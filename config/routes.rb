@@ -1,3 +1,11 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :wkclasses
+  resources :attendances
+  resources :instructors
+  resources :workouts
+  resources :rel_product_workouts
+  resources :rel_user_products
+  resources :products
+  resources :users
+  root 'users#index'
 end

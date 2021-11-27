@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Classes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Workout</th>
+      <th>Date</th>
+      <th>Start</th>
+      <th>Attendance</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @wkclasses.each do |wkclass| %>
+      <tr>
+        <td><%= wkclass.workout.name %></td>
+        <td><%= wkclass.date %></td>
+        <td><%= wkclass.time %></td>
+        <td><%= wkclass.attendances.count %></td>
+        <td><%= link_to 'Show', wkclass %></td>
+        <td><%= link_to 'Edit', edit_wkclass_path(wkclass) %></td>
+        <td><%= link_to 'Destroy', wkclass, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Class', new_wkclass_path %>

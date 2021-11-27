@@ -1,0 +1,27 @@
+<%= form_with(model: wkclass) do |form| %>
+  <% if wkclass.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>
+
+      <ul>
+        <% wkclass.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :workout_id %>
+    <%= form.number_field :workout_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.datetime_select :start_time %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

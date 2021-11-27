@@ -1,0 +1,2 @@
+module RelProductWorkoutsHelper
+end

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @rel_user_product.user_id %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @rel_user_product.product_id %>
+</p>
+
+<p>
+  <strong>Dop:</strong>
+  <%= @rel_user_product.dop %>
+</p>
+
+<p>
+  <strong>Payment:</strong>
+  <%= @rel_user_product.payment %>
+</p>
+
+<%= link_to 'Edit', edit_rel_user_product_path(@rel_user_product) %> |
+<%= link_to 'Back', rel_user_products_path %>

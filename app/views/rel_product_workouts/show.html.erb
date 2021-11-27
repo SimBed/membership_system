@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @rel_product_workout.product_id %>
+</p>
+
+<p>
+  <strong>Workout:</strong>
+  <%= @rel_product_workout.workout_id %>
+</p>
+
+<%= link_to 'Edit', edit_rel_product_workout_path(@rel_product_workout) %> |
+<%= link_to 'Back', rel_product_workouts_path %>

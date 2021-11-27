@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <%= @wkclass.summary %>
+</p>
+
+<p>
+  <%= "Attendances: #{@wkclass.attendances.count}" %>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Product</th>
+      <th>Revenue</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @wkclass.users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.product_for_class(@wkclass).name %></td>
+        <td><%= user.revenue_for_class(@wkclass) %></td>
+        <td><%= link_to 'Show', user %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Edit', edit_wkclass_path(@wkclass) %> |
+<%= link_to 'Back', wkclasses_path %>

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Max classes:</strong>
+  <%= @product.max_classes %>
+</p>
+
+<p>
+  <strong>Validity length:</strong>
+  <%= @product.validity_length %>
+</p>
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>
