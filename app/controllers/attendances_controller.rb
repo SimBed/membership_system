@@ -1,3 +1,4 @@
+#require 'byebug'
 class AttendancesController < ApplicationController
   before_action :set_attendance, only: %i[ show edit update destroy ]
 
@@ -12,7 +13,11 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/new
   def new
+    session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
+    @wkclass = Wkclass.find(session[:wkclass_id])
+    # e.g. [["Aparna Shah 9C:5W", 1], ["Aryan Agarwal UC:3M", 2], ...]
+    @qualifying_products = Wkclass.users_with_product(@wkclass).map { |q| ["#{User.find(q["userid"]).first_name} #{User.find(q["userid"]).last_name} #{RelUserProduct.find(q["relid"]).name}", q["relid"]] }
   end
 
   # GET /attendances/1/edit
@@ -22,12 +27,17 @@ class AttendancesController < ApplicationController
   # POST /attendances or /attendances.json
   def create
     @attendance = Attendance.new(attendance_params)
-
+    #byebug
     respond_to do |format|
       if @attendance.save
         format.html { redirect_to @attendance, notice: "Attendance was successfully created." }
         format.json { render :show, status: :created, location: @attendance }
+        @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else
+        session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
+        @attendance = Attendance.new
+        @wkclass = Wkclass.find(session[:wkclass_id])
+        @qualifying_products = Wkclass.users_with_product(@wkclass).map { |q| ["#{User.find(q["userid"]).first_name} #{User.find(q["userid"]).last_name} #{RelUserProduct.find(q["relid"]).name}", q["relid"]] }
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @attendance.errors, status: :unprocessable_entity }
       end

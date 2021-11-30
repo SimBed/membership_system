@@ -2,11 +2,41 @@ class RelUserProduct < ApplicationRecord
   belongs_to :product
   belongs_to :user
   has_many :attendances
+  # this defines the name method on an instance of RelUserProduct
+  # so @rel_user_product.name equals Product.find(@rel_user_product).name
+  delegate :name, to: :product
 
   def status
     return 'not started' if self.attendance_status == 'not started'
     return 'expired' if self.attendance_status == 'exhausted' || self.validity_status == 'expired'
-    return 'ongoing'
+    'ongoing'
+  end
+
+  def expiry_date
+    start_date = self.attendances.order_by_date.first["date"]
+    case product.validity_unit
+      when 'D'
+        return start_date + self.product.validity_length
+      when 'W'
+        return start_date + self.product.validity_length.weeks
+      when 'M'
+        return start_date + self.product.validity_length.months
+    end
+  end
+
+  # for revenue cashflows
+  def attendance_estimate
+    return product.max_classes unless product.max_classes == 1000
+      case product.validity_unit
+        when 'D'
+          # probably no unlimited products with days but assume every day if so
+          return self.product.validity_length
+        when 'W'
+          # assume 5 classes per week when unlimited and product in weeks
+          return self.product.validity_length * 5
+        when 'M'
+          return self.product.validity_length * 20
+      end
   end
 
   private
@@ -14,15 +44,14 @@ class RelUserProduct < ApplicationRecord
       attendance_count = self.attendances.count
       return 'not started' if attendance_count.zero?
       return attendance_count if attendance_count < self.product.max_classes
-      return 'exhausted'
+      'exhausted'
     end
 
     def validity_status
       return 'not started' if self.attendance_status == 'not started'
+      return 'expired' if self.expiry_date > Date.today()
       start_date = self.attendances.order_by_date.first["date"]
-      expiry_date = start_date + self.product.validity_length
-      return 'expired' if expiry_date > Date.today()
-      return expiry_date - start_date
+      self.expiry_date - start_date
     end
 
 end

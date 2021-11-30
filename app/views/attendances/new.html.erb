@@ -1,4 +1,7 @@
-<h1>New Attendance</h1>
+<h3> <%= "#{Workout.find(@wkclass.workout_id).name}" %> <br>
+   <%= "#{@wkclass.date}, #{@wkclass.time}" %>
+</h3>
+<h3> New Attendance </h3>
 
 <%= render 'form', attendance: @attendance %>
 
