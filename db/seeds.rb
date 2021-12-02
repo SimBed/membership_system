@@ -36,7 +36,7 @@ Product.create!(max_classes: 1000, validity_length: 1, validity_unit: 'W')
 Instructor.create!(first_name: 'Apoorv', last_name: 'Mathur')
 
 # Workouts
-Workout.create!(name: 'CrossFitness', instructor_id: Instructor.where(first_name: 'Apoorv').first.id)
+Workout.create!(name: 'HIIT', instructor_id: Instructor.where(first_name: 'Apoorv').first.id)
 
 # Classes
 Wkclass.create!(workout_id:1, start_time: '8-11-2021 10:30')
@@ -74,7 +74,7 @@ RelUserProduct.create!(user_id: 14, product_id: 6, dop: '1-11-2021', payment: 10
 
 # RelProductWorkouts
 Product.all.each do |p|
-  RelProductWorkout.create!(product_id: p.id, workout_id: Workout.where(name: 'CrossFitness').first.id)
+  RelProductWorkout.create!(product_id: p.id, workout_id: Workout.where(name: 'HIIT').first.id)
 end
 
 # Attendances

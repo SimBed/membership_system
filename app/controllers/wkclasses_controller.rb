@@ -38,7 +38,7 @@ class WkclassesController < ApplicationController
   def update
     respond_to do |format|
       if @wkclass.update(wkclass_params)
-        format.html { redirect_to @wkclass, notice: "Wkclass was successfully updated." }
+        format.html { redirect_to wkclasses_path, notice: "Wkclass was successfully updated." }
         format.json { render :show, status: :ok, location: @wkclass }
       else
         format.html { render :edit, status: :unprocessable_entity }

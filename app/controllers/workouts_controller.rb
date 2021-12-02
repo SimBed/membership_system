@@ -13,10 +13,12 @@ class WorkoutsController < ApplicationController
   # GET /workouts/new
   def new
     @workout = Workout.new
+    @instructors = Instructor.all.map { |i| ["#{i.first_name} #{i.last_name}", i.id] }
   end
 
   # GET /workouts/1/edit
   def edit
+    @instructors = Instructor.all.map { |i| ["#{i.first_name} #{i.last_name}", i.id] }
   end
 
   # POST /workouts or /workouts.json
@@ -25,11 +27,12 @@ class WorkoutsController < ApplicationController
 
     respond_to do |format|
       if @workout.save
-        format.html { redirect_to @workout, notice: "Workout was successfully created." }
+        format.html { redirect_to workouts_path, notice: "Workout was successfully created." }
         format.json { render :show, status: :created, location: @workout }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @workout.errors, status: :unprocessable_entity }
+        @instructors = Instructor.all.map { |i| ["#{i.first_name} #{i.last_name}", i.id] }
       end
     end
   end
@@ -38,7 +41,7 @@ class WorkoutsController < ApplicationController
   def update
     respond_to do |format|
       if @workout.update(workout_params)
-        format.html { redirect_to @workout, notice: "Workout was successfully updated." }
+        format.html { redirect_to workouts_path, notice: "Workout was successfully updated." }
         format.json { render :show, status: :ok, location: @workout }
       else
         format.html { render :edit, status: :unprocessable_entity }

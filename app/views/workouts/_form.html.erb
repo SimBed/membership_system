@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= form.label :instructor_id %>
-    <%= form.number_field :instructor_id %>
+    <%= form.select :instructor_id, options_for_select(@instructors) %>
   </div>
 
   <div class="actions">

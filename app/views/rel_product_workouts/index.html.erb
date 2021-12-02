@@ -14,8 +14,8 @@
   <tbody>
     <% @rel_product_workouts.each do |rel_product_workout| %>
       <tr>
-        <td><%= rel_product_workout.product_id %></td>
-        <td><%= rel_product_workout.workout_id %></td>
+        <td><%= Product.find(rel_product_workout.product_id).name %></td>
+        <td><%= Workout.find(rel_product_workout.workout_id).name %></td>
         <td><%= link_to 'Show', rel_product_workout %></td>
         <td><%= link_to 'Edit', edit_rel_product_workout_path(rel_product_workout) %></td>
         <td><%= link_to 'Destroy', rel_product_workout, method: :delete, data: { confirm: 'Are you sure?' } %></td>
