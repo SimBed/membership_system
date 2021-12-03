@@ -13,10 +13,12 @@ class ProductsController < ApplicationController
   # GET /products/new
   def new
     @product = Product.new
+    @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
   end
 
   # GET /products/1/edit
   def edit
+    @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
   end
 
   # POST /products or /products.json
@@ -25,9 +27,10 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
-        format.html { redirect_to @product, notice: "Product was successfully created." }
+        format.html { redirect_to products_path, notice: "Product was successfully created." }
         format.json { render :show, status: :created, location: @product }
       else
+        @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
@@ -38,9 +41,10 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to @product, notice: "Product was successfully updated." }
+        format.html { redirect_to products_path, notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
       else
+        @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
@@ -51,7 +55,7 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     respond_to do |format|
-      format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
+      format.html { redirect_to products_path, notice: "Product was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -64,6 +68,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:max_classes, :validity_length, :validity_unit)
+      params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :workout_group_id)
     end
 end

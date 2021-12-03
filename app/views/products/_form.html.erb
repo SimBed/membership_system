@@ -26,6 +26,10 @@
     <%= form.text_field :validity_unit %>
   </div>
 
+  <div class="field">
+    <%= form.select :workout_group_id, options_for_select(@workout_groups)%>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

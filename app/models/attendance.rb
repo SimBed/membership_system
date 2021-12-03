@@ -2,6 +2,7 @@ class Attendance < ApplicationRecord
   belongs_to :wkclass
   belongs_to :rel_user_product
 
+  # for expiry_date method of RelUserProduct model
   def self.order_by_date
     sql = "SELECT wkclasses.start_time date
            FROM attendances

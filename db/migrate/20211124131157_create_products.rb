@@ -4,6 +4,7 @@ class CreateProducts < ActiveRecord::Migration[6.1]
       t.integer :max_classes
       t.integer :validity_length
       t.string :validity_unit
+      t.integer :workout_group_id
 
       t.timestamps
     end

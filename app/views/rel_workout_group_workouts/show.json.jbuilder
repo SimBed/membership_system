@@ -1,0 +1,1 @@
+json.partial! "rel_workout_group_workouts/rel_workout_group_workout", rel_workout_group_workout: @rel_workout_group_workout

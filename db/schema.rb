@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_24_134339) do
+ActiveRecord::Schema.define(version: 2021_12_02_110254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2021_11_24_134339) do
     t.integer "max_classes"
     t.integer "validity_length"
     t.string "validity_unit"
+    t.integer "workout_group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -53,6 +54,13 @@ ActiveRecord::Schema.define(version: 2021_11_24_134339) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "rel_workout_group_workouts", force: :cascade do |t|
+    t.integer "workout_group_id"
+    t.integer "workout_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -63,6 +71,12 @@ ActiveRecord::Schema.define(version: 2021_11_24_134339) do
   create_table "wkclasses", force: :cascade do |t|
     t.integer "workout_id"
     t.datetime "start_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "workout_groups", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

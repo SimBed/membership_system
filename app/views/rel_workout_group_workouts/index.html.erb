@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Rel Workout Group Workouts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Workout group</th>
+      <th>Workout</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rel_workout_group_workouts.each do |rel_workout_group_workout| %>
+      <tr>
+        <td><%= rel_workout_group_workout.workout_group_id %></td>
+        <td><%= rel_workout_group_workout.workout_id %></td>
+        <td><%= link_to 'Show', rel_workout_group_workout %></td>
+        <td><%= link_to 'Edit', edit_rel_workout_group_workout_path(rel_workout_group_workout) %></td>
+        <td><%= link_to 'Destroy', rel_workout_group_workout, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Rel Workout Group Workout', new_rel_workout_group_workout_path %>

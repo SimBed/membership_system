@@ -16,14 +16,20 @@ class Wkclass < ApplicationRecord
     "#{workout.name}, #{date}, #{time}"
   end
 
+  def revenue
+    users.map { |u| u.revenue_for_class(self) }.inject(0, :+)
+  end
+
+  # for qualifying products in select box for new attendance form
   def self.users_with_product(wkclass)
     sql = "SELECT users.id AS userid, relup.id AS relid
            FROM Wkclasses
             INNER JOIN workouts ON wkclasses.workout_id = workouts.id
-            INNER JOIN Rel_product_workouts rel ON workouts.id = rel.workout_id
-            INNER JOIN products on products.id = rel.product_id
-            INNER JOIN rel_user_products relup ON relup.product_id = products.id
-            INNER JOIN users ON users.id = relup.user_id
+            INNER JOIN rel_workout_group_workouts rel ON workouts.id = rel.workout_id
+            INNER JOIN workout_groups ON rel.workout_group_id = workout_groups.id
+            INNER JOIN products on workout_groups.id = products.workout_group_id
+            INNER JOIN rel_user_products relup ON products.id = relup.product_id
+            INNER JOIN users ON relup.user_id = users.id
             WHERE Wkclasses.id = #{wkclass.id} ORDER BY userid;"
     ActiveRecord::Base.connection.exec_query(sql).to_a
   end

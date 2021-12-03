@@ -18,19 +18,22 @@ users.each do |u|
   User.create!(first_name: u[:first_name], last_name: u[:last_name])
 end
 
+# Workout Groups
+WorkoutGroup.create!(name: 'Space')
+
 # Products
 # 1. Drop IN & Class Pass & Free
-Product.create!(max_classes: 1, validity_length: 1, validity_unit: 'D')
+Product.create!(max_classes: 1, validity_length: 1, validity_unit: 'D', workout_group_id: 1)
 # 2. 6C5W
-Product.create!(max_classes: 6, validity_length: 5, validity_unit: 'W')
+Product.create!(max_classes: 6, validity_length: 5, validity_unit: 'W', workout_group_id: 1)
 # 3. 8C5W
-Product.create!(max_classes: 8, validity_length: 5, validity_unit: 'W')
+Product.create!(max_classes: 8, validity_length: 5, validity_unit: 'W', workout_group_id: 1)
 # 4. U1M
-Product.create!(max_classes: 1000, validity_length: 1, validity_unit: 'M')
+Product.create!(max_classes: 1000, validity_length: 1, validity_unit: 'M', workout_group_id: 1)
 # 5. U3M
-Product.create!(max_classes: 1000, validity_length: 3, validity_unit: 'M')
+Product.create!(max_classes: 1000, validity_length: 3, validity_unit: 'M', workout_group_id: 1)
 # 6. U1W
-Product.create!(max_classes: 1000, validity_length: 1, validity_unit: 'W')
+Product.create!(max_classes: 1000, validity_length: 1, validity_unit: 'W', workout_group_id: 1)
 
 # Instructors
 Instructor.create!(first_name: 'Apoorv', last_name: 'Mathur')

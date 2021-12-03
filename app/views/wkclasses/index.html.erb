@@ -9,6 +9,7 @@
       <th>Date</th>
       <th>Start</th>
       <th>Attendance</th>
+      <th>Base Revenue</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
         <td><%= wkclass.date %></td>
         <td><%= wkclass.time %></td>
         <td><%= wkclass.attendances.count %></td>
+        <td><%= wkclass.revenue %></td>
         <td><%= link_to 'Show', wkclass %></td>
         <td><%= link_to 'Edit', edit_wkclass_path(wkclass) %></td>
         <td><%= link_to 'Destroy', wkclass, method: :delete, data: { confirm: 'Are you sure?' } %></td>
