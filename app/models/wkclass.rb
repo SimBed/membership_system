@@ -3,6 +3,7 @@ class Wkclass < ApplicationRecord
   has_many :rel_user_products, through: :attendances
   has_many :users, through: :rel_user_products
   belongs_to :workout
+  delegate :name, to: :workout
 
   def date
     start_time.strftime('%a %d %b %y')
@@ -17,7 +18,7 @@ class Wkclass < ApplicationRecord
   end
 
   def revenue
-    users.map { |u| u.revenue_for_class(self) }.inject(0, :+)
+    attendances.map { |a| a.revenue }.inject(0, :+)
   end
 
   # for qualifying products in select box for new attendance form

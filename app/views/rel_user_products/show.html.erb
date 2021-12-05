@@ -1,24 +1,40 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
-  <%= @rel_user_product.user_id %>
+  <strong>Client:</strong>
+  <%= @rel_user_product.user.name %>
 </p>
 
 <p>
-  <strong>Product:</strong>
-  <%= @rel_user_product.product_id %>
-</p>
-
-<p>
-  <strong>Dop:</strong>
-  <%= @rel_user_product.dop %>
+  <strong>Purchase:</strong>
+  <%= @rel_user_product.product.name %>
 </p>
 
 <p>
   <strong>Payment:</strong>
   <%= @rel_user_product.payment %>
 </p>
+
+<p>
+  <strong>Payment Date:</strong>
+  <%= @rel_user_product.dop %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @rel_user_product.status %>
+</p>
+
+<% unless @rel_user_product.status == 'not started' %>
+<p>
+  <strong>Attendances:</strong>
+  <ul>
+    <% @rel_user_product.attendances.each do |a| %>
+    <li> <%= a.date %></li>
+    <% end %>
+  </ul>
+</p>
+<% end %>
 
 <%= link_to 'Edit', edit_rel_user_product_path(@rel_user_product) %> |
 <%= link_to 'Back', rel_user_products_path %>

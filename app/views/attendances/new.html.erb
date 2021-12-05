@@ -1,8 +1,5 @@
-<h3> <%= "#{Workout.find(@wkclass.workout_id).name}" %> <br>
-   <%= "#{@wkclass.date}, #{@wkclass.time}" %>
-</h3>
-<h3> New Attendance </h3>
+<h5> <%= "#{Workout.find(@wkclass.workout_id).name}" %> <br>
+   <small><%= "#{@wkclass.date}, #{@wkclass.time}" %></small>
+</h5>
 
 <%= render 'form', attendance: @attendance %>
-
-<%= link_to 'Back', attendances_path %>

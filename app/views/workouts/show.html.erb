@@ -1,14 +1,21 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
+  <strong>Workout:</strong>
   <%= @workout.name %>
 </p>
 
 <p>
   <strong>Instructor:</strong>
-  <%= @workout.instructor_id %>
+  <%= @workout.instructor.name %>
 </p>
+
+<p>
+  <strong>Workout Group</strong>
+  <%= @workout.workout_groups.map { |w| w.name }.join(' ') %>
+</p>
+
+
 
 <%= link_to 'Edit', edit_workout_path(@workout) %> |
 <%= link_to 'Back', workouts_path %>

@@ -1,6 +1,13 @@
 class Attendance < ApplicationRecord
   belongs_to :wkclass
   belongs_to :rel_user_product
+  # this defines the start_time method on an instance of Wkclass
+  # so @attendance.start_time equals WkClass.find(@attendance.id).start_time
+  delegate :start_time, :date, to: :wkclass
+
+  def revenue
+    rel_user_product.payment / rel_user_product.attendance_estimate
+  end
 
   # for expiry_date method of RelUserProduct model
   def self.order_by_date

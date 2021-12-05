@@ -5,8 +5,9 @@
 </p>
 
 <p>
-  <%= "Attendances: #{@wkclass.attendances.count}" %>
-  | <%= link_to 'Add attendance', new_attendance_path(:wkclass_id => @wkclass.id) %>
+  <%= "Attendances: #{@wkclass.attendances.count}" %> |
+  <%= "Revenue: #{@wkclass.revenue}" %> |
+  <%= link_to 'Add attendance', new_attendance_path(:wkclass_id => @wkclass.id) %>
 </p>
 
 <table>

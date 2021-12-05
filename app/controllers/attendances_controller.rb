@@ -30,7 +30,7 @@ class AttendancesController < ApplicationController
     #byebug
     respond_to do |format|
       if @attendance.save
-        format.html { redirect_to @attendance, notice: "Attendance was successfully created." }
+        format.html { redirect_to new_attendance_path, notice: "#{@attendance.rel_user_product.user.name}''s attendance was successfully logged." }
         format.json { render :show, status: :created, location: @attendance }
         @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else

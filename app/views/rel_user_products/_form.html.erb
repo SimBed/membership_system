@@ -13,12 +13,12 @@
 
   <div class="field">
     <%= form.label :user_id %>
-    <%= form.number_field :user_id %>
+    <%= form.select :user_id, @users %>
   </div>
 
   <div class="field">
     <%= form.label :product_id %>
-    <%= form.number_field :product_id %>
+    <%= form.select :product_id, @products %>
   </div>
 
   <div class="field">
@@ -32,6 +32,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Log Purchase' %>
   </div>
 <% end %>

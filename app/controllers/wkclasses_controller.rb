@@ -13,6 +13,8 @@ class WkclassesController < ApplicationController
   # GET /wkclasses/new
   def new
     @wkclass = Wkclass.new
+    # for select in new wkclass form
+    @workouts = Workout.all.map { |w| [w.name, w.id] }
   end
 
   # GET /wkclasses/1/edit

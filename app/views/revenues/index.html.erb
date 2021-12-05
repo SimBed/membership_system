@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Revenue</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Workout Group</th>
+      <th>Attendamces</th>
+      <th>Base Revenue</th>
+      <th>Expiries</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @workout_groups.each do |wg| %>
+      <tr>
+        <td><%= wg.name %></td>
+        <td><%= wg.attendances.count %></td>
+        <td><%= wg.base_revenue %></td>
+        <td><%= 4 %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

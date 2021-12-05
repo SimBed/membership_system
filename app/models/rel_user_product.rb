@@ -3,8 +3,9 @@ class RelUserProduct < ApplicationRecord
   belongs_to :user
   has_many :attendances
   # this defines the name method on an instance of RelUserProduct
-  # so @rel_user_product.name equals Product.find(@rel_user_product).name
+  # so @rel_user_product.name equals Product.find(@rel_user_product.id).name
   delegate :name, to: :product
+  delegate :revenue_for_class, to: :user
 
   def status
     return 'not started' if self.attendance_status == 'not started'
@@ -33,9 +34,9 @@ class RelUserProduct < ApplicationRecord
           return self.product.validity_length
         when 'W'
           # assume 5 classes per week when unlimited and product in weeks
-          return self.product.validity_length * 5
+          return self.product.validity_length * 6 #5
         when 'M'
-          return self.product.validity_length * 20
+          return self.product.validity_length * 30 #20
       end
   end
 
@@ -49,7 +50,7 @@ class RelUserProduct < ApplicationRecord
 
     def validity_status
       return 'not started' if self.attendance_status == 'not started'
-      return 'expired' if self.expiry_date > Date.today()
+      return 'expired' if Date.today() > self.expiry_date
       start_date = self.attendances.order_by_date.first["date"]
       self.expiry_date - start_date
     end

@@ -23,10 +23,12 @@
 
   <div class="field">
     <%= form.label :validity_unit %>
-    <%= form.text_field :validity_unit %>
+    <%= form.select :validity_unit, [['days', 'D'], ['weeks', 'W'], ['months', 'M'] ] %>
+    <%#= form.text_field :validity_unit %>
   </div>
 
   <div class="field">
+    <%= form.label :workout_group_id, 'Workout Group' %>
     <%= form.select :workout_group_id, options_for_select(@workout_groups)%>
   </div>
 

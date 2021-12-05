@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :rel_user_products, dependent: :destroy
   has_many :attendances, through: :rel_user_products
+  scope :order_by_name, -> { order(:first_name, :last_name) }
 
   def name
     "#{first_name} #{last_name}"

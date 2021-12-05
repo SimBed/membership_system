@@ -12,13 +12,12 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :workout_id %>
-    <%= form.number_field :workout_id %>
+    <%= form.select :workout_id, options_for_select(@workouts) %>
   </div>
 
   <div class="field">
     <%= form.label :start_time %>
-    <%= form.datetime_select :start_time %>
+    <%= form.datetime_select :start_time, default: Time.parse('10:30') %>
   </div>
 
   <div class="actions">

@@ -1,8 +1,12 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
-  <%= @workout_group.name %>
+  <strong><%= @workout_group.name %></strong> workout group includes:
+  <ul>
+  <% @workout_group.workouts.each do |wk| %>
+    <li> <%= link_to "#{wk.name}", wk %> </li>
+  <% end %>
+  </ul>
 </p>
 
 <%= link_to 'Edit', edit_workout_group_path(@workout_group) %> |
