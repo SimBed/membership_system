@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @purchase.client.name %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @purchase.product.name %>
+</p>
+
+<p>
+  <strong>Payment:</strong>
+  <%= @purchase.payment %>
+</p>
+
+<p>
+  <strong>Payment Date:</strong>
+  <%= @purchase.dop %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @purchase.status %>
+</p>
+
+<p>
+  <strong>Payment mode:</strong>
+  <%= @purchase.payment_mode %>
+</p>
+
+<p>
+  <strong>Invoice:</strong>
+  <%= @purchase.invoice %>
+</p>
+
+<p>
+  <strong>Note:</strong>
+  <%= @purchase.note %>
+</p>
+
+<p>
+  <strong>Adjust restart:</strong>
+  <%= @purchase.adjust_restart %>
+</p>
+
+<p>
+  <strong>Ar payment:</strong>
+  <%= @purchase.ar_payment %>
+</p>
+
+<p>
+  <strong>Ar date:</strong>
+  <%= @purchase.ar_date %>
+</p>
+
+<% unless @purchase.status == 'not started' %>
+<p>
+  <strong>Attendances:</strong>
+  <ul>
+    <% @purchase.attendances.each do |a| %>
+    <li> <%= a.date %></li>
+    <% end %>
+  </ul>
+</p>
+<% end %>
+
+<%= link_to 'Edit', edit_purchase_path(@purchase) %> |
+<%= link_to 'Back', purchases_path %>

@@ -17,7 +17,7 @@ class AttendancesController < ApplicationController
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
     # e.g. [["Aparna Shah 9C:5W", 1], ["Aryan Agarwal UC:3M", 2], ...]
-    @qualifying_products = Wkclass.users_with_product(@wkclass).map { |q| ["#{User.find(q["userid"]).first_name} #{User.find(q["userid"]).last_name} #{RelUserProduct.find(q["relid"]).name}", q["relid"]] }
+    @qualifying_products = Wkclass.clients_with_product(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
   end
 
   # GET /attendances/1/edit
@@ -37,7 +37,7 @@ class AttendancesController < ApplicationController
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
         @attendance = Attendance.new
         @wkclass = Wkclass.find(session[:wkclass_id])
-        @qualifying_products = Wkclass.users_with_product(@wkclass).map { |q| ["#{User.find(q["userid"]).first_name} #{User.find(q["userid"]).last_name} #{RelUserProduct.find(q["relid"]).name}", q["relid"]] }
+        @qualifying_products = Wkclass.clients_with_product(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @attendance.errors, status: :unprocessable_entity }
       end
@@ -74,6 +74,6 @@ class AttendancesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def attendance_params
-      params.require(:attendance).permit(:wkclass_id, :rel_user_product_id)
+      params.require(:attendance).permit(:wkclass_id, :purchase_id)
     end
 end

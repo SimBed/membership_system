@@ -29,7 +29,7 @@ class WorkoutGroupsController < ApplicationController
 
     respond_to do |format|
       if @workout_group.save
-        format.html { redirect_to @workout_group, notice: "Workout group was successfully created." }
+        format.html { redirect_to @workout_group, notice: "Workout Group was successfully created." }
         format.json { render :show, status: :created, location: @workout_group }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -42,7 +42,7 @@ class WorkoutGroupsController < ApplicationController
   def update
     respond_to do |format|
       if @workout_group.update(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
-        format.html { redirect_to @workout_group, notice: "Workout group was successfully updated." }
+        format.html { redirect_to @workout_group, notice: "Workout Group was successfully updated." }
         format.json { render :show, status: :ok, location: @workout_group }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,7 +55,7 @@ class WorkoutGroupsController < ApplicationController
   def destroy
     @workout_group.destroy
     respond_to do |format|
-      format.html { redirect_to workout_groups_url, notice: "Workout group was successfully destroyed." }
+      format.html { redirect_to workout_groups_url, notice: "Workout Group was successfully destroyed." }
       format.json { head :no_content }
     end
   end

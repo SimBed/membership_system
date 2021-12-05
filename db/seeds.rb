@@ -1,5 +1,5 @@
-# Users
-users = [{:first_name => 'Aparna', :last_name => 'Shah'},
+# Clients
+clients = [{:first_name => 'Aparna', :last_name => 'Shah'},
          {:first_name => 'Aryan', :last_name => 'Agarwal'},
          {:first_name => 'Bhavik', :last_name => 'Shah'},
          {:first_name => 'Ekta', :last_name => 'Sheth'},
@@ -14,12 +14,18 @@ users = [{:first_name => 'Aparna', :last_name => 'Shah'},
          {:first_name => 'Triveni', :last_name => 'Chouhan'},
          {:first_name => 'Varun', :last_name => 'Joshi'}]
 
-users.each do |u|
-  User.create!(first_name: u[:first_name], last_name: u[:last_name])
+clients.each do |c|
+  Client.create!(first_name: c[:first_name], last_name: c[:last_name])
 end
 
+# Instructors
+Instructor.create!(first_name: 'Apoorv', last_name: 'Mathur')
+
+# Workouts
+Workout.create!(name: 'HIIT', instructor_id: Instructor.where(first_name: 'Apoorv').first.id)
+
 # Workout Groups
-WorkoutGroup.create!(name: 'Space')
+WorkoutGroup.create!(name: 'Space', workout_ids: [1])
 
 # Products
 # 1. Drop IN & Class Pass & Free
@@ -34,12 +40,6 @@ Product.create!(max_classes: 1000, validity_length: 1, validity_unit: 'M', worko
 Product.create!(max_classes: 1000, validity_length: 3, validity_unit: 'M', workout_group_id: 1)
 # 6. U1W
 Product.create!(max_classes: 1000, validity_length: 1, validity_unit: 'W', workout_group_id: 1)
-
-# Instructors
-Instructor.create!(first_name: 'Apoorv', last_name: 'Mathur')
-
-# Workouts
-Workout.create!(name: 'HIIT', instructor_id: Instructor.where(first_name: 'Apoorv').first.id)
 
 # Classes
 Wkclass.create!(workout_id:1, start_time: '8-11-2021 10:30')
@@ -56,38 +56,39 @@ Wkclass.create!(workout_id:1, start_time: '22-11-2021 10:30')
 Wkclass.create!(workout_id:1, start_time: '23-11-2021 10:30')
 Wkclass.create!(workout_id:1, start_time: '24-11-2021 10:30')
 
-# RelUserProducts to Nov 24
-RelUserProduct.create!(user_id: 1, product_id: 4, dop: '1-11-2021', payment: 7000)
-RelUserProduct.create!(user_id: 2, product_id: 6, dop: '1-11-2021', payment: 1000)
-RelUserProduct.create!(user_id: 3, product_id: 2, dop: '1-11-2021', payment: 3900)
-RelUserProduct.create!(user_id: 3, product_id: 5, dop: '11-11-2021', payment: 20000)
-RelUserProduct.create!(user_id: 4, product_id: 2, dop: '1-11-2021', payment: 3900)
-RelUserProduct.create!(user_id: 4, product_id: 5, dop: '11-11-2021', payment: 20000)
-RelUserProduct.create!(user_id: 5, product_id: 2, dop: '1-11-2021', payment: 3900)
-RelUserProduct.create!(user_id: 6, product_id: 1, dop: '1-11-2021', payment: 0)
-RelUserProduct.create!(user_id: 7, product_id: 1, dop: '1-11-2021', payment: 1000)
-RelUserProduct.create!(user_id: 8, product_id: 3, dop: '1-11-2021', payment: 5200)
-RelUserProduct.create!(user_id: 9, product_id: 1, dop: '1-11-2021', payment: 0)
-RelUserProduct.create!(user_id: 10, product_id: 1, dop: '1-11-2021', payment: 500)
-RelUserProduct.create!(user_id: 11, product_id: 4, dop: '1-11-2021', payment: 8000)
-RelUserProduct.create!(user_id: 12, product_id: 4, dop: '10-11-2021', payment: 7000)
-RelUserProduct.create!(user_id: 13, product_id: 2, dop: '1-11-2021', payment: 3900)
-RelUserProduct.create!(user_id: 13, product_id: 4, dop: '7-11-2021', payment: 7000)
-RelUserProduct.create!(user_id: 14, product_id: 6, dop: '1-11-2021', payment: 1000)
+# Purchases to Nov 24
+Purchase.create!(client_id: 1, product_id: 4, dop: '1-11-2021', payment: 7000)
+Purchase.create!(client_id: 2, product_id: 6, dop: '1-11-2021', payment: 1000)
+Purchase.create!(client_id: 3, product_id: 2, dop: '1-11-2021', payment: 3900)
+Purchase.create!(client_id: 3, product_id: 5, dop: '11-11-2021', payment: 20000)
+Purchase.create!(client_id: 4, product_id: 2, dop: '1-11-2021', payment: 3900)
+Purchase.create!(client_id: 4, product_id: 5, dop: '11-11-2021', payment: 20000)
+Purchase.create!(client_id: 5, product_id: 2, dop: '1-11-2021', payment: 3900)
+Purchase.create!(client_id: 6, product_id: 1, dop: '1-11-2021', payment: 0)
+Purchase.create!(client_id: 7, product_id: 1, dop: '1-11-2021', payment: 1000)
+Purchase.create!(client_id: 8, product_id: 3, dop: '1-11-2021', payment: 5200)
+Purchase.create!(client_id: 9, product_id: 1, dop: '1-11-2021', payment: 0)
+Purchase.create!(client_id: 10, product_id: 1, dop: '1-11-2021', payment: 500)
+Purchase.create!(client_id: 11, product_id: 4, dop: '1-11-2021', payment: 8000)
+Purchase.create!(client_id: 12, product_id: 4, dop: '10-11-2021', payment: 7000)
+Purchase.create!(client_id: 13, product_id: 2, dop: '1-11-2021', payment: 3900)
+Purchase.create!(client_id: 13, product_id: 4, dop: '7-11-2021', payment: 7000)
+Purchase.create!(client_id: 14, product_id: 6, dop: '1-11-2021', payment: 1000)
 
-# RelProductWorkouts
-Product.all.each do |p|
-  RelProductWorkout.create!(product_id: p.id, workout_id: Workout.where(name: 'HIIT').first.id)
-end
+# Workout Groups
+# todo
+
+# rel_workout_group_workouts
+# todo
 
 # Attendances
-Attendance.create!(wkclass_id: 1, rel_user_product_id: 2)
-Attendance.create!(wkclass_id: 1, rel_user_product_id: 3)
-Attendance.create!(wkclass_id: 1, rel_user_product_id: 17)
-Attendance.create!(wkclass_id: 2, rel_user_product_id: 2)
-Attendance.create!(wkclass_id: 2, rel_user_product_id: 10)
-Attendance.create!(wkclass_id: 2, rel_user_product_id: 15)
-Attendance.create!(wkclass_id: 3, rel_user_product_id: 2)
-Attendance.create!(wkclass_id: 3, rel_user_product_id: 3)
-Attendance.create!(wkclass_id: 3, rel_user_product_id: 5)
-Attendance.create!(wkclass_id: 3, rel_user_product_id: 14)
+Attendance.create!(wkclass_id: 1, purchase_id: 2)
+Attendance.create!(wkclass_id: 1, purchase_id: 3)
+Attendance.create!(wkclass_id: 1, purchase_id: 17)
+Attendance.create!(wkclass_id: 2, purchase_id: 2)
+Attendance.create!(wkclass_id: 2, purchase_id: 10)
+Attendance.create!(wkclass_id: 2, purchase_id: 15)
+Attendance.create!(wkclass_id: 3, purchase_id: 2)
+Attendance.create!(wkclass_id: 3, purchase_id: 3)
+Attendance.create!(wkclass_id: 3, purchase_id: 5)
+Attendance.create!(wkclass_id: 3, purchase_id: 14)

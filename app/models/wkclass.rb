@@ -1,7 +1,7 @@
 class Wkclass < ApplicationRecord
   has_many :attendances
-  has_many :rel_user_products, through: :attendances
-  has_many :users, through: :rel_user_products
+  has_many :purchases, through: :attendances
+  has_many :clients, through: :purchases
   belongs_to :workout
   delegate :name, to: :workout
 
@@ -22,16 +22,16 @@ class Wkclass < ApplicationRecord
   end
 
   # for qualifying products in select box for new attendance form
-  def self.users_with_product(wkclass)
-    sql = "SELECT users.id AS userid, relup.id AS relid
+  def self.clients_with_product(wkclass)
+    sql = "SELECT clients.id AS clientid, purchases.id AS purchaseid
            FROM Wkclasses
             INNER JOIN workouts ON wkclasses.workout_id = workouts.id
             INNER JOIN rel_workout_group_workouts rel ON workouts.id = rel.workout_id
             INNER JOIN workout_groups ON rel.workout_group_id = workout_groups.id
             INNER JOIN products on workout_groups.id = products.workout_group_id
-            INNER JOIN rel_user_products relup ON products.id = relup.product_id
-            INNER JOIN users ON relup.user_id = users.id
-            WHERE Wkclasses.id = #{wkclass.id} ORDER BY userid;"
+            INNER JOIN purchases ON products.id = purchases.product_id
+            INNER JOIN users ON purchases.client_id = clients.id
+            WHERE Wkclasses.id = #{wkclass.id} ORDER BY clientid;"
     ActiveRecord::Base.connection.exec_query(sql).to_a
   end
 end

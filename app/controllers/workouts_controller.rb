@@ -54,7 +54,7 @@ class WorkoutsController < ApplicationController
   def destroy
     @workout.destroy
     respond_to do |format|
-      format.html { redirect_to workouts_url, notice: "Workout was successfully destroyed." }
+      format.html { redirect_to workouts_url, notice: "Workout was successfully deleted." }
       format.json { head :no_content }
     end
   end

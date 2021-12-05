@@ -1,7 +1,7 @@
 class WorkoutGroup < ApplicationRecord
   has_many :products, dependent: :destroy
-  has_many :rel_user_products, through: :products
-  has_many :attendances, through: :rel_user_products
+  has_many :purchases, through: :products
+  has_many :attendances, through: :purchases
   # has_many :wkclasses, through: :attendances
   has_many :rel_workout_group_workouts, dependent: :destroy
   has_many :workouts, through: :rel_workout_group_workouts

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root 'users#index'
+  resources :purchases
+  resources :clients
   resources :rel_workout_group_workouts
   resources :workout_groups
   resources :wkclasses
@@ -7,8 +9,6 @@ Rails.application.routes.draw do
   resources :instructors
   resources :workouts
   resources :workout_groups
-  resources :rel_user_products
   resources :products
-  resources :users
   resources :revenues, only: [:index]
 end

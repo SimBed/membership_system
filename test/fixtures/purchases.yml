@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client_id: 1
+  product_id: 1
+  payment: 1
+  dop: 2021-12-05
+  payment_mode: MyString
+  invoice: MyString
+  note: MyText
+  adjust_restart: false
+  ar_payment: 1
+  ar_date: 2021-12-05
+
+two:
+  client_id: 1
+  product_id: 1
+  payment: 1
+  dop: 2021-12-05
+  payment_mode: MyString
+  invoice: MyString
+  note: MyText
+  adjust_restart: false
+  ar_payment: 1
+  ar_date: 2021-12-05

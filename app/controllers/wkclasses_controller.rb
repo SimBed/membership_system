@@ -27,7 +27,7 @@ class WkclassesController < ApplicationController
 
     respond_to do |format|
       if @wkclass.save
-        format.html { redirect_to @wkclass, notice: "Wkclass was successfully created." }
+        format.html { redirect_to @wkclass, notice: "Class was successfully created." }
         format.json { render :show, status: :created, location: @wkclass }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class WkclassesController < ApplicationController
   def update
     respond_to do |format|
       if @wkclass.update(wkclass_params)
-        format.html { redirect_to wkclasses_path, notice: "Wkclass was successfully updated." }
+        format.html { redirect_to wkclasses_path, notice: "Class was successfully updated." }
         format.json { render :show, status: :ok, location: @wkclass }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class WkclassesController < ApplicationController
   def destroy
     @wkclass.destroy
     respond_to do |format|
-      format.html { redirect_to wkclasses_url, notice: "Wkclass was successfully destroyed." }
+      format.html { redirect_to wkclasses_url, notice: "Class was successfully deleted." }
       format.json { head :no_content }
     end
   end
