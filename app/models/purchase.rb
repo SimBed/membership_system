@@ -2,6 +2,7 @@ class Purchase < ApplicationRecord
   belongs_to :product
   belongs_to :client
   has_many :attendances
+  scope :not_expired, -> { where('expired = ?', false) }
   # this defines the name method on an instance of Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, to: :product

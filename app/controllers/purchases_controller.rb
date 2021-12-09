@@ -4,6 +4,12 @@ class PurchasesController < ApplicationController
   # GET /purchases or /purchases.json
   def index
     @purchases = Purchase.all
+    # it is not critical that expired purchases are identifiable at database level. This will just improve efficiency as the number of purchases gets biggger over time.
+    # For example, the form for adding a new attendance makes qualifying purchases available form a select box. It is inefficient
+    # to have to run ruby code on the entire population of purchases to identify the non-expired purchases.
+    # there are probably more appropriate ways of updating the purchase's status at database level, but running some code
+    # here is innnoccuous (negligible slows down a little-used page) and means the database will be kept up to data intermittently which achieves the aim.
+    expire_purchases
   end
 
   # GET /purchases/1 or /purchases/1.json
@@ -61,6 +67,13 @@ class PurchasesController < ApplicationController
   end
 
   private
+
+    def expire_purchases
+      Purchase.not_expired.each do |p|
+        p.update({expired: true}) if p.expired?
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_purchase
       @purchase = Purchase.find(params[:id])
