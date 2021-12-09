@@ -8,9 +8,18 @@ class Purchase < ApplicationRecord
   delegate :revenue_for_class, to: :client
 
   def status
+    return 'expired' if self.adjust_restart?
     return 'not started' if self.attendance_status == 'not started'
     return 'expired' if self.attendance_status == 'exhausted' || self.validity_status == 'expired'
     'ongoing'
+  end
+
+  def expired?
+    status == 'expired'
+  end
+
+  def expired_in?(month_year)
+    expired? && expiry_date.strftime('%b %Y') == month_year
   end
 
   def expiry_date
@@ -38,6 +47,13 @@ class Purchase < ApplicationRecord
         when 'M'
           return self.product.validity_length * 30 #20
       end
+  end
+
+  def expiry_revenue
+    attendance_revenue = attendances.map { |a| a.revenue }.inject(:+)
+    # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
+    return payment - attendance_revenue unless adjust_restart?
+    ar_payment - attendance_revenue
   end
 
   private

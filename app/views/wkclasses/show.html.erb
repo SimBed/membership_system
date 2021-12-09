@@ -21,12 +21,12 @@
   </thead>
 
   <tbody>
-    <% @wkclass.users.each do |user| %>
+    <% @wkclass.clients.each do |client| %>
       <tr>
-        <td><%= user.name %></td>
-        <td><%= user.product_for_class(@wkclass).name %></td>
-        <td><%= user.revenue_for_class(@wkclass) %></td>
-        <% attendance = user.attendances.where(wkclass_id: @wkclass.id).first %>
+        <td><%= client.name %></td>
+        <td><%= client.product_for_class(@wkclass).name %></td>
+        <td><%= client.revenue_for_class(@wkclass) %></td>
+        <% attendance = client.attendances.where(wkclass_id: @wkclass.id).first %>
         <td><%= link_to 'Remove attendance', attendance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

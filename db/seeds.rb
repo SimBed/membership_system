@@ -19,13 +19,19 @@ clients.each do |c|
 end
 
 # Instructors
-Instructor.create!(first_name: 'Apoorv', last_name: 'Mathur')
+Instructor.create!(first_name: 'Ap', last_name: 'Mat')
+Instructor.create!(first_name: 'Gig', last_name: 'Bed')
+Instructor.create!(first_name: 'Kar', last_name: 'Ram')
 
 # Workouts
-Workout.create!(name: 'HIIT', instructor_id: Instructor.where(first_name: 'Apoorv').first.id)
+Workout.create!(name: 'HIIT', instructor_id: Instructor.where(first_name: 'Ap').first.id)
+Workout.create!(name: 'S&C', instructor_id: Instructor.where(first_name: 'Gig').first.id)
+Workout.create!(name: 'PSM', instructor_id: Instructor.where(first_name: 'Kar').first.id)
+Workout.create!(name: 'Mat Pilates', instructor_id: Instructor.where(first_name: 'Kar').first.id)
 
 # Workout Groups
-WorkoutGroup.create!(name: 'Space', workout_ids: [1])
+WorkoutGroup.create!(name: 'Space', workout_ids: [1, 2, 4])
+WorkoutGroup.create!(name: 'Pilates', workout_ids: [3, 4])
 
 # Products
 # 1. Drop IN & Class Pass & Free
@@ -74,12 +80,6 @@ Purchase.create!(client_id: 12, product_id: 4, dop: '10-11-2021', payment: 7000)
 Purchase.create!(client_id: 13, product_id: 2, dop: '1-11-2021', payment: 3900)
 Purchase.create!(client_id: 13, product_id: 4, dop: '7-11-2021', payment: 7000)
 Purchase.create!(client_id: 14, product_id: 6, dop: '1-11-2021', payment: 1000)
-
-# Workout Groups
-# todo
-
-# rel_workout_group_workouts
-# todo
 
 # Attendances
 Attendance.create!(wkclass_id: 1, purchase_id: 2)

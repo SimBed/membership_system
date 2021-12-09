@@ -4,6 +4,7 @@ class Wkclass < ApplicationRecord
   has_many :clients, through: :purchases
   belongs_to :workout
   delegate :name, to: :workout
+  scope :order_by_date, -> { order(:start_time) }
 
   def date
     start_time.strftime('%a %d %b %y')
@@ -30,8 +31,10 @@ class Wkclass < ApplicationRecord
             INNER JOIN workout_groups ON rel.workout_group_id = workout_groups.id
             INNER JOIN products on workout_groups.id = products.workout_group_id
             INNER JOIN purchases ON products.id = purchases.product_id
-            INNER JOIN users ON purchases.client_id = clients.id
+            INNER JOIN clients ON purchases.client_id = clients.id
             WHERE Wkclasses.id = #{wkclass.id} ORDER BY clientid;"
-    ActiveRecord::Base.connection.exec_query(sql).to_a
+    ActiveRecord::Base.connection.exec_query(sql).to_a.select { |client_purchase| !Purchase.find(client_purchase["purchaseid"]).expired? }
+
   end
+
 end

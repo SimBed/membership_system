@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'users#index'
+  root 'clients#index'
   resources :purchases
   resources :clients
   resources :rel_workout_group_workouts

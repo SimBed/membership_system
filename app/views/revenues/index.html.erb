@@ -1,24 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Revenue</h1>
+<h2>Revenue</h2>
+
+<form action=<%= "/revenues/" %> method="GET">
+    <select name="revenue_date" onchange="this.form.submit()">
+      <%= options_for_select @months, session[:revenue_date] %>
+    </select>
+</form>
 
 <table>
   <thead>
     <tr>
       <th>Workout Group</th>
-      <th>Attendamces</th>
+      <th>Attendances</th>
       <th>Base Revenue</th>
-      <th>Expiries</th>
+      <th>Expiry Revenue</th>
+      <th>Total Revenue</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @workout_groups.each do |wg| %>
+    <% @workout_group_names.each do |wg| %>
       <tr>
-        <td><%= wg.name %></td>
-        <td><%= wg.attendances.count %></td>
-        <td><%= wg.base_revenue %></td>
-        <td><%= 4 %></td>
+        <td><%= wg %></td>
+        <td><%= @wg_revenue_hash[wg.to_sym][:number] %></td>
+        <td><%= @wg_revenue_hash[wg.to_sym][:base_revenue] %></td>
+        <td><%= @wg_revenue_hash[wg.to_sym][:expiry_revenue] %></td>
+        <td><%= @wg_revenue_hash[wg.to_sym][:total_revenue] %></td>
       </tr>
     <% end %>
   </tbody>

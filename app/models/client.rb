@@ -12,12 +12,12 @@ class Client < ApplicationRecord
   end
 
   def revenue_for_class(wkclass)
-    wkclass.purchases.where(user_id: self.id).first.payment / self.purchase_for_class(wkclass).attendance_estimate
+    wkclass.purchases.where(client_id: self.id).first.payment / self.purchase_for_class(wkclass).attendance_estimate
   end
 
   private
     def purchase_for_class(wkclass)
-      wkclass.purchases.where(user_id: self.id).first
+      wkclass.purchases.where(client_id: self.id).first
     end
 
 end
