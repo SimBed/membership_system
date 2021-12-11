@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Client:</strong>
   <%= @purchase.client.name %>
@@ -40,20 +38,49 @@
   <%= @purchase.note %>
 </p>
 
+<% if @purchase.adjust_restart %>
 <p>
-  <strong>Adjust restart:</strong>
-  <%= @purchase.adjust_restart %>
-</p>
-
-<p>
-  <strong>Ar payment:</strong>
+  <strong>A&R payment:</strong>
   <%= @purchase.ar_payment %>
 </p>
 
 <p>
-  <strong>Ar date:</strong>
+  <strong>A&R payment date:</strong>
   <%= @purchase.ar_date %>
 </p>
+<% end %>
+
+
+<% unless @purchase.freezes.count.zero? %>
+<p>
+  <strong>Freezes:</strong>
+  <ul>
+    <% @purchase.freezes.each do |f| %>
+    <li> <%= f.start_date %></li>
+    <li> <%= f.end_date %></li>
+    <li> <%= pluralize(f.duration, "day") %></li>
+    <li> <%= f.note %></li>
+    <li><%= link_to 'Edit', edit_freeze_path(f) %></li>
+    <li><%= link_to 'Delete', f, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+    <% end %>
+  </ul>
+</p>
+<% end %>
+
+
+<% unless @purchase.adjustments.count.zero? %>
+<p>
+  <strong>Adjustments:</strong>
+  <ul>
+    <% @purchase.adjustments.each do |adj| %>
+    <li> <%= pluralize(adj.adjustment, "day") %></li>
+    <li> <%= adj.note %></li>
+    <li><%= link_to 'Edit', edit_adjustment_path(adj) %></li>
+    <li><%= link_to 'Delete', adj, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+    <% end %>
+  </ul>
+</p>
+<% end %>
 
 <% unless @purchase.status == 'not started' %>
 <p>
@@ -66,5 +93,7 @@
 </p>
 <% end %>
 
+<%= link_to 'Add freeze', new_freeze_path(purchase: @purchase.id) %> |
+<%= link_to 'Add adjustment', new_adjustment_path(purchase: @purchase.id) %> |
 <%= link_to 'Edit', edit_purchase_path(@purchase) %> |
 <%= link_to 'Back', purchases_path %>

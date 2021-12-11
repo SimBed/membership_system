@@ -1,0 +1,34 @@
+<%= form_with(model: freeze) do |form| %>
+  <% if freeze.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(freeze.errors.count, "error") %> prohibited this adjustment from being saved:</h2>
+
+      <ul>
+        <% freeze.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div><%= form.hidden_field :purchase_id, value: params[:purchase] || freeze.purchase_id %></div>
+
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.date_field :start_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_date %>
+    <%= form.date_field :end_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note %>
+    <%= form.text_area :note %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

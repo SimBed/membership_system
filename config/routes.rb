@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   resources :workout_groups
   resources :products
   resources :revenues, only: [:index]
+  resources :adjustments
+  resources :freezes
 end

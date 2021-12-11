@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_102150) do
+ActiveRecord::Schema.define(version: 2021_12_11_105450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "adjustments", force: :cascade do |t|
+    t.integer "purchase_id"
+    t.integer "adjustment"
+    t.text "note"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "attendances", force: :cascade do |t|
     t.integer "wkclass_id"
@@ -27,6 +35,15 @@ ActiveRecord::Schema.define(version: 2021_12_09_102150) do
     t.string "last_name"
     t.string "email"
     t.string "phone"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "freezes", force: :cascade do |t|
+    t.integer "purchase_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.text "note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

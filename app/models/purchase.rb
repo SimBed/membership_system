@@ -1,7 +1,10 @@
+require 'byebug'
 class Purchase < ApplicationRecord
   belongs_to :product
   belongs_to :client
   has_many :attendances
+  has_many :adjustments, dependent: :destroy
+  has_many :freezes, dependent: :destroy
   scope :not_expired, -> { where('expired = ?', false) }
   # this defines the name method on an instance of Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
@@ -24,15 +27,23 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_date
-    start_date = self.attendances.order_by_date.first["date"]
-    case product.validity_unit
+    #byebug
+    return ar_date if adjust_restart
+    return self.dop if attendances.count.zero?
+    start_date = self.start_date
+    end_date = case product.validity_unit
       when 'D'
-        return start_date + self.product.validity_length
+        start_date + self.product.validity_length
       when 'W'
-        return start_date + self.product.validity_length.weeks
+        start_date + self.product.validity_length.weeks
       when 'M'
-        return start_date + self.product.validity_length.months
+        start_date + self.product.validity_length.months
     end
+      end_date + adjustments.map { |a| a.adjustment }.inject(0, :+).days
+  end
+
+  def expiry_date_formatted
+    expiry_date.strftime("%d-%m-%Y")
   end
 
   # for revenue cashflows
@@ -58,6 +69,10 @@ class Purchase < ApplicationRecord
   end
 
   private
+    def start_date
+      attendances.sort_by { |a| a.start_time }.first.start_time
+    end
+
     def attendance_status
       attendance_count = self.attendances.count
       return 'not started' if attendance_count.zero?
@@ -68,7 +83,7 @@ class Purchase < ApplicationRecord
     def validity_status
       return 'not started' if self.attendance_status == 'not started'
       return 'expired' if Date.today() > self.expiry_date
-      start_date = self.attendances.order_by_date.first["date"]
+      #byebug
       self.expiry_date - start_date
     end
 end

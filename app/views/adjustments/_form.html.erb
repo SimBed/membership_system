@@ -1,0 +1,29 @@
+<%= form_with(model: adjustment) do |form| %>
+  <% if adjustment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(adjustment.errors.count, "error") %> prohibited this adjustment from being saved:</h2>
+
+      <ul>
+        <% adjustment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div><%= form.hidden_field :purchase_id, value: params[:purchase] || adjustment.purchase_id %></div>
+
+  <div class="field">
+    <%= form.label :adjustment, 'days' %>
+    <%= form.number_field :adjustment %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note %>
+    <%= form.text_area :note %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

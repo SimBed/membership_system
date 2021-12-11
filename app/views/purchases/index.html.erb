@@ -8,13 +8,8 @@
       <th>Payment</th>
       <th>Dop</th>
       <th>Attendances</th>
+      <th>Expiry Date</th>
       <th>Status</th>
-      <th>Payment mode</th>
-      <th>Invoice</th>
-      <th>Note</th>
-      <th>A&R</th>
-      <th>A&R payment</th>
-      <th>A&R date</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -27,13 +22,8 @@
         <td><%= purchase.payment %></td>
         <td><%= purchase.dop %></td>
         <td><%= purchase.attendances.count %></td>
+        <td><%= purchase.expiry_date_formatted %></td>
         <td><%= purchase.status %></td>
-        <td><%= purchase.payment_mode %></td>
-        <td><%= purchase.invoice %></td>
-        <td><%= purchase.note %></td>
-        <td><%= purchase.adjust_restart %></td>
-        <td><%= purchase.ar_payment %></td>
-        <td><%= purchase.ar_date %></td>
         <td><%= link_to 'Show', purchase %></td>
         <td><%= link_to 'Edit', edit_purchase_path(purchase) %></td>
         <td><%= link_to 'Destroy', purchase, method: :delete, data: { confirm: 'Are you sure?' } %></td>
