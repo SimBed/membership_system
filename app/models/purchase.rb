@@ -62,7 +62,7 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_revenue
-    attendance_revenue = attendances.map { |a| a.revenue }.inject(:+)
+    attendance_revenue = attendances.map { |a| a.revenue }.inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
     return payment - attendance_revenue unless adjust_restart?
     ar_payment - attendance_revenue
