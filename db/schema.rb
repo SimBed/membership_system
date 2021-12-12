@@ -75,9 +75,9 @@ ActiveRecord::Schema.define(version: 2021_12_11_105450) do
     t.boolean "adjust_restart", default: false
     t.integer "ar_payment"
     t.date "ar_date"
+    t.boolean "expired", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "expired", default: false
   end
 
   create_table "rel_workout_group_workouts", force: :cascade do |t|

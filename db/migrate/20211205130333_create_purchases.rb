@@ -11,6 +11,7 @@ class CreatePurchases < ActiveRecord::Migration[6.1]
       t.boolean :adjust_restart, default: false
       t.integer :ar_payment
       t.date :ar_date
+      t.boolean :expired, default: false
 
       t.timestamps
     end

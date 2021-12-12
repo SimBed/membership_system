@@ -57,7 +57,7 @@ class Purchase < ApplicationRecord
           # assume 5 classes per week when unlimited and product in weeks
           return self.product.validity_length * 6 #5
         when 'M'
-          return self.product.validity_length * 30 #20
+          return self.product.validity_length * 20
       end
   end
 
