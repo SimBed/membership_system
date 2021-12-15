@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+
+ img.button_icon {
+   width: 1.4rem;
+   height: 1.4rem;
+   @extend %icons;
+ }

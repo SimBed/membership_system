@@ -1,0 +1,11 @@
+<% @products.each do |product| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-client-name"><%= product.name %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_product_path(product), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), product, method: :delete, data: { confirm: 'Product and its purchases will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>

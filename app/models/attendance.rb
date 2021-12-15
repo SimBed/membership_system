@@ -23,7 +23,7 @@ class Attendance < ApplicationRecord
   #     ActiveRecord::Base.connection.exec_query(sql).to_a
   # end
 
-  def self.in_grouping(workout_group, start_date, end_date)
+  def self.by_workout_group(workout_group, start_date, end_date)
     sql = "SELECT attendances.id
            FROM Workout_Groups
            INNER JOIN Products ON Workout_Groups.id = Products.workout_group_id
@@ -32,6 +32,21 @@ class Attendance < ApplicationRecord
            INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
            WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
            AND Workout_Groups.name = '#{workout_group}';"
+      # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
+      attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
+      # return an array of objects, by using the find method with an array parameter
+      Attendance.find(attendance_ids)
+  end
+
+  def self.by_client(clientid, start_date, end_date)
+    sql = "SELECT attendances.id
+           FROM Clients
+           INNER JOIN Purchases ON Clients.id = Purchases.client_id
+           INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
+           INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
+           WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
+           AND Clients.id = '#{clientid}'
+           ORDER BY WkClasses.start_time desc;"
       # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
       attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
       # return an array of objects, by using the find method with an array parameter

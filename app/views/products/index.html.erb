@@ -1,20 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<h2>Products</h2>
-
-<table>
-  <tbody>
-    <% @products.each do |product| %>
-      <tr>
-        <td><%= product.name %></td>
-        <td><%= link_to 'Show', product %></td>
-        <td><%= link_to 'Edit', edit_product_path(product) %></td>
-        <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Product', new_product_path %>
+<h2>Products <%= link_to image_tag('add.png', class: "button_icon"), new_product_path, class: "icon-container" %></h2>
+<div id="products_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'products_table' %>
+</div>

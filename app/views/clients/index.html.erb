@@ -1,31 +1,4 @@
-<h2>Clients</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @clients.each do |client| %>
-      <tr>
-        <td><%= client.first_name %></td>
-        <td><%= client.last_name %></td>
-        <td><%= client.email %></td>
-        <td><%= client.phone %></td>
-        <td><%= link_to 'Show', client %></td>
-        <td><%= link_to 'Edit', edit_client_path(client) %></td>
-        <td><%= link_to 'Destroy', client, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Client', new_client_path %>
+<h2>Clients <%= link_to image_tag('add.png', class: "button_icon"), new_client_path, class: "icon-container" %></h2>
+<div id="clients_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'clients_table' %>
+</div>

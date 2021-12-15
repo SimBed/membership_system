@@ -1,8 +1,7 @@
-require 'byebug'
 class Purchase < ApplicationRecord
   belongs_to :product
   belongs_to :client
-  has_many :attendances
+  has_many :attendances, dependent: :destroy
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
   scope :not_expired, -> { where('expired = ?', false) }
@@ -27,7 +26,6 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_date
-    #byebug
     return ar_date if adjust_restart
     return self.dop if attendances.count.zero?
     start_date = self.start_date
@@ -43,7 +41,8 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_date_formatted
-    expiry_date.strftime("%d-%m-%Y")
+    # expiry_date.strftime("%d-%m-%Y")
+    expiry_date.strftime('%a %d %b %y')
   end
 
   # for revenue cashflows
@@ -66,6 +65,11 @@ class Purchase < ApplicationRecord
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
     return payment - attendance_revenue unless adjust_restart?
     ar_payment - attendance_revenue
+  end
+
+  def start_or_dop
+    return dop.strftime('%d %b %y') if attendance_status == 'not started'
+    return start_date.strftime('%d %b %y')
   end
 
   private

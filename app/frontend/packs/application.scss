@@ -1,9 +1,5 @@
-h1 {
-
-}
 // Import Bootstrap v5
 @import "~bootstrap/scss/bootstrap";
-
 
 /* mixins, variables, etc. */
 $font-stack:  Montserrat, Arial;
@@ -117,4 +113,97 @@ legend {
   font-size: 0.9rem;
   font-weight: normal;
   padding-right: 0.75rem;
+}
+
+%icons {
+/*  display: block; */
+margin: auto;
+/*to allow centering of icon*/
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+img.table_icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  @extend %icons;
+}
+
+img.header_icon {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.icon-container:hover {
+  background-color: #fff;
+}
+
+/* table formatting */
+.cell {
+  color: black;
+  flex: 1;
+  border: 0.05em solid white;
+  background-color: #e9ecef;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+
+.c-class-name, .class-attendance-header, .c-revenue-name,
+.c-revenue-attend, .c-revenue-attend, .c-revenue-base, .c-revenue-expiry, .c-revenue-total {
+  font-size: 1.3em;
+  text-align: left;
+  padding-left: 0.1em;
+}
+
+.c-class-date, .c-client-date, .c-client-wkname, .c-client-product, .c-client-name,
+.c-client-email, .c-client-phone, .c-instructor-name, .c-instructor-workouts, .c-wg-name {
+  font-size: 1.0em;
+  text-align: left;
+  padding-left: 0.1em;
+}
+
+.c-class-time {
+  font-size: 1.0em;
+  text-align: left;
+  padding-left: 0.1em;
+  flex:0.5;
+}
+
+.c-class-attendance {
+  font-size: 1.0em;
+  text-align: left;
+  padding-left: 0.1em;
+  flex: 0.5;
+  /*to allow centering of icon*/
+  position: relative;
+}
+
+.c-class-revenue, .c-client-revenue {
+  font-size: 1.0em;
+  text-align: left;
+  padding-left: 0.1em;
+  flex:0.5;
+}
+
+.c-class-icon {
+  /*to allow centering of icon*/
+  position: relative;
+  flex:0.25;
+}
+
+.margin-override {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* so select box aligns with client name*/
+.align-with-header {
+  line-height: 28px;
+}
+
+h2 form {
+  display: inline-block;
+  font-size: 0.6em;
 }

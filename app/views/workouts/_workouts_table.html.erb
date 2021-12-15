@@ -1,0 +1,15 @@
+<% @workouts.each do |workout| %>
+  <div class ="d-flex bg-light">
+    <div class ="cell c-class-icon">
+      <%= link_to image_tag('clipboard.png', class: "table_icon"), workout, class: "icon-container" %>
+    </div>
+      <div class ="cell c-client-name"><%= workout.name %></div>
+      <div class ="cell c-client-name"><%= workout.instructor.name %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_workout_path(workout), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), workout, method: :delete, data: { confirm: 'Workout will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>

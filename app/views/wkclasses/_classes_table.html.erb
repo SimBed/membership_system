@@ -1,0 +1,18 @@
+<% @wkclasses.each do |wkclass| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('clipboard.png', class: "table_icon"), wkclass, class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-name"><%= wkclass.name %></div>
+      <div class ="cell c-class-date"><%= wkclass.date %></div>
+      <div class ="cell c-class-time"><%= wkclass.time %></div>
+      <div class ="cell c-class-attendance"><%= wkclass.attendances.count %><%= image_tag('group.png', class: "table_icon")%></div>
+      <div class ="cell c-class-revenue"><%= number_to_currency(wkclass.revenue, precision: 0, unit: '') %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_wkclass_path(wkclass), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), wkclass, method: :delete, data: { confirm: 'Class and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>

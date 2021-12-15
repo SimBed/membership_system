@@ -1,29 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<h2>Workouts</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Instructor</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @workouts.each do |workout| %>
-      <tr>
-        <td><%= workout.name %></td>
-        <td><%= workout.instructor.name %></td>
-        <td><%= link_to 'Show', workout %></td>
-        <td><%= link_to 'Edit', edit_workout_path(workout) %></td>
-        <td><%= link_to 'Destroy', workout, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Workout', new_workout_path %>
+<h2>Workouts <%= link_to image_tag('add.png', class: "button_icon"), new_workout_path, class: "icon-container" %></h2>
+<div id="workouts_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'workouts_table' %>
+</div>

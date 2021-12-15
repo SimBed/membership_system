@@ -1,34 +1,11 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <%= @wkclass.summary %>
-</p>
-
-<p>
-  <%= "Attendances: #{@wkclass.attendances.count}" %> |
-  <%= "Revenue: #{@wkclass.revenue}" %> |
-  <%= link_to 'Add attendance', new_attendance_path(:wkclass_id => @wkclass.id) %>
-</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Client</th>
-      <th>Product</th>
-      <th>Revenue</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @wkclass.clients.each do |client| %>
-      <tr>
-        <td><%= client.name %></td>
-        <td><%= client.product_for_class(@wkclass).name %></td>
-        <td><%= client.revenue_for_class(@wkclass) %></td>
-        <% attendance = client.attendances.where(wkclass_id: @wkclass.id).first %>
-        <td><%= link_to 'Remove attendance', attendance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="mb-2">
+  <h5 class ="class-attendance-header">  <%= "#{@wkclass.summary}" %>
+    <span class="me-2"></span>
+    <%= link_to image_tag('add.png', class: "button_icon"), new_attendance_path(:wkclass_id => @wkclass.id), class: "icon-container" %>
+  </h5>
+  <%= @wkclass.attendances.count %> <%= image_tag('group.png', class: "header_icon")%> |
+  <%= number_to_currency(@wkclass.revenue, precision: 0, unit: 'Rs.') %>
+</div>
+<div id="classes_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'class_attendance_table' %>
+</div>

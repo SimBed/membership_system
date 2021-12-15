@@ -1,0 +1,17 @@
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name"></div>
+    <div class ="cell c-revenue-attend">Attendances</div>
+    <div class ="cell c-revenue-base">Base Revenue</div>
+    <div class ="cell c-revenue-expiry">Expiry Revenue</div>
+    <div class ="cell c-revenue-total">Total Revenue</div>
+</div>
+
+<% @workout_group_names.each do |wg| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-revenue-name"><%= wg %></div>
+      <div class ="cell c-revenue-attend"><%= @wg_revenue_hash[wg.to_sym][:number] %></div>
+      <div class ="cell c-revenue-base"><%= number_to_currency(@wg_revenue_hash[wg.to_sym][:base_revenue], precision: 0, unit: '') %></div>
+      <div class ="cell c-revenue-expiry"><%= number_to_currency(@wg_revenue_hash[wg.to_sym][:expiry_revenue], precision: 0, unit: '') %></div>
+      <div class ="cell c-revenue-total"><%= number_to_currency(@wg_revenue_hash[wg.to_sym][:total_revenue], precision: 0, unit: 'Rs.') %></div>
+  </div>
+<% end %>

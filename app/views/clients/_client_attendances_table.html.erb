@@ -1,0 +1,14 @@
+<div id="client_table" class="container px-1 mb-5 margin-override">
+  <% @attendances.each do |attendance| %>
+    <div class ="d-flex bg-light">
+        <div class ="cell c-client-date"><%= attendance.wkclass.date %></div>
+        <div class ="cell c-client-wkname"><%= attendance.wkclass.workout.name %></div>
+        <div class ="cell c-client-product"><%= attendance.purchase.product.name %></div>
+        <div class ="cell c-class-revenue"><%= number_to_currency(attendance.revenue, precision: 0, unit: '') %></div>
+        <div class ="cell c-class-icon">
+          <%= link_to image_tag('delete.png', class: "table_icon"), attendance, method: :delete,
+                      data: { confirm: 'Attendance will de deleted. Are you sure?' }, class: "icon-container" %>
+        </div>
+    </div>
+  <% end %>
+</div>

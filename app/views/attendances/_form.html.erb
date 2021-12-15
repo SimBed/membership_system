@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <div><%= form.hidden_field :wkclass_id, :value => @wkclass.id %> </div>
+  <div><%= form.hidden_field :wkclass_id, :value => @wkclass&.id || attendance.wkclass.id %> </div>
 
   <!--div class="field">
     <%#= form.label :rel_user_product_id %>

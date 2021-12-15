@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= form.select :workout_id, options_for_select(@workouts) %>
+    <%= form.select :workout_id, options_for_select(@workouts, @wkclass.workout.id) %>
   </div>
 
   <div class="field">

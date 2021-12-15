@@ -1,17 +1,6 @@
-#require 'byebug'
 class AttendancesController < ApplicationController
-  before_action :set_attendance, only: %i[ show edit update destroy ]
+  before_action :set_attendance, only: %i[ edit destroy ]
 
-  # GET /attendances or /attendances.json
-  def index
-    @attendances = Attendance.all
-  end
-
-  # GET /attendances/1 or /attendances/1.json
-  def show
-  end
-
-  # GET /attendances/new
   def new
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
@@ -20,59 +9,31 @@ class AttendancesController < ApplicationController
     @qualifying_products = Wkclass.clients_with_product(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
   end
 
-  # GET /attendances/1/edit
-  def edit
-  end
-
-  # POST /attendances or /attendances.json
   def create
     @attendance = Attendance.new(attendance_params)
-    #byebug
-    respond_to do |format|
       if @attendance.save
-        format.html { redirect_to new_attendance_path, notice: "#{@attendance.rel_user_product.user.name}''s attendance was successfully logged." }
-        format.json { render :show, status: :created, location: @attendance }
+        redirect_to new_attendance_path, notice: "#{@attendance.rel_user_product.user.name}''s attendance was successfully logged."
         @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
         @attendance = Attendance.new
         @wkclass = Wkclass.find(session[:wkclass_id])
         @qualifying_products = Wkclass.clients_with_product(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @attendance.errors, status: :unprocessable_entity }
+        render :new, status: :unprocessable_entity
       end
-    end
-  end
+   end
 
-  # PATCH/PUT /attendances/1 or /attendances/1.json
-  def update
-    respond_to do |format|
-      if @attendance.update(attendance_params)
-        format.html { redirect_to @attendance, notice: "Attendance was successfully updated." }
-        format.json { render :show, status: :ok, location: @attendance }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @attendance.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /attendances/1 or /attendances/1.json
   def destroy
+    @wkclass = Wkclass.find(@attendance.wkclass.id)
     @attendance.destroy
-    respond_to do |format|
-      format.html { redirect_to attendances_url, notice: "Attendance was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to @wkclass, notice: "Attendance was successfully removed."
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_attendance
       @attendance = Attendance.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def attendance_params
       params.require(:attendance).permit(:wkclass_id, :purchase_id)
     end

@@ -4,7 +4,7 @@ class Wkclass < ApplicationRecord
   has_many :clients, through: :purchases
   belongs_to :workout
   delegate :name, to: :workout
-  scope :order_by_date, -> { order(:start_time) }
+  scope :order_by_date, -> { order(start_time: :desc) }
 
   def date
     start_time.strftime('%a %d %b %y')

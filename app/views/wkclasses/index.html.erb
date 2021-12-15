@@ -1,32 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<h2>Classes</h2>
-<%= link_to 'New Class', new_wkclass_path %>
-<br><br>
-<table>
-  <thead>
-    <tr>
-      <th>Workout</th>
-      <th>Date</th>
-      <th>Start</th>
-      <th>Attendance</th>
-      <th>Base Revenue</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @wkclasses.each do |wkclass| %>
-      <tr>
-        <td><%= wkclass.workout.name %></td>
-        <td><%= wkclass.date %></td>
-        <td><%= wkclass.time %></td>
-        <td><%= wkclass.attendances.count %></td>
-        <td><%= wkclass.revenue %></td>
-        <td><%= link_to 'Show', wkclass %></td>
-        <td><%= link_to 'Edit', edit_wkclass_path(wkclass) %></td>
-        <td><%= link_to 'Destroy', wkclass, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<h2>Classes <%= link_to image_tag('add.png', class: "button_icon"), new_wkclass_path, class: "icon-container" %></h2>
+<div id="classes_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'classes_table' %>
+</div>

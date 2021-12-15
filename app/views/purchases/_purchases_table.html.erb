@@ -1,0 +1,34 @@
+<div class ="d-flex bg-light">
+    <div class ="cell c-class-icon">
+    </div>
+    <div class ="cell c-client-name"></div>
+    <div class ="cell c-client-name"></div>
+    <div class ="cell c-client-email"></div>
+    <div class ="cell c-client-phone">Start/Paid</div>
+    <div class ="cell c-client-email">Expire</div>
+    <div class ="cell c-client-name">Attendance</div>
+    <div class ="cell c-client-phone">Status</div>
+    <div class ="cell c-class-icon"></div>
+    <div class ="cell c-class-icon"></div>
+</div>
+
+<% @purchases.each do |purchase| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('clipboard.png', class: "table_icon"), purchase, class: "icon-container" %>
+      </div>
+      <div class ="cell c-client-name"><%= purchase.client.name %></div>
+      <div class ="cell c-client-name"><%= purchase.product.name %></div>
+      <div class ="cell c-client-email"><%= number_to_currency(purchase.payment, precision: 0, unit: 'Rs.') %></div>
+      <div class ="cell c-client-phone"><%= purchase.start_or_dop %></div>
+      <div class ="cell c-client-email"><%= purchase.expiry_date_formatted %></div>
+      <div class ="cell c-client-name"><%= purchase.attendances.count %></div>
+      <div class ="cell c-client-phone"><%= purchase.status %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_purchase_path(purchase), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), purchase, method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>
