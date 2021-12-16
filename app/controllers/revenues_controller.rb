@@ -25,6 +25,4 @@ class RevenuesController < ApplicationController
     # months_logged method defined in application helper
     @months = months_logged
   end
-
-
 end

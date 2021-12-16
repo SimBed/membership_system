@@ -24,18 +24,33 @@ class Attendance < ApplicationRecord
   # end
 
   def self.by_workout_group(workout_group, start_date, end_date)
-    sql = "SELECT attendances.id
-           FROM Workout_Groups
-           INNER JOIN Products ON Workout_Groups.id = Products.workout_group_id
-           INNER JOIN Purchases ON Products.id = Purchases.product_id
-           INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
-           INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
-           WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
-           AND Workout_Groups.name = '#{workout_group}';"
-      # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
-      attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
-      # return an array of objects, by using the find method with an array parameter
+      attendance_ids = WorkoutGroup.joins(products: [purchases: [attendances: [:wkclass]]])
+                                   .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+                                   .where(workout_group_condition(workout_group))
+                                   .order(:start_time)
+                                   .select('attendances.id').to_a.map(&:id)
       Attendance.find(attendance_ids)
+  end
+
+  def self.by_date(start_date, end_date)
+    # note wkclass belongs to attendance so wkclass not wkclasses
+    attendance_ids = WorkoutGroup.joins(products: [purchases: [attendances: [:wkclass]]])
+                                 .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+                                 .order(:start_time)
+                                 .select('attendances.id').to_a.map(&:id)
+    Attendance.find(attendance_ids)
+    # equivalent method calling sql directly without rails helper methods
+    # sql = "SELECT attendances.id
+    #        FROM Workout_Groups
+    #        INNER JOIN Products ON Workout_Groups.id = Products.workout_group_id
+    #        INNER JOIN Purchases ON Products.id = Purchases.product_id
+    #        INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
+    #        INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
+    #        WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
+    #        ORDER BY Wkclasses.start_time;"
+    #   # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
+    #   attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
+    #   # return an array of objects, by using the find method with an array parameter
   end
 
   def self.by_client(clientid, start_date, end_date)
@@ -53,8 +68,10 @@ class Attendance < ApplicationRecord
       Attendance.find(attendance_ids)
   end
 
-  # not correct
-  # def self.in_month(start_date, end_date)
-  #   Wkclass.joins(:attendances).where("Wkclasses.start_time > ? AND Wkclasses.start_time < ?", start_date, end_date).map {|w| w.attendances}
-  # end
+  private
+    # https://api.rubyonrails.org/v6.1.4/classes/ActiveRecord/QueryMethods.html#method-i-where
+    # If an array is passed, then the first element of the array is treated as a template, and the remaining elements are inserted into the template to generate the condition.
+    def self.workout_group_condition(selection)
+      ["workout_groups.name = ?", "#{selection}"] unless selection == 'All'
+    end
 end

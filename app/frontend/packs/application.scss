@@ -158,13 +158,14 @@ img.header_icon {
 }
 
 .c-class-date, .c-client-date, .c-client-wkname, .c-client-product, .c-client-name,
-.c-client-email, .c-client-phone, .c-instructor-name, .c-instructor-workouts, .c-wg-name {
+.c-client-email, .c-client-phone, .c-instructor-name, .c-instructor-workouts, .c-wg-name,
+.c-attendance-date, .c-attendance-wkname, .c-attendance-product, .c-attendance-client {
   font-size: 1.0em;
   text-align: left;
   padding-left: 0.1em;
 }
 
-.c-class-time {
+.c-class-time, .c-class-revenue, .c-client-revenue, .c-attendance-revenue {
   font-size: 1.0em;
   text-align: left;
   padding-left: 0.1em;
@@ -178,13 +179,6 @@ img.header_icon {
   flex: 0.5;
   /*to allow centering of icon*/
   position: relative;
-}
-
-.c-class-revenue, .c-client-revenue {
-  font-size: 1.0em;
-  text-align: left;
-  padding-left: 0.1em;
-  flex:0.5;
 }
 
 .c-class-icon {

@@ -1,6 +1,21 @@
 class AttendancesController < ApplicationController
   before_action :set_attendance, only: %i[ edit destroy ]
 
+  def index
+    session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || Date.today.beginning_of_month.strftime('%b %Y')
+    session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
+    start_date = Date.parse(session[:attendance_period]).strftime('%Y-%m-%d')
+    end_date = Date.parse(session[:attendance_period]).end_of_month.strftime('%Y-%m-%d')
+    @attendances = Attendance.by_workout_group(session[:workout_group], start_date, end_date)
+    @attendances.sort_by! { |a| [a.wkclass.start_time, a.purchase.name] }
+    @revenue = @attendances.map(&:revenue).inject(0, :+)
+    # prepare items for the revenue date select
+    # months_logged method defined in application helper
+    @months = months_logged
+    # prepare items for the workout group select
+    @workout_groups = ['All'] + WorkoutGroup.all.map { |wg| ["#{wg.name}"] }
+  end
+
   def new
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
@@ -12,7 +27,7 @@ class AttendancesController < ApplicationController
   def create
     @attendance = Attendance.new(attendance_params)
       if @attendance.save
-        redirect_to new_attendance_path, notice: "#{@attendance.rel_user_product.user.name}''s attendance was successfully logged."
+        redirect_to new_attendance_path, notice: "#{@attendance.purchase.client.name}''s attendance was successfully logged."
         @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]

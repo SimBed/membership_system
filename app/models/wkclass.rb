@@ -1,5 +1,5 @@
 class Wkclass < ApplicationRecord
-  has_many :attendances
+  has_many :attendances, dependent: :destroy
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
   belongs_to :workout
