@@ -1,44 +1,32 @@
-# require 'byebug'
 class WorkoutGroupsController < ApplicationController
   before_action :set_workout_group, only: %i[ show edit update destroy ]
 
-  # GET /workout_groups or /workout_groups.json
   def index
     @workout_groups = WorkoutGroup.all
   end
 
-  # GET /workout_groups/1 or /workout_groups/1.json
   def show
   end
 
-  # GET /workout_groups/new
   def new
     @workout_group = WorkoutGroup.new
     @workouts = Workout.all
   end
 
-  # GET /workout_groups/1/edit
   def edit
     @workouts = Workout.all
   end
 
-  # POST /workout_groups or /workout_groups.json
   def create
-    # byebug
     @workout_group = WorkoutGroup.new(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
-
-    respond_to do |format|
       if @workout_group.save
-        format.html { redirect_to @workout_group, notice: "Workout Group was successfully created." }
-        format.json { render :show, status: :created, location: @workout_group }
+        redirect_to @workout_group
+        flash[:success] = "Workout Group was successfully created."
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @workout_group.errors, status: :unprocessable_entity }
+        render :new, status: :unprocessable_entity
       end
-    end
   end
 
-  # PATCH/PUT /workout_groups/1 or /workout_groups/1.json
   def update
     respond_to do |format|
       if @workout_group.update(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
@@ -51,7 +39,6 @@ class WorkoutGroupsController < ApplicationController
     end
   end
 
-  # DELETE /workout_groups/1 or /workout_groups/1.json
   def destroy
     @workout_group.destroy
     respond_to do |format|
@@ -61,7 +48,6 @@ class WorkoutGroupsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_workout_group
       @workout_group = WorkoutGroup.find(params[:id])
     end

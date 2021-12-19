@@ -27,7 +27,8 @@ class AttendancesController < ApplicationController
   def create
     @attendance = Attendance.new(attendance_params)
       if @attendance.save
-        redirect_to new_attendance_path, notice: "#{@attendance.purchase.client.name}''s attendance was successfully logged."
+        redirect_to @attendance.wkclass
+        flash[:success] = "#{@attendance.purchase.client.name}''s attendance was successfully logged"
         @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
@@ -41,7 +42,8 @@ class AttendancesController < ApplicationController
   def destroy
     @wkclass = Wkclass.find(@attendance.wkclass.id)
     @attendance.destroy
-    redirect_to @wkclass, notice: "Attendance was successfully removed."
+    redirect_to @wkclass
+    flash[:success] = "Attendance was successfully removed"
   end
 
   private

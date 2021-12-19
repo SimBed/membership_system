@@ -9,6 +9,8 @@ class Purchase < ApplicationRecord
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, to: :product
   delegate :revenue_for_class, to: :client
+  validates :payment, presence: true
+  validates_associated :client, :product 
 
   def status
     return 'expired' if self.adjust_restart?
@@ -42,7 +44,7 @@ class Purchase < ApplicationRecord
 
   def expiry_date_formatted
     # expiry_date.strftime("%d-%m-%Y")
-    expiry_date.strftime('%a %d %b %y')
+    expiry_date&.strftime('%a %d %b %y')
   end
 
   # for revenue cashflows
@@ -56,7 +58,8 @@ class Purchase < ApplicationRecord
           # assume 5 classes per week when unlimited and product in weeks
           return self.product.validity_length * 6 #5
         when 'M'
-          return self.product.validity_length * 20
+          return self.product.validity_length * 20 unless self.product.validity_length == 1
+          25 # for 1M
       end
   end
 
@@ -68,7 +71,7 @@ class Purchase < ApplicationRecord
   end
 
   def start_or_dop
-    return dop.strftime('%d %b %y') if attendance_status == 'not started'
+    return dop&.strftime('%d %b %y') if attendance_status == 'not started'
     return start_date.strftime('%d %b %y')
   end
 

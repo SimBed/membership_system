@@ -1,5 +1,7 @@
 class Instructor < ApplicationRecord
-  has_many :workouts
+  has_many :workouts, dependent: :destroy
+  validates :first_name, uniqueness: {scope: :last_name, message: "Already an instructor with this name"}
+
   def name
     "#{first_name} #{last_name}"
   end

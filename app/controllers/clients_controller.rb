@@ -19,59 +19,43 @@ class ClientsController < ApplicationController
     @months = months_logged
   end
 
-  # GET /clients/new
   def new
     @client = Client.new
   end
 
-  # GET /clients/1/edit
   def edit
   end
 
-  # POST /clients or /clients.json
   def create
     @client = Client.new(client_params)
-
-    respond_to do |format|
       if @client.save
-        format.html { redirect_to new_client_path, notice: "#{@client.name} was successfully created." }
-        format.json { render :show, status: :created, location: @client }
+        redirect_to clients_path
+        flash[:success] = "#{@client.name} was successfully added"
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @client.errors, status: :unprocessable_entity }
+        render :new, status: :unprocessable_entity
       end
-    end
   end
 
-  # PATCH/PUT /clients/1 or /clients/1.json
   def update
-    respond_to do |format|
       if @client.update(client_params)
-        format.html { redirect_to @client, notice: "#{@client.name} was successfully updated." }
-        format.json { render :show, status: :ok, location: @client }
+        redirect_to clients_path
+        flash[:success] = "#{@client.name} was successfully updated"
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @client.errors, status: :unprocessable_entity }
+        render :edit, status: :unprocessable_entity
       end
-    end
   end
 
-  # DELETE /clients/1 or /clients/1.json
   def destroy
     @client.destroy
-    respond_to do |format|
-      format.html { redirect_to clients_url, notice: "#{@client.name} was successfully deleted." }
-      format.json { head :no_content }
-    end
+      redirect_to clients_url
+      flash[:success] = "#{@client.name} was successfully deleted"
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_client
       @client = Client.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def client_params
       params.require(:client).permit(:first_name, :last_name, :email, :phone)
     end

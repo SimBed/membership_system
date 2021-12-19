@@ -1,0 +1,24 @@
+default: &default
+
+ payment_methods:
+  - Card-Credit
+  - Card-Debit
+  - Cash
+  - Cheque
+  - ClassPass
+  - Fitternity
+  - Google Pay
+  - Instamojo
+  - NEFT
+  - Not paid
+  - Yoga
+  - PayTM
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

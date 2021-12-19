@@ -1,0 +1,7 @@
+<% @purchases.each do |purchase| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-client-date"><%= purchase.dop %></div>
+      <div class ="cell c-client-wkname"><%= purchase.client.name %></div>
+      <div class ="cell c-client-product"><%= number_to_currency(purchase.payment, precision: 0, unit: '') %></div>
+  </div>
+<% end %>

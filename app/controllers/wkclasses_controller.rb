@@ -21,7 +21,8 @@ class WkclassesController < ApplicationController
   def create
     @wkclass = Wkclass.new(wkclass_params)
       if @wkclass.save
-        redirect_to @wkclass, notice: "Class was successfully created."
+        redirect_to @wkclass
+        flash[:success] = "Class was successfully created"
       else
         render :new, status: :unprocessable_entity
       end
@@ -29,7 +30,8 @@ class WkclassesController < ApplicationController
 
   def update
       if @wkclass.update(wkclass_params)
-        redirect_to wkclasses_path, notice: "Class was successfully updated."
+        redirect_to wkclasses_path
+        flash[:success] = "Class was successfully updated"
       else
         render :edit, status: :unprocessable_entity
       end
@@ -37,7 +39,8 @@ class WkclassesController < ApplicationController
 
   def destroy
     @wkclass.destroy
-    redirect_to wkclasses_url, notice: "Class was successfully deleted."
+    redirect_to wkclasses_url
+    flash[:success] = "Class was successfully deleted"
   end
 
   private

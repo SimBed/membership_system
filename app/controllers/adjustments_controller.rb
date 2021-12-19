@@ -9,7 +9,8 @@ class AdjustmentsController < ApplicationController
     @adjustment = Adjustment.new(adjustment_params)
 
       if @adjustment.save
-        redirect_to Purchase.find(adjustment_params[:purchase_id]), notice: "adjustment was successfully created."
+        redirect_to Purchase.find(adjustment_params[:purchase_id])
+        flash[:success] = "adjustment was successfully created"
       else
         render :new, status: :unprocessable_entity
       end
@@ -20,7 +21,8 @@ class AdjustmentsController < ApplicationController
 
   def update
     if @adjustment.update(adjustment_params)
-      redirect_to Purchase.find(adjustment_params[:purchase_id]), notice: "adjustment was successfully updated."
+      redirect_to Purchase.find(adjustment_params[:purchase_id])
+      flash[:success] = "adjustment was successfully updated"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -29,7 +31,8 @@ class AdjustmentsController < ApplicationController
   def destroy
     @purchase = @adjustment.purchase
     @adjustment.destroy
-    redirect_to @purchase, notice: "adjustment was successfully deleted."
+    redirect_to @purchase
+    flash[:success] = "adjustment was successfully deleted"
   end
 
   private

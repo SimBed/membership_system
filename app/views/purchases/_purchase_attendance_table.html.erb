@@ -1,0 +1,14 @@
+<% unless @purchase.status == 'not started' %>
+<div class='bg-light w-50'>
+  <div class='cell'>
+    Attendances
+  </div>
+</div>
+  <% @purchase.attendances.each do |a| %>
+     <div class='bg-light w-50'>
+       <div class='cell'>
+         <%= a.date %>
+       </div>
+     </div>
+  <% end %>
+<% end %>

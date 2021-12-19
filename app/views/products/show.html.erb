@@ -1,14 +1,14 @@
-<p id="notice"><%= notice %></p>
+<div class ="d-flex bg-light">
+  <h5><%= @product.name %></h5>
+  <form action=<%= "/products/#{params[:id]}" %> method="GET" class="ms-3 align-with-header">
+      <select name="product_purchased_period" onchange="this.form.submit()">
+        <%= options_for_select @months, session[:product_purchased_period] %>
+      </select>
+  </form>
+</div>
 
-<p>
-  <strong>Max classes:</strong>
-  <%= @product.max_classes %>
-</p>
+<div id="product_purchased_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'product_purchased_table' %>
+</div>
 
-<p>
-  <strong>Validity length:</strong>
-  <%= @product.validity_length %>
-</p>
-
-<%= link_to 'Edit', edit_product_path(@product) %> |
-<%= link_to 'Back', products_path %>
+<%= link_to 'back to products', products_path %>

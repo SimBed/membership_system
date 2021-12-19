@@ -32,6 +32,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit @client.new_record? ? 'add client' : 'update client' %>
   </div>
 <% end %>

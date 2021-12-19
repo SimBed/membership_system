@@ -5,7 +5,7 @@
       <div class ="cell c-class-time"><%= client.revenue_for_class(@wkclass) %></div>
       <% attendance = client.attendances.where(wkclass_id: @wkclass.id).first %>
       <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), attendance, method: :delete, data: { confirm: 'Class and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
+        <%= link_to image_tag('delete.png', class: "table_icon"), attendance, method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' }, class: "icon-container" %>
       </div>
   </div>
 <% end %>

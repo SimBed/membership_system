@@ -21,6 +21,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit wkclass.new_record? ? 'create class' : 'update class' %>
   </div>
 <% end %>

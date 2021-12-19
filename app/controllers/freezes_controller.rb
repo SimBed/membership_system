@@ -7,12 +7,12 @@ class FreezesController < ApplicationController
 
   def create
     @freeze = Freeze.new(freeze_params)
-
-      if @freeze.save
-        redirect_to Purchase.find(freeze_params[:purchase_id]), notice: "freeze was successfully created."
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @freeze.save
+      redirect_to Purchase.find(freeze_params[:purchase_id])
+      flash[:success] = "freeze was successfully created"
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -20,7 +20,8 @@ class FreezesController < ApplicationController
 
   def update
     if @freeze.update(freeze_params)
-      redirect_to Purchase.find(freeze_params[:purchase_id]), notice: "freeze was successfully updated."
+      redirect_to Purchase.find(freeze_params[:purchase_id])
+      flash[:success] = "freeze was successfully updated"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -29,7 +30,8 @@ class FreezesController < ApplicationController
   def destroy
     @purchase = @freeze.purchase
     @freeze.destroy
-    redirect_to @purchase, notice: "freeze was successfully deleted."
+    redirect_to @purchase
+    flash[:success] = "freeze was successfully deleted"
   end
 
   private

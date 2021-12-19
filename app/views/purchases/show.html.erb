@@ -1,99 +1,18 @@
-<p>
-  <strong>Client:</strong>
-  <%= @purchase.client.name %>
-</p>
+<h5><%= link_to @purchase.client.name, @purchase.client, class: "text-decoration-none" %>
+  <div class = "mt-1 mb-3"><%= link_to @purchase.product.name, @purchase.product, class: "text-decoration-none" %></div>
+</h5>
 
-<p>
-  <strong>Product:</strong>
-  <%= @purchase.product.name %>
-</p>
+<div id="purchase_table" class="container px-1 mb-2 margin-override">
+  <%= render partial: 'purchase_table' %>
+</div>
 
-<p>
-  <strong>Payment:</strong>
-  <%= @purchase.payment %>
-</p>
+<div class="mb-2">
+  <%= link_to 'add freeze', new_freeze_path(purchase: @purchase.id) %> |
+  <%= link_to 'add adjustment', new_adjustment_path(purchase: @purchase.id) %> |
+  <%= link_to 'edit purchase', edit_purchase_path(@purchase) %> |
+  <%= link_to 'back to purchases', purchases_path %>
+</div>
 
-<p>
-  <strong>Payment Date:</strong>
-  <%= @purchase.dop %>
-</p>
-
-<p>
-  <strong>Status:</strong>
-  <%= @purchase.status %>
-</p>
-
-<p>
-  <strong>Payment mode:</strong>
-  <%= @purchase.payment_mode %>
-</p>
-
-<p>
-  <strong>Invoice:</strong>
-  <%= @purchase.invoice %>
-</p>
-
-<p>
-  <strong>Note:</strong>
-  <%= @purchase.note %>
-</p>
-
-<% if @purchase.adjust_restart %>
-<p>
-  <strong>A&R payment:</strong>
-  <%= @purchase.ar_payment %>
-</p>
-
-<p>
-  <strong>A&R payment date:</strong>
-  <%= @purchase.ar_date %>
-</p>
-<% end %>
-
-
-<% unless @purchase.freezes.count.zero? %>
-<p>
-  <strong>Freezes:</strong>
-  <ul>
-    <% @purchase.freezes.each do |f| %>
-    <li> <%= f.start_date %></li>
-    <li> <%= f.end_date %></li>
-    <li> <%= pluralize(f.duration, "day") %></li>
-    <li> <%= f.note %></li>
-    <li><%= link_to 'Edit', edit_freeze_path(f) %></li>
-    <li><%= link_to 'Delete', f, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-    <% end %>
-  </ul>
-</p>
-<% end %>
-
-
-<% unless @purchase.adjustments.count.zero? %>
-<p>
-  <strong>Adjustments:</strong>
-  <ul>
-    <% @purchase.adjustments.each do |adj| %>
-    <li> <%= pluralize(adj.adjustment, "day") %></li>
-    <li> <%= adj.note %></li>
-    <li><%= link_to 'Edit', edit_adjustment_path(adj) %></li>
-    <li><%= link_to 'Delete', adj, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-    <% end %>
-  </ul>
-</p>
-<% end %>
-
-<% unless @purchase.status == 'not started' %>
-<p>
-  <strong>Attendances:</strong>
-  <ul>
-    <% @purchase.attendances.each do |a| %>
-    <li> <%= a.date %></li>
-    <% end %>
-  </ul>
-</p>
-<% end %>
-
-<%= link_to 'Add freeze', new_freeze_path(purchase: @purchase.id) %> |
-<%= link_to 'Add adjustment', new_adjustment_path(purchase: @purchase.id) %> |
-<%= link_to 'Edit', edit_purchase_path(@purchase) %> |
-<%= link_to 'Back', purchases_path %>
+<div id="purchase_attendance_table" class="container px-1 mt-4 margin-override">
+  <%= render partial: 'purchase_attendance_table' %>
+</div>

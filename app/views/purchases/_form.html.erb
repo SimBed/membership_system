@@ -13,12 +13,12 @@
 
   <div class="field">
     <%= form.label :client_id %>
-    <%= form.select :client_id, @clients %>
+    <%= form.select :client_id, @clients, include_blank: true %>
   </div>
 
   <div class="field">
     <%= form.label :product_id %>
-    <%= form.select :product_id, @products %>
+    <%= form.select :product_id, @products, include_blank: true %>
   </div>
 
   <div class="field">
@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= form.label :payment_mode %>
-    <%= form.text_field :payment_mode %>
+    <%= form.select :payment_mode, options_for_select(@payment_methods), include_blank: true %>
   </div>
 
   <div class="field">
