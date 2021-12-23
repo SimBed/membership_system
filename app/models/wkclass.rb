@@ -33,8 +33,8 @@ class Wkclass < ApplicationRecord
             INNER JOIN purchases ON products.id = purchases.product_id
             INNER JOIN clients ON purchases.client_id = clients.id
             WHERE Wkclasses.id = #{wkclass.id} ORDER BY clientid;"
-    ActiveRecord::Base.connection.exec_query(sql).to_a.select { |client_purchase| !Purchase.find(client_purchase["purchaseid"]).expired? }
-
+            # [{"clientid"=>1, "purchaseid"=>1}, {"clientid"=>2, "purchaseid"=>2},...
+    ActiveRecord::Base.connection.exec_query(sql).to_a.select { |cp| !Purchase.find(cp["purchaseid"]).expired? && !Purchase.find(cp["purchaseid"]).freezed?(wkclass.start_time) }
   end
 
 end

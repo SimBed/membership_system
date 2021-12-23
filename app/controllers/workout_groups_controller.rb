@@ -28,23 +28,19 @@ class WorkoutGroupsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
       if @workout_group.update(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
-        format.html { redirect_to @workout_group, notice: "Workout Group was successfully updated." }
-        format.json { render :show, status: :ok, location: @workout_group }
+        redirect_to @workout_group
+        flash[:success] = "Workout Group was successfully updated."
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @workout_group.errors, status: :unprocessable_entity }
+        @workouts = Workout.all
+        render :edit, status: :unprocessable_entity
       end
-    end
   end
 
   def destroy
     @workout_group.destroy
-    respond_to do |format|
-      format.html { redirect_to workout_groups_url, notice: "Workout Group was successfully destroyed." }
-      format.json { head :no_content }
-    end
+      redirect_to workout_groups_url
+      flash[:success] = "Workout Group was successfully destroyed."
   end
 
   private

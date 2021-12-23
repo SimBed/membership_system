@@ -77,7 +77,7 @@ div.actions {
 label {
   display: block; }
 
-  /*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
+/*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
 input[type="checkbox"] {
 margin: 3px 3px 3px 4px;
 }
@@ -136,6 +136,11 @@ img.header_icon {
   height: 1.4rem;
 }
 
+img.infinity_icon {
+  width: 1.0rem;
+  height: 1.0rem;
+}
+
 .icon-container:hover {
   background-color: #fff;
 }
@@ -150,6 +155,9 @@ img.header_icon {
   padding-bottom: 0.3em;
 }
 
+div.danger .cell{
+  background-color: red;}
+
 .c-class-name, .class-attendance-header, .c-revenue-name,
 .c-revenue-attend, .c-revenue-attend, .c-revenue-base, .c-revenue-expiry, .c-revenue-total {
   font-size: 1.3em;
@@ -160,13 +168,15 @@ img.header_icon {
 .c-class-date, .c-client-date, .c-client-wkname, .c-client-product, .c-client-name,
 .c-client-email, .c-client-phone, .c-instructor-name, .c-instructor-workouts, .c-wg-name,
 .c-attendance-date, .c-attendance-wkname, .c-attendance-product, .c-attendance-client,
-.c-workout-name, .c-workout-instructor, .c-workout-workoutgroup, .c-product-name {
+.c-workout-name, .c-workout-instructor, .c-workout-workoutgroup, .c-product-name, .c-purchases-client,
+.c-purchases-name, .c-purchases-expiry {
   font-size: 1.0em;
   text-align: left;
   padding-left: 0.1em;
 }
 
-.c-class-time, .c-class-revenue, .c-client-revenue, .c-attendance-revenue, .c-product-purchases {
+.c-class-time, .c-class-revenue, .c-client-revenue, .c-attendance-revenue, .c-product-purchases,
+.c-purchases-attendances, .c-purchases-status {
   font-size: 1.0em;
   text-align: left;
   padding-left: 0.1em;
@@ -210,4 +220,11 @@ h2 form {
 
 h5 > div {
   font-size: 0.8em;
+}
+
+.ar_hide {
+  display: none !important;
+}
+.ar_show {
+  display:block;
 }

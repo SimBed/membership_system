@@ -10,13 +10,39 @@ class Purchase < ApplicationRecord
   delegate :name, to: :product
   delegate :revenue_for_class, to: :client
   validates :payment, presence: true
-  validates_associated :client, :product 
+  validates_associated :client, :product
+  #validates :ar_payment, presence: true, if: :adjust_restart?
+  with_options if: :adjust_restart? do |ar|
+    ar.validates :ar_payment, presence: true
+    ar.validates :ar_date, presence: true
+  end
+  # wg is an array of workout groups
+  scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
+  scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
+  scope :order_by_dop, -> { order(dop: :desc) }
+
+  # def self.by_client_dop
+  #   Purchase.joins(:client)
+  #           .order(:first_name, dop: :desc)
+  # end
+
+  def full_name
+    "#{name} : #{number_to_currency(self.payment, precision: 0, unit: '')}"
+  end
 
   def status
     return 'expired' if self.adjust_restart?
     return 'not started' if self.attendance_status == 'not started'
     return 'expired' if self.attendance_status == 'exhausted' || self.validity_status == 'expired'
+    return 'frozen' if freezed?(Date.today)
     'ongoing'
+  end
+
+  def freezed?(adate)
+    freezes.each do |f|
+      return true if adate.between?(f.start_date, f.end_date)
+    end
+    false
   end
 
   def expired?
@@ -47,6 +73,16 @@ class Purchase < ApplicationRecord
     expiry_date&.strftime('%a %d %b %y')
   end
 
+  def days_to_expiry
+    return 1000 unless status == 'ongoing'
+    (expiry_date.to_date - Date.today).to_i
+  end
+
+  def days_to_expiry_format
+    return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
+    ['','']
+  end
+
   # for revenue cashflows
   def attendance_estimate
     return product.max_classes unless product.max_classes == 1000
@@ -70,10 +106,22 @@ class Purchase < ApplicationRecord
     ar_payment - attendance_revenue
   end
 
-  def start_or_dop
-    return dop&.strftime('%d %b %y') if attendance_status == 'not started'
-    return start_date.strftime('%d %b %y')
+  def start_to_expiry
+    return attendance_status if attendance_status == 'not started'
+    return "#{start_date.strftime('%d %b %y')} - #{expiry_date_formatted}"
   end
+
+  def attendances_remain_format
+    return ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon') unless attendance_status.is_a? Integer
+    "#{product.max_classes} (#{product.max_classes - attendance_status})"
+  end
+
+  def attendances_remain_numeric
+    return product.max_classes - attendances.count if status == 'ongoing'
+    return 1000
+  end
+
+
 
   private
     def start_date
@@ -83,6 +131,7 @@ class Purchase < ApplicationRecord
     def attendance_status
       attendance_count = self.attendances.count
       return 'not started' if attendance_count.zero?
+      return 'unlimited' if product.max_classes == 1000
       return attendance_count if attendance_count < self.product.max_classes
       'exhausted'
     end

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root 'clients#index'
+  get '/purchases/clear_filters', to: 'purchases#clear_filters', as: 'clear_filters'
+  # note if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
+  get '/purchases/filter', to: 'purchases#filter'
   resources :purchases
   resources :clients
   resources :rel_workout_group_workouts
@@ -13,4 +16,5 @@ Rails.application.routes.draw do
   resources :revenues, only: [:index]
   resources :adjustments
   resources :freezes
+
 end

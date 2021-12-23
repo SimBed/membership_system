@@ -47,19 +47,19 @@
   </div>
 
   <% unless @purchase.new_record? %>
-  <div class="field">
+  <div class="field" id="ar">
     <%= form.label :adjust_restart %>
-    <%= form.check_box :adjust_restart %>
+    <%= form.check_box :adjust_restart, onclick: "toggleHide()" %>
   </div>
 
-  <div class="field">
+  <div class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
     <%= form.label :ar_payment %>
-    <%= form.number_field :ar_payment %>
+    <%= form.number_field :ar_payment, class: "arvalue" %>
   </div>
 
-  <div class="field">
+  <div class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
     <%= form.label :ar_date %>
-    <%= form.date_select :ar_date, include_blank: true, selected: @purchase.ar_date %>
+    <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date}, {class: "arvalue"} %>
   </div>
   <% end %>
 
@@ -67,3 +67,18 @@
     <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase'  %>
   </div>
 <% end %>
+
+<script>
+  function toggleHide() {
+      var x = document.getElementsByClassName("ar");
+      var i;
+      for (i = 0; i < x.length; i++) {
+        x[i].classList.toggle('ar_hide')
+      }
+      var x = document.getElementsByClassName("arvalue");
+      var i;
+      for (i = 0; i < x.length; i++) {
+        x[i].value="";
+      }
+    }
+</script>
