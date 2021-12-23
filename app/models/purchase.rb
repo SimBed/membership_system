@@ -70,7 +70,8 @@ class Purchase < ApplicationRecord
 
   def expiry_date_formatted
     # expiry_date.strftime("%d-%m-%Y")
-    expiry_date&.strftime('%a %d %b %y')
+    # expiry_date&.strftime('%a %d %b %y')
+    expiry_date&.strftime('%d %b %y')
   end
 
   def days_to_expiry
@@ -120,8 +121,6 @@ class Purchase < ApplicationRecord
     return product.max_classes - attendances.count if status == 'ongoing'
     return 1000
   end
-
-
 
   private
     def start_date

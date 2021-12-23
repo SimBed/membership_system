@@ -18,8 +18,8 @@ body {
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-  line-height: 18px; }
+  font-size: 1.3rem;
+  line-height: 1.5rem; }
 
 pre {
   background-color: #eee;
@@ -79,7 +79,8 @@ label {
 
 /*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
 input[type="checkbox"] {
-margin: 3px 3px 3px 4px;
+  vertical-align: middle
+/*margin: 3px 3px 3px 4px;*/
 }
 
 div.search {
@@ -113,6 +114,26 @@ legend {
   font-size: 0.9rem;
   font-weight: normal;
   padding-right: 0.75rem;
+}
+
+div i.fa, i.fas {
+  font-size: 1.0em;
+}
+
+div i.fa-sort-alpha-down{
+  color: $gray-darker;
+}
+
+select.sort {
+  color: $gray-darker;
+  border: solid;
+  border-color: $bg-light;
+  border-width: 1px;
+  background-color: $bg-light;
+}
+
+.purchase-filters {
+  font-size: 0.8em;
 }
 
 %icons {
@@ -227,4 +248,8 @@ h5 > div {
 }
 .ar_show {
   display:block;
+}
+
+.purchases-table {
+  font-size: 0.6em;
 }
