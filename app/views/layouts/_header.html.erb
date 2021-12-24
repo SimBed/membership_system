@@ -1,40 +1,45 @@
-<nav class="navbar1 mb-4">
-  <ul class="navbar-nav">
+<div class="d-flex">
+  <nav class="navbar1 mb-4">
+    <ul class="navbar-nav">
 
-    <li class="nav-item">
-      <%= link_to 'clients', clients_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item">
+        <%= link_to 'clients', clients_path, class: "nav-link" %>
+      </li>
 
-    <li class="nav-item home">
-      <%= link_to 'classes', wkclasses_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item home">
+        <%= link_to 'classes', wkclasses_path, class: "nav-link" %>
+      </li>
 
-    <li class="nav-item">
-      <%= link_to 'instructors', instructors_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item">
+        <%= link_to 'purchases', purchases_path, class: "nav-link" %>
+      </li>
 
-    <li class="nav-item">
-      <%= link_to 'workouts', workouts_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item">
+        <%= link_to 'revenue', revenues_path, class: "nav-link" %>
+      </li>
+  </nav>
 
-    <li class="nav-item">
-      <%= link_to 'products', products_path, class: "nav-link" %>
-    </li>
+  <nav class="navbar2 mb-4">
+    <ul class="navbar-nav">
 
-    <li class="nav-item">
-      <%= link_to 'purchases', purchases_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item">
+        <%= link_to 'instructors', instructors_path, class: "nav-link" %>
+      </li>
 
-    <li class="nav-item">
-      <%= link_to 'workout groups', workout_groups_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item">
+        <%= link_to 'workouts', workouts_path, class: "nav-link" %>
+      </li>
 
-    <li class="nav-item">
-      <%= link_to 'revenue', revenues_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item">
+        <%= link_to 'products', products_path, class: "nav-link" %>
+      </li>
 
-    <li class="nav-item">
-      <%= link_to 'attendances', attendances_path, class: "nav-link" %>
-    </li>
+      <li class="nav-item">
+        <%= link_to 'workout groups', workout_groups_path, class: "nav-link" %>
+      </li>
 
-</nav>
+      <li class="nav-item">
+        <%= link_to 'attendances', attendances_path, class: "nav-link" %>
+      </li>
+  </nav>
+</div>
