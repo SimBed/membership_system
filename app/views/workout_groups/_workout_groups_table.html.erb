@@ -1,9 +1,6 @@
 <% @workout_groups.each do |workout_group| %>
   <div class ="d-flex bg-light">
-    <div class ="cell c-class-icon">
-      <%= link_to image_tag('clipboard.png', class: "table_icon"), workout_group, class: "icon-container" %>
-    </div>
-      <div class ="cell c-wg-name"><%= workout_group.name %></div>
+      <div class ="cell c-wg-name"><%= link_to workout_group.name, workout_group %></div>
       <div class ="cell c-class-icon">
         <%= link_to image_tag('edit.png', class: "table_icon"), edit_workout_group_path(workout_group), class: "icon-container" %>
       </div>

@@ -28,6 +28,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit 'create workout group' %>
+    <%= form.submit @workout_group.new_record? ? 'Create workout group' : 'Update workout group' %>
   </div>
 <% end %>

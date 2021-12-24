@@ -1,13 +1,13 @@
-<p id="notice"><%= notice %></p>
+<div class="mb-4">
+  <p>
+    The <strong><%= @workout_group.name %></strong> workout group includes:
+    <ul>
+    <% @workout_group.workouts.each do |wk| %>
+      <li> <%= wk.name %> </li>
+    <% end %>
+    </ul>
+  </p>
+</div>
 
-<p>
-  <strong><%= @workout_group.name %></strong> workout group includes:
-  <ul>
-  <% @workout_group.workouts.each do |wk| %>
-    <li> <%= link_to "#{wk.name}", wk %> </li>
-  <% end %>
-  </ul>
-</p>
-
-<%= link_to 'Edit', edit_workout_group_path(@workout_group) %> |
-<%= link_to 'Back to workout groups', workout_groups_path %>
+<%= link_to 'edit', edit_workout_group_path(@workout_group) %> |
+<%= link_to 'back to workout groups', workout_groups_path %>

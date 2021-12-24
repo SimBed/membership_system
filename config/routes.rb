@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   resources :workout_groups
   resources :wkclasses
   resources :attendances, only: [:index, :new, :create, :destroy]
-  resources :instructors
-  resources :workouts
+  resources :instructors, only: [:index, :new, :edit, :create, :update, :destroy]
+  resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
   resources :workout_groups
   resources :products
   resources :revenues, only: [:index]

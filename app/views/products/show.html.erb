@@ -1,13 +1,13 @@
-<div class ="d-flex bg-light">
-  <h5><%= @product.name %></h5>
+<div class ="d-flex mb-2">
+  <h2><%= @product.name %></h2>
   <form action=<%= "/products/#{params[:id]}" %> method="GET" class="ms-3 align-with-header">
-      <select name="product_purchased_period" onchange="this.form.submit()">
+      <select name="product_purchased_period" onchange="this.form.submit()" class="sort">
         <%= options_for_select @months, session[:product_purchased_period] %>
       </select>
   </form>
 </div>
 
-<div id="product_purchased_table" class="container px-1 mb-5 margin-override">
+<div id="product-purchased-table" class="container px-1 mb-5 margin-override">
   <%= render partial: 'product_purchased_table' %>
 </div>
 

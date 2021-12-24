@@ -34,7 +34,12 @@ a:visited {
 
 a:hover {
   color: #fff;
-  background-color: #000; }
+  background-color: #000;
+ }
+
+ .nav-link:hover {
+  color: #fff;
+ }
 
 th {
   padding-bottom: 5px; }
@@ -169,45 +174,49 @@ img.infinity_icon {
 /* table formatting */
 .cell {
   color: black;
-  flex: 1;
   border: 0.05em solid white;
   background-color: #e9ecef;
   padding-top: 0.3em;
   padding-bottom: 0.3em;
+  font-size: 0.9em;
+  text-align: left;
+  padding-left: 0.1em;
+  flex: 1;
 }
 
 div.danger .cell{
   background-color: red;}
 
-.c-class-name, .class-attendance-header, .c-revenue-name,
-.c-revenue-attend, .c-revenue-attend, .c-revenue-base, .c-revenue-expiry, .c-revenue-total {
+.class-attendance-header {
   font-size: 1.3em;
-  text-align: left;
-  padding-left: 0.1em;
 }
 
-.c-class-date, .c-client-date, .c-client-wkname, .c-client-product, .c-client-name,
-.c-client-email, .c-client-phone, .c-instructor-name, .c-instructor-workouts, .c-wg-name,
+.c-class-name, .c-class-date, .c-client-date, .c-client-wkname, .c-client-product, .c-client-name,
+.c-instructor-name, .c-instructor-workouts, .c-wg-name,
 .c-attendance-date, .c-attendance-wkname, .c-attendance-product, .c-attendance-client,
 .c-workout-name, .c-workout-instructor, .c-workout-workoutgroup, .c-product-name, .c-purchases-client,
-.c-purchases-name, .c-purchases-expiry {
-  font-size: 1.0em;
-  text-align: left;
-  padding-left: 0.1em;
+.c-purchases-name, .c-purchases-expiry, .c-revenue-name, .c-revenue-attend, .c-revenue-base,
+.c-revenue-expiry, .c-revenue-total {
+
 }
 
-.c-class-time, .c-class-revenue, .c-client-revenue, .c-attendance-revenue, .c-product-purchases,
-.c-purchases-attendances, .c-purchases-status {
-  font-size: 1.0em;
-  text-align: left;
-  padding-left: 0.1em;
+.c-client-email, .c-client-phone {
+  font-size: 0.7em;
+  padding-left: 0.7em;
+}
+
+.c-class-time, .c-client-revenue, .c-attendance-revenue, .c-product-purchases,
+.c-purchases-attendances, .c-purchases-status, .c-class-attendance-revenue {
+  font-size: 0.9em;
+  flex:0.5;
+}
+
+.c-class-revenue {
+  font-size: 0.7em;
   flex:0.5;
 }
 
 .c-class-attendance {
-  font-size: 1.0em;
-  text-align: left;
-  padding-left: 0.1em;
   flex: 0.5;
   /*to allow centering of icon*/
   position: relative;
@@ -231,7 +240,7 @@ div.danger .cell{
 
 /* so select box aligns with client name*/
 .align-with-header {
-  line-height: 28px;
+  line-height: 40px;
 }
 
 h2 form {

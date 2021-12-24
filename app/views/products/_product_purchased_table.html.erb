@@ -1,7 +1,12 @@
+<div class ="d-flex bg-light">
+  <div class ="cell c-product-name fw-bold">Date of Purchase</div>
+  <div class ="cell c-product-name fw-bold">Client</div>
+  <div class ="cell c-product-name fw-bold">Payment</div>
+</div>
 <% @purchases.each do |purchase| %>
   <div class ="d-flex bg-light">
-      <div class ="cell c-client-date"><%= purchase.dop %></div>
+      <div class ="cell c-client-date"><%= purchase.dop.strftime('%d %b %y') %></div>
       <div class ="cell c-client-wkname"><%= purchase.client.name %></div>
-      <div class ="cell c-client-product"><%= number_to_currency(purchase.payment, precision: 0, unit: '') %></div>
+      <div class ="cell c-client-product"><%= number_to_currency(purchase.payment, precision: 0, unit: 'Rs. ') %></div>
   </div>
 <% end %>
