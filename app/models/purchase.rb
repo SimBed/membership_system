@@ -114,7 +114,7 @@ class Purchase < ApplicationRecord
 
   def attendances_remain_format
     # "[number] [attendances icon] [more icon]"
-    base_html = "#{attendances.count} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more', class: 'header_icon')}"
+    base_html = "#{attendances.count} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
     # unlimited
     return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if product.max_classes == 1000
     # unused classes
