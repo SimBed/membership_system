@@ -113,8 +113,14 @@ class Purchase < ApplicationRecord
   end
 
   def attendances_remain_format
-    return ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon') unless attendance_status.is_a? Integer
-    "#{product.max_classes} (#{product.max_classes - attendance_status})"
+    # "[number] [attendances icon] [more icon]"
+    base_html = "#{attendances.count} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more', class: 'header_icon')}"
+    # unlimited
+    return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if product.max_classes == 1000
+    # unused classes
+    return "#{base_html} #{product.max_classes} (#{product.max_classes - attendances.count})".html_safe if attendances.count < product.max_classes
+    # otherwise
+    "#{base_html} #{product.max_classes}".html_safe
   end
 
   def attendances_remain_numeric
@@ -124,7 +130,9 @@ class Purchase < ApplicationRecord
 
   private
     def start_date
-      attendances.sort_by { |a| a.start_time }.first.start_time
+      # attendances.sort_by { |a| a.start_time }.first.start_time
+      # use includes to avoid firing additional query per wkclass
+      attendances.includes(:wkclass).map(&:start_time).min
     end
 
     def attendance_status
