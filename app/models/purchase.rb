@@ -32,8 +32,9 @@ class Purchase < ApplicationRecord
 
   def status
     return 'expired' if self.adjust_restart?
-    return 'not started' if self.attendance_status == 'not started'
-    return 'expired' if self.attendance_status == 'exhausted' || self.validity_status == 'expired'
+    status_hash = self.status_hash
+    return 'not started' if status_hash[:attendance_status] == 'not started'
+    return 'expired' if status_hash[:attendance_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
     return 'frozen' if freezed?(Date.today)
     'ongoing'
   end
@@ -55,15 +56,15 @@ class Purchase < ApplicationRecord
 
   def expiry_date
     return ar_date if adjust_restart
-    return self.dop if attendances.count.zero?
+    return dop if attendances.size.zero?
     start_date = self.start_date
     end_date = case product.validity_unit
       when 'D'
-        start_date + self.product.validity_length
+        start_date + product.validity_length
       when 'W'
-        start_date + self.product.validity_length.weeks
+        start_date + product.validity_length.weeks
       when 'M'
-        start_date + self.product.validity_length.months
+        start_date + product.validity_length.months
     end
       end_date + adjustments.map { |a| a.adjustment }.inject(0, :+).days
   end
@@ -108,19 +109,22 @@ class Purchase < ApplicationRecord
   end
 
   def start_to_expiry
-    return attendance_status if attendance_status == 'not started'
+    status_hash = self.status_hash
+    return status_hash[:attendance_status] if status_hash[:attendance_status] == 'not started'
     return "#{start_date.strftime('%d %b %y')} - #{expiry_date_formatted}"
   end
 
   def attendances_remain_format
+    ac = attendances.count
     # "[number] [attendances icon] [more icon]"
-    base_html = "#{attendances.count} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
+    base_html = "#{ac} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
+    pmc = product.max_classes
     # unlimited
-    return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if product.max_classes == 1000
+    return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if pmc == 1000
     # unused classes
-    return "#{base_html} #{product.max_classes} (#{product.max_classes - attendances.count})".html_safe if attendances.count < product.max_classes
+    return "#{base_html} #{pmc} (#{pmc - ac})".html_safe if ac < pmc
     # otherwise
-    "#{base_html} #{product.max_classes}".html_safe
+    "#{base_html} #{pmc}".html_safe
   end
 
   def attendances_remain_numeric
@@ -135,18 +139,23 @@ class Purchase < ApplicationRecord
       attendances.includes(:wkclass).map(&:start_time).min
     end
 
-    def attendance_status
-      attendance_count = self.attendances.count
+    def attendance_status(attendance_count, max_classes)
       return 'not started' if attendance_count.zero?
-      return 'unlimited' if product.max_classes == 1000
-      return attendance_count if attendance_count < self.product.max_classes
+      return 'unlimited' if max_classes == 1000
+      return attendance_count if attendance_count < max_classes
       'exhausted'
     end
 
-    def validity_status
-      return 'not started' if self.attendance_status == 'not started'
-      return 'expired' if Date.today() > self.expiry_date
-      #byebug
-      self.expiry_date - start_date
+    def validity_status(attendance_count, expiry_date)
+      return 'not started' if attendance_count.zero?
+      return 'expired' if Date.today() > expiry_date
+      expiry_date - start_date
+    end
+
+    def status_hash
+      attendance_count = self.attendances.size
+      { attendance_status: attendance_status(attendance_count, self.product.max_classes),
+        validity_status: validity_status(attendance_count, self.expiry_date),
+      }
     end
 end

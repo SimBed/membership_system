@@ -22,6 +22,11 @@ class Wkclass < ApplicationRecord
     attendances.map { |a| a.revenue }.inject(0, :+)
   end
 
+  def self.by_date(start_date, end_date)
+      Wkclass.where("start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+             .order(:start_time)
+  end
+
   # for qualifying products in select box for new attendance form
   def self.clients_with_product(wkclass)
     sql = "SELECT clients.id AS clientid, purchases.id AS purchaseid

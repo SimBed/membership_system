@@ -3,6 +3,9 @@ class WkclassesController < ApplicationController
 
   def index
     @wkclasses = Wkclass.order_by_date
+    handle_search
+    @workout = Workout.distinct.pluck(:name).sort!
+    @months = months_logged
   end
 
   def show
@@ -43,6 +46,14 @@ class WkclassesController < ApplicationController
     flash[:success] = "Class was successfully deleted"
   end
 
+  def filter
+    # see application_helper
+    clear_session(:filter_workout, :classes_period)
+    session[:filter_workout] = params[:workout] || session[:filter_workout]
+    session[:classes_period] = params[:classes_period] || session[:classes_period]
+    redirect_to wkclasses_path
+  end
+
   private
     def set_wkclass
       @wkclass = Wkclass.find(params[:id])
@@ -50,5 +61,14 @@ class WkclassesController < ApplicationController
 
     def wkclass_params
       params.require(:wkclass).permit(:workout_id, :start_time)
+    end
+
+    def handle_search
+      @wkclasses = Wkclass.joins(:workout).where(workout: { name: session[:filter_workout] }) if session[:filter_workout].present?
+      if session[:classes_period].present?
+        start_date = Date.parse(session[:classes_period])
+        end_date = Date.parse(session[:classes_period]).end_of_month
+        @wkclasses = @wkclasses.by_date(start_date, end_date)
+      end
     end
 end

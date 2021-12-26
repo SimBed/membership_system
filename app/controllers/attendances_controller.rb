@@ -28,7 +28,7 @@ class AttendancesController < ApplicationController
     @attendance = Attendance.new(attendance_params)
       if @attendance.save
         redirect_to @attendance.wkclass
-        flash[:success] = "#{@attendance.purchase.client.name}''s attendance was successfully logged"
+        flash[:success] = "#{@attendance.purchase.client.name}'s attendance was successfully logged"
         @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]

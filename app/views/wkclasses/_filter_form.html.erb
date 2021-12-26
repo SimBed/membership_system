@@ -1,0 +1,27 @@
+<div class="container search">
+  <hr class = "search mb-3"></hr>
+
+  <%= form_with(url: "/wkclasses/filter", method: "get", local: false, class: "form-class") do %>
+
+  <div class="container mb-1 px-0">
+
+    <fieldset>
+      <legend>WORKOUT</legend>
+      <% @workout.each do |wk| %>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'workout[]', wk, session[:filter_workout].present? ? session[:filter_workout].include?(wk) : false, id: "chbox#{wk}", onChange: "this.form.submit()" %>
+          <%= wk %>
+        <% end %>
+      <% end %>
+    </fieldset>
+    <fieldset class="mt-2">
+      <select name="classes_period" onchange="this.form.submit()" class= "sort">
+        <%= options_for_select @months, session[:classes_period] %>
+      </select>
+    </fieldset>
+  </div>
+
+  <% end %>
+  <hr class = "search mb-3"></hr>
+
+</div>
