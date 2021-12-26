@@ -1,11 +1,12 @@
 <% unless @purchase.status == 'not started' %>
-<div class='bg-light w-50'>
-  <div class='cell'>
-    Attendances
-  </div>
+<div class ="d-flex bg-light w-50">
+    <div class ="cell fw-bold">Attendances</div>
 </div>
-  <% @attendances.each do |a| %>
-     <div class='bg-light w-50'>
+  <% @attendances.each_with_index do |a, index| %>
+     <div class='d-flex bg-light w-50'>
+       <div class='cell c-purchases-attendances-index'>
+         <%= @attendances.size - index %>
+       </div>
        <div class='cell'>
          <%= a.date %>
        </div>

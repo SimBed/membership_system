@@ -11,6 +11,16 @@
      <div class='cell c-purchase-row-headers'>Status</div>
      <div class='cell px-1'><%= @purchase.status %></div>
    </div>
+   <% if @purchase.expired? %>
+     <div class='d-flex bg-light flex-row'>
+       <div class='cell c-purchase-row-headers'>Expiry cause</div>
+       <div class='cell px-1'><%= @purchase.expiry_cause %></div>
+     </div>
+     <div class='d-flex bg-light flex-row'>
+       <div class='cell c-purchase-row-headers'>Expired on</div>
+       <div class='cell px-1'><%= @purchase.expired_on %></div>
+     </div>
+   <% end %>
    <div class='d-flex bg-light flex-row'>
      <div class='cell c-purchase-row-headers'>Payment mode</div>
      <div class='cell px-1'><%= @purchase.payment_mode %></div>

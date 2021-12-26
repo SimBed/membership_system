@@ -54,6 +54,18 @@ class Purchase < ApplicationRecord
     expired? && expiry_date.strftime('%b %Y') == month_year
   end
 
+  def expiry_cause
+    return 'adjust & restart' if adjust_restart
+    return 'used max classes' if attendances.size == product.max_classes
+    return 'max time period'
+  end
+
+  def expired_on
+    return ar_date.strftime('%d %b %y') if adjust_restart
+    return max_class_expiry_date.strftime('%d %b %y') if attendances.size == product.max_classes
+    return expiry_date.strftime('%d %b %y')
+  end
+
   def expiry_date
     return ar_date if adjust_restart
     return dop if attendances.size.zero?
@@ -138,6 +150,10 @@ class Purchase < ApplicationRecord
       # attendances.sort_by { |a| a.start_time }.first.start_time
       # use includes to avoid firing additional query per wkclass
       attendances.includes(:wkclass).map(&:start_time).min
+    end
+
+    def max_class_expiry_date
+      attendances.includes(:wkclass).map(&:start_time).max
     end
 
     def attendance_status(attendance_count, max_classes)
