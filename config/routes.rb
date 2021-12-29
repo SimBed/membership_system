@@ -17,5 +17,5 @@ Rails.application.routes.draw do
   resources :revenues, only: [:index]
   resources :adjustments
   resources :freezes
-
+  resources :fitternities
 end

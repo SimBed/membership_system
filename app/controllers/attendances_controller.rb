@@ -4,8 +4,8 @@ class AttendancesController < ApplicationController
   def index
     session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || Date.today.beginning_of_month.strftime('%b %Y')
     session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
-    start_date = Date.parse(session[:attendance_period]).strftime('%Y-%m-%d')
-    end_date = Date.parse(session[:attendance_period]).end_of_month.strftime('%Y-%m-%d')
+    start_date = Date.parse(session[:attendance_period])
+    end_date = Date.parse(session[:attendance_period]).end_of_month.end_of_day
     @attendances = Attendance.by_workout_group(session[:workout_group], start_date, end_date)
     @attendances.sort_by! { |a| [a.wkclass.start_time, a.purchase.name] }
     @revenue = @attendances.map(&:revenue).inject(0, :+)

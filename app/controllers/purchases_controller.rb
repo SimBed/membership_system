@@ -1,3 +1,4 @@
+require 'byebug'
 class PurchasesController < ApplicationController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: %i[ show edit update destroy ]
@@ -46,6 +47,8 @@ class PurchasesController < ApplicationController
   end
 
   def create
+    byebug
+
     @purchase = Purchase.new(purchase_params)
       if @purchase.save
         redirect_to @purchase
@@ -104,8 +107,11 @@ class PurchasesController < ApplicationController
     end
 
     def purchase_params
-      params.require(:purchase).permit(:client_id, :product_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+      pp = params.require(:purchase).permit(:client_id, :product_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+      pp[:fitternity_id] = Fitternity.ongoing.first.id if params[:purchase][:payment_mode] == 'Fitternity'
+      pp
     end
+
 
     def initialize_sort
       session[:sort_option] = params[:sort_option] || session[:sort_option] || 'client_dop'

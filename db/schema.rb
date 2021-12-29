@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_11_105450) do
+ActiveRecord::Schema.define(version: 2021_12_29_190114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,13 @@ ActiveRecord::Schema.define(version: 2021_12_11_105450) do
     t.string "last_name"
     t.string "email"
     t.string "phone"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "fitternities", force: :cascade do |t|
+    t.integer "max_classes"
+    t.date "expiry_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -78,6 +85,7 @@ ActiveRecord::Schema.define(version: 2021_12_11_105450) do
     t.boolean "expired", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "fitternity_id"
   end
 
   create_table "rel_workout_group_workouts", force: :cascade do |t|

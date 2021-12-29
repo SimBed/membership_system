@@ -1,6 +1,7 @@
 class Purchase < ApplicationRecord
   belongs_to :product
   belongs_to :client
+  belongs_to :fitternity, optional: true
   has_many :attendances, dependent: :destroy
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
