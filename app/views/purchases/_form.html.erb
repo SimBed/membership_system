@@ -52,14 +52,14 @@
     <%= form.check_box :adjust_restart, onclick: "toggleHide()" %>
   </div>
 
-  <div class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
+  <div id="ar_payment" class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
     <%= form.label :ar_payment %>
     <%= form.number_field :ar_payment, class: "arvalue" %>
   </div>
 
   <div class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
     <%= form.label :ar_date %>
-    <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date}, {class: "arvalue"} %>
+    <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date || Date.today}, {class: "arvalue"} %>
   </div>
   <% end %>
 
@@ -70,15 +70,21 @@
 
 <script>
   function toggleHide() {
+    var currentState = 'hidden';
+    if (document.getElementById("ar_payment").classList.contains("ar_hide")) {
+        currentState = 'visible';
+      }
       var x = document.getElementsByClassName("ar");
       var i;
       for (i = 0; i < x.length; i++) {
         x[i].classList.toggle('ar_hide')
       }
-      var x = document.getElementsByClassName("arvalue");
-      var i;
-      for (i = 0; i < x.length; i++) {
-        x[i].value="";
+      if (currentState == 'hidden') {
+        var x = document.getElementsByClassName("arvalue");
+        var i;
+        for (i = 0; i < x.length; i++) {
+          x[i].value="";
+        }
       }
     }
 </script>

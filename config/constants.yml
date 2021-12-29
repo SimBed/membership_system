@@ -1,6 +1,7 @@
 default: &default
 
  payment_methods:
+  - A&R conversion
   - Card-Credit
   - Card-Debit
   - Cash
@@ -11,7 +12,6 @@ default: &default
   - Instamojo
   - NEFT
   - Not paid
-  - Yoga
   - PayTM
 
 development:
