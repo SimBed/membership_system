@@ -1,4 +1,3 @@
-require 'byebug'
 class PurchasesController < ApplicationController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: %i[ show edit update destroy ]
