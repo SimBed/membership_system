@@ -4,11 +4,11 @@ class Fitternity < ApplicationRecord
   scope :ongoing, -> { all.select { |f| !(f.expired?) }}
 
   def started?
-    !purchases.zero?
+    !purchases.nil?
   end
 
   def maxed_classes?
-    purchases == max_classes
+    purchases.size == max_classes
   end
 
   def past_expiry?
@@ -17,6 +17,10 @@ class Fitternity < ApplicationRecord
 
   def expired?
     maxed_classes? || past_expiry?
+  end
+
+  def classes_remain
+    max_classes - purchases.size
   end
 
 end

@@ -1,8 +1,8 @@
   <% @attendances.each do |attendance| %>
     <div class ="d-flex bg-light">
-        <div class ="cell c-attendance-date"><%= attendance.wkclass.date %></div>
+        <div class ="cell c-attendance-date"><%= link_to attendance.wkclass.date, attendance.wkclass %></div>
         <div class ="cell c-attendance-wkname"><%= attendance.wkclass.workout.name %></div>
-        <div class ="cell c-attendance-product"><%= attendance.purchase.product.name %></div>
+        <div class ="cell c-attendance-product"><%= link_to attendance.purchase.product.name, attendance.purchase %></div>
         <div class ="cell c-attendance-client"><%= attendance.purchase.client.name %></div>
         <div class ="cell c-attendance-revenue"><%= number_to_currency(attendance.revenue, precision: 0, unit: '') %></div>
     </div>

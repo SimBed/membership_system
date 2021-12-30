@@ -7,7 +7,7 @@
          <%= @attendances.size - index %>
        </div>
        <div class='cell'>
-         <%= a.date %>
+         <%= link_to a.date, a.wkclass %>
        </div>
      </div>
   <% end %>

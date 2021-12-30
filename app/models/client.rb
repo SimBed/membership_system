@@ -29,7 +29,7 @@ class Client < ApplicationRecord
     def full_name_must_be_unique
       # complicated due to situation on update. There will of course be one record in the database
       # with the relevant name on update (the record we are updating) and we don't want its presence
-      # to trigger warnings. We don't however want an exisitng reecord to have its name changed to
+      # to trigger warnings. We don't however want an exisitng record to have its name changed to
       # a name that is the same of a (different) already existing record. Note the id of a new record
       # (not yet saved) will be nil (so won't be equal to the id of any saved record.)
       client = Client.where(["first_name = ? and last_name = ?", first_name, last_name])

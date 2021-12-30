@@ -46,8 +46,6 @@ class PurchasesController < ApplicationController
   end
 
   def create
-    byebug
-
     @purchase = Purchase.new(purchase_params)
       if @purchase.save
         redirect_to @purchase
@@ -107,7 +105,7 @@ class PurchasesController < ApplicationController
 
     def purchase_params
       pp = params.require(:purchase).permit(:client_id, :product_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
-      pp[:fitternity_id] = Fitternity.ongoing.first.id if params[:purchase][:payment_mode] == 'Fitternity'
+      pp[:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
       pp
     end
 

@@ -7,7 +7,7 @@ class AttendancesController < ApplicationController
     start_date = Date.parse(session[:attendance_period])
     end_date = Date.parse(session[:attendance_period]).end_of_month.end_of_day
     @attendances = Attendance.by_workout_group(session[:workout_group], start_date, end_date)
-    @attendances.sort_by! { |a| [a.wkclass.start_time, a.purchase.name] }
+    @attendances.sort_by! { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
     @revenue = @attendances.map(&:revenue).inject(0, :+)
     # prepare items for the revenue date select
     # months_logged method defined in application helper

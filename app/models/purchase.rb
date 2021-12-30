@@ -17,6 +17,7 @@ class Purchase < ApplicationRecord
     ar.validates :ar_payment, presence: true
     ar.validates :ar_date, presence: true
   end
+  validate :fitternity_payment
   # wg is an array of workout groups
   scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
@@ -175,5 +176,13 @@ class Purchase < ApplicationRecord
       { attendance_status: attendance_status(attendance_count, self.product.max_classes),
         validity_status: validity_status(attendance_count, self.expiry_date),
       }
+    end
+
+    def fitternity_payment
+        if payment_mode == 'Fitternity'
+          ong_fit_packages = Fitternity.select { |f| !(f.expired?) }
+          errors.add(:base, "No ongoing Fitternity package") if ong_fit_packages.size.zero?
+          return
+        end
     end
 end

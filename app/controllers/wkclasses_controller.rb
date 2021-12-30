@@ -64,7 +64,7 @@ class WkclassesController < ApplicationController
     end
 
     def handle_search
-      @wkclasses = Wkclass.joins(:workout).where(workout: { name: session[:filter_workout] }) if session[:filter_workout].present?
+      @wkclasses = Wkclass.joins(:workout).where(workout: { name: session[:filter_workout] }).order(start_time: :desc) if session[:filter_workout].present?
       if session[:classes_period].present? && !(session[:classes_period] == 'All')
         start_date = Date.parse(session[:classes_period])
         end_date = Date.parse(session[:classes_period]).end_of_month.end_of_day

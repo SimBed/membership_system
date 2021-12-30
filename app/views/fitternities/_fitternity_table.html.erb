@@ -4,6 +4,10 @@
      <div class='cell px-1'><%= @fitternity.max_classes %></div>
    </div>
    <div class='d-flex bg-light flex-row'>
+     <div class='cell c-purchase-row-headers'>Classes remain</div>
+     <div class='cell px-1'><%= @fitternity.classes_remain %></div>
+   </div>
+   <div class='d-flex bg-light flex-row'>
      <div class='cell c-purchase-row-headers'>Expiry</div>
      <div class='cell px-1'><%= @fitternity.expiry_date.strftime('%d %b %y') %></div>
    </div>
