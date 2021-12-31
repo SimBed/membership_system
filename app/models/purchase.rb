@@ -80,8 +80,11 @@ class Purchase < ApplicationRecord
       when 'M'
         start_date + product.validity_length.months
     end
-      # formulae above overstate by 1 day so deduct 1
-      end_date + adjustments.map { |a| a.adjustment }.inject(0, :+).days - 1.day
+
+      added_days = adjustments.map { |a| a.adjustment }.inject(0, :+).days
+      frozen_days = freezes.map { |f| f.duration}.inject(0, :+).days
+      # end_date formulae above overstate by 1 day so deduct 1
+      end_date + added_days + frozen_days - 1.day
   end
 
   def expiry_date_formatted
