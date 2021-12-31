@@ -1,6 +1,8 @@
 <div class ="d-flex bg-light">
     <div class ="cell c-product-name fw-bold">Product</div>
     <div class ="cell c-product-purchases fw-bold">Purchases</div>
+    <div class ="cell c-product-purchases fw-bold">Price</div>
+    <div class ="cell c-class-icon"></div>
     <div class ="cell c-class-icon"></div>
     <div class ="cell c-class-icon"></div>
 </div>
@@ -8,11 +10,15 @@
   <div class ="d-flex bg-light">
       <div class ="cell c-product-name"><%=link_to product.name, product %></div>
       <div class ="cell c-product-purchases"><%= product.purchases.size %></div>
+      <div class ="cell c-product-purchases"><%= product.prices.map {|p| p.price} %></div>
       <div class ="cell c-class-icon">
         <%= link_to image_tag('edit.png', class: "table_icon"), edit_product_path(product), class: "icon-container" %>
       </div>
       <div class ="cell c-class-icon">
         <%= link_to image_tag('delete.png', class: "table_icon"), product, method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }, class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to 'new price', new_price_path(product_id: product.id) %>
       </div>
   </div>
 <% end %>

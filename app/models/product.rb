@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   has_many :purchases, dependent: :destroy
+  has_many :prices, dependent: :destroy
   belongs_to :workout_group
   #validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
   validate :product_combo_must_be_unique
