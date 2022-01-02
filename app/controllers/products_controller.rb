@@ -17,6 +17,7 @@ class ProductsController < ApplicationController
     #   total_revenue: base_revenue + expiry_revenue
     # }
     @months = months_logged
+    @prices = @product.prices.sort_by { |p| p.date_from }.reverse!
   end
 
   def new

@@ -1,0 +1,10 @@
+<div class ="d-flex bg-light">
+  <div class ="cell c-product-name fw-bold">Base Price</div>
+  <div class ="cell c-product-name fw-bold">From</div>
+</div>
+<% @prices.each do |price| %>
+  <div class ="d-flex bg-light">
+    <div class ="cell c-client-product"><%= number_to_currency(price.price, precision: 0, unit: 'Rs. ') %></div>
+    <div class ="cell c-client-wkname"><%= price.date_from.strftime('%d %b %y') %></div>
+  </div>
+<% end %>
