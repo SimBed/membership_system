@@ -18,6 +18,11 @@ class ProductsController < ApplicationController
     # }
     @months = months_logged
     @prices = @product.prices.sort_by { |p| p.date_from }.reverse!
+    respond_to do |format|
+      format.html {}
+      format.js {render 'show.js.erb'}
+    end
+
   end
 
   def new
