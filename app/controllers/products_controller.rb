@@ -1,3 +1,4 @@
+require 'byebug'
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
 
@@ -59,6 +60,19 @@ class ProductsController < ApplicationController
     @product.destroy
       redirect_to products_path
       flash[:success] = "Product was successfully deleted"
+  end
+
+  def payment
+    # @base_payment = Product.find(params[:purchase][:product_id]).prices.last&.price
+    #byebug
+    @base_payment = Product.find(params[:selected_product]).prices.last&.price
+    @base_payment = @base_payment * params[:test].to_i
+    # respond_to do |format|
+    #   format.html {}
+    #   format.js {render 'payment.js.erb'}
+    # end
+    render 'payment.js.erb'
+
   end
 
   private

@@ -16,10 +16,22 @@
     <%= form.select :client_id, @clients, include_blank: true %>
   </div>
 
+  <!--div class="field">
+    <%#= form.label :product_id %>
+    <%#= form.select :product_id, @products, { include_blank: true },{ data: {
+    remote: true,
+    url: '/products/payment',
+    method: 'post'
+  }} %>
+  </div-->
+
   <div class="field">
     <%= form.label :product_id %>
-    <%= form.select :product_id, @products, include_blank: true %>
+    <%= form.select :product_id, @products, { include_blank: true }
+   %>
   </div>
+
+
 
   <div class="field">
     <%= form.label :payment %>
@@ -67,6 +79,27 @@
     <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase'  %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+//   document.getElementById("purchase_product_id").onchange =  function () {
+// alert ("this is a test");
+//   }
+</script>
+
+<script>
+$(function() {
+    $("select#purchase_product_id").on("change", function() {
+      //alert("dan")
+        $.ajax({
+            url:  '/products/payment',
+            type: 'post',
+            data: { selected_product: $("select#purchase_product_id").val(),
+            test: $("input#purchase_invoice").val(),
+           }
+        });
+    });
+});
+</script>
 
 <script>
   function toggleHide() {
