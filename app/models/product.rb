@@ -9,6 +9,10 @@ class Product < ApplicationRecord
     "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit}"
   end
 
+  def current_prices
+    prices.current.map {|p| p.price}.join(', ')
+  end
+
   # more work needed
   def self.by_purchase_date(product_id, start_date, end_date)
       purchase_ids = Product.joins(:purchases)

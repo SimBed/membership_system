@@ -26,12 +26,14 @@
   </div-->
 
   <div class="field">
-    <%= form.label :product_id %>
-    <%= form.select :product_id, @products, { include_blank: true }
-   %>
+    <%= form.label :product_id, 'Product type' %>
+    <%= form.select :product_id, @product_types, { include_blank: true }  %>
   </div>
 
-
+  <div class="field">
+    <%= form.label :product_name, 'Product name' %>
+    <%= form.select :product_name, @product_names %>
+  </div>
 
   <div class="field">
     <%= form.label :payment %>
@@ -93,8 +95,8 @@ $(function() {
         $.ajax({
             url:  '/products/payment',
             type: 'post',
-            data: { selected_product: $("select#purchase_product_id").val(),
-            test: $("input#purchase_invoice").val(),
+            data: { selected_product_type: $("select#purchase_product_id").val(),
+                    selected_product_name: $("select#purchase_product_name").val(),
            }
         });
     });

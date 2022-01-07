@@ -18,7 +18,8 @@ class ProductsController < ApplicationController
     #   total_revenue: base_revenue + expiry_revenue
     # }
     @months = months_logged
-    @prices = @product.prices.sort_by { |p| p.date_from }.reverse!
+    # @prices = @product.prices.sort_by { |p| [p.current? ? 0 : 1, -p.price] }
+    @prices = @product.prices.order_by_current_price
     respond_to do |format|
       format.html {}
       format.js {render 'show.js.erb'}
@@ -65,13 +66,20 @@ class ProductsController < ApplicationController
   def payment
     # @base_payment = Product.find(params[:purchase][:product_id]).prices.last&.price
     #byebug
-    @base_payment = Product.find(params[:selected_product]).prices.last&.price
-    @base_payment = @base_payment * params[:test].to_i
+    if params[:selected_product_name].blank?
+      @product_types = Product.all.map { |p| [p.name, p.id] }
+      @product_names = Product.find(params[:selected_product_type]).prices.map { |p| [p.name, p.id] }
+      render 'namedropdowns.js.erb'
+    else
+    @base_payment = Price.find(params[:selected_product_name]).price
+    render 'payment.js.erb'
+    #@base_payment = @base_payment * params[:test].to_i
+    end
     # respond_to do |format|
     #   format.html {}
     #   format.js {render 'payment.js.erb'}
     # end
-    render 'payment.js.erb'
+
 
   end
 

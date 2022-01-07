@@ -10,6 +10,12 @@ class WorkoutGroup < ApplicationRecord
   after_create :create_rel_workout_group_workout
   after_update :update_rel_workout_group_workout
 
+  def self.product_list
+    WorkoutGroup.joins(products: [:prices])
+           .select('workout_groups.name','products.id', 'products.max_classes', 'products.validity_length', 'products.validity_unit', 'prices.name')
+           .map(&:attributes)
+  end
+
   def attendances_in(revenue_date)
     attendances.in_month(Date.parse(revenue_date), Date.parse(revenue_date) + 1.month).count
   end

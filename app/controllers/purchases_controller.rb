@@ -35,7 +35,8 @@ class PurchasesController < ApplicationController
   def new
     @purchase = Purchase.new
     @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-    @products = Product.all.map { |p| [p.name, p.id] }
+    @product_types = Product.all.map { |p| [p.name, p.id] }
+    @product_names = []
     @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
   end
 

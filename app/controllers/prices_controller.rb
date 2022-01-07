@@ -1,5 +1,5 @@
 class PricesController < ApplicationController
-  before_action :set_, only: %i[ edit update destroy ]
+  before_action :set_price, only: %i[ edit update destroy ]
 
   def new
     @price = Price.new
@@ -38,10 +38,10 @@ class PricesController < ApplicationController
   private
 
     def set_price
-      @price = price.find(params[:id])
+      @price = Price.find(params[:id])
     end
 
     def price_params
-      params.require(:price).permit(:price, :date_from, :product_id)
+      params.require(:price).permit(:name, :price, :date_from, :product_id, :current)
     end
 end
