@@ -1,3 +1,4 @@
+require 'byebug'
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
 
@@ -17,6 +18,13 @@ class ProductsController < ApplicationController
     #   total_revenue: base_revenue + expiry_revenue
     # }
     @months = months_logged
+    # @prices = @product.prices.sort_by { |p| [p.current? ? 0 : 1, -p.price] }
+    @prices = @product.prices.order_by_current_price
+    respond_to do |format|
+      format.html {}
+      format.js {render 'show.js.erb'}
+    end
+
   end
 
   def new
@@ -54,6 +62,26 @@ class ProductsController < ApplicationController
       redirect_to products_path
       flash[:success] = "Product was successfully deleted"
   end
+
+  def payment
+# [{"wg_name"=>"Space",.."price"=>500,.."name"=>"Space UC:1W power"}, {...}, {...} ...]
+    #@base_payment = WorkoutGroup.products_hash[params[:selected_product].to_i]['price']
+
+@products_hash = WorkoutGroup.products_hash
+@base_payment = @products_hash[@products_hash.index {|p| p['name']==params[:selected_product]}]['price']
+    render 'payment.js.erb'
+  end
+
+  # def payment
+  #   if params[:selected_product_name].blank?
+  #     @product_types = Product.all.map { |p| [p.name, p.id] }
+  #     @product_names = Product.find(params[:selected_product_type]).prices.map { |p| [p.name, p.id] }
+  #     render 'namedropdowns.js.erb'
+  #   else
+  #   @base_payment = Price.find(params[:selected_product_name]).price
+  #   render 'payment.js.erb'
+  #   end
+  # end
 
   private
     def set_product

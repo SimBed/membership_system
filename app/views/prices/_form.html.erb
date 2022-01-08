@@ -1,0 +1,39 @@
+<%= form_with(model: price) do |form| %>
+  <% if price.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(price.errors.count, "error") %> prohibited this price from being saved:</h2>
+
+      <ul>
+        <% price.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div><%= form.hidden_field :product_id, value: params[:product_id] || price.product_id %></div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price, 'Rs.' %>
+    <%= form.number_field :price %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date_from, 'starting on' %>
+    <%= form.date_field :date_from %>
+  </div>
+
+  <div class="field">
+    <%= form.label :current, 'current?' %>
+    <%= form.check_box :current %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

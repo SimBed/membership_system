@@ -4,6 +4,7 @@ module ApplicationHelper
     # order_by_date sorts descending
     first_class_date = Wkclass.order_by_date.last.start_time - 1.month
     last_class_date = Wkclass.order_by_date.first.start_time
+    # @months = shouldn't be here?
     @months = months_between(first_class_date, last_class_date)
   end
 

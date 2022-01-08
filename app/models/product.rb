@@ -1,11 +1,20 @@
 class Product < ApplicationRecord
   has_many :purchases, dependent: :destroy
+  has_many :prices, dependent: :destroy
   belongs_to :workout_group
   #validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
   validate :product_combo_must_be_unique
 
   def name
     "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit}"
+  end
+
+  def self.full_name(wg_name, max_classes, validity_length, validity_unit, price_name)
+    "#{wg_name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit} #{price_name}"
+  end
+
+  def current_prices
+    prices.current.map {|p| p.price}.join(', ')
   end
 
   # more work needed

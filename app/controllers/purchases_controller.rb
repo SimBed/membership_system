@@ -1,3 +1,4 @@
+require 'byebug'
 class PurchasesController < ApplicationController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: %i[ show edit update destroy ]
@@ -35,13 +36,17 @@ class PurchasesController < ApplicationController
   def new
     @purchase = Purchase.new
     @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-    @products = Product.all.map { |p| [p.name, p.id] }
+    # @products_hash = WorkoutGroup.products_hash
+    # @product_names = @products_hash.map.with_index { |p, index| [Product.full_name(p['wg_name'], p['max_classes'], p['validity_length'], p['validity_unit'], p['price_name']), index]}
+    @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
     @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
   end
 
   def edit
     @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-    @products = Product.all.map { |p| [p.name, p.id] }
+    @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+    # as the product name is not an attribute of the purchase model, it is not automatically selected in the dropdown
+    @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name)
     @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
   end
 
@@ -52,7 +57,7 @@ class PurchasesController < ApplicationController
         flash[:success] = "Purchase was successfully created"
       else
         @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-        @products = Product.all.map { |p| [p.name, p.id] }
+        @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
         @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
         render :new, status: :unprocessable_entity
       end
@@ -64,7 +69,8 @@ class PurchasesController < ApplicationController
         flash[:success] = "Purchase was successfully updated"
       else
         @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-        @products = Product.all.map { |p| [p.name, p.id] }
+        @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+        @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name) unless purchase_params[:product_id].nil?
         @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
         render :edit, status: :unprocessable_entity
     end
@@ -104,11 +110,17 @@ class PurchasesController < ApplicationController
     end
 
     def purchase_params
-      pp = params.require(:purchase).permit(:client_id, :product_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+      pp = params.require(:purchase).permit(:client_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
       pp[:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
+      @products_hash = WorkoutGroup.products_hash
+      # pp[:product_id] = @products_hash[params[:purchase][:products_hash_index].to_i]['product_id']
+      if params[:purchase][:product_name].blank?
+        pp[:product_id] = nil
+      else
+        pp[:product_id] = @products_hash[@products_hash.index {|p| p['name']==params[:purchase][:product_name]}]['product_id']
+      end
       pp
     end
-
 
     def initialize_sort
       session[:sort_option] = params[:sort_option] || session[:sort_option] || 'client_dop'
@@ -121,4 +133,5 @@ class PurchasesController < ApplicationController
       # hack to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
       @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
     end
+
 end
