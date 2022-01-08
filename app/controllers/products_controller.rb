@@ -64,24 +64,24 @@ class ProductsController < ApplicationController
   end
 
   def payment
-    # @base_payment = Product.find(params[:purchase][:product_id]).prices.last&.price
-    #byebug
-    if params[:selected_product_name].blank?
-      @product_types = Product.all.map { |p| [p.name, p.id] }
-      @product_names = Product.find(params[:selected_product_type]).prices.map { |p| [p.name, p.id] }
-      render 'namedropdowns.js.erb'
-    else
-    @base_payment = Price.find(params[:selected_product_name]).price
+# [{"wg_name"=>"Space",.."price"=>500,.."name"=>"Space UC:1W power"}, {...}, {...} ...]
+    #@base_payment = WorkoutGroup.products_hash[params[:selected_product].to_i]['price']
+
+@products_hash = WorkoutGroup.products_hash
+@base_payment = @products_hash[@products_hash.index {|p| p['name']==params[:selected_product]}]['price']
     render 'payment.js.erb'
-    #@base_payment = @base_payment * params[:test].to_i
-    end
-    # respond_to do |format|
-    #   format.html {}
-    #   format.js {render 'payment.js.erb'}
-    # end
-
-
   end
+
+  # def payment
+  #   if params[:selected_product_name].blank?
+  #     @product_types = Product.all.map { |p| [p.name, p.id] }
+  #     @product_names = Product.find(params[:selected_product_type]).prices.map { |p| [p.name, p.id] }
+  #     render 'namedropdowns.js.erb'
+  #   else
+  #   @base_payment = Price.find(params[:selected_product_name]).price
+  #   render 'payment.js.erb'
+  #   end
+  # end
 
   private
     def set_product

@@ -6,12 +6,17 @@
   <%= render partial: 'purchase_table' %>
 </div>
 
-<div class="mb-2">
-  <%= link_to 'add freeze', new_freeze_path(purchase: @purchase.id) %> |
-  <%= link_to 'add adjustment', new_adjustment_path(purchase: @purchase.id) %> |
-  <%= link_to 'edit purchase', edit_purchase_path(@purchase) %> |
-  <%= link_to 'back to purchases', purchases_path %>
+<div class="mb-3 d-flex">
+  <div>
+    <%= link_to 'add freeze', new_freeze_path(purchase: @purchase.id) %> |
+    <%= link_to 'add adjustment', new_adjustment_path(purchase: @purchase.id) %> |
+    <%= link_to 'edit purchase', edit_purchase_path(@purchase) %>
+  </div>
+  <div class="me-3 ms-auto">
+    <%= link_to 'back to purchases', purchases_path %>
+  </div>
 </div>
+
 
 <div id="purchase_attendance_table" class="container px-1 mt-4 mb-1 margin-override">
   <%= render partial: 'purchase_attendance_table' %>

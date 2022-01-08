@@ -9,6 +9,10 @@ class Product < ApplicationRecord
     "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit}"
   end
 
+  def self.full_name(wg_name, max_classes, validity_length, validity_unit, price_name)
+    "#{wg_name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit} #{price_name}"
+  end
+
   def current_prices
     prices.current.map {|p| p.price}.join(', ')
   end

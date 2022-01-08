@@ -26,13 +26,8 @@
   </div-->
 
   <div class="field">
-    <%= form.label :product_id, 'Product type' %>
-    <%= form.select :product_id, @product_types, { include_blank: true }  %>
-  </div>
-
-  <div class="field">
-    <%= form.label :product_name, 'Product name' %>
-    <%= form.select :product_name, @product_names %>
+    <%= form.label :product_name, 'Product' %>
+    <%= form.select :product_name, options_for_select(@product_names, @product_name), { include_blank: true }  %>
   </div>
 
   <div class="field">
@@ -47,7 +42,7 @@
 
   <div class="field">
     <%= form.label :payment_mode %>
-    <%= form.select :payment_mode, options_for_select(@payment_methods), include_blank: true %>
+    <%= form.select :payment_mode, options_for_select(@payment_methods, @purchase.payment_mode), include_blank: true %>
   </div>
 
   <div class="field">
@@ -82,26 +77,26 @@
   </div>
 <% end %>
 
-<script type="text/javascript">
-//   document.getElementById("purchase_product_id").onchange =  function () {
-// alert ("this is a test");
-//   }
+<script>
+  // update value of payment field based on product selected
+  $(function() {
+      $("select#purchase_product_name").on("change", function() {
+          $.ajax({
+              url:  '/products/payment',
+              type: 'post',
+              data: { selected_product: $("select#purchase_product_name").val()
+             }
+          });
+      });
+  });
 </script>
 
-<script>
-$(function() {
-    $("select#purchase_product_id").on("change", function() {
-      //alert("dan")
-        $.ajax({
-            url:  '/products/payment',
-            type: 'post',
-            data: { selected_product_type: $("select#purchase_product_id").val(),
-                    selected_product_name: $("select#purchase_product_name").val(),
-           }
-        });
-    });
-});
-</script>
+<!-- <script>
+  // syntax example with javascript rather than jquery
+  document.getElementById("purchase_product_id").onchange =  function () {
+  alert ("this is a test");
+  }
+</script> -->
 
 <script>
   function toggleHide() {

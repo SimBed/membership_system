@@ -5,28 +5,24 @@ class Purchase < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
-  scope :not_expired, -> { where('expired = ?', false) }
   # this defines the name method on an instance of Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, to: :product
   delegate :revenue_for_class, to: :client
   validates :payment, presence: true
+  validates :payment_mode, presence: true
   validates_associated :client, :product
-  #validates :ar_payment, presence: true, if: :adjust_restart?
+  # validates :ar_payment, presence: true, if: :adjust_restart?
   with_options if: :adjust_restart? do |ar|
     ar.validates :ar_payment, presence: true
     ar.validates :ar_date, presence: true
   end
   validate :fitternity_payment
+  scope :not_expired, -> { where('expired = ?', false) }
   # wg is an array of workout groups
   scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   scope :order_by_dop, -> { order(dop: :desc) }
-
-  # def self.by_client_dop
-  #   Purchase.joins(:client)
-  #           .order(:first_name, dop: :desc)
-  # end
 
   def full_name
     "#{name} : #{number_to_currency(self.payment, precision: 0, unit: '')}"
