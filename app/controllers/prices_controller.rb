@@ -3,6 +3,7 @@ class PricesController < ApplicationController
 
   def new
     @price = Price.new
+    @product = Product.find(params[:product_id])
   end
 
   def create

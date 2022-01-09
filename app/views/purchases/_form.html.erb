@@ -32,11 +32,11 @@
 
   <div class="field">
     <%= form.label :payment %>
-    <%= form.number_field :payment %>
+    <%= form.number_field :payment, readonly: true %>
   </div>
 
   <div class="field">
-    <%= form.label :dop %>
+    <%= form.label :dop, 'Date of purchase' %>
     <%= form.date_select :dop %>
   </div>
 

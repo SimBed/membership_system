@@ -20,8 +20,9 @@
     <legend>Workout</legend>
     <% @workouts.each do |workout| %>
       <div class ="d-flex">
-        <!-- to improve - checkboxes are not selected on edit -->
-        <%= check_box_tag 'workout_ids[]', workout.id, false, class: "checkbox-class", id: "chbox#{workout.id}" %>
+        <% checked = false %>
+        <% checked = @workout_group.workouts.pluck(:name).include?(workout.name) if @workout_group.persisted? %>
+        <%= check_box_tag 'workout_ids[]', workout.id, checked, class: "checkbox-class", id: "chbox#{workout.id}" %>
         <%= label_tag 'chbox#{workout.id}', workout.name %>
       </div>
     <% end %>

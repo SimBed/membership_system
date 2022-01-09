@@ -30,7 +30,7 @@
 
   <div class="field">
     <%= form.label :current, 'current?' %>
-    <%= form.check_box :current %>
+    <%= form.check_box :current, { checked: @price.new_record? || form.object.current? } %>
   </div>
 
   <div class="actions">
