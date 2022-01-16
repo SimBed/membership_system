@@ -1,3 +1,4 @@
+require 'byebug'
 class PurchasesController < ApplicationController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: %i[ show edit update destroy ]
@@ -7,6 +8,7 @@ class PurchasesController < ApplicationController
     # convoluted but seems ok way to sort by date descending when date is part of a multiple parameter sort
     #@purchases = Purchase.all.sort_by { |p| [p.client.name, -p.dop&.to_time.to_i] }
     @purchases = Purchase.all
+    handle_search_name unless session[:search_name].blank?
     handle_search
     #@problems = @problems.send("order_by_#{session[:sort_option]}").paginate(page: params[:page], per_page: 10)
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
@@ -26,6 +28,10 @@ class PurchasesController < ApplicationController
     # There are probably more appropriate ways of updating the purchase's status at database level, but running some code
     # here is inoccuous (negligibly slows down a non-speed-critical page) and means the database will be kept up to data intermittently which achieves the aim.
     expire_purchases
+    respond_to do |format|
+      format.html {}
+      format.js {render 'index.js.erb'}
+    end
   end
 
   def show
@@ -82,15 +88,16 @@ class PurchasesController < ApplicationController
   end
 
   def clear_filters
-    clear_session(:filter_workout_group, :filter_status)
+    clear_session(:filter_workout_group, :filter_status, :search_name)
     redirect_to purchases_path
   end
 
   def filter
     # see application_helper
-    clear_session(:filter_workout_group, :filter_status)
+    clear_session(:filter_workout_group, :filter_status, :search_name)
     # Without the ors (||) the sessions would get set to nil when redirecting to purchases other than through the
     # filter form (e.g. by clicking purchases on the navbar) (as the params items are nil in these cases)
+    session[:search_name] = params[:search_name] || session[:search_name]
     session[:filter_workout_group] = params[:workout_group] || session[:filter_workout_group]
     session[:filter_status] = params[:status] || session[:filter_status]
     redirect_to purchases_path
@@ -125,9 +132,12 @@ class PurchasesController < ApplicationController
       session[:sort_option] = params[:sort_option] || session[:sort_option] || 'client_dop'
     end
 
+    def handle_search_name
+      @purchases = @purchases.client_name_like(session[:search_name])
+    end
+
     def handle_search
-      #@purchases = Purchase.joins(product: [:workout_group]).where(workout_groups: { name: session[:filter_workout_group] }) if session[:filter_workout_group].present?
-      @purchases = Purchase.with_workout_group(session[:filter_workout_group]) if session[:filter_workout_group].present?
+      @purchases = @purchases.with_workout_group(session[:filter_workout_group]) if session[:filter_workout_group].present?
       @purchases = @purchases.select { |p| session[:filter_status].include?(p.status) } if session[:filter_status].present?
       # hack to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
       @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)

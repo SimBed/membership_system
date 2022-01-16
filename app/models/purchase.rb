@@ -19,10 +19,12 @@ class Purchase < ApplicationRecord
   end
   validate :fitternity_payment
   scope :not_expired, -> { where('expired = ?', false) }
-  # wg is an array of workout groups
+  # wg is an array of workout group names
+  # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
   scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   scope :order_by_dop, -> { order(dop: :desc) }
+  scope :client_name_like, ->(name) { joins(:client).where("clients.first_name ILIKE ? OR clients.last_name ILIKE ?", "%#{name}%", "%#{name}%") }
 
   def full_name
     "#{name} : #{number_to_currency(self.payment, precision: 0, unit: '')}"
@@ -145,6 +147,11 @@ class Purchase < ApplicationRecord
     return product.max_classes - attendances.count if status == 'ongoing'
     return 1000
   end
+
+  # def self.client_name_search(name)
+  #    joins(:client)
+  #   .where("clients.first_name ILIKE ? OR clients.last_name ILIKE ?", "%#{name}%", "%#{name}%")
+  # end
 
   private
     def start_date

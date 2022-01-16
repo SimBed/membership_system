@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'clients#index'
   get '/purchases/clear_filters', to: 'purchases#clear_filters', as: 'clear_filters'
   # note if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
-  get '/purchases/filter', to: 'purchases#filter'
+  get '/purchases/filter', to: 'purchases#filter', as: 'filter'
   get '/wkclasses/filter', to: 'wkclasses#filter'
   post '/products/payment', to: 'products#payment'
   resources :purchases

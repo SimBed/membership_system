@@ -275,3 +275,13 @@ h5 > div {
 .purchases-table {
   font-size: 0.6em;
 }
+
+%buttonsearch {
+  border: none;
+  padding-left: 1px;
+  padding-right: 1px;
+  background-color: white;
+}
+button.search{
+  @extend %buttonsearch;
+}
