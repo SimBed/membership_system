@@ -6,9 +6,14 @@ class Client < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validate :full_name_must_be_unique
-  validates :email, uniqueness: { case_sensitive: false }, allow_blank: true
+  # validates :email, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
-
+  validates :instagram, uniqueness: { case_sensitive: false }, allow_blank: true
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
+  validates :email, allow_blank: true, length: { maximum: 255 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: { case_sensitive: false }
+                    
   def name
     "#{first_name} #{last_name}"
   end
