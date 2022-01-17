@@ -1,3 +1,5 @@
+<%= paginate @purchases, remote: true %>
+<%= page_entries_info @purchases %>
 <% @purchases.each do |purchase| %>
   <div class ="d-flex <%= 'danger' if purchase.payment_mode == 'Not paid' %>">
       <div class ="cell c-class-icon">

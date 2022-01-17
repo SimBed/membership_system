@@ -14,11 +14,13 @@ class PurchasesController < ApplicationController
     @status = %w[expired frozen not\ started ongoing]
     case session[:sort_option]
     when 'client_dop', 'dop'
-      @purchases = @purchases.send("order_by_#{session[:sort_option]}") #.paginate(page: params[:page], per_page: 30)
+      @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
     when 'expiry'
-      @purchases = @purchases.to_a.sort_by { |p| p.days_to_expiry } #.paginate(page: params[:page], per_page: 30)
+      @purchases = @purchases.to_a.sort_by { |p| p.days_to_expiry }
+      @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
     when 'classes_remain'
-      @purchases = @purchases.to_a.sort_by { |p| p.attendances_remain_numeric }
+      @purchases = @purchases.not_expired.to_a.sort_by { |p| p.attendances_remain_numeric }
+      @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
     end
 
     # it is not critical that expired purchases are identifiable at database level. This will just improve efficiency as the number of purchases gets biggger over time.
