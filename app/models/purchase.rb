@@ -25,7 +25,7 @@ class Purchase < ApplicationRecord
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   scope :order_by_dop, -> { order(dop: :desc) }
   scope :client_name_like, ->(name) { joins(:client).where("clients.first_name ILIKE ? OR clients.last_name ILIKE ?", "%#{name}%", "%#{name}%") }
-  paginates_per 5
+  paginates_per 20
 
   def full_name
     "#{name} : #{number_to_currency(self.payment, precision: 0, unit: '')}"
