@@ -1,0 +1,26 @@
+<%= form_with(model: [:admin, wkclass]) do |form| %>
+  <% if wkclass.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>
+
+      <ul>
+        <% wkclass.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.select :workout_id, options_for_select(@workouts, @wkclass.workout&.id || @workouts.first) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= form.datetime_select :start_time, default: Time.parse('10:30') %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit wkclass.new_record? ? 'create class' : 'update class' %>
+  </div>
+<% end %>

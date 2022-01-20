@@ -1,0 +1,124 @@
+<%#= https://stackoverflow.com/questions/48197245/form-for-vs-form-with-in-rails-5-with-namespace
+prior to introduction of the admin folder structure/namespace the named route for the url "/purchases" was purchases_path
+With the admin namespace, the required url is "/admin/purchase" with named route admin_purchases_path.
+I don't see it in the documentation for form_with but the array syntax [:admin, purchase] as the model argument achieves this %>
+<%= form_with(model: [:admin, purchase]) do |form| %>
+  <% if purchase.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(purchase.errors.count, "error") %> prohibited this purchase from being saved:</h2>
+
+      <ul>
+        <% purchase.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :client_id %>
+    <%= form.select :client_id, @clients, include_blank: true %>
+  </div>
+
+  <!--div class="field">
+    <%#= form.label :product_id %>
+    <%#= form.select :product_id, @products, { include_blank: true },{ data: {
+    remote: true,
+    url: '/products/payment',
+    method: 'post'
+  }} %>
+  </div-->
+
+  <div class="field">
+    <%= form.label :product_name, 'Product' %>
+    <%= form.select :product_name, options_for_select(@product_names, @product_name), { include_blank: true }  %>
+  </div>
+
+  <div class="field">
+    <%= form.label :payment %>
+    <%= form.number_field :payment, readonly: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dop, 'Date of purchase' %>
+    <%= form.date_select :dop %>
+  </div>
+
+  <div class="field">
+    <%= form.label :payment_mode %>
+    <%= form.select :payment_mode, options_for_select(@payment_methods, @purchase.payment_mode), include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :invoice %>
+    <%= form.text_field :invoice %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note %>
+    <%= form.text_area :note %>
+  </div>
+
+  <% unless @purchase.new_record? %>
+  <div class="field" id="ar">
+    <%= form.label :adjust_restart %>
+    <%= form.check_box :adjust_restart, onclick: "toggleHide()" %>
+  </div>
+
+  <div id="ar_payment" class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
+    <%= form.label :ar_payment %>
+    <%= form.number_field :ar_payment, class: "arvalue" %>
+  </div>
+
+  <div class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
+    <%= form.label :ar_date %>
+    <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date || Date.today}, {class: "arvalue"} %>
+  </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase'  %>
+  </div>
+<% end %>
+
+<script>
+  // update value of payment field based on product selected
+  $(function() {
+      $("select#purchase_product_name").on("change", function() {
+          $.ajax({
+              url:  '/products/payment',
+              type: 'post',
+              data: { selected_product: $("select#purchase_product_name").val()
+             }
+          });
+      });
+  });
+</script>
+
+<!-- <script>
+  // syntax example with javascript rather than jquery
+  document.getElementById("purchase_product_id").onchange =  function () {
+  alert ("this is a test");
+  }
+</script> -->
+
+<script>
+  function toggleHide() {
+    var currentState = 'hidden';
+    if (document.getElementById("ar_payment").classList.contains("ar_hide")) {
+        currentState = 'visible';
+      }
+      var x = document.getElementsByClassName("ar");
+      var i;
+      for (i = 0; i < x.length; i++) {
+        x[i].classList.toggle('ar_hide')
+      }
+      if (currentState == 'hidden') {
+        var x = document.getElementsByClassName("arvalue");
+        var i;
+        for (i = 0; i < x.length; i++) {
+          x[i].value="";
+        }
+      }
+    }
+</script>

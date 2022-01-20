@@ -1,0 +1,23 @@
+<% @clients.each do |client| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('clipboard.png', class: "table_icon"), admin_client_path(client), class: "icon-container" %>
+      </div>
+      <div class ="cell c-client-name"><%= client.first_name %></div>
+      <div class ="cell c-client-name"><%= client.last_name %></div>
+      <div class ="cell c-client-email"><%= client.email %></div>
+      <div class ="cell c-client-phone"><%= client.phone %></div>
+      <div class ="cell c-client-phone"><%= client.instagram %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(client), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_client_path(client), method: :delete, data: { confirm: 'Client and its purchases and attendances will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <% if !Account.find_by(email: client.email&.downcase)&.activated? %>
+        <%= link_to image_tag('add.png', class: "table_icon"), admin_accounts_path(email: client.email), method: :post, data: { confirm: 'An account for this client will be created. Are you sure?' }, class: "icon-container" %>
+        <% end %>
+      </div>
+  </div>
+<% end %>

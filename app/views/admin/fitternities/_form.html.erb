@@ -1,0 +1,26 @@
+<%= form_with(model: [:admin, fitternity]) do |form| %>
+  <% if fitternity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(fitternity.errors.count, "error") %> prohibited this Fitternity from being saved:</h2>
+      <ul>
+        <% fitternity.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :max_classes %>
+    <%= form.number_field :max_classes %>
+  </div>
+
+  <div class="field">
+    <%= form.label :expiry_date %>
+    <%= form.date_select :expiry_date %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

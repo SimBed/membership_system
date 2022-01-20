@@ -1,0 +1,12 @@
+<% @instructors.each do |instructor| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-instructor-name"><%= instructor.name %></div>
+      <div class ="cell c-instructor-workouts"><%= instructor.workouts.pluck(:name).join(', ') %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_instructor_path(instructor), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_instructor_path(instructor), method: :delete, data: { confirm: 'Instructor and all its workouts will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>

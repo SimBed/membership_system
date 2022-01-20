@@ -1,27 +1,28 @@
 Rails.application.routes.draw do
-  root 'clients#index'
-  get '/purchases/clear_filters', to: 'purchases#clear_filters', as: 'clear_filters'
-  # note if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
-  get '/purchases/filter', to: 'purchases#filter', as: 'filter'
+  root 'admin/clients#index'
+  get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_filters'
+  # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
+  get '/purchases/filter', to: 'admin/purchases#filter', as: 'purchase_filter'
   get '/wkclasses/filter', to: 'wkclasses#filter'
-  post '/products/payment', to: 'products#payment'
-  get    '/login',   to: 'sessions#new'
-  post   '/login',   to: 'sessions#create'
-  delete '/logout',  to: 'sessions#destroy'
-  resources :purchases
-  resources :clients
-  resources :rel_workout_group_workouts
-  resources :workout_groups
-  resources :wkclasses
-  resources :attendances, only: [:index, :new, :create, :destroy]
-  resources :instructors, only: [:index, :new, :edit, :create, :update, :destroy]
-  resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
-  resources :workout_groups
-  resources :products
-  resources :revenues, only: [:index]
-  resources :adjustments
-  resources :freezes
-  resources :fitternities
-  resources :prices
-  resources :accounts, only: [:index, :create, :destroy]
+  post '/products/payment', to: 'admin/products#payment'
+  get    '/login',   to: 'auth/sessions#new'
+  post   '/login',   to: 'auth/sessions#create'
+  delete '/logout',  to: 'auth/sessions#destroy'
+  namespace :admin do
+    resources :accounts, only: [:index, :create, :destroy]
+    resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
+    resources :attendances, only: [:index, :new, :create, :destroy]
+    resources :clients
+    resources :fitternities
+    resources :freezes, only: [:new, :edit, :create, :update, :destroy]
+    resources :instructors, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :prices
+    resources :products
+    resources :purchases
+    resources :rel_workout_group_workouts
+    resources :revenues, only: [:index]
+    resources :wkclasses
+    resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :workout_groups
+  end
 end

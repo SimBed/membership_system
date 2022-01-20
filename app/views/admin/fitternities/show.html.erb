@@ -1,0 +1,12 @@
+<div id="fitternity_table" class="container px-1 mb-2 margin-override">
+  <%= render partial: 'fitternity_table' %>
+</div>
+
+<div class="mb-2">
+  <%= link_to 'edit Fitternity package', edit_admin_fitternity_path(@fitternity) %> |
+  <%= link_to 'back to Fitternity packages', admin_fitternities_path %>
+</div>
+
+<div id="fitternity-attendance-table" class="container px-1 mt-4 mb-1 margin-override">
+  <%= render partial: 'fitternity_attendance_table' %>
+</div>

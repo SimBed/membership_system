@@ -1,0 +1,13 @@
+<div class="mb-4">
+  <p>
+    The <strong><%= @workout_group.name %></strong> workout group includes:
+    <ul>
+    <% @workout_group.workouts.each do |wk| %>
+      <li> <%= wk.name %> </li>
+    <% end %>
+    </ul>
+  </p>
+</div>
+
+<%= link_to 'edit', edit_admin_workout_group_path(@workout_group) %> |
+<%= link_to 'back to workout groups', admin_workout_groups_path %>

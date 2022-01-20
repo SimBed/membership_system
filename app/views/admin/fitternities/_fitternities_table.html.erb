@@ -1,0 +1,15 @@
+<% @fitternities.each do |fitternity| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('clipboard.png', class: "table_icon"), admin_fitternity_path(fitternity), class: "icon-container" %>
+      </div>
+      <div class ="cell c-instructor-name"><%= fitternity.max_classes %></div>
+      <div class ="cell c-instructor-workouts"><%= fitternity.expiry_date.strftime('%d %b %y') %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_fitternity_path(fitternity), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_fitternity_path(fitternity), method: :delete, data: { confirm: 'Fitternity and all its purchases will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>

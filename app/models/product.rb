@@ -34,6 +34,7 @@ class Product < ApplicationRecord
     def product_combo_must_be_unique
       product = Product.where(["max_classes = ? and validity_length = ? and validity_unit = ? and workout_group_id = ?", max_classes, validity_length, validity_unit, workout_group_id])
       product.each do |p|
+        # relevant for updates, new products won't have an id before save 
         if id != product.first.id
           errors.add(:base, "This product already exists") if product.present?
           return

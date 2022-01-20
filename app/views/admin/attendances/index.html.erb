@@ -1,0 +1,16 @@
+<h2>Attendances <form action=<%= "/admin/attendances/" %> method="GET">
+              <select name="attendance_period" onchange="this.form.submit()">
+                <%= options_for_select @months, session[:attendance_period] %>
+              </select>
+              <select name="workout_group" onchange="this.form.submit()">
+                <%= options_for_select @workout_groups, session[:workout_group] %>
+              </select>
+            </form>
+</h2>
+<%# unless session[:workout_group] == 'All' %>
+  <p> <%= number_to_currency(@revenue, precision: 0, unit: 'Rs.') %> </p>
+<%# end %>
+
+<div id="attendances_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'attendances_table' %>
+</div>

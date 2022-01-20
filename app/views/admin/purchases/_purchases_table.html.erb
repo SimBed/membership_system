@@ -1,0 +1,21 @@
+<%= paginate @purchases, remote: true %>
+<%= page_entries_info @purchases %>
+<% @purchases.each do |purchase| %>
+  <div class ="d-flex <%= 'danger' if purchase.payment_mode == 'Not paid' %>">
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('clipboard.png', class: "table_icon"), admin_purchase_path(purchase), class: "icon-container" %>
+      </div>
+      <div class ="cell c-purchases-client"><%= purchase.client.name %></div>
+      <div class ="cell c-purchases-name"><%= "#{purchase.name} #{number_with_delimiter(purchase.payment)}" %></div>
+      <div class ="cell c-purchases-expiry"><%= purchase.start_to_expiry %></div>
+      <div class ="cell c-purchases-attendances"><%= purchase.attendances_remain_format %> </div>
+      <div class ="cell c-purchases-status"><%= purchase.status %></div>
+      <div class ="cell c-purchases-status"><%= purchase.days_to_expiry_format[0] %> <%= purchase.days_to_expiry_format[1] %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>
