@@ -14,5 +14,10 @@
       <div class ="cell c-class-icon">
         <%= link_to image_tag('delete.png', class: "table_icon"), client, method: :delete, data: { confirm: 'Client and its purchases and attendances will be deleted. Are you sure?' }, class: "icon-container" %>
       </div>
+      <div class ="cell c-class-icon">
+        <% if !Account.find_by(email: client.email&.downcase)&.activated? %>
+        <%= link_to image_tag('add.png', class: "table_icon"), accounts_path(email: client.email), method: :post, data: { confirm: 'An account for this client will be created. Are you sure?' }, class: "icon-container" %>
+        <% end %>
+      </div>
   </div>
 <% end %>

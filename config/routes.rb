@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get '/purchases/filter', to: 'purchases#filter', as: 'filter'
   get '/wkclasses/filter', to: 'wkclasses#filter'
   post '/products/payment', to: 'products#payment'
+  get    '/login',   to: 'sessions#new'
+  post   '/login',   to: 'sessions#create'
+  delete '/logout',  to: 'sessions#destroy'
   resources :purchases
   resources :clients
   resources :rel_workout_group_workouts
@@ -20,4 +23,5 @@ Rails.application.routes.draw do
   resources :freezes
   resources :fitternities
   resources :prices
+  resources :accounts, only: [:index, :create, :destroy]
 end
