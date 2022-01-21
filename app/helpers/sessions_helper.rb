@@ -52,14 +52,35 @@ module SessionsHelper
   end
 
   def admin_account
-    redirect_to(login_path) unless logged_in? && current_account.admin?
+    unless logged_in_as_admin?
+      flash[:warning] = 'Forbidden'
+      redirect_to(login_path)
+    end
   end
 
   def logged_in_account
     return if logged_in?
 
+    # TODO: an admin location shouldn't be stored for a client
+    # currently not using redirect_or for clients
     store_location
     flash[:danger] = 'Please log in.'
     redirect_to login_path
+  end
+
+  # def logged_in_as_superadmin?
+  #   logged_in? && !current_account.superadmin?
+  # end
+
+  def logged_in_as_admin?
+    logged_in? && current_account.admin?
+  end
+
+  def logged_in_as_client?
+    logged_in? && current_account.client?
+  end
+
+  def logged_in_as_instructor?
+    logged_in? && current_account.instructor?
   end
 end

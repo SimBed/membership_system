@@ -1,4 +1,5 @@
 class Admin::AccountsController < Admin::BaseController
+
   def create
     @account = Account.new(account_params)
 
@@ -17,7 +18,7 @@ class Admin::AccountsController < Admin::BaseController
   private
     def account_params
       password_params = {password: 'password', password_confirmation: 'password'}
-      activation_params = {activated: true}
+      activation_params = {activated: true, client: true}
       params.permit(:email).merge(password_params).merge(activation_params)
     end
 end

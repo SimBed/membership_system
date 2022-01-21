@@ -1,5 +1,4 @@
 class Admin::RevenuesController < Admin::BaseController
-  before_action :admin_account
 
   def index
     session[:revenue_period] = params[:revenue_period] || session[:revenue_period] || Date.today.beginning_of_month.strftime('%b %Y')

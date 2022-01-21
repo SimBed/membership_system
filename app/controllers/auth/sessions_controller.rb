@@ -1,4 +1,6 @@
 class Auth::SessionsController < Auth::BaseController
+  def new; end
+
   def create
     account = Account.find_by(email: params[:session][:email].downcase)
     if account&.authenticate(params[:session][:password])
@@ -15,7 +17,7 @@ class Auth::SessionsController < Auth::BaseController
   def destroy
     log_out if logged_in?
     clear_session(:filter_workout_group, :filter_status, :search_name)
-    redirect_to clients_path
+    redirect_to public_pages_welcome_path
   end
 
   private
@@ -23,7 +25,11 @@ class Auth::SessionsController < Auth::BaseController
   def action_when_activated(account)
     log_in account
     params[:session][:remember_me] == '1' ? remember(account) : forget(account)
-    redirect_back_or clients_path
+    if account.admin?
+      redirect_back_or admin_clients_path
+    else
+      redirect_to client_show_path
+    end
   end
 
   def flash_and_redirect_not_activated
