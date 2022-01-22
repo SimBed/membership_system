@@ -1,4 +1,5 @@
 class Account < ApplicationRecord
+  has_many :clients
   attr_accessor :remember_token, :reset_token
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
