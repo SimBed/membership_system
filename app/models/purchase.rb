@@ -73,7 +73,7 @@ class Purchase < ApplicationRecord
     start_date = self.start_date
     end_date = case product.validity_unit
       when 'D'
-        start_date + product.validity_length
+        start_date + product.validity_length.days
       when 'W'
         start_date + product.validity_length.weeks
       when 'M'
