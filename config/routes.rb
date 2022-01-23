@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     resources :fitternities
     resources :freezes, only: [:new, :edit, :create, :update, :destroy]
     resources :instructors, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :partners
     resources :prices
     resources :products
     resources :purchases

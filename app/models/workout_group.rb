@@ -1,4 +1,5 @@
 class WorkoutGroup < ApplicationRecord
+  belongs_to :partner
   has_many :products, dependent: :destroy
   has_many :purchases, through: :products
   has_many :attendances, through: :purchases

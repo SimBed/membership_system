@@ -1,3 +1,4 @@
+require 'byebug'
 class Admin::WorkoutGroupsController < Admin::BaseController
   before_action :set_workout_group, only: %i[ show edit update destroy ]
 
@@ -11,14 +12,18 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def new
     @workout_group = WorkoutGroup.new
     @workouts = Workout.all
+    @partners = Partner.all.map {|p| [p.first_name, p.id]}
   end
 
   def edit
     @workouts = Workout.all
+    @partners = Partner.all.map {|p| [p.first_name, p.id]}
+    @partner = @workout_group.partner
   end
 
   def create
-    @workout_group = WorkoutGroup.new(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
+    # @workout_group = WorkoutGroup.new(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
+    @workout_group = WorkoutGroup.new(workout_group_params)
       if @workout_group.save
         redirect_to admin_workout_group_path(@workout_group)
         flash[:success] = "Workout Group was successfully created."
@@ -28,7 +33,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   end
 
   def update
-      if @workout_group.update(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
+      if @workout_group.update(workout_group_params)
         redirect_to admin_workout_group_path(@workout_group)
         flash[:success] = "Workout Group was successfully updated."
       else
@@ -48,9 +53,8 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       @workout_group = WorkoutGroup.find(params[:id])
     end
 
-    # not used
     def workout_group_params
-      params.require(:workout_group).permit(:name)
+      params.require(:workout_group).permit(:name, :split, :partner_id, workout_ids: [])
     end
 
 end
