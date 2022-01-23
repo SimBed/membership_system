@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_18_164934) do
+ActiveRecord::Schema.define(version: 2022_01_22_160254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(version: 2022_01_18_164934) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "instagram"
+    t.integer "account_id"
+    t.text "note"
   end
 
   create_table "fitternities", force: :cascade do |t|
@@ -69,6 +71,24 @@ ActiveRecord::Schema.define(version: 2022_01_18_164934) do
     t.text "note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "instructor_rates", force: :cascade do |t|
+    t.integer "rate"
+    t.date "date_from"
+    t.bigint "instructor_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["instructor_id"], name: "index_instructor_rates_on_instructor_id"
+  end
+
+  create_table "instructor_salaries", force: :cascade do |t|
+    t.integer "salary"
+    t.date "date_from"
+    t.bigint "instructor_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["instructor_id"], name: "index_instructor_salaries_on_instructor_id"
   end
 
   create_table "instructors", force: :cascade do |t|
@@ -141,4 +161,6 @@ ActiveRecord::Schema.define(version: 2022_01_18_164934) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "instructor_rates", "instructors"
+  add_foreign_key "instructor_salaries", "instructors"
 end

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rate: 1
+  date_from: 2022-01-22
+  instructor: one
+
+two:
+  rate: 1
+  date_from: 2022-01-22
+  instructor: two

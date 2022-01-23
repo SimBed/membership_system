@@ -27,4 +27,8 @@ Rails.application.routes.draw do
     resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :workout_groups
   end
+  namespace :superadmin do
+    resources :instructor_salaries
+    resources :instructor_rates
+  end
 end

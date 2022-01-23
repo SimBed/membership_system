@@ -1,0 +1,17 @@
+<p>
+  <strong>Instructor:</strong>
+  <%= @instructor_rate.instructor.name %>
+</p>
+<p>
+  <strong>Rate:</strong>
+  <%= @instructor_rate.rate %>
+</p>
+<p>
+  <strong>From:</strong>
+  <%= @instructor_rate.date_from %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_superadmin_instructor_rate_path(@instructor_rate) %> |
+<%= link_to 'Back', superadmin_instructor_rates_path %>

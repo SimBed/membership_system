@@ -1,0 +1,32 @@
+<%= form_with(model: [:superadmin, instructor_salary]) do |form| %>
+  <% if instructor_salary.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(instructor_salary.errors.count, "error") %> prohibited this instructor_salary from being saved:</h2>
+
+      <ul>
+        <% instructor_salary.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :salary %>
+    <%= form.number_field :salary %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date_from %>
+    <%= form.date_select :date_from %>
+  </div>
+
+  <div class="field">
+    <%= form.label :instructor_id %>
+    <%= form.text_field :instructor_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
