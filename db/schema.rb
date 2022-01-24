@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_063455) do
+ActiveRecord::Schema.define(version: 2022_01_24_032115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,8 +53,16 @@ ActiveRecord::Schema.define(version: 2022_01_23_063455) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "instagram"
-    t.integer "account_id"
-    t.text "note"
+  end
+
+  create_table "expenses", force: :cascade do |t|
+    t.string "item"
+    t.integer "amount"
+    t.date "date"
+    t.bigint "workout_group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["workout_group_id"], name: "index_expenses_on_workout_group_id"
   end
 
   create_table "fitternities", force: :cascade do |t|
@@ -80,15 +88,6 @@ ActiveRecord::Schema.define(version: 2022_01_23_063455) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["instructor_id"], name: "index_instructor_rates_on_instructor_id"
-  end
-
-  create_table "instructor_salaries", force: :cascade do |t|
-    t.integer "salary"
-    t.date "date_from"
-    t.bigint "instructor_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["instructor_id"], name: "index_instructor_salaries_on_instructor_id"
   end
 
   create_table "instructors", force: :cascade do |t|
@@ -153,6 +152,7 @@ ActiveRecord::Schema.define(version: 2022_01_23_063455) do
     t.datetime "start_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "instructor_id"
   end
 
   create_table "workout_groups", force: :cascade do |t|
@@ -165,11 +165,10 @@ ActiveRecord::Schema.define(version: 2022_01_23_063455) do
 
   create_table "workouts", force: :cascade do |t|
     t.string "name"
-    t.integer "instructor_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "expenses", "workout_groups"
   add_foreign_key "instructor_rates", "instructors"
-  add_foreign_key "instructor_salaries", "instructors"
 end

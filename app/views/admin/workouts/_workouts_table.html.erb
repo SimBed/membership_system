@@ -12,7 +12,7 @@
       <%#= link_to image_tag('clipboard.png', class: "table_icon"), workout, class: "icon-container" %>
     </div-->
       <div class ="cell c-workout-name"><%= workout.name %></div>
-      <div class ="cell c-workout-instructor"><%= workout.instructor.name %></div>
+      <div class ="cell c-workout-instructor"><%#= workout.instructor.name %></div>
       <div class ="cell c-workout-workoutgroup"><%= workout.workout_groups.pluck(:name).join(', ') %></div>
       <div class ="cell c-class-icon">
         <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_workout_path(workout), class: "icon-container" %>

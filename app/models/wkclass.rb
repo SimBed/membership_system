@@ -2,9 +2,14 @@ class Wkclass < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
+  belongs_to :instructor
   belongs_to :workout
   delegate :name, to: :workout
   scope :order_by_date, -> { order(start_time: :desc) }
+
+  def instructor_expense
+    instructor.instructor_rates.order_recent_first.first.rate
+  end
 
   def date
     start_time.strftime('%a %d %b %y')

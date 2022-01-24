@@ -15,10 +15,14 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclass = Wkclass.new
     # for select in new wkclass form
     @workouts = Workout.all.map { |w| [w.name, w.id] }
+    @instructors =  Instructor.order_by_name.map { |i| [i.name, i.id] }
   end
 
   def edit
     @workouts = Workout.all.map { |w| [w.name, w.id] }
+    @workout = @wkclass.workout
+    @instructors =  Instructor.order_by_name.map { |i| [i.name, i.id] }
+    @instructor = @wkclass.instructor
   end
 
   def create
@@ -60,7 +64,7 @@ class Admin::WkclassesController < Admin::BaseController
     end
 
     def wkclass_params
-      params.require(:wkclass).permit(:workout_id, :start_time)
+      params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id)
     end
 
     def handle_search
