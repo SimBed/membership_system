@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= form.label :partner_id %>
-    <%= form.select :partner_id, options_for_select(@partners, @partner) %>
+    <%= form.select :partner_id, options_for_select(@partners, @partner.id) %>
   </div>
 
   <div class="field">

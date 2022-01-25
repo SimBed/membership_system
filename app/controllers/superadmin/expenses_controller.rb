@@ -15,7 +15,7 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
   def edit
     @workout_groups = WorkoutGroup.all.map { |w| [w.name, w.id] }
-    @workout_group = @expense.workout_group.id  
+    @workout_group = @expense.workout_group.id
   end
 
   def create
@@ -23,7 +23,8 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
     respond_to do |format|
       if @expense.save
-        format.html { redirect_to superadmin_expense_path(@expense), notice: "Expense was successfully created." }
+        format.html { redirect_to superadmin_expenses_path
+                      flash[:success] = "Expense was successfully created" }
         format.json { render :show, status: :created, location: @expense }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -35,7 +36,8 @@ class Superadmin::ExpensesController < Superadmin::BaseController
   def update
     respond_to do |format|
       if @expense.update(expense_params)
-        format.html { redirect_to superadmin_expense_path(@expense), notice: "Expense was successfully updated." }
+        format.html { redirect_to superadmin_expenses_path
+                      flash[:success] = "Expense was successfully updated" }
         format.json { render :show, status: :ok, location: @expense }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,7 +49,8 @@ class Superadmin::ExpensesController < Superadmin::BaseController
   def destroy
     @expense.destroy
     respond_to do |format|
-      format.html { redirect_to superadmin_expenses_path, notice: "Expense was successfully destroyed." }
+      format.html { redirect_to superadmin_expenses_path
+                    flash[:success] = "Expense was successfully deleted" }
       format.json { head :no_content }
     end
   end

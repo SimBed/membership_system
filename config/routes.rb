@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     resources :workout_groups
   end
   namespace :superadmin do
-    resources :expenses
+    resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :instructor_rates
   end
 end

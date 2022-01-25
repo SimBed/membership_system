@@ -25,7 +25,7 @@ class Auth::SessionsController < Auth::BaseController
   def action_when_activated(account)
     log_in account
     params[:session][:remember_me] == '1' ? remember(account) : forget(account)
-    if account.admin?
+    if account.admin? || account.superadmin?
       redirect_back_or admin_clients_path
     else
       redirect_to client_show_path

@@ -1,6 +1,5 @@
 class Instructor < ApplicationRecord
   has_many :wkclasses
-  has_many :instructor_salaries, dependent: :destroy
   has_many :instructor_rates, dependent: :destroy
   scope :order_by_name, -> { order(:first_name, :last_name) }
   validates :first_name, presence: true
@@ -9,5 +8,9 @@ class Instructor < ApplicationRecord
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def current_rate
+    instructor_rates.order_recent_first.first&.rate
   end
 end

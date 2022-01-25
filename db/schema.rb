@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_24_032115) do
+ActiveRecord::Schema.define(version: 2022_01_25_103601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2022_01_24_032115) do
     t.datetime "reset_sent_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "superadmin", default: false
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
 
@@ -153,6 +154,7 @@ ActiveRecord::Schema.define(version: 2022_01_24_032115) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "instructor_id"
+    t.integer "instructor_cost"
   end
 
   create_table "workout_groups", force: :cascade do |t|
@@ -160,7 +162,7 @@ ActiveRecord::Schema.define(version: 2022_01_24_032115) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "partner_id"
-    t.integer "split"
+    t.integer "partner_share"
   end
 
   create_table "workouts", force: :cascade do |t|

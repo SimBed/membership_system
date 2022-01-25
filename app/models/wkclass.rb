@@ -6,10 +6,7 @@ class Wkclass < ApplicationRecord
   belongs_to :workout
   delegate :name, to: :workout
   scope :order_by_date, -> { order(start_time: :desc) }
-
-  def instructor_expense
-    instructor.instructor_rates.order_recent_first.first.rate
-  end
+  scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
 
   def date
     start_time.strftime('%a %d %b %y')
@@ -28,8 +25,14 @@ class Wkclass < ApplicationRecord
   end
 
   def self.by_date(start_date, end_date)
-      Wkclass.where("start_time BETWEEN '#{start_date}' AND '#{end_date}'")
-             .order(:start_time)
+    Wkclass.where("start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+           .order(:start_time)
+  end
+
+  def self.in_workout_group(workout_group, start_date, end_date)
+    joins(workout: [rel_workout_group_workouts: [:workout_group]])
+    .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+    .where("workout_groups.name = ?", "#{workout_group}")
   end
 
   # for qualifying products in select box for new attendance form

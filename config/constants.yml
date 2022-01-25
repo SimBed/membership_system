@@ -14,6 +14,9 @@ default: &default
   - Not paid
   - PayTM
 
+ gst_rate:
+  - 18
+
 development:
   <<: *default
 

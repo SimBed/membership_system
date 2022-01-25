@@ -1,12 +1,11 @@
-<div class="mb-4">
-  <p>
-    The <strong><%= @workout_group.name %></strong> workout group includes:
-    <ul>
-    <% @workout_group.workouts.each do |wk| %>
-      <li> <%= wk.name %> </li>
-    <% end %>
-    </ul>
-  </p>
+<h2>Revenue for <%= "#{@workout_group.name} Group Class" %> <form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET">
+              <select name="revenue_period" onchange="this.form.submit()" class= "sort">
+                <%= options_for_select @months, session[:revenue_period] %>
+              </select>
+            </form>
+</h2>
+<div id="revenues-table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'revenues_table' %>
 </div>
 
 <%= link_to 'edit', edit_admin_workout_group_path(@workout_group) %> |
