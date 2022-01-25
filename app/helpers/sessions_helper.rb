@@ -52,7 +52,14 @@ module SessionsHelper
   end
 
   def admin_account
-    unless logged_in_as_admin?
+    unless logged_in_as_admin? || logged_in_as_superadmin?
+      flash[:warning] = 'Forbidden'
+      redirect_to(login_path)
+    end
+  end
+
+  def superadmin_account
+    unless logged_in_as_superadmin?
       flash[:warning] = 'Forbidden'
       redirect_to(login_path)
     end
@@ -71,9 +78,12 @@ module SessionsHelper
   # def logged_in_as_superadmin?
   #   logged_in? && !current_account.superadmin?
   # end
+  def logged_in_as_superadmin?
+    logged_in? && current_account.superadmin?
+  end
 
   def logged_in_as_admin?
-    logged_in? && current_account.admin?
+    logged_in? && (current_account.admin? || current_account.superadmin?)
   end
 
   def logged_in_as_client?

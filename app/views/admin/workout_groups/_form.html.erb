@@ -17,13 +17,23 @@
   </div>
 
   <div class="field">
+    <%= form.label :partner_id %>
+    <%= form.select :partner_id, options_for_select(@partners, @partner.id) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :split %>
+    <%= form.number_field :split %>
+  </div>
+
+  <div class="field">
     <legend>Workout</legend>
     <% @workouts.each do |workout| %>
       <div class ="d-flex">
         <% checked = false %>
         <% checked = @workout_group.workouts.pluck(:name).include?(workout.name) if @workout_group.persisted? %>
-        <%= check_box_tag 'workout_ids[]', workout.id, checked, class: "checkbox-class", id: "chbox#{workout.id}" %>
-        <%= label_tag 'chbox#{workout.id}', workout.name %>
+        <%= check_box_tag 'workout_group[workout_ids][]', workout.id, checked, class: "checkbox-class", id: "chbox#{workout.id}" %>
+        <%= label_tag "chbox#{workout.id}", workout.name %>
       </div>
     <% end %>
   </div>

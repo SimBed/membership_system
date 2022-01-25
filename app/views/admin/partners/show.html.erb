@@ -1,0 +1,11 @@
+<h2>Revenue for <%= "#{@partner.name}" %> <form action=<%= "/admin/partners/#{params[:id]}" %> method="GET">
+              <select name="revenue_period" onchange="this.form.submit()" class= "sort">
+                <%= options_for_select @months, session[:revenue_period] %>
+              </select>
+            </form>
+</h2>
+<div id="revenues-table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'revenues_table' %>
+</div>
+
+<%= link_to 'back to partners', admin_partners_path %>

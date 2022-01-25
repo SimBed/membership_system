@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_18_164934) do
+ActiveRecord::Schema.define(version: 2022_01_25_103601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2022_01_18_164934) do
     t.datetime "reset_sent_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "superadmin", default: false
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
 
@@ -55,6 +56,16 @@ ActiveRecord::Schema.define(version: 2022_01_18_164934) do
     t.string "instagram"
   end
 
+  create_table "expenses", force: :cascade do |t|
+    t.string "item"
+    t.integer "amount"
+    t.date "date"
+    t.bigint "workout_group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["workout_group_id"], name: "index_expenses_on_workout_group_id"
+  end
+
   create_table "fitternities", force: :cascade do |t|
     t.integer "max_classes"
     t.date "expiry_date"
@@ -71,7 +82,23 @@ ActiveRecord::Schema.define(version: 2022_01_18_164934) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "instructor_rates", force: :cascade do |t|
+    t.integer "rate"
+    t.date "date_from"
+    t.bigint "instructor_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["instructor_id"], name: "index_instructor_rates_on_instructor_id"
+  end
+
   create_table "instructors", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "partners", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.datetime "created_at", precision: 6, null: false
@@ -126,19 +153,24 @@ ActiveRecord::Schema.define(version: 2022_01_18_164934) do
     t.datetime "start_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "instructor_id"
+    t.integer "instructor_cost"
   end
 
   create_table "workout_groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "partner_id"
+    t.integer "partner_share"
   end
 
   create_table "workouts", force: :cascade do |t|
     t.string "name"
-    t.integer "instructor_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "expenses", "workout_groups"
+  add_foreign_key "instructor_rates", "instructors"
 end

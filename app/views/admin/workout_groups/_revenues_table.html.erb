@@ -1,0 +1,46 @@
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name">Attendances</div>
+    <div class ="cell c-revenue-attend "><%= @revenue[:number] %></div>
+</div>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name">Base Revenue</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:base_revenue], precision: 0, unit: '') %></div>
+</div>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name">Expiry Revenue</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:expiry_revenue], precision: 0, unit: '') %></div>
+</div>
+<div class ="d-flex bg-light fw-bold">
+    <div class ="cell c-revenue-name">Gross Revenue</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:gross_revenue], precision: 0, unit: '') %></div>
+</div>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name">GST</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:gst], precision: 0, unit: '') %></div>
+</div>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name">Net <small>(of GST)</small> Revenue</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:net_revenue], precision: 0, unit: '') %></div>
+</div>
+<% @fixed_expenses.each do |x| %>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name"><%= x.item %></div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(x.amount, precision: 0, unit: 'Rs. ') %></div>
+</div>
+<% end %>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name">Instructor Class Cost</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:per_class_costs], precision: 0, unit: '') %></div>
+</div>
+<div class ="d-flex bg-light fw-bold">
+    <div class ="cell c-revenue-name">Total Expense</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:total_expense], precision: 0, unit: '') %></div>
+</div>
+<div class ="d-flex bg-light fw-bold">
+    <div class ="cell c-revenue-name">Profit</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:profit], precision: 0, unit: '') %></div>
+</div>
+<div class ="d-flex bg-light fw-bold">
+    <div class ="cell c-revenue-name">Partner Share</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:partner_share], precision: 0, unit: 'Rs. ') %></div>
+</div>

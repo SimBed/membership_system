@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     resources :fitternities
     resources :freezes, only: [:new, :edit, :create, :update, :destroy]
     resources :instructors, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :partners
     resources :prices
     resources :products
     resources :purchases
@@ -26,5 +27,9 @@ Rails.application.routes.draw do
     resources :wkclasses
     resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :workout_groups
+  end
+  namespace :superadmin do
+    resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :instructor_rates
   end
 end

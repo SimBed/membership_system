@@ -1,0 +1,21 @@
+<h2>Instructor Rates</h2>
+
+<table>
+  <tbody>
+    <% @instructor_rates.each do |instructor_rate| %>
+      <tr>
+        <td><%= instructor_rate.instructor.name %></td>
+        <td><%= instructor_rate.rate %></td>
+        <td><%= instructor_rate.date_from %></td>
+
+        <td><%= link_to 'Show', superadmin_instructor_rate_path(instructor_rate) %></td>
+        <td><%= link_to 'Edit', edit_superadmin_instructor_rate_path(instructor_rate) %></td>
+        <td><%= link_to 'Destroy', superadmin_instructor_rate_path(instructor_rate), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Instructor Rate', new_superadmin_instructor_rate_path %>

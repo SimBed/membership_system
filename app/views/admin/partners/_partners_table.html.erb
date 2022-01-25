@@ -1,0 +1,17 @@
+<% @partners.each do |partner| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-instructor-name">
+        <% if logged_in_as_superadmin? %>
+          <%= link_to partner.name, admin_partner_path(partner) %></div>
+        <% else %>
+          <%= partner.name %></div>
+        <% end %>
+      <div class ="cell c-instructor-workouts"><%= partner.workout_group_list %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_partner_path(partner), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_partner_path(partner), method: :delete, data: { confirm: 'Partner and all its workouts groups will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>
