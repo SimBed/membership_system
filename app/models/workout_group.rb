@@ -6,8 +6,10 @@ class WorkoutGroup < ApplicationRecord
   # has_many :wkclasses, through: :attendances
   has_many :rel_workout_group_workouts, dependent: :destroy
   has_many :workouts, through: :rel_workout_group_workouts
-
   attr_accessor :workout_ids
+  validates :name, presence: true
+  validates :partner_share, presence: true
+  validates :workout_ids, presence: true
   after_create :create_rel_workout_group_workout
   after_update :update_rel_workout_group_workout
 

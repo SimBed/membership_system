@@ -4,6 +4,7 @@ class Wkclass < ApplicationRecord
   has_many :clients, through: :purchases
   belongs_to :instructor
   belongs_to :workout
+  validates_associated :instructor
   delegate :name, to: :workout
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }

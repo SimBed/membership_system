@@ -31,6 +31,8 @@ class Admin::WkclassesController < Admin::BaseController
         redirect_to admin_wkclass_path(@wkclass)
         flash[:success] = "Class was successfully created"
       else
+        @workouts = Workout.all.map { |w| [w.name, w.id] }
+        @instructors =  Instructor.order_by_name.map { |i| [i.name, i.id] }
         render :new, status: :unprocessable_entity
       end
   end
@@ -65,7 +67,7 @@ class Admin::WkclassesController < Admin::BaseController
 
     def wkclass_params
       wk_p = params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id)
-      cost = Instructor.find(wk_p[:instructor_id]).current_rate
+      cost = Instructor&.find(wk_p[:instructor_id]).current_rate if Instructor.exists?(wk_p[:instructor_id])
       wk_p.merge({ instructor_cost: cost })
     end
 

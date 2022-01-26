@@ -18,12 +18,12 @@
 
   <div class="field">
     <%= form.label :partner_id %>
-    <%= form.select :partner_id, options_for_select(@partners, @partner.id) %>
+    <%= form.select :partner_id, options_for_select(@partners, @partner&.id), { include_blank: true } %>
   </div>
 
   <div class="field">
-    <%= form.label :split %>
-    <%= form.number_field :split %>
+    <%= form.label :partner_share %>
+    <%= form.number_field :partner_share %>
   </div>
 
   <div class="field">

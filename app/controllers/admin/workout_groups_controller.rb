@@ -59,16 +59,18 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     # @workout_group = WorkoutGroup.new(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
     @workout_group = WorkoutGroup.new(workout_group_params)
       if @workout_group.save
-        redirect_to admin_workout_group_path(@workout_group)
+        redirect_to admin_workout_groups_path
         flash[:success] = "Workout Group was successfully created."
       else
+        @workouts = Workout.all
+        @partners = Partner.all.map {|p| [p.first_name, p.id]}
         render :new, status: :unprocessable_entity
       end
   end
 
   def update
       if @workout_group.update(workout_group_params)
-        redirect_to admin_workout_group_path(@workout_group)
+        redirect_to admin_workout_groups_path
         flash[:success] = "Workout Group was successfully updated."
       else
         @workouts = Workout.all
@@ -88,7 +90,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     end
 
     def workout_group_params
-      params.require(:workout_group).permit(:name, :partner_id, :partner_split, workout_ids: [])
+      params.require(:workout_group).permit(:name, :partner_id, :partner_share, workout_ids: [])
     end
 
 end
