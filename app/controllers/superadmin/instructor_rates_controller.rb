@@ -1,11 +1,8 @@
 class Superadmin::InstructorRatesController < Superadmin::BaseController
-  before_action :set_instructor_rate, only: %i[ show edit update destroy ]
+  before_action :set_instructor_rate, only: %i[ edit update destroy ]
 
   def index
     @instructor_rates = InstructorRate.all
-  end
-
-  def show
   end
 
   def new
@@ -23,7 +20,8 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
 
     respond_to do |format|
       if @instructor_rate.save
-        format.html { redirect_to superadmin_instructor_rate_path(@instructor_rate), notice: "Instructor rate was successfully created." }
+        format.html { redirect_to superadmin_instructor_rates_path
+                      flash[:success] = "Instructor rate was successfully created." }
         format.json { render :show, status: :created, location: @instructor_rate }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -35,7 +33,8 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   def update
     respond_to do |format|
       if @instructor_rate.update(instructor_rate_params)
-        format.html { redirect_to superadmin_instructor_rate_path(@instructor_rate), notice: "Instructor rate was successfully updated." }
+        format.html { redirect_to superadmin_instructor_rates_path
+                      flash[:success] = "Instructor rate was successfully updated." }
         format.json { render :show, status: :ok, location: @instructor_rate }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,7 +46,8 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   def destroy
     @instructor_rate.destroy
     respond_to do |format|
-      format.html { redirect_to superadmin_instructor_rates_path, notice: "Instructor rate was successfully destroyed." }
+      format.html { redirect_to superadmin_instructor_rates_path
+                    flash[:success] = "Instructor rate was successfully destroyed." }
       format.json { head :no_content }
     end
   end

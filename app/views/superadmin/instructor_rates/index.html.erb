@@ -1,21 +1,4 @@
-<h2>Instructor Rates</h2>
-
-<table>
-  <tbody>
-    <% @instructor_rates.each do |instructor_rate| %>
-      <tr>
-        <td><%= instructor_rate.instructor.name %></td>
-        <td><%= instructor_rate.rate %></td>
-        <td><%= instructor_rate.date_from %></td>
-
-        <td><%= link_to 'Show', superadmin_instructor_rate_path(instructor_rate) %></td>
-        <td><%= link_to 'Edit', edit_superadmin_instructor_rate_path(instructor_rate) %></td>
-        <td><%= link_to 'Destroy', superadmin_instructor_rate_path(instructor_rate), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Instructor Rate', new_superadmin_instructor_rate_path %>
+<h2>Instructor Rates <%= link_to image_tag('add.png', class: "button_icon"), new_superadmin_instructor_rate_path, class: "icon-container" %></h2>
+<div id="rates_table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'rates_table' %>
+</div>

@@ -1,0 +1,13 @@
+<% @instructor_rates.each do |rate| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-instructor-name"><%= rate.instructor.name %></div>
+      <div class ="cell c-instructor-name"><%= rate.rate %></div>
+      <div class ="cell c-instructor-name"><%= rate.date_from.strftime('%d %b %y') %></div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_instructor_rate_path(rate), class: "icon-container" %>
+      </div>
+      <div class ="cell c-class-icon">
+        <%= link_to image_tag('delete.png', class: "table_icon"), superadmin_instructor_rate_path(rate), method: :delete, data: { confirm: 'Instructor and all its workouts will be deleted. Are you sure?' }, class: "icon-container" %>
+      </div>
+  </div>
+<% end %>
