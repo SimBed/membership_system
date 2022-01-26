@@ -88,7 +88,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     end
 
     def workout_group_params
-      params.require(:workout_group).permit(:name, :split, :partner_id, workout_ids: [])
+      params.require(:workout_group).permit(:name, :partner_id, :partner_split, workout_ids: [])
     end
 
 end
