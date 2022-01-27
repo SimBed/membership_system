@@ -12,6 +12,7 @@ class Admin::PartnersController < Admin::BaseController
     end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
     gst_rate = Rails.application.config_for(:constants)["gst_rate"].first.to_f / 100
     @total_share = 0
+    @partner_share={}
     @partner.workout_groups.each do |wg|
       attendances = Attendance.by_workout_group(wg.name, start_date, end_date)
       base_revenue = attendances.map { |a| a.revenue }.inject(0, :+)
@@ -20,11 +21,15 @@ class Admin::PartnersController < Admin::BaseController
       gst = gross_revenue * gst_rate
       net_revenue = gross_revenue - gst
       @fixed_expenses = Expense.by_workout_group(wg.name, start_date, end_date)
-      per_class_costs = WorkoutGroup.instructor_cost_for(wg.name, start_date, end_date)
-      total_expense = @fixed_expenses.map { |x| x.amount }.inject(0, :+) + per_class_costs
+      total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)
+      @wkclasses_with_instructor_expense =
+        Wkclass.in_workout_group(wg.name,start_date,end_date)
+               .has_instructor_cost
+      total_instructor_expense = @wkclasses_with_instructor_expense.map(&:instructor_cost).inject(0, &:+)
+      total_expense = total_fixed_expense + total_instructor_expense
       profit = net_revenue - total_expense
       partner_share = profit * wg.partner_share.to_f / 100
-      @partner_share = {wg.name.to_sym => partner_share}
+      @partner_share[wg.name.to_sym] = partner_share
       @total_share += partner_share
     end
     @months = months_logged

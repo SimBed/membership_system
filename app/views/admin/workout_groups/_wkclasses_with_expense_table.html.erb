@@ -1,0 +1,9 @@
+<h4>* Classes with Instructor Expense</h4>
+<% @wkclasses_with_instructor_expense.each do |w| %>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-attend "><%= w.name %></div>
+    <div class ="cell c-revenue-name"><%= w.start_time.strftime('%d %b %y') %></div>
+    <div class ="cell c-revenue-attend "><%= w.instructor_name %></div>
+    <div class ="cell c-revenue-attend "><%= w.instructor_cost %></div>
+</div>
+<% end %>

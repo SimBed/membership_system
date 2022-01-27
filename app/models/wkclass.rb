@@ -6,6 +6,7 @@ class Wkclass < ApplicationRecord
   belongs_to :workout
   validates_associated :instructor
   delegate :name, to: :workout
+  delegate :name, to: :instructor, prefix: true
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
 
@@ -30,10 +31,13 @@ class Wkclass < ApplicationRecord
            .order(:start_time)
   end
 
-  def self.in_workout_group(workout_group, start_date, end_date)
-    joins(workout: [rel_workout_group_workouts: [:workout_group]])
-    .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
-    .where("workout_groups.name = ?", "#{workout_group}")
+  def self.in_workout_group(workout_group_name, start_date, end_date)
+    # method used in workout_group controller for @wkclasses_with_instructor_cost
+    # which is then used to output wkclass name and instructor name (so workout and instructor are included to avoid multiple fires to the database)
+    Wkclass.includes(:instructor).includes(:workout)
+      .joins(workout: [rel_workout_group_workouts: [:workout_group]])
+      .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+      .where("workout_groups.name = ?", "#{workout_group_name}")
   end
 
   # for qualifying products in select box for new attendance form

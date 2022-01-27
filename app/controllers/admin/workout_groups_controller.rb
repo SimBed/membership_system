@@ -21,8 +21,13 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     gst = gross_revenue * gst_rate
     net_revenue = gross_revenue - gst
     @fixed_expenses = Expense.by_workout_group(@workout_group.name, start_date, end_date)
-    per_class_costs = WorkoutGroup.instructor_cost_for(@workout_group.name, start_date, end_date)
-    total_expense = @fixed_expenses.map { |x| x.amount }.inject(0, :+) + per_class_costs
+    total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)
+    # for table of classes where there was an instructor expense
+    @wkclasses_with_instructor_expense =
+      Wkclass.in_workout_group(@workout_group.name,start_date,end_date)
+             .has_instructor_cost
+    total_instructor_expense = @wkclasses_with_instructor_expense.map(&:instructor_cost).inject(0, &:+)
+    total_expense = total_fixed_expense + total_instructor_expense
     profit = net_revenue - total_expense
     partner_share = profit * @workout_group.partner_share.to_f / 100
     @revenue = {
@@ -32,11 +37,13 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       gross_revenue: gross_revenue,
       gst: gst,
       net_revenue: net_revenue,
-      per_class_costs: per_class_costs,
+      total_fixed_expense: total_fixed_expense,
+      total_instructor_expense: total_instructor_expense,
       total_expense: total_expense,
       profit: profit,
       partner_share: partner_share
     }
+
     # prepare items for the revenue date select
     # months_logged method defined in application helper
     @months = months_logged

@@ -13,11 +13,12 @@ class WorkoutGroup < ApplicationRecord
   after_create :create_rel_workout_group_workout
   after_update :update_rel_workout_group_workout
 
-  def self.instructor_cost_for(workout_group, start_date, end_date)
-    Wkclass.in_workout_group('Space',start_date,end_date)
-           .has_instructor_cost
-           .sum(:instructor_cost)
-  end
+  # not used
+  # def self.instructor_cost_for(workout_group_name, start_date, end_date)
+  #   Wkclass.in_workout_group(workout_group_name,start_date,end_date)
+  #          .has_instructor_cost
+  #          .sum(:instructor_cost)
+  # end
 
   def workout_list
     workouts.pluck(:name).join(', ')

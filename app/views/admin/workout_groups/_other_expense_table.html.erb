@@ -1,0 +1,8 @@
+<h4>** Other Expenses</h4>
+
+<% @fixed_expenses.each do |x| %>
+  <div class ="d-flex bg-light">
+      <div class ="cell c-revenue-name"><%= x.item %></div>
+      <div class ="cell c-revenue-attend "><%= number_to_currency(x.amount, precision: 0, unit: 'Rs. ') %></div>
+  </div>
+<% end %>
