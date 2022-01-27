@@ -27,6 +27,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :gst_applies %>
+    <%= form.select :gst_applies, [true, false] %>
+  </div>
+
+  <div class="field">
     <legend>Workout</legend>
     <% @workouts.each do |workout| %>
       <div class ="d-flex">

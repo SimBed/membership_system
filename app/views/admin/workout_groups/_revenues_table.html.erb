@@ -1,6 +1,10 @@
 <div class ="d-flex bg-light">
     <div class ="cell c-revenue-name">Attendances</div>
-    <div class ="cell c-revenue-attend "><%= @revenue[:number] %></div>
+    <div class ="cell c-revenue-attend "><%= @revenue[:attendance_count] %></div>
+</div>
+<div class ="d-flex bg-light">
+    <div class ="cell c-revenue-name">Number of Classes</div>
+    <div class ="cell c-revenue-attend "><%= @revenue[:class_count] %></div>
 </div>
 <div class ="d-flex bg-light">
     <div class ="cell c-revenue-name">Base Revenue</div>

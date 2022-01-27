@@ -1,4 +1,4 @@
-<h2>Revenue for <%= "#{@partner.name}" %> <form action=<%= "/admin/partners/#{params[:id]}" %> method="GET">
+<h2><strong><i><%= "#{@partner.name}" %></i></strong> Payment Summary <form action=<%= "/admin/partners/#{params[:id]}" %> method="GET">
               <select name="revenue_period" onchange="this.form.submit()" class= "sort">
                 <%= options_for_select @months, session[:revenue_period] %>
               </select>

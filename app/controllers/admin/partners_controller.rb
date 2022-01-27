@@ -10,7 +10,6 @@ class Admin::PartnersController < Admin::BaseController
     session[:revenue_period] = params[:revenue_period] || session[:revenue_period] || Date.today.beginning_of_month.strftime('%b %Y')
     start_date = Date.parse(session[:revenue_period])
     end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
-    gst_rate = Rails.application.config_for(:constants)["gst_rate"].first.to_f / 100
     @total_share = 0
     @partner_share={}
     @partner.workout_groups.each do |wg|
@@ -18,7 +17,7 @@ class Admin::PartnersController < Admin::BaseController
       base_revenue = attendances.map { |a| a.revenue }.inject(0, :+)
       expiry_revenue =  wg.expiry_revenue(session[:revenue_period])
       gross_revenue = base_revenue + expiry_revenue
-      gst = gross_revenue * gst_rate
+      gst = gross_revenue * (1 - 1 / (1 + wg.gst_rate))
       net_revenue = gross_revenue - gst
       @fixed_expenses = Expense.by_workout_group(wg.name, start_date, end_date)
       total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)

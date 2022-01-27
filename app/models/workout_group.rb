@@ -24,6 +24,11 @@ class WorkoutGroup < ApplicationRecord
     workouts.pluck(:name).join(', ')
   end
 
+  def gst_rate
+    return 0 if !gst_applies
+    Rails.application.config_for(:constants)["gst_rate"].first.to_f / 100
+  end
+
   # products_hash collates the relevant attributes across 3 models which define each product
   # and creates a name out of them
   # a product can then be selected from a single dropdown when adding a purchase eg 'Space 1C:1D Diwali21'

@@ -1,4 +1,4 @@
-<h2>Revenue for <%= "#{@workout_group.name} Group Class" %> <form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET">
+<h2><strong><i><%= "#{@workout_group.name}" %></i></strong> Profit Share  <form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET">
               <select name="revenue_period" onchange="this.form.submit()" class= "sort">
                 <%= options_for_select @months, session[:revenue_period] %>
               </select>
