@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 2022_01_27_050829) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "instagram"
+    t.integer "account_id"
+    t.text "note"
   end
 
   create_table "expenses", force: :cascade do |t|

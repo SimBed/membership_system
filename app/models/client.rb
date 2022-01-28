@@ -1,6 +1,7 @@
 class Client < ApplicationRecord
   has_many :purchases, dependent: :destroy
   has_many :attendances, through: :purchases
+  belongs_to :account, optional: true
   scope :order_by_name, -> { order(:first_name, :last_name) }
   # validates :first_name, uniqueness: {scope: :last_name}
   validates :first_name, presence: true
@@ -13,7 +14,7 @@ class Client < ApplicationRecord
   validates :email, allow_blank: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-                    
+
   def name
     "#{first_name} #{last_name}"
   end
