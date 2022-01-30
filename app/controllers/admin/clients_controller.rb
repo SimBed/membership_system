@@ -1,4 +1,3 @@
-require 'byebug'
 class Admin::ClientsController < Admin::BaseController
   skip_before_action :admin_account, only: [:show]
   before_action :correct_account_or_admin, only: [:show]
