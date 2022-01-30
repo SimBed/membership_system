@@ -1,6 +1,8 @@
 class Admin::PartnersController < Admin::BaseController
+  skip_before_action :admin_account, only: [:show]
+  before_action :correct_account_or_superadmin, only: %i[ show ]
+#  before_action :layout_set, only: [:show]
   before_action :set_partner, only: %i[ show edit update destroy ]
-  before_action :superadmin_account, only: %i[ show ]
 
   def index
     @partners = Partner.all
@@ -84,6 +86,19 @@ class Admin::PartnersController < Admin::BaseController
     end
 
     def partner_params
-      params.require(:partner).permit(:first_name, :last_name)
+      params.require(:partner).permit(:first_name, :last_name, :email, :phone)
     end
+
+    def correct_account_or_superadmin
+      redirect_to(root_url) unless Partner.find(params[:id]).account == current_account || logged_in_as_superadmin?
+    end
+
+    # def layout_set
+    #   if current_account.superadmin?
+    #     self.class.layout 'admin'
+    #   else
+    #     # fails without self.class
+    #     self.class.layout 'admin'
+    #   end
+    # end
 end

@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   has_many :clients
+  has_many :partners
   attr_accessor :remember_token, :reset_token
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
@@ -37,6 +38,22 @@ class Account < ApplicationRecord
   def forget
     update(remember_digest: nil)
   end
+
+  # def admin?
+  #   ac_type == 'admin'
+  # end
+  #
+  # def superadmin?
+  #   ac_type == 'superadmin'
+  # end
+  #
+  # def client?
+  #   ac_type == 'client'
+  # end
+  #
+  # def partner?
+  #   ac_type == 'partner'
+  # end
 
   private
 

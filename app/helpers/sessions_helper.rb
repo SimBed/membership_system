@@ -75,22 +75,23 @@ module SessionsHelper
     redirect_to login_path
   end
 
-  # def logged_in_as_superadmin?
-  #   logged_in? && !current_account.superadmin?
-  # end
   def logged_in_as_superadmin?
-    logged_in? && current_account.superadmin?
+    logged_in? && current_account.ac_type == 'superadmin'
   end
 
   def logged_in_as_admin?
-    logged_in? && (current_account.admin? || current_account.superadmin?)
+    logged_in? && (current_account.ac_type == 'admin' || current_account.ac_type == 'superadmin')
   end
 
   def logged_in_as_client?
-    logged_in? && current_account.client?
+    logged_in? && current_account.ac_type == 'client'
   end
 
-  def logged_in_as_instructor?
-    logged_in? && current_account.instructor?
+  def logged_in_as_partner?
+    logged_in? && current_account.ac_type == 'partner'
+  end
+
+  def logged_in_as_partner_or_superadmin?
+    logged_in? && current_account.ac_type == 'partner' || current_account.ac_type == 'superadmin'
   end
 end

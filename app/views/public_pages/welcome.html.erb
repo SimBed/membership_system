@@ -1,7 +1,7 @@
 <% if logged_in_as_admin? %>
   <% controller.redirect_to admin_clients_path %>
 <% elsif logged_in_as_client? %>
-  <%= render template: 'client/clients/show' %>
+  <%= controller.redirect_to admin_client_path(current_account.clients.first) %>
 <% else %>
   <%= render template: 'auth/sessions/new' %>
 <% end %>

@@ -1,9 +1,18 @@
 class Admin::WorkoutGroupsController < Admin::BaseController
+  skip_before_action :admin_account, only: [:show, :index]
+  before_action :partner_or_admin_account, only: %i[ index ]
+  before_action :correct_account_or_superadmin, only: %i[ show ]
   before_action :set_workout_group, only: %i[ show edit update destroy ]
-  before_action :superadmin_account, only: %i[ show ]
+#  before_action :superadmin_account, only: %i[ show ]
 
   def index
-    @workout_groups = WorkoutGroup.all
+    if logged_in_as_partner?
+      partner_id = current_account.partners.first.id
+      # reformat to scope
+      @workout_groups = WorkoutGroup.all.where(partner_id: partner_id)
+    else
+      @workout_groups = WorkoutGroup.all
+    end
   end
 
   def show
@@ -101,4 +110,15 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       params.require(:workout_group).permit(:name, :partner_id, :partner_share, :gst_applies, workout_ids: [])
     end
 
+    def correct_account_or_superadmin
+      redirect_to(root_url) unless WorkoutGroup.find(params[:id]).partner.account == current_account || logged_in_as_superadmin?
+    end
+
+    def partner_or_superadmin_account
+      redirect_to(root_url) unless logged_in_as_superadmin? || logged_in_as_partner?
+    end
+
+    def partner_or_admin_account
+      redirect_to(root_url) unless logged_in_as_admin? || logged_in_as_partner?
+    end
 end

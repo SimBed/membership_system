@@ -10,16 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_27_050829) do
+ActiveRecord::Schema.define(version: 2022_01_29_024024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "email"
-    t.boolean "admin", default: false
-    t.boolean "client", default: false
-    t.boolean "instructor", default: false
     t.string "password_digest"
     t.string "remember_digest"
     t.boolean "activated", default: false
@@ -27,7 +24,7 @@ ActiveRecord::Schema.define(version: 2022_01_27_050829) do
     t.datetime "reset_sent_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "superadmin", default: false
+    t.string "ac_type"
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
 
@@ -105,6 +102,9 @@ ActiveRecord::Schema.define(version: 2022_01_27_050829) do
     t.string "last_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "account_id"
+    t.string "email"
+    t.string "phone"
   end
 
   create_table "prices", force: :cascade do |t|

@@ -25,11 +25,18 @@ class Auth::SessionsController < Auth::BaseController
   def action_when_activated(account)
     log_in account
     params[:session][:remember_me] == '1' ? remember(account) : forget(account)
-    if account.admin? || account.superadmin?
-      redirect_back_or admin_clients_path
-    else
-      redirect_to client_show_path
-    end
+    if logged_in_as_admin?
+    redirect_back_or admin_clients_path
+     return
+   end
+   if logged_in_as_client?
+    redirect_to admin_client_path(account.clients.first)
+     return
+   end
+   if logged_in_as_partner?
+    redirect_to admin_partner_path(account.partners.first)
+    return
+  end
   end
 
   def flash_and_redirect_not_activated
