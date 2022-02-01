@@ -1,48 +1,104 @@
+require 'byebug'
 require "test_helper"
 
 class ClientsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @client = clients(:one)
+    @client1 = accounts(:client1)
+    @client2 = accounts(:client2)
+    @admin = accounts(:admin)
+    @superadmin = accounts(:superadmin)
+    @partner1 = accounts(:partner1)
+    @partner2 = accounts(:partner2)
   end
 
-  test "should get index" do
-    get clients_url
-    assert_response :success
+  test "should redirect index when not logged in as admin" do
+    get admin_clients_url
+    assert_redirected_to login_path
+    log_in_as(@client1)
+    get admin_clients_url
+    assert_redirected_to login_path
+    log_in_as(@partner1)
+    get admin_clients_url
+    assert_redirected_to login_path
   end
 
-  test "should get new" do
-    get new_client_url
-    assert_response :success
+  test "should redirect new when not logged in as admin" do
+    get new_admin_client_url
+    assert_redirected_to login_path
+    log_in_as(@client1)
+    get new_admin_client_url
+    assert_redirected_to login_path
+    log_in_as(@partner1)
+    get new_admin_client_url
+    assert_redirected_to login_path
   end
 
-  test "should create client" do
-    assert_difference('Client.count') do
-      post clients_url, params: { client: { email: @client.email, first_name: @client.first_name, last_name: @client.last_name, phone: @client.phone } }
-    end
-
-    assert_redirected_to client_url(Client.last)
+  test 'should redirect show when not logged in as admin or correct account' do
+    get admin_client_path(@client2.clients.first)
+    assert_redirected_to root_url
+    log_in_as(@client1)
+    get admin_client_path(@client2.clients.first)
+    assert_redirected_to root_url
+    log_in_as(@partner1)
+    get admin_client_path(@client2.clients.first)
+    assert_redirected_to root_url
   end
 
-  test "should show client" do
-    get client_url(@client)
-    assert_response :success
-  end
+  test 'should redirect edit when not logged in as admin' do
+    get edit_admin_client_path(@client2.clients.first)
+    assert_redirected_to login_path
+    log_in_as(@client1)
+    get edit_admin_client_path(@client2.clients.first)
+    assert_redirected_to login_path
+    log_in_as(@partner1)
+    get edit_admin_client_path(@client2.clients.first)
+    assert_redirected_to login_path
+end
 
-  test "should get edit" do
-    get edit_client_url(@client)
-    assert_response :success
+test 'should redirect create when not logged in as admin' do
+  assert_no_difference 'Client.count' do
+    post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
   end
-
-  test "should update client" do
-    patch client_url(@client), params: { client: { email: @client.email, first_name: @client.first_name, last_name: @client.last_name, phone: @client.phone } }
-    assert_redirected_to client_url(@client)
+  assert_redirected_to login_path
+  log_in_as(@client1)
+  assert_no_difference 'Client.count' do
+    post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
   end
-
-  test "should destroy client" do
-    assert_difference('Client.count', -1) do
-      delete client_url(@client)
-    end
-
-    assert_redirected_to clients_url
+  assert_redirected_to login_path
+  log_in_as(@partner1)
+  assert_no_difference 'Client.count' do
+    post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
   end
+  assert_redirected_to login_path
+end
+
+test 'should redirect update when not logged in as admin' do
+  patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
+  assert_redirected_to login_path
+  log_in_as(@client1)
+  patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
+  assert_redirected_to login_path
+  log_in_as(@partner1)
+  patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
+  assert_redirected_to login_path
+end
+
+test 'should redirect destroy when not logged in as admin' do
+  assert_no_difference 'Client.count' do
+    delete admin_client_path(@client1)
+  end
+  assert_redirected_to login_path
+  log_in_as(@client1)
+  assert_no_difference 'Client.count' do
+    delete admin_client_path(@client1)
+  end
+  assert_redirected_to login_path
+  log_in_as(@partner1)
+  assert_no_difference 'Client.count' do
+    delete admin_client_path(@client1)
+  end
+  assert_redirected_to login_path
+end
+
+
 end

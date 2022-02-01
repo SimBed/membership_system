@@ -30,7 +30,7 @@ class ClientTest < ActiveSupport::TestCase
   end
 
   test 'full name should be unique' do
-    duplicate_named_client = Client.new(first_name: '@client.first_name', last_name: @client.last_name)
+    duplicate_named_client = Client.new(first_name: @client.first_name, last_name: @client.last_name)
     @client.save
     assert_not duplicate_named_client.valid?
   end
@@ -70,6 +70,10 @@ class ClientTest < ActiveSupport::TestCase
     @client.email = mixed_case_email
     @client.save
     assert_equal mixed_case_email.downcase, @client.reload.email
+  end
+
+  test 'name method' do
+    assert_equal 'Amala Paw', @client.name
   end
 
 end

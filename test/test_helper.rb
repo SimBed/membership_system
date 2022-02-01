@@ -7,7 +7,19 @@ class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  #fixtures :all
+  # fixtures :all
+  fixtures :instructors, :workouts, :accounts, :clients, :partners
 
-  # Add more helper methods to be used by all tests here...
+  # def log_in_as(account)
+  #   session[:account_id] = account.id
+  # end
+
+  # class ActionDispatch::IntegrationTest
+    # Log in as a particular user.
+    def log_in_as(account, password: 'password', remember_me: '1')
+      post login_path, params: { session: { email: account.email,
+                                            password: password,
+                                            remember_me: remember_me } }
+    end
+
 end
