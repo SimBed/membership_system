@@ -100,7 +100,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def filter
     # see application_helper
-    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :search_name)
+    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :search_name)
     # Without the ors (||) the sessions would get set to nil when redirecting to purchases other than through the
     # filter form (e.g. by clicking purchases on the navbar) (as the params items are nil in these cases)
     session[:search_name] = params[:search_name] || session[:search_name]
