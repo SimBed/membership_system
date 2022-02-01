@@ -12,6 +12,7 @@ class Admin::PurchasesController < Admin::BaseController
     #@problems = @problems.send("order_by_#{session[:sort_option]}").paginate(page: params[:page], per_page: 10)
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @status = %w[expired frozen not\ started ongoing]
+    @other_attributes = %w[not\ invoiced]
     case session[:sort_option]
     when 'client_dop', 'dop'
       @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
@@ -68,6 +69,7 @@ class Admin::PurchasesController < Admin::BaseController
         @clients = Client.order_by_name.map { |c| [c.name, c.id] }
         @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
         @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
+        @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name) unless purchase_params[:product_id].nil?
         render :new, status: :unprocessable_entity
       end
   end
@@ -98,12 +100,15 @@ class Admin::PurchasesController < Admin::BaseController
 
   def filter
     # see application_helper
-    clear_session(:filter_workout_group, :filter_status, :search_name)
+    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :search_name)
     # Without the ors (||) the sessions would get set to nil when redirecting to purchases other than through the
     # filter form (e.g. by clicking purchases on the navbar) (as the params items are nil in these cases)
     session[:search_name] = params[:search_name] || session[:search_name]
     session[:filter_workout_group] = params[:workout_group] || session[:filter_workout_group]
     session[:filter_status] = params[:status] || session[:filter_status]
+    session[:filter_invoice] = params[:invoice] || session[:filter_invoice]
+    session[:filter_package] = params[:package] || session[:filter_package]
+    session[:filter_close_to_expiry] = params[:close_to_expiry] || session[:filter_close_to_expiry]
     redirect_to admin_purchases_path
   end
 
@@ -142,6 +147,9 @@ class Admin::PurchasesController < Admin::BaseController
 
     def handle_search
       @purchases = @purchases.with_workout_group(session[:filter_workout_group]) if session[:filter_workout_group].present?
+      @purchases = @purchases.uninvoiced if session[:filter_invoice].present?
+      @purchases = @purchases.with_package if session[:filter_package].present?
+      @purchases = @purchases.started.not_expired.select { |p| p.close_to_expiry? } if session[:filter_close_to_expiry].present?
       @purchases = @purchases.select { |p| session[:filter_status].include?(p.status) } if session[:filter_status].present?
       # hack to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
       @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)

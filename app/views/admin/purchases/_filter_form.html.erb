@@ -37,7 +37,7 @@
     </fieldset>
   </div>
 
-  <div class="col-8 px-0">
+  <div class="col-4 px-0">
     <fieldset>
       <legend>STATUS</legend>
       <% @status.each do |status| %>
@@ -46,6 +46,24 @@
           <%= status %>
         <% end %>
       <% end %>
+    </fieldset>
+  </div>
+
+  <div class="col-4 px-0">
+    <fieldset>
+      <legend>ATTRIBUTE</legend>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'invoice', 'not invoiced', session[:filter_invoice].present? ? true : false, class: "checkbox-class", id: "chbox_invoice", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= 'not invoiced' %>
+        <% end %>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'package', 'package', session[:filter_package].present? ? true : false, class: "checkbox-class", id: "chbox_package", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= 'package' %>
+        <% end %>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'close_to_expiry', 'close_to_expiry', session[:filter_close_to_expiry].present? ? true : false, class: "checkbox-class", id: "chbox_close_to_expiry", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= 'close to expiry' %>
+        <% end %>
     </fieldset>
   </div>
 

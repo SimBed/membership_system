@@ -11,6 +11,18 @@
      <div class='cell c-purchase-row-headers'>Status</div>
      <div class='cell px-1'><%= @purchase.status %></div>
    </div>
+   <% unless @purchase.not_started? %>
+     <div class='d-flex bg-light flex-row'>
+       <div class='cell c-purchase-row-headers'>Expiry date</div>
+       <div class='cell px-1'><%= @purchase.expiry_date_formatted %></div>
+     </div>
+   <% end %>
+   <% unless @purchase.not_started? %>
+     <div class='d-flex bg-light flex-row'>
+       <div class='cell c-purchase-row-headers'>Attendances left</div>
+       <div class='cell px-1'><%= @purchase.attendances_remain %></div>
+     </div>
+   <% end %>
    <% if @purchase.expired? %>
      <div class='d-flex bg-light flex-row'>
        <div class='cell c-purchase-row-headers'>Expiry cause</div>

@@ -11,6 +11,8 @@ class Purchase < ApplicationRecord
   delegate :revenue_for_class, to: :client
   validates :payment, presence: true
   validates :payment_mode, presence: true
+  validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },
+                    uniqueness: { case_sensitive: false }
   validates_associated :client, :product
   # validates :ar_payment, presence: true, if: :adjust_restart?
   with_options if: :adjust_restart? do |ar|
@@ -19,12 +21,17 @@ class Purchase < ApplicationRecord
   end
   validate :fitternity_payment
   scope :not_expired, -> { where('expired = ?', false) }
+  # simple solution (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero  
+  scope :started, -> { joins(:attendances).distinct }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
   scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
+  scope :with_package, -> { joins(:product).where("products.max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   scope :order_by_dop, -> { order(dop: :desc) }
   scope :client_name_like, ->(name) { joins(:client).where("clients.first_name ILIKE ? OR clients.last_name ILIKE ?", "%#{name}%", "%#{name}%") }
+  scope :uninvoiced, -> { where(invoice: nil)}
+  scope :invoiced, -> { where.not(invoice: nil)}
   paginates_per 20
 
   def full_name
@@ -50,6 +57,15 @@ class Purchase < ApplicationRecord
   def expired?
     status == 'expired'
   end
+
+  def not_started?
+    status == 'not started'
+  end
+
+  # def has_expiry_date?
+  #   statuses = %w[ongoing frozen]
+  #   statuses.include?(status)
+  # end
 
   def expired_in?(month_year)
     expired? && expiry_date.strftime('%b %Y') == month_year
@@ -93,14 +109,22 @@ class Purchase < ApplicationRecord
   end
 
   def days_to_expiry
-    return 1000 unless status == 'ongoing'
-    (expiry_date.to_date - Date.today).to_i
+    if ['ongoing', 'frozen'].include?(self.status)
+      (expiry_date.to_date - Date.today).to_i
+    else
+      1000
+    end
   end
 
-  def days_to_expiry_format
-    return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
-    ['','']
-  end
+  # def days_to_expiry
+  #   return 1000 unless status == 'ongoing'
+  #   (expiry_date.to_date - Date.today).to_i
+  # end
+
+  # def days_to_expiry_format
+  #   return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
+  #   ['','']
+  # end
 
   # for revenue cashflows
   def attendance_estimate
@@ -147,6 +171,19 @@ class Purchase < ApplicationRecord
   def attendances_remain_numeric
     return product.max_classes - attendances.count if status == 'ongoing'
     return 1000
+  end
+
+  def attendances_remain(unlimited_text: true)
+    ac = attendances.count
+    pmc = product.max_classes
+    return 'unlimited' if pmc == 1000 && unlimited_text == true
+    pmc - ac
+  end
+
+  # apply to ongoing purchases. Not designed to work sensibly with an expired purchase
+  def close_to_expiry?(days_remain: 5, attendances_remain: 2)
+    return true if attendances_remain(unlimited_text: false) < attendances_remain || days_to_expiry < days_remain
+    false
   end
 
   # def self.client_name_search(name)
