@@ -1,27 +1,35 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+admin:
+  email: admin@example.com
+  password_digest: <%= Account.digest('password') %>
+  ac_type: admin
+  activated: true
 
-one:
-  email: MyString
-  password_digest: MyString
-  remember_digest: MyString
-  admin: false
-  client: false
-  instructor: false
-  activation_digest: MyString
-  activated: false
-  activated_at:
-  reset_digest: MyString
-  reset_sent_at: 2022-01-18 19:33:19
+superadmin:
+  email: superadmin@example.com
+  password_digest: <%= Account.digest('password') %>
+  ac_type: superadmin
+  activated: true
 
-two:
-  email: MyString2
-  password_digest: MyString
-  remember_digest: MyString
-  admin: false
-  client: false
-  instructor: false
-  activation_digest: MyString
-  activated: false
-  activated_at:
-  reset_digest: MyString
-  reset_sent_at: 2022-01-18 19:33:19
+client1:
+  email: client1@example.com
+  password_digest: <%= Account.digest('password') %>
+  ac_type: client
+  activated: true
+
+client2:
+  email: client2@example.com
+  password_digest: <%= Account.digest('password') %>
+  ac_type: client
+  activated: true
+
+partner1:
+  email: partner1@example.com
+  password_digest: <%= Account.digest('password') %>
+  ac_type: partner
+  activated: true
+
+partner2:
+  email: partner2@example.com
+  password_digest: <%= Account.digest('password') %>
+  ac_type: partner
+  activated: true

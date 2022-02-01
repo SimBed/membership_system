@@ -1,9 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+Arnie:
+  first_name: Arnold
+  last_name: Shwarz
+  account_id: <%= ActiveRecord::FixtureSet.identify(:partner1) %>
+  email: as@example.com
 
-one:
-  first_name: MyString
-  last_name: MyString
-
-two:
-  first_name: MyString
-  last_name: MyString
+Mark:
+  first_name: Marky
+  last_name: Zuck
+  account_id: <%= ActiveRecord::FixtureSet.identify(:partner2) %>
+  email: mz@example.com

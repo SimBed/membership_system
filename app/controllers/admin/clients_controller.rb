@@ -70,6 +70,7 @@ class Admin::ClientsController < Admin::BaseController
     def correct_account_or_admin
       redirect_to(root_url) unless Client.find(params[:id]).account == current_account || logged_in_as_admin?
     end
+
     # def layout_set
     #   if logged_in_as_admin?
     #     self.class.layout 'admin'

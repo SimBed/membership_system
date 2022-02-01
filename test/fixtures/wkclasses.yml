@@ -1,9 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   workout_id: 1
-  start_time: 2021-11-24 13:43:39
+  start_time: 2022-01-01 10:00:30
+  instructor_id: <%= ActiveRecord::FixtureSet.identify(:Aadrak) %>
+  instructor_cost: 0
 
 two:
   workout_id: 1
-  start_time: 2021-11-24 13:43:39
+  start_time: 2022-01-15 08:40:00
+  instructor_id: <%= ActiveRecord::FixtureSet.identify(:Aadrak) %>
+  instructor_cost: 0

@@ -3,14 +3,17 @@ class Client < ApplicationRecord
   has_many :attendances, through: :purchases
   belongs_to :account, optional: true
   scope :order_by_name, -> { order(:first_name, :last_name) }
+  before_save :downcase_email
   # validates :first_name, uniqueness: {scope: :last_name}
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  validates :first_name, presence: true, length: { maximum: 40 }
+  validates :last_name, presence: true, length: { maximum: 40 }
   validate :full_name_must_be_unique
   # validates :email, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :instagram, uniqueness: { case_sensitive: false }, allow_blank: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
+  # note allow_blank will skip the validations on blank fields so multiple clients
+  # with blank email will not fall foul of the uniqueness requirement
   validates :email, allow_blank: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
@@ -28,6 +31,10 @@ class Client < ApplicationRecord
   end
 
   private
+    def downcase_email
+      self.email = email.downcase
+    end
+
     def purchase_for_class(wkclass)
       wkclass.purchases.where(client_id: self.id).first
     end
