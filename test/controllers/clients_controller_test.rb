@@ -53,52 +53,50 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@partner1)
     get edit_admin_client_path(@client2.clients.first)
     assert_redirected_to login_path
-end
+  end
 
-test 'should redirect create when not logged in as admin' do
-  assert_no_difference 'Client.count' do
-    post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
+  test 'should redirect create when not logged in as admin' do
+    assert_no_difference 'Client.count' do
+      post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
+    end
+    assert_redirected_to login_path
+    log_in_as(@client1)
+    assert_no_difference 'Client.count' do
+      post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
+    end
+    assert_redirected_to login_path
+    log_in_as(@partner1)
+    assert_no_difference 'Client.count' do
+      post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
+    end
+    assert_redirected_to login_path
   end
-  assert_redirected_to login_path
-  log_in_as(@client1)
-  assert_no_difference 'Client.count' do
-    post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
-  end
-  assert_redirected_to login_path
-  log_in_as(@partner1)
-  assert_no_difference 'Client.count' do
-    post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester' } }
-  end
-  assert_redirected_to login_path
-end
 
-test 'should redirect update when not logged in as admin' do
-  patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
-  assert_redirected_to login_path
-  log_in_as(@client1)
-  patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
-  assert_redirected_to login_path
-  log_in_as(@partner1)
-  patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
-  assert_redirected_to login_path
-end
-
-test 'should redirect destroy when not logged in as admin' do
-  assert_no_difference 'Client.count' do
-    delete admin_client_path(@client1)
+  test 'should redirect update when not logged in as admin' do
+    patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
+    assert_redirected_to login_path
+    log_in_as(@client1)
+    patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
+    assert_redirected_to login_path
+    log_in_as(@partner1)
+    patch admin_client_path(@client2), params: { client: { instagram: 'test' } }
+    assert_redirected_to login_path
   end
-  assert_redirected_to login_path
-  log_in_as(@client1)
-  assert_no_difference 'Client.count' do
-    delete admin_client_path(@client1)
-  end
-  assert_redirected_to login_path
-  log_in_as(@partner1)
-  assert_no_difference 'Client.count' do
-    delete admin_client_path(@client1)
-  end
-  assert_redirected_to login_path
-end
 
-
+  test 'should redirect destroy when not logged in as admin' do
+    assert_no_difference 'Client.count' do
+      delete admin_client_path(@client1)
+    end
+    assert_redirected_to login_path
+    log_in_as(@client1)
+    assert_no_difference 'Client.count' do
+      delete admin_client_path(@client1)
+    end
+    assert_redirected_to login_path
+    log_in_as(@partner1)
+    assert_no_difference 'Client.count' do
+      delete admin_client_path(@client1)
+    end
+    assert_redirected_to login_path
+  end
 end

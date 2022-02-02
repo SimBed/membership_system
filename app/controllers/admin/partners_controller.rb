@@ -1,6 +1,7 @@
 class Admin::PartnersController < Admin::BaseController
   skip_before_action :admin_account, only: [:show]
   before_action :correct_account_or_superadmin, only: %i[ show ]
+  before_action :superadmin_account, only: %i[ edit update destroy ]
 #  before_action :layout_set, only: [:show]
   before_action :set_partner, only: %i[ show edit update destroy ]
 
@@ -62,7 +63,7 @@ class Admin::PartnersController < Admin::BaseController
     respond_to do |format|
       if @partner.update(partner_params)
         format.html { redirect_to admin_partners_path
-                      flash[:success] = "Expense was successfully updated" }
+                      flash[:success] = "Partner was successfully updated" }
         format.json { render :show, status: :ok, location: @partner }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -91,6 +92,10 @@ class Admin::PartnersController < Admin::BaseController
 
     def correct_account_or_superadmin
       redirect_to(root_url) unless Partner.find(params[:id]).account == current_account || logged_in_as_superadmin?
+    end
+
+    def superadmin_account
+      redirect_to(root_url) unless logged_in_as_superadmin?
     end
 
     # def layout_set
