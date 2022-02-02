@@ -21,7 +21,7 @@ class Purchase < ApplicationRecord
   end
   validate :fitternity_payment
   scope :not_expired, -> { where('expired = ?', false) }
-  # simple solution (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero  
+  # simple solution (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
   scope :started, -> { joins(:attendances).distinct }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
@@ -32,6 +32,7 @@ class Purchase < ApplicationRecord
   scope :client_name_like, ->(name) { joins(:client).where("clients.first_name ILIKE ? OR clients.last_name ILIKE ?", "%#{name}%", "%#{name}%") }
   scope :uninvoiced, -> { where(invoice: nil)}
   scope :invoiced, -> { where.not(invoice: nil)}
+  scope :unpaid, -> { where(payment_mode: 'Not paid')}
   paginates_per 20
 
   def full_name

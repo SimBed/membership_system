@@ -94,13 +94,13 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def clear_filters
-    clear_session(:filter_workout_group, :filter_status, :search_name)
+    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :filter_unpaid, :search_name)
     redirect_to admin_purchases_path
   end
 
   def filter
     # see application_helper
-    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :search_name)
+    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :filter_unpaid, :search_name)
     # Without the ors (||) the sessions would get set to nil when redirecting to purchases other than through the
     # filter form (e.g. by clicking purchases on the navbar) (as the params items are nil in these cases)
     session[:search_name] = params[:search_name] || session[:search_name]
@@ -109,6 +109,7 @@ class Admin::PurchasesController < Admin::BaseController
     session[:filter_invoice] = params[:invoice] || session[:filter_invoice]
     session[:filter_package] = params[:package] || session[:filter_package]
     session[:filter_close_to_expiry] = params[:close_to_expiry] || session[:filter_close_to_expiry]
+    session[:filter_unpaid] = params[:unpaid] || session[:filter_unpaid]
     redirect_to admin_purchases_path
   end
 
@@ -126,6 +127,8 @@ class Admin::PurchasesController < Admin::BaseController
 
     def purchase_params
       pp = params.require(:purchase).permit(:client_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+      pp[:invoice] = nil if pp[:invoice] == ""
+      pp[:note] = nil if pp[:note] == ""
       pp[:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
       @products_hash = WorkoutGroup.products_hash
       # pp[:product_id] = @products_hash[params[:purchase][:products_hash_index].to_i]['product_id']
@@ -149,10 +152,10 @@ class Admin::PurchasesController < Admin::BaseController
       @purchases = @purchases.with_workout_group(session[:filter_workout_group]) if session[:filter_workout_group].present?
       @purchases = @purchases.uninvoiced if session[:filter_invoice].present?
       @purchases = @purchases.with_package if session[:filter_package].present?
+      @purchases = @purchases.unpaid if session[:filter_unpaid].present?
       @purchases = @purchases.started.not_expired.select { |p| p.close_to_expiry? } if session[:filter_close_to_expiry].present?
       @purchases = @purchases.select { |p| session[:filter_status].include?(p.status) } if session[:filter_status].present?
       # hack to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
       @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
     end
-
 end

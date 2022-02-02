@@ -64,6 +64,10 @@
           <%= check_box_tag 'close_to_expiry', 'close_to_expiry', session[:filter_close_to_expiry].present? ? true : false, class: "checkbox-class", id: "chbox_close_to_expiry", onchange: 'Rails.fire(this.form, "submit")'  %>
           <%= 'close to expiry' %>
         <% end %>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'unpaid', 'unpaid', session[:filter_unpaid].present? ? true : false, class: "checkbox-class", id: "chbox_unpaid", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= 'unpaid' %>
+        <% end %>
     </fieldset>
   </div>
 
