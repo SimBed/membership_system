@@ -21,15 +21,20 @@ class Purchase < ApplicationRecord
   end
   validate :fitternity_payment
   scope :not_expired, -> { where('expired = ?', false) }
-  # simple solution (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
-  scope :started, -> { joins(:attendances).distinct }
+  # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
+  scope :started, -> { joins(:attendances).merge(Attendance.provisional).distinct }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
   scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
-  scope :with_package, -> { joins(:product).where("products.max_classes > 1") }
+  # 'using a scope through an association'
+  # https://apidock.com/rails/ActiveRecord/SpawnMethods/merge
+  scope :with_package, -> { joins(:product).merge(Product.package) }
+  # alternative 'mixes concerns and logic'
+  # scope :with_package, -> { joins(:product).where("max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   scope :order_by_dop, -> { order(dop: :desc) }
-  scope :client_name_like, ->(name) { joins(:client).where("clients.first_name ILIKE ? OR clients.last_name ILIKE ?", "%#{name}%", "%#{name}%") }
+  scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
+  # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
   scope :uninvoiced, -> { where(invoice: nil)}
   scope :invoiced, -> { where.not(invoice: nil)}
   scope :unpaid, -> { where(payment_mode: 'Not paid')}
@@ -42,8 +47,10 @@ class Purchase < ApplicationRecord
   def status
     return 'expired' if self.adjust_restart?
     status_hash = self.status_hash
-    return 'not started' if status_hash[:attendance_status] == 'not started'
-    return 'expired' if status_hash[:attendance_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
+    return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
+    return 'booked first class' if status_hash[:attendance_confirmed_status] == 'not started' && status_hash[:attendance_provisional_status] != 'not started'
+    return 'provisionally expired' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired'
+    return 'expired' if status_hash[:attendance_confirmed_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
     return 'frozen' if freezed?(Date.today)
     'ongoing'
   end
@@ -63,30 +70,25 @@ class Purchase < ApplicationRecord
     status == 'not started'
   end
 
-  # def has_expiry_date?
-  #   statuses = %w[ongoing frozen]
-  #   statuses.include?(status)
-  # end
-
   def expired_in?(month_year)
     expired? && expiry_date.strftime('%b %Y') == month_year
   end
 
   def expiry_cause
     return 'adjust & restart' if adjust_restart
-    return 'used max classes' if attendances.size == product.max_classes
+    return 'used max classes' if attendances.provisional.size == product.max_classes
     return 'max time period'
   end
 
   def expired_on
     return ar_date.strftime('%d %b %y') if adjust_restart
-    return max_class_expiry_date.strftime('%d %b %y') if attendances.size == product.max_classes
+    return max_class_expiry_date.strftime('%d %b %y') if attendances.provisional.size == product.max_classes
     return expiry_date.strftime('%d %b %y')
   end
 
   def expiry_date
     return ar_date if adjust_restart
-    return dop if attendances.size.zero?
+    return dop if attendances.provisional.size.zero?
     start_date = self.start_date
     end_date = case product.validity_unit
       when 'D'
@@ -104,8 +106,6 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_date_formatted
-    # expiry_date.strftime("%d-%m-%Y")
-    # expiry_date&.strftime('%a %d %b %y')
     expiry_date&.strftime('%d %b %y')
   end
 
@@ -152,7 +152,7 @@ class Purchase < ApplicationRecord
 
   def start_to_expiry
     status_hash = self.status_hash
-    return status_hash[:attendance_status] if status_hash[:attendance_status] == 'not started'
+    return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
     return "#{start_date.strftime('%d %b %y')} - #{expiry_date_formatted}"
   end
 
@@ -196,7 +196,7 @@ class Purchase < ApplicationRecord
     def start_date
       # attendances.sort_by { |a| a.start_time }.first.start_time
       # use includes to avoid firing additional query per wkclass
-      attendances.includes(:wkclass).map(&:start_time).min
+      attendances.provisional.includes(:wkclass).map(&:start_time).min
     end
 
     def max_class_expiry_date
@@ -217,9 +217,11 @@ class Purchase < ApplicationRecord
     end
 
     def status_hash
-      attendance_count = self.attendances.size
-      { attendance_status: attendance_status(attendance_count, self.product.max_classes),
-        validity_status: validity_status(attendance_count, self.expiry_date),
+      attendance_provisional_count = self.attendances.provisional.size
+      attendance_confirmed_count = self.attendances.confirmed.size
+      { attendance_provisional_status: attendance_status(attendance_provisional_count, self.product.max_classes),
+        attendance_confirmed_status: attendance_status(attendance_confirmed_count, self.product.max_classes),
+        validity_status: validity_status(attendance_provisional_count, self.expiry_date),
       }
     end
 

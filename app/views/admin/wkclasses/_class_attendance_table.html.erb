@@ -1,11 +1,38 @@
-<% @wkclass.clients.each do |client| %>
-  <div class ="d-flex bg-light">
-      <div class ="cell c-class-name"><%= client.name %></div>
-      <div class ="cell c-class-date"><%= client.product_for_class(@wkclass).name %></div>
-      <div class ="cell c-class-attendance-revenue"><%= number_to_currency(client.revenue_for_class(@wkclass), precision: 0, unit: 'Rs. ') %></div>
-      <% attendance = client.attendances.where(wkclass_id: @wkclass.id).first %>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' }, class: "icon-container" %>
-      </div>
-  </div>
+<!--#% @wkclass.clients.each do |client| %-->
+<% Rails.application.config_for(:constants)["attendance_status_does_count"].each do |attendance_status| %>
+  <% Attendance.by_status(@wkclass, attendance_status).each do |attendance| %>
+    <div class ="d-flex bg-light">
+        <div class ="cell c-class-name"><%= attendance.client.name %></div>
+        <div class ="cell c-class-date"><%= attendance.client.product_for_class(@wkclass).name %></div>
+        <div class ="cell c-class-attendance-revenue"><%= number_to_currency(attendance.client.revenue_for_class(@wkclass), precision: 0, unit: 'Rs. ') %></div>
+        <%# @attendance = attendance.client.attendances.where(wkclass_id: @wkclass.id).first %>
+        <!--div class ="cell c-class-name"><%#= @attendance.status %></div-->
+        <div class ="cell c-class-name">
+          <%= render 'admin/wkclasses/attendance_form', object: attendance %>
+        </div>
+        <div class ="cell c-class-icon">
+          <%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' }, class: "icon-container" %>
+        </div>
+    </div>
+  <% end %>
+<% end %>
+
+<hr>
+
+<% Rails.application.config_for(:constants)["attendance_status_doesnt_count"].each do |attendance_status| %>
+  <% Attendance.by_status(@wkclass, attendance_status).each do |attendance| %>
+    <div class ="d-flex bg-light">
+        <div class ="cell c-class-name"><%= attendance.client.name %></div>
+        <div class ="cell c-class-date"><%= attendance.client.product_for_class(@wkclass).name %></div>
+        <div class ="cell c-class-attendance-revenue"><%= number_to_currency(attendance.client.revenue_for_class(@wkclass), precision: 0, unit: 'Rs. ') %></div>
+        <%# @attendance = attendance.client.attendances.where(wkclass_id: @wkclass.id).first %>
+        <!--div class ="cell c-class-name"><%#= @attendance.status %></div-->
+        <div class ="cell c-class-name">
+          <%= render 'admin/wkclasses/attendance_form', object: attendance %>
+        </div>
+        <div class ="cell c-class-icon">
+          <%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' }, class: "icon-container" %>
+        </div>
+    </div>
+  <% end %>
 <% end %>

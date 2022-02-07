@@ -23,7 +23,7 @@ class Wkclass < ApplicationRecord
   end
 
   def revenue
-    attendances.map { |a| a.revenue }.inject(0, :+)
+    attendances.confirmed.map { |a| a.revenue }.inject(0, :+)
   end
 
   def self.by_date(start_date, end_date)
@@ -33,7 +33,7 @@ class Wkclass < ApplicationRecord
 
   def self.in_workout_group(workout_group_name, start_date, end_date)
     # method used in workout_group controller for @wkclasses_with_instructor_cost
-    # which is then used to output wkclass name and instructor name (so workout and instructor are included to avoid multiple fires to the database)
+    # which is then used to output wkclass name and instructor name (so workout and instructor are 'included' to avoid multiple fires to the database)
     Wkclass.includes(:instructor).includes(:workout)
       .joins(workout: [rel_workout_group_workouts: [:workout_group]])
       .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
@@ -41,17 +41,26 @@ class Wkclass < ApplicationRecord
   end
 
   # for qualifying products in select box for new attendance form
-  def self.clients_with_product(wkclass)
-  # note: If the column in select is not one of the attributes of the model on which the select is called on then those columns are not displayed. All of these attributes are still contained in the objects within AR::Relation and are accessible as any other public instance attributes.
+  def self.clients_with_purchase_for(wkclass)
+    # note: If the column in select is not one of the attributes of the model on which the select is called on then those columns are not displayed. All of these attributes are still contained in the objects within AR::Relation and are accessible as any other public instance attributes.
     client_purchase_ids =
-     Wkclass.joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
-            .where("wkclasses.id = #{wkclass.id}")
-            .order("clients.first_name")
-            .select('clients.id as clientid, purchases.id as purchaseid')
+    WorkoutGroup.joins(products: [purchases: [:client]]).merge(WorkoutGroup.includes_workout_of(wkclass))
+    .order("clients.first_name")
+    .select('clients.id as clientid, purchases.id as purchaseid')
     client_purchase_ids.to_a.select { |cp| !Purchase.find(cp["purchaseid"]).expired? && !Purchase.find(cp["purchaseid"]).freezed?(wkclass.start_time) }
   end
 
-# alternative code with direct SQL rathern than Active record helper methods
+  # previous for clients_with_purchase_for with lots of nested joins and no scope on association
+  # def self.clients_with_product(wkclass)
+  #   client_purchase_ids =
+  #    Wkclass.joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
+  #           .where("wkclasses.id = #{wkclass.id}")
+  #           .order("clients.first_name")
+  #           .select('clients.id as clientid, purchases.id as purchaseid')
+  #   client_purchase_ids.to_a.select { |cp| !Purchase.find(cp["purchaseid"]).expired? && !Purchase.find(cp["purchaseid"]).freezed?(wkclass.start_time) }
+  # end
+
+# alternative code with direct SQL rather than Active record helper methods
   # def self.clients_with_product(wkclass)
   #   sql = "SELECT clients.id AS clientid, purchases.id AS purchaseid
   #          FROM Wkclasses

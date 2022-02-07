@@ -5,6 +5,10 @@ class Attendance < ApplicationRecord
   # so @attendance.start_time equals WkClass.find(@attendance.id).start_time
   # date is a Wkclass instance method that formats start_time
   delegate :start_time, :date, to: :wkclass
+  delegate :client, to: :purchase
+  delegate :name, to: :client
+  scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }
+  scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }
 
   def revenue
     purchase.payment / purchase.attendance_estimate
@@ -22,6 +26,16 @@ class Attendance < ApplicationRecord
   #          ORDER BY date ASC;"
   #     ActiveRecord::Base.connection.exec_query(sql).to_a
   # end
+
+  def self.by_status(wkclass, status)
+     # sort_order = Rails.application.config_for(:constants)["attendance_status"]
+     joins(:wkclass, purchase: [:client])
+    .where(wkclasses: {id: wkclass.id})
+    .where(status: status)
+    .order(:first_name)
+    # .select('attendances.status', 'clients.first_name')
+    #.to_a.sort_by { |a| [sort_order.index(a.status), a.first_name] }
+  end
 
   def self.by_workout_group(workout_group, start_date, end_date)
       attendance_ids = WorkoutGroup.joins(products: [purchases: [attendances: [:wkclass]]])

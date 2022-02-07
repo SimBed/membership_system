@@ -17,6 +17,7 @@ class Client < ApplicationRecord
   validates :email, allow_blank: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+  scope :name_like, ->(name) { where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
 
   def name
     "#{first_name} #{last_name}"
