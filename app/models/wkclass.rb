@@ -38,6 +38,7 @@ class Wkclass < ApplicationRecord
       .joins(workout: [rel_workout_group_workouts: [:workout_group]])
       .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
       .where("workout_groups.name = ?", "#{workout_group_name}")
+      .order(:start_time)
   end
 
   # for qualifying products in select box for new attendance form

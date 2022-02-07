@@ -1,9 +1,17 @@
 <h4>* Classes with Instructor Expense</h4>
-<% @wkclasses_with_instructor_expense.each do |w| %>
+<% @wkclasses_with_instructor_expense.each_with_index do |w, index| %>
 <div class ="d-flex bg-light">
+    <div class='cell c-purchases-attendances-index'>
+      <%= index + 1 %>
+    </div>
     <div class ="cell c-revenue-attend "><%= w.name %></div>
     <div class ="cell c-revenue-name"><%= w.start_time.strftime('%d %b %y') %></div>
+    <div class ="cell c-revenue-name"><%= w.start_time.strftime('%I:%M %p') %></div>
     <div class ="cell c-revenue-attend "><%= w.instructor_name %></div>
     <div class ="cell c-revenue-attend "><%= w.instructor_cost %></div>
 </div>
 <% end %>
+<div class ="d-flex bg-light w-50">
+    <div class ="cell c-revenue-name">Total</div>
+    <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:total_instructor_expense], precision: 0, unit: 'Rs. ') %></div>
+</div>
