@@ -199,20 +199,6 @@ div.danger .cell{
   font-size: 1.3em;
 }
 
-.c-class-name, .c-class-date, .c-client-date, .c-client-wkname, .c-client-product, .c-client-name,
-.c-instructor-name, .c-instructor-workouts, .c-wg-name,
-.c-attendance-date, .c-attendance-wkname, .c-attendance-product, .c-attendance-client,
-.c-workout-name, .c-workout-instructor, .c-workout-workoutgroup, .c-product-name, .c-purchases-client,
-.c-purchases-name, .c-purchases-expiry, .c-revenue-name, .c-revenue-attend, .c-revenue-base,
-.c-revenue-expiry, .c-revenue-total {
-
-}
-
-.c-client-email, .c-client-phone {
-  font-size: 0.7em;
-  padding-left: 0.7em;
-}
-
 .c-class-time, .c-client-revenue, .c-attendance-revenue, .c-product-purchases,
 .c-purchases-attendances, .c-purchases-status, .c-class-attendance-revenue {
   font-size: 0.9em;
@@ -284,4 +270,51 @@ h5 > div {
 }
 button.search{
   @extend %buttonsearch;
+}
+
+%grid-container {
+  display: grid;
+  grid-gap: 0.08em;
+  padding: 0.1em;
+}
+
+.grid-container-client-index {
+  @extend %grid-container;
+  grid-template-columns: 2em auto auto auto auto auto 2em 2em 2em;
+
+  .grid-cell {
+    color: black;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: 0.8em;
+    text-align: left;
+    padding-left: 0.1em;
+  }
+
+  .email {
+    font-size: 0.7em;
+  }
+
+  .icon {
+    position: relative;
+  }
+}
+
+%grid-container-schedule {
+    border: none;
+    text-align: left;
+    max-width: 99%;
+    overflow: auto;
+}
+
+.grid-container-client-index > div:nth-child(18n+1),
+.grid-container-client-index > div:nth-child(18n+2),
+.grid-container-client-index > div:nth-child(18n+3),
+.grid-container-client-index > div:nth-child(18n+4),
+.grid-container-client-index > div:nth-child(18n+5),
+.grid-container-client-index > div:nth-child(18n+6),
+.grid-container-client-index > div:nth-child(18n+7),
+.grid-container-client-index > div:nth-child(18n+8),
+.grid-container-client-index > div:nth-child(18n+9) {
+  background-color: $bg-light;
 }
