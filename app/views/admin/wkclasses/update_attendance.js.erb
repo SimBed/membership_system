@@ -1,0 +1,9 @@
+var classes_table = document.getElementById('classes_table')
+classes_table.innerHTML = "<%= j(render partial: 'admin/wkclasses/class_attendance_table') %>";
+
+var class_summary = document.getElementById('class_summary')
+class_summary.innerHTML = "<%= j(render partial: 'admin/wkclasses/class_summary') %>";
+
+<% flash.each do |message_type, message| %>
+  $("#flash_messages").html("<div class='alert alert-<%= message_type %>'><%= message.html_safe %></div>")
+<% end %>

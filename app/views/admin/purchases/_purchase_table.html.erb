@@ -19,10 +19,15 @@
    <% end %>
    <% unless @purchase.not_started? %>
      <div class='d-flex bg-light flex-row'>
-       <div class='cell c-purchase-row-headers'>Attendances left</div>
+       <div class='cell c-purchase-row-headers'>Bookings left</div>
        <div class='cell px-1'><%= @purchase.attendances_remain %></div>
      </div>
+     <div class='d-flex bg-light flex-row'>
+       <div class='cell c-purchase-row-headers'>Attendances left</div>
+       <div class='cell px-1'><%= @purchase.attendances_remain(provisional: false) %></div>
+     </div>
    <% end %>
+
    <% if @purchase.expired? %>
      <div class='d-flex bg-light flex-row'>
        <div class='cell c-purchase-row-headers'>Expiry cause</div>
@@ -33,6 +38,13 @@
        <div class='cell px-1'><%= @purchase.expired_on %></div>
      </div>
    <% end %>
+   <% if @purchase.provisionally_expired? %>
+     <div class='d-flex bg-light flex-row'>
+       <div class='cell c-purchase-row-headers'>Will expire on</div>
+       <div class='cell px-1'><%= @purchase.will_expire_on %></div>
+     </div>
+   <% end %>
+
    <div class='d-flex bg-light flex-row'>
      <div class='cell c-purchase-row-headers'>Payment mode</div>
      <div class='cell px-1'><%= @purchase.payment_mode %></div>

@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :accounts, only: [:index, :create, :destroy]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
-    resources :attendances, only: [:index, :new, :create, :destroy]
+    resources :attendances, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :clients
     resources :fitternities
     resources :freezes, only: [:new, :edit, :create, :update, :destroy]

@@ -21,9 +21,11 @@
       <%= render 'layouts/client_header' %>
     <% end %>
     <main>
+      <div id="flash_messages">
       <% flash.each do |message_type, message| %>
         <div class="alert alert-<%= message_type %>"><%= message %></div>
       <% end %>
+      </div>
       <%= yield %>
       <%= debug(params) if Rails.env.development? %>
       <%= current_account&.ac_type if Rails.env.development? %>

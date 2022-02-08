@@ -22,26 +22,23 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     # Earlier I thought it had to be sting and converted with .strftime('%Y-%m-%d') but subsequently found either worked
     start_date = Date.parse(session[:revenue_period])
     end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
-    attendances = Attendance.by_workout_group(@workout_group.name, start_date, end_date)
-    class_count = Wkclass.in_workout_group(@workout_group.name,start_date,end_date).size
-    base_revenue = attendances.map { |a| a.revenue }.inject(0, :+)
+    attendances_in_period = Attendance.confirmed.by_workout_group(@workout_group.name, start_date, end_date)
+    classes_in_period = Wkclass.in_workout_group(@workout_group.name, start_date, end_date)
+    base_revenue = attendances_in_period.map { |a| a.revenue }.inject(0, :+)
     expiry_revenue =  @workout_group.expiry_revenue(session[:revenue_period])
     gross_revenue = base_revenue + expiry_revenue
     gst = gross_revenue * (1 - 1 / (1 + @workout_group.gst_rate))
     net_revenue = gross_revenue - gst
     @fixed_expenses = Expense.by_workout_group(@workout_group.name, start_date, end_date)
     total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)
-    # for table of classes where there was an instructor expense
-    @wkclasses_with_instructor_expense =
-      Wkclass.in_workout_group(@workout_group.name,start_date,end_date)
-             .has_instructor_cost
+    @wkclasses_with_instructor_expense = classes_in_period.has_instructor_cost
     total_instructor_expense = @wkclasses_with_instructor_expense.map(&:instructor_cost).inject(0, &:+)
     total_expense = total_fixed_expense + total_instructor_expense
     profit = net_revenue - total_expense
     partner_share = profit * @workout_group.partner_share.to_f / 100
     @revenue = {
-      attendance_count: attendances.size,
-      class_count: class_count,
+      attendance_count: attendances_in_period.size,
+      class_count: classes_in_period.size,
       base_revenue: base_revenue,
       expiry_revenue: expiry_revenue,
       gross_revenue: gross_revenue,

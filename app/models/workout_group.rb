@@ -13,6 +13,11 @@ class WorkoutGroup < ApplicationRecord
   after_create :create_rel_workout_group_workout
   after_update :update_rel_workout_group_workout
 
+  def self.includes_workout_of(wkclass)
+    joins(rel_workout_group_workouts: [:workout])
+    .where("Workouts.name = ?", "#{wkclass.name}")
+  end
+
   # not used
   # def self.instructor_cost_for(workout_group_name, start_date, end_date)
   #   Wkclass.in_workout_group(workout_group_name,start_date,end_date)

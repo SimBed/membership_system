@@ -21,7 +21,7 @@ class Admin::AttendancesController < Admin::BaseController
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
     # e.g. [["Aparna Shah 9C:5W", 1], ["Aryan Agarwal UC:3M", 2], ...]
-    @qualifying_products = Wkclass.clients_with_product(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
+    @qualifying_products = Wkclass.clients_with_purchase_for(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
   end
 
   def create
@@ -34,9 +34,29 @@ class Admin::AttendancesController < Admin::BaseController
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
         @attendance = Attendance.new
         @wkclass = Wkclass.find(session[:wkclass_id])
-        @qualifying_products = Wkclass.clients_with_product(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
+        @qualifying_products = Wkclass.clients_with_purchase_for(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
         render :new, status: :unprocessable_entity
       end
+   end
+
+   def update
+     @attendance = Attendance.find(params[:attendance][:id])
+     @wkclass = Wkclass.find(@attendance.wkclass.id)
+     @client = @attendance.purchase.client.name
+     if @attendance.update(attendance_status_params)
+        respond_to do |format|
+          format.html do
+            flash[:success] = "Attendance was successfully updated"
+            redirect_back fallback_location: admin_wkclasses_path
+          end
+          format.js do
+            flash.now[:success] = "#{@client}'s attendance was successfully updated to  #{@attendance.status}"
+            render 'admin/wkclasses/update_attendance.js.erb'
+          end
+        end
+     else
+       flash[:warning] = "Attendance was not updated"
+     end
    end
 
   def destroy
@@ -53,5 +73,9 @@ class Admin::AttendancesController < Admin::BaseController
 
     def attendance_params
       params.require(:attendance).permit(:wkclass_id, :purchase_id)
+    end
+
+    def attendance_status_params
+      params.require(:attendance).permit(:id, :status)
     end
 end
