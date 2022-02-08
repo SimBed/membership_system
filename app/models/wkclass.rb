@@ -9,6 +9,7 @@ class Wkclass < ApplicationRecord
   delegate :name, to: :instructor, prefix: true
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
+  scope :between_dates, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }) }
 
   def date
     start_time.strftime('%a %d %b %y')
@@ -31,12 +32,21 @@ class Wkclass < ApplicationRecord
            .order(:start_time)
   end
 
+  # def self.in_workout_group(workout_group_name, start_date, end_date)
+  #   # method used in workout_group controller for @wkclasses_with_instructor_cost
+  #   # which is then used to output wkclass name and instructor name (so workout and instructor are 'included' to avoid multiple fires to the database)
+  #   Wkclass.includes(:instructor).includes(:workout)
+  #     .joins(workout: [rel_workout_group_workouts: [:workout_group]])
+  #     .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+  #     .where("workout_groups.name = ?", "#{workout_group_name}")
+  # end
+
   def self.in_workout_group(workout_group_name, start_date, end_date)
     # method used in workout_group controller for @wkclasses_with_instructor_cost
     # which is then used to output wkclass name and instructor name (so workout and instructor are 'included' to avoid multiple fires to the database)
     Wkclass.includes(:instructor).includes(:workout)
+      .between_dates(start_date, end_date)
       .joins(workout: [rel_workout_group_workouts: [:workout_group]])
-      .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
       .where("workout_groups.name = ?", "#{workout_group_name}")
   end
 

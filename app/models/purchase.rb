@@ -47,11 +47,13 @@ class Purchase < ApplicationRecord
   def status
     return 'expired' if self.adjust_restart?
     status_hash = self.status_hash
+    freezed = freezed?(Date.today)
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
     return 'booked first class' if status_hash[:attendance_confirmed_status] == 'not started' && status_hash[:attendance_provisional_status] != 'not started'
+    return 'provisionally expired (and frozen)' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired' && freezed
     return 'provisionally expired' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired'
     return 'expired' if status_hash[:attendance_confirmed_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
-    return 'frozen' if freezed?(Date.today)
+    return 'frozen' if freezed
     'ongoing'
   end
 
@@ -70,25 +72,33 @@ class Purchase < ApplicationRecord
     status == 'not started'
   end
 
+  def provisionally_expired?
+    status == 'provisionally expired'
+  end
+
   def expired_in?(month_year)
     expired? && expiry_date.strftime('%b %Y') == month_year
   end
 
   def expiry_cause
     return 'adjust & restart' if adjust_restart
-    return 'used max classes' if attendances.provisional.size == product.max_classes
+    return 'used max classes' if attendances.confirmed.size == product.max_classes
     return 'max time period'
   end
 
   def expired_on
     return ar_date.strftime('%d %b %y') if adjust_restart
-    return max_class_expiry_date.strftime('%d %b %y') if attendances.provisional.size == product.max_classes
+    return max_class_expiry_date.strftime('%d %b %y') if attendances.confirmed.size == product.max_classes
     return expiry_date.strftime('%d %b %y')
+  end
+
+  def will_expire_on
+    attendances.provisional.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
   end
 
   def expiry_date
     return ar_date if adjust_restart
-    return dop if attendances.provisional.size.zero?
+    return 'n/a' if attendances.provisional.size.zero?
     start_date = self.start_date
     end_date = case product.validity_unit
       when 'D'
@@ -106,7 +116,10 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_date_formatted
-    expiry_date&.strftime('%d %b %y')
+    # expiry_date&.strftime('%d %b %y')
+    @expiry_date = expiry_date
+    return @expiry_date.strftime('%d %b %y') if @expiry_date.is_a?(Time)
+    @expiry_date
   end
 
   def days_to_expiry
@@ -116,16 +129,6 @@ class Purchase < ApplicationRecord
       1000
     end
   end
-
-  # def days_to_expiry
-  #   return 1000 unless status == 'ongoing'
-  #   (expiry_date.to_date - Date.today).to_i
-  # end
-
-  # def days_to_expiry_format
-  #   return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
-  #   ['','']
-  # end
 
   # for revenue cashflows
   def attendance_estimate
@@ -144,7 +147,7 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_revenue
-    attendance_revenue = attendances.map { |a| a.revenue }.inject(0, :+)
+    attendance_revenue = attendances.confirmed.map { |a| a.revenue }.inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
     return payment - attendance_revenue unless adjust_restart?
     ar_payment - attendance_revenue
@@ -156,29 +159,16 @@ class Purchase < ApplicationRecord
     return "#{start_date.strftime('%d %b %y')} - #{expiry_date_formatted}"
   end
 
-  def attendances_remain_format
-    ac = attendances.count
-    # "[number] [attendances icon] [more icon]"
-    base_html = "#{ac} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
-    pmc = product.max_classes
-    # unlimited
-    return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if pmc == 1000
-    # unused classes
-    return "#{base_html} #{pmc} (#{pmc - ac})".html_safe if ac < pmc
-    # otherwise
-    "#{base_html} #{pmc}".html_safe
-  end
-
   def attendances_remain_numeric
     return product.max_classes - attendances.count if status == 'ongoing'
     return 1000
   end
 
-  def attendances_remain(unlimited_text: true)
-    ac = attendances.count
-    pmc = product.max_classes
-    return 'unlimited' if pmc == 1000 && unlimited_text == true
-    pmc - ac
+  def attendances_remain(provisional: true, unlimited_text: true)
+    ac = provisional ? attendances.provisional.count : attendances.confirmed.count
+    mc = product.max_classes
+    return 'unlimited' if mc == 1000 && unlimited_text == true
+    mc - ac
   end
 
   # apply to ongoing purchases. Not designed to work sensibly with an expired purchase
@@ -187,9 +177,27 @@ class Purchase < ApplicationRecord
     false
   end
 
-  # def self.client_name_search(name)
-  #    joins(:client)
-  #   .where("clients.first_name ILIKE ? OR clients.last_name ILIKE ?", "%#{name}%", "%#{name}%")
+  # def attendances_remain_format
+  #   ac = attendances.count
+  #   # "[number] [attendances icon] [more icon]"
+  #   base_html = "#{ac} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
+  #   pmc = product.max_classes
+  #   # unlimited
+  #   return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if pmc == 1000
+  #   # unused classes
+  #   return "#{base_html} #{pmc} (#{pmc - ac})".html_safe if ac < pmc
+  #   # otherwise
+  #   "#{base_html} #{pmc}".html_safe
+  # end
+
+  # def days_to_expiry
+  #   return 1000 unless status == 'ongoing'
+  #   (expiry_date.to_date - Date.today).to_i
+  # end
+
+  # def days_to_expiry_format
+  #   return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
+  #   ['','']
   # end
 
   private
@@ -200,7 +208,7 @@ class Purchase < ApplicationRecord
     end
 
     def max_class_expiry_date
-      attendances.includes(:wkclass).map(&:start_time).max
+      attendances.confirmed.includes(:wkclass).map(&:start_time).max
     end
 
     def attendance_status(attendance_count, max_classes)

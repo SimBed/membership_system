@@ -16,8 +16,8 @@ class Admin::PartnersController < Admin::BaseController
     @total_share = 0
     @partner_share={}
     @partner.workout_groups.each do |wg|
-      attendances = Attendance.by_workout_group(wg.name, start_date, end_date)
-      base_revenue = attendances.map { |a| a.revenue }.inject(0, :+)
+      attendances_in_period = Attendance.confirmed.by_workout_group(wg.name, start_date, end_date)
+      base_revenue = attendances_in_period.map { |a| a.revenue }.inject(0, :+)
       expiry_revenue =  wg.expiry_revenue(session[:revenue_period])
       gross_revenue = base_revenue + expiry_revenue
       gst = gross_revenue * (1 - 1 / (1 + wg.gst_rate))
@@ -25,7 +25,7 @@ class Admin::PartnersController < Admin::BaseController
       @fixed_expenses = Expense.by_workout_group(wg.name, start_date, end_date)
       total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)
       @wkclasses_with_instructor_expense =
-        Wkclass.in_workout_group(wg.name,start_date,end_date)
+        Wkclass.in_workout_group(wg.name, start_date, end_date)
                .has_instructor_cost
       total_instructor_expense = @wkclasses_with_instructor_expense.map(&:instructor_cost).inject(0, &:+)
       total_expense = total_fixed_expense + total_instructor_expense
