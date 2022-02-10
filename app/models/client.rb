@@ -23,6 +23,14 @@ class Client < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def last_class
+    attendances.confirmed.includes(:wkclass).map(&:start_time).max
+  end
+
+  def total_spend
+    purchases.map(&:payment).inject(0, :+)
+  end
+
   def product_for_class(wkclass)
     Product.find(self.purchase_for_class(wkclass).product_id)
   end

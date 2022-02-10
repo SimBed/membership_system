@@ -38,13 +38,15 @@ class WorkoutGroup < ApplicationRecord
   # and creates a name out of them
   # a product can then be selected from a single dropdown when adding a purchase eg 'Space 1C:1D Diwali21'
   def self.products_hash
+# attributes returns an array of hashes like below and the each loop adds the name key/value pair to it.
 # [{"wg_name"=>"Space",.."price"=>500,.."name"=>"Space UC:1W Diwali21"}, {...}, {...} ...]
-    WorkoutGroup.joins(products: [:prices])
-           .select('workout_groups.name as wg_name','products.id as product_id', 'products.max_classes', 'products.validity_length', 'products.validity_unit', 'prices.name as price_name', 'prices.price')
-           .map(&:attributes)
-           .each { |p| p['name'] = Product.full_name(p['wg_name'], p['max_classes'],
-                       p['validity_length'], p['validity_unit'], p['price_name'])
-                  }
+    joins(products: [:prices])
+   .select('workout_groups.name as wg_name','products.id as product_id', 'products.max_classes',
+           'products.validity_length', 'products.validity_unit', 'prices.name as price_name', 'prices.price')
+   .map(&:attributes)
+   .each { |p| p['name'] = Product.full_name(p['wg_name'], p['max_classes'],
+               p['validity_length'], p['validity_unit'], p['price_name'])
+          }
   end
 
   def attendances_in(revenue_date)

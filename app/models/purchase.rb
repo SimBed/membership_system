@@ -40,8 +40,14 @@ class Purchase < ApplicationRecord
   scope :unpaid, -> { where(payment_mode: 'Not paid')}
   paginates_per 20
 
+  # violates MVC - improve
+  # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
   def full_name
-    "#{name} : #{number_to_currency(self.payment, precision: 0, unit: '')}"
+    "#{name_with_dop} - #{ActionController::Base.helpers.number_to_currency(self.payment, precision: 0, unit: 'Rs.')}"
+  end
+
+  def name_with_dop
+    "#{name} - #{dop.strftime('%d %b %y')}"
   end
 
   def status

@@ -318,3 +318,33 @@ button.search{
 .grid-container-client-index > div:nth-child(18n+9) {
   background-color: $bg-light;
 }
+
+.grid-container-client-summary {
+  @extend %grid-container;
+  grid-template-columns: 8em 8em;
+
+  .grid-cell {
+    background-color: #e9ecef;
+    color: black;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: 0.8em;
+    text-align: left;
+    padding-left: 0.1em;
+  }
+}
+
+.grid-container-client-attendances {
+  @extend %grid-container;
+  grid-template-columns: auto auto auto auto;
+
+  .grid-cell {
+    background-color: #e9ecef;
+    color: black;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: 0.9em;
+    text-align: left;
+    padding-left: 0.1em;
+  }
+}

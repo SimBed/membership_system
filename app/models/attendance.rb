@@ -7,8 +7,10 @@ class Attendance < ApplicationRecord
   delegate :start_time, :date, to: :wkclass
   delegate :client, to: :purchase
   delegate :name, to: :client
+  delegate :product, to: :purchase
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }
   scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }
+  scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
 
   def revenue
     purchase.payment / purchase.attendance_estimate
@@ -60,6 +62,22 @@ class Attendance < ApplicationRecord
      .order(:start_time)
   end
 
+  # def self.for_client_purchase(clientid, purchaseid)
+  #    joins(:wkclass, purchase: [product: [:workout_group]])
+  #   .joins(purchase: [:client])
+  #   .where(clients: {id: clientid})
+  #   .where(purchase_condition(purchaseid))
+  #   .order(:dop, :start_time)
+  # end
+
+  def self.for_client_purchase(clientid, purchaseid)
+     joins(:wkclass, purchase: [product: [:workout_group]])
+    .joins(purchase: [:client])
+    .where(clients: {id: clientid})
+    .where(purchase_condition(purchaseid))
+    .order(dop: :desc, start_time: :asc)
+  end
+
   def self.by_date(start_date, end_date)
     # note wkclass belongs to attendance so wkclass not wkclasses
     attendance_ids = WorkoutGroup.joins(products: [purchases: [attendances: [:wkclass]]])
@@ -96,10 +114,34 @@ class Attendance < ApplicationRecord
       Attendance.find(attendance_ids)
   end
 
+  def self.test(clientid)
+    sql = "SELECT attendances.id
+           FROM Clients
+           INNER JOIN Purchases ON Clients.id = Purchases.client_id
+           INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
+           INNER JOIN Products ON Products.id = Purchases.product_id
+           WHERE Clients.id = '#{clientid}';"
+      attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
+      Attendance.find(attendance_ids)
+  end
+
+  def self.test2(clientid)
+    sql = "SELECT * FROM Attendances
+           INNER JOIN Purchases ON Purchases.id = Attendances.purchase_id
+           INNER JOIN Products ON Products.id = Purchases.product_id
+           INNER JOIN Clients ON Clients.id = Purchases.client_id
+           WHERE Clients.id = '#{clientid}';"
+      ActiveRecord::Base.connection.exec_query(sql)
+  end
+
   private
     # https://api.rubyonrails.org/v6.1.4/classes/ActiveRecord/QueryMethods.html#method-i-where
     # If an array is passed, then the first element of the array is treated as a template, and the remaining elements are inserted into the template to generate the condition.
     def self.workout_group_condition(selection)
       ["workout_groups.name = ?", "#{selection}"] unless selection == 'All'
+    end
+
+    def self.purchase_condition(selection)
+      ["purchases.id = ?", "#{selection}"] unless selection == 'All'
     end
 end

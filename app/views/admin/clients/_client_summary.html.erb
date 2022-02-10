@@ -1,0 +1,8 @@
+<div class="grid-container-client-summary">
+  <div class="grid-cell name">total classes</div>
+  <div class="grid-cell name"><%= @client_hash[:attendances] %></div>
+  <div class="grid-cell email">total spend</div>
+  <div class="grid-cell name"><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></div>
+  <div class="grid-cell name">last class</div>
+  <div class="grid-cell email"><%= "#{time_ago_in_words(@client_hash[:last_class])} ago" %></div>
+</div>

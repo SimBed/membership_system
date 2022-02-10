@@ -1,12 +1,13 @@
-  <% @attendances.each do |attendance| %>
-    <div class ="d-flex bg-light">
-        <div class ="cell c-client-date"><%= attendance.wkclass.date %></div>
-        <div class ="cell c-client-wkname"><%= attendance.wkclass.workout.name %></div>
-        <div class ="cell c-client-product"><%= attendance.purchase.product.name %></div>
-        <div class ="cell c-class-revenue"><%= number_to_currency(attendance.revenue, precision: 0, unit: '') %></div>
-        <div class ="cell c-class-icon">
-          <%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete,
-                      data: { confirm: 'Attendance will de deleted. Are you sure?' }, class: "icon-container" %>
-        </div>
-    </div>
+<% @purchases.each do |purchase| %>
+  <div class ="cell"><%= purchase.full_name %></div>
+  <div class="grid-container-client-attendances">
+    <% attendances = purchase.attendances.order_by_date %>
+    <% attendances.each_with_index do |attendance, index| %>
+      <div class ="grid-cell"><%= attendances.size - index %></div>
+      <div class ="grid-cell"><%= attendance.wkclass.date %></div>
+      <div class ="grid-cell"><%= attendance.wkclass.workout.name %></div>
+      <div class ="grid-cell"><%= attendance.purchase.product.name %></div>
+    <% end %>
+  </div>
+  <hr>
   <% end %>

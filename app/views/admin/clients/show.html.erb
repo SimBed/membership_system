@@ -1,10 +1,13 @@
-<div class ="d-flex bg-light">
-  <h5><%= @client.name %></h5>
-  <form action=<%= "/admin/clients/#{params[:id]}" %> method="GET" class="ms-3 align-with-header">
-      <select name="attendance_period" onchange="this.form.submit()">
-        <%= options_for_select @months, session[:attendance_period] %>
+  <h2><%= @client.name %> <form action=<%= "/admin/clients/#{params[:id]}" %> method="GET" >
+      <select name="purchaseid" onchange="this.form.submit()" class= "sort">
+        <%#= options_for_select @months, session[:attendance_period] %>
+        <%= options_for_select @products_purchased, session[:purchaseid] %>
       </select>
   </form>
+  </h2>
+
+<div id="client-summary" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'client_summary' %>
 </div>
 
 <div id="attendances-table" class="container px-1 mb-5 margin-override">

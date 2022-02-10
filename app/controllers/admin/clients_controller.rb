@@ -9,17 +9,22 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def show
-    session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || Date.today.beginning_of_month.strftime('%b %Y')
-    start_date = Date.parse(session[:attendance_period]).strftime('%Y-%m-%d')
-    end_date = Date.parse(session[:attendance_period]).end_of_month.strftime('%Y-%m-%d')
-    @attendances = Attendance.by_client(@client.id, start_date, end_date)
-    # @client_hash = {
-    #   number: attendances.size,
-    #   base_revenue: base_revenue,
-    #   expiry_revenue: expiry_revenue,
-    #   total_revenue: base_revenue + expiry_revenue
-    # }
-    @months = months_logged
+#    session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || Date.today.beginning_of_month.strftime('%b %Y')
+    session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'All'
+    # start_date = Date.parse(session[:attendance_period]).strftime('%Y-%m-%d')
+    # end_date = Date.parse(session[:attendance_period]).end_of_month.strftime('%Y-%m-%d')
+      if session[:purchaseid] == 'All'
+      @purchases = @client.purchases.order_by_dop
+      else
+      @purchases = [Purchase.find(session[:purchaseid])]
+    end if
+    @client_hash = {
+      attendances: @client.attendances.size,
+      spend: @client.total_spend,
+      last_class: @client.last_class
+    }
+
+    @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id]  }
   end
 
   def new
