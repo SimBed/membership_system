@@ -56,9 +56,9 @@ class Purchase < ApplicationRecord
     freezed = freezed?(Date.today)
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
     return 'booked first class' if status_hash[:attendance_confirmed_status] == 'not started' && status_hash[:attendance_provisional_status] != 'not started'
+    return 'expired' if status_hash[:attendance_confirmed_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
     return 'provisionally expired (and frozen)' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired' && freezed
     return 'provisionally expired' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired'
-    return 'expired' if status_hash[:attendance_confirmed_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
     return 'frozen' if freezed
     'ongoing'
   end
