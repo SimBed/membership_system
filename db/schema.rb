@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_10_132202) do
+ActiveRecord::Schema.define(version: 2022_02_11_133652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(version: 2022_02_10_132202) do
     t.integer "partner_id"
     t.integer "partner_share"
     t.boolean "gst_applies", default: true
+    t.boolean "requires_invoice", default: true
   end
 
   create_table "workouts", force: :cascade do |t|

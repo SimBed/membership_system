@@ -150,7 +150,7 @@ class Admin::PurchasesController < Admin::BaseController
 
     def handle_search
       @purchases = @purchases.with_workout_group(session[:filter_workout_group]) if session[:filter_workout_group].present?
-      @purchases = @purchases.uninvoiced if session[:filter_invoice].present?
+      @purchases = @purchases.uninvoiced.requires_invoice if session[:filter_invoice].present?
       @purchases = @purchases.with_package if session[:filter_package].present?
       @purchases = @purchases.unpaid if session[:filter_unpaid].present?
       @purchases = @purchases.started.not_expired.select { |p| p.close_to_expiry? } if session[:filter_close_to_expiry].present?

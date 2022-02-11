@@ -15,10 +15,10 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def show
-#    session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || Date.today.beginning_of_month.strftime('%b %Y')
+    # without clearing the session, the following sequence will show the attendances of the purchase of the preiously viewed client:
+    # show clientA, select one of clientA's purchases, return to client index, show client B
+    clear_session(:purchaseid)
     session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'All'
-    # start_date = Date.parse(session[:attendance_period]).strftime('%Y-%m-%d')
-    # end_date = Date.parse(session[:attendance_period]).end_of_month.strftime('%Y-%m-%d')
       if session[:purchaseid] == 'All'
       @purchases = @client.purchases.order_by_dop
       else

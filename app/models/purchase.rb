@@ -9,6 +9,7 @@ class Purchase < ApplicationRecord
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, to: :product
   delegate :revenue_for_class, to: :client
+  delegate :workout_group, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },
@@ -36,6 +37,7 @@ class Purchase < ApplicationRecord
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
   # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
   scope :uninvoiced, -> { where(invoice: nil)}
+  scope :requires_invoice, -> { joins(product: [:workout_group]).where(workout_groups: {requires_invoice: true}) }
   scope :invoiced, -> { where.not(invoice: nil)}
   scope :unpaid, -> { where(payment_mode: 'Not paid')}
   paginates_per 20
