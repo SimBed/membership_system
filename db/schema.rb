@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_03_104124) do
+ActiveRecord::Schema.define(version: 2022_02_10_132202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_104124) do
     t.string "instagram"
     t.integer "account_id"
     t.text "note"
+    t.string "whatsapp"
   end
 
   create_table "expenses", force: :cascade do |t|

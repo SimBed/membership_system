@@ -6,6 +6,12 @@ class Admin::ClientsController < Admin::BaseController
 
   def index
     @clients = Client.order_by_name
+    handle_search_name unless session[:search_client_name].blank?
+    handle_search
+    respond_to do |format|
+      format.html {}
+      format.js {render 'index.js.erb'}
+    end
   end
 
   def show
@@ -59,13 +65,25 @@ class Admin::ClientsController < Admin::BaseController
       flash[:success] = "#{@client.name} was successfully deleted"
   end
 
+  def clear_filters
+    clear_session(:filter_packagee, :search_client_name)
+    redirect_to admin_clients_path
+  end
+
+  def filter
+    clear_session(:filter_packagee, :search_client_name)
+    session[:search_client_name] = params[:search_client_name] || session[:search_client_name]
+    session[:filter_packagee] = params[:packagee] || session[:filter_packagee]
+    redirect_to admin_clients_path
+  end
+
   private
     def set_client
       @client = Client.find(params[:id])
     end
 
     def client_params
-      params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram)
+      params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :note)
     end
 
     def correct_account
@@ -74,6 +92,14 @@ class Admin::ClientsController < Admin::BaseController
 
     def correct_account_or_admin
       redirect_to(root_url) unless Client.find(params[:id]).account == current_account || logged_in_as_admin?
+    end
+
+    def handle_search_name
+      @clients = @clients.name_like(session[:search_client_name])
+    end
+
+    def handle_search
+      @clients = @clients.joins(:purchases).merge(Purchase.with_package).distinct if session[:filter_packagee].present?
     end
 
     # def layout_set

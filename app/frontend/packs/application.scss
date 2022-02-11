@@ -280,7 +280,7 @@ button.search{
 
 .grid-container-client-index {
   @extend %grid-container;
-  grid-template-columns: 2em auto auto auto auto auto 2em 2em 2em;
+  grid-template-columns: auto auto auto auto 2em 2em 2em;
 
   .grid-cell {
     color: black;
@@ -289,6 +289,20 @@ button.search{
     font-size: 0.8em;
     text-align: left;
     padding-left: 0.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    a.like_button {
+      border-radius: 1rem;
+      line-height: 1.25;
+      padding: 0.1rem 0.5rem;
+      box-shadow: 0 1px #999;
+      text-decoration: none;
+      color: black;
+      &:hover {
+        color: $gray-darker;
+      }
+    }
   }
 
   .email {
@@ -307,15 +321,13 @@ button.search{
     overflow: auto;
 }
 
-.grid-container-client-index > div:nth-child(18n+1),
-.grid-container-client-index > div:nth-child(18n+2),
-.grid-container-client-index > div:nth-child(18n+3),
-.grid-container-client-index > div:nth-child(18n+4),
-.grid-container-client-index > div:nth-child(18n+5),
-.grid-container-client-index > div:nth-child(18n+6),
-.grid-container-client-index > div:nth-child(18n+7),
-.grid-container-client-index > div:nth-child(18n+8),
-.grid-container-client-index > div:nth-child(18n+9) {
+.grid-container-client-index > div:nth-child(14n+1),
+.grid-container-client-index > div:nth-child(14n+2),
+.grid-container-client-index > div:nth-child(14n+3),
+.grid-container-client-index > div:nth-child(14n+4),
+.grid-container-client-index > div:nth-child(14n+5),
+.grid-container-client-index > div:nth-child(14n+6),
+.grid-container-client-index > div:nth-child(14n+7) {
   background-color: $bg-light;
 }
 
@@ -334,9 +346,24 @@ button.search{
   }
 }
 
+.grid-container-client-data {
+  @extend %grid-container;
+  grid-template-columns: 8em 32em;
+
+  .grid-cell {
+    background-color: #e9ecef;
+    color: black;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: 0.8em;
+    text-align: left;
+    padding-left: 0.1em;
+  }
+}
+
 .grid-container-client-attendances {
   @extend %grid-container;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 2em 12em 12em;
 
   .grid-cell {
     background-color: #e9ecef;
@@ -347,4 +374,19 @@ button.search{
     text-align: left;
     padding-left: 0.1em;
   }
+}
+
+img.back_icon {
+  width: 2.0rem;
+  height: 2.0rem;
+}
+
+.c-league-name {
+  font-size: 0.65em;
+  text-align: left;
+  padding-left: 0.1em;
+  flex-basis: 30%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

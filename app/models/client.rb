@@ -10,6 +10,7 @@ class Client < ApplicationRecord
   validate :full_name_must_be_unique
   # validates :email, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
+  validates :whatsapp, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :instagram, uniqueness: { case_sensitive: false }, allow_blank: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
   # note allow_blank will skip the validations on blank fields so multiple clients

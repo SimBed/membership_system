@@ -8,12 +8,12 @@
   <%= render partial: 'revenues_table' %>
 </div>
 
-<%= link_to 'back to workout groups', admin_workout_groups_path %>
-
 <div id="wkclasses-with-expense-table" class="container px-1 mt-5 mb-5 margin-override">
   <%= render partial: 'wkclasses_with_expense_table' %>
 </div>
 
-<div id="other-expense-table" class="container px-1 mt-5 mb-5 margin-override">
+<div id="other-expense-table" class="container px-1 mt-5 mb-3 margin-override">
   <%= render partial: 'other_expense_table' %>
 </div>
+
+<%= link_to image_tag('back.png', class: "back_icon"), admin_workout_groups_path, class: "icon-container" %>

@@ -1,0 +1,33 @@
+  <%= form_with(url: client_filter_path, method: "get", local: false, class: "form-class") do %>
+
+  <div class="field">
+  <%= text_field_tag :search_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_client_name], onchange: 'Rails.fire(this.form, "submit")' %>
+  </div>
+
+  <div class="container mb-1">
+  <div class="row">
+
+  <div class="col-4 px-0">
+    <fieldset>
+      <legend>ATTRIBUTE</legend>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'packagee', 'packagee', session[:filter_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= 'has package' %>
+        <% end %>
+    </fieldset>
+  </div>
+
+  <div class="container d-flex">
+    <%= link_to image_tag('clear_filter.png', class: "filter_icon"), clear_client_filters_path, {remote: true, class: "search searchdelete icon-container"} %>
+  </div>
+  <% end %>
+
+  </div>
+  </div>
+
+  <!-- bridge league approach -->
+    <!--select id="show_pages">
+      <%#= options_for_select(@leagues, params[:id]) %>
+    </select-->
+  <hr class = "search mb-3"></hr>
+</div>

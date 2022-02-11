@@ -1,0 +1,5 @@
+var clients_filter = document.getElementById('clients-filter')
+clients_filter.innerHTML = "<%= j(render partial: 'filter_form') %>";
+
+var clients_table = document.getElementById('clients-table')
+clients_table.innerHTML = "<%= j(render partial: 'clients_table') %>";

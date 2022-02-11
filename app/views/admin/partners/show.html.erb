@@ -4,8 +4,8 @@
               </select>
             </form>
 </h2>
-<div id="revenues-table" class="container px-1 mb-5 margin-override">
+<div id="revenues-table" class="container px-1 mb-3 margin-override">
   <%= render partial: 'revenues_table' %>
 </div>
 
-<%= link_to 'back to partners', admin_partners_path %>
+<%= link_to image_tag('back.png', class: "back_icon"), admin_partners_path, class: "icon-container" %>

@@ -1,10 +1,6 @@
 <div class="grid-container-client-index">
   <% @clients.each do |client| %>
-    <div class="grid-cell icon">
-      <%= link_to image_tag('clipboard.png', class: "table_icon"), admin_client_path(client), class: "icon-container" %>
-    </div>
-    <div class="grid-cell name"><%= client.first_name %></div>
-    <div class="grid-cell name"><%= client.last_name %></div>
+    <div class="grid-cell name link"><%= link_to client.name, admin_client_path(client), class: "like_button" %></div>
     <div class="grid-cell email"><%= client.email %></div>
     <div class="grid-cell email"><%= client.phone %></div>
     <div class="grid-cell email"><%= client.instagram %></div>

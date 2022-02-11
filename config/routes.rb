@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   get 'client/clients/show', to: 'client/clients#show', as: 'client_show'
   get 'public_pages/welcome'
   root 'public_pages#welcome'
-  get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_filters'
+  get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
+  get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'  
   # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
   get '/purchases/filter', to: 'admin/purchases#filter', as: 'purchase_filter'
   get '/wkclasses/filter', to: 'admin/wkclasses#filter'
+  get '/clients/filter', to: 'admin/clients#filter', as: 'client_filter'
   post '/products/payment', to: 'admin/products#payment'
   get    '/login',   to: 'auth/sessions#new'
   post   '/login',   to: 'auth/sessions#create'

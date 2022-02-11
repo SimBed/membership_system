@@ -1,4 +1,4 @@
 <h2>Editing Purchase</h2>
 <%= render 'form', purchase: @purchase %>
-<%= link_to 'show purchase', admin_purchase_path(@purchase) %> |
-<%= link_to 'back to purchases', admin_purchases_path %>
+<%= link_to image_tag('clipboard.png', class: "back_icon"), admin_purchase_path(@purchase), class: "icon-container" %> |
+<%= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>

@@ -1,8 +1,23 @@
+<div class="grid-container-client-data">
+  <div class="grid-cell name">Email</div>
+  <div class="grid-cell name"><%= @client.email %></div>
+  <div class="grid-cell email">Phone</div>
+  <div class="grid-cell name"><%= @client.phone %></div>
+  <div class="grid-cell name">Whatsapp</div>
+  <div class="grid-cell email"><%= %></div>
+  <div class="grid-cell name">Instagram</div>
+  <div class="grid-cell email"><%= @client.instagram %></div>
+  <div class="grid-cell name">Note</div>
+  <div class="grid-cell email"><%= @client.note %></div>
+</div>
+
 <div class="grid-container-client-summary">
-  <div class="grid-cell name">total classes</div>
+  <div class="grid-cell name">Total classes</div>
   <div class="grid-cell name"><%= @client_hash[:attendances] %></div>
-  <div class="grid-cell email">total spend</div>
-  <div class="grid-cell name"><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></div>
-  <div class="grid-cell name">last class</div>
-  <div class="grid-cell email"><%= "#{time_ago_in_words(@client_hash[:last_class])} ago" %></div>
+  <% if logged_in_as_superadmin? %>
+    <div class="grid-cell email">Total spend</div>
+    <div class="grid-cell name"><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></div>
+  <% end %>
+  <div class="grid-cell name">Last class</div>
+  <div class="grid-cell email"><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></div>
 </div>

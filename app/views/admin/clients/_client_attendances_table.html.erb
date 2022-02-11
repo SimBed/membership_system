@@ -1,12 +1,11 @@
 <% @purchases.each do |purchase| %>
-  <div class ="cell"><%= purchase.full_name %></div>
+  <div class ="cell d-inline-block px-2"><%= purchase.full_name %></div>
   <div class="grid-container-client-attendances">
     <% attendances = purchase.attendances.order_by_date %>
     <% attendances.each_with_index do |attendance, index| %>
       <div class ="grid-cell"><%= attendances.size - index %></div>
       <div class ="grid-cell"><%= attendance.wkclass.date %></div>
       <div class ="grid-cell"><%= attendance.wkclass.workout.name %></div>
-      <div class ="grid-cell"><%= attendance.purchase.product.name %></div>
     <% end %>
   </div>
   <hr>

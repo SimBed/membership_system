@@ -1,8 +1,8 @@
 <div id="class_summary" class="mb-2">
   <%= render partial: 'class_summary' %>
 </div>
-<div id="classes_table" class="container px-1 mb-5 margin-override">
+<div id="classes_table" class="container px-1 mb-3 margin-override">
   <%= render partial: 'class_attendance_table' %>
 </div>
 
-<%= link_to 'back to classes', admin_wkclasses_path %>
+<%= link_to image_tag('back.png', class: "back_icon"), admin_wkclasses_path, class: "icon-container" %>
