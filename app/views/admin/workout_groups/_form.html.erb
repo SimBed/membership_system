@@ -32,6 +32,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :requires_invoice, 'The Space invoices the client' %>
+    <%= form.select :requires_invoice, [true, false] %>
+  </div>
+
+  <div class="field">
     <legend>Workout</legend>
     <% @workouts.each do |workout| %>
       <div class ="d-flex">

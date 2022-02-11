@@ -104,7 +104,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     end
 
     def workout_group_params
-      params.require(:workout_group).permit(:name, :partner_id, :partner_share, :gst_applies, workout_ids: [])
+      params.require(:workout_group).permit(:name, :partner_id, :partner_share, :gst_applies, :invoiceable, workout_ids: [])
     end
 
     def correct_account_or_superadmin

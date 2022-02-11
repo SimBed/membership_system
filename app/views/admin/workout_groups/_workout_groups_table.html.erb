@@ -8,6 +8,8 @@
         <% end %>
       <div class ="cell c-wg-name"><%= link_to workout_group.partner.name, admin_partner_path(workout_group.partner) %></div>
       <div class ="cell c-wg-name"><%= workout_group.workout_list %></div>
+      <div class ="cell c-class-icon"><%= image_tag('gst.png', class: "table_icon") if workout_group.gst_applies %></div>
+      <div class ="cell c-class-icon"><%= image_tag('invoice.png', class: "table_icon") if workout_group.requires_invoice %></div>
       <div class ="cell c-class-icon">
         <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_workout_group_path(workout_group), class: "icon-container" %>
       </div>
