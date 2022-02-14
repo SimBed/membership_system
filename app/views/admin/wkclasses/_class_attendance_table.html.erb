@@ -2,8 +2,8 @@
 <% Rails.application.config_for(:constants)["attendance_status_does_count"].each do |attendance_status| %>
   <% Attendance.by_status(@wkclass, attendance_status).each do |attendance| %>
     <div class ="d-flex bg-light">
-        <div class ="cell c-class-name"><%= attendance.client.name %></div>
-        <div class ="cell c-class-date"><%= attendance.client.product_for_class(@wkclass).name %></div>
+        <div class ="cell c-class-name"><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></div>
+        <div class ="cell c-class-date"><%= link_to attendance.client.product_for_class(@wkclass).name, admin_purchase_path(attendance.purchase), class: "like_button" %></div>
         <div class ="cell c-class-attendance-revenue"><%= number_to_currency(attendance.client.revenue_for_class(@wkclass), precision: 0, unit: 'Rs. ') %></div>
         <%# @attendance = attendance.client.attendances.where(wkclass_id: @wkclass.id).first %>
         <!--div class ="cell c-class-name"><%#= @attendance.status %></div-->
