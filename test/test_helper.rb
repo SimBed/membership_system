@@ -8,7 +8,7 @@ class ActiveSupport::TestCase
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   # fixtures :all
-  fixtures :instructors, :workouts, :accounts, :clients, :partners
+  fixtures :instructors, :workouts, :accounts, :clients, :partners, :wkclasses
 
   # def log_in_as(account)
   #   session[:account_id] = account.id

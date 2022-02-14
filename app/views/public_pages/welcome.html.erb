@@ -1,7 +1,9 @@
-<% if logged_in_as_admin? %>
+<% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
   <% controller.redirect_to admin_clients_path %>
-<% elsif logged_in_as_client? %>
+<% elsif logged_in_as?('client') %>
   <%= controller.redirect_to admin_client_path(current_account.clients.first) %>
+  <% elsif logged_in_as?('partner') %>
+    <%= controller.redirect_to admin_partner_path(current_account.partners.first) %>
 <% else %>
   <%= render template: 'auth/sessions/new' %>
 <% end %>

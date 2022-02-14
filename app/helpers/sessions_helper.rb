@@ -52,14 +52,21 @@ module SessionsHelper
   end
 
   def admin_account
-    unless logged_in_as_admin? || logged_in_as_superadmin?
+    unless logged_in_as?('admin', 'superadmin')
       flash[:warning] = 'Forbidden'
       redirect_to(login_path)
     end
   end
 
   def superadmin_account
-    unless logged_in_as_superadmin?
+    unless logged_in_as?('superadmin')
+      flash[:warning] = 'Forbidden'
+      redirect_to(login_path)
+    end
+  end
+
+  def junioradmin_account
+    unless logged_in_as?('junioradmin', 'admin', 'superadmin')
       flash[:warning] = 'Forbidden'
       redirect_to(login_path)
     end
@@ -75,23 +82,14 @@ module SessionsHelper
     redirect_to login_path
   end
 
-  def logged_in_as_superadmin?
-    logged_in? && current_account.ac_type == 'superadmin'
+  def clear_session(*args)
+    args.each do |session_key|
+      session[session_key] = nil
+    end
   end
 
-  def logged_in_as_admin?
-    logged_in? && (current_account.ac_type == 'admin' || current_account.ac_type == 'superadmin')
+  def logged_in_as?(*ac_types)
+    logged_in? && ac_types.map{ |ac_type| current_account.ac_type == ac_type }.include?(true)
   end
 
-  def logged_in_as_client?
-    logged_in? && current_account.ac_type == 'client'
-  end
-
-  def logged_in_as_partner?
-    logged_in? && current_account.ac_type == 'partner'
-  end
-
-  def logged_in_as_partner_or_superadmin?
-    logged_in? && current_account.ac_type == 'partner' || current_account.ac_type == 'superadmin'
-  end
 end

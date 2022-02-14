@@ -1,7 +1,5 @@
 require "test_helper"
-
+require 'byebug'
 class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+
 end

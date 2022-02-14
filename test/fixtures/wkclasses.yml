@@ -1,11 +1,11 @@
-one:
-  workout_id: 1
-  start_time: 2022-01-01 10:00:30
+wkclass1:
+  workout_id: <%= ActiveRecord::FixtureSet.identify(:HIIT) %>
+  start_time: 2021-09-30 23:31:01
   instructor_id: <%= ActiveRecord::FixtureSet.identify(:Aadrak) %>
   instructor_cost: 0
 
-two:
-  workout_id: 1
-  start_time: 2022-01-15 08:40:00
+wkclass2:
+  workout_id: <%= ActiveRecord::FixtureSet.identify(:HIIT) %>
+  start_time: 2021-10-30 23:31:01
   instructor_id: <%= ActiveRecord::FixtureSet.identify(:Aadrak) %>
   instructor_cost: 0

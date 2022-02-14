@@ -10,6 +10,12 @@ superadmin:
   ac_type: superadmin
   activated: true
 
+junioradmin:
+  email: junioradmin@example.com
+  password_digest: <%= Account.digest('password') %>
+  ac_type: junioradmin
+  activated: true
+
 client1:
   email: client1@example.com
   password_digest: <%= Account.digest('password') %>

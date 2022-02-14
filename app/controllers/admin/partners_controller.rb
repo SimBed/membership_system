@@ -91,11 +91,11 @@ class Admin::PartnersController < Admin::BaseController
     end
 
     def correct_account_or_superadmin
-      redirect_to(root_url) unless Partner.find(params[:id]).account == current_account || logged_in_as_superadmin?
+      redirect_to(root_url) unless Partner.find(params[:id]).account == current_account || logged_in_as?('superadmin')
     end
 
     def superadmin_account
-      redirect_to(root_url) unless logged_in_as_superadmin?
+      redirect_to(root_url) unless logged_in_as?('superadmin')
     end
 
     # def layout_set

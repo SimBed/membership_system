@@ -16,7 +16,7 @@
         <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_workout_path(workout), class: "icon-container" %>
       </div>
       <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), admin_workout_path(workout), method: :delete, data: { confirm: 'Workout will be deleted. Are you sure?' }, class: "icon-container" %>
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_workout_path(workout), method: :delete, data: { confirm: 'Workout and any classes of this type will be deleted. Are you sure?' }, class: "icon-container" %>
       </div>
   </div>
 <% end %>
