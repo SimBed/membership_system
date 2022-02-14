@@ -1,4 +1,6 @@
 class Admin::AttendancesController < Admin::BaseController
+  skip_before_action :admin_account
+  before_action :junioradmin_account
   before_action :set_attendance, only: %i[ edit destroy ]
 
   def index

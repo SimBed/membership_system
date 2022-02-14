@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <% if logged_in_as_partner? %>
+    <% if logged_in_as?('partner') %>
       <%= render 'layouts/partner_header' %>
     <% else %>
       <%= render 'layouts/admin_header' %>
@@ -24,7 +24,7 @@
       <% end %>
       <%= yield %>
       <%= debug(params) if Rails.env.development? %>
-      <%= current_account&.ac_type if Rails.env.development? %>      
+      <%= current_account&.ac_type if Rails.env.development? %>
     </main>
   </body>
 </html>

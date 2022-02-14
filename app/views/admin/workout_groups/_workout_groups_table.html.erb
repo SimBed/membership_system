@@ -1,12 +1,12 @@
 <% @workout_groups.each do |workout_group| %>
   <div class ="d-flex bg-light">
-      <div class ="cell c-wg-name">
-        <% if logged_in_as_partner_or_superadmin? %>
-          <%= link_to workout_group.name, admin_workout_group_path(workout_group) %></div>
-        <% else %>
-          <%= workout_group.name %></div>
-        <% end %>
-      <div class ="cell c-wg-name"><%= link_to workout_group.partner.name, admin_partner_path(workout_group.partner) %></div>
+      <% if logged_in_as?('partner', 'superadmin') %>
+        <div class ="cell c-wg-name"><%= link_to workout_group.name, admin_workout_group_path(workout_group) %></div>
+        <div class ="cell c-wg-name"><%= link_to workout_group.partner.name, admin_partner_path(workout_group.partner) %></div>
+      <% else %>
+        <div class ="cell c-wg-name"><%= workout_group.name %></div>
+        <div class ="cell c-wg-name"><%= workout_group.partner.name %></div>
+      <% end %>
       <div class ="cell c-wg-name"><%= workout_group.workout_list %></div>
       <div class ="cell c-class-icon"><%= image_tag('gst.png', class: "table_icon") if workout_group.gst_applies %></div>
       <div class ="cell c-class-icon"><%= image_tag('invoice.png', class: "table_icon") if workout_group.requires_invoice %></div>

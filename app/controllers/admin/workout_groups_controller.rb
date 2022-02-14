@@ -6,7 +6,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 #  before_action :superadmin_account, only: %i[ show ]
 
   def index
-    if logged_in_as_partner?
+    if logged_in_as?('partner')
       partner_id = current_account.partners.first.id
       # reformat to scope
       @workout_groups = WorkoutGroup.all.where(partner_id: partner_id)
@@ -108,14 +108,14 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     end
 
     def correct_account_or_superadmin
-      redirect_to(root_url) unless WorkoutGroup.find(params[:id]).partner.account == current_account || logged_in_as_superadmin?
+      redirect_to(root_url) unless WorkoutGroup.find(params[:id]).partner.account == current_account || logged_in_as?('superadmin')
     end
 
     def partner_or_superadmin_account
-      redirect_to(root_url) unless logged_in_as_superadmin? || logged_in_as_partner?
+      redirect_to(root_url) unless logged_in_as?('superadmin') || logged_in_as?('partner')
     end
 
     def partner_or_admin_account
-      redirect_to(root_url) unless logged_in_as_admin? || logged_in_as_partner?
+      redirect_to(root_url) unless logged_in_as?('admin', 'superadmin') || logged_in_as?('partner')
     end
 end

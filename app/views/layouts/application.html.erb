@@ -13,10 +13,12 @@
   </head>
 
   <body>
-    <% if logged_in_as_partner? %>
+    <% if logged_in_as?('partner') %>
       <%= render 'layouts/partner_header' %>
-    <% elsif logged_in_as_admin? %>
+    <% elsif logged_in_as?('admin', 'superadmin') %>
       <%= render 'layouts/admin_header' %>
+    <% elsif logged_in_as?('junioradmin') %>
+      <%= render 'layouts/junioradmin_header' %>
     <% else %>
       <%= render 'layouts/client_header' %>
     <% end %>
