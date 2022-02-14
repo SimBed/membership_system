@@ -11,6 +11,7 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def show
+    handle_search
   end
 
   def new
