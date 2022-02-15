@@ -26,14 +26,18 @@
     <div class ="cell c-revenue-name">Net <small>(of GST)</small> Revenue</div>
     <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:net_revenue], precision: 0, unit: '') %></div>
 </div>
+<% unless @revenue[:total_instructor_expense].zero? %>
 <div class ="d-flex bg-light">
     <div class ="cell c-revenue-name">Instructor (per-class) Expense*</div>
     <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:total_instructor_expense], precision: 0, unit: '') %></div>
 </div>
+<% end %>
+<% unless @revenue[:total_fixed_expense].zero? %>
 <div class ="d-flex bg-light">
     <div class ="cell c-revenue-name">Other Expenses**</div>
     <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:total_fixed_expense], precision: 0, unit: '') %></div>
 </div>
+<% end %>
 <div class ="d-flex bg-light fw-bold">
     <div class ="cell c-revenue-name">Total Expense</div>
     <div class ="cell c-revenue-attend "><%= number_to_currency(@revenue[:total_expense], precision: 0, unit: '') %></div>

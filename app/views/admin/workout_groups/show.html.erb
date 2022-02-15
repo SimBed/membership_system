@@ -8,12 +8,16 @@
   <%= render partial: 'revenues_table' %>
 </div>
 
+<% unless @wkclasses_with_instructor_expense.empty? %>
 <div id="wkclasses-with-expense-table" class="container px-1 mt-5 mb-5 margin-override">
   <%= render partial: 'wkclasses_with_expense_table' %>
 </div>
+<% end %>
 
+<% unless @fixed_expenses.empty? %>
 <div id="other-expense-table" class="container px-1 mt-5 mb-3 margin-override">
   <%= render partial: 'other_expense_table' %>
 </div>
+<% end %>
 
 <%= link_to image_tag('back.png', class: "back_icon"), admin_workout_groups_path, class: "icon-container" %>

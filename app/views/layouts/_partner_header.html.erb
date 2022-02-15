@@ -8,6 +8,10 @@
         <%= link_to 'workout groups', admin_workout_groups_path, class: "nav-link" %>
       </li>
 
+      <li class="nav-item">
+        <%= link_to 'payment summary', admin_partner_path(current_account.partners.first) , class: "nav-link" %>
+      </li>
+
       <% if current_account %>
         <li class="nav-item">
           <%= link_to logout_path, method: :delete, class: "nav-link" do %>
