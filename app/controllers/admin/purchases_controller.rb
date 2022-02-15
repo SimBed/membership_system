@@ -9,7 +9,6 @@ class Admin::PurchasesController < Admin::BaseController
     @purchases = Purchase.all
     handle_search_name unless session[:search_name].blank?
     handle_search
-    #@problems = @problems.send("order_by_#{session[:sort_option]}").paginate(page: params[:page], per_page: 10)
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @status = %w[expired frozen not\ started ongoing]
     @other_attributes = %w[not\ invoiced]

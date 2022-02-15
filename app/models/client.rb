@@ -19,6 +19,7 @@ class Client < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   scope :name_like, ->(name) { where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
+  paginates_per 20
 
   def name
     "#{first_name} #{last_name}"

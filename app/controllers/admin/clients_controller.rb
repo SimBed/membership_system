@@ -10,6 +10,7 @@ class Admin::ClientsController < Admin::BaseController
     @clients = Client.order_by_name
     handle_search_name unless session[:search_client_name].blank?
     handle_search
+    @clients= @clients.page params[:page]
     respond_to do |format|
       format.html {}
       format.js {render 'index.js.erb'}
