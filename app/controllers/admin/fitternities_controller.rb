@@ -6,7 +6,7 @@ class Admin::FitternitiesController < Admin::BaseController
   end
 
   def show
-    @attendances = @fitternity.attendances
+    @attendances = @fitternity.attendances.order_by_date
   end
 
   def new
