@@ -7,7 +7,7 @@ class Admin::ClientsController < Admin::BaseController
   before_action :set_client, only: %i[ show edit update destroy ]
 
   def index
-    @clients = Client.order_by_name
+    @clients = Client.includes(:account).order_by_name
     handle_search_name unless session[:search_client_name].blank?
     handle_search
     @clients= @clients.page params[:page]

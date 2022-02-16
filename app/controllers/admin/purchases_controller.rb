@@ -6,7 +6,7 @@ class Admin::PurchasesController < Admin::BaseController
     # obsolete now - optimised by sorting at databse
     # convoluted but seems ok way to sort by date descending when date is part of a multiple parameter sort
     #@purchases = Purchase.all.sort_by { |p| [p.client.name, -p.dop&.to_time.to_i] }
-    @purchases = Purchase.all
+    @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client).all
     handle_search_name unless session[:search_name].blank?
     handle_search
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
