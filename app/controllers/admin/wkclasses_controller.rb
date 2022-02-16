@@ -4,7 +4,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :set_wkclass, only: %i[ show edit update destroy ]
 
   def index
-    @wkclasses = Wkclass.order_by_date
+    @wkclasses = Wkclass.includes([:confirmed_attendances, :provisional_attendances, :workout]).order_by_date
     handle_search
     @workout = Workout.distinct.pluck(:name).sort!
     @months = ['All'] + months_logged

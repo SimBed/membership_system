@@ -1,5 +1,7 @@
 class Wkclass < ApplicationRecord
   has_many :attendances, dependent: :destroy
+  has_many :confirmed_attendances, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }, class_name: 'Attendance'
+  has_many :provisional_attendances, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }, class_name: 'Attendance'
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
   belongs_to :instructor

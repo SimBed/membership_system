@@ -7,10 +7,10 @@
       <div class ="cell c-class-date"><%= wkclass.date %></div>
       <div class ="cell c-class-time"><%= wkclass.time %></div>
       <div class ="cell c-class-icon">
-        <%= wkclass.attendances.provisional.count %> <%= image_tag('reserve.png', class: "header_icon")%>
+        <%= wkclass.provisional_attendances.size %> <%= image_tag('reserve.png', class: "header_icon")%>
       </div>
       <div class ="cell c-class-icon">
-        <%= wkclass.attendances.confirmed.count %> <%= image_tag('group.png', class: "header_icon")%>
+        <%= wkclass.confirmed_attendances.size %> <%= image_tag('group.png', class: "header_icon")%>
       </div>
       <!--div class ="cell c-class-revenue"><%#= number_to_currency(wkclass.revenue, precision: 0, unit: 'Rs. ') %></div-->
       <div class ="cell c-class-icon">
