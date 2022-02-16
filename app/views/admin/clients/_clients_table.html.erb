@@ -1,5 +1,7 @@
-<% paginate @clients, remote: true %>
-<div class="page_entries_info"><%= page_entries_info @clients %></div>
+<div class="page_entries_info">
+  <%= paginate @clients, remote: true %>
+  <%= page_entries_info @clients %>
+</div>
 <div class="grid-container-client-index">
   <% @clients.each do |client| %>
     <div class="grid-cell name"><%= link_to client.name, admin_client_path(client), class: "like_button" %></div>
