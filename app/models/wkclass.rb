@@ -55,7 +55,7 @@ class Wkclass < ApplicationRecord
       .order(:start_time)
   end
 
-  # # for qualifying products in select box for new attendance form
+  # for qualifying products in select box for new attendance form
   # def self.clients_with_purchase_for(wkclass)
   #   # note: If the column in select is not one of the attributes of the model on which the select is called on then those columns are not displayed. All of these attributes are still contained in the objects within AR::Relation and are accessible as any other public instance attributes.
   #   client_purchase_ids =

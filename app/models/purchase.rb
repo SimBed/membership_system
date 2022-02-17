@@ -46,15 +46,16 @@ class Purchase < ApplicationRecord
 # this is convoluted - convert the join to an array of purchases to apply the purchase instance methods,
 # then convert back to active record to 'include' the clients so @qualifying purchases can be built
 # (which need the client name) with the client name in the attendances controller
+# note where doesn't preserve the order of the ids so do the ordering after the 'includes' not after the 'merge' (which would be before the order distorting 'where')
   def self.qualifying_for(wkclass)
-    where(id:
-       Purchase.joins(product: [:workout_group]).merge(WorkoutGroup.includes_workout_of(wkclass))
-               .joins(:client)
-               .order("clients.first_name", "purchases.dop")
-               .to_a.select { |p| !p.expired? &&!p.provisionally_expired? && !p.freezed?(wkclass.start_time) }
-               .map(&:id)
-          )
-          .includes(:client)
+    purchases = Purchase.joins(product: [:workout_group])
+                        .joins(:client)
+                        .merge(WorkoutGroup.includes_workout_of(wkclass))
+    Purchase.where(id: purchases
+                        .to_a.select { |p| !p.expired? &&!p.provisionally_expired? && !p.freezed?(wkclass.start_time) }
+                        .map(&:id)
+                  )
+            .includes(:client).order("clients.first_name", "purchases.dop")
   end
 
   # violates MVC - improve
