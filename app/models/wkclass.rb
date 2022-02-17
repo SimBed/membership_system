@@ -55,15 +55,18 @@ class Wkclass < ApplicationRecord
       .order(:start_time)
   end
 
-  # for qualifying products in select box for new attendance form
-  def self.clients_with_purchase_for(wkclass)
-    # note: If the column in select is not one of the attributes of the model on which the select is called on then those columns are not displayed. All of these attributes are still contained in the objects within AR::Relation and are accessible as any other public instance attributes.
-    client_purchase_ids =
-    WorkoutGroup.joins(products: [purchases: [:client]]).merge(WorkoutGroup.includes_workout_of(wkclass))
-    .order("clients.first_name")
-    .select('clients.id as clientid, purchases.id as purchaseid')
-    client_purchase_ids.to_a.select { |cp| !Purchase.find(cp["purchaseid"]).expired? && !Purchase.find(cp["purchaseid"]).freezed?(wkclass.start_time) }
-  end
+  # # for qualifying products in select box for new attendance form
+  # def self.clients_with_purchase_for(wkclass)
+  #   # note: If the column in select is not one of the attributes of the model on which the select is called on then those columns are not displayed. All of these attributes are still contained in the objects within AR::Relation and are accessible as any other public instance attributes.
+  #   client_purchase_ids =
+  #   WorkoutGroup.joins(products: [purchases: [:client]]).merge(WorkoutGroup.includes_workout_of(wkclass))
+  #   .order("clients.first_name", "purchases.dop")
+  #   .select('clients.id as clientid, purchases.id as purchaseid')
+  #   client_purchase_ids.to_a.select do |cp|
+  #     purchase = Purchase.find(cp["purchaseid"])
+  #     !purchase.expired? &&!purchase.provisionally_expired? && !purchase.freezed?(wkclass.start_time)
+  #    end
+  # end
 
   # previous for clients_with_purchase_for with lots of nested joins and no scope on association
   # def self.clients_with_product(wkclass)

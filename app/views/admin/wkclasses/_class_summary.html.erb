@@ -4,7 +4,9 @@
 </h5>
 <%= link_to '<<', admin_wkclass_path(@wkclasses.prev(params[:id])), {class: "paginate_icon"} %>
 <%= @wkclass.attendances.confirmed.count %> <%= image_tag('group.png', class: "header_icon")%> |
+<% unless logged_in_as?('junioradmin') %>
 <%= number_to_currency(@wkclass.revenue, precision: 0, unit: 'Rs. ') %> |
+<% end %>
 <%= @wkclass.instructor&.name %>
 <%# <%= link_to '>>', {id: @wkclasses.next(params[:id]).id} , {class: "pl-2"} %>
 

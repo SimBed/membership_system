@@ -4,7 +4,9 @@
     <div class ="d-flex bg-light">
         <div class ="cell c-class-name"><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></div>
         <div class ="cell c-class-date"><%= link_to attendance.client.product_for_class(@wkclass).name, admin_purchase_path(attendance.purchase), class: "like_button" %></div>
+        <% unless logged_in_as?('junioradmin') %>
         <div class ="cell c-class-attendance-revenue"><%= number_to_currency(attendance.client.revenue_for_class(@wkclass), precision: 0, unit: 'Rs. ') %></div>
+        <% end %>
         <%# @attendance = attendance.client.attendances.where(wkclass_id: @wkclass.id).first %>
         <!--div class ="cell c-class-name"><%#= @attendance.status %></div-->
         <div class ="cell c-class-name">

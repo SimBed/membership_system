@@ -42,6 +42,21 @@ class Purchase < ApplicationRecord
   scope :unpaid, -> { where(payment_mode: 'Not paid')}
   paginates_per 20
 
+# for qualifying purchases in select box for new attendance form
+# this is convoluted - convert the join to an array of purchases to apply the purchase instance methods,
+# then convert back to active record to 'include' the clients so @qualifying purchases can be built
+# (which need the client name) with the client name in the attendances controller
+  def self.qualifying_for(wkclass)
+    where(id:
+       Purchase.joins(product: [:workout_group]).merge(WorkoutGroup.includes_workout_of(wkclass))
+               .joins(:client)
+               .order("clients.first_name", "purchases.dop")
+               .to_a.select { |p| !p.expired? &&!p.provisionally_expired? && !p.freezed?(wkclass.start_time) }
+               .map(&:id)
+          )
+          .includes(:client)
+  end
+
   # violates MVC - improve
   # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
   def full_name

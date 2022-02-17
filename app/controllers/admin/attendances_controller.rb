@@ -22,8 +22,16 @@ class Admin::AttendancesController < Admin::BaseController
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
-    # e.g. [["Aparna Shah 9C:5W", 1], ["Aryan Agarwal UC:3M", 2], ...]
-    @qualifying_products = Wkclass.clients_with_purchase_for(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
+
+    # @qualifying_purchases = Wkclass.clients_with_purchase_for(@wkclass).map do |q|
+    #   client = Client.find(q["clientid"])
+    #   purchase = Purchase.find(q["purchaseid"])
+    #   ["#{client.first_name} #{client.last_name} #{purchase.name} #{purchase.dop.strftime('%b %d')}", q["purchaseid"]]
+    #  end
+    # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2], ...]
+    @qualifying_purchases = Purchase.qualifying_for(@wkclass).map do |p|
+      ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id]
+     end
   end
 
   def create
@@ -36,7 +44,9 @@ class Admin::AttendancesController < Admin::BaseController
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
         @attendance = Attendance.new
         @wkclass = Wkclass.find(session[:wkclass_id])
-        @qualifying_products = Wkclass.clients_with_purchase_for(@wkclass).map { |q| ["#{Client.find(q["clientid"]).first_name} #{Client.find(q["clientid"]).last_name} #{Purchase.find(q["purchaseid"]).name}", q["purchaseid"]] }
+        @qualifying_purchases = Purchase.qualifying_for(@wkclass).map do |p|
+          ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id]
+         end
         render :new, status: :unprocessable_entity
       end
    end

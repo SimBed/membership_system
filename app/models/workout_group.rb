@@ -43,6 +43,7 @@ class WorkoutGroup < ApplicationRecord
     joins(products: [:prices])
    .select('workout_groups.name as wg_name','products.id as product_id', 'products.max_classes',
            'products.validity_length', 'products.validity_unit', 'prices.name as price_name', 'prices.price')
+   .order('workout_groups.id', 'products.id')
    .map(&:attributes)
    .each { |p| p['name'] = Product.full_name(p['wg_name'], p['max_classes'],
                p['validity_length'], p['validity_unit'], p['price_name'])
