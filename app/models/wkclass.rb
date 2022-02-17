@@ -59,7 +59,7 @@ class Wkclass < ApplicationRecord
   def self.clients_with_purchase_for(wkclass)
     # note: If the column in select is not one of the attributes of the model on which the select is called on then those columns are not displayed. All of these attributes are still contained in the objects within AR::Relation and are accessible as any other public instance attributes.
     client_purchase_ids =
-    WorkoutGroup.joins(products: [purchases: [:client]]).merge(WorkoutGroup.includes_workout_of(wkclass))
+    WorkoutGroup.joins(products: [purchases: [:client]]).merge(WorkoutGroup.includes_workout_of(wkclass)).merge(Purchase.not_expired)
     .order("clients.first_name", "purchases.dop")
     .select('clients.id as clientid, purchases.id as purchaseid')
     client_purchase_ids.to_a.select do |cp|

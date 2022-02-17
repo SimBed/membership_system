@@ -48,7 +48,8 @@ class Purchase < ApplicationRecord
 # (which need the client name) with the client name in the attendances controller
 # note where doesn't preserve the order of the ids so do the ordering after the 'includes' not after the 'merge' (which would be before the order distorting 'where')
   def self.qualifying_for(wkclass)
-    purchases = Purchase.joins(product: [:workout_group])
+    purchases = Purchase.not_expired
+                        .joins(product: [:workout_group])
                         .joins(:client)
                         .merge(WorkoutGroup.includes_workout_of(wkclass))
     Purchase.where(id: purchases
