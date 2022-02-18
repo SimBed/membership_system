@@ -68,6 +68,10 @@
           <%= check_box_tag 'unpaid', 'unpaid', session[:filter_unpaid].present? ? true : false, class: "checkbox-class", id: "chbox_unpaid", onchange: 'Rails.fire(this.form, "submit")'  %>
           <%= 'unpaid' %>
         <% end %>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'classpass', 'classpass', session[:filter_classpass].present? ? true : false, class: "checkbox-class", id: "chbox_classpass", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= 'classpass' %>
+        <% end %>
     </fieldset>
   </div>
 

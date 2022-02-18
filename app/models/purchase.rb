@@ -40,6 +40,7 @@ class Purchase < ApplicationRecord
   scope :requires_invoice, -> { joins(product: [:workout_group]).where(workout_groups: {requires_invoice: true}) }
   scope :invoiced, -> { where.not(invoice: nil)}
   scope :unpaid, -> { where(payment_mode: 'Not paid')}
+  scope :classpass, -> { where(payment_mode: 'ClassPass')}
   paginates_per 20
 
 # for qualifying purchases in select box for new attendance form

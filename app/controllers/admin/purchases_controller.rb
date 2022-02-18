@@ -93,13 +93,13 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def clear_filters
-    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :filter_unpaid, :search_name)
+    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :filter_unpaid, :filter_classpass, :search_name)
     redirect_to admin_purchases_path
   end
 
   def filter
     # see application_helper
-    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :filter_unpaid, :search_name)
+    clear_session(:filter_workout_group, :filter_status, :filter_invoice, :filter_package, :filter_close_to_expiry, :filter_unpaid, :filter_classpass, :search_name)
     # Without the ors (||) the sessions would get set to nil when redirecting to purchases other than through the
     # filter form (e.g. by clicking purchases on the navbar) (as the params items are nil in these cases)
     session[:search_name] = params[:search_name] || session[:search_name]
@@ -109,6 +109,7 @@ class Admin::PurchasesController < Admin::BaseController
     session[:filter_package] = params[:package] || session[:filter_package]
     session[:filter_close_to_expiry] = params[:close_to_expiry] || session[:filter_close_to_expiry]
     session[:filter_unpaid] = params[:unpaid] || session[:filter_unpaid]
+    session[:filter_classpass] = params[:classpass] || session[:filter_classpass]
     redirect_to admin_purchases_path
   end
 
@@ -152,6 +153,7 @@ class Admin::PurchasesController < Admin::BaseController
       @purchases = @purchases.uninvoiced.requires_invoice if session[:filter_invoice].present?
       @purchases = @purchases.with_package if session[:filter_package].present?
       @purchases = @purchases.unpaid if session[:filter_unpaid].present?
+      @purchases = @purchases.classpass if session[:filter_classpass].present?
       @purchases = @purchases.started.not_expired.select { |p| p.close_to_expiry? } if session[:filter_close_to_expiry].present?
       @purchases = @purchases.select { |p| session[:filter_status].include?(p.status) } if session[:filter_status].present?
       # hack to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
