@@ -77,8 +77,10 @@
              <small><%= "(#{pluralize(f.duration, "day")})" %></small><br>
              <%= f.note %>
           </div>
-          <div class='cell c-class-icon'><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(f), class: "icon-container" %></div>
-          <div class='cell c-class-icon'><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(f), method: :delete, data: { confirm: 'Freeze will be deleted Are you sure?' } %></div>
+          <% unless setting == "clientshow" %>
+            <div class='cell c-class-icon'><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(f), class: "icon-container" %></div>
+            <div class='cell c-class-icon'><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(f), method: :delete, data: { confirm: 'Freeze will be deleted Are you sure?' } %></div>
+          <% end %>
         </div>
      <% end %>
    <% end %>
@@ -90,8 +92,10 @@
             <%= "#{pluralize(adj.adjustment, "day")} adjustment" %><br>
              <%= adj.note %>
           </div>
-          <div class='cell c-class-icon'><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_adjustment_path(adj), class: "icon-container" %></div>
-          <div class='cell c-class-icon'><%= link_to image_tag('delete.png', class: "table_icon"), admin_adjustment_path(adj), method: :delete, data: { confirm: 'Adjustment will be deleted. Are you sure?' } %></div>
+          <% unless setting == "clientshow" %>
+            <div class='cell c-class-icon'><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_adjustment_path(adj), class: "icon-container" %></div>
+            <div class='cell c-class-icon'><%= link_to image_tag('delete.png', class: "table_icon"), admin_adjustment_path(adj), method: :delete, data: { confirm: 'Adjustment will be deleted. Are you sure?' } %></div>
+          <% end %>
         </div>
      <% end %>
    <% end %>
