@@ -11,9 +11,10 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def show
-    # set @wkclasses so they can be scrolled through from each wkclass show
+    # set @wkclasses and @wkindex so the wkclasses can be scrolled through from each wkclass show
     @wkclasses = Wkclass.order_by_date
     handle_search
+    @wkindex = @wkclasses.index(@wkclass)
   end
 
   def new

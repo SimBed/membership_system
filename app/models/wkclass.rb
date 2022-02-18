@@ -1,3 +1,4 @@
+require 'byebug'
 class Wkclass < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :confirmed_attendances, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }, class_name: 'Attendance'
@@ -12,8 +13,8 @@ class Wkclass < ApplicationRecord
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
   scope :between_dates, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }) }
-  scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
-  scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
+  # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
+  # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
   def date
     start_time.strftime('%a %d %b %y')
