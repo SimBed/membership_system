@@ -19,8 +19,9 @@ class Fitternity < ApplicationRecord
     maxed_classes? || past_expiry?
   end
 
-  def classes_remain
-    max_classes - purchases.size
+  def classes_remain(provisional: true)
+    return (max_classes - attendances.provisional.size) if provisional
+    max_classes - attendances.confirmed.size
   end
 
 end

@@ -4,7 +4,7 @@ class Attendance < ApplicationRecord
   # this defines the start_time method on an instance of Wkclass
   # so @attendance.start_time equals WkClass.find(@attendance.id).start_time
   # date is a Wkclass instance method that formats start_time
-  delegate :start_time, :date, to: :wkclass
+  delegate :start_time, :date, :time, to: :wkclass
   delegate :client, to: :purchase
   delegate :name, to: :client
   delegate :product, to: :purchase
