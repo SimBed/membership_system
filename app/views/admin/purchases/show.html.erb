@@ -8,9 +8,9 @@
 
 <div class="mb-3 d-flex">
   <div>
-    <%= link_to 'add freeze', new_admin_freeze_path(purchase: @purchase.id) %> |
-    <%= link_to 'add adjustment', new_admin_adjustment_path(purchase: @purchase.id) %> |
-    <%= link_to 'edit purchase', edit_admin_purchase_path(@purchase) %>
+    <%= link_to image_tag('freeze.png', class: "back_icon" ), new_admin_freeze_path(purchase: @purchase.id), class: "icon-container" %> |
+    <%= link_to image_tag('adjust.png', class: "back_icon" ), new_admin_adjustment_path(purchase: @purchase.id), class: "icon-container" %> |
+    <%= link_to image_tag('edit.png', class: "back_icon" ), edit_admin_purchase_path(@purchase), class: "icon-container" %>
   </div>
   <div class="me-3 ms-auto">
     <%= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>

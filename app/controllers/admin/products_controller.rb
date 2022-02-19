@@ -2,7 +2,7 @@ class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: %i[ show edit update destroy ]
 
   def index
-    @products = Product.all
+    @products = Product.order_by_name_max_classes
   end
 
   def show

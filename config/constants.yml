@@ -13,6 +13,7 @@ default: &default
   - NEFT
   - Not applicable
   - Not paid
+  - Paid to instructor
   - PayTM
 
  gst_rate:
