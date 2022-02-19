@@ -11,6 +11,7 @@ default: &default
   - Google Pay
   - Instamojo
   - NEFT
+  - Not applicable
   - Not paid
   - PayTM
 

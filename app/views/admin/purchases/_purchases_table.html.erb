@@ -1,23 +1,17 @@
-<%= paginate @purchases, remote: true %>
-<%= page_entries_info @purchases %>
-<% @purchases.each do |purchase| %>
-  <div class ="d-flex <%= 'danger' if purchase.payment_mode == 'Not paid' %>">
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('clipboard.png', class: "table_icon"), admin_purchase_path(purchase), class: "icon-container" %>
-      </div>
-      <div class ="cell c-purchases-client"><%= link_to purchase.client.name, admin_client_path(purchase.client) %></div>
-      <!--div class ="cell c-purchases-name"><%#= "#{purchase.name} #{number_with_delimiter(purchase.payment)}" %></div-->
-      <div class ="cell c-purchases-name"><%= purchase.name_with_dop %></div>
-      <div class ="cell c-purchases-expiry"><%= purchase.start_to_expiry %></div>
-      <!--div class ="cell c-purchases-attendances"><%#= purchase.attendances_remain_format %> </div-->
-      <!--div class ="cell c-purchases-status"><%#= purchase.status %></div-->
-      <!--div class ="cell c-purchases-status"><%#= purchase.days_to_expiry_format[0] %> <%#= purchase.days_to_expiry_format[1] %></div-->
-      <!--div class ="cell c-purchases-status"><%#= purchase.invoice %></div-->
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase), class: "icon-container" %>
-      </div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
-      </div>
-  </div>
-<% end %>
+<div class="page_entries_info">
+  <%= paginate @purchases, remote: true %>
+  <%= page_entries_info @purchases %>
+</div>
+<div class="grid-container-purchase-index">
+  <% @purchases.each do |purchase| %>
+    <div class="grid-cell"><%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %></div>
+    <div class="grid-cell"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></div>
+    <div class="grid-cell"><%= purchase.start_to_expiry %></div>
+    <div class="grid-cell icon">
+      <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase), class: "icon-container" %>
+    </div>
+    <div class="grid-cell icon">
+      <%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
+    </div>
+  <% end %>
+</div>

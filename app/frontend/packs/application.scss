@@ -264,7 +264,7 @@ h5 > div {
 }
 
 .purchases-table {
-  font-size: 0.6em;
+  font-size: 1.0em;
 }
 
 %buttonsearch {
@@ -379,6 +379,46 @@ button.search{
     text-align: left;
     padding-left: 0.1em;
   }
+}
+
+.grid-container-purchase-index {
+  @extend %grid-container;
+  grid-template-columns: auto auto auto 2em 2em;
+
+  .grid-cell {
+    color: black;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: 0.8em;
+    text-align: left;
+    padding-left: 0.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    a.like_button {
+      border-radius: 1rem;
+      line-height: 1.25;
+      padding: 0.1rem 0.5rem;
+      box-shadow: 0 1px #999;
+      text-decoration: none;
+      color: black;
+      &:hover {
+        color: $gray-darker;
+      }
+    }
+  }
+
+  .icon {
+    position: relative;
+  }
+}
+
+.grid-container-purchase-index > div:nth-child(10n+1),
+.grid-container-purchase-index > div:nth-child(10n+2),
+.grid-container-purchase-index > div:nth-child(10n+3),
+.grid-container-purchase-index > div:nth-child(10n+4),
+.grid-container-purchase-index > div:nth-child(10n+5) {
+  background-color: $bg-light;
 }
 
 img.back_icon {
