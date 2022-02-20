@@ -10,6 +10,7 @@ class Purchase < ApplicationRecord
   delegate :name, to: :product
   delegate :revenue_for_class, to: :client
   delegate :workout_group, to: :product
+  delegate :dropin?, to: :product  
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },

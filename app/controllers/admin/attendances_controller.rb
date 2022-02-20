@@ -27,7 +27,7 @@ class Admin::AttendancesController < Admin::BaseController
       client = Client.find(q["clientid"])
       purchase = Purchase.find(q["purchaseid"])
       # not started elimnates dropins
-      close_to_expiry = "close_to_expiry" if purchase.close_to_expiry? && !purchase.not_started?
+      close_to_expiry = "close_to_expiry" if purchase.close_to_expiry? && !purchase.dropin?
       ["#{client.first_name} #{client.last_name} #{purchase.name} #{purchase.dop.strftime('%b %d')}", q["purchaseid"], {class: close_to_expiry}]
      end
     # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2], ...]
