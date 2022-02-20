@@ -11,7 +11,7 @@ class Wkclass < ApplicationRecord
   delegate :name, to: :instructor, prefix: true
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
-  scope :between_dates, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }) }
+  scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
@@ -31,12 +31,18 @@ class Wkclass < ApplicationRecord
     attendances.confirmed.map { |a| a.revenue }.inject(0, :+)
   end
 
-  def self.by_date(start_date, end_date)
-    Wkclass.where("start_time BETWEEN '#{start_date}' AND '#{end_date}'")
-           .order(:start_time)
+# improve - add 'All' as an optional parameter..then refactor for_client_purchase in attendance.rb
+  def self.in_workout_group(workout_group_name)
+     joins(workout: [rel_workout_group_workouts: [:workout_group]])
+    .where("workout_groups.name = ?", "#{workout_group_name}")
   end
 
-  # def self.in_workout_group(workout_group_name, start_date, end_date)
+  # def self.by_date(start_date, end_date)
+  #   Wkclass.where("start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+  #          .order(:start_time)
+  # end
+
+  # def self.in_workout_group(workout_group_name).between(start_date, end_date)
   #   # method used in workout_group controller for @wkclasses_with_instructor_cost
   #   # which is then used to output wkclass name and instructor name (so workout and instructor are 'included' to avoid multiple fires to the database)
   #   Wkclass.includes(:instructor).includes(:workout)
@@ -45,15 +51,15 @@ class Wkclass < ApplicationRecord
   #     .where("workout_groups.name = ?", "#{workout_group_name}")
   # end
 
-  def self.in_workout_group(workout_group_name, start_date, end_date)
-    # method used in workout_group controller for @wkclasses_with_instructor_cost
-    # which is then used to output wkclass name and instructor name (so workout and instructor are 'included' to avoid multiple fires to the database)
-    Wkclass.includes(:instructor).includes(:workout)
-      .between_dates(start_date, end_date)
-      .joins(workout: [rel_workout_group_workouts: [:workout_group]])
-      .where("workout_groups.name = ?", "#{workout_group_name}")
-      .order(:start_time)
-  end
+  # def self.in_workout_group(workout_group_name).between(start_date, end_date)
+  #   # method used in workout_group controller for @wkclasses_with_instructor_cost
+  #   # which is then used to output wkclass name and instructor name (so workout and instructor are 'included' to avoid multiple fires to the database)
+  #   Wkclass.includes(:instructor).includes(:workout)
+  #     .between(start_date, end_date)
+  #     .joins(workout: [rel_workout_group_workouts: [:workout_group]])
+  #     .where("workout_groups.name = ?", "#{workout_group_name}")
+  #     .order(:start_time)
+  # end
 
   # for qualifying purchases in select box for new attendance form
   def self.clients_with_purchase_for(wkclass)

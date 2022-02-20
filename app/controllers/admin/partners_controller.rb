@@ -25,7 +25,8 @@ class Admin::PartnersController < Admin::BaseController
       @fixed_expenses = Expense.by_workout_group(wg.name, start_date, end_date)
       total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)
       @wkclasses_with_instructor_expense =
-        Wkclass.in_workout_group(wg.name, start_date, end_date)
+        Wkclass.in_workout_group(wg.name)
+               .between(start_date, end_date)
                .has_instructor_cost
       total_instructor_expense = @wkclasses_with_instructor_expense.map(&:instructor_cost).inject(0, &:+)
       total_expense = total_fixed_expense + total_instructor_expense

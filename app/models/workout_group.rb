@@ -20,7 +20,7 @@ class WorkoutGroup < ApplicationRecord
 
   # not used
   # def self.instructor_cost_for(workout_group_name, start_date, end_date)
-  #   Wkclass.in_workout_group(workout_group_name,start_date,end_date)
+  #   Wkclass.in_workout_group(workout_group_name).between(start_date,end_date)
   #          .has_instructor_cost
   #          .sum(:instructor_cost)
   # end

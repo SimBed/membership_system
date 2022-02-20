@@ -57,7 +57,7 @@ class Attendance < ApplicationRecord
 
   def self.by_workout_group(workout_group_name, start_date, end_date)
       joins(:wkclass, purchase: [product: [:workout_group]])
-     .merge(Wkclass.between_dates(start_date, end_date))
+     .merge(Wkclass.between(start_date, end_date))
      .where(workout_group_condition(workout_group_name))
      .order(:start_time)
   end

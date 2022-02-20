@@ -1,3 +1,4 @@
+require 'byebug'
 class Admin::WkclassesController < Admin::BaseController
   skip_before_action :admin_account, only: %i[ show index new edit create update filter ]
   before_action :junioradmin_account, only: %i[ show index new edit create update ]
@@ -60,8 +61,9 @@ class Admin::WkclassesController < Admin::BaseController
 
   def filter
     # see application_helper
-    clear_session(:filter_workout, :classes_period)
+    clear_session(:filter_workout, :filter_spacegroup, :classes_period)
     session[:filter_workout] = params[:workout] || session[:filter_workout]
+    session[:filter_spacegroup] = params[:spacegroup] || session[:filter_spacegroup]
     session[:classes_period] = params[:classes_period] || session[:classes_period]
     redirect_to admin_wkclasses_path
   end
@@ -79,10 +81,11 @@ class Admin::WkclassesController < Admin::BaseController
 
     def handle_search
       @wkclasses = Wkclass.joins(:workout).where(workout: { name: session[:filter_workout] }).order(start_time: :desc) if session[:filter_workout].present?
+      @wkclasses = @wkclasses.in_workout_group(session[:filter_spacegroup]) if session[:filter_spacegroup].present?
       if session[:classes_period].present? && !(session[:classes_period] == 'All')
         start_date = Date.parse(session[:classes_period])
         end_date = Date.parse(session[:classes_period]).end_of_month.end_of_day
-        @wkclasses = @wkclasses.by_date(start_date, end_date)
+        @wkclasses = @wkclasses.between(start_date, end_date)
       end
     end
 end

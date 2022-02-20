@@ -23,7 +23,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     start_date = Date.parse(session[:revenue_period])
     end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
     attendances_in_period = Attendance.confirmed.by_workout_group(@workout_group.name, start_date, end_date)
-    classes_in_period = Wkclass.in_workout_group(@workout_group.name, start_date, end_date)
+    classes_in_period = Wkclass.in_workout_group(@workout_group.name).between(start_date, end_date)
     base_revenue = attendances_in_period.map { |a| a.revenue }.inject(0, :+)
     expiry_revenue =  @workout_group.expiry_revenue(session[:revenue_period])
     gross_revenue = base_revenue + expiry_revenue

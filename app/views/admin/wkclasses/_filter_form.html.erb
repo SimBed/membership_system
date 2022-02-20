@@ -1,9 +1,10 @@
 <div class="container search">
   <hr class = "search mb-3"></hr>
 
-  <%= form_with(url: "/wkclasses/filter", method: "get", local: false, class: "form-class") do %>
+  <%= form_with(url: "/wkclasses/filter", method: "get", local: true, class: "form-class") do %>
   <div class="container mb-1 px-0">
-
+  <div class="row">
+    <div class="col-4 px-0">
     <fieldset>
       <legend>WORKOUT</legend>
       <% @workout.each do |wk| %>
@@ -13,6 +14,16 @@
         <% end %>
       <% end %>
     </fieldset>
+    </div>
+    <div class="col-4 px-0">
+    <fieldset>
+      <legend>ATTRIBUTE</legend>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
+        <%= 'Space group' %>
+      <% end %>
+    </fieldset>
+    </div>
     <fieldset class="mt-2">
       <select name="classes_period" onchange="this.form.submit()" class= "sort">
         <%= options_for_select @months, session[:classes_period] %>
