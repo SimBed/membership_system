@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_084243) do
+ActiveRecord::Schema.define(version: 2022_02_21_093907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.text "note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchase_id"], name: "index_adjustments_on_purchase_id"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -44,6 +45,9 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.string "status", default: "booked"
     t.string "booked_by"
     t.integer "cancellation_count", default: 0
+    t.index ["purchase_id"], name: "index_attendances_on_purchase_id"
+    t.index ["status"], name: "index_attendances_on_status"
+    t.index ["wkclass_id"], name: "index_attendances_on_wkclass_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -57,6 +61,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.integer "account_id"
     t.text "note"
     t.string "whatsapp"
+    t.index ["account_id"], name: "index_clients_on_account_id"
     t.index ["first_name", "last_name"], name: "index_clients_on_first_name_and_last_name"
   end
 
@@ -67,6 +72,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.bigint "workout_group_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["amount"], name: "index_expenses_on_amount"
     t.index ["workout_group_id"], name: "index_expenses_on_workout_group_id"
   end
 
@@ -84,6 +90,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.text "note"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchase_id"], name: "index_freezes_on_purchase_id"
   end
 
   create_table "instructor_rates", force: :cascade do |t|
@@ -110,6 +117,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.integer "account_id"
     t.string "email"
     t.string "phone"
+    t.index ["account_id"], name: "index_partners_on_account_id"
   end
 
   create_table "prices", force: :cascade do |t|
@@ -120,6 +128,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.integer "product_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_prices_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -129,6 +138,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.integer "workout_group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["max_classes"], name: "index_products_on_max_classes"
   end
 
   create_table "purchases", force: :cascade do |t|
@@ -146,6 +156,10 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "fitternity_id"
+    t.index ["client_id"], name: "index_purchases_on_client_id"
+    t.index ["dop"], name: "index_purchases_on_dop"
+    t.index ["expired"], name: "index_purchases_on_expired"
+    t.index ["product_id"], name: "index_purchases_on_product_id"
   end
 
   create_table "rel_workout_group_workouts", force: :cascade do |t|
@@ -153,6 +167,8 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.integer "workout_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["workout_group_id"], name: "index_rel_workout_group_workouts_on_workout_group_id"
+    t.index ["workout_id"], name: "index_rel_workout_group_workouts_on_workout_id"
   end
 
   create_table "wkclasses", force: :cascade do |t|
@@ -162,6 +178,9 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "instructor_id"
     t.integer "instructor_cost"
+    t.index ["instructor_id"], name: "index_wkclasses_on_instructor_id"
+    t.index ["start_time"], name: "index_wkclasses_on_start_time"
+    t.index ["workout_id"], name: "index_wkclasses_on_workout_id"
   end
 
   create_table "workout_groups", force: :cascade do |t|
@@ -172,12 +191,14 @@ ActiveRecord::Schema.define(version: 2022_02_21_084243) do
     t.integer "partner_share"
     t.boolean "gst_applies", default: true
     t.boolean "requires_invoice", default: true
+    t.index ["name"], name: "index_workout_groups_on_name"
   end
 
   create_table "workouts", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_workouts_on_name"
   end
 
   add_foreign_key "expenses", "workout_groups"
