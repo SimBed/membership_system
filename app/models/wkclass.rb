@@ -13,7 +13,7 @@ class Wkclass < ApplicationRecord
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
   scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
-  paginates_per 20
+  paginates_per 100
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
