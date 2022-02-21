@@ -19,6 +19,8 @@ class Client < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   scope :name_like, ->(name) { where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
+  # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
+  scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: {id: nil}) }
   paginates_per 20
 
   def name

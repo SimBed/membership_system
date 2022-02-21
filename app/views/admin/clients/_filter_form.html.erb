@@ -14,6 +14,10 @@
           <%= check_box_tag 'packagee', 'packagee', session[:filter_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: 'Rails.fire(this.form, "submit")'  %>
           <%= 'has package' %>
         <% end %>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'enquiry', 'enquiry', session[:filter_enquiry].present? ? true : false, class: "checkbox-class", id: "chbox_enquiry", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= 'enquiry' %>
+        <% end %>
     </fieldset>
   </div>
 

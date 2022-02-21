@@ -74,9 +74,10 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def filter
-    clear_session(:filter_packagee, :search_client_name)
+    clear_session(:filter_packagee, :filter_enquiry, :search_client_name)
     session[:search_client_name] = params[:search_client_name] || session[:search_client_name]
     session[:filter_packagee] = params[:packagee] || session[:filter_packagee]
+    session[:filter_enquiry] = params[:enquiry] || session[:filter_enquiry]
     redirect_to admin_clients_path
   end
 
@@ -103,6 +104,7 @@ class Admin::ClientsController < Admin::BaseController
 
     def handle_search
       @clients = @clients.joins(:purchases).merge(Purchase.with_package).distinct if session[:filter_packagee].present?
+      @clients = @clients.enquiry if session[:filter_enquiry].present?
     end
 
     # def layout_set
