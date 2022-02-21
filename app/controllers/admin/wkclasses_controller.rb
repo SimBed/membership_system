@@ -6,8 +6,14 @@ class Admin::WkclassesController < Admin::BaseController
   def index
     @wkclasses = Wkclass.includes([:confirmed_attendances, :provisional_attendances, :workout]).order_by_date
     handle_search
+    @wkclasses = @wkclasses.page params[:page]
     @workout = Workout.distinct.pluck(:name).sort!
     @months = ['All'] + months_logged
+
+    respond_to do |format|
+      format.html {}
+      format.js {render 'index.js.erb'}
+    end
   end
 
   def show

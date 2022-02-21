@@ -421,6 +421,48 @@ button.search{
   background-color: $bg-light;
 }
 
+.grid-container-wkclass-index {
+  @extend %grid-container;
+  grid-template-columns: auto auto auto auto auto 2em 2em;
+
+  .grid-cell {
+    color: black;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: 0.8em;
+    text-align: left;
+    padding-left: 0.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    a.like_button {
+      border-radius: 1rem;
+      line-height: 1.25;
+      padding: 0.1rem 0.5rem;
+      box-shadow: 0 1px #999;
+      text-decoration: none;
+      color: black;
+      &:hover {
+        color: $gray-darker;
+      }
+    }
+  }
+  .icon {
+    position: relative;
+  }
+}
+
+  .grid-container-wkclass-index > div:nth-child(14n+1),
+  .grid-container-wkclass-index > div:nth-child(14n+2),
+  .grid-container-wkclass-index > div:nth-child(14n+3),
+  .grid-container-wkclass-index > div:nth-child(14n+4),
+  .grid-container-wkclass-index > div:nth-child(14n+5),
+  .grid-container-wkclass-index > div:nth-child(14n+6),
+  .grid-container-wkclass-index > div:nth-child(14n+7) {
+    background-color: $bg-light;
+  }
+
+
 img.back_icon {
   width: 2.0rem;
   height: 2.0rem;

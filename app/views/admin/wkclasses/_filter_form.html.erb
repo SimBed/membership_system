@@ -1,7 +1,7 @@
 <div class="container search">
   <hr class = "search mb-3"></hr>
 
-  <%= form_with(url: "/wkclasses/filter", method: "get", local: true, class: "form-class") do %>
+  <%= form_with(url: wkclass_filter_path, method: "get", local: false, class: "form-class") do %>
   <div class="container mb-1 px-0">
   <div class="row">
     <div class="col-4 px-0">

@@ -1,23 +1,19 @@
-<% @wkclasses.each do |wkclass| %>
-  <div class ="d-flex bg-light">
-      <!--div class ="cell c-class-icon">
-        <%#= link_to image_tag('clipboard.png', class: "table_icon"), admin_wkclass_path(wkclass), class: "icon-container" %>
-      </div-->
-      <div class ="cell c-class-name"><%= link_to wkclass.name, admin_wkclass_path(wkclass), class: "like_button" %></div>
-      <div class ="cell c-class-date"><%= wkclass.date %></div>
-      <div class ="cell c-class-time"><%= wkclass.time %></div>
-      <div class ="cell c-class-icon">
-        <%= wkclass.provisional_attendances.size %> <%= image_tag('reserve.png', class: "header_icon")%>
-      </div>
-      <div class ="cell c-class-icon">
-        <%= wkclass.confirmed_attendances.size %> <%= image_tag('group.png', class: "header_icon")%>
-      </div>
-      <!--div class ="cell c-class-revenue"><%#= number_to_currency(wkclass.revenue, precision: 0, unit: 'Rs. ') %></div-->
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass), class: "icon-container" %>
-      </div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), method: :delete, data: { confirm: 'Class and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
-      </div>
-  </div>
-<% end %>
+<div class="page_entries_info">
+  <%= paginate @wkclasses, remote: true %>
+  <%= page_entries_info @wkclasses, entry_name: 'classes' %>
+</div>
+<div class="grid-container-wkclass-index">
+  <% @wkclasses.each do |wkclass| %>
+    <div class="grid-cell"><%= link_to wkclass.name, admin_wkclass_path(wkclass), class: "like_button" %></div>
+    <div class="grid-cell"><%= wkclass.date %></div>
+    <div class="grid-cell"><%= wkclass.time %></div>
+    <div class="grid-cell"><%= wkclass.provisional_attendances.size %> <%= image_tag('reserve.png', class: "header_icon")%></div>
+    <div class="grid-cell"><%= wkclass.physical_attendances.size %> <%= image_tag('group.png', class: "header_icon")%></div>
+    <div class="grid-cell icon">
+      <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass), class: "icon-container" %>
+    </div>
+    <div class="grid-cell icon">
+      <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), method: :delete, data: { confirm: 'Class and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
+    </div>
+  <% end %>
+</div>
