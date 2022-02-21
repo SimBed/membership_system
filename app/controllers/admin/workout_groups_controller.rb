@@ -3,15 +3,14 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   before_action :partner_or_admin_account, only: %i[ index ]
   before_action :correct_account_or_superadmin, only: %i[ show ]
   before_action :set_workout_group, only: %i[ show edit update destroy ]
-#  before_action :superadmin_account, only: %i[ show ]
 
   def index
     if logged_in_as?('partner')
       partner_id = current_account.partners.first.id
       # reformat to scope
-      @workout_groups = WorkoutGroup.all.where(partner_id: partner_id)
+      @workout_groups = WorkoutGroup.where(partner_id: partner_id).order_by_name
     else
-      @workout_groups = WorkoutGroup.all
+      @workout_groups = WorkoutGroup.order_by_name
     end
   end
 

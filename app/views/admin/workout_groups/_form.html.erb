@@ -37,13 +37,15 @@
   </div>
 
   <div class="field">
-    <legend>Workout</legend>
+    <legend>Workouts included</legend>
     <% @workouts.each do |workout| %>
       <div class ="d-flex">
         <% checked = false %>
         <% checked = @workout_group.workouts.pluck(:name).include?(workout.name) if @workout_group.persisted? %>
-        <%= check_box_tag 'workout_group[workout_ids][]', workout.id, checked, class: "checkbox-class", id: "chbox#{workout.id}" %>
-        <%= label_tag "chbox#{workout.id}", workout.name %>
+        <%= label_tag nil, class: "purchase-filters" do %>
+          <%= check_box_tag 'workout_group[workout_ids][]', workout.id, checked, class: "checkbox-class", id: "chbox#{workout.id}" %>
+          <%= workout.name %>
+        <% end %>
       </div>
     <% end %>
   </div>

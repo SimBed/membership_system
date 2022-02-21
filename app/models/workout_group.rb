@@ -12,6 +12,7 @@ class WorkoutGroup < ApplicationRecord
   validates :workout_ids, presence: true
   after_create :create_rel_workout_group_workout
   after_update :update_rel_workout_group_workout
+  scope :order_by_name, -> { order(:name) }
 
   def self.includes_workout_of(wkclass)
     joins(rel_workout_group_workouts: [:workout])
