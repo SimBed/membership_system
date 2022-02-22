@@ -22,6 +22,26 @@
         <%= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
         <%= 'Space group' %>
       <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'todays_class', 'todays_class', session[:filter_todays_class].present? ? true : false, class: "checkbox-class", id: "chbox_todays_class", onchange: "this.form.submit()"  %>
+        <%= 'Today' %>
+      <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'yesterdays_class', 'yesterdays_class', session[:filter_yesterdays_class].present? ? true : false, class: "checkbox-class", id: "chbox_yesterdays_class", onchange: "this.form.submit()"  %>
+        <%= 'Yesterday' %>
+      <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'tomorrows_class', 'tomorrows_class', session[:filter_tomorrows_class].present? ? true : false, class: "checkbox-class", id: "chbox_tomorrows_class", onchange: "this.form.submit()"  %>
+        <%= 'Tomorrow' %>
+      <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'past', 'past', session[:filter_past].present? ? true : false, class: "checkbox-class", id: "chbox_past", onchange: "this.form.submit()"  %>
+        <%= 'Past' %>
+      <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'future', 'future', session[:filter_future].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: "this.form.submit()"  %>
+        <%= 'Future' %>
+      <% end %>
     </fieldset>
     </div>
     <fieldset class="mt-2">

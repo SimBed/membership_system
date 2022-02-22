@@ -13,6 +13,11 @@ class Wkclass < ApplicationRecord
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
   scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
+  scope :todays_class, -> { where(start_time: Date.today.beginning_of_day..Date.today.end_of_day)}
+  scope :yesterdays_class, -> { where(start_time: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)}
+  scope :tomorrows_class, -> { where(start_time: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day)}  
+  scope :past, -> { where('start_time < ?', Date.today.beginning_of_day) }
+  scope :future, -> { where.not(id: past) }
   paginates_per 100
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}

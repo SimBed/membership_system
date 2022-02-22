@@ -1,3 +1,4 @@
+require 'byebug'
 class Admin::WkclassesController < Admin::BaseController
   skip_before_action :admin_account, only: %i[ show index new edit create update filter ]
   before_action :junioradmin_account, only: %i[ show index new edit create update ]
@@ -18,7 +19,8 @@ class Admin::WkclassesController < Admin::BaseController
 
   def show
     # if the 'wkclass show comes from the client_attendances_table and the date of that class is not in the period filter
-    # from the wkclass index filter form, the next_item helper will fail (unless the classes_period is reset to be consistent with the wkclass to be shown)    
+    # from the wkclass index filter form, the next_item helper will fail (unless the classes_period is reset to be consistent with the wkclass to be shown)
+    clear_session(:filter_workout, :filter_spacegroup, :filter_todays_class, :filter_yesterdays_class, :filter_tomorrows_class, :filter_past, :filter_future, :classes_period)
     session[:classes_period] = params[:classes_period] || session[:classes_period]
     # set @wkclasses and @wkindex so the wkclasses can be scrolled through from each wkclass show
     @wkclasses = Wkclass.order_by_date
@@ -69,10 +71,15 @@ class Admin::WkclassesController < Admin::BaseController
 
   def filter
     # see application_helper
-    clear_session(:filter_workout, :filter_spacegroup, :classes_period)
+    clear_session(:filter_workout, :filter_spacegroup, :filter_todays_class, :filter_yesterdays_class, :filter_tomorrows_class, :filter_past, :filter_future, :classes_period)
     session[:filter_workout] = params[:workout] || session[:filter_workout]
     session[:filter_spacegroup] = params[:spacegroup] || session[:filter_spacegroup]
     session[:classes_period] = params[:classes_period] || session[:classes_period]
+    session[:filter_todays_class] = params[:todays_class] || session[:filter_todays_class]
+    session[:filter_yesterdays_class] = params[:yesterdays_class] || session[:filter_yesterdays_class]
+    session[:filter_tomorrows_class] = params[:tomorrows_class] || session[:filter_tomorrows_class]
+    session[:filter_past] = params[:past] || session[:filter_past]
+    session[:filter_future] = params[:future] || session[:filter_future]
     redirect_to admin_wkclasses_path
   end
 
@@ -88,8 +95,14 @@ class Admin::WkclassesController < Admin::BaseController
     end
 
     def handle_search
+
       @wkclasses = Wkclass.joins(:workout).where(workout: { name: session[:filter_workout] }).order(start_time: :desc) if session[:filter_workout].present?
       @wkclasses = @wkclasses.in_workout_group(session[:filter_spacegroup]) if session[:filter_spacegroup].present?
+      @wkclasses = @wkclasses.todays_class if session[:filter_todays_class].present?
+      @wkclasses = @wkclasses.yesterdays_class if session[:filter_yesterdays_class].present?
+      @wkclasses = @wkclasses.tomorrows_class if session[:filter_tomorrows_class].present?
+      @wkclasses = @wkclasses.past if session[:filter_past].present?
+      @wkclasses = @wkclasses.future if session[:filter_future].present?
       if session[:classes_period].present? && !(session[:classes_period] == 'All')
         start_date = Date.parse(session[:classes_period])
         end_date = Date.parse(session[:classes_period]).end_of_month.end_of_day
