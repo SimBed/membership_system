@@ -9,10 +9,10 @@
     <div class="grid-cell"><%= wkclass.time %></div>
     <div class="grid-cell"><%= wkclass.provisional_attendances.size %> <%= image_tag('reserve.png', class: "header_icon")%></div>
     <div class="grid-cell"><%= wkclass.physical_attendances.size %> <%= image_tag('group.png', class: "header_icon")%></div>
-    <div class="grid-cell icon">
+    <div class="grid-cell icon nomobile">
       <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass), class: "icon-container" %>
     </div>
-    <div class="grid-cell icon">
+    <div class="grid-cell icon nomobile">
       <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), method: :delete, data: { confirm: 'Class and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
     </div>
   <% end %>

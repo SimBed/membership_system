@@ -69,7 +69,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def clear_filters
-    clear_session(:filter_packagee, :search_client_name)
+    clear_session(:filter_packagee, :filter_enquiry, :search_client_name)
     redirect_to admin_clients_path
   end
 

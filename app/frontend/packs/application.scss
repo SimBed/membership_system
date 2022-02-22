@@ -14,12 +14,23 @@ $gray-darkest: #474444;
 body {
   background-color: #fff;
   color: #333;
-  margin: 33px; }
+  margin: 0.2rem; }
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 1.3rem;
-  line-height: 1.5rem; }
+  font-size: 0.8rem;
+  line-height: 1.0rem; }
+
+  .nav-link {
+    padding: 0.1rem 0.2rem;
+  }
+
+
+
+
+
+
+
 
 pre {
   background-color: #eee;
@@ -160,17 +171,12 @@ transform: translate(-50%, -50%);
 }
 
 img.table_icon {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.0rem;
+  height: 1.0rem;
   @extend %icons;
 }
 
 img.header_icon {
-  width: 1.4rem;
-  height: 1.4rem;
-}
-
-img.infinity_icon {
   width: 1.0rem;
   height: 1.0rem;
 }
@@ -285,7 +291,7 @@ button.search{
 
 .grid-container-client-index {
   @extend %grid-container;
-  grid-template-columns: auto auto auto auto 2em 2em 2em;
+  grid-template-columns: auto auto;
 
   .grid-cell {
     color: black;
@@ -383,7 +389,7 @@ button.search{
 
 .grid-container-purchase-index {
   @extend %grid-container;
-  grid-template-columns: auto auto auto 2em 2em;
+  grid-template-columns: auto auto;
 
   .grid-cell {
     color: black;
@@ -423,7 +429,7 @@ button.search{
 
 .grid-container-wkclass-index {
   @extend %grid-container;
-  grid-template-columns: auto auto auto auto auto 2em 2em;
+  grid-template-columns: auto auto auto auto auto;
 
   .grid-cell {
     color: black;
@@ -500,4 +506,48 @@ div.page_entries_info {
 
 .close_to_expiry {
   color: red;
+}
+
+div.nomobile {
+  display: none;
+}
+
+@media (min-width: 600px) {
+
+  body {
+    margin: 33px; }
+
+  body, p, ol, ul, td {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+   }
+   .nav-link {
+     padding: 0.5rem 1rem;
+   }
+   img.table_icon {
+     width: 1.4rem;
+     height: 1.4rem;
+     @extend %icons;
+   }
+
+   img.header_icon {
+     width: 1.4rem;
+     height: 1.4rem;
+   }
+
+   div.nomobile {
+     display: block;
+   }
+
+   .grid-container-client-index {
+     grid-template-columns: auto auto auto auto 2em 2em 2em;
+   }
+
+   .grid-container-wkclass-index {
+     grid-template-columns: auto auto auto auto auto 2em 2em;
+   }
+
+   .grid-container-purchase-index {
+     grid-template-columns: auto auto auto 2em 2em;
+  }
 }
