@@ -17,6 +17,9 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def show
+    # if the 'wkclass show comes from the client_attendances_table and the date of that class is not in the period filter
+    # from the wkclass index filter form, the next_item helper will fail (unless the classes_period is reset to be consistent with the wkclass to be shown)    
+    session[:classes_period] = params[:classes_period] || session[:classes_period]
     # set @wkclasses and @wkindex so the wkclasses can be scrolled through from each wkclass show
     @wkclasses = Wkclass.order_by_date
     handle_search
