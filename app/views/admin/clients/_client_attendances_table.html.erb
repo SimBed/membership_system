@@ -1,13 +1,14 @@
 <% @purchases.each do |purchase| %>
 <% @purchase = purchase %>
-  <div class ="cell d-inline-block px-2"><%= purchase.name %></div>
+  <div class ="cell d-inline-block px-2"><%= link_to purchase.name, admin_purchase_path(purchase), class: "like_button" %></div>
   <%= render partial: 'admin/purchases/purchase_table', locals: {setting: "clientshow"} %>
   <div class="grid-container-client-attendances">
     <% attendances = purchase.attendances.order_by_date %>
     <% attendances.each_with_index do |attendance, index| %>
       <div class ="grid-cell"><%= attendances.size - index %></div>
-      <div class ="grid-cell"><%= attendance.wkclass.date %></div>
+      <div class ="grid-cell"><%= link_to attendance.wkclass.date, admin_wkclass_path(attendance.wkclass), class: "like_button" %></div>
       <div class ="grid-cell"><%= attendance.wkclass.workout.name %></div>
+      <div class ="grid-cell"><%= attendance.status %></div>
     <% end %>
   </div>
   <hr>

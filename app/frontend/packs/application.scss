@@ -374,7 +374,7 @@ button.search{
 
 .grid-container-client-attendances {
   @extend %grid-container;
-  grid-template-columns: 2em 12em 12em;
+  grid-template-columns: 2em auto auto auto;
 
   .grid-cell {
     background-color: #e9ecef;
