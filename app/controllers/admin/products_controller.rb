@@ -1,4 +1,3 @@
-require 'byebug'
 class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: %i[ show edit update destroy ]
 
