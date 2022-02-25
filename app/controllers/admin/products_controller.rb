@@ -1,3 +1,4 @@
+require 'byebug'
 class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: %i[ show edit update destroy ]
 
@@ -63,10 +64,12 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def payment
+
 # [{"wg_name"=>"Space",.."price"=>500,.."name"=>"Space UC:1W power"}, {...}, {...} ...]
     #@base_payment = WorkoutGroup.products_hash[params[:selected_product].to_i]['price']
-    @products_hash = WorkoutGroup.products_hash
-    @base_payment = @products_hash[@products_hash.index {|p| p['name']==params[:selected_product]}]['price']
+    # @products_hash = WorkoutGroup.products_hash
+    # @base_payment = @products_hash[@products_hash.index {|p| p['name']==params[:selected_product]}]['price']
+    @base_payment = Price.find(params[:selected_price]).price
     render 'payment.js.erb'
   end
 

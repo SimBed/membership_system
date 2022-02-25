@@ -17,7 +17,8 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
 
   <div class="field">
     <%= form.label :client_id %>
-    <%= form.select :client_id, @clients, include_blank: true %>
+    <%#= form.select :client_id, @clients, include_blank: true %>
+    <%= form.collection_select :client_id, Client.order_by_name, :id, :name, include_blank: true %>
   </div>
 
   <!--div class="field">
@@ -29,9 +30,19 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
   }} %>
   </div-->
 
+  <!-- <div class="field">
+    <%#= form.label :product_name, 'Product' %>
+    <%#= form.select :product_name, options_for_select(@product_names, @product_name), { include_blank: true }  %>
+  </div> -->
+
   <div class="field">
-    <%= form.label :product_name, 'Product' %>
-    <%= form.select :product_name, options_for_select(@product_names, @product_name), { include_blank: true }  %>
+    <%= form.label :product_id, 'Product' %>
+    <%= form.collection_select :product_id, @product_names, :id, :name, include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price_id, 'Price' %>
+    <%= form.grouped_collection_select :price_id, @product_names, :prices, :name, :id, :name, include_blank: true %>
   </div>
 
   <div class="field">
@@ -83,16 +94,58 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
 
 <script>
   // update value of payment field based on product selected
+  // $(function() {
+  //     $("select#purchase_product_name").on("change", function() {
+  //         $.ajax({
+  //             url:  '/products/payment',
+  //             type: 'post',
+  //             data: { selected_product: $("select#purchase_product_name").val()
+  //            }
+  //         });
+  //     });
+  // });
+
   $(function() {
-      $("select#purchase_product_name").on("change", function() {
+      $("select#purchase_price_id").on("change", function() {
           $.ajax({
               url:  '/products/payment',
               type: 'post',
-              data: { selected_product: $("select#purchase_product_name").val()
+              data: { selected_price: $("select#purchase_price_id").val()
              }
           });
       });
   });
+</script>
+
+<script>
+  prices = $('select#purchase_price_id').html()
+  $('select#purchase_product_id').on('change', function() {
+    product = $('#purchase_product_id :selected').text();
+    options = $(prices).filter("optgroup[label='" + product + "']").html();
+    if (options) {
+      $('#purchase_price_id').html(options);}
+    else {
+      $('#purchase_price_id').empty();}
+      $.ajax({
+          url:  '/products/payment',
+          type: 'post',
+          data: { selected_price: $("select#purchase_price_id").val()
+         }
+      });
+   });
+</script>
+
+<script>
+    $(document).ready(()=>{
+      prices = $('select#purchase_price_id').html();
+      product = $('#purchase_product_id :selected').text();
+      options = $(prices).filter("optgroup[label='" + product + "']").html();
+      if (options) {
+        $('#purchase_price_id').html(options);}
+      else {
+        $('#purchase_price_id').empty();}
+    });
+
 </script>
 
 <!-- <script>

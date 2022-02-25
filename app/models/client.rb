@@ -2,7 +2,6 @@ class Client < ApplicationRecord
   has_many :purchases, dependent: :destroy
   has_many :attendances, through: :purchases
   belongs_to :account, optional: true
-  scope :order_by_name, -> { order(:first_name, :last_name) }
   before_save :downcase_email
   # validates :first_name, uniqueness: {scope: :last_name}
   validates :first_name, presence: true, length: { maximum: 40 }
@@ -18,6 +17,7 @@ class Client < ApplicationRecord
   validates :email, allow_blank: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+  scope :order_by_name, -> { order(:first_name, :last_name) }
   scope :name_like, ->(name) { where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
   # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
   scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: {id: nil}) }

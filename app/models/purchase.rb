@@ -2,6 +2,7 @@ class Purchase < ApplicationRecord
   belongs_to :product
   belongs_to :client
   belongs_to :fitternity, optional: true
+  belongs_to :price
   has_many :attendances, dependent: :destroy
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
@@ -10,7 +11,7 @@ class Purchase < ApplicationRecord
   delegate :name, to: :product
   delegate :revenue_for_class, to: :client
   delegate :workout_group, to: :product
-  delegate :dropin?, to: :product  
+  delegate :dropin?, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },
@@ -69,6 +70,10 @@ class Purchase < ApplicationRecord
 
   def name_with_dop
     "#{name} - #{dop.strftime('%d %b %y')}"
+  end
+
+  def name_with_price_name
+    "#{name} - #{self.price.name}"
   end
 
   def status

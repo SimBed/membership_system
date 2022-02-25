@@ -41,18 +41,21 @@ class Admin::PurchasesController < Admin::BaseController
 
   def new
     @purchase = Purchase.new
-    @clients = Client.order_by_name.map { |c| [c.name, c.id] }
+    #@clients = Client.order_by_name.map { |c| [c.name, c.id] }
+    @clients = Client.order_by_name
     # @products_hash = WorkoutGroup.products_hash
     # @product_names = @products_hash.map.with_index { |p, index| [Product.full_name(p['wg_name'], p['max_classes'], p['validity_length'], p['validity_unit'], p['price_name']), index]}
-    @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+    # @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+    @product_names = Product.order_by_name_max_classes
     @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
   end
 
   def edit
-    @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-    @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+    @clients = Client.order_by_name
+    @product_names = Product.order_by_name_max_classes
+    # @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
     # as the product name is not an attribute of the purchase model, it is not automatically selected in the dropdown
-    @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name)
+    # @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name)
     @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
   end
 
@@ -62,13 +65,13 @@ class Admin::PurchasesController < Admin::BaseController
         # redirect_to @purchase previously (before admin namespace)
         # equivalent to redirect_to admin_purchase_path @purchase
         redirect_to [:admin, @purchase]
-        #admin_purchase_path @purchase
         flash[:success] = "Purchase was successfully created"
       else
-        @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-        @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+        @clients = Client.order_by_name
+        # @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+        @product_names = Product.order_by_name_max_classes
         @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
-        @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name) unless purchase_params[:product_id].nil?
+  #      @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name) unless purchase_params[:product_id].nil?
         render :new, status: :unprocessable_entity
       end
   end
@@ -79,8 +82,9 @@ class Admin::PurchasesController < Admin::BaseController
         flash[:success] = "Purchase was successfully updated"
       else
         @clients = Client.order_by_name.map { |c| [c.name, c.id] }
-        @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
-        @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name) unless purchase_params[:product_id].nil?
+        # @product_names = WorkoutGroup.products_hash.map { |p| p['name'] }
+        # @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name) unless purchase_params[:product_id].nil?
+        @product_names = Product.order_by_name_max_classes
         @payment_methods = Rails.application.config_for(:constants)["payment_methods"]
         render :edit, status: :unprocessable_entity
     end
@@ -126,17 +130,18 @@ class Admin::PurchasesController < Admin::BaseController
     end
 
     def purchase_params
-      pp = params.require(:purchase).permit(:client_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+      pp = params.require(:purchase).permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode, :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
       pp[:invoice] = nil if pp[:invoice] == ""
       pp[:note] = nil if pp[:note] == ""
       pp[:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
-      @products_hash = WorkoutGroup.products_hash
+      # @products_hash = WorkoutGroup.products_hash
       # pp[:product_id] = @products_hash[params[:purchase][:products_hash_index].to_i]['product_id']
-      if params[:purchase][:product_name].blank?
-        pp[:product_id] = nil
-      else
-        pp[:product_id] = @products_hash[@products_hash.index {|p| p['name']==params[:purchase][:product_name]}]['product_id']
-      end
+      pp[:product_id] = nil if params[:purchase][:product_id].blank?
+      # if params[:purchase][:product_name].blank?
+      #   pp[:product_id] = nil
+      # else
+      #   pp[:product_id] = @products_hash[@products_hash.index {|p| p['name']==params[:purchase][:product_name]}]['product_id']
+      # end
       pp
     end
 

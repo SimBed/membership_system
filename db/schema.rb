@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_093907) do
+ActiveRecord::Schema.define(version: 2022_02_23_134949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,9 +156,11 @@ ActiveRecord::Schema.define(version: 2022_02_21_093907) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "fitternity_id"
+    t.bigint "price_id"
     t.index ["client_id"], name: "index_purchases_on_client_id"
     t.index ["dop"], name: "index_purchases_on_dop"
     t.index ["expired"], name: "index_purchases_on_expired"
+    t.index ["price_id"], name: "index_purchases_on_price_id"
     t.index ["product_id"], name: "index_purchases_on_product_id"
   end
 
@@ -203,4 +205,5 @@ ActiveRecord::Schema.define(version: 2022_02_21_093907) do
 
   add_foreign_key "expenses", "workout_groups"
   add_foreign_key "instructor_rates", "instructors"
+  add_foreign_key "purchases", "prices"
 end

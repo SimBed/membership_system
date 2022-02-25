@@ -1,5 +1,6 @@
 <h5><%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "text-decoration-none" %>
-  <div class = "mt-1 mb-3"><%= link_to @purchase.product.name, admin_product_path(@purchase.product), class: "text-decoration-none" %></div>
+  <div class = "mt-1"><%= link_to @purchase.name, admin_product_path(@purchase.product), class: "text-decoration-none" %></div>
+<div class = "mt-1 mb-3"><%= @purchase.price.name %></div>
 </h5>
 
 <div id="purchase-table" class="container px-1 mb-2 margin-override">
