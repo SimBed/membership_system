@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_134949) do
     t.index ["client_id"], name: "index_purchases_on_client_id"
     t.index ["dop"], name: "index_purchases_on_dop"
     t.index ["expired"], name: "index_purchases_on_expired"
+    t.index ["price_id"], name: "index_purchases_on_price_id"
     t.index ["product_id"], name: "index_purchases_on_product_id"
   end
 
