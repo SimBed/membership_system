@@ -19,12 +19,14 @@ class Admin::WkclassesController < Admin::BaseController
   def show
     # if the 'wkclass show comes from the client_attendances_table and the date of that class is not in the period filter
     # from the wkclass index filter form, the next_item helper will fail (unless the classes_period is reset to be consistent with the wkclass to be shown)
-    clear_session(:filter_workout, :filter_spacegroup, :filter_todays_class, :filter_yesterdays_class, :filter_tomorrows_class, :filter_past, :filter_future, :classes_period) if params[:setting] == 'clientshow'
-    session[:classes_period] = params[:classes_period] || session[:classes_period]
+    # clear_session(:filter_workout, :filter_spacegroup, :filter_todays_class, :filter_yesterdays_class, :filter_tomorrows_class, :filter_past, :filter_future, :classes_period) if params[:setting] == 'clientshow'
+    # session[:classes_period] = params[:classes_period] || session[:classes_period]
     # set @wkclasses and @wkindex so the wkclasses can be scrolled through from each wkclass show
-    @wkclasses = Wkclass.order_by_date
-    handle_search
-    @wkindex = @wkclasses.index(@wkclass)
+    unless params[:no_scroll] then
+      @wkclasses = Wkclass.order_by_date
+      handle_search
+      @wkindex = @wkclasses.index(@wkclass)
+    end
   end
 
   def new
@@ -44,7 +46,7 @@ class Admin::WkclassesController < Admin::BaseController
   def create
     @wkclass = Wkclass.new(wkclass_params)
       if @wkclass.save
-        redirect_to admin_wkclass_path(@wkclass)
+        redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
         flash[:success] = "Class was successfully created"
       else
         @workouts = Workout.all.map { |w| [w.name, w.id] }

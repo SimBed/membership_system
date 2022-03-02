@@ -2,7 +2,7 @@
   <span class="me-2"></span>
   <%= link_to image_tag('add.png', class: "button_icon"), new_admin_attendance_path(:wkclass_id => @wkclass.id), class: "icon-container" %>
 </h5>
-<%= link_to '<<', admin_wkclass_path(@wkclasses.next_item(params[:id].to_i)), {class: "paginate_icon"} %>
+<%= link_to '<<', admin_wkclass_path(@wkclasses.next_item(params[:id].to_i)), {class: "paginate_icon"} unless params[:no_scroll] %>
 <%= @wkclass.attendances.confirmed.count %> <%= image_tag('group.png', class: "header_icon")%> |
 <% unless logged_in_as?('junioradmin') %>
 <%= number_to_currency(@wkclass.revenue, precision: 0, unit: 'Rs. ') %> |
@@ -10,4 +10,4 @@
 <%= @wkclass.instructor&.name %>
 <%# <%= link_to '>>', {id: @wkclasses.next(params[:id]).id} , {class: "pl-2"} %>
 
-<%= link_to '>>', admin_wkclass_path(@wkclasses.prev_item(params[:id].to_i)), {class: "paginate_icon pl-2"} %>
+<%= link_to '>>', admin_wkclass_path(@wkclasses.prev_item(params[:id].to_i)), {class: "paginate_icon pl-2"} unless params[:no_scroll] %>

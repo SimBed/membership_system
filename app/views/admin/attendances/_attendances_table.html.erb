@@ -1,6 +1,6 @@
   <% @attendances.each do |attendance| %>
     <div class ="d-flex bg-light">
-        <div class ="cell c-attendance-date"><%= link_to attendance.wkclass.date, admin_wkclass_path(attendance.wkclass) %></div>
+        <div class ="cell c-attendance-date"><%= link_to attendance.wkclass.date, admin_wkclass_path(attendance.wkclass, no_scroll: true) %></div>
         <div class ="cell c-attendance-wkname"><%= attendance.wkclass.workout.name %></div>
         <div class ="cell c-attendance-product"><%= link_to attendance.purchase.product.name, admin_purchase_path(attendance.purchase) %></div>
         <div class ="cell c-attendance-client"><%= attendance.purchase.client.name %></div>

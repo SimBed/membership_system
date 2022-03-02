@@ -9,7 +9,7 @@ class Admin::AttendancesController < Admin::BaseController
     start_date = Date.parse(session[:attendance_period])
     end_date = Date.parse(session[:attendance_period]).end_of_month.end_of_day
     @attendances = Attendance.by_workout_group(session[:workout_group], start_date, end_date)
-    @attendances.sort_by! { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
+    @attendances.sort_by { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
     @revenue = @attendances.map(&:revenue).inject(0, :+)
     # prepare items for the revenue date select
     # months_logged method defined in application helper
@@ -38,7 +38,7 @@ class Admin::AttendancesController < Admin::BaseController
   def create
     @attendance = Attendance.new(attendance_params)
       if @attendance.save
-        redirect_to admin_wkclass_path(@attendance.wkclass)
+        redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
         flash[:success] = "#{@attendance.purchase.client.name}'s attendance was successfully logged"
         @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else
@@ -75,7 +75,7 @@ class Admin::AttendancesController < Admin::BaseController
   def destroy
     @wkclass = Wkclass.find(@attendance.wkclass.id)
     @attendance.destroy
-    redirect_to admin_wkclass_path(@wkclass)
+    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash[:success] = "Attendance was successfully removed"
   end
 

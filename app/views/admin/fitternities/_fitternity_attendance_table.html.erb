@@ -7,7 +7,7 @@
          <%= @attendances.size - index %>
        </div>
        <div class='cell'>
-         <%= link_to attendance.date, admin_wkclass_path(attendance.wkclass) %>
+         <%= link_to attendance.date, admin_wkclass_path(attendance.wkclass, no_scroll: true) %>
        </div>
        <div class='cell c-class-time'>
          <%= attendance.time %>
