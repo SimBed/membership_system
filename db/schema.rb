@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_23_134949) do
+ActiveRecord::Schema.define(version: 2022_03_01_055203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_134949) do
     t.integer "account_id"
     t.text "note"
     t.string "whatsapp"
+    t.boolean "hotlead", default: false
     t.index ["account_id"], name: "index_clients_on_account_id"
     t.index ["first_name", "last_name"], name: "index_clients_on_first_name_and_last_name"
   end

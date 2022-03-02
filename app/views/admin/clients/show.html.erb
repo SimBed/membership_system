@@ -1,10 +1,6 @@
-  <h2><%= @client.name %> <form action=<%= "/admin/clients/#{params[:id]}" %> method="GET" >
-      <select name="purchaseid" onchange="this.form.submit()" class= "sort">
-        <%#= options_for_select @months, session[:attendance_period] %>
-        <%= options_for_select @products_purchased, session[:purchaseid] %>
-      </select>
-  </form>
-  </h2>
+<h2>
+  <%= render partial: 'client_heading' %>
+</h2>
 
 <div id="client-summary" class="container px-1 mb-5 margin-override">
   <%= render partial: 'client_summary' %>

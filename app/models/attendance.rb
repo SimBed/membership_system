@@ -26,7 +26,7 @@ class Attendance < ApplicationRecord
   #          FROM attendances
   #          INNER JOIN wkclasses ON wkclasses.id = attendances.wkclass_id
   #          ORDER BY date ASC;"
-  #     ActiveRecord::Base.connection.exec_query(sql).to_a
+  #   ActiveRecord::Base.connection.exec_query(sql).to_a
   # end
 
   def self.by_status(wkclass, status)

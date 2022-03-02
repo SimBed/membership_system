@@ -14,10 +14,14 @@
 <div class="grid-container-client-summary">
   <div class="grid-cell name">Total classes</div>
   <div class="grid-cell name"><%= @client_hash[:attendances] %></div>
+  <div class="grid-cell name">Total purchases</div>
+  <div class="grid-cell name"><%= @client_hash[:purchases] %></div>
   <% if logged_in_as?('superadmin') %>
     <div class="grid-cell email">Total spend</div>
     <div class="grid-cell name"><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></div>
   <% end %>
   <div class="grid-cell name">Last class</div>
   <div class="grid-cell email"><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></div>
+  <div class="grid-cell name">First contact</div>
+  <div class="grid-cell email"><%= "#{time_ago_in_words(@client_hash[:date_created])} ago" %></div>
 </div>

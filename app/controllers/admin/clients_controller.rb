@@ -8,6 +8,7 @@ class Admin::ClientsController < Admin::BaseController
 
   def index
     @clients = Client.includes(:account).order_by_name
+    # @clients = Client.order_by_name
     handle_search_name unless session[:search_client_name].blank?
     handle_search
     @clients = @clients.page params[:page]
@@ -29,8 +30,11 @@ class Admin::ClientsController < Admin::BaseController
     end if
     @client_hash = {
       attendances: @client.attendances.size,
+      purchases: @client.purchases.size,
       spend: @client.total_spend,
-      last_class: @client.last_class
+      last_class: @client.last_class,
+      date_created: @client.created_at,
+      date_last_purchase_expiry: @client.last_purchase&.expiry_date
     }
 
     @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id]  }
@@ -69,15 +73,17 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def clear_filters
-    clear_session(:filter_packagee, :filter_enquiry, :search_client_name)
+    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_hot, :search_client_name)
     redirect_to admin_clients_path
   end
 
   def filter
-    clear_session(:filter_packagee, :filter_enquiry, :search_client_name)
+    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_hot, :search_client_name)
     session[:search_client_name] = params[:search_client_name] || session[:search_client_name]
-    session[:filter_packagee] = params[:packagee] || session[:filter_packagee]
+    session[:filter_cold] = params[:cold] || session[:filter_cold]
     session[:filter_enquiry] = params[:enquiry] || session[:filter_enquiry]
+    session[:filter_packagee] = params[:packagee] || session[:filter_packagee]
+    session[:filter_hot] = params[:hot] || session[:filter_hot]
     redirect_to admin_clients_path
   end
 
@@ -87,7 +93,7 @@ class Admin::ClientsController < Admin::BaseController
     end
 
     def client_params
-      params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :note)
+      params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
     end
 
     def correct_account
@@ -103,8 +109,10 @@ class Admin::ClientsController < Admin::BaseController
     end
 
     def handle_search
-      @clients = @clients.joins(:purchases).merge(Purchase.with_package).distinct if session[:filter_packagee].present?
+      @clients = @clients.cold if session[:filter_cold].present?
       @clients = @clients.enquiry if session[:filter_enquiry].present?
+      @clients = @clients.joins(:purchases).merge(Purchase.with_package).distinct if session[:filter_packagee].present?
+      @clients = @clients.hot if session[:filter_hot].present?
     end
 
     # def layout_set

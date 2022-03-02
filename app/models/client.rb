@@ -21,7 +21,52 @@ class Client < ApplicationRecord
   scope :name_like, ->(name) { where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
   # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
   scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: {id: nil}) }
+  scope :hot, -> { where(hotlead: true) }
+  # cold failed as a class method (didn't mix well with Client.includes(:account) in the controller. Don't understand why.)
+  scope :cold, -> { clients = Client
+                      .select('clients.id', 'max(start_time) as max')
+                      .joins(purchases: [attendances: [:wkclass]])
+                      .group('clients.id')
+                      .having("max(start_time) < ?", 3.months.ago)
+                    Client.where(id: clients.map(&:id))
+                  }
   paginates_per 20
+
+
+  # def self.cold
+  #   clients = Client
+  #   .select('clients.id', 'max(start_time) as max')
+  #   .joins(purchases: [attendances: [:wkclass]])
+  #   .group('clients.id')
+  #   .having("max(start_time) < ?", 3.months.ago)
+  #   # .to_a.map(&:id)
+  #   # hack to convert back to ActiveRecord
+  #   Client.where(id: clients.map(&:id))
+  # end
+
+  # def self.cold
+  #     sql = "SELECT client_id, max(start_time)
+  #            FROM clients INNER JOIN purchases ON purchases.client_id = clients.id
+  #            INNER JOIN attendances ON attendances.purchase_id = purchases.id
+  #            INNER JOIN wkclasses ON attendances.wkclass_id = wkclasses.id
+  #            GROUP BY client_id
+  #            HAVING max(start_time) > CURRENT_DATE - INTERVAL '1 months';"
+  #     ActiveRecord::Base.connection.exec_query(sql).to_a
+  # end
+
+  def cold?
+    date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
+    return false if date_of_last_class.nil?
+    date_of_last_class < 3.months.ago
+  end
+
+  def cold2?
+    Client.cold.where(id: self.id).exists?
+  end
+
+  def enquiry?
+    Client.enquiry.where(id: self.id).exists?
+  end
 
   def name
     "#{first_name} #{last_name}"
@@ -33,6 +78,10 @@ class Client < ApplicationRecord
 
   def total_spend
     purchases.map(&:payment).inject(0, :+)
+  end
+
+  def last_purchase
+    purchases.order_by_dop.first
   end
 
   def product_for_class(wkclass)

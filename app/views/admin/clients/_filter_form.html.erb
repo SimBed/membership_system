@@ -10,14 +10,22 @@
   <div class="col-4 px-0">
     <fieldset>
       <legend>ATTRIBUTE</legend>
-        <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'packagee', 'packagee', session[:filter_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: 'Rails.fire(this.form, "submit")'  %>
-          <%= 'has package' %>
-        <% end %>
-        <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'enquiry', 'enquiry', session[:filter_enquiry].present? ? true : false, class: "checkbox-class", id: "chbox_enquiry", onchange: 'Rails.fire(this.form, "submit")'  %>
-          <%= 'enquiry' %>
-        <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'cold', 'cold', session[:filter_cold].present? ? true : false, class: "checkbox-class", id: "chbox_cold", onchange: 'Rails.fire(this.form, "submit")' %>
+        <%= 'cold' %>
+      <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'enquiry', 'enquiry', session[:filter_enquiry].present? ? true : false, class: "checkbox-class", id: "chbox_enquiry", onchange: 'Rails.fire(this.form, "submit")' %>
+        <%= 'enquiry' %>
+      <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'packagee', 'packagee', session[:filter_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: 'Rails.fire(this.form, "submit")' %>
+        <%= 'has package' %>
+      <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'hot', 'hot', session[:filter_hot].present? ? true : false, class: "checkbox-class", id: "chbox_hot", onchange: 'Rails.fire(this.form, "submit")' %>
+        <%= 'hot' %>
+      <% end %>
     </fieldset>
   </div>
 
