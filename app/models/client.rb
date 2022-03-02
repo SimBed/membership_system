@@ -32,7 +32,14 @@ class Client < ApplicationRecord
                   }
   paginates_per 20
 
-
+  def self.to_csv
+    CSV.generate(row_sep: "\n") do |csv|
+      csv << column_names
+      all.each do |client|
+        csv << client.attributes.values_at(*column_names)
+      end
+    end
+  end
   # def self.cold
   #   clients = Client
   #   .select('clients.id', 'max(start_time) as max')

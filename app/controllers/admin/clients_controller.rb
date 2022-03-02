@@ -11,10 +11,17 @@ class Admin::ClientsController < Admin::BaseController
     # @clients = Client.order_by_name
     handle_search_name unless session[:search_client_name].blank?
     handle_search
-    @clients = @clients.page params[:page]
+    # when exporting data, want it all not just the page of pagination
+    if params[:export_all]
+      @clients = @clients.page(params[:page]).per(1000)
+    else
+      @clients = @clients.page params[:page]
+    end
     respond_to do |format|
       format.html {}
       format.js {render 'index.js.erb'}
+      format.csv { send_data @clients.to_csv }
+      format.xls
     end
   end
 
