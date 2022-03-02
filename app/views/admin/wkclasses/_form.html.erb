@@ -12,7 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.select :workout_id, options_for_select(@workouts, @wkclass.workout&.id || @workouts.first) %>
+    <%# the class must not be edited after an attendance has been added, otherwise careless  administration may cause clients to attend a class for which they do not have an applicable product %>
+    <%= form.select :workout_id, options_for_select(@workouts, @wkclass.workout&.id || @workouts.first),{}, {disabled: (true unless @wkclass.attendances.size.zero?)} %>
   </div>
 
   <div class="field">

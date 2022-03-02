@@ -30,11 +30,6 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
   }} %>
   </div-->
 
-  <!-- <div class="field">
-    <%#= form.label :product_name, 'Product' %>
-    <%#= form.select :product_name, options_for_select(@product_names, @product_name), { include_blank: true }  %>
-  </div> -->
-
   <div class="field">
     <%= form.label :product_id, 'Product' %>
     <%= form.collection_select :product_id, @product_names, :id, :name, include_blank: true %>
