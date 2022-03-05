@@ -1,48 +1,29 @@
 require "test_helper"
-
 class ExpensesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @expense = expenses(:one)
+    @client1 = accounts(:client1)
+    @client2 = accounts(:client2)
+    @admin = accounts(:admin)
+    @superadmin = accounts(:superadmin)
+    @junioradmin = accounts(:junioradmin)
+    @partner1 = accounts(:partner1)
+    @partner2 = accounts(:partner2)
   end
 
-  test "should get index" do
-    get expenses_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_expense_url
-    assert_response :success
-  end
-
-  test "should create expense" do
-    assert_difference('Expense.count') do
-      post expenses_url, params: { expense: { amount: @expense.amount, date: @expense.date, item: @expense.item, workout_group_id: @expense.workout_group_id } }
-    end
-
-    assert_redirected_to expense_url(Expense.last)
-  end
-
-  test "should show expense" do
-    get expense_url(@expense)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_expense_url(@expense)
-    assert_response :success
-  end
-
-  test "should update expense" do
-    patch expense_url(@expense), params: { expense: { amount: @expense.amount, date: @expense.date, item: @expense.item, workout_group_id: @expense.workout_group_id } }
-    assert_redirected_to expense_url(@expense)
-  end
-
-  test "should destroy expense" do
-    assert_difference('Expense.count', -1) do
-      delete expense_url(@expense)
-    end
-
-    assert_redirected_to expenses_url
+  test "should redirect index when not logged in as senioradmin" do
+    get superadmin_expenses_url
+    assert_redirected_to login_path
+    log_in_as(@client1)
+    get superadmin_expenses_url
+    assert_redirected_to login_path
+    log_in_as(@partner1)
+    get superadmin_expenses_url
+    assert_redirected_to login_path
+    log_in_as(@junioradmin)
+    get superadmin_expenses_url
+    assert_redirected_to login_path
+    log_in_as(@admin)
+    get superadmin_expenses_url
+    assert_redirected_to login_path
   end
 end

@@ -9,3 +9,8 @@ Namrata:
   last_name: Sheth
   email: namrata@example.com
   account_id: <%= ActiveRecord::FixtureSet.identify(:client2) %>
+
+Wannabe:
+  first_name: Wannabe
+  last_name: Acountolda
+  email: wannabe@example.com

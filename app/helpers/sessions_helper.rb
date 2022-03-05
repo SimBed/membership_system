@@ -68,7 +68,7 @@ module SessionsHelper
   def junioradmin_account
     unless logged_in_as?('junioradmin', 'admin', 'superadmin')
       flash[:warning] = 'Forbidden'
-      redirect_to(login_path)
+      redirect_to login_path
     end
   end
 

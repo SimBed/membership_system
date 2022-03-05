@@ -1,11 +1,4 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  rate: 1
-  date_from: 2022-01-22
-  instructor: one
-
-two:
-  rate: 1
-  date_from: 2022-01-22
-  instructor: two
+aadrak_rate:
+  rate: 1500
+  date_from: 2022-01-01
+  instructor: <%= ActiveRecord::FixtureSet.identify(:Aadrak) %>

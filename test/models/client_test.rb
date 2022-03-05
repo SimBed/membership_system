@@ -76,4 +76,9 @@ class ClientTest < ActiveSupport::TestCase
     assert_equal 'Amala Paw', @client.name
   end
 
+  test 'associated account (if there is one) must exist' do
+    @client.account_id = 21
+    refute @client.valid?
+  end
+
 end

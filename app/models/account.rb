@@ -8,6 +8,7 @@ class Account < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :ac_type, presence: true
   has_secure_password
 
   def self.digest(string)
@@ -38,22 +39,6 @@ class Account < ApplicationRecord
   def forget
     update(remember_digest: nil)
   end
-
-  # def admin?
-  #   ac_type == 'admin'
-  # end
-  #
-  # def superadmin?
-  #   ac_type == 'superadmin'
-  # end
-  #
-  # def client?
-  #   ac_type == 'client'
-  # end
-  #
-  # def partner?
-  #   ac_type == 'partner'
-  # end
 
   private
 

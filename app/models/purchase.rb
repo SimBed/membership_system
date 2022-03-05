@@ -16,13 +16,13 @@ class Purchase < ApplicationRecord
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },
                     uniqueness: { case_sensitive: false }
-  validates_associated :client, :product
   # validates :ar_payment, presence: true, if: :adjust_restart?
   with_options if: :adjust_restart? do |ar|
     ar.validates :ar_payment, presence: true
     ar.validates :ar_date, presence: true
   end
   validate :fitternity_payment
+  validates :fitternity, presence: true, if: :fitternity_id
   scope :not_expired, -> { where('expired = ?', false) }
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
   scope :started, -> { joins(:attendances).merge(Attendance.provisional).distinct }

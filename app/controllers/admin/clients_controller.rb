@@ -75,8 +75,8 @@ class Admin::ClientsController < Admin::BaseController
 
   def destroy
     @client.destroy
-      redirect_to admin_clients_path
-      flash[:success] = "#{@client.name} was successfully deleted"
+    redirect_to admin_clients_path
+    flash[:success] = "#{@client.name} was successfully deleted"
   end
 
   def clear_filters

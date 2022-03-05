@@ -1,11 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
+  name: base
   price: 1
   date_from: 2021-12-30
-  product_id: 1
+  current: true
+  product_id: <%= ActiveRecord::FixtureSet.identify(:space_package) %>
 
 two:
+  name: base
   price: 1
   date_from: 2021-12-30
-  product_id: 1
+  current: true
+  product_id: <%= ActiveRecord::FixtureSet.identify(:space_dropin) %>

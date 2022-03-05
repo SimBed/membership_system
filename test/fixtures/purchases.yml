@@ -1,25 +1,27 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  client_id: 1
-  product_id: 1
-  payment: 1
-  dop: 2021-12-05
-  payment_mode: MyString
-  invoice: MyString
-  note: MyText
+aparna_package:
+  client_id: <%= ActiveRecord::FixtureSet.identify(:Aparna) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:space_package) %>
+  payment: 10000
+  dop: 2022-02-15
+  payment_mode: Cash
   adjust_restart: false
-  ar_payment: 1
-  ar_date: 2021-12-05
+  price_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
 
-two:
-  client_id: 1
-  product_id: 1
-  payment: 1
-  dop: 2021-12-05
-  payment_mode: MyString
-  invoice: MyString
-  note: MyText
+aparna_dropin:
+  client_id: <%= ActiveRecord::FixtureSet.identify(:Aparna) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:space_dropin) %>
+  payment: 1000
+  dop: 2022-01-17
+  payment_mode: Cash
   adjust_restart: false
-  ar_payment: 1
-  ar_date: 2021-12-05
+  price_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
+
+three:
+  client_id: <%= ActiveRecord::FixtureSet.identify(:Namrata) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:space_package) %>
+  payment: 1000
+  dop: 2022-01-17
+  payment_mode: Cash
+  adjust_restart: false
+  adjust_restart: false
+  price_id: <%= ActiveRecord::FixtureSet.identify(:one) %>

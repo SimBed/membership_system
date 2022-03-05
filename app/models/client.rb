@@ -17,6 +17,7 @@ class Client < ApplicationRecord
   validates :email, allow_blank: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+  validates :account, presence: true, if: :account_id
   scope :order_by_name, -> { order(:first_name, :last_name) }
   scope :name_like, ->(name) { where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
   # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
@@ -40,16 +41,6 @@ class Client < ApplicationRecord
       end
     end
   end
-  # def self.cold
-  #   clients = Client
-  #   .select('clients.id', 'max(start_time) as max')
-  #   .joins(purchases: [attendances: [:wkclass]])
-  #   .group('clients.id')
-  #   .having("max(start_time) < ?", 3.months.ago)
-  #   # .to_a.map(&:id)
-  #   # hack to convert back to ActiveRecord
-  #   Client.where(id: clients.map(&:id))
-  # end
 
   # def self.cold
   #     sql = "SELECT client_id, max(start_time)
@@ -67,8 +58,12 @@ class Client < ApplicationRecord
     date_of_last_class < 3.months.ago
   end
 
-  def cold2?
-    Client.cold.where(id: self.id).exists?
+  # alternative code if wanting to loop through an array of clients
+  # cold_client_id_array = Client.cold.pluck(:id)
+  # Client.limit(3).map {|c| c.cold2?(cold_client_id_array)}
+  def cold2?(cold_client_id_array)
+    # Client.cold.where(id: self.id).exists?
+    cold_client_id_array.include?(self.id)
   end
 
   def enquiry?

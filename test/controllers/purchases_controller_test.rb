@@ -1,48 +1,95 @@
 require "test_helper"
-
 class PurchasesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @purchase = purchases(:one)
+    @client1 = accounts(:client1)
+    @client2 = accounts(:client2)
+    @admin = accounts(:admin)
+    @superadmin = accounts(:superadmin)
+    @junioradmin = accounts(:junioradmin)
+    @partner1 = accounts(:partner1)
+    @partner2 = accounts(:partner2)
+    @purchase1 = purchases(:aparna_package)
+    @purchase2 = purchases(:aparna_dropin)
   end
 
-  test "should get index" do
-    get purchases_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_purchase_url
-    assert_response :success
-  end
-
-  test "should create purchase" do
-    assert_difference('Purchase.count') do
-      post purchases_url, params: { purchase: { adjust_restart: @purchase.adjust_restart, ar_date: @purchase.ar_date, ar_payment: @purchase.ar_payment, client_id: @purchase.client_id, dop: @purchase.dop, invoice: @purchase.invoice, note: @purchase.note, payment: @purchase.payment, payment_mode: @purchase.payment_mode, product_id: @purchase.product_id } }
+  test "should redirect index when not logged in as admin or more senior" do
+    get admin_purchases_url
+    assert_redirected_to login_path
+    [@client1, @partner1, @junioradmin].each do |account_holder|
+      log_in_as(account_holder)
+      get admin_purchases_url
+      assert_redirected_to login_path
     end
-
-    assert_redirected_to purchase_url(Purchase.last)
   end
 
-  test "should show purchase" do
-    get purchase_url(@purchase)
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get edit_purchase_url(@purchase)
-    assert_response :success
-  end
-
-  test "should update purchase" do
-    patch purchase_url(@purchase), params: { purchase: { adjust_restart: @purchase.adjust_restart, ar_date: @purchase.ar_date, ar_payment: @purchase.ar_payment, client_id: @purchase.client_id, dop: @purchase.dop, invoice: @purchase.invoice, note: @purchase.note, payment: @purchase.payment, payment_mode: @purchase.payment_mode, product_id: @purchase.product_id } }
-    assert_redirected_to purchase_url(@purchase)
-  end
-
-  test "should destroy purchase" do
-    assert_difference('Purchase.count', -1) do
-      delete purchase_url(@purchase)
+  test 'should redirect show when not logged in as admin or more senior' do
+    get admin_purchase_path(@purchase1)
+    assert_redirected_to login_path
+    [@client1, @partner1, @junioradmin].each do |account_holder|
+      log_in_as(account_holder)
+      get admin_purchase_path(@purchase1)
+      assert_redirected_to login_path
     end
-
-    assert_redirected_to purchases_url
   end
+
+  # test 'should redirect edit when not logged in as junioradmin or more senior' do
+  #   get edit_admin_client_path(@client2.clients.first)
+  #   assert_redirected_to login_path
+  #   log_in_as(@client1)
+  #   get edit_admin_client_path(@client2.clients.first)
+  #   assert_redirected_to login_path
+  #   log_in_as(@partner1)
+  #   get edit_admin_client_path(@client2.clients.first)
+  #   assert_redirected_to login_path
+  # end
+  #
+  # test 'should redirect create when not logged in as junior admin or more senior' do
+  #   assert_no_difference 'Client.count' do
+  #     post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester', email: 'example@example.com' } }
+  #   end
+  #   assert_redirected_to login_path
+  #   log_in_as(@client1)
+  #   assert_no_difference 'Client.count' do
+  #     post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester', email: 'example@example.com' } }
+  #   end
+  #   assert_redirected_to login_path
+  #   log_in_as(@partner1)
+  #   assert_no_difference 'Client.count' do
+  #     post admin_clients_path, params: { client: { first_name: 'test', last_name: 'tester', email: 'example@example.com' } }
+  #   end
+  #   assert_redirected_to login_path
+  # end
+  #
+  # test 'should redirect update when not logged in as junior admin or more senior' do
+  #   patch admin_client_path(@client2.clients.first), params: { client: { instagram: 'test' } }
+  #   assert_redirected_to login_path
+  #   log_in_as(@client1)
+  #   patch admin_client_path(@client2.clients.first), params: { client: { instagram: 'test' } }
+  #   assert_redirected_to login_path
+  #   log_in_as(@partner1)
+  #   patch admin_client_path(@client2.clients.first), params: { client: { instagram: 'test' } }
+  #   assert_redirected_to login_path
+  # end
+  #
+  # test 'should redirect destroy when not logged in as admin or more senior' do
+  #   assert_no_difference 'Client.count' do
+  #     delete admin_client_path(@client1.clients.first)
+  #   end
+  #   assert_redirected_to login_path
+  #   log_in_as(@client1)
+  #   assert_no_difference 'Client.count' do
+  #     delete admin_client_path(@client1.clients.first)
+  #   end
+  #   assert_redirected_to login_path
+  #   log_in_as(@partner1)
+  #   assert_no_difference 'Client.count' do
+  #     delete admin_client_path(@client1.clients.first)
+  #   end
+  #   assert_redirected_to login_path
+  #   log_in_as(@junioradmin)
+  #   assert_no_difference 'Client.count' do
+  #     delete admin_client_path(@client1.clients.first)
+  #   end
+  #   assert_redirected_to login_path
+  # end
 end

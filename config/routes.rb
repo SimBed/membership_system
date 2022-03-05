@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'client/clients/show', to: 'client/clients#show', as: 'client_show'
+  # get 'client/clients/show', to: 'client/clients#show', as: 'client_show'
   get 'public_pages/welcome'
   root 'public_pages#welcome'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
@@ -33,5 +33,8 @@ Rails.application.routes.draw do
   namespace :superadmin do
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :instructor_rates
+  end
+  namespace :client do
+    resources :clients, only: [:show]
   end
 end

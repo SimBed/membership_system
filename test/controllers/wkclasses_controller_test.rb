@@ -1,5 +1,4 @@
 require "test_helper"
-require 'byebug'
 
 class WkclassesControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -11,7 +10,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     @partner1 = accounts(:partner1)
     @partner2 = accounts(:partner2)
     @time = '2022-02-13 10:30:00'
-    @workout = workouts(:HIIT)
+    @workout = workouts(:hiit)
     @instructor = instructors(:Aadrak)
     @wkclass1 = wkclasses(:wkclass1)
   end

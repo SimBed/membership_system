@@ -11,6 +11,10 @@ class Attendance < ApplicationRecord
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }
   scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
+  validates :status, inclusion: { in:
+    Rails.application.config_for(:constants)["attendance_status_does_count"] +
+    Rails.application.config_for(:constants)["attendance_status_doesnt_count"]
+    }
 
   def revenue
     purchase.payment / purchase.attendance_estimate
