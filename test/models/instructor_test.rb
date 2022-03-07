@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class InstructorTest < ActiveSupport::TestCase
   def setup
@@ -24,5 +24,4 @@ class InstructorTest < ActiveSupport::TestCase
     @instructor.save
     refute duplicate_named_instructor.valid?
   end
-
 end

@@ -1,0 +1,33 @@
+require:
+  - rubocop-rails
+AllCops:
+    NewCops: enable
+    Exclude:
+      - 'node_modules/**/*'
+      - 'tmp/**/*'
+      - 'vendor/**/*'
+      - '.git/**/*'
+      - 'db/**/*'
+      - 'config/**/*'
+      - 'script/**/*'
+      - 'bin/**/*'
+      - !ruby/regexp /old_and_unused\.rb$/
+Layout/EndOfLine:
+    EnforcedStyle: lf
+# toggle between lf & crlf depending on which quirk arises
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/OptionalBooleanParameter:
+  AllowedMethods: ['position']
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
+Naming/PredicateName:
+  AllowedMethods: ['is_logged_in?']
+Style/SymbolArray:
+  EnforcedStyle: brackets
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+Rails/RefuteMethods:
+  EnforcedStyle: refute

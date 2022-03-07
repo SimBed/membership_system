@@ -1,11 +1,10 @@
-require "test_helper"
+require 'test_helper'
 
 class AttendanceTest < ActiveSupport::TestCase
   def setup
     @attendance =
       Attendance.new(wkclass_id: ActiveRecord::FixtureSet.identify(:wkclass1),
-                     purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package)
-                    )
+                     purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package))
   end
 
   test 'should be valid' do

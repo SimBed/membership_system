@@ -1,12 +1,11 @@
-require "test_helper"
+require 'test_helper'
 
 class PartnerTest < ActiveSupport::TestCase
   def setup
     @partner = Partner.new(first_name: 'Apu',
                            last_name: 'Mathu',
                            email: 'apu@thespace.in',
-                           account_id: ActiveRecord::FixtureSet.identify(:partner1)
-                          )
+                           account_id: ActiveRecord::FixtureSet.identify(:partner1))
   end
 
   test 'should be valid' do

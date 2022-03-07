@@ -1,5 +1,6 @@
-require "test_helper"
-require 'byebug'
+# frozen_string_literal: true
+
+require 'test_helper'
 class AdjustmentTest < ActiveSupport::TestCase
   def setup
     @adjustment = Adjustment.new(purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package),
@@ -24,6 +25,4 @@ class AdjustmentTest < ActiveSupport::TestCase
     @adjustment.purchase_id = 21
     refute @adjustment.valid?
   end
-
-
 end

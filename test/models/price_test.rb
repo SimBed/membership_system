@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class PriceTest < ActiveSupport::TestCase
   def setup
@@ -6,8 +6,7 @@ class PriceTest < ActiveSupport::TestCase
                        price: 1000,
                        date_from: '2022-01-01',
                        current: true,
-                       product_id: ActiveRecord::FixtureSet.identify(:unlimited3m)
-                      )
+                       product_id: ActiveRecord::FixtureSet.identify(:unlimited3m))
   end
 
   test 'should be valid' do
@@ -28,5 +27,4 @@ class PriceTest < ActiveSupport::TestCase
     @price.name = '     '
     refute @price.valid?
   end
-
 end

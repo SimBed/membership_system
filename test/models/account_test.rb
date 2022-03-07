@@ -1,15 +1,16 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
   def setup
-    @account = Account.new(email: "user@example.com",
-                           password: "foobar",
-                           password_confirmation: "foobar",
-                           ac_type: 'client'
-                          )
+    @account = Account.new(email: 'user@example.com',
+                           password: 'foobar',
+                           password_confirmation: 'foobar',
+                           ac_type: 'client')
   end
 
-  test "should be valid" do
+  test 'should be valid' do
     assert @account.valid?
   end
 
@@ -43,5 +44,4 @@ class AccountTest < ActiveSupport::TestCase
   test 'authenticated? should return false for an account with nil remember_digest' do
     refute @account.authenticated?(:remember, '')
   end
-
 end

@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class WorkoutGroupTest < ActiveSupport::TestCase
   def setup
@@ -6,13 +6,10 @@ class WorkoutGroupTest < ActiveSupport::TestCase
     @workout1 = workouts(:hiit)
     @workout2 = workouts(:mobility)
     @workout_group = WorkoutGroup.new(
-                        name: 'Dance',
-                        partner_id: @partner.id,
-                        partner_share: 50,
-                        gst_applies: true,
-                        requires_invoice: true,
-                        workout_ids: [@workout1.id, @workout2.id]
-                        )
+      name: 'Dance', partner_id: @partner.id, partner_share: 50,
+      gst_applies: true, requires_invoice: true,
+      workout_ids: [@workout1.id, @workout2.id]
+    )
   end
 
   test 'should be valid' do

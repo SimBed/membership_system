@@ -1,12 +1,11 @@
-require "test_helper"
+require 'test_helper'
 
 class ProductTest < ActiveSupport::TestCase
   def setup
     @product = Product.new(max_classes: 10,
-                       validity_length: 3,
-                       validity_unit: 'M',
-                       workout_group_id: ActiveRecord::FixtureSet.identify(:space)
-                      )
+                           validity_length: 3,
+                           validity_unit: 'M',
+                           workout_group_id: ActiveRecord::FixtureSet.identify(:space))
   end
 
   test 'should be valid' do
@@ -40,5 +39,4 @@ class ProductTest < ActiveSupport::TestCase
     @product.save
     assert similar_product.valid?
   end
-
 end

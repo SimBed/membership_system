@@ -1,17 +1,15 @@
-require "test_helper"
+require 'test_helper'
 class PurchaseTest < ActiveSupport::TestCase
   def setup
     @purchase =
       Purchase.new(client_id: ActiveRecord::FixtureSet.identify(:Aparna),
                    product_id: ActiveRecord::FixtureSet.identify(:unlimited3m),
-                   payment: 10000,
-                   dop: '2022-02-15',
-                   payment_mode: 'Cash',
-                   # invoice: '', note: '', adjust_restart: false, ar_payment: '', ar_date: '', expired: false, fitternity_id: nil,
-                   price_id: ActiveRecord::FixtureSet.identify(:one)
-                 )
+                   payment: 10_000, dop: '2022-02-15', payment_mode: 'Cash',
+                   # invoice: '', note: '', adjust_restart: false, ar_payment: '', ar_date: '',
+                   # expired: false, fitternity_id: nil,
+                   price_id: ActiveRecord::FixtureSet.identify(:one))
     @fitternity = ActiveRecord::FixtureSet.identify(:one)
-end
+  end
 
   test 'should be valid' do
     assert @purchase.valid?

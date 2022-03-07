@@ -1,12 +1,11 @@
-require "test_helper"
+require 'test_helper'
 
 class FreezeTest < ActiveSupport::TestCase
   def setup
-   @freeze = Freeze.new(purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package),
-                        start_date: '2022-02-05',
-                        end_date: '2022-02-15',
-                        note: 'caca is here'
-                        )
+    @freeze = Freeze.new(purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package),
+                         start_date: '2022-02-05',
+                         end_date: '2022-02-15',
+                         note: 'caca is here')
   end
 
   test 'should be valid' do
