@@ -2,7 +2,13 @@ require "test_helper"
 
 class ClientTest < ActiveSupport::TestCase
   def setup
-    @client = Client.new(first_name: 'Amala', last_name: 'Paw', email: 'amala@thespace.in', phone: '914567890', instagram: '#paw', note: 'our top client')
+    @client = Client.new(first_name: 'Amala',
+                         last_name: 'Paw',
+                         email: 'amala@thespace.in',
+                         phone: '914567890',
+                         instagram: '#paw',
+                         note: 'our top client'
+                        )
   end
 
   test 'should be valid' do
@@ -76,7 +82,7 @@ class ClientTest < ActiveSupport::TestCase
     assert_equal 'Amala Paw', @client.name
   end
 
-  test 'associated account (if there is one) must exist' do
+  test 'associated account (if there is one) should exist' do
     @client.account_id = 21
     refute @client.valid?
   end

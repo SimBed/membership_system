@@ -1,4 +1,4 @@
-aadrak_rate:
-  rate: 1500
+amit_rate:
+  rate: 500
   date_from: 2022-01-01
-  instructor: <%= ActiveRecord::FixtureSet.identify(:Aadrak) %>
+  instructor_id: <%= ActiveRecord::FixtureSet.identify(:amit) %>

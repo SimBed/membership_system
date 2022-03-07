@@ -2,7 +2,11 @@ require "test_helper"
 
 class AccountTest < ActiveSupport::TestCase
   def setup
-    @account = Account.new(email: "user@example.com", password: "foobar", password_confirmation: "foobar", ac_type: 'client')
+    @account = Account.new(email: "user@example.com",
+                           password: "foobar",
+                           password_confirmation: "foobar",
+                           ac_type: 'client'
+                          )
   end
 
   test "should be valid" do

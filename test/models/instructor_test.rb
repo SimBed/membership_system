@@ -8,4 +8,21 @@ class InstructorTest < ActiveSupport::TestCase
   test 'should be valid' do
     assert @instructor.valid?
   end
+
+  test 'first name should be present' do
+    @instructor.first_name = '     '
+    refute @instructor.valid?
+  end
+
+  test 'last name should be present' do
+    @instructor.last_name = '     '
+    refute @instructor.valid?
+  end
+
+  test 'full name should be unique' do
+    duplicate_named_instructor = Instructor.new(first_name: @instructor.first_name, last_name: @instructor.last_name)
+    @instructor.save
+    refute duplicate_named_instructor.valid?
+  end
+
 end

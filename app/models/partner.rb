@@ -8,6 +8,7 @@ class Partner < ApplicationRecord
   validates :email, allow_blank: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+  validates :account, presence: true, if: :account_id                    
 
   def name
     "#{first_name} #{last_name}"

@@ -4,6 +4,7 @@ class Product < ApplicationRecord
   belongs_to :workout_group
   validates :max_classes, presence: true
   validates :validity_length, presence: true
+  validates :validity_unit, presence: true
   #validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
   validate :product_combo_must_be_unique
   scope :package, -> {where("max_classes > 1")}

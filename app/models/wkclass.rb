@@ -7,7 +7,8 @@ class Wkclass < ApplicationRecord
   has_many :clients, through: :purchases
   belongs_to :instructor
   belongs_to :workout
-  validates_associated :instructor
+  validate :instructor_rate_exists
+  validate :unique_workout_time_combo
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
   scope :order_by_date, -> { order(start_time: :desc) }
@@ -15,7 +16,7 @@ class Wkclass < ApplicationRecord
   scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
   scope :todays_class, -> { where(start_time: Date.today.beginning_of_day..Date.today.end_of_day)}
   scope :yesterdays_class, -> { where(start_time: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)}
-  scope :tomorrows_class, -> { where(start_time: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day)}  
+  scope :tomorrows_class, -> { where(start_time: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day)}
   scope :past, -> { where('start_time < ?', Date.today.beginning_of_day) }
   scope :future, -> { where.not(id: past) }
   paginates_per 100
@@ -105,5 +106,18 @@ class Wkclass < ApplicationRecord
   #           # [{"clientid"=>1, "purchaseid"=>1}, {"clientid"=>2, "purchaseid"=>2},...
   #   ActiveRecord::Base.connection.exec_query(sql).to_a.select { |cp| !Purchase.find(cp["purchaseid"]).expired? && !Purchase.find(cp["purchaseid"]).freezed?(wkclass.start_time) }
   # end
+  private
+    def instructor_rate_exists
+      errors.add(:base, "Instructor does not have a rate") if Instructor.exists?(instructor_id) && instructor.current_rate.nil?
+    end
 
+    def unique_workout_time_combo
+      wkclass = Wkclass.where(["workout_id = ? and start_time = ?", workout_id, start_time])
+      wkclass.each do |w|
+        if id != wkclass.first.id
+          errors.add(:base, "A class for this workout and time already exists") if wkclass.present?
+          return
+        end
+      end
+    end
 end

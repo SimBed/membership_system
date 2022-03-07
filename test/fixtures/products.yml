@@ -1,10 +1,10 @@
-space_package:
+unlimited3m:
   max_classes: 1000
   validity_length: 3
   validity_unit: M
   workout_group_id: <%= ActiveRecord::FixtureSet.identify(:space) %>
 
-space_dropin:
+dropin:
   max_classes: 1
   validity_length: 1
   validity_unit: D

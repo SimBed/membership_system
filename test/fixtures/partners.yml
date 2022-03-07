@@ -2,10 +2,10 @@ Arnie:
   first_name: Arnold
   last_name: Shwarz
   account_id: <%= ActiveRecord::FixtureSet.identify(:partner1) %>
-  email: as@example.com
+  email: partner1@example.com
 
 Mark:
   first_name: Marky
   last_name: Zuck
   account_id: <%= ActiveRecord::FixtureSet.identify(:partner2) %>
-  email: mz@example.com
+  email: partner2@example.com

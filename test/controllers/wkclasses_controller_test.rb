@@ -11,7 +11,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     @partner2 = accounts(:partner2)
     @time = '2022-02-13 10:30:00'
     @workout = workouts(:hiit)
-    @instructor = instructors(:Aadrak)
+    @instructor = instructors(:amit)
     @wkclass1 = wkclasses(:wkclass1)
   end
 

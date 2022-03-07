@@ -39,7 +39,7 @@ class Admin::WkclassesController < Admin::BaseController
   def edit
     @workouts = Workout.all.map { |w| [w.name, w.id] }
     @workout = @wkclass.workout
-    @instructors =  Instructor.order_by_name.map { |i| [i.name, i.id] }
+    @instructors =  Instructor.has_rate.order_by_name.map { |i| [i.name, i.id] }
     @instructor = @wkclass.instructor&.id
   end
 
@@ -90,9 +90,8 @@ class Admin::WkclassesController < Admin::BaseController
     end
 
     def wkclass_params
-      wk_p = params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id)
-      cost = Instructor&.find(wk_p[:instructor_id]).current_rate if Instructor.exists?(wk_p[:instructor_id])
-      wk_p.merge({ instructor_cost: cost })
+      cost = Instructor.where(instructor_id: params[:instructor_id]).current_rate if Instructor.exists?(params[:instructor_id])
+      params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id).merge({ instructor_cost: cost })
     end
 
     def handle_search
