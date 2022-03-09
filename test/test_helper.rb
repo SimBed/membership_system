@@ -17,6 +17,7 @@ class ActiveSupport::TestCase
   # class ActionDispatch::IntegrationTest
     # Log in as a particular user.
     def log_in_as(account, password: 'password', remember_me: '1')
+      return if account.nil?
       post login_path, params: { session: { email: account.email,
                                             password: password,
                                             remember_me: remember_me } }

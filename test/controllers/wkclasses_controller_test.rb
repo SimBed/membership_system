@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class WkclassesControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -12,10 +12,10 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     @time = '2022-02-13 10:30:00'
     @workout = workouts(:hiit)
     @instructor = instructors(:amit)
-    @wkclass1 = wkclasses(:wkclass1)
+    @wkclass1 = wkclasses(:one)
   end
 
-  test "should redirect index when not logged in as junioradmin or more senior" do
+  test 'should redirect index when not logged in as junioradmin or more senior' do
     get admin_wkclasses_url
     assert_redirected_to login_path
     log_in_as(@client1)
@@ -26,7 +26,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test "should redirect new when not logged in as junioradmin or more senior" do
+  test 'should redirect new when not logged in as junioradmin or more senior' do
     get new_admin_wkclass_url
     assert_redirected_to login_path
     log_in_as(@client1)
@@ -108,5 +108,4 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to login_path
   end
-
 end

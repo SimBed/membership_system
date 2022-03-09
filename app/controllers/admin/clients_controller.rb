@@ -1,8 +1,8 @@
 class Admin::ClientsController < Admin::BaseController
   # skip_before_action :admin_account, only: [:show]
-  skip_before_action :admin_account, only: %i[ show index new edit create update clear_filters filter ]
-  before_action :junioradmin_account, only: %i[ index new edit create update ]
-  before_action :correct_account_or_admin, only: [:show]
+  skip_before_action :admin_account, only: %i[ index new edit create update clear_filters filter ]
+  before_action :junioradmin_account, only: %i[ index new edit create update clear_filters filter]
+  # before_action :correct_account_or_admin, only: [:show]
   # before_action :layout_set, only: [:show]
   before_action :set_client, only: %i[ show edit update destroy ]
 
@@ -103,13 +103,13 @@ class Admin::ClientsController < Admin::BaseController
       params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
     end
 
-    def correct_account
-      redirect_to referrer unless Client.find(params[:id]).account == current_account
-    end
-
-    def correct_account_or_admin
-      redirect_to(root_url) unless Client.find(params[:id]).account == current_account || logged_in_as?('admin', 'superadmin')
-    end
+    # def correct_account
+    #   redirect_to referrer unless Client.find(params[:id]).account == current_account
+    # end
+    #
+    # def correct_account_or_admin
+    #   redirect_to login_path unless Client.find(params[:id]).account == current_account || logged_in_as?('admin', 'superadmin')
+    # end
 
     def handle_search_name
       @clients = @clients.name_like(session[:search_client_name])

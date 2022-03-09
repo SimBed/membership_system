@@ -13,9 +13,9 @@ Rails.application.routes.draw do
   post   '/login',   to: 'auth/sessions#create'
   delete '/logout',  to: 'auth/sessions#destroy'
   namespace :admin do
-    resources :accounts, only: [:index, :create, :destroy]
+    resources :accounts, only: [:index, :create, :update, :destroy]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
-    resources :attendances, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :attendances, only: [:index, :new, :create, :update, :destroy]
     resources :clients
     resources :fitternities
     resources :freezes, only: [:new, :edit, :create, :update, :destroy]

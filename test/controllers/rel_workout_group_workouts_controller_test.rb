@@ -1,3 +1,3 @@
-require "test_helper"
+require 'test_helper'
 class RelWorkoutGroupWorkoutsControllerTest < ActionDispatch::IntegrationTest
 end

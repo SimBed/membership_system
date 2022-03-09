@@ -13,8 +13,12 @@ class Admin::AccountsController < Admin::BaseController
     redirect_back fallback_location: admin_clients_path
   end
 
+  def update
+    # accounts cant be updated through app
+  end
+
   def destroy
-    # accounts cant be deleted throut app
+    # accounts cant be deleted through app
   end
 
   private
@@ -34,7 +38,7 @@ class Admin::AccountsController < Admin::BaseController
 
     def set_account_holder
       # don't create account if for some reason there is no associated account holder
-      # used where rather than find as find returns an error (not nil or empty object) when record not found
+      # used 'where' rather than 'find' as find returns an error (rather than nil or empty object) when record not found
       @account_holder = Client.where(id: params[:client_id]) if params[:ac_type] == 'client'
       @account_holder = Partner.where(id: params[:partner_id]) if params[:ac_type] == 'partner'
       (redirect_to(login_path) and return) if @account_holder.empty?

@@ -54,14 +54,14 @@ module SessionsHelper
   def admin_account
     unless logged_in_as?('admin', 'superadmin')
       flash[:warning] = 'Forbidden'
-      redirect_to(login_path)
+      redirect_to login_path
     end
   end
 
   def superadmin_account
     unless logged_in_as?('superadmin')
       flash[:warning] = 'Forbidden'
-      redirect_to(login_path)
+      redirect_to login_path
     end
   end
 

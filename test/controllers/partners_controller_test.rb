@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class PartnersControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -11,7 +11,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     @partner2 = accounts(:partner2)
   end
 
-  test "should redirect index when not logged in as admin or more senior" do
+  test 'should redirect index when not logged in as admin or more senior' do
     get admin_partners_url
     assert_redirected_to login_path
     log_in_as(@client1)
@@ -25,7 +25,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test "should redirect new when not logged in as admin or more senior" do
+  test 'should redirect new when not logged in as admin or more senior' do
     get new_admin_partner_url
     assert_redirected_to login_path
     log_in_as(@client1)

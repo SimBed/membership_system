@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class InstructorRatesControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -11,7 +11,7 @@ class InstructorRatesControllerTest < ActionDispatch::IntegrationTest
     @partner2 = accounts(:partner2)
   end
 
-  test "should redirect index when not logged in as senioradmin" do
+  test 'should redirect index when not logged in as senioradmin' do
     get superadmin_instructor_rates_url
     assert_redirected_to login_path
     log_in_as(@client1)

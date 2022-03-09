@@ -1,6 +1,6 @@
 aparna_package:
-  client_id: <%= ActiveRecord::FixtureSet.identify(:Aparna) %>
-  product_id: <%= ActiveRecord::FixtureSet.identify(:space_package) %>
+  client_id: <%= ActiveRecord::FixtureSet.identify(:aparna) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:unlimited3m) %>
   payment: 10000
   dop: 2022-02-15
   payment_mode: Cash
@@ -8,8 +8,8 @@ aparna_package:
   price_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
 
 aparna_dropin:
-  client_id: <%= ActiveRecord::FixtureSet.identify(:Aparna) %>
-  product_id: <%= ActiveRecord::FixtureSet.identify(:space_dropin) %>
+  client_id: <%= ActiveRecord::FixtureSet.identify(:aparna) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:dropin) %>
   payment: 1000
   dop: 2022-01-17
   payment_mode: Cash
@@ -17,8 +17,8 @@ aparna_dropin:
   price_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
 
 three:
-  client_id: <%= ActiveRecord::FixtureSet.identify(:Namrata) %>
-  product_id: <%= ActiveRecord::FixtureSet.identify(:space_package) %>
+  client_id: <%= ActiveRecord::FixtureSet.identify(:namrata) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:unlimited3m) %>
   payment: 1000
   dop: 2022-01-17
   payment_mode: Cash

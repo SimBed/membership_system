@@ -1,9 +1,8 @@
 require 'test_helper'
-
 class AttendanceTest < ActiveSupport::TestCase
   def setup
     @attendance =
-      Attendance.new(wkclass_id: ActiveRecord::FixtureSet.identify(:wkclass1),
+      Attendance.new(wkclass_id: ActiveRecord::FixtureSet.identify(:one),
                      purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package))
   end
 

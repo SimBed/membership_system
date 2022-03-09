@@ -2,7 +2,7 @@ require 'test_helper'
 class PurchaseTest < ActiveSupport::TestCase
   def setup
     @purchase =
-      Purchase.new(client_id: ActiveRecord::FixtureSet.identify(:Aparna),
+      Purchase.new(client_id: ActiveRecord::FixtureSet.identify(:aparna),
                    product_id: ActiveRecord::FixtureSet.identify(:unlimited3m),
                    payment: 10_000, dop: '2022-02-15', payment_mode: 'Cash',
                    # invoice: '', note: '', adjust_restart: false, ar_payment: '', ar_date: '',

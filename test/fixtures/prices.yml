@@ -3,11 +3,11 @@ one:
   price: 10000
   date_from: 2021-12-30
   current: true
-  product_id: <%= ActiveRecord::FixtureSet.identify(:space_package) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:unlimited3m) %>
 
 two:
   name: base
   price: 1000
   date_from: 2021-12-30
   current: true
-  product_id: <%= ActiveRecord::FixtureSet.identify(:space_dropin) %>
+  product_id: <%= ActiveRecord::FixtureSet.identify(:dropin) %>

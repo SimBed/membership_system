@@ -1,3 +1,3 @@
-require "test_helper"
+require 'test_helper'
 class FitternitiesControllerTest < ActionDispatch::IntegrationTest
 end
