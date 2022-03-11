@@ -25,7 +25,7 @@ class Admin::WkclassesController < Admin::BaseController
     unless params[:no_scroll] then
       @wkclasses = Wkclass.order_by_date
       handle_search
-      @wkindex = @wkclasses.index(@wkclass)
+      # @wkindex = @wkclasses.index(@wkclass)
     end
   end
 

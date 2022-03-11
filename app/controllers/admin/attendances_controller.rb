@@ -1,22 +1,7 @@
 class Admin::AttendancesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
-  before_action :set_attendance, only: %i[ edit destroy ]
-
-  def index
-    session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || Date.today.beginning_of_month.strftime('%b %Y')
-    session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
-    start_date = Date.parse(session[:attendance_period])
-    end_date = Date.parse(session[:attendance_period]).end_of_month.end_of_day
-    @attendances = Attendance.by_workout_group(session[:workout_group], start_date, end_date)
-    @attendances.sort_by { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
-    @revenue = @attendances.map(&:revenue).inject(0, :+)
-    # prepare items for the revenue date select
-    # months_logged method defined in application helper
-    @months = months_logged
-    # prepare items for the workout group select
-    @workout_groups = ['All'] + WorkoutGroup.all.map { |wg| ["#{wg.name}"] }
-  end
+  before_action :set_attendance, only: %i[ destroy ]
 
   def new
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
@@ -40,7 +25,7 @@ class Admin::AttendancesController < Admin::BaseController
       if @attendance.save
         redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
         flash[:success] = "#{@attendance.purchase.client.name}'s attendance was successfully logged"
-        @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
+        #@wkclass = Wkclass.find(params[:attendance][:wkclass_id])
       else
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
         @attendance = Attendance.new
@@ -53,7 +38,7 @@ class Admin::AttendancesController < Admin::BaseController
    end
 
    def update
-     @attendance = Attendance.find(params[:attendance][:id])
+     @attendance = Attendance.find(params[:id])
      @wkclass = Wkclass.find(@attendance.wkclass.id)
      @client = @attendance.purchase.client.name
      if @attendance.update(attendance_status_params)
@@ -77,6 +62,22 @@ class Admin::AttendancesController < Admin::BaseController
     @attendance.destroy
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash[:success] = "Attendance was successfully removed"
+  end
+
+  # index of attendances not used - available by explicit url but not by navigation link
+  def index
+    session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || Date.today.beginning_of_month.strftime('%b %Y')
+    session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
+    start_date = Date.parse(session[:attendance_period])
+    end_date = Date.parse(session[:attendance_period]).end_of_month.end_of_day
+    @attendances = Attendance.by_workout_group(session[:workout_group], start_date, end_date)
+    @attendances.sort_by { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
+    @revenue = @attendances.map(&:revenue).inject(0, :+)
+    # prepare items for the revenue date select
+    # months_logged method defined in application helper
+    @months = months_logged
+    # prepare items for the workout group select
+    @workout_groups = ['All'] + WorkoutGroup.all.map { |wg| ["#{wg.name}"] }
   end
 
   private

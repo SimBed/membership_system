@@ -86,22 +86,24 @@ class Client < ApplicationRecord
     purchases.order_by_dop.first
   end
 
-  def product_for_class(wkclass)
-    Product.find(self.purchase_for_class(wkclass).product_id)
-  end
+  # def products_for_class(wkclass)
+  #   # Product.find(self.purchase_for_class(wkclass).product_id)
+  #   Product.find(self.purchases_for_class(wkclass).pluck(:product_id))
+  # end
 
-  def revenue_for_class(wkclass)
-    wkclass.purchases.where(client_id: self.id).first.payment / self.purchase_for_class(wkclass).attendance_estimate
-  end
+  # def revenue_for_class(wkclass)
+  #   #wkclass.purchases.where(client_id: self.id).first.payment / self.purchase_for_class(wkclass).attendance_estimate
+  # end
 
   private
     def downcase_email
       self.email = email.downcase
     end
 
-    def purchase_for_class(wkclass)
-      wkclass.purchases.where(client_id: self.id).first
-    end
+    # def purchases_for_class(wkclass)
+    #   # wkclass.purchases.where(client_id: self.id).first
+    #   wkclass.purchases.where(client_id: self.id)
+    # end
 
     def full_name_must_be_unique
       # complicated due to situation on update. There will of course be one record in the database

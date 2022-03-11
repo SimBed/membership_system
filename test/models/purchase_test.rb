@@ -65,6 +65,12 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 'Pilates 8C:5W', @purchase_fixed.name
   end
 
+  test 'delegated dropin? method' do
+    refute @purchase_package.dropin?
+    assert @purchase_dropin.dropin?
+    refute @purchase_fixed.dropin?
+  end
+
   test 'attendance_estimate method' do
     assert_equal 60, @purchase_package.attendance_estimate
     assert_equal 1, @purchase_dropin.attendance_estimate

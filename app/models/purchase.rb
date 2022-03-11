@@ -9,7 +9,7 @@ class Purchase < ApplicationRecord
   # this defines the name method on an instance of Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, to: :product
-  delegate :revenue_for_class, to: :client
+  # delegate :revenue_for_class, to: :client
   delegate :workout_group, to: :product
   delegate :dropin?, to: :product
   validates :payment, presence: true
@@ -45,6 +45,11 @@ class Purchase < ApplicationRecord
   scope :classpass, -> { where(payment_mode: 'ClassPass')}
   paginates_per 20
 
+  def revenue_for_class(wkclass)
+    return 0 unless wkclass.purchases.include?(self)
+    payment / attendance_estimate
+  end
+
 # for qualifying purchases in select box for new attendance form
 # this is convoluted - convert the join to an array of purchases to apply the purchase instance methods,
 # then convert back to active record to 'include' the clients so @qualifying purchases can be built
@@ -62,18 +67,10 @@ class Purchase < ApplicationRecord
             .includes(:client).order("clients.first_name", "purchases.dop")
   end
 
-  # violates MVC - improve
-  # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
-  def full_name
-    "#{name_with_dop} - #{ActionController::Base.helpers.number_to_currency(self.payment, precision: 0, unit: 'Rs.')}"
-  end
+
 
   def name_with_dop
     "#{name} - #{dop.strftime('%d %b %y')}"
-  end
-
-  def name_with_price_name
-    "#{name} - #{self.price.name}"
   end
 
   def status
@@ -230,6 +227,21 @@ class Purchase < ApplicationRecord
   # def days_to_expiry_format
   #   return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
   #   ['','']
+  # end
+
+  # # violates MVC
+  # # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
+  # def full_name
+  #   "#{name_with_dop} - #{helpers.number_to_currency(self.payment, precision: 0, unit: 'Rs.')}"
+  # end
+  #
+  # # http://railscasts.com/episodes/132-helpers-outside-views?autoplay=true  3m.45s
+  # def helpers
+  #   ActionController::Base.helpers
+  # end
+
+  # def name_with_price_name
+  #   "#{name} - #{self.price.name}"
   # end
 
   private
