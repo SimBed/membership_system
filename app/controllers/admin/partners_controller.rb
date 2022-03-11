@@ -1,8 +1,8 @@
 class Admin::PartnersController < Admin::BaseController
-  skip_before_action :admin_account, only: [:show]
+  skip_before_action :admin_account, only: %i[ show edit update destroy ]
   before_action :correct_account_or_superadmin, only: %i[ show ]
   before_action :superadmin_account, only: %i[ edit update destroy ]
-#  before_action :layout_set, only: [:show]
+  #  before_action :layout_set, only: [:show]
   before_action :set_partner, only: %i[ show edit update destroy ]
 
   def index
@@ -92,11 +92,11 @@ class Admin::PartnersController < Admin::BaseController
     end
 
     def correct_account_or_superadmin
-      redirect_to(root_url) unless Partner.find(params[:id]).account == current_account || logged_in_as?('superadmin')
+      redirect_to login_path unless Partner.find(params[:id]).account == current_account || logged_in_as?('superadmin')
     end
 
     def superadmin_account
-      redirect_to(root_url) unless logged_in_as?('superadmin')
+      redirect_to login_path unless logged_in_as?('superadmin')
     end
 
     # def layout_set

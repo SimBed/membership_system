@@ -1,4 +1,5 @@
 require 'test_helper'
+
 class Client::ClientsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
@@ -8,6 +9,8 @@ class Client::ClientsControllerTest < ActionDispatch::IntegrationTest
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
   end
+
+  # only show method for client_client controller
 
   test 'should redirect show when not logged in as account of the client' do
     [nil, @account_client2, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|

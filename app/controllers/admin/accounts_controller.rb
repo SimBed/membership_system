@@ -1,6 +1,8 @@
 class Admin::AccountsController < Admin::BaseController
   before_action :correct_credentials
   before_action :set_account_holder
+  # accounts can't be updated/destroyed through the app
+  # admin accounts cant be created through the app
 
   def create
     @account = Account.new(account_params)
@@ -11,14 +13,6 @@ class Admin::AccountsController < Admin::BaseController
         flash[:warning] = "account was not created"
       end
     redirect_back fallback_location: admin_clients_path
-  end
-
-  def update
-    # accounts cant be updated through app
-  end
-
-  def destroy
-    # accounts cant be deleted through app
   end
 
   private

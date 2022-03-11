@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   post   '/login',   to: 'auth/sessions#create'
   delete '/logout',  to: 'auth/sessions#destroy'
   namespace :admin do
-    resources :accounts, only: [:index, :create, :update, :destroy]
+    resources :accounts, only: [:create]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
     resources :attendances, only: [:index, :new, :create, :update, :destroy]
     resources :clients
@@ -21,10 +21,10 @@ Rails.application.routes.draw do
     resources :freezes, only: [:new, :edit, :create, :update, :destroy]
     resources :instructors, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :partners
-    resources :prices
+    resources :prices, only: [:new, :edit, :create, :update, :destroy]
     resources :products
     resources :purchases
-    resources :rel_workout_group_workouts
+    # resources :rel_workout_group_workouts, only: [:create, :update, :destroy]
     resources :revenues, only: [:index]
     resources :wkclasses
     resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   end
   namespace :superadmin do
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
-    resources :instructor_rates
+    resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]
   end
   namespace :client do
     resources :clients, only: [:show]

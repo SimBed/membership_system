@@ -1,4 +1,5 @@
 require 'test_helper'
+
 class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)

@@ -27,4 +27,9 @@ class PriceTest < ActiveSupport::TestCase
     @price.name = '     '
     refute @price.valid?
   end
+
+  test 'date_from should not be blank' do
+    @price.date_from = '     '
+    refute @price.valid?
+  end
 end

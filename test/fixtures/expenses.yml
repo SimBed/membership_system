@@ -2,4 +2,4 @@ one:
   item: chiball
   amount: 1000
   date: 2022-02-24
-  workout_group: <%= ActiveRecord::FixtureSet.identify(:space) %>
+  workout_group_id: <%= ActiveRecord::FixtureSet.identify(:space) %>

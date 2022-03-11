@@ -1,5 +1,9 @@
 space:
   name: Space
+  partner_id: <%= ActiveRecord::FixtureSet.identify(:arnie) %>
+  partner_share: 60
 
 pilates:
   name: Pilates
+  partner_id: <%= ActiveRecord::FixtureSet.identify(:mark) %>
+  partner_share: 10

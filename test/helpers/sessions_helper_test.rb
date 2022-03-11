@@ -6,7 +6,7 @@ class SessionsHelperTest < ActionView::TestCase
     remember(@account)
   end
 
-  test 'current_user returns right user when session is nil' do
+  test 'current_user remebers and returns right user when session is nil' do
     assert current_account?(@account)
     assert logged_in_as?('admin')
   end

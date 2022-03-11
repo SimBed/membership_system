@@ -13,6 +13,7 @@ class Admin::PricesController < Admin::BaseController
         redirect_to admin_product_path(Product.find(price_params[:product_id]))
         flash[:success] = "price was successfully created"
       else
+        @product = Product.find(price_params[:product_id])
         render :new, status: :unprocessable_entity
       end
   end

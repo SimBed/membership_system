@@ -107,14 +107,14 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     end
 
     def correct_account_or_superadmin
-      redirect_to(root_url) unless WorkoutGroup.find(params[:id]).partner.account == current_account || logged_in_as?('superadmin')
+      redirect_to login_path unless WorkoutGroup.find(params[:id]).partner.account == current_account || logged_in_as?('superadmin')
     end
 
     def partner_or_superadmin_account
-      redirect_to(root_url) unless logged_in_as?('superadmin') || logged_in_as?('partner')
+      redirect_to login_path unless logged_in_as?('superadmin') || logged_in_as?('partner')
     end
 
     def partner_or_admin_account
-      redirect_to(root_url) unless logged_in_as?('admin', 'superadmin') || logged_in_as?('partner')
+      redirect_to login_path unless logged_in_as?('admin', 'superadmin') || logged_in_as?('partner')
     end
 end

@@ -1,5 +1,5 @@
 one:
-  purchase: <%= ActiveRecord::FixtureSet.identify(:aparna_package) %>
+  purchase_id: <%= ActiveRecord::FixtureSet.identify(:aparna_package) %>
   start_date: 2021-12-11
   end_date: 2021-12-11
   note: MyText
