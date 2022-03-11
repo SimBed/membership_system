@@ -8,7 +8,11 @@ class PurchaseTest < ActiveSupport::TestCase
                    # invoice: '', note: '', adjust_restart: false, ar_payment: '', ar_date: '',
                    # expired: false, fitternity_id: nil,
                    price_id: ActiveRecord::FixtureSet.identify(:one))
-    @fitternity = ActiveRecord::FixtureSet.identify(:one)
+    @fitternity = fitternities(:one)
+    @purchase_package = purchases(:aparna_package)
+    @purchase_dropin = purchases(:aparna_dropin)
+    @purchase_fixed = purchases(:namrata_fixed)
+    @wkclass1 = wkclasses(:one)
   end
 
   test 'should be valid' do
@@ -39,7 +43,7 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'if payment_method is Fitternity then a Fitternity should be ongoing' do
     @purchase.payment_mode = 'Fitternity'
-    Fitternity.find(@fitternity).update(max_classes: 0)
+    @fitternity.update(max_classes: 0)
     refute @purchase.valid?
   end
 
@@ -54,4 +58,23 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase.ar_date = '2022-02-01'
     refute @purchase.valid?
   end
+
+  test 'delegated name method' do
+    assert_equal 'Space UC:3M', @purchase_package.name
+    assert_equal 'Space 1C:1D', @purchase_dropin.name
+    assert_equal 'Pilates 8C:5W', @purchase_fixed.name
+  end
+
+  test 'attendance_estimate method' do
+    assert_equal 60, @purchase_package.attendance_estimate
+    assert_equal 1, @purchase_dropin.attendance_estimate
+    assert_equal 8, @purchase_fixed.attendance_estimate
+  end
+
+  test 'delegated revenue_for_class method' do
+    assert_equal 10000 / 60, @purchase_package.revenue_for_class(@wkclass1)
+    assert_equal 0, @purchase_dropin.revenue_for_class(@wkclass1)
+    assert_equal 9000 / 8, @purchase_fixed.revenue_for_class(@wkclass1)
+  end
+
 end

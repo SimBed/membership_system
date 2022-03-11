@@ -9,3 +9,9 @@ dropin:
   validity_length: 1
   validity_unit: D
   workout_group_id: <%= ActiveRecord::FixtureSet.identify(:space) %>
+
+fixed:
+  max_classes: 8
+  validity_length: 5
+  validity_unit: W
+  workout_group_id: <%= ActiveRecord::FixtureSet.identify(:pilates) %>

@@ -7,3 +7,8 @@ two:
   wkclass_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
   purchase_id: <%= ActiveRecord::FixtureSet.identify(:aparna_package) %>
   status: booked
+
+three:
+  wkclass_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  purchase_id: <%= ActiveRecord::FixtureSet.identify(:namrata_fixed) %>
+  status: attended

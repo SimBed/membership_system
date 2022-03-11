@@ -11,3 +11,10 @@ two:
   date_from: 2021-12-30
   current: true
   product_id: <%= ActiveRecord::FixtureSet.identify(:dropin) %>
+
+three:
+  name: base
+  price: 9000
+  date_from: 2021-12-30
+  current: true
+  product_id: <%= ActiveRecord::FixtureSet.identify(:fixed) %>

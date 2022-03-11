@@ -16,12 +16,12 @@ aparna_dropin:
   adjust_restart: false
   price_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
 
-three:
+namrata_fixed:
   client_id: <%= ActiveRecord::FixtureSet.identify(:namrata) %>
-  product_id: <%= ActiveRecord::FixtureSet.identify(:unlimited3m) %>
-  payment: 1000
+  product_id: <%= ActiveRecord::FixtureSet.identify(:fixed) %>
+  payment: 9000
   dop: 2022-01-17
   payment_mode: Cash
   adjust_restart: false
   adjust_restart: false
-  price_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  price_id: <%= ActiveRecord::FixtureSet.identify(:three) %>
