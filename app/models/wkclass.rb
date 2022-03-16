@@ -8,7 +8,7 @@ class Wkclass < ApplicationRecord
   belongs_to :instructor
   belongs_to :workout
   validate :instructor_rate_exists
-  validate :unique_workout_time_combo
+  validate :unique_workout_time_instructor_combo
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
   scope :order_by_date, -> { order(start_time: :desc) }
@@ -111,11 +111,11 @@ class Wkclass < ApplicationRecord
       errors.add(:base, "Instructor does not have a rate") if Instructor.exists?(instructor_id) && instructor.current_rate.nil?
     end
 
-    def unique_workout_time_combo
-      wkclass = Wkclass.where(["workout_id = ? and start_time = ?", workout_id, start_time])
+    def unique_workout_time_instructor_combo
+      wkclass = Wkclass.where(["workout_id = ? and start_time = ? and instructor_id = ?", workout_id, start_time, instructor_id])
       wkclass.each do |w|
         if id != wkclass.first.id
-          errors.add(:base, "A class for this workout and time already exists") if wkclass.present?
+          errors.add(:base, "A class for this workout, instructor and time already exists") if wkclass.present?
           return
         end
       end
