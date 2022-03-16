@@ -7,17 +7,7 @@ class Admin::AttendancesController < Admin::BaseController
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
-
-    @qualifying_purchases = Wkclass.clients_with_purchase_for(@wkclass).map do |q|
-      client = Client.find(q["clientid"])
-      purchase = Purchase.find(q["purchaseid"])
-      close_to_expiry = "close_to_expiry" if purchase.close_to_expiry? && !purchase.dropin?
-      ["#{client.first_name} #{client.last_name} #{purchase.name} #{purchase.dop.strftime('%b %d')}", q["purchaseid"], {class: close_to_expiry}]
-     end
-    # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2], ...]
-    # @qualifying_purchases = Purchase.qualifying_for(@wkclass).map do |p|
-    #   ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id]
-    #  end
+    @qualifying_purchases = qualifying_purchases
   end
 
   def create
@@ -30,9 +20,7 @@ class Admin::AttendancesController < Admin::BaseController
         session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
         @attendance = Attendance.new
         @wkclass = Wkclass.find(session[:wkclass_id])
-        @qualifying_purchases = Purchase.qualifying_for(@wkclass).map do |p|
-          ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id]
-         end
+        @qualifying_purchases = qualifying_purchases
         render :new, status: :unprocessable_entity
       end
    end
@@ -81,6 +69,15 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   private
+
+    # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2, {class: "close_to_expiry"}], ...]
+    def qualifying_purchases
+      Purchase.qualifying_for(@wkclass).map do |p|
+        close_to_expiry = "close_to_expiry" if p.close_to_expiry? && !p.dropin?
+        ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id, {class: close_to_expiry}]
+      end
+    end
+
     def set_attendance
       @attendance = Attendance.find(params[:id])
     end

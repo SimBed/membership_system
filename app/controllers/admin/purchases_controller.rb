@@ -19,8 +19,10 @@ class Admin::PurchasesController < Admin::BaseController
       @purchases = @purchases.to_a.sort_by { |p| p.days_to_expiry }
       @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
     when 'classes_remain'
-      @purchases = @purchases.not_expired.to_a.sort_by { |p| p.attendances_remain_numeric }
-      @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
+      @purchases = @purchases.with_package.started.not_expired.to_a.sort_by { |p| p.attendances_remain(provisional: true, unlimited_text: false) }
+      # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
+      ids = @purchases.map(&:id)
+      @purchases = Purchase.where(id: ids).order(Arel.sql("position(id::text in '#{ids.join(',')}')")).page params[:page]
     end
 
     # it is not critical that expired purchases are identifiable at database level. This will just improve efficiency as the number of purchases gets biggger over time.

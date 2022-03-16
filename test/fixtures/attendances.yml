@@ -5,8 +5,8 @@ one:
 
 two:
   wkclass_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
-  purchase_id: <%= ActiveRecord::FixtureSet.identify(:aparna_package) %>
-  status: booked
+  purchase_id: <%= ActiveRecord::FixtureSet.identify(:aparna_dropin) %>
+  status: attended
 
 three:
   wkclass_id: <%= ActiveRecord::FixtureSet.identify(:one) %>

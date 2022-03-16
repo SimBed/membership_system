@@ -12,6 +12,7 @@ class Purchase < ApplicationRecord
   # delegate :revenue_for_class, to: :client
   delegate :workout_group, to: :product
   delegate :dropin?, to: :product
+  delegate :max_classes, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },
@@ -50,11 +51,12 @@ class Purchase < ApplicationRecord
     payment / attendance_estimate
   end
 
-# for qualifying purchases in select box for new attendance form
-# this is convoluted - convert the join to an array of purchases to apply the purchase instance methods,
-# then convert back to active record to 'include' the clients so @qualifying purchases can be built
-# (which need the client name) with the client name in the attendances controller
-# note where doesn't preserve the order of the ids so do the ordering after the 'includes' not after the 'merge' (which would be before the order distorting 'where')
+  # for qualifying purchases in select box for new attendance form
+  # this seems convoluted:
+  # 1.convert the join to an array of purchases
+  # 2.apply the purchase instance methods (that can't currently be done at database level)
+  # 3.convert back to ActiveRecord_Relation to 'include' the clients so @qualifying purchases can be built
+  # note 'where' doesn't preserve the order of the ids, hence the ordering after the 'includes' not as part of the original joins query
   def self.qualifying_for(wkclass)
     purchases = Purchase.not_expired
                         .joins(product: [:workout_group])
@@ -62,12 +64,10 @@ class Purchase < ApplicationRecord
                         .merge(WorkoutGroup.includes_workout_of(wkclass))
     Purchase.where(id: purchases
                         .to_a.select { |p| !p.expired? &&!p.provisionally_expired? && !p.freezed?(wkclass.start_time) }
-                        .map(&:id)
+                        .map(&:id) # or pluck(:id)
                   )
             .includes(:client).order("clients.first_name", "purchases.dop")
   end
-
-
 
   def name_with_dop
     "#{name} - #{dop.strftime('%d %b %y')}"
@@ -110,18 +110,21 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_cause
+    return unless expired?
     return 'adjust & restart' if adjust_restart
     return 'used max classes' if attendances.confirmed.size == product.max_classes
     return 'max time period'
   end
 
   def expired_on
+    return unless expired?
     return ar_date.strftime('%d %b %y') if adjust_restart
     return max_class_expiry_date.strftime('%d %b %y') if attendances.confirmed.size == product.max_classes
     return expiry_date.strftime('%d %b %y')
   end
 
   def will_expire_on
+    return nil unless provisionally_expired?
     attendances.provisional.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
   end
 
@@ -141,20 +144,16 @@ class Purchase < ApplicationRecord
       added_days = adjustments.map { |a| a.adjustment }.inject(0, :+).days
       frozen_days = freezes.map { |f| f.duration}.inject(0, :+).days
       # end_date formulae above overstate by 1 day so deduct 1
-      end_date + added_days + frozen_days - 1.day
-  end
-
-  def expiry_date_formatted
-    # expiry_date&.strftime('%d %b %y')
-    @expiry_date = expiry_date
-    return @expiry_date.strftime('%d %b %y') if @expiry_date.is_a?(Time)
-    @expiry_date
+      # to_date changes ActiveSupport::TimeWithZone object to Date object
+      # as 'Sun, 12 Dec 2021' preferred to 'Sun, 12 Dec 2021 10:30:00.000000000 UTC +00:00'
+      (end_date + added_days + frozen_days - 1.day).to_date
   end
 
   def days_to_expiry
-    if ['ongoing', 'frozen'].include?(self.status)
-      (expiry_date.to_date - Date.today).to_i
+    if ['ongoing', 'frozen', 'booked first class'].include?(self.status)
+      (expiry_date - Date.today).to_i
     else
+      # random high number is useful for sorting by days to expiry
       1000
     end
   end
@@ -176,6 +175,7 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_revenue
+    return 0 unless expired?
     attendance_revenue = attendances.confirmed.map { |a| a.revenue }.inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
     return payment - attendance_revenue unless adjust_restart?
@@ -185,23 +185,18 @@ class Purchase < ApplicationRecord
   def start_to_expiry
     status_hash = self.status_hash
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
-    return "#{start_date.strftime('%d %b %y')} - #{expiry_date_formatted}"
-  end
-
-  def attendances_remain_numeric
-    return product.max_classes - attendances.count if status == 'ongoing'
-    return 1000
+    return "#{start_date.strftime('%d %b %y')} - #{expiry_date.strftime('%d %b %y')}"
   end
 
   def attendances_remain(provisional: true, unlimited_text: true)
-    ac = provisional ? attendances.provisional.count : attendances.confirmed.count
-    mc = product.max_classes
-    return 'unlimited' if mc == 1000 && unlimited_text == true
-    mc - ac
+    attendance_count = provisional ? attendances.provisional.size : attendances.confirmed.size
+    return 'unlimited' if max_classes == 1000 && unlimited_text == true
+    max_classes - attendance_count
   end
 
-  # apply to ongoing purchases. Not designed to work sensibly with an expired purchase
+  # apply to ongoing packages. Not designed to work sensibly with an expired purchase
   def close_to_expiry?(days_remain: 5, attendances_remain: 2)
+    #return false unless ongoing || booked first class || package
     return true if attendances_remain(unlimited_text: false) < attendances_remain || days_to_expiry < days_remain
     false
   end
@@ -229,6 +224,13 @@ class Purchase < ApplicationRecord
   #   ['','']
   # end
 
+  # def expiry_date_formatted
+  #   # expiry_date&.strftime('%d %b %y')
+  #   @expiry_date = expiry_date
+  #   return @expiry_date unless @expiry_date.is_a?(Time)
+  #   @expiry_date.strftime('%d %b %y')
+  # end
+
   # # violates MVC
   # # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
   # def full_name
@@ -248,7 +250,7 @@ class Purchase < ApplicationRecord
     def start_date
       # attendances.sort_by { |a| a.start_time }.first.start_time
       # use includes to avoid firing additional query per wkclass
-      attendances.provisional.includes(:wkclass).map(&:start_time).min
+      attendances.provisional.includes(:wkclass).map(&:start_time).min.to_date
     end
 
     def max_class_expiry_date
@@ -258,6 +260,7 @@ class Purchase < ApplicationRecord
     def attendance_status(attendance_count, max_classes)
       return 'not started' if attendance_count.zero?
       return 'unlimited' if max_classes == 1000
+      #should this be max_classes - attendance_count
       return attendance_count if attendance_count < max_classes
       'exhausted'
     end
