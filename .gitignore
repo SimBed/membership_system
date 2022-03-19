@@ -34,3 +34,7 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore test fixtures
+/test/fixtures/*
+/test/fixtures/orig/*
