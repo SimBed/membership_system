@@ -1,4 +1,0 @@
-amit_rate:
-  rate: 500
-  date_from: 2022-01-01
-  instructor_id: <%= ActiveRecord::FixtureSet.identify(:amit) %>

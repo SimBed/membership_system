@@ -1,3 +1,0 @@
-one:
-  purchase_id: <%= ActiveRecord::FixtureSet.identify(:aparna_package) %>
-  adjustment: 7
