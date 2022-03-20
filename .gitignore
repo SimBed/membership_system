@@ -38,3 +38,4 @@ yarn-debug.log*
 # Ignore test fixtures
 /test/fixtures/*
 /test/fixtures/orig/*
+/test/alt_testing/*

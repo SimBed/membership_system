@@ -5,7 +5,7 @@ class ProductTest < ActiveSupport::TestCase
     @product = Product.new(max_classes: 10,
                            validity_length: 3,
                            validity_unit: 'M',
-                           workout_group_id: ActiveRecord::FixtureSet.identify(:space))
+                           workout_group_id: workout_groups(:space).id)
   end
 
   test 'should be valid' do
@@ -35,7 +35,7 @@ class ProductTest < ActiveSupport::TestCase
 
   test 'similar product for different workout group should be valid' do
     similar_product = @product.dup
-    similar_product.workout_group_id = ActiveRecord::FixtureSet.identify(:pilates)
+    similar_product.workout_group_id = workout_groups(:pilates).id
     @product.save
     assert similar_product.valid?
   end

@@ -282,8 +282,8 @@ class Purchase < ApplicationRecord
 
     def fitternity_payment
         if payment_mode == 'Fitternity'
-          ong_fit_packages = Fitternity.select { |f| !(f.expired?) }
-          errors.add(:base, "No ongoing Fitternity package") if ong_fit_packages.size.zero?
+          # ong_fit_packages = Fitternity.select { |f| !(f.expired?) }
+          errors.add(:base, "No ongoing Fitternity package") if Fitternity.ongoing.size.zero?
           return
         end
     end

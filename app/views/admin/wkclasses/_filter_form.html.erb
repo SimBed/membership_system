@@ -19,7 +19,8 @@
     <fieldset>
       <legend>ATTRIBUTE</legend>
       <%= label_tag nil, class: "purchase-filters" do %>
-        <%= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
+        <%#= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
+        <%= check_box_tag 'spacegroup', 'Space Group', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>        
         <%= 'Space group' %>
       <% end %>
       <%= label_tag nil, class: "purchase-filters" do %>

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FreezeTest < ActiveSupport::TestCase
   def setup
-    @freeze = Freeze.new(purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package),
+    @freeze = Freeze.new(purchase_id: purchases(:AnushkaUC3Mong).id,
                          start_date: '2022-02-05',
                          end_date: '2022-02-15',
                          note: 'caca is here')
@@ -18,7 +18,7 @@ class FreezeTest < ActiveSupport::TestCase
   end
 
   test 'purchase should be valid' do
-    @freeze.purchase_id = 21
+    @freeze.purchase_id = 4000
     refute @freeze.valid?
   end
 

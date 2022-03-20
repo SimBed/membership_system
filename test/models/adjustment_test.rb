@@ -3,8 +3,7 @@
 require 'test_helper'
 class AdjustmentTest < ActiveSupport::TestCase
   def setup
-    @adjustment = Adjustment.new(purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package),
-                                 adjustment: 10)
+    @adjustment = Adjustment.new(purchase_id: purchases(:Neelu8C5Wexp).id, adjustment: 10)
   end
 
   test 'should be valid' do
@@ -22,7 +21,7 @@ class AdjustmentTest < ActiveSupport::TestCase
   end
 
   test 'associated purchase must be valid' do
-    @adjustment.purchase_id = 21
+    @adjustment.purchase_id = 4000
     refute @adjustment.valid?
   end
 end

@@ -82,7 +82,7 @@ class ClientTest < ActiveSupport::TestCase
   end
 
   test 'associated account (if there is one) should exist' do
-    @client.account_id = 21
+    @client.account_id = 4000
     refute @client.valid?
   end
 end

@@ -7,7 +7,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase1 = purchases(:aparna_package)
+    @purchase1 = purchases(:AparnaUC1Mong)
   end
 
   test 'should redirect new when not logged in as admin or more senior' do
@@ -62,7 +62,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as admin or more senior' do
     original_payment = @purchase1.payment
-    [nil, @account_client1, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @purchase1.client.account, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
     log_in_as(account_holder)
     patch admin_purchase_path(@purchase1), params:
      { purchase:
@@ -80,7 +80,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @purchase1.client.account, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Purchase.count' do
         delete admin_purchase_path(@purchase1)

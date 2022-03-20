@@ -7,8 +7,8 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @client_with_no_account = clients(:wannabe)
-    @partner_without_account = partners(:wantaccount)
+    @client_with_no_account = clients(:client_14)
+    @partner_without_account = partners(:bibi)
   end
 
   # the accounts controller only has a create method.

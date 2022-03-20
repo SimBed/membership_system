@@ -1,12 +1,14 @@
 namespace :db do
   desc 'Convert development DB to Rails test fixtures'
   task to_fixtures: :environment do
-    TABLES_TO_SKIP = %w[accounts ar_internal_metadata schema_migrations].freeze
+    TABLES_TO_SKIP = %w[ar_internal_metadata schema_migrations].freeze
+    # TABLES_TO_DO = %w[accounts].freeze
 
     begin
       ActiveRecord::Base.establish_connection
       ActiveRecord::Base.connection.tables.each do |table_name|
         next if TABLES_TO_SKIP.include?(table_name)
+        # next unless TABLES_TO_DO.include?(table_name)
 
         i = '000'
         file_path = "#{Rails.root}/test/fixtures/#{table_name}.yml"

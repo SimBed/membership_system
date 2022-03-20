@@ -7,8 +7,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase1 = purchases(:aparna_package)
-    @instructor_rate = instructor_rates(:amit_rate)
+    @instructor_rate = instructor_rates(:instructor_rate_1)
   end
 
   # no show method for instructor_rates controller

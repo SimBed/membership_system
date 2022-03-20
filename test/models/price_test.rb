@@ -6,7 +6,7 @@ class PriceTest < ActiveSupport::TestCase
                        price: 1000,
                        date_from: '2022-01-01',
                        current: true,
-                       product_id: ActiveRecord::FixtureSet.identify(:unlimited3m))
+                       product_id: products(:unlimited3m).id)
   end
 
   test 'should be valid' do
@@ -30,6 +30,11 @@ class PriceTest < ActiveSupport::TestCase
 
   test 'date_from should not be blank' do
     @price.date_from = '     '
+    refute @price.valid?
+  end
+
+  test 'product should be valid' do
+    @price.product_id = 4000
     refute @price.valid?
   end
 end

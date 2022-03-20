@@ -9,9 +9,8 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase1 = purchases(:aparna_package)
-    @partner1 = partners(:arnie)
-    @partner2 = partners(:mark)
+    @partner1 = partners(:appy)
+    @partner2 = partners(:kari)
   end
 
   test 'should redirect new when not logged in as admin or more senior' do

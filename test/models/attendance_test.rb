@@ -2,8 +2,8 @@ require 'test_helper'
 class AttendanceTest < ActiveSupport::TestCase
   def setup
     @attendance =
-      Attendance.new(wkclass_id: ActiveRecord::FixtureSet.identify(:one),
-                     purchase_id: ActiveRecord::FixtureSet.identify(:aparna_package))
+      Attendance.new(wkclass_id: wkclasses(:SC28Feb).id,
+                     purchase_id: purchases(:ChintanUC1Wexp).id)
   end
 
   test 'should be valid' do
@@ -11,12 +11,12 @@ class AttendanceTest < ActiveSupport::TestCase
   end
 
   test 'associated wkclass must be valid' do
-    @attendance.wkclass_id = 21
+    @attendance.wkclass_id = 4000
     refute @attendance.valid?
   end
 
   test 'associated purchase must be valid' do
-    @attendance.purchase_id = 21
+    @attendance.purchase_id = 4000
     refute @attendance.valid?
   end
 

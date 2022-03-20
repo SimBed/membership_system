@@ -7,7 +7,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @fitternity = fitternities(:one)
+    @fitternity = fitternities(:two_ongoing)
   end
 
   test 'should redirect new when not logged in as admin or more senior' do

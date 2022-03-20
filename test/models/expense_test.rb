@@ -5,7 +5,7 @@ class ExpenseTest < ActiveSupport::TestCase
     @expense = Expense.new(item: 'zoom',
                            amount: 1000,
                            date: '2022-02-01',
-                           workout_group_id: ActiveRecord::FixtureSet.identify(:space))
+                           workout_group_id: workout_groups(:space).id)
   end
 
   test 'should be valid' do
@@ -13,7 +13,7 @@ class ExpenseTest < ActiveSupport::TestCase
   end
 
   test 'workout_group should be valid' do
-    @expense.workout_group_id = 21
+    @expense.workout_group_id = 4000
     refute @expense.valid?
   end
 end

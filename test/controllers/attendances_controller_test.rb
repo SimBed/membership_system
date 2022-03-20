@@ -8,9 +8,9 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase1 = purchases(:aparna_package)
-    @attendance = attendances(:one)
-    @wkclass = wkclasses(:one)
+    @purchase1 = purchases(:AparnaUC1Mong)
+    @attendance = attendances(:attendance_70)
+    @wkclass = wkclasses(:wkclass_25)
   end
 
   # no edit method for attendances controller

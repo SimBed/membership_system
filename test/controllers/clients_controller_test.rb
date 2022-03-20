@@ -8,8 +8,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase1 = purchases(:aparna_package)
-    @client = clients(:aparna)
+    @client = clients(:client_4)
   end
 
   test 'should redirect new when not logged in as junioradmin or more senior' do

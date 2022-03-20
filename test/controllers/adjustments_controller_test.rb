@@ -8,8 +8,8 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase1 = purchases(:aparna_package)
-    @adjustment = adjustments(:one)
+    @purchase1 = purchases(:AparnaUC1Mong)
+    @adjustment = adjustments(:adjustment_2)
   end
 
   # no index method for adjustments controller

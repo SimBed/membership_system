@@ -5,7 +5,7 @@ class PartnerTest < ActiveSupport::TestCase
     @partner = Partner.new(first_name: 'Apu',
                            last_name: 'Mathu',
                            email: 'apu@thespace.in',
-                           account_id: ActiveRecord::FixtureSet.identify(:partner1))
+                           account_id: accounts(:partner1).id)
   end
 
   test 'should be valid' do
@@ -29,7 +29,7 @@ class PartnerTest < ActiveSupport::TestCase
   end
 
   test 'associated account (if there is one) should exist' do
-    @partner.account_id = 21
+    @partner.account_id = 4000
     refute @partner.valid?
   end
 end

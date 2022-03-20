@@ -2,14 +2,14 @@ require 'test_helper'
 
 class FreezesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @account_client1 = accounts(:client1)
+    @account_client1 = accounts(:client3)
     @account_client2 = accounts(:client2)
     @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase = purchases(:aparna_package)
-    @freeze = freezes(:one)
+    @purchase = purchases(:purchase_20)
+    @freeze = freezes(:freeze_1)
   end
 
   # no index method for freezes controller

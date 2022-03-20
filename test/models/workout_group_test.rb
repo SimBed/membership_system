@@ -2,7 +2,7 @@ require 'test_helper'
 
 class WorkoutGroupTest < ActiveSupport::TestCase
   def setup
-    @partner = partners(:arnie)
+    @partner = partners(:appy)
     @workout1 = workouts(:hiit)
     @workout2 = workouts(:mobility)
     @workout_group = WorkoutGroup.new(
