@@ -2,6 +2,8 @@ class Admin::WkclassesController < Admin::BaseController
   skip_before_action :admin_account, only: %i[ show index new edit create update filter ]
   before_action :junioradmin_account, only: %i[ show index new edit create update ]
   before_action :set_wkclass, only: %i[ show edit update destroy ]
+  # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
+  # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
 
   def index
     @wkclasses = Wkclass.includes([:confirmed_attendances, :provisional_attendances, :workout]).order_by_date
@@ -65,7 +67,9 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def destroy
+    @purchases = @wkclass.attendances.map { |a| a.purchase }
     @wkclass.destroy
+    update_purchase_status(@purchases)
     redirect_to admin_wkclasses_path
     flash[:success] = "Class was successfully deleted"
   end

@@ -24,12 +24,16 @@ class Purchase < ApplicationRecord
   end
   validate :fitternity_payment
   validates :fitternity, presence: true, if: :fitternity_id
-  scope :not_expired, -> { where('expired = ?', false) }
+  # scope :not_expired, -> { where('expired = ?', false) }
+  scope :not_expired, -> { where.not(status: ['expired', 'provisionally expired', 'provisionally expired (and frozen)']) }
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
-  scope :started, -> { joins(:attendances).merge(Attendance.provisional).distinct }
+  # scope :started, -> { joins(:attendances).merge(Attendance.provisional).distinct }
+  scope :started, -> { where.not(status: 'not started') }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
   scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
+  # stata is an array of purchases statuses
+  scope :with_statuses, ->(stata) { where(status: stata) }
   # 'using a scope through an association'
   # https://apidock.com/rails/ActiveRecord/SpawnMethods/merge
   scope :with_package, -> { joins(:product).merge(Product.package) }
@@ -37,6 +41,7 @@ class Purchase < ApplicationRecord
   # scope :with_package, -> { joins(:product).where("max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   scope :order_by_dop, -> { order(dop: :desc) }
+  scope :order_by_expiry_date, -> { order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
   # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
   scope :uninvoiced, -> { where(invoice: nil)}
@@ -63,7 +68,7 @@ class Purchase < ApplicationRecord
                         .joins(:client)
                         .merge(WorkoutGroup.includes_workout_of(wkclass))
     Purchase.where(id: purchases
-                        .to_a.select { |p| !p.expired? &&!p.provisionally_expired? && !p.freezed?(wkclass.start_time) }
+                        .to_a.select { |p| !p.freezed?(wkclass.start_time) }
                         .map(&:id) # or pluck(:id)
                   )
             .includes(:client).order("clients.first_name", "purchases.dop")
@@ -73,7 +78,7 @@ class Purchase < ApplicationRecord
     "#{name} - #{dop.strftime('%d %b %y')}"
   end
 
-  def status
+  def status_calc
     return 'expired' if self.adjust_restart?
     status_hash = self.status_hash
     freezed = freezed?(Date.today)
@@ -102,7 +107,7 @@ class Purchase < ApplicationRecord
   end
 
   def provisionally_expired?
-    status == 'provisionally expired'
+    ['provisionally expired', 'provisionally expired (and frozen)'].include?(status)
   end
 
   def expired_in?(month_year)
@@ -128,10 +133,10 @@ class Purchase < ApplicationRecord
     attendances.provisional.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
   end
 
-  def expiry_date
+  def expiry_date_calc
     return ar_date if adjust_restart
     return 'n/a' if attendances.provisional.size.zero?
-    start_date = self.start_date
+    start_date = self.start_date_calc
     end_date = case product.validity_unit
       when 'D'
         start_date + product.validity_length.days
@@ -201,6 +206,12 @@ class Purchase < ApplicationRecord
     false
   end
 
+  def start_date_calc
+    # attendances.sort_by { |a| a.start_time }.first.start_time
+    # use includes to avoid firing additional query per wkclass
+    attendances.provisional.includes(:wkclass).map(&:start_time).min&.to_date
+  end  
+
   # def attendances_remain_format
   #   ac = attendances.count
   #   # "[number] [attendances icon] [more icon]"
@@ -247,12 +258,6 @@ class Purchase < ApplicationRecord
   # end
 
   private
-    def start_date
-      # attendances.sort_by { |a| a.start_time }.first.start_time
-      # use includes to avoid firing additional query per wkclass
-      attendances.provisional.includes(:wkclass).map(&:start_time).min.to_date
-    end
-
     def max_class_expiry_date
       attendances.confirmed.includes(:wkclass).map(&:start_time).max
     end
@@ -268,7 +273,7 @@ class Purchase < ApplicationRecord
     def validity_status(attendance_count, expiry_date)
       return 'not started' if attendance_count.zero?
       return 'expired' if Date.today() > expiry_date
-      expiry_date - start_date
+      expiry_date - start_date_calc
     end
 
     def status_hash
@@ -276,7 +281,7 @@ class Purchase < ApplicationRecord
       attendance_confirmed_count = self.attendances.confirmed.size
       { attendance_provisional_status: attendance_status(attendance_provisional_count, self.product.max_classes),
         attendance_confirmed_status: attendance_status(attendance_confirmed_count, self.product.max_classes),
-        validity_status: validity_status(attendance_provisional_count, self.expiry_date),
+        validity_status: validity_status(attendance_provisional_count, self.expiry_date_calc),
       }
     end
 

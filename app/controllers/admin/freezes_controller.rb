@@ -1,5 +1,6 @@
 class Admin::FreezesController < Admin::BaseController
   before_action :set_freeze, only: %i[ edit update destroy ]
+  after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
   def new
     @freeze = Freeze.new
@@ -8,6 +9,7 @@ class Admin::FreezesController < Admin::BaseController
   def create
     @freeze = Freeze.new(freeze_params)
     if @freeze.save
+      @purchase = @freeze.purchase
       redirect_to admin_purchase_path(Purchase.find(freeze_params[:purchase_id]))
       flash[:success] = "freeze was successfully created"
     else
@@ -20,6 +22,7 @@ class Admin::FreezesController < Admin::BaseController
 
   def update
     if @freeze.update(freeze_params)
+      @purchase = @freeze.purchase
       redirect_to admin_purchase_path(Purchase.find(freeze_params[:purchase_id]))
       flash[:success] = "freeze was successfully updated"
     else

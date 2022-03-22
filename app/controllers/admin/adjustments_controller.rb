@@ -1,5 +1,6 @@
 class Admin::AdjustmentsController < Admin::BaseController
   before_action :set_adjustment, only: %i[ edit update destroy ]
+  after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
   def new
     @adjustment = Adjustment.new
@@ -9,6 +10,7 @@ class Admin::AdjustmentsController < Admin::BaseController
     @adjustment = Adjustment.new(adjustment_params)
 
       if @adjustment.save
+        @purchase = @adjustment.purchase
         redirect_to admin_purchase_path(Purchase.find(adjustment_params[:purchase_id]))
         flash[:success] = "adjustment was successfully created"
       else
@@ -21,6 +23,7 @@ class Admin::AdjustmentsController < Admin::BaseController
 
   def update
     if @adjustment.update(adjustment_params)
+      @purchase = @adjustment.purchase
       redirect_to admin_purchase_path(Purchase.find(adjustment_params[:purchase_id]))
       flash[:success] = "adjustment was successfully updated"
     else

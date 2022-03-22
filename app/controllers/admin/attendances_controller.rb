@@ -1,7 +1,8 @@
 class Admin::AttendancesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
-  before_action :set_attendance, only: %i[ destroy ]
+  before_action :set_attendance, only: %i[ update destroy ]
+  after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
   def new
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
@@ -13,6 +14,7 @@ class Admin::AttendancesController < Admin::BaseController
   def create
     @attendance = Attendance.new(attendance_params)
       if @attendance.save
+        @purchase = @attendance.purchase
         redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
         flash[:success] = "#{@attendance.purchase.client.name}'s attendance was successfully logged"
         #@wkclass = Wkclass.find(params[:attendance][:wkclass_id])
@@ -26,10 +28,11 @@ class Admin::AttendancesController < Admin::BaseController
    end
 
    def update
-     @attendance = Attendance.find(params[:id])
+     @purchase = @attendance.purchase
      @wkclass = Wkclass.find(@attendance.wkclass.id)
      @client = @attendance.purchase.client.name
      if @attendance.update(attendance_status_params)
+        @purchase = @attendance.purchase
         respond_to do |format|
           format.html do
             flash[:success] = "Attendance was successfully updated"
@@ -47,6 +50,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def destroy
     @wkclass = Wkclass.find(@attendance.wkclass.id)
+    @purchase = @attendance.purchase
     @attendance.destroy
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash[:success] = "Attendance was successfully removed"

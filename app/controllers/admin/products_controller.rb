@@ -1,6 +1,6 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :set_product, only: %i[ show edit update destroy ]
-
+  after_action -> { update_purchase_status([@purchases]) }, only: %i[ update ]
   def index
     @products = Product.order_by_name_max_classes
   end
@@ -48,6 +48,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def update
       if @product.update(product_params)
+        @purchases = @product.purchases
         redirect_to admin_products_path
         flash[:success] = "Product was successfully updated"
       else

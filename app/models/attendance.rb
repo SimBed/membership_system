@@ -74,69 +74,69 @@ class Attendance < ApplicationRecord
   #   .order(:dop, :start_time)
   # end
 
-  def self.for_client_purchase(clientid, purchaseid)
-     joins(:wkclass, purchase: [product: [:workout_group]])
-    .joins(purchase: [:client])
-    .where(clients: {id: clientid})
-    .where(purchase_condition(purchaseid))
-    .order(dop: :desc, start_time: :asc)
-  end
+  # def self.for_client_purchase(clientid, purchaseid)
+  #    joins(:wkclass, purchase: [product: [:workout_group]])
+  #   .joins(purchase: [:client])
+  #   .where(clients: {id: clientid})
+  #   .where(purchase_condition(purchaseid))
+  #   .order(dop: :desc, start_time: :asc)
+  # end
 
-  def self.by_date(start_date, end_date)
-    # note wkclass belongs to attendance so wkclass not wkclasses
-    attendance_ids = WorkoutGroup.joins(products: [purchases: [attendances: [:wkclass]]])
-                                 .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
-                                 .order(:start_time)
-                                 .select('attendances.id').to_a.map(&:id)
-    Attendance.find(attendance_ids)
-    # equivalent method calling sql directly without rails helper methods
-    # sql = "SELECT attendances.id
-    #        FROM Workout_Groups
-    #        INNER JOIN Products ON Workout_Groups.id = Products.workout_group_id
-    #        INNER JOIN Purchases ON Products.id = Purchases.product_id
-    #        INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
-    #        INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
-    #        WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
-    #        ORDER BY Wkclasses.start_time;"
-    #   # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
-    #   attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
-    #   # return an array of objects, by using the find method with an array parameter
-  end
+  # def self.by_date(start_date, end_date)
+  #   # note wkclass belongs to attendance so wkclass not wkclasses
+  #   attendance_ids = WorkoutGroup.joins(products: [purchases: [attendances: [:wkclass]]])
+  #                                .where("wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'")
+  #                                .order(:start_time)
+  #                                .select('attendances.id').to_a.map(&:id)
+  #   Attendance.find(attendance_ids)
+  #   # equivalent method calling sql directly without rails helper methods
+  #   # sql = "SELECT attendances.id
+  #   #        FROM Workout_Groups
+  #   #        INNER JOIN Products ON Workout_Groups.id = Products.workout_group_id
+  #   #        INNER JOIN Purchases ON Products.id = Purchases.product_id
+  #   #        INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
+  #   #        INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
+  #   #        WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
+  #   #        ORDER BY Wkclasses.start_time;"
+  #   #   # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
+  #   #   attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
+  #   #   # return an array of objects, by using the find method with an array parameter
+  # end
 
-  def self.by_client(clientid, start_date, end_date)
-    sql = "SELECT attendances.id
-           FROM Clients
-           INNER JOIN Purchases ON Clients.id = Purchases.client_id
-           INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
-           INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
-           WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
-           AND Clients.id = '#{clientid}'
-           ORDER BY WkClasses.start_time desc;"
-      # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
-      attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
-      # return an array of objects, by using the find method with an array parameter
-      Attendance.find(attendance_ids)
-  end
+  # def self.by_client(clientid, start_date, end_date)
+  #   sql = "SELECT attendances.id
+  #          FROM Clients
+  #          INNER JOIN Purchases ON Clients.id = Purchases.client_id
+  #          INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
+  #          INNER JOIN Wkclasses ON Attendances.wkclass_id = Wkclasses.id
+  #          WHERE Wkclasses.start_time BETWEEN '#{start_date}' AND '#{end_date}'
+  #          AND Clients.id = '#{clientid}'
+  #          ORDER BY WkClasses.start_time desc;"
+  #     # convert the query result to an array of hashes [ {id: 1}, {id: 3},...] and then to an array of ids
+  #     attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
+  #     # return an array of objects, by using the find method with an array parameter
+  #     Attendance.find(attendance_ids)
+  # end
 
-  def self.test(clientid)
-    sql = "SELECT attendances.id
-           FROM Clients
-           INNER JOIN Purchases ON Clients.id = Purchases.client_id
-           INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
-           INNER JOIN Products ON Products.id = Purchases.product_id
-           WHERE Clients.id = '#{clientid}';"
-      attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
-      Attendance.find(attendance_ids)
-  end
-
-  def self.test2(clientid)
-    sql = "SELECT * FROM Attendances
-           INNER JOIN Purchases ON Purchases.id = Attendances.purchase_id
-           INNER JOIN Products ON Products.id = Purchases.product_id
-           INNER JOIN Clients ON Clients.id = Purchases.client_id
-           WHERE Clients.id = '#{clientid}';"
-      ActiveRecord::Base.connection.exec_query(sql)
-  end
+  # def self.test(clientid)
+  #   sql = "SELECT attendances.id
+  #          FROM Clients
+  #          INNER JOIN Purchases ON Clients.id = Purchases.client_id
+  #          INNER JOIN Attendances ON Purchases.id = Attendances.purchase_id
+  #          INNER JOIN Products ON Products.id = Purchases.product_id
+  #          WHERE Clients.id = '#{clientid}';"
+  #     attendance_ids = ActiveRecord::Base.connection.exec_query(sql).to_a.map(&:values)
+  #     Attendance.find(attendance_ids)
+  # end
+  #
+  # def self.test2(clientid)
+  #   sql = "SELECT * FROM Attendances
+  #          INNER JOIN Purchases ON Purchases.id = Attendances.purchase_id
+  #          INNER JOIN Products ON Products.id = Purchases.product_id
+  #          INNER JOIN Clients ON Clients.id = Purchases.client_id
+  #          WHERE Clients.id = '#{clientid}';"
+  #     ActiveRecord::Base.connection.exec_query(sql)
+  # end
 
   private
     # https://api.rubyonrails.org/v6.1.4/classes/ActiveRecord/QueryMethods.html#method-i-where

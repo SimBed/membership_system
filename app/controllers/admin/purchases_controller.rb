@@ -1,6 +1,9 @@
 class Admin::PurchasesController < Admin::BaseController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: %i[ show edit update destroy ]
+  # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
+  # parameter is an array to deal with the situation where e.g. a wkclass is deleted and multiple purchases need updating
+  after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update ]
 
   def index
     # obsolete now - optimised by sorting at databse
@@ -16,8 +19,7 @@ class Admin::PurchasesController < Admin::BaseController
     when 'client_dop', 'dop'
       @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
     when 'expiry'
-      @purchases = @purchases.to_a.sort_by { |p| p.days_to_expiry }
-      @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
+      @purchases = @purchases.with_package.started.not_expired.order_by_expiry_date.page params[:page]
     when 'classes_remain'
       @purchases = @purchases.with_package.started.not_expired.to_a.sort_by { |p| p.attendances_remain(provisional: true, unlimited_text: false) }
       # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
@@ -30,7 +32,7 @@ class Admin::PurchasesController < Admin::BaseController
     # to have to run ruby code on the entire population of purchases to identify the non-expired purchases.
     # There are probably more appropriate ways of updating the purchase's status at database level, but running some code
     # here is inoccuous (negligibly slows down a non-speed-critical page) and means the database will be kept up to data intermittently which achieves the aim.
-    expire_purchases
+    # expire_purchases
     respond_to do |format|
       format.html {}
       format.js {render 'index.js.erb'}
@@ -121,11 +123,11 @@ class Admin::PurchasesController < Admin::BaseController
 
   private
 
-    def expire_purchases
-      Purchase.not_expired.each do |p|
-        p.update({expired: true}) if p.expired?
-      end
-    end
+    # def expire_purchases
+    #   Purchase.not_expired.each do |p|
+    #     p.update({expired: true}) if p.expired?
+    #   end
+    # end
 
     def set_purchase
       @purchase = Purchase.find(params[:id])
@@ -161,8 +163,9 @@ class Admin::PurchasesController < Admin::BaseController
       @purchases = @purchases.with_package if session[:filter_package].present?
       @purchases = @purchases.unpaid if session[:filter_unpaid].present?
       @purchases = @purchases.classpass if session[:filter_classpass].present?
+      @purchases = @purchases.with_statuses(session[:filter_status]) if session[:filter_status].present?
       @purchases = @purchases.started.not_expired.select { |p| p.close_to_expiry? } if session[:filter_close_to_expiry].present?
-      @purchases = @purchases.select { |p| session[:filter_status].include?(p.status) } if session[:filter_status].present?
+      # @purchases = @purchases.select { |p| session[:filter_status].include?(p.status) } if session[:filter_status].present?
       # hack to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
       @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
     end

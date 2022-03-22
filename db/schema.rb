@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_01_055203) do
+ActiveRecord::Schema.define(version: 2022_03_21_092949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,16 +153,19 @@ ActiveRecord::Schema.define(version: 2022_03_01_055203) do
     t.boolean "adjust_restart", default: false
     t.integer "ar_payment"
     t.date "ar_date"
-    t.boolean "expired", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "fitternity_id"
     t.integer "price_id"
+    t.string "status", default: "not started"
+    t.date "expiry_date"
+    t.date "start_date"
+    t.boolean "tax_included", default: true
     t.index ["client_id"], name: "index_purchases_on_client_id"
     t.index ["dop"], name: "index_purchases_on_dop"
-    t.index ["expired"], name: "index_purchases_on_expired"
     t.index ["price_id"], name: "index_purchases_on_price_id"
     t.index ["product_id"], name: "index_purchases_on_product_id"
+    t.index ["status"], name: "purchases_status_index"
   end
 
   create_table "rel_workout_group_workouts", force: :cascade do |t|

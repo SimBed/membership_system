@@ -1,6 +1,13 @@
 require 'test_helper'
 class PurchaseTest < ActiveSupport::TestCase
   def setup
+    travel_to Date.parse('18 March 2022')
+    Purchase.all.each do |p|
+      p.update(start_date: p.start_date_calc)
+      p.update(expiry_date: p.expiry_date_calc)
+      p.update(status: p.status_calc)
+    end
+
     @purchase =
       Purchase.new(client_id: clients(:aparna).id,
                    product_id: products(:unlimited3m).id,
@@ -91,8 +98,9 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'self.qualifying_for(wkclass)' do
-    assert_equal [441, 374, 29, 201, 343, 212, 335, 334, 381, 437, 312, 438, 382, 375, 200, 407,
- 377, 99, 452, 198, 389, 339, 399, 120, 224, 360, 125, 341, 119, 230, 390, 416], Purchase.qualifying_for(@wkclass1).pluck(:id)
+    assert_equal [441, 374, 29, 201, 343, 212, 335, 334, 381, 437, 406, 59, 312, 229, 438, 382, 375, 200,
+                  407, 377, 99, 452, 198, 389, 339, 399, 120, 224, 360, 125, 341, 119, 230, 390,
+                  416], Purchase.qualifying_for(@wkclass1).pluck(:id)
   end
 
   test 'name_with_dop method' do
@@ -101,11 +109,11 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 'Pilates 8C:5W - 15 Feb 22', @purchase_fixed.name_with_dop
   end
 
-  test 'status method' do
-    assert_equal 'ongoing', @purchase_package.status
-    assert_equal 'expired', @purchase_dropin.status
-    assert_equal 'not started', @purchase_dropin2.status
-    assert_equal 'ongoing', @purchase_fixed.status
+  test 'status_calc method' do
+    assert_equal 'ongoing', @purchase_package.status_calc
+    assert_equal 'expired', @purchase_dropin.status_calc
+    assert_equal 'not started', @purchase_dropin2.status_calc
+    assert_equal 'ongoing', @purchase_fixed.status_calc
   end
 
   test 'freezed? method' do
@@ -143,21 +151,21 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_nil @purchase_fixed.will_expire_on
   end
 
-  test 'expiry_date method' do
-    assert_equal Date.parse('25 Apr 2022'), @purchase_package.expiry_date
-    assert_equal Date.parse('25 Feb 2022'), @purchase_dropin.expiry_date
-    assert_equal 'n/a', @purchase_dropin2.expiry_date
-    assert_equal Date.parse('21 Mar 2022'), @purchase_fixed.expiry_date
+  test 'expiry_date_calc method' do
+    assert_equal Date.parse('25 Apr 2022'), @purchase_package.expiry_date_calc
+    assert_equal Date.parse('25 Feb 2022'), @purchase_dropin.expiry_date_calc
+    assert_equal 'n/a', @purchase_dropin2.expiry_date_calc
+    assert_equal Date.parse('21 Mar 2022'), @purchase_fixed.expiry_date_calc
   end
 
   # tests based on Date.today need improvement (an environment variable perhaps)
   test 'days_to_expiry method' do
     # test data is based on attendance in the 2030s ie first class is in 2030 and expiry date based on that
-    assert_equal 36, @purchase_package.days_to_expiry
+    assert_equal 38, @purchase_package.days_to_expiry
     assert_equal 1000, @purchase_dropin.days_to_expiry
     assert_equal 1000, @purchase_dropin2.days_to_expiry
     # assert_operator 1000, :<, @purchase_fixed.days_to_expiry
-    assert_equal 1, @purchase_fixed.days_to_expiry
+    assert_equal 3, @purchase_fixed.days_to_expiry
   end
 
   # needs a proper testcase
