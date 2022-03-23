@@ -39,3 +39,5 @@ yarn-debug.log*
 /test/fixtures/*
 /test/fixtures/orig/*
 /test/alt_testing/*
+
+latest.dump

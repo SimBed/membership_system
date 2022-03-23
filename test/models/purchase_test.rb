@@ -2,11 +2,11 @@ require 'test_helper'
 class PurchaseTest < ActiveSupport::TestCase
   def setup
     travel_to Date.parse('18 March 2022')
-    Purchase.all.each do |p|
-      p.update(start_date: p.start_date_calc)
-      p.update(expiry_date: p.expiry_date_calc)
-      p.update(status: p.status_calc)
-    end
+    # Purchase.all.each do |p|
+    #   p.update(start_date: p.start_date_calc)
+    #   p.update(expiry_date: p.expiry_date_calc)
+    #   p.update(status: p.status_calc)
+    # end
 
     @purchase =
       Purchase.new(client_id: clients(:aparna).id,
@@ -98,8 +98,8 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'self.qualifying_for(wkclass)' do
-    assert_equal [441, 374, 29, 201, 343, 212, 335, 334, 381, 437, 406, 59, 312, 229, 438, 382, 375, 200,
-                  407, 377, 99, 452, 198, 389, 339, 399, 120, 224, 360, 125, 341, 119, 230, 390,
+    assert_equal [441, 374, 29, 201, 343, 212, 335, 459, 381, 406, 312, 229, 438, 382, 200,
+                  407, 377, 99, 198, 389, 339, 399, 120, 224, 360, 125, 341, 119, 230, 390,
                   416], Purchase.qualifying_for(@wkclass1).pluck(:id)
   end
 
@@ -161,11 +161,11 @@ class PurchaseTest < ActiveSupport::TestCase
   # tests based on Date.today need improvement (an environment variable perhaps)
   test 'days_to_expiry method' do
     # test data is based on attendance in the 2030s ie first class is in 2030 and expiry date based on that
-    assert_equal 38, @purchase_package.days_to_expiry
+    assert_equal 40, @purchase_package.days_to_expiry
     assert_equal 1000, @purchase_dropin.days_to_expiry
     assert_equal 1000, @purchase_dropin2.days_to_expiry
     # assert_operator 1000, :<, @purchase_fixed.days_to_expiry
-    assert_equal 3, @purchase_fixed.days_to_expiry
+    assert_equal 7, @purchase_fixed.days_to_expiry
   end
 
   # needs a proper testcase
@@ -177,10 +177,10 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'start_to_expiry method' do
-    assert_equal "25 Jan 22 - 25 Apr 22", @purchase_package.start_to_expiry
+    assert_equal "25 Jan 22 - 27 Apr 22", @purchase_package.start_to_expiry
     assert_equal "25 Feb 22 - 25 Feb 22", @purchase_dropin.start_to_expiry
     assert_equal "not started", @purchase_dropin2.start_to_expiry
-    assert_equal "15 Feb 22 - 21 Mar 22", @purchase_fixed.start_to_expiry
+    assert_equal "15 Feb 22 - 25 Mar 22", @purchase_fixed.start_to_expiry
   end
 
   test 'attendances_remain method' do
@@ -196,7 +196,7 @@ class PurchaseTest < ActiveSupport::TestCase
     refute @purchase_package.close_to_expiry?
     assert @purchase_dropin.close_to_expiry?
     assert @purchase_dropin2.close_to_expiry?
-    assert @purchase_fixed.close_to_expiry?
+    refute @purchase_fixed.close_to_expiry?
   end
 
 end
