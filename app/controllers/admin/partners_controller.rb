@@ -23,12 +23,12 @@ class Admin::PartnersController < Admin::BaseController
       gst = gross_revenue * (1 - 1 / (1 + wg.gst_rate))
       net_revenue = gross_revenue - gst
       @fixed_expenses = Expense.by_workout_group(wg.name, start_date, end_date)
-      total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)
-      @wkclasses_with_instructor_expense =
+      total_fixed_expense = @fixed_expenses.sum(:amount)
+      total_instructor_expense =
         Wkclass.in_workout_group(wg.name)
                .between(start_date, end_date)
                .has_instructor_cost
-      total_instructor_expense = @wkclasses_with_instructor_expense.map(&:instructor_cost).inject(0, &:+)
+               .sum(:instructor_cost)
       total_expense = total_fixed_expense + total_instructor_expense
       profit = net_revenue - total_expense
       partner_share = profit * wg.partner_share.to_f / 100

@@ -9,7 +9,7 @@ class Admin::ProductsController < Admin::BaseController
     session[:product_purchased_period] = params[:product_purchased_period] || session[:product_purchased_period] || Date.today.beginning_of_month.strftime('%b %Y')
     start_date = Date.parse(session[:product_purchased_period]).strftime('%Y-%m-%d')
     end_date = Date.parse(session[:product_purchased_period]).end_of_month.strftime('%Y-%m-%d')
-    @purchases = Product.by_purchase_date(@product.id, start_date, end_date)
+    @purchases = Purchase.by_product_date(@product.id, start_date, end_date)
     # @client_hash = {
     #   number: attendances.size,
     #   base_revenue: base_revenue,

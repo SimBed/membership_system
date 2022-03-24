@@ -13,8 +13,5 @@ class Instructor < ApplicationRecord
 
   def current_rate
     instructor_rates.order_recent_first.first&.rate
-    # rate = instructor_rates.order_recent_first.first&.rate || 0
-    # return nil if rate.zero?
-    # rate
   end
 end

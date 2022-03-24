@@ -7,7 +7,6 @@ class Client < ApplicationRecord
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
   validate :full_name_must_be_unique
-  # validates :email, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :whatsapp, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :instagram, uniqueness: { case_sensitive: false }, allow_blank: true
@@ -31,6 +30,7 @@ class Client < ApplicationRecord
                       .having("max(start_time) < ?", 3.months.ago)
                     Client.where(id: clients.map(&:id))
                   }
+
   paginates_per 20
 
   def self.to_csv
@@ -42,28 +42,10 @@ class Client < ApplicationRecord
     end
   end
 
-  # def self.cold
-  #     sql = "SELECT client_id, max(start_time)
-  #            FROM clients INNER JOIN purchases ON purchases.client_id = clients.id
-  #            INNER JOIN attendances ON attendances.purchase_id = purchases.id
-  #            INNER JOIN wkclasses ON attendances.wkclass_id = wkclasses.id
-  #            GROUP BY client_id
-  #            HAVING max(start_time) > CURRENT_DATE - INTERVAL '1 months';"
-  #     ActiveRecord::Base.connection.exec_query(sql).to_a
-  # end
-
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?
     date_of_last_class < 3.months.ago
-  end
-
-  # alternative code if wanting to loop through an array of clients
-  # cold_client_id_array = Client.cold.pluck(:id)
-  # Client.limit(3).map {|c| c.cold2?(cold_client_id_array)}
-  def cold2?(cold_client_id_array)
-    # Client.cold.where(id: self.id).exists?
-    cold_client_id_array.include?(self.id)
   end
 
   def enquiry?
@@ -86,24 +68,10 @@ class Client < ApplicationRecord
     purchases.order_by_dop.first
   end
 
-  # def products_for_class(wkclass)
-  #   # Product.find(self.purchase_for_class(wkclass).product_id)
-  #   Product.find(self.purchases_for_class(wkclass).pluck(:product_id))
-  # end
-
-  # def revenue_for_class(wkclass)
-  #   #wkclass.purchases.where(client_id: self.id).first.payment / self.purchase_for_class(wkclass).attendance_estimate
-  # end
-
   private
     def downcase_email
       self.email = email.downcase
     end
-
-    # def purchases_for_class(wkclass)
-    #   # wkclass.purchases.where(client_id: self.id).first
-    #   wkclass.purchases.where(client_id: self.id)
-    # end
 
     def full_name_must_be_unique
       # complicated due to situation on update. There will of course be one record in the database

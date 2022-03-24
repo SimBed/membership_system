@@ -27,15 +27,6 @@ class Product < ApplicationRecord
     prices.current.map {|p| p.price}.join(', ')
   end
 
-  # more work needed
-  def self.by_purchase_date(product_id, start_date, end_date)
-      purchase_ids = Product.joins(:purchases)
-                                 .where("purchases.dop BETWEEN '#{start_date}' AND '#{end_date}'")
-                                 .where("products.id = ?", "#{product_id}")
-                                 .select('purchases.id').to_a.map(&:id)
-      Purchase.find(purchase_ids)
-  end
-
   private
 
     # see comment on full_name_must_be_unique in Client model

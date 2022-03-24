@@ -22,7 +22,7 @@ class FreezeTest < ActiveSupport::TestCase
     refute @freeze.valid?
   end
 
-  test 'duration' do
+  test 'duration method' do
     assert_equal 11, @freeze.duration
   end
 end

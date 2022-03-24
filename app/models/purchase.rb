@@ -49,11 +49,19 @@ class Purchase < ApplicationRecord
   scope :invoiced, -> { where.not(invoice: nil)}
   scope :unpaid, -> { where(payment_mode: 'Not paid')}
   scope :classpass, -> { where(payment_mode: 'ClassPass')}
+  #scope :not_used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.not_between(adate, adate.end_of_day)).distinct}
+  # scope :not_used_on?, ->(adate) { left_outer_joins(attendances: [:wkclass]).where.not(wkclasses: {start_time: adate..adate.end_of_day}).distinct }
+  # note the 'unscope' see genkilabs solution @ https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
+  # scope :used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.between(adate, adate.end_of_day)).unscope(:order).distinct}
   paginates_per 20
 
   def revenue_for_class(wkclass)
     return 0 unless wkclass.purchases.include?(self)
     payment / attendance_estimate
+  end
+
+  def attended_on?(adate)
+    attendances.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
   end
 
   # for qualifying purchases in select box for new attendance form
@@ -68,10 +76,17 @@ class Purchase < ApplicationRecord
                         .joins(:client)
                         .merge(WorkoutGroup.includes_workout_of(wkclass))
     Purchase.where(id: purchases
-                        .to_a.select { |p| !p.freezed?(wkclass.start_time) }
+                        .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.attended_on?(wkclass.start_time.to_date) }
                         .map(&:id) # or pluck(:id)
                   )
             .includes(:client).order("clients.first_name", "purchases.dop")
+  end
+
+  def self.by_product_date(product_id, start_date, end_date)
+      joins(:product)
+     .where("purchases.dop BETWEEN '#{start_date}' AND '#{end_date}'")
+     .where("products.id = ?", "#{product_id}")
+     .order(dop: :desc)
   end
 
   def name_with_dop
@@ -210,7 +225,7 @@ class Purchase < ApplicationRecord
     # attendances.sort_by { |a| a.start_time }.first.start_time
     # use includes to avoid firing additional query per wkclass
     attendances.provisional.includes(:wkclass).map(&:start_time).min&.to_date
-  end  
+  end
 
   # def attendances_remain_format
   #   ac = attendances.count
