@@ -22,17 +22,17 @@ class Admin::PurchasesController < Admin::BaseController
       @purchases = @purchases.with_package.started.not_expired.order_by_expiry_date.page params[:page]
     when 'classes_remain'
       @purchases = @purchases.with_package.started.not_expired.to_a.sort_by { |p| p.attendances_remain(provisional: true, unlimited_text: false) }
+      # where does not retain the order of the items searched for, hence the more complicated approach below
       # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
       ids = @purchases.map(&:id)
-      @purchases = Purchase.where(id: ids).order(Arel.sql("position(id::text in '#{ids.join(',')}')")).page params[:page]
+      # raw SQL in Active Record functions will give an error to guard against SQL injection in the case where the raw SQl contains user input i.e. a params value
+      # the error can be everriden by converting the we have to change the raw SQL string literals to an Arel::Nodes::SqlLiteral object.
+      # there is no user input in the converted Arel object, so this is OK
+      # 'id:: text' is equivalent to 'CAST (id AS TEXT)' see https://www.postgresqltutorial.com/postgresql-cast/
+      # position is a Postgresql string function, see https://www.postgresqltutorial.com/postgresql-position/
+      @purchases = Purchase.where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")).page params[:page]
     end
 
-    # it is not critical that expired purchases are identifiable at database level. This will just improve efficiency as the number of purchases gets biggger over time.
-    # For example, the form for adding a new attendance makes qualifying purchases available from a select box. It is inefficient
-    # to have to run ruby code on the entire population of purchases to identify the non-expired purchases.
-    # There are probably more appropriate ways of updating the purchase's status at database level, but running some code
-    # here is inoccuous (negligibly slows down a non-speed-critical page) and means the database will be kept up to data intermittently which achieves the aim.
-    # expire_purchases
     respond_to do |format|
       format.html {}
       format.js {render 'index.js.erb'}
@@ -78,6 +78,8 @@ class Admin::PurchasesController < Admin::BaseController
   #      @product_name = Product.full_name(@purchase.product.workout_group.name, @purchase.product.max_classes, @purchase.product.validity_length, @purchase.product.validity_unit, @purchase.product.prices.where('price=?', @purchase.payment).first&.name) unless purchase_params[:product_id].nil?
         render :new, status: :unprocessable_entity
       end
+      # send_sms
+      # send_whatsapp(@purchase.payment)
   end
 
   def update
@@ -123,12 +125,6 @@ class Admin::PurchasesController < Admin::BaseController
 
   private
 
-    # def expire_purchases
-    #   Purchase.not_expired.each do |p|
-    #     p.update({expired: true}) if p.expired?
-    #   end
-    # end
-
     def set_purchase
       @purchase = Purchase.find(params[:id])
     end
@@ -168,5 +164,35 @@ class Admin::PurchasesController < Admin::BaseController
       # @purchases = @purchases.select { |p| session[:filter_status].include?(p.status) } if session[:filter_status].present?
       # hack to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
       @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
+    end
+
+    def send_sms
+      account_sid = Rails.configuration.twilio[:account_sid]
+      auth_token = Rails.configuration.twilio[:auth_token]
+      from = Rails.configuration.twilio[:number]
+      to = Rails.configuration.twilio[:me]
+      client = Twilio::REST::Client.new(account_sid, auth_token)
+
+      client.messages.create(
+      from: from,
+      to: to,
+      body: "The Space - Product Purchase"
+      )
+    end
+
+    def send_whatsapp(payment)
+      account_sid = Rails.configuration.twilio[:account_sid]
+      auth_token = Rails.configuration.twilio[:auth_token]
+      from = Rails.configuration.twilio[:whatsapp_number]
+      to = Rails.configuration.twilio[:me]
+      client = Twilio::REST::Client.new(account_sid, auth_token)
+
+      client.messages.create(
+         from: "whatsapp:#{from}",
+         to: "whatsapp:#{to}",
+         body: "The Space - Product Purchase
+         #{@purchase.name_with_dop}
+         #{payment} Rs."
+       )
     end
 end

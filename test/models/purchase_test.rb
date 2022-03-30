@@ -2,11 +2,6 @@ require 'test_helper'
 class PurchaseTest < ActiveSupport::TestCase
   def setup
     travel_to Date.parse('18 March 2022')
-    # Purchase.all.each do |p|
-    #   p.update(start_date: p.start_date_calc)
-    #   p.update(expiry_date: p.expiry_date_calc)
-    #   p.update(status: p.status_calc)
-    # end
 
     @purchase =
       Purchase.new(client_id: clients(:aparna).id,
