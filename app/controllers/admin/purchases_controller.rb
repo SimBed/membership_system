@@ -1,9 +1,11 @@
 class Admin::PurchasesController < Admin::BaseController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: [:show, :edit, :update, :destroy]
+  before_action :sanitize_params, only: [:create, :update]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
-  after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update]
+  # this approach is no good as the callback should be after a successful create not a failed create
+  # after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update]
 
   def index
     # obsolete now - optimised by sorting at databse
@@ -69,6 +71,7 @@ class Admin::PurchasesController < Admin::BaseController
       # equivalent to redirect_to admin_purchase_path @purchase
       redirect_to [:admin, @purchase]
       flash[:success] = 'Purchase was successfully created'
+      update_purchase_status([@purchase])
     else
       @clients = Client.order_by_name
       @product_names = Product.order_by_name_max_classes
@@ -83,6 +86,7 @@ class Admin::PurchasesController < Admin::BaseController
     if @purchase.update(purchase_params)
       redirect_to [:admin, @purchase]
       flash[:success] = 'Purchase was successfully updated'
+      update_purchase_status([@purchase])
     else
       @clients = Client.order_by_name.map { |c| [c.name, c.id] }
       @product_names = Product.order_by_name_max_classes
@@ -122,13 +126,16 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def purchase_params
-    pp = params.require(:purchase).permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
-                                          :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
-    pp[:invoice] = nil if pp[:invoice] == ''
-    pp[:note] = nil if pp[:note] == ''
-    pp[:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
-    pp[:product_id] = nil if params[:purchase][:product_id].blank?
-    pp
+    params.require(:purchase)
+          .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
+                  :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+  end
+
+  def sanitize_params
+    params[:purchase][:invoice] = nil if params[:purchase][:invoice] == ''
+    params[:purchase][:note] = nil if params[:purchase][:note] == ''
+    params[:purchase][:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
+    params[:purchase][:product_id] = nil if params[:purchase][:product_id].blank?
   end
 
   def initialize_sort
