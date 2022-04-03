@@ -108,6 +108,7 @@ class Admin::PurchasesController < Admin::BaseController
     redirect_to admin_purchases_path
   end
 
+  # store the filter_form params in sessions
   def filter
     # see application_helper
     clear_session(*session_filter_list)
@@ -131,11 +132,19 @@ class Admin::PurchasesController < Admin::BaseController
                   :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
   end
 
+  # def sanitize_params
+  #   params[:purchase][:invoice] = nil if params[:purchase][:invoice] == ''
+  #   params[:purchase][:note] = nil if params[:purchase][:note] == ''
+  #   params[:purchase][:fitternity_id]=Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
+  #   params[:purchase][:product_id] = nil if params[:purchase][:product_id].blank?
+  # end
+
   def sanitize_params
-    params[:purchase][:invoice] = nil if params[:purchase][:invoice] == ''
-    params[:purchase][:note] = nil if params[:purchase][:note] == ''
-    params[:purchase][:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
-    params[:purchase][:product_id] = nil if params[:purchase][:product_id].blank?
+    params.tap do |params|
+      params[:purchase][:invoice] = nil if params.dig(:purchase, :invoice) == ''
+      params[:purchase][:note] = nil if params.dig(:purchase, :note) == ''
+      params[:purchase][:product_id] = nil if params.dig(:purchase, :product_id).blank?
+    end
   end
 
   def initialize_sort
@@ -150,22 +159,27 @@ class Admin::PurchasesController < Admin::BaseController
     if session[:filter_workout_group].present?
       @purchases = @purchases.with_workout_group(session[:filter_workout_group])
     end
-    @purchases = @purchases.uninvoiced.requires_invoice if session[:filter_invoice].present?
+    @purchases = @purchases.with_package.uninvoiced.requires_invoice if session[:filter_invoice].present?
     @purchases = @purchases.with_package if session[:filter_package].present?
     @purchases = @purchases.unpaid if session[:filter_unpaid].present?
     @purchases = @purchases.classpass if session[:filter_classpass].present?
     @purchases = @purchases.with_statuses(session[:filter_status]) if session[:filter_status].present?
     @purchases = @purchases.started.not_expired.select(&:close_to_expiry?) if session[:filter_close_to_expiry].present?
-    # HACK: to convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
+    # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
     @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
   end
 
-  # A list of the param names that can be used for filtering Purchases
+  # filtering_params(params).each do |key, value|
+  #   @products = @products.public_send("filter_by_#{key}", value) if value.present?
+  # end
+
+  # The params names from filter_form.html.erb
   def params_filter_list
     [:workout_group, :status, :invoice, :package, :close_to_expiry,
      :unpaid, :classpass, :search_name]
   end
 
+  # ['workout_group_filter',...'invoice_filter',...:search_name]
   def session_filter_list
     params_filter_list.map { |i| i == :search_name ? i : "filter_#{i}" }
   end
