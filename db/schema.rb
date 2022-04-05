@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_21_092949) do
+ActiveRecord::Schema.define(version: 2022_04_04_121351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,21 @@ ActiveRecord::Schema.define(version: 2022_03_21_092949) do
     t.boolean "hotlead", default: false
     t.index ["account_id"], name: "index_clients_on_account_id"
     t.index ["first_name", "last_name"], name: "index_clients_on_first_name_and_last_name"
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "expenses", force: :cascade do |t|
