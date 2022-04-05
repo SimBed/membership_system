@@ -2,7 +2,7 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   before_action :set_instructor_rate, only: %i[ edit update destroy ]
 
   def index
-    @instructor_rates = InstructorRate.all
+    @instructor_rates = InstructorRate.order_by_instructor
   end
 
   def new
