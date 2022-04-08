@@ -129,7 +129,7 @@ class Admin::PurchasesController < Admin::BaseController
   def purchase_params
     params.require(:purchase)
           .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
-                  :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+                  :invoice, :note, :adjust_restart, :ar_payment, :ar_date, :fitternity_id)
   end
 
   # def sanitize_params
@@ -143,6 +143,7 @@ class Admin::PurchasesController < Admin::BaseController
     params.tap do |params|
       params[:purchase][:invoice] = nil if params.dig(:purchase, :invoice) == ''
       params[:purchase][:note] = nil if params.dig(:purchase, :note) == ''
+      params[:purchase][:fitternity_id] = Fitternity.ongoing.first&.id if params.dig(:purchase, :payment_mode) == 'Fitternity'
       params[:purchase][:product_id] = nil if params.dig(:purchase, :product_id).blank?
     end
   end
