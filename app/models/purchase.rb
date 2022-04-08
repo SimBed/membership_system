@@ -227,6 +227,26 @@ class Purchase < ApplicationRecord
     attendances.provisional.includes(:wkclass).map(&:start_time).min&.to_date
   end
 
+  def body_for_create
+    "Purchase Confirmation - please do not reply to this message. Contact The Space directly if you have any questions.
+          Class: #{self.workout_group}
+          Type: package
+          Classes: #{self.product.max_classes}
+          Validity: #{self.product.validity_length}#{self.product.validity_unit}
+          Cost: #{self.payment}
+          Freeze: no freeze requested
+          Start Date: date of your first class
+          Expiry Date: based on start date and validity
+
+          This purchase is non-refundable, cannot be frozen (except for dates specified at time of purchase) and will expire once the validity passes regardless of how many classes you actually attend. Please read our Package Policy here:
+          https://thespacejuhu.in/Policy.html
+
+          Rakesh, The Space
+          www.thespacejuhu.in
+          Instagram @thespace.juhu"
+
+  end
+
   # def attendances_remain_format
   #   ac = attendances.count
   #   # "[number] [attendances icon] [more icon]"

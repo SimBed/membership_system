@@ -72,6 +72,7 @@ class Admin::PurchasesController < Admin::BaseController
       redirect_to [:admin, @purchase]
       flash[:success] = 'Purchase was successfully created'
       update_purchase_status([@purchase])
+      send_whatsapp(Rails.configuration.twilio[:me], @purchase.body_for_create)
     else
       @clients = Client.order_by_name
       @product_names = Product.order_by_name_max_classes
@@ -184,33 +185,28 @@ class Admin::PurchasesController < Admin::BaseController
     params_filter_list.map { |i| i == :search_name ? i : "filter_#{i}" }
   end
 
-  def send_sms
-    account_sid = Rails.configuration.twilio[:account_sid]
-    auth_token = Rails.configuration.twilio[:auth_token]
-    from = Rails.configuration.twilio[:number]
-    to = Rails.configuration.twilio[:me]
-    client = Twilio::REST::Client.new(account_sid, auth_token)
+  # def send_sms
+  #   account_sid = Rails.configuration.twilio[:account_sid]
+  #   auth_token = Rails.configuration.twilio[:auth_token]
+  #   from = Rails.configuration.twilio[:number]
+  #   to = Rails.configuration.twilio[:me]
+  #   client = Twilio::REST::Client.new(account_sid, auth_token)
+  #
+  #   client.messages.create(
+  #     from: from,
+  #     to: to,
+  #     body: 'The Space - Product Purchase'
+  #   )
+  # end
 
-    client.messages.create(
-      from: from,
-      to: to,
-      body: 'The Space - Product Purchase'
-    )
-  end
-
-  def send_whatsapp(payment)
-    account_sid = Rails.configuration.twilio[:account_sid]
-    auth_token = Rails.configuration.twilio[:auth_token]
-    from = Rails.configuration.twilio[:whatsapp_number]
-    to = Rails.configuration.twilio[:me]
+    def send_whatsapp(to, body)
+    twilio_initialise
     client = Twilio::REST::Client.new(account_sid, auth_token)
 
     client.messages.create(
       from: "whatsapp:#{from}",
       to: "whatsapp:#{to}",
-      body: "The Space - Product Purchase
-         #{@purchase.name_with_dop}
-         #{payment} Rs."
+      body: body
     )
   end
 end

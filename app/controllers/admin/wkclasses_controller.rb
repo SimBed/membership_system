@@ -50,6 +50,10 @@ class Admin::WkclassesController < Admin::BaseController
       if @wkclass.save
         redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
         flash[:success] = "Class was successfully created"
+        # @wkclass.delay.send_reminder
+        # Wkclass.delay.send_reminder(@wkclass.id)
+        send_whatsapp
+        # Wkclass.send_reminder(@wkclass.id)
       else
         @workouts = Workout.all.map { |w| [w.name, w.id] }
         @instructors =  Instructor.order_by_name.map { |i| [i.name, i.id] }
@@ -114,4 +118,16 @@ class Admin::WkclassesController < Admin::BaseController
         @wkclasses = @wkclasses.between(start_date, end_date)
       end
     end
+
+    def send_whatsapp
+      twilio_initialise
+      client = Twilio::REST::Client.new(account_sid, auth_token)
+
+      client.messages.create(
+        from: "whatsapp:#{from}",
+        to: "whatsapp:#{Rails.configuration.twilio[:me]}",
+        body: "Thank you for purchasing the product! We value your feedback and would like to learn more about your experience."
+      )
+    end
+
 end
