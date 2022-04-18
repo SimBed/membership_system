@@ -72,7 +72,8 @@ class Admin::PurchasesController < Admin::BaseController
       redirect_to [:admin, @purchase]
       flash[:success] = 'Purchase was successfully created'
       update_purchase_status([@purchase])
-      send_whatsapp(Rails.configuration.twilio[:me], @purchase.body_for_create)
+      # post_purchase_action
+      # flash[:warning] = 'whatsapp was sent'
     else
       @clients = Client.order_by_name
       @product_names = Product.order_by_name_max_classes
@@ -185,6 +186,27 @@ class Admin::PurchasesController < Admin::BaseController
     params_filter_list.map { |i| i == :search_name ? i : "filter_#{i}" }
   end
 
+  def post_purchase_action
+    # return unless @purchase.client.account.nil?
+    # setup_account
+    whatsapp_params = {to: Rails.configuration.twilio[:me], message_type: 'new_purchase'}
+    Whatsapp.new(whatsapp_params).send_whatsapp
+  end
+
+  def setup_account
+    @account_holder = @purchase.client
+    @account = Account.new(
+       {password: 'password', password_confirmation: 'password',
+        activated: true, ac_type: 'client', email: @account_holder.email}
+        )
+        if @account.save
+          @account_holder.update(account_id: @account.id)
+          flash[:success] = "account was successfully created"
+        else
+          flash[:warning] = "account was not created"
+        end
+  end
+
   # def send_sms
   #   account_sid = Rails.configuration.twilio[:account_sid]
   #   auth_token = Rails.configuration.twilio[:auth_token]
@@ -201,10 +223,10 @@ class Admin::PurchasesController < Admin::BaseController
 
     def send_whatsapp(to, body)
     twilio_initialise
-    client = Twilio::REST::Client.new(account_sid, auth_token)
+    client = Twilio::REST::Client.new(@account_sid, @auth_token)
 
     client.messages.create(
-      from: "whatsapp:#{from}",
+      from: "whatsapp:#{@from}",
       to: "whatsapp:#{to}",
       body: body
     )
