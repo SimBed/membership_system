@@ -3,6 +3,7 @@ class Whatsapp
   def initialize(attributes = {})
     @to = attributes[:to]
     @message_type = attributes[:message_type]
+    @account_items = attributes[:account_items]
   end
 
   def send_whatsapp
@@ -35,7 +36,7 @@ class Whatsapp
     "Welcome to The Space!"+
     "\n\nTo see details of your membership, please login:"+
     "\nEmail: the email you registered with us"+
-    "\nPassword: password"+
+    "\nPassword: #{@account_items[:password]}"+
     "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
     end
 

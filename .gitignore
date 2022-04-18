@@ -42,3 +42,6 @@ yarn-debug.log*
 
 latest.dump
 /app/models/#unused_code.rb
+
+# file for testing Delayed Job
+/app/delayed.txt

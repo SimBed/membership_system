@@ -40,6 +40,10 @@ class Account < ApplicationRecord
     update(remember_digest: nil)
   end
 
+  def self.password_wizard(n)
+  ('A'..'L').to_a.concat(('m'..'z').to_a).concat((1..9).to_a).concat((1..9).to_a).sample(n).join
+  end
+
   private
 
     def downcase_email
