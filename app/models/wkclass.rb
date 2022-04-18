@@ -21,6 +21,7 @@ class Wkclass < ApplicationRecord
   scope :past, -> { where('start_time < ?', Date.today.beginning_of_day) }
   scope :future, -> { where.not(id: past) }
   paginates_per 100
+  # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
@@ -45,6 +46,44 @@ class Wkclass < ApplicationRecord
     attendances.confirmed.map { |a| a.revenue }.inject(0, :+)
   end
 
+  # Use a class method with an argument to call send_reminder method rather than call send_reminder directly
+  # on an wkclass instance. As Delayed::Job works by saving an object to database (in yml form), this approach considerably
+  # reduces the volume of data stored in the delayed_jobs table (per Railscast)
+  class << self
+    def send_reminder(id)
+      find(id).send_reminder
+    end
+    handle_asynchronously :send_reminder, :run_at => Proc.new { Time.now + 30.seconds }
+  end
+
+  def send_reminder
+    file_path = "#{Rails.root}/delayed.txt"
+    File.open(file_path, 'w') do |file|
+      file.write("delayed job processing at #{Time.now}")
+    end
+    # Wkclass.last.update(instructor_cost:100)
+    # account_sid = Rails.configuration.twilio[:account_sid]
+    # auth_token = Rails.configuration.twilio[:auth_token]
+    # from = Rails.configuration.twilio[:whatsapp_number]
+    # to = Rails.configuration.twilio[:me]
+    # client = Twilio::REST::Client.new(account_sid, auth_token)
+    # time_str = ((self.start_time).localtime).strftime("%I:%M%p on %b. %d, %Y")
+    # self.attendances.provisional.each do |booking|
+    #     body = "Hi #{self.purchase.client.first_name}. Just a reminder that you have a class coming up at #{time_str}."
+    #     message = client.messages.create(
+    #       from: "whatsapp:#{from}",
+    #       to: "whatsapp:#{to}",
+    #       body: body
+    #     )
+    #   end
+  end
+    # handle_asynchronously :send_reminder, :run_at => Proc.new { |i| i.when_to_run }
+
+
+    # def when_to_run
+    #   minutes_before_class = 60.minutes
+    #   start_time - minutes_before_class
+    # end
   private
     def instructor_rate_exists
       errors.add(:base, "Instructor does not have a rate") if Instructor.exists?(instructor_id) && instructor.current_rate.nil?
@@ -59,4 +98,6 @@ class Wkclass < ApplicationRecord
         end
       end
     end
+
+
 end
