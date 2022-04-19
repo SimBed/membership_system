@@ -71,7 +71,7 @@ class Admin::PurchasesController < Admin::BaseController
       # equivalent to redirect_to admin_purchase_path @purchase
       redirect_to [:admin, @purchase]
       flash[:success] = 'Purchase was successfully created'
-      post_purchases_processing
+      post_purchase_processing
     else
       @clients = Client.order_by_name
       @product_names = Product.order_by_name_max_classes
@@ -184,13 +184,13 @@ class Admin::PurchasesController < Admin::BaseController
       params_filter_list.map { |i| i == :search_name ? i : "filter_#{i}" }
     end
 
-    def post_purchases_processing
+    def post_purchase_processing
       update_purchase_status([@purchase])
       if @purchase.client.account.nil?
-        setup_account_for_new_client
-        send_new_account_whatsapp
+        # setup_account_for_new_client
+        # send_new_account_whatsapp
       end
-      send_new_purchase_whatsapp
+      # send_new_purchase_whatsapp
     end
 
     def setup_account_for_new_client
@@ -230,7 +230,7 @@ class Admin::PurchasesController < Admin::BaseController
       whatsapp_params = {to: Rails.configuration.twilio[:boss],
                          message_type: 'new_purchase' }
       Whatsapp.new(whatsapp_params).send_whatsapp
-      
+
       flash[:warning] = 'whatsapp was sent'
     end
 end
