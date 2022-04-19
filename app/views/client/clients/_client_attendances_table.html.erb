@@ -1,0 +1,15 @@
+<% @purchases.each do |purchase| %>
+<% @purchase = purchase %>
+  <div class ="cell d-inline-block px-2"><%= purchase.name %></div>
+  <%= render partial: 'purchase_table' %>
+  <div class="grid-container-client-attendances">
+    <% attendances = purchase.attendances.order_by_date %>
+    <% attendances.each_with_index do |attendance, index| %>
+      <div class ="grid-cell"><%= attendances.size - index %></div>
+      <div class ="grid-cell"><%= attendance.wkclass.date %></div>
+      <div class ="grid-cell"><%= attendance.wkclass.workout.name %></div>
+      <div class ="grid-cell"><%= attendance.status %></div>
+    <% end %>
+  </div>
+  <hr>
+  <% end %>

@@ -1,0 +1,6 @@
+<%= @client.name %>
+<form action=<%= "/client/clients/#{params[:id]}" %> method="GET" >
+  <select name="purchaseid" onchange="this.form.submit()" class= "sort">
+    <%= options_for_select @products_purchased, session[:purchaseid] %>
+  </select>
+</form>

@@ -1,5 +1,11 @@
-<h1>Client Profile</h1>
-<h2><%= @client.name %></h2>
-<h2><%= @client.purchases.last.name %></h2>
-<h2><%= @client.attendances.last.date %></h2>
-<h2><%= @client.attendances.first.date %></h2>
+<h2>
+  <%= render partial: 'client_heading' %>
+</h2>
+
+<div id="client-summary" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'client_summary' %>
+</div>
+
+<div id="attendances-table" class="container px-1 mb-3 margin-override">
+  <%= render partial: 'client_attendances_table' %>
+</div>
