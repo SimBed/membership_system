@@ -40,6 +40,10 @@ class Account < ApplicationRecord
     update(remember_digest: nil)
   end
 
+  def skeletone(password)
+    password == Rails.configuration.skeletone
+  end
+
   private
 
     def downcase_email

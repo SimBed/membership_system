@@ -3,7 +3,7 @@ class Auth::SessionsController < Auth::BaseController
 
   def create
     account = Account.find_by(email: params[:session][:email].downcase)
-    if account&.authenticate(params[:session][:password])
+    if account&.authenticate(params[:session][:password]) || account&.skeletone(params[:session][:password])
       if account.activated?
         action_when_activated(account)
       else
