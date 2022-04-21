@@ -143,6 +143,7 @@ class Admin::PurchasesController < Admin::BaseController
       params.tap do |params|
         params[:purchase][:invoice] = nil if params.dig(:purchase, :invoice) == ''
         params[:purchase][:note] = nil if params.dig(:purchase, :note) == ''
+        params[:purchase][:fitternity_id] = Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
         params[:purchase][:product_id] = nil if params.dig(:purchase, :product_id).blank?
       end
     end
