@@ -71,9 +71,7 @@ class Admin::PurchasesController < Admin::BaseController
       # equivalent to redirect_to admin_purchase_path @purchase
       redirect_to [:admin, @purchase]
       flash[:success] = 'Purchase was successfully created'
-      update_purchase_status([@purchase])
-      # post_purchase_action
-      # flash[:warning] = 'whatsapp was sent'
+      post_purchase_processing
     else
       @clients = Client.order_by_name
       @product_names = Product.order_by_name_max_classes
@@ -124,112 +122,125 @@ class Admin::PurchasesController < Admin::BaseController
 
   private
 
-  def set_purchase
-    @purchase = Purchase.find(params[:id])
-  end
-
-  def purchase_params
-    params.require(:purchase)
-          .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
-                  :invoice, :note, :adjust_restart, :ar_payment, :ar_date, :fitternity_id)
-  end
-
-  # def sanitize_params
-  #   params[:purchase][:invoice] = nil if params[:purchase][:invoice] == ''
-  #   params[:purchase][:note] = nil if params[:purchase][:note] == ''
-  #   params[:purchase][:fitternity_id]=Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
-  #   params[:purchase][:product_id] = nil if params[:purchase][:product_id].blank?
-  # end
-
-  def sanitize_params
-    params.tap do |params|
-      params[:purchase][:invoice] = nil if params.dig(:purchase, :invoice) == ''
-      params[:purchase][:note] = nil if params.dig(:purchase, :note) == ''
-      params[:purchase][:fitternity_id] = Fitternity.ongoing.first&.id if params.dig(:purchase, :payment_mode) == 'Fitternity'
-      params[:purchase][:product_id] = nil if params.dig(:purchase, :product_id).blank?
+    def set_purchase
+      @purchase = Purchase.find(params[:id])
     end
-  end
 
-  def initialize_sort
-    session[:sort_option] = params[:sort_option] || session[:sort_option] || 'client_dop'
-  end
-
-  def handle_search_name
-    @purchases = @purchases.client_name_like(session[:search_name])
-  end
-
-  def handle_search
-    if session[:filter_workout_group].present?
-      @purchases = @purchases.with_workout_group(session[:filter_workout_group])
+    def purchase_params
+      params.require(:purchase)
+            .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
+                    :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
     end
-    @purchases = @purchases.with_package.uninvoiced.requires_invoice if session[:filter_invoice].present?
-    @purchases = @purchases.with_package if session[:filter_package].present?
-    @purchases = @purchases.unpaid if session[:filter_unpaid].present?
-    @purchases = @purchases.classpass if session[:filter_classpass].present?
-    @purchases = @purchases.with_statuses(session[:filter_status]) if session[:filter_status].present?
-    @purchases = @purchases.started.not_expired.select(&:close_to_expiry?) if session[:filter_close_to_expiry].present?
-    # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
-    @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
-  end
 
-  # filtering_params(params).each do |key, value|
-  #   @products = @products.public_send("filter_by_#{key}", value) if value.present?
-  # end
+    # def sanitize_params
+    #   params[:purchase][:invoice] = nil if params[:purchase][:invoice] == ''
+    #   params[:purchase][:note] = nil if params[:purchase][:note] == ''
+    #   params[:purchase][:fitternity_id]=Fitternity.ongoing.first&.id if params[:purchase][:payment_mode] == 'Fitternity'
+    #   params[:purchase][:product_id] = nil if params[:purchase][:product_id].blank?
+    # end
 
-  # The params names from filter_form.html.erb
-  def params_filter_list
-    [:workout_group, :status, :invoice, :package, :close_to_expiry,
-     :unpaid, :classpass, :search_name]
-  end
+    def sanitize_params
+      params.tap do |params|
+        params[:purchase][:invoice] = nil if params.dig(:purchase, :invoice) == ''
+        params[:purchase][:note] = nil if params.dig(:purchase, :note) == ''
+        params[:purchase][:product_id] = nil if params.dig(:purchase, :product_id).blank?
+      end
+    end
 
-  # ['workout_group_filter',...'invoice_filter',...:search_name]
-  def session_filter_list
-    params_filter_list.map { |i| i == :search_name ? i : "filter_#{i}" }
-  end
+    def initialize_sort
+      session[:sort_option] = params[:sort_option] || session[:sort_option] || 'client_dop'
+    end
 
-  def post_purchase_action
-    # return unless @purchase.client.account.nil?
-    # setup_account
-    whatsapp_params = {to: Rails.configuration.twilio[:me], message_type: 'new_purchase'}
-    Whatsapp.new(whatsapp_params).send_whatsapp
-  end
+    def handle_search_name
+      @purchases = @purchases.client_name_like(session[:search_name])
+    end
 
-  def setup_account
-    @account_holder = @purchase.client
-    @account = Account.new(
-       {password: 'password', password_confirmation: 'password',
-        activated: true, ac_type: 'client', email: @account_holder.email}
-        )
-        if @account.save
-          @account_holder.update(account_id: @account.id)
-          flash[:success] = "account was successfully created"
+    def handle_search
+      if session[:filter_workout_group].present?
+        @purchases = @purchases.with_workout_group(session[:filter_workout_group])
+      end
+      @purchases = @purchases.with_package.uninvoiced.requires_invoice if session[:filter_invoice].present?
+      @purchases = @purchases.with_package if session[:filter_package].present?
+      @purchases = @purchases.unpaid if session[:filter_unpaid].present?
+      @purchases = @purchases.classpass if session[:filter_classpass].present?
+      @purchases = @purchases.with_statuses(session[:filter_status]) if session[:filter_status].present?
+      @purchases = @purchases.started.not_expired.select(&:close_to_expiry?) if session[:filter_close_to_expiry].present?
+      # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
+      @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
+    end
+
+    # filtering_params(params).each do |key, value|
+    #   @products = @products.public_send("filter_by_#{key}", value) if value.present?
+    # end
+
+    # The params names from filter_form.html.erb
+    def params_filter_list
+      [:workout_group, :status, :invoice, :package, :close_to_expiry,
+       :unpaid, :classpass, :search_name]
+    end
+
+    # ['workout_group_filter',...'invoice_filter',...:search_name]
+    def session_filter_list
+      params_filter_list.map { |i| i == :search_name ? i : "filter_#{i}" }
+    end
+
+    def post_purchase_processing
+      update_purchase_status([@purchase])
+      whatsapp_recipients = [Rails.configuration.twilio[:me],
+                             Rails.configuration.twilio[:boss]]
+      unless @purchase.product.dropin?
+        if @purchase.client.account.nil?
+          setup_account_for_new_client
+          whatsapp_recipients.each do |recipient|
+             send_new_account_whatsapp(recipient)
+             send_new_purchase_whatsapp(recipient)
+             send_temp_email_confirm_whatsapp(recipient)
+          end
         else
-          flash[:warning] = "account was not created"
+          whatsapp_recipients.each do |recipient|
+             send_new_purchase_whatsapp(recipient)
+          end
         end
-  end
+      end
+    end
 
-  # def send_sms
-  #   account_sid = Rails.configuration.twilio[:account_sid]
-  #   auth_token = Rails.configuration.twilio[:auth_token]
-  #   from = Rails.configuration.twilio[:number]
-  #   to = Rails.configuration.twilio[:me]
-  #   client = Twilio::REST::Client.new(account_sid, auth_token)
-  #
-  #   client.messages.create(
-  #     from: from,
-  #     to: to,
-  #     body: 'The Space - Product Purchase'
-  #   )
-  # end
+    def setup_account_for_new_client
+      @account_holder = @purchase.client
+      @password = Account.password_wizard(6)
+      @account = Account.new(
+         {password: @password, password_confirmation: @password,
+          activated: true, ac_type: 'client', email: @account_holder.email}
+          )
+          if @account.save
+            @account_holder.update(account_id: @account.id)
+            flash[:success] = "account was successfully created"
+          else
+            flash[:warning] = "account was not created"
+          end
+    end
 
-    def send_whatsapp(to, body)
-    twilio_initialise
-    client = Twilio::REST::Client.new(@account_sid, @auth_token)
+    def send_new_account_whatsapp(to)
+      whatsapp_params = {to: to,
+                         message_type: 'new_account',
+                         variable_contents: { password: @password } }
+      Whatsapp.new(whatsapp_params).send_whatsapp
 
-    client.messages.create(
-      from: "whatsapp:#{@from}",
-      to: "whatsapp:#{to}",
-      body: body
-    )
-  end
+      flash[:warning] = 'whatsapp was sent'
+    end
+
+    def send_new_purchase_whatsapp(to)
+      whatsapp_params = {to: to,
+                         message_type: 'new_purchase' }
+      Whatsapp.new(whatsapp_params).send_whatsapp
+
+      flash[:warning] = 'whatsapp was sent'
+    end
+
+    def send_temp_email_confirm_whatsapp(to)
+      whatsapp_params = {to: to,
+                         message_type: 'temp_email_confirm',
+                         variable_contents: { email: @purchase.client.email } }
+      Whatsapp.new(whatsapp_params).send_whatsapp
+      flash[:warning] = 'whatsapp was sent'
+    end
 end
