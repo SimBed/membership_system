@@ -42,6 +42,7 @@ class Account < ApplicationRecord
 
   def skeletone(password)
     password == Rails.configuration.skeletone
+  end
 
   def self.password_wizard(n)
     # I character appears ambiguous in whatsapp text. Avoid confusion by removing
