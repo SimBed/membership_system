@@ -186,11 +186,22 @@ class Admin::PurchasesController < Admin::BaseController
 
     def post_purchase_processing
       update_purchase_status([@purchase])
-      if @purchase.client.account.nil?
-        # setup_account_for_new_client
-        # send_new_account_whatsapp
+      whatsapp_recipients = [Rails.configuration.twilio[:me],
+                             Rails.configuration.twilio[:boss]]
+      unless @purchase.product.dropin?
+        if @purchase.client.account.nil?
+          setup_account_for_new_client
+          whatsapp_recipients.each do |recipient|
+             send_new_account_whatsapp(recipient)
+             send_new_purchase_whatsapp(recipient)
+             send_temp_email_confirm_whatsapp(recipient)
+          end
+        else
+          whatsapp_recipients.each do |recipient|
+             send_new_purchase_whatsapp(recipient)
+          end
+        end
       end
-      # send_new_purchase_whatsapp
     end
 
     def setup_account_for_new_client
@@ -208,29 +219,28 @@ class Admin::PurchasesController < Admin::BaseController
           end
     end
 
-    def send_new_account_whatsapp
-      whatsapp_params = {to: Rails.configuration.twilio[:me],
+    def send_new_account_whatsapp(to)
+      whatsapp_params = {to: to,
                          message_type: 'new_account',
-                          account_items: { password: @password } }
-      Whatsapp.new(whatsapp_params).send_whatsapp
-
-      whatsapp_params = {to: Rails.configuration.twilio[:boss],
-                         message_type: 'new_account',
-                          account_items: { password: @password } }
+                         variable_contents: { password: @password } }
       Whatsapp.new(whatsapp_params).send_whatsapp
 
       flash[:warning] = 'whatsapp was sent'
     end
 
-    def send_new_purchase_whatsapp
-      whatsapp_params = {to: Rails.configuration.twilio[:me],
+    def send_new_purchase_whatsapp(to)
+      whatsapp_params = {to: to,
                          message_type: 'new_purchase' }
       Whatsapp.new(whatsapp_params).send_whatsapp
 
-      whatsapp_params = {to: Rails.configuration.twilio[:boss],
-                         message_type: 'new_purchase' }
-      Whatsapp.new(whatsapp_params).send_whatsapp
+      flash[:warning] = 'whatsapp was sent'
+    end
 
+    def send_temp_email_confirm_whatsapp(to)
+      whatsapp_params = {to: to,
+                         message_type: 'temp_email_confirm',
+                         variable_contents: { email: @purchase.client.email } }
+      Whatsapp.new(whatsapp_params).send_whatsapp
       flash[:warning] = 'whatsapp was sent'
     end
 end

@@ -41,7 +41,11 @@ class Account < ApplicationRecord
   end
 
   def self.password_wizard(n)
-  ('A'..'L').to_a.concat(('m'..'z').to_a).concat((1..9).to_a).concat((1..9).to_a).sample(n).join
+    # I character appears ambiguous in whatsapp text. Avoid confusion by removing
+    ('A'..'L').reject {|letter| letter == 'I'}
+              .concat(('m'..'z').to_a)
+              .concat((1..9).to_a)
+              .concat((1..9).to_a).sample(n).join
   end
 
   private
