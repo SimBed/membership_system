@@ -1,6 +1,7 @@
 class Admin::AttendancesController < Admin::BaseController
   skip_before_action :admin_account
-  before_action :junioradmin_account
+  before_action :junioradmin_account, only: %i[ new destroy index ]
+  before_action :correct_account_or_junioradmin, only: %i[ create update ]
   before_action :set_attendance, only: %i[ update destroy ]
   after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
@@ -92,5 +93,13 @@ class Admin::AttendancesController < Admin::BaseController
 
     def attendance_status_params
       params.require(:attendance).permit(:id, :status)
+    end
+
+    def correct_account_or_junioradmin
+      @client = Client.find(Purchase.find(params[:attendance][:purchase_id].to_i).client.id)
+      unless current_account?(@client.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
+        flash[:warning] = 'Forbidden'
+        redirect_to login_path
+      end
     end
 end

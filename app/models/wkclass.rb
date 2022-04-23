@@ -18,8 +18,11 @@ class Wkclass < ApplicationRecord
   scope :todays_class, -> { where(start_time: Date.today.beginning_of_day..Date.today.end_of_day)}
   scope :yesterdays_class, -> { where(start_time: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)}
   scope :tomorrows_class, -> { where(start_time: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day)}
-  scope :past, -> { where('start_time < ?', Date.today.beginning_of_day) }
-  scope :future, -> { where.not(id: past) }
+  scope :past, -> { where('start_time < ?', Time.now) }
+  scope :future, -> { where('start_time > ?', Time.now) }
+  cancellation_window = 2.hours
+  scope :in_cancellation_window, -> { where('start_time > ?', Time.now + cancellation_window) }
+  scope :future_and_recent, -> { where('start_time > ?', Time.now - cancellation_window) }
   paginates_per 100
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}

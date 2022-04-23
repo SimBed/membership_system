@@ -181,6 +181,11 @@ img.header_icon {
   height: 1.0rem;
 }
 
+img.grid_table_icon {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
 .icon-container:hover {
   background-color: #fff;
 }
@@ -467,6 +472,22 @@ button.search{
   .grid-container-wkclass-index > div:nth-child(14n+7) {
     background-color: $bg-light;
   }
+
+  .grid-container-client-bookings {
+    @extend %grid-container;
+    grid-template-columns: auto auto auto;
+
+    .grid-cell {
+      background-color: #e9ecef;
+      color: black;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+      font-size: 0.9em;
+      text-align: left;
+      padding-left: 0.1em;
+    }
+  }
+
 
 
 img.back_icon {

@@ -20,6 +20,10 @@ class Client::ClientsController < ApplicationController
   @products_purchased = ['Ongoing', 'All']
   end
 
+  def book
+    @wkclasses = Wkclass.future_and_recent
+  end
+
   private
 
   def correct_account
