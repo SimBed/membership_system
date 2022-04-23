@@ -129,7 +129,7 @@ class Admin::PurchasesController < Admin::BaseController
     def purchase_params
       params.require(:purchase)
             .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
-                    :invoice, :note, :adjust_restart, :ar_payment, :ar_date)
+                    :invoice, :note, :adjust_restart, :ar_payment, :ar_date, :fitternity_id)
     end
 
     # def sanitize_params
