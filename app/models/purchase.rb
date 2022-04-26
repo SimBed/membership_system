@@ -61,7 +61,7 @@ class Purchase < ApplicationRecord
   end
 
   def attended_on?(adate)
-    attendances.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
+    attendances.confirmed.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
   end
 
   # for qualifying purchases in select box for new attendance form

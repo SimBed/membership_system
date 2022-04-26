@@ -30,6 +30,7 @@ class Client < ApplicationRecord
                       .having("max(start_time) < ?", 3.months.ago)
                     Client.where(id: clients.map(&:id))
                   }
+  scope :attendances_not_cancelled_early, -> { where("attendances.status != 'cancelled early'") }                
 
   paginates_per 20
 

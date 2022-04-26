@@ -21,7 +21,10 @@ class Client::ClientsController < ApplicationController
   end
 
   def book
-    @wkclasses = Wkclass.future_and_recent
+    @wkclass_booked = Wkclass.booked_by(@client)
+    @wkclasses_bookable = Wkclass.bookable_by(@client)
+    @wkclasses_potentially_bookable =
+      Wkclass.potentially_bookable_by(@client) - @wkclasses_bookable - @wkclass_booked
   end
 
   private

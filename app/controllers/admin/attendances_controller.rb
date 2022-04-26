@@ -1,8 +1,9 @@
-class Admin::AttendancesController < Admin::BaseController
+  class Admin::AttendancesController < Admin::BaseController
   skip_before_action :admin_account
-  before_action :junioradmin_account, only: %i[ new destroy index ]
-  before_action :correct_account_or_junioradmin, only: %i[ create update ]
   before_action :set_attendance, only: %i[ update destroy ]
+  before_action :junioradmin_account, only: %i[ new destroy index ]
+  before_action :correct_account_or_junioradmin, only: %i[ create update destroy ]
+
   after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
   def new
@@ -15,16 +16,27 @@ class Admin::AttendancesController < Admin::BaseController
   def create
     @attendance = Attendance.new(attendance_params)
       if @attendance.save
+        # needed for after_action callback
         @purchase = @attendance.purchase
-        redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
-        flash[:success] = "#{@attendance.purchase.client.name}'s attendance was successfully logged"
-        #@wkclass = Wkclass.find(params[:attendance][:wkclass_id])
+        if booking_by_client?
+          @wkclass_name = @attendance.wkclass.name
+          redirect_to "/client/clients/#{@client.id}/book"
+          flash[:success] = "booking for #{@wkclass_name} was successfully made"
+        else
+          redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
+          flash[:success] = "#{@attendance.purchase.client.name}'s attendance was successfully logged"
+          #@wkclass = Wkclass.find(params[:attendance][:wkclass_id])
+        end
       else
-        session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
-        @attendance = Attendance.new
-        @wkclass = Wkclass.find(session[:wkclass_id])
-        @qualifying_purchases = qualifying_purchases
-        render :new, status: :unprocessable_entity
+        if booking_by_client?
+          @wkclasses = Wkclass.future_and_recent
+        else
+          session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
+          @attendance = Attendance.new
+          @wkclass = Wkclass.find(session[:wkclass_id])
+          @qualifying_purchases = qualifying_purchases
+          render :new, status: :unprocessable_entity
+        end
       end
    end
 
@@ -96,10 +108,21 @@ class Admin::AttendancesController < Admin::BaseController
     end
 
     def correct_account_or_junioradmin
-      @client = Client.find(Purchase.find(params[:attendance][:purchase_id].to_i).client.id)
-      unless current_account?(@client.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
+      @client = if params.has_key?(:attendance) && params[:attendance].has_key?(:purchase_id)
+                # !params.dig(:attendance, :purchase_id).nil?
+                # if create
+                  Client.find(Purchase.find(params[:attendance][:purchase_id].to_i).client.id)
+                else
+                  # if update or destroy
+                  @client = @attendance.client
+                end
+      unless current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
         flash[:warning] = 'Forbidden'
         redirect_to login_path
       end
+    end
+
+    def booking_by_client?
+      current_account.ac_type == 'client'
     end
 end

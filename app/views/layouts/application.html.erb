@@ -19,8 +19,10 @@
       <%= render 'layouts/admin_header' %>
     <% elsif logged_in_as?('junioradmin') %>
       <%= render 'layouts/junioradmin_header' %>
-    <% else %>
+    <% elsif logged_in_as?('client') %>
       <%= render 'layouts/client_header' %>
+    <% else %>
+      <%= render 'layouts/not_logged_in_header' %>
     <% end %>
     <main>
       <div id="flash_messages">

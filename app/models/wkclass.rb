@@ -28,6 +28,58 @@ class Wkclass < ApplicationRecord
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
+  def self.potentially_bookable_by(client)
+    Wkclass.future_and_recent
+    .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
+    .where("clients.id": client.id)
+    .merge(Purchase.not_expired)
+    #.where.not(["attendances.status = ?", 'booked'])
+    # .joins(attendances: [purchase: [:client]])
+    # .where.not(["clients.id = ? AND attendances.status = ?", client.id, 'booked'])
+  end
+
+  def self.booked_by(client)
+    Wkclass.future_and_recent.joins(attendances: [purchase: [:client]])
+    .where("clients.id = ? AND attendances.status IN (?)", client.id, Rails.application.config_for(:constants)["attendance_status_does_count"])
+    .distinct
+  end
+
+  def self.not_already_booked_by2(client)
+    Wkclass.future_and_recent.left_joins(attendances: [purchase: [:client]])
+    .where.not("clients.id = ? AND attendances.status = ?", client.id, 'booked').or("clients.id IS ?", nil)
+  end
+
+  def self.not_already_booked_by(client)
+    sql = "SELECT DISTINCT wkclasses.id FROM Wkclasses
+           LEFT OUTER JOIN attendances ON wkclasses.id = attendances.wkclass_id
+           LEFT OUTER JOIN purchases on attendances.purchase_id = purchases.id
+           LEFT OUTER JOIN clients on clients.id = purchases.client_id
+           WHERE start_time > '#{Time.now - 2.hours}'
+           AND NOT (clients.id = #{client.id} AND attendances.status = 'booked')
+           OR clients.id IS NULL;"
+    wkclasses = ActiveRecord::Base.connection.exec_query(sql)
+    Wkclass.where(id: wkclasses.to_a.map {|r| r['id']})
+  end
+
+  # spent ages trying to work out why a.merge(b) wouldn't work (gave nil result).
+  # Ended up with this hack (intersection of 'arrays')
+  def self.bookable_by1(client)
+    self.potentially_available_to(client) & self.not_already_booked_by(client)
+  end
+
+  def self.bookable_by(client)
+    self.potentially_bookable_by(client).select do |wkclass|
+      !wkclass.day_already_has_booking_by(client)
+    end
+  end
+
+  def day_already_has_booking_by(client)
+    client.attendances.provisional.map do |a|
+      a.start_time.to_date
+    end
+    .include?(self.start_time.to_date)
+  end
+
   def self.in_workout_group(workout_group_name)
      joins(workout: [rel_workout_group_workouts: [:workout_group]])
     .where("workout_groups.name = ?", "#{workout_group_name}")
