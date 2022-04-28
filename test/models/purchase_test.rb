@@ -147,7 +147,7 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'expiry_date_calc method' do
     assert_equal Date.parse('25 Apr 2022'), @purchase_package.expiry_date_calc
-    assert_equal Date.parse('25 Feb 2022'), @purchase_dropin.expiry_date_calc
+    assert_equal Date.parse('19 Mar 2022'), @purchase_dropin.expiry_date_calc
     assert_equal 'n/a', @purchase_dropin2.expiry_date_calc
     assert_equal Date.parse('21 Mar 2022'), @purchase_fixed.expiry_date_calc
   end

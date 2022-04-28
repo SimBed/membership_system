@@ -17,9 +17,4 @@ class Admin::BaseController < ApplicationController
     #     start_date: p.start_date_calc })
   end
 
-  # def twilio_initialise
-  #   @account_sid = Rails.configuration.twilio[:account_sid]
-  #   @auth_token = Rails.configuration.twilio[:auth_token]
-  #   @from = Rails.configuration.twilio[:whatsapp_number]
-  # end
 end

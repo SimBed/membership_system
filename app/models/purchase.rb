@@ -61,7 +61,7 @@ class Purchase < ApplicationRecord
   end
 
   def attended_on?(adate)
-    attendances.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
+    attendances.confirmed.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
   end
 
   # for qualifying purchases in select box for new attendance form
@@ -82,6 +82,27 @@ class Purchase < ApplicationRecord
             .includes(:client).order("clients.first_name", "purchases.dop")
   end
 
+  def self.available_for_booking(wkclass, client)
+    purchases = Purchase.not_expired
+                        .joins(product: [:workout_group])
+                        .joins(:client)
+                        .merge(WorkoutGroup.includes_workout_of(wkclass))
+                        .where(client_id: client.id)
+    purchases = Purchase.where(id: purchases
+                        .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.attended_on?(wkclass.start_time.to_date) }
+                        .map(&:id) # or pluck(:id)
+                  )
+                        .order("purchases.dop")
+    # in unusual case of more than one available purchase, use the started one (earliest dop if still a choice) or the earliest dop if no started one
+    started_purchases = purchases.select { |p| !p.not_started? }
+    if started_purchases.nil?
+      started_purchases[0]
+    else
+      purchases[0]
+    end
+
+  end
+
   def self.by_product_date(product_id, start_date, end_date)
       joins(:product)
      .where("purchases.dop BETWEEN '#{start_date}' AND '#{end_date}'")
@@ -97,12 +118,12 @@ class Purchase < ApplicationRecord
     return 'expired' if self.adjust_restart?
     status_hash = self.status_hash
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
-    return 'booked first class' if status_hash[:attendance_confirmed_status] == 'not started' && status_hash[:attendance_provisional_status] != 'not started'
     return 'expired' if status_hash[:attendance_confirmed_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
     freezed = freezed?(Date.today)
     return 'provisionally expired (and frozen)' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired' && freezed
     return 'frozen' if freezed
     return 'provisionally expired' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired'
+    return 'booked first class' if status_hash[:attendance_confirmed_status] == 'not started' && status_hash[:attendance_provisional_status] != 'not started'
     'ongoing'
   end
 
@@ -151,6 +172,8 @@ class Purchase < ApplicationRecord
   def expiry_date_calc
     return ar_date if adjust_restart
     return 'n/a' if attendances.provisional.size.zero?
+    # expiry date is undefined for dropins. Avoid unexpected issues by setting to a day in the future
+    return Date.tomorrow if product.dropin?
     start_date = self.start_date_calc
     end_date = case product.validity_unit
       when 'D'

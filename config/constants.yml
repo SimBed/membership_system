@@ -28,6 +28,11 @@ default: &default
  attendance_status_doesnt_count:
   - cancelled early
 
+ attendance_status_cant_rebook:
+  - booked
+  - attended
+  - no show
+
 development:
   <<: *default
 

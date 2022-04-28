@@ -8,6 +8,7 @@ class Attendance < ApplicationRecord
   delegate :client, to: :purchase
   delegate :name, to: :client
   delegate :product, to: :purchase
+  scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window)}
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }
   scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
@@ -15,6 +16,13 @@ class Attendance < ApplicationRecord
     Rails.application.config_for(:constants)["attendance_status_does_count"] +
     Rails.application.config_for(:constants)["attendance_status_doesnt_count"]
     }
+
+  def self.applicable_to(wkclass, client)
+     joins(:wkclass).where("wkclasses.id = ?", wkclass.id)
+    .joins([purchase: [:client]])
+    .where("clients.id = ?", client.id)
+    .first
+  end
 
   def revenue
     purchase.payment / purchase.attendance_estimate

@@ -1,7 +1,7 @@
 <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
   <% controller.redirect_to admin_clients_path %>
 <% elsif logged_in_as?('client') %>
-  <%= controller.redirect_to admin_client_path(current_account.clients.first) %>
+  <%= controller.redirect_to client_client_path(current_account.clients.first) %>
   <% elsif logged_in_as?('partner') %>
     <%= controller.redirect_to admin_partner_path(current_account.partners.first) %>
 <% else %>

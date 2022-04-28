@@ -25,13 +25,6 @@ body, p, ol, ul, td {
     padding: 0.1rem 0.2rem;
   }
 
-
-
-
-
-
-
-
 pre {
   background-color: #eee;
   padding: 10px;
@@ -179,6 +172,11 @@ img.table_icon {
 img.header_icon {
   width: 1.0rem;
   height: 1.0rem;
+}
+
+img.grid_table_icon {
+  width: 1.3rem;
+  height: 1.3rem;
 }
 
 .icon-container:hover {
@@ -468,6 +466,36 @@ button.search{
     background-color: $bg-light;
   }
 
+  .grid-container-client-bookings {
+    @extend %grid-container;
+    grid-template-columns: auto auto auto auto;
+
+    .grid-cell {
+      background-color: #e9ecef;
+      color: black;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+      font-size: 0.9em;
+      text-align: left;
+      padding-left: 0.1em;
+    }
+
+    .unbooked, .cancelled-early {
+      background-color: #e9ecef;
+      color: black;
+    }
+
+    /*.booked {
+      background-color: black;
+      color: white;
+    }
+    .cancelled-late {
+      background-color: red;
+      color: black;
+    }*/
+
+
+  }
 
 img.back_icon {
   width: 2.0rem;

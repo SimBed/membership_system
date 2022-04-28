@@ -1,0 +1,13 @@
+<h5>Coming up</h5>
+<div class="grid-container-client-bookings">
+<% @wkclasses.each do |wkclass| %>
+  <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
+  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.date %></div>
+  <div class= "grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.time %></div>
+  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.workout.name %></div>
+  <div class ="grid-cell <%=booking_link_and_class[0]%>">
+    <%= booking_link_and_class_for(wkclass, @client)[1] %>
+  </div>
+  <!--div class ="grid-cell"><%#= render 'client/clients/booking_form' %></div-->
+<% end %>
+</div>

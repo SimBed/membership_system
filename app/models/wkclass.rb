@@ -12,18 +12,80 @@ class Wkclass < ApplicationRecord
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
   scope :order_by_date, -> { order(start_time: :desc) }
+  scope :order_by_reverse_date, -> { order(start_time: :asc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
   scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
   scope :not_between, ->(start_date, end_date) { where.not({ start_time: (start_date..end_date) }) }
   scope :todays_class, -> { where(start_time: Date.today.beginning_of_day..Date.today.end_of_day)}
   scope :yesterdays_class, -> { where(start_time: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)}
   scope :tomorrows_class, -> { where(start_time: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day)}
-  scope :past, -> { where('start_time < ?', Date.today.beginning_of_day) }
-  scope :future, -> { where.not(id: past) }
+  scope :on_date, ->(date) { where(start_time: date.beginning_of_day..date.end_of_day)}
+  scope :past, -> { where('start_time < ?', Time.now) }
+  scope :future, -> { where('start_time > ?', Time.now) }
+  visibility_window = 2.hours
+  advance_days = 1
+  scope :in_booking_visibility_window, -> { where({ start_time: ( (Time.now - visibility_window)..Date.tomorrow.advance(days: advance_days).end_of_day.to_time) })}
+  cancellation_window = 2.hours
+  scope :in_cancellation_window, -> { where('start_time > ?', Time.now + cancellation_window) }
+  scope :future_and_recent, -> { where('start_time > ?', Time.now - cancellation_window) }
   paginates_per 100
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
+
+  def self.show_in_bookings_for(client)
+    Wkclass.in_booking_visibility_window
+    .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
+    .where("clients.id": client.id)
+    .merge(Purchase.not_expired)
+    #.where.not(["attendances.status = ?", 'booked'])
+    # .joins(attendances: [purchase: [:client]])
+    # .where.not(["clients.id = ? AND attendances.status = ?", client.id, 'booked'])
+  end
+
+  def booking_on_same_day?(client)
+    bookings_on_same_day =
+    Wkclass.where.not(id: self.id).on_date(self.start_time.to_date).joins(attendances: [purchase: [:client]])
+    .where("clients.id = ? AND attendances.status IN (?)", client.id, Rails.application.config_for(:constants)["attendance_status_cant_rebook"])
+    return false if bookings_on_same_day.empty?
+    return true
+  end
+
+  def self.not_already_booked_by2(client)
+    Wkclass.future_and_recent.left_joins(attendances: [purchase: [:client]])
+    .where.not("clients.id = ? AND attendances.status = ?", client.id, 'booked').or("clients.id IS ?", nil)
+  end
+
+  def self.not_already_booked_by(client)
+    sql = "SELECT DISTINCT wkclasses.id FROM Wkclasses
+           LEFT OUTER JOIN attendances ON wkclasses.id = attendances.wkclass_id
+           LEFT OUTER JOIN purchases on attendances.purchase_id = purchases.id
+           LEFT OUTER JOIN clients on clients.id = purchases.client_id
+           WHERE start_time > '#{Time.now - 2.hours}'
+           AND NOT (clients.id = #{client.id} AND attendances.status = 'booked')
+           OR clients.id IS NULL;"
+    wkclasses = ActiveRecord::Base.connection.exec_query(sql)
+    Wkclass.where(id: wkclasses.to_a.map {|r| r['id']})
+  end
+
+  # spent ages trying to work out why a.merge(b) wouldn't work (gave nil result).
+  # Ended up with this hack (intersection of 'arrays')
+  def self.bookable_by1(client)
+    self.potentially_available_to(client) & self.not_already_booked_by(client)
+  end
+
+  def self.bookable_by(client)
+    self.potentially_bookable_by(client).select do |wkclass|
+      !wkclass.day_already_has_booking_by(client)
+    end
+  end
+
+  def day_already_has_booking_by(client)
+    client.attendances.provisional.map do |a|
+      a.start_time.to_date
+    end
+    .include?(self.start_time.to_date)
+  end
 
   def self.in_workout_group(workout_group_name)
      joins(workout: [rel_workout_group_workouts: [:workout_group]])
@@ -36,6 +98,10 @@ class Wkclass < ApplicationRecord
 
   def time
     start_time.strftime('%H:%M')
+  end
+
+  def day_of_week
+    start_time.strftime('%A')
   end
 
   def summary
