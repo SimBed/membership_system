@@ -25,13 +25,6 @@ body, p, ol, ul, td {
     padding: 0.1rem 0.2rem;
   }
 
-
-
-
-
-
-
-
 pre {
   background-color: #eee;
   padding: 10px;
@@ -486,9 +479,23 @@ button.search{
       text-align: left;
       padding-left: 0.1em;
     }
+
+    .unbooked, .cancelled-early {
+      background-color: #e9ecef;
+      color: black;
+    }
+
+    /*.booked {
+      background-color: black;
+      color: white;
+    }
+    .cancelled-late {
+      background-color: red;
+      color: black;
+    }*/
+
+
   }
-
-
 
 img.back_icon {
   width: 2.0rem;

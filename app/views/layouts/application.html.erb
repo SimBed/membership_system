@@ -25,10 +25,20 @@
       <%= render 'layouts/not_logged_in_header' %>
     <% end %>
     <main>
+      <!--https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller-->
       <div id="flash_messages">
       <% flash.each do |message_type, message| %>
-        <div class="alert alert-<%= message_type %>"><%= message %></div>
+        <div class="alert alert-<%= message_type %>">
+          <% if message.is_a?(Array) %>
+            <% message.each do |text| %>
+              <%= content_tag :div, text %>
+            <% end %>
+          <% else %>
+            <%= message %>
+          <% end %>
+        </div>
       <% end %>
+
       </div>
       <%= yield %>
       <%= debug(params) if Rails.env.development? %>

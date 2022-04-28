@@ -40,8 +40,8 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   #   end
   # end
 
-  test 'should redirect create when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+  test 'should redirect create when not logged in as correct client, junior admin or more senior' do
+    [nil, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Attendance.count' do
         post admin_attendances_path, params:
@@ -53,9 +53,9 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should redirect update when not logged in as admin or more senior' do
+  test 'should redirect update when not logged in as correct client, junioradmin or more senior' do
     original_status = @attendance.status
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       patch admin_attendance_path(@attendance), params:
        { attendance:

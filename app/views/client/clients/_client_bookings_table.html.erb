@@ -1,40 +1,13 @@
-<h4>Booked</h4>
+<h5>Coming up</h5>
 <div class="grid-container-client-bookings">
-<% @wkclass_booked.each do |wkclass| %>
-  <div class ="grid-cell"><%= wkclass.date %></div>
-  <div class="grid-cell"><%= wkclass.time %></div>
-  <div class ="grid-cell"><%= wkclass.workout.name %></div>
-  <div class ="grid-cell">
-    <%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(Attendance.applicable_to(wkclass, @client), attendance: { status: 'cancelled early' }), method: :patch, data: { confirm: 'You will be cancelled for this class. Are you sure?' }, class: "icon-container" %>
+<% @wkclasses.each do |wkclass| %>
+  <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
+  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.date %></div>
+  <div class= "grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.time %></div>
+  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.workout.name %></div>
+  <div class ="grid-cell <%=booking_link_and_class[0]%>">
+    <%= booking_link_and_class_for(wkclass, @client)[1] %>
   </div>
-
-  <!--div class ="grid-cell"><%#= render 'client/clients/booking_form' %></div-->
-<% end %>
-</div>
-
-<hr>
-<h4>Bookable</h4>
-<div class="grid-container-client-bookings">
-<% @wkclasses_bookable.each do |wkclass| %>
-  <div class ="grid-cell"><%= wkclass.date %></div>
-  <div class="grid-cell"><%= wkclass.time %></div>
-  <div class ="grid-cell"><%= wkclass.workout.name %></div>
-  <div class ="grid-cell">
-    <%= link_to image_tag('add.png', class: "grid_table_icon"), admin_attendances_path('attendance[wkclass_id]': wkclass.id, 'attendance[purchase_id]': Purchase.available_for_booking(wkclass, @client).id), method: :post, data: { confirm: 'You will be booked for this class. Are you sure?' }, class: "icon-container" %>
-  </div>
-
-  <!--div class ="grid-cell"><%#= render 'client/clients/booking_form' %></div-->
-<% end %>
-</div>
-
-<hr>
-<h4>Potentially Bookable</h4>
-<div class="grid-container-client-bookings">
-<% @wkclasses_potentially_bookable.each do |wkclass| %>
-  <div class ="grid-cell"><%= wkclass.date %></div>
-  <div class="grid-cell"><%= wkclass.time %></div>
-  <div class ="grid-cell"><%= wkclass.workout.name %></div>
-
   <!--div class ="grid-cell"><%#= render 'client/clients/booking_form' %></div-->
 <% end %>
 </div>
