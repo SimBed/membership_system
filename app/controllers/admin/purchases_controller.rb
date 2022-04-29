@@ -191,15 +191,15 @@ class Admin::PurchasesController < Admin::BaseController
                              Rails.configuration.twilio[:boss]]
       unless @purchase.product.dropin?
         if @purchase.client.account.nil?
-          setup_account_for_new_client
+          #setup_account_for_new_client
           whatsapp_recipients.each do |recipient|
-             send_new_account_whatsapp(recipient)
-             send_new_purchase_whatsapp(recipient)
-             send_temp_email_confirm_whatsapp(recipient)
+             #send_new_account_whatsapp(recipient)
+             #send_new_purchase_whatsapp(recipient)
+             #send_temp_email_confirm_whatsapp(recipient)
           end
         else
           whatsapp_recipients.each do |recipient|
-             send_new_purchase_whatsapp(recipient)
+             #send_new_purchase_whatsapp(recipient)
           end
         end
       end
