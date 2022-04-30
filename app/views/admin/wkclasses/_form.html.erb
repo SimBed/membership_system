@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%# the class must not be edited after an attendance has been added, otherwise careless  administration may cause clients to attend a class for which they do not have an applicable product %>
+    <%# the wkclass must not be edited after an attendance has been added, otherwise careless  administration may cause clients to attend a class for which they do not have an applicable product %>
     <%= form.select :workout_id, options_for_select(@workouts, @wkclass.workout&.id || @workouts.first),{}, {disabled: (true unless @wkclass.attendances.size.zero?)} %>
   </div>
 
@@ -24,6 +24,11 @@
   <div class="field">
     <%= form.label :instructor_id %>
     <%= form.select :instructor_id, options_for_select(@instructors, @instructor), include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :max_capacity, 'Maximum capacity' %>
+    <%= form.select :max_capacity, options_for_select((0..50), 12) %>
   </div>
 
   <div class="actions">

@@ -99,7 +99,7 @@ class Admin::WkclassesController < Admin::BaseController
     def wkclass_params
       cost = Instructor.find(params[:wkclass][:instructor_id]).current_rate if Instructor.exists?(params[:wkclass][:instructor_id])
       cost = nil if cost.zero?
-      params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id).merge({ instructor_cost: cost })
+      params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id, :max_capacity).merge({ instructor_cost: cost })
     end
 
     def handle_search

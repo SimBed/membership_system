@@ -146,3 +146,13 @@
 #                p['validity_length'], p['validity_unit'], p['price_name'])
 #           }
 #   end
+
+#AttendancesController
+# refactored to request.get?
+# @wkclass = if params.has_key?(:attendance) && params[:attendance].has_key?(:wkclass_id)
+#           # if create
+#             Wkclass.find(params[:attendance][:wkclass_id].to_i)
+#           else
+#             # if update
+#             @attendance.wkclass
+#           end

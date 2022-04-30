@@ -6,6 +6,7 @@
   before_action :modifiable_status, only: %i[ update ]
   before_action :already_booked, only: %i[ create update ]
   before_action :in_booking_window, only: %i[ create ]
+  before_action :reached_max_capacity, only: %i[ create update ]
   after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
   def new
@@ -251,5 +252,23 @@
         end
       end
     end
+
+    def reached_max_capacity
+      # admin can override max_capacity
+      if logged_in_as?('client')
+        if request.post?
+          @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
+          if @wkclass.max_capacity == @wkclass.attendances.provisional.count
+            flash[:warning] = "Booking not possible (full)"
+            redirect_to client_book_path(@client)
+          end
+        else # patch
+          if @wkclass.max_capacity == @wkclass.attendances.provisional.count && @attendance.status == 'cancelled early'
+            flash[:warning] = "Rebooking not possible (full)"
+            redirect_to client_book_path(@client)
+          end
+        end
+     end
+   end
 
 end

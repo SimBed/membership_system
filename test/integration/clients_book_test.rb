@@ -126,4 +126,57 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     assert_redirected_to client_book_path(@client.id)
     assert_equal "Booking is 'no show' and too late to change", flash[:warning]
   end
+
+  test 'boook class after reached maximum capacity' do
+    wkclass_max_capacity = 4
+    @tomorrows_class_early.update(max_capacity: wkclass_max_capacity)
+    log_in_as(@admin)
+    # admin books to max capacity
+    @account_other_client = accounts(:client1)
+    @other_client = @account_other_client.clients.first
+    @other_client_purchase = @other_client.purchases.last
+    wkclass_max_capacity.times {
+        post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                             purchase_id: @other_client_purchase.id } }
+                               }
+    assert_equal @tomorrows_class_early.attendances.provisional.count, wkclass_max_capacity
+    # client attempts to book
+    log_in_as(@account_client)
+    assert_difference 'Attendance.provisional.count', 0 do
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                         purchase_id: @purchase.id } }
+    end
+    assert_redirected_to client_book_path(@client.id)
+    assert_equal "Booking not possible (full)", flash[:warning]
+    # 1 cancellation
+    log_in_as(@admin)
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @other_client)
+    assert_difference 'Attendance.provisional.count', -1 do
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
+    end
+    # client now books
+    log_in_as(@account_client)
+    assert_difference 'Attendance.provisional.count', 1 do
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                         purchase_id: @purchase.id } }
+    end
+    # client now cancels
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    assert_difference 'Attendance.provisional.count', -1 do
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    end
+    # class gets full again
+    log_in_as(@admin)
+    assert_difference 'Attendance.provisional.count', 1 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                             purchase_id: @other_client_purchase.id } }
+                                                        end
+    # client attempts to rebook
+    log_in_as(@account_client)
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    assert_difference 'Attendance.provisional.count', 0 do
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    end
+    assert_equal "Rebooking not possible (full)", flash[:warning]
+  end
 end
