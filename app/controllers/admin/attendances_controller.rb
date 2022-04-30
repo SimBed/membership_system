@@ -255,15 +255,17 @@
 
     def reached_max_capacity
       # admin can override max_capacity
+      # note >= comparison not just == as admin may breech maximum capacity, whch should not be a trigger to allow client to further breech it
+
       if logged_in_as?('client')
         if request.post?
           @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
-          if @wkclass.max_capacity == @wkclass.attendances.provisional.count
+          if @wkclass.attendances.provisional.count >= @wkclass.max_capacity
             flash[:warning] = "Booking not possible (full)"
             redirect_to client_book_path(@client)
           end
         else # patch
-          if @wkclass.max_capacity == @wkclass.attendances.provisional.count && @attendance.status == 'cancelled early'
+          if @wkclass.attendances.provisional.count == @wkclass.max_capacity && @attendance.status == 'cancelled early'
             flash[:warning] = "Rebooking not possible (full)"
             redirect_to client_book_path(@client)
           end
