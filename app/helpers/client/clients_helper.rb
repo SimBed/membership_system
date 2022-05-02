@@ -9,6 +9,8 @@ module Client::ClientsHelper
       end
     else
       case attendance.status
+      when 'attended'
+        ['bg-secondary', '']
       when 'booked'
         # ['booked', link_to(image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance, attendance: { intent: 'modify' }), method: :patch, data: { confirm: 'You will be cancelled for this class. Are you sure?' }, class: "icon-container")]
         ['bg-success', link_to(image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :patch, data: { confirm: 'You will be cancelled for this class. Penalties may apply to late cancellations and no-shows. Are you sure?' }, class: "icon-container")]
@@ -20,6 +22,10 @@ module Client::ClientsHelper
         end
       when 'cancelled late'
         ['bg-danger', '']
+      when 'no show'
+        ['bg-danger', '']
+      else #safety net
+          ['bg-secondary', '']
       end
     end
   end
