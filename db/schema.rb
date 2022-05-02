@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_29_101619) do
+ActiveRecord::Schema.define(version: 2022_05_01_185837) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2022_04_29_101619) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", default: "booked"
     t.string "booked_by"
-    t.integer "cancellation_count", default: 0
+    t.integer "amendment_count", default: 0
     t.index ["purchase_id"], name: "index_attendances_on_purchase_id"
     t.index ["status"], name: "index_attendances_on_status"
     t.index ["wkclass_id"], name: "index_attendances_on_wkclass_id"
@@ -136,6 +136,17 @@ ActiveRecord::Schema.define(version: 2022_04_29_101619) do
     t.index ["account_id"], name: "index_partners_on_account_id"
   end
 
+  create_table "penalties", force: :cascade do |t|
+    t.bigint "purchase_id", null: false
+    t.bigint "attendance_id", null: false
+    t.integer "amount"
+    t.string "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["attendance_id"], name: "index_penalties_on_attendance_id", unique: true
+    t.index ["purchase_id"], name: "index_penalties_on_purchase_id"
+  end
+
   create_table "prices", force: :cascade do |t|
     t.string "name"
     t.integer "price"
@@ -176,6 +187,8 @@ ActiveRecord::Schema.define(version: 2022_04_29_101619) do
     t.date "expiry_date"
     t.date "start_date"
     t.boolean "tax_included", default: true
+    t.integer "late_cancels", default: 0
+    t.integer "no_shows", default: 0
     t.index ["client_id"], name: "index_purchases_on_client_id"
     t.index ["dop"], name: "index_purchases_on_dop"
     t.index ["price_id"], name: "index_purchases_on_price_id"
@@ -225,4 +238,6 @@ ActiveRecord::Schema.define(version: 2022_04_29_101619) do
 
   add_foreign_key "expenses", "workout_groups"
   add_foreign_key "instructor_rates", "instructors"
+  add_foreign_key "penalties", "attendances"
+  add_foreign_key "penalties", "purchases"
 end

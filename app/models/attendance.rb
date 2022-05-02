@@ -1,6 +1,8 @@
 class Attendance < ApplicationRecord
   belongs_to :wkclass
   belongs_to :purchase
+  # allowed to be zero
+  has_one :penalty, dependent: :destroy
   # delegate :start_time... defines the start_time method for instances of Attendance
   # so @attendance.start_time equals WkClass.find(@attendance.id).start_time
   # date is a Wkclass instance method that formats start_time
@@ -11,6 +13,7 @@ class Attendance < ApplicationRecord
   scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window)}
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }
   scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }
+  scope :cant_rebook, -> { where(status: Rails.application.config_for(:constants)["attendance_status_cant_rebook"]) }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
   validates :status, inclusion: { in:
     Rails.application.config_for(:constants)["attendance_status_does_count"] +

@@ -179,4 +179,32 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     end
     assert_equal "Rebooking not possible (full)", flash[:warning]
   end
+
+  test 'client cant amend booking more than 3 times' do
+    log_in_as(@account_client)
+    # book
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                          purchase_id: @purchase.id } }
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    assert_equal 0, @attendance.amendment_count
+    # cancel
+    patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    assert_equal 1, @attendance.amendment_count
+    # rebook
+    patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    assert_equal 2, @attendance.amendment_count
+    # cancel again
+    patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    assert_equal 3, @attendance.amendment_count
+    # re-re-book should fail
+    patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    assert_equal 3, @attendance.amendment_count
+    assert_not_equal 'booked', @attendance.status
+    assert_redirected_to client_book_path(@client.id)
+    assert_equal "Change not possible (too many prior amendments)", flash[:warning]
+  end
 end

@@ -6,6 +6,7 @@ class Purchase < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
+  has_many :penalties, dependent: :destroy
   # this defines the name method on an instance of Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, to: :product
@@ -60,8 +61,8 @@ class Purchase < ApplicationRecord
     payment / attendance_estimate
   end
 
-  def attended_on?(adate)
-    attendances.confirmed.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
+  def committed_on?(adate)
+    attendances.cant_rebook.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
   end
 
   # for qualifying purchases in select box for new attendance form
@@ -76,7 +77,7 @@ class Purchase < ApplicationRecord
                         .joins(:client)
                         .merge(WorkoutGroup.includes_workout_of(wkclass))
     Purchase.where(id: purchases
-                        .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.attended_on?(wkclass.start_time.to_date) }
+                        .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.committed_on?(wkclass.start_time.to_date) }
                         .map(&:id) # or pluck(:id)
                   )
             .includes(:client).order("clients.first_name", "purchases.dop")
@@ -89,7 +90,7 @@ class Purchase < ApplicationRecord
                         .merge(WorkoutGroup.includes_workout_of(wkclass))
                         .where(client_id: client.id)
     purchases = Purchase.where(id: purchases
-                        .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.attended_on?(wkclass.start_time.to_date) }
+                        .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.committed_on?(wkclass.start_time.to_date) }
                         .map(&:id) # or pluck(:id)
                   )
                         .order("purchases.dop")
@@ -186,10 +187,11 @@ class Purchase < ApplicationRecord
 
       added_days = adjustments.map { |a| a.adjustment }.inject(0, :+).days
       frozen_days = freezes.map { |f| f.duration}.inject(0, :+).days
+      penalty_days = penalties.map { |p| p.amount}.inject(0, :+).days
       # end_date formulae above overstate by 1 day so deduct 1
       # to_date changes ActiveSupport::TimeWithZone object to Date object
       # as 'Sun, 12 Dec 2021' preferred to 'Sun, 12 Dec 2021 10:30:00.000000000 UTC +00:00'
-      (end_date + added_days + frozen_days - 1.day).to_date
+      (end_date + added_days + frozen_days - penalty_days - 1.day).to_date
   end
 
   def days_to_expiry

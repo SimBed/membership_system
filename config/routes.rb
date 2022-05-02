@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'penalties/create'
+  end
   # get 'client/clients/show', to: 'client/clients#show', as: 'client_show'
   get 'public_pages/welcome'
   root 'public_pages#welcome'

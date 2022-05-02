@@ -1,3 +1,4 @@
+require 'byebug'
   class Admin::AttendancesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :set_attendance, only: %i[ update destroy ]
@@ -7,6 +8,7 @@
   before_action :already_booked, only: %i[ create update ]
   before_action :in_booking_window, only: %i[ create ]
   before_action :reached_max_capacity, only: %i[ create update ]
+  before_action :reached_max_amendments, only: %i[ update ]
   after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
   def new
@@ -81,19 +83,30 @@
      when 'early'
        @updated_status = @original_status == 'booked' ? 'cancelled early' : 'booked'
      when 'late'
-       @updated_status = @original_status == 'booked' ? 'cancelled late' : 'booked'
+       if @original_status == 'booked'
+         @updated_status = 'cancelled late'
+         late_cancellation_by_client = true
+       else
+         @updated_status = 'booked'
+       end
      when 'too late'
        flash[:warning] = "Booking for #{@wkclass_name} was not updated. Deadline has passed."
        redirect_to client_book_path(@client)
        return
      end
      if @attendance.update(status: @updated_status)
+        @attendance.increment!(:amendment_count)
+        if late_cancellation_by_client
+          @purchase.increment!(:late_cancels)
+          late_cancellation_penalty if @purchase.reload.late_cancels > 2
+        end
         respond_to do |format|
           format.html do
             flash_for_successful_client_update
             redirect_to client_book_path(@client)
           end
           format.js do
+            # not currently used
             flash.now[:success] = "Booking for #{@wkclass_name} on #{@wkclass_day} updated to '#{@updated_status}'"
             render 'admin/wkclasses/update_attendance.js.erb'
           end
@@ -120,7 +133,16 @@
    def update_by_admin
      @client_name = @attendance.purchase.client.name
      if @attendance.update(attendance_status_params)
-        respond_to do |format|
+       # no point incrementing amendment_count when admin does it
+       if attendance_status_params[:status] == 'cancelled late'
+         @purchase.increment!(:late_cancels)
+         late_cancellation_penalty if @purchase.reload.late_cancels > 2
+       end
+       if attendance_status_params[:status] == 'no show'
+         @purchase.increment!(:no_shows)
+         no_show_penalty if @purchase.reload.no_shows > 1
+       end
+       respond_to do |format|
           format.html do
             flash[:success] = "Attendance was successfully updated"
             redirect_back fallback_location: admin_wkclasses_path
@@ -129,7 +151,7 @@
             flash.now[:success] = "#{@client_name}'s attendance was successfully updated to  #{@attendance.status}"
             render 'admin/wkclasses/update_attendance.js.erb'
           end
-        end
+       end
      else
        flash[:warning] = "Attendance was not updated"
      end
@@ -270,7 +292,32 @@
             redirect_to client_book_path(@client)
           end
         end
+      end
      end
-   end
 
-end
+     def reached_max_amendments
+       if logged_in_as?('client')
+         # book(0), cancel(1), book(2), cancel(3), book(fail)
+         if @attendance.amendment_count >= 3
+           flash[:warning] = "Change not possible (too many prior amendments)"
+           redirect_to client_book_path(@client)
+         end
+       end
+     end
+
+     def late_cancellation_penalty
+       # no more than one penalty per attendance
+        if @attendance.penalty.nil?
+         Penalty.create({purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1, reason: 'late cancellation'})
+         update_purchase_status([@purchase])
+       end
+     end
+
+     def no_show_penalty
+       if @attendance.penalty.nil?
+         Penalty.create({purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show'})
+         update_purchase_status([@purchase])
+       end
+     end
+
+ end
