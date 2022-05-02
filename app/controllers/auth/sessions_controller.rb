@@ -31,7 +31,7 @@ class Auth::SessionsController < Auth::BaseController
       return
     end
     if logged_in_as?('client')
-      redirect_to client_client_path(account.clients.first)
+      redirect_to client_book_path(account.clients.first)
       return
     end
     if logged_in_as?('partner')

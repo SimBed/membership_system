@@ -23,7 +23,7 @@ class Wkclass < ApplicationRecord
   scope :past, -> { where('start_time < ?', Time.now) }
   scope :future, -> { where('start_time > ?', Time.now) }
   visibility_window = 2.hours
-  advance_days = 1
+  advance_days = 3
   scope :in_booking_visibility_window, -> { where({ start_time: ( (Time.now - visibility_window)..Date.tomorrow.advance(days: advance_days).end_of_day.to_time) })}
   cancellation_window = 2.hours
   scope :in_cancellation_window, -> { where('start_time > ?', Time.now + cancellation_window) }

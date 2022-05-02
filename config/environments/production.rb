@@ -3,6 +3,10 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  #https://stackoverflow.com/questions/6118779/how-to-change-default-timezone-for-active-record-in-rails
+  config.time_zone = 'Kolkata'
+  config.active_record.default_timezone = :local
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

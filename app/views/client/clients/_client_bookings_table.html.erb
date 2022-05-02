@@ -5,6 +5,8 @@
   <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.date %></div>
   <div class= "grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.time %></div>
   <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.workout.name %></div>
+  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
+
   <div class ="grid-cell <%=booking_link_and_class[0]%>">
     <%= booking_link_and_class_for(wkclass, @client)[1] %>
   </div>
