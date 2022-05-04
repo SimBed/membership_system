@@ -9,8 +9,6 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     @tomorrows_class_late = wkclasses(:wkclass_for_booking_late)
     @admin = accounts(:admin)
-    @superadmin = accounts(:superadmin)
-    @junioradmin = accounts(:junioradmin)
     travel_to (@tomorrows_class_early.start_time.beginning_of_day)
   end
 
@@ -111,7 +109,7 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     assert_equal "Booking for #{@tomorrows_class_early.name} was not updated. Deadline has passed.", flash[:warning]
   end
 
-  test 'change booking from booked after no show' do
+  test 'change booking after no show' do
     log_in_as(@account_client)
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }

@@ -99,4 +99,15 @@
         </div>
      <% end %>
    <% end %>
+
+   <% unless @purchase.penalties.count.zero? %>
+     <% @purchase.penalties.each do |pen| %>
+        <div class='d-flex bg-light flex-row'>
+          <div class='cell'>
+            <%= "#{pluralize(pen.amount, "day")} deduction" %><br>
+             <%= pen.reason %>
+          </div>
+        </div>
+     <% end %>
+   <% end %>
 </div>

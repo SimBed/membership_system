@@ -55,6 +55,7 @@
        <div class='cell px-1'><%= @purchase.ar_date.strftime('%d %b %y') %></div>
      </div>
    <% end %>
+
    <% unless @purchase.freezes.count.zero? %>
      <% @purchase.freezes.each do |f| %>
         <div class='d-flex bg-light flex-row'>
@@ -63,6 +64,27 @@
                 #{f.end_date.strftime('%d %b %y')}"
              %>
              <small><%= "(#{pluralize(f.duration, "day")})" %></small>
+          </div>
+        </div>
+     <% end %>
+   <% end %>
+
+   <% unless @purchase.adjustments.count.zero? %>
+     <% @purchase.adjustments.each do |adj| %>
+        <div class='d-flex bg-light flex-row'>
+          <div class='cell'>
+            <%= "#{pluralize(adj.adjustment, "day")} extension" %><br>
+          </div>
+        </div>
+     <% end %>
+   <% end %>
+
+   <% unless @purchase.penalties.count.zero? %>
+     <% @purchase.penalties.each do |pen| %>
+        <div class='d-flex bg-light flex-row'>
+          <div class='cell'>
+            <%= "#{pluralize(pen.amount, "day")} deduction" %><br>
+             <%= "#{pen.reason} on #{pen.attendance.date}" %>
           </div>
         </div>
      <% end %>
