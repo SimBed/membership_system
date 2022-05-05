@@ -106,7 +106,7 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
     assert_equal 'booked', @attendance.status
     assert_redirected_to client_book_path(@client.id)
-    assert_equal "Booking for #{@tomorrows_class_early.name} was not updated. Deadline has passed.", flash[:warning]
+    assert_equal "Booking for #{@tomorrows_class_early.name} not changed. Deadline to make changes has passed", flash[:warning]
   end
 
   test 'change booking after no show' do
@@ -122,7 +122,7 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     assert_redirected_to client_book_path(@client.id)
-    assert_equal "Booking is 'no show' and too late to change", flash[:warning]
+    assert_equal ["Booking is 'no show' and can't now be changed.", "Please contact the Space for help"], flash[:warning]
   end
 
   test 'boook class after reached maximum capacity' do
@@ -145,7 +145,7 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
                                                          purchase_id: @purchase.id } }
     end
     assert_redirected_to client_book_path(@client.id)
-    assert_equal "Booking not possible (full)", flash[:warning]
+    assert_equal "Booking not possible. Class fully booked", flash[:warning]
     # 1 cancellation
     log_in_as(@admin)
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @other_client)
@@ -175,7 +175,7 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     assert_difference 'Attendance.provisional.count', 0 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
-    assert_equal "Rebooking not possible (full)", flash[:warning]
+    assert_equal "Rebooking not possible. Class fully booked", flash[:warning]
   end
 
   test 'client cant amend booking more than 3 times' do
@@ -203,6 +203,7 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     assert_equal 3, @attendance.amendment_count
     assert_not_equal 'booked', @attendance.status
     assert_redirected_to client_book_path(@client.id)
-    assert_equal "Change not possible (too many prior amendments)", flash[:warning]
+    assert_equal ["Change not possible. Too many prior amendments.",
+                  "Please contact the Space for help"], flash[:warning]
   end
 end

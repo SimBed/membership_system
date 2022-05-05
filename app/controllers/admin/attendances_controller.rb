@@ -1,61 +1,64 @@
   class Admin::AttendancesController < Admin::BaseController
-  skip_before_action :admin_account
-  before_action :set_attendance, only: %i[ update destroy ]
-  before_action :junioradmin_account, only: %i[ new destroy index ]
-  before_action :correct_account_or_junioradmin, only: %i[ create update destroy ]
-  before_action :modifiable_status, only: %i[ update ]
-  before_action :already_booked, only: %i[ create update ]
-  before_action :in_booking_window, only: %i[ create ]
-  before_action :reached_max_capacity, only: %i[ create update ]
-  before_action :reached_max_amendments, only: %i[ update ]
-  after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
+    include AttendancesHelper
+    skip_before_action :admin_account
+    before_action :set_attendance, only: %i[ update destroy ]
+    before_action :junioradmin_account, only: %i[ new destroy index ]
+    before_action :correct_account_or_junioradmin, only: %i[ create update destroy ]
+    before_action :modifiable_status, only: %i[ update ]
+    before_action :already_booked, only: %i[ create update ]
+    before_action :in_booking_window, only: %i[ create ]
+    before_action :reached_max_capacity, only: %i[ create update ]
+    before_action :reached_max_amendments, only: %i[ update ]
+    after_action -> { update_purchase_status([@purchase]) }, only: %i[ create update destroy ]
 
-  def new
-    session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
-    @attendance = Attendance.new
-    @wkclass = Wkclass.find(session[:wkclass_id])
-    @qualifying_purchases = qualifying_purchases
-  end
+    def new
+      session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
+      @attendance = Attendance.new
+      @wkclass = Wkclass.find(session[:wkclass_id])
+      @qualifying_purchases = qualifying_purchases
+    end
 
-  def create
-    @attendance = Attendance.new(attendance_params)
-      if @attendance.save
-        # needed for after_action callback
-        @purchase = @attendance.purchase
-        if logged_in_as?('client')
-          after_successful_create_by_client
+    def create
+      @attendance = Attendance.new(attendance_params)
+        if @attendance.save
+          # needed for after_action callback
+          @purchase = @attendance.purchase
+          if logged_in_as?('client')
+            after_successful_create_by_client
+          else
+            after_successful_create_by_admin
+          end
         else
-          after_successful_create_by_admin
+          if logged_in_as?('client')
+            after_unsuccessful_create_by_client
+          else
+            after_unsuccessful_create_by_admin
+          end
         end
-      else
-        if logged_in_as?('client')
-          after_unsuccessful_create_by_client
-        else
-          after_unsuccessful_create_by_admin
-        end
-      end
-   end
+     end
 
-   def after_successful_create_by_client
-     @wkclass = @attendance.wkclass
-     @wkclass_name = @wkclass.name
-     @wkclass_day = @wkclass.day_of_week
-     redirect_to client_book_path(@client)
-     # redirect_to "/client/clients/#{@client.id}/book"
-     flash[:success] = "Booked for #{@wkclass_name} on #{@wkclass_day}"
-   end
+     def after_successful_create_by_client
+       @wkclass = @attendance.wkclass
+       @wkclass_name = @wkclass.name
+       @wkclass_day = @wkclass.day_of_week
+       redirect_to client_book_path(@client)
+       # redirect_to "/client/clients/#{@client.id}/book"
+       # attendances_helper has booking_flash_hash with a method as a value
+       # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
+       flash[:success] = send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day
+     end
 
-   def after_successful_create_by_admin
-     @client_name = @attendance.purchase.client.name
-     redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
-     flash[:success] = "#{@client_name}'s attendance was successfully logged"
-     #@wkclass = Wkclass.find(params[:attendance][:wkclass_id])
-   end
+     def after_successful_create_by_admin
+       @client_name = @attendance.purchase.client.name
+       redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
+       flash[:success] = "#{@client_name}'s attendance was successfully logged"
+       #@wkclass = Wkclass.find(params[:attendance][:wkclass_id])
+     end
 
    def after_unsuccessful_create_by_client
      redirect_to client_book_path(@client)
      # redirect_to "/client/clients/#{@client.id}/book"
-     flash[:warning] = "Booking failed"
+     flash[:warning] = send booking_flash_hash[:booking][:unsuccessful][:message]
    end
 
    def after_unsuccessful_create_by_admin
@@ -89,7 +92,7 @@
          @updated_status = 'booked'
        end
      when 'too late'
-       flash[:warning] = "Booking for #{@wkclass_name} was not updated. Deadline has passed."
+       flash[:warning] = send booking_flash_hash[:update][:too_late][:message], true, @wkclass_name
        redirect_to client_book_path(@client)
        return
      end
@@ -120,12 +123,13 @@
    def flash_for_successful_client_update
      if @original_status == 'booked'
        if @time_of_request == 'early'
-         flash[:success] = ["#{@wkclass_name} on #{@wkclass_day} is '#{@updated_status}'","There is no penalty for this change"]
+         flash[:success] = send booking_flash_hash[:update][:cancel_early][:message], @wkclass_name, @wkclass_day
        else # late
-         flash[:warning] = ["#{@wkclass_name} on #{@wkclass_day} is '#{@updated_status}'","Avoid penalties by making changes to bookings before the deadlines"]
+         cancel_late_type = @penalty_given ? :cancel_late_no_amnesty : :cancel_late_amnesty
+         flash[:warning] = send booking_flash_hash[:update][cancel_late_type][:message], @wkclass_name, @wkclass_day
        end
-     else #cancelled early to booked
-       flash[:success] = "#{@wkclass_name} on #{@wkclass_day} is now #{@updated_status}"
+     else #cancelled to booked
+       flash[:success] = send booking_flash_hash[:update][:successful][:message], @wkclass_name, @wkclass_day
      end
    end
 
@@ -238,9 +242,10 @@
     # example2 - non-browser request to update 'attended' to 'cancelled early'
     def modifiable_status
       # admin can modify status explicitly, but clients can't
+      # client can't rebook after cancelling late
       modifiable_statuses = Rails.application.config_for(:constants)["attendance_status_does_count"] - ['booked']
       if modifiable_statuses.include?(@attendance.status) && !admin_modification?
-        flash[:warning] = "Booking is '#{@attendance.status}' and too late to change"
+        flash[:warning] = send booking_flash_hash[:update][:unmodifiable][:message], @attendance.status
         redirect_to client_book_path(@client)
       end
     end
@@ -251,21 +256,21 @@
       window_start = wkclass.start_time.ago(days_before.days).beginning_of_day
       window_end = wkclass.start_time - 5.minutes
       if !(window_start..window_end).cover?(Time.now) && !admin_modification?
-        flash[:warning] = "Not in booking window"
+        flash[:warning] = send booking_flash_hash[:booking][:too_late][:message], false
         redirect_to client_book_path(@client)
       end
     end
 
     def already_booked
-      @wkclass = if params.has_key?(:attendance) && params[:attendance].has_key?(:wkclass_id)
-                # if create
-                  Wkclass.find(params[:attendance][:wkclass_id].to_i)
-                else
-                  # if update
-                  @attendance.wkclass
-                end
+      # booking_type = params.has_key?(:attendance) && params[:attendance].has_key?(:wkclass_id) ? :booking: :update
+      booking_type = request.post? ? :booking: :update
+      @wkclass = if booking_type == :booking
+                    Wkclass.find(params[:attendance][:wkclass_id].to_i)
+                 else
+                    @attendance.wkclass
+                 end
       if @wkclass.booking_on_same_day?(@client)
-        flash[:warning] = "Booking not possible"
+        flash[:warning] = send booking_flash_hash[booking_type][:daily_limit_met][:message]
         if logged_in_as?('client')
           redirect_to client_book_path(@client)
         else # must be admin
@@ -282,12 +287,12 @@
         if request.post?
           @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
           if @wkclass.attendances.provisional.count >= @wkclass.max_capacity
-            flash[:warning] = "Booking not possible (full)"
+            flash[:warning] = send booking_flash_hash[:booking][:fully_booked][:message], false
             redirect_to client_book_path(@client)
           end
         else # patch
           if @wkclass.attendances.provisional.count == @wkclass.max_capacity && @attendance.status == 'cancelled early'
-            flash[:warning] = "Rebooking not possible (full)"
+            flash[:warning] = send booking_flash_hash[:update][:fully_booked][:message], true
             redirect_to client_book_path(@client)
           end
         end
@@ -298,7 +303,7 @@
        if logged_in_as?('client')
          # book(0), cancel(1), book(2), cancel(3), book(fail)
          if @attendance.amendment_count >= 3
-           flash[:warning] = "Change not possible (too many prior amendments)"
+           flash[:warning] = send booking_flash_hash[:update][:prior_amendments][:message]
            redirect_to client_book_path(@client)
          end
        end
@@ -308,6 +313,7 @@
        # no more than one penalty per attendance
         if @attendance.penalty.nil?
          Penalty.create({purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1, reason: 'late cancellation'})
+         @penalty_given = true
          update_purchase_status([@purchase])
        end
      end
