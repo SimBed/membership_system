@@ -1,4 +1,6 @@
 class Admin::ProductsController < Admin::BaseController
+  skip_before_action :admin_account, only: %i[ payment ]
+  before_action :junioradmin_account, only: %i[ payment ]
   before_action :set_product, only: %i[ show edit update destroy ]
   after_action -> { update_purchase_status([@purchases]) }, only: %i[ update ]
   def index

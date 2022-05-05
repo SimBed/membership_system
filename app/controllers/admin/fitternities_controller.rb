@@ -1,4 +1,6 @@
 class Admin::FitternitiesController < Admin::BaseController
+  skip_before_action :admin_account, only: %i[ index new create show]
+  before_action :junioradmin_account, only: %i[ index new create show ]
   before_action :set_fitternity, only: %i[show edit update destroy]
 
   def index

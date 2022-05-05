@@ -1,3 +1,3 @@
 class Auth::BaseController < ApplicationController
-  layout 'admin'
+  # layout 'admin'
 end
