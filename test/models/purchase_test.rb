@@ -2,19 +2,20 @@ require 'test_helper'
 class PurchaseTest < ActiveSupport::TestCase
   def setup
     travel_to Date.parse('18 March 2022')
-
+    @client = clients(:aparna)
+    @product = products(:unlimited3m)
+    @price = prices(:base_new_unlimited3m)
     @purchase =
-      Purchase.new(client_id: clients(:aparna).id,
-                   product_id: products(:unlimited3m).id,
+      Purchase.new(client_id: @client.id,
+                   product_id: @product.id,
                    payment: 10_000, dop: '2022-02-15', payment_mode: 'Cash',
-                   # invoice: '', note: '', adjust_restart: false, ar_payment: '', ar_date: '',
-                   # expired: false, fitternity_id: nil,
-                   price_id: prices(:base_new_unlimited3m).id)
+                   price_id: @price.id)
     @fitternity = fitternities(:two_ongoing)
     @purchase_package = purchases(:AnushkaUC3Mong)
     @purchase_dropin = purchases(:priya1c1d)
     @purchase_dropin2 = purchases(:kiran1c1d_notstarted)
     @purchase_fixed = purchases(:tina8c5wong)
+    @purchase_trial = purchases(:purchase_trial)
     @wkclass1 = wkclasses(:hiitfeb26)
   end
 
@@ -72,6 +73,28 @@ class PurchaseTest < ActiveSupport::TestCase
     refute @purchase_package.dropin?
     assert @purchase_dropin.dropin?
     refute @purchase_fixed.dropin?
+    refute @purchase_trial.dropin?
+  end
+
+  test 'delegated trial? method' do
+    refute @purchase_package.trial?
+    refute @purchase_dropin.trial?
+    refute @purchase_fixed.trial?
+    assert @purchase_trial.trial?
+  end
+
+  test 'delegated unlimited_package? method' do
+    assert @purchase_package.unlimited_package?
+    refute @purchase_dropin.unlimited_package?
+    refute @purchase_fixed.unlimited_package?
+    refute @purchase_trial.unlimited_package?
+  end
+
+  test 'delegated fixed_package? method' do
+    refute @purchase_package.fixed_package?
+    refute @purchase_dropin.fixed_package?
+    assert @purchase_fixed.fixed_package?
+    refute @purchase_trial.fixed_package?
   end
 
   test 'delegated max_classes method' do
@@ -93,8 +116,8 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'self.qualifying_for(wkclass)' do
-    assert_equal [441, 374, 201, 212, 335, 459, 381, 406, 229, 438, 382, 200, 407, 377, 99, 198, 389, 399, 120,
-                  224, 360, 125, 341, 119, 390, 416], Purchase.qualifying_for(@wkclass1).pluck(:id)
+    assert_equal [441, 374, 201, 212, 335, 459, 381, 406, 368, 229, 438, 382, 200, 407, 377, 99, 198, 389, 399,
+                  120, 224, 360, 125, 341, 119, 390, 416], Purchase.qualifying_for(@wkclass1).pluck(:id)
   end
 
   test 'name_with_dop method' do

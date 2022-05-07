@@ -55,26 +55,26 @@
        #@wkclass = Wkclass.find(params[:attendance][:wkclass_id])
      end
 
-   def after_unsuccessful_create_by_client
-     redirect_to client_book_path(@client)
-     # redirect_to "/client/clients/#{@client.id}/book"
-     flash[:warning] = send booking_flash_hash[:booking][:unsuccessful][:message]
-   end
+     def after_unsuccessful_create_by_client
+       redirect_to client_book_path(@client)
+       # redirect_to "/client/clients/#{@client.id}/book"
+       flash[:warning] = send booking_flash_hash[:booking][:unsuccessful][:message]
+     end
 
-   def after_unsuccessful_create_by_admin
-     session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
-     @attendance = Attendance.new
-     @wkclass = Wkclass.find(session[:wkclass_id])
-     @qualifying_purchases = qualifying_purchases
-     render :new, status: :unprocessable_entity
-   end
+     def after_unsuccessful_create_by_admin
+       session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
+       @attendance = Attendance.new
+       @wkclass = Wkclass.find(session[:wkclass_id])
+       @qualifying_purchases = qualifying_purchases
+       render :new, status: :unprocessable_entity
+     end
 
-   def update
-     @purchase = @attendance.purchase
-     @wkclass = Wkclass.find(@attendance.wkclass.id)
-     update_by_client if logged_in_as?('client')
-     update_by_admin if logged_in_as?('junioradmin', 'admin', 'superadmin')
-   end
+     def update
+       @purchase = @attendance.purchase
+       @wkclass = Wkclass.find(@attendance.wkclass.id)
+       update_by_client if logged_in_as?('client')
+       update_by_admin if logged_in_as?('junioradmin', 'admin', 'superadmin')
+     end
 
    def update_by_client
      @wkclass_name = @wkclass.name
@@ -100,7 +100,12 @@
         @attendance.increment!(:amendment_count)
         if late_cancellation_by_client
           @purchase.increment!(:late_cancels)
-          late_cancellation_penalty if @purchase.reload.late_cancels > 2
+          late_cancels_max = amnesty_limit[:late_cancel][@purchase.product_type]
+          if @purchase.reload.late_cancels > late_cancels_max
+            late_cancellation_penalty(@purchase.product_type)
+          else
+            @attendance.update(amnesty: true)
+          end
         end
         respond_to do |format|
           format.html do
@@ -137,13 +142,23 @@
      @client_name = @attendance.purchase.client.name
      if @attendance.update(attendance_status_params)
        # no point incrementing amendment_count when admin does it
-       if attendance_status_params[:status] == 'cancelled late'
+       attendance_status = attendance_status_params[:status]
+       if attendance_status == 'cancelled late'
          @purchase.increment!(:late_cancels)
-         late_cancellation_penalty if @purchase.reload.late_cancels > 2
-       end
-       if attendance_status_params[:status] == 'no show'
+         late_cancels_max = amnesty_limit[:late_cancel][@purchase.product_type]
+         if @purchase.reload.late_cancels > late_cancels_max
+           late_cancellation_penalty(@purchase.product_type)
+         else
+           @attendance.update(amnesty: true)
+         end
+       elsif attendance_status == 'no show'
          @purchase.increment!(:no_shows)
-         no_show_penalty if @purchase.reload.no_shows > 1
+         no_shows_max = amnesty_limit[:no_show][@purchase.product_type]
+         if @purchase.reload.no_shows > no_shows_max
+           no_show_penalty(@purchase.product_type)
+         else
+           @attendance.update(amnesty: true)
+         end
        end
        respond_to do |format|
           format.html do
@@ -264,17 +279,13 @@
     def already_booked
       # booking_type = params.has_key?(:attendance) && params[:attendance].has_key?(:wkclass_id) ? :booking: :update
       booking_type = request.post? ? :booking: :update
-      @wkclass = if booking_type == :booking
-                    Wkclass.find(params[:attendance][:wkclass_id].to_i)
-                 else
-                    @attendance.wkclass
-                 end
+      @wkclass = booking_type == :booking ? Wkclass.find(params[:attendance][:wkclass_id].to_i) : @attendance.wkclass
       if @wkclass.booking_on_same_day?(@client)
         flash[:warning] = send booking_flash_hash[booking_type][:daily_limit_met][:message]
         if logged_in_as?('client')
           redirect_to client_book_path(@client)
         else # must be admin
-          redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
+          redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
         end
       end
     end
@@ -309,17 +320,18 @@
        end
      end
 
-     def late_cancellation_penalty
-       # no more than one penalty per attendance
-        if @attendance.penalty.nil?
-         Penalty.create({purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1, reason: 'late cancellation'})
-         @penalty_given = true
-         update_purchase_status([@purchase])
+     def late_cancellation_penalty(package_type)
+       if package_type == :unlimited_package && @attendance.penalty.nil?
+          # no more than one penalty per attendance
+          Penalty.create({purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1, reason: 'late cancellation'})
+          # for the flash
+          @penalty_given = true
+          update_purchase_status([@purchase])
        end
      end
 
-     def no_show_penalty
-       if @attendance.penalty.nil?
+     def no_show_penalty(package_type)
+       if package_type == :unlimited_package && @attendance.penalty.nil?
          Penalty.create({purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show'})
          update_purchase_status([@purchase])
        end

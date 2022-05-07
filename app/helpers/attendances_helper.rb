@@ -119,6 +119,26 @@ module AttendancesHelper
      "Please contact the Space for help"]
   end
 
+  delegate :dropin?, to: :product
+  delegate :trial?, to: :product
+  delegate :unlimited_package?, to: :product
+  delegate :fixed_package?, to: :product
+
+  def amnesty_limit
+    { late_cancel:
+        { unlimited_package: 2,
+          fixed_package: 1,
+          trial: 100,
+          dropin: 1
+        },
+      no_show:
+        { unlimited_package: 1,
+          fixed_package: 0,
+          trial: 100,
+          dropin: 0
+        }
+    }
+  end
 end
 
 #send booking_flash_hash[:booking][:successful], 'HIIT', 'Sun'

@@ -13,6 +13,10 @@ class Purchase < ApplicationRecord
   # delegate :revenue_for_class, to: :client
   delegate :workout_group, to: :product
   delegate :dropin?, to: :product
+  delegate :trial?, to: :product
+  delegate :unlimited_package?, to: :product
+  delegate :fixed_package?, to: :product
+  delegate :product_type, to: :product
   delegate :max_classes, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
@@ -154,14 +158,14 @@ class Purchase < ApplicationRecord
   def expiry_cause
     return unless expired?
     return 'adjust & restart' if adjust_restart
-    return 'used max classes' if attendances.confirmed.size == product.max_classes
+    return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
     return 'max time period'
   end
 
   def expired_on
     return unless expired?
     return ar_date.strftime('%d %b %y') if adjust_restart
-    return max_class_expiry_date.strftime('%d %b %y') if attendances.confirmed.size == product.max_classes
+    return max_class_expiry_date.strftime('%d %b %y') if attendances.no_amnesty.confirmed.size == max_classes
     return expiry_date.strftime('%d %b %y')
   end
 
@@ -205,7 +209,7 @@ class Purchase < ApplicationRecord
 
   # for revenue cashflows
   def attendance_estimate
-    return product.max_classes unless product.max_classes == 1000
+    return max_classes unless max_classes == 1000
       case product.validity_unit
         when 'D'
           # probably no unlimited products with days but assume every day if so
@@ -221,7 +225,7 @@ class Purchase < ApplicationRecord
 
   def expiry_revenue
     return 0 unless expired?
-    attendance_revenue = attendances.confirmed.map { |a| a.revenue }.inject(0, :+)
+    attendance_revenue = attendances.no_amnesty.confirmed.map { |a| a.revenue }.inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
     return payment - attendance_revenue unless adjust_restart?
     ar_payment - attendance_revenue
@@ -234,7 +238,7 @@ class Purchase < ApplicationRecord
   end
 
   def attendances_remain(provisional: true, unlimited_text: true)
-    attendance_count = provisional ? attendances.provisional.size : attendances.confirmed.size
+    attendance_count = provisional ? attendances.no_amnesty.provisional.size : attendances.no_amnesty.confirmed.size
     return 'unlimited' if max_classes == 1000 && unlimited_text == true
     max_classes - attendance_count
   end
@@ -247,8 +251,6 @@ class Purchase < ApplicationRecord
   end
 
   def start_date_calc
-    # attendances.sort_by { |a| a.start_time }.first.start_time
-    # use includes to avoid firing additional query per wkclass
     attendances.provisional.includes(:wkclass).map(&:start_time).min&.to_date
   end
 
@@ -299,7 +301,7 @@ class Purchase < ApplicationRecord
 
   private
     def max_class_expiry_date
-      attendances.confirmed.includes(:wkclass).map(&:start_time).max
+      attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max
     end
 
     def attendance_status(attendance_count, max_classes)
@@ -317,10 +319,10 @@ class Purchase < ApplicationRecord
     end
 
     def status_hash
-      attendance_provisional_count = self.attendances.provisional.size
-      attendance_confirmed_count = self.attendances.confirmed.size
-      { attendance_provisional_status: attendance_status(attendance_provisional_count, self.product.max_classes),
-        attendance_confirmed_status: attendance_status(attendance_confirmed_count, self.product.max_classes),
+      attendance_provisional_count = self.attendances.no_amnesty.provisional.size
+      attendance_confirmed_count = self.attendances.no_amnesty.confirmed.size
+      { attendance_provisional_status: attendance_status(attendance_provisional_count, max_classes),
+        attendance_confirmed_status: attendance_status(attendance_confirmed_count, max_classes),
         validity_status: validity_status(attendance_provisional_count, self.expiry_date_calc),
       }
     end

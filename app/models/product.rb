@@ -15,8 +15,27 @@ class Product < ApplicationRecord
     "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit}"
   end
 
+  def unlimited_package?
+    max_classes == 1000 && !trial?
+  end
+
+  def fixed_package?
+    max_classes.between?(2, 999)
+  end
+
+  def trial?
+    validity_length == 1 && validity_unit == 'W'
+  end
+
   def dropin?
     max_classes == 1
+  end
+
+  def product_type
+    return :unlimited_package if unlimited_package?
+    return :fixed_package if fixed_package?
+    return :trial if trial?
+    return :dropin if dropin?   
   end
 
   def self.full_name(wg_name, max_classes, validity_length, validity_unit, price_name)

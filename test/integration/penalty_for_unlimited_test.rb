@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PenaltyForNoshowTest < ActionDispatch::IntegrationTest
+class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
   def setup
     @account_client = accounts(:client_for_booking)
     @client = @account_client.clients.first
@@ -13,7 +13,7 @@ class PenaltyForNoshowTest < ActionDispatch::IntegrationTest
     travel_to (@tomorrows_class_early.start_time.beginning_of_day)
   end
 
-  test 'warning then penalty after cancel late multiple times' do
+  test 'warning then penalty after cancel unlimited package late multiple times' do
     log_in_as(@account_client)
     # book a class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,

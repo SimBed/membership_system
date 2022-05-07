@@ -103,8 +103,7 @@ class ClientsBookTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
     travel_to (@tomorrows_class_early.start_time + 5.minutes)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    assert_equal 'booked', @attendance.status
+    assert_equal 'booked', @attendance.reload.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal "Booking for #{@tomorrows_class_early.name} not changed. Deadline to make changes has passed", flash[:warning]
   end
