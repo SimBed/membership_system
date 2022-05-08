@@ -13,7 +13,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     travel_to (@tomorrows_class_early.start_time.beginning_of_day)
   end
 
-  test 'warning then penalty after cancel unlimited package late multiple times' do
+  test 'amnesty then penalty after cancel unlimited package late multiple times' do
     log_in_as(@account_client)
     # book a class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
@@ -21,7 +21,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
     travel_to (@tomorrows_class_early.start_time - 10.minutes)
     # cancel class late
-    assert_no_difference '@purchase.penalties.count' do
+    assert_no_difference '@purchase.penalties.size' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
     assert_equal 1, @purchase.reload.late_cancels
@@ -40,7 +40,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     # book a 3rd class
     # must be in booking_window
     travel_to (@wkclass3.start_time.beginning_of_day)
-    assert_difference 'Attendance.count', 1 do
+    assert_difference 'Attendance.no_amnesty.size', 1 do
     post admin_attendances_path, params: { attendance: { wkclass_id: @wkclass3.id,
                                                          purchase_id: @purchase.id } }
                                                        end
@@ -55,7 +55,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     # book a 4th class
     # must be in booking_window
     travel_to (@wkclass4.start_time.beginning_of_day)
-    assert_difference 'Attendance.count', 1 do
+    assert_difference 'Attendance.no_amnesty.size', 1 do
     post admin_attendances_path, params: { attendance: { wkclass_id: @wkclass4.id,
                                                          purchase_id: @purchase.id } }
                                                        end
@@ -68,7 +68,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_equal 4, @purchase.reload.late_cancels
     assert_redirected_to client_book_path(@client.id)
     assert_equal ["HIIT on Monday is 'cancelled late'", "A deduction will be made to your Package.",
-                  "Avoid deductions by making changes to bookings before the deadlines"], flash[:warning]
+                  "Avoid deductions by making changes to bookings before the deadlines"], flash[:danger]
   end
 
   test 'warning then penalty after no show multiple times' do

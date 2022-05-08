@@ -9,8 +9,8 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
     @purchase1 = purchases(:AparnaUC1Mong)
-    @attendance = attendances(:attendance_70)
-    @wkclass = wkclasses(:wkclass_25)
+    @attendance = attendances(:attendance_test)
+    @wkclass = wkclasses(:wkclass_mat)
   end
 
   # no edit method for attendances controller
@@ -31,14 +31,6 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to login_path
     end
   end
-
-  # test 'should redirect edit when not logged in as admin or more senior' do
-  #   [nil, @attendance.client.account, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
-  #     log_in_as(account_holder)
-  #     get edit_admin_attendance_path(@attendance)
-  #     assert_redirected_to login_path
-  #   end
-  # end
 
   test 'should redirect create when not logged in as correct client, junior admin or more senior' do
     [nil, @account_client2, @account_partner1].each do |account_holder|

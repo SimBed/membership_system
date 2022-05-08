@@ -45,7 +45,7 @@
        # redirect_to "/client/clients/#{@client.id}/book"
        # attendances_helper has booking_flash_hash with a method as a value
        # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
-       flash[:success] = send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day
+       flash[booking_flash_hash[:booking][:successful][:colour]] = send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day
      end
 
      def after_successful_create_by_admin
@@ -58,7 +58,7 @@
      def after_unsuccessful_create_by_client
        redirect_to client_book_path(@client)
        # redirect_to "/client/clients/#{@client.id}/book"
-       flash[:warning] = send booking_flash_hash[:booking][:unsuccessful][:message]
+       flash[booking_flash_hash[:booking][:unsuccessful][:colour]] = send booking_flash_hash[:booking][:unsuccessful][:message]
      end
 
      def after_unsuccessful_create_by_admin
@@ -83,16 +83,22 @@
      @original_status = @attendance.status
      case @time_of_request
      when 'early'
-       @updated_status = @original_status == 'booked' ? 'cancelled early' : 'booked'
+       if @original_status == 'booked'
+         @updated_status = 'cancelled early'
+         early_cancellation_by_client = true
+       else
+         @updated_status = 'booked'
+       end
      when 'late'
        if @original_status == 'booked'
          @updated_status = 'cancelled late'
+         # late cancellations sometimes count
          late_cancellation_by_client = true
        else
          @updated_status = 'booked'
        end
      when 'too late'
-       flash[:warning] = send booking_flash_hash[:update][:too_late][:message], true, @wkclass_name
+       flash[booking_flash_hash[:update][:too_late][:colour]] = send booking_flash_hash[:update][:too_late][:message], true, @wkclass_name
        redirect_to client_book_path(@client)
        return
      end
@@ -100,12 +106,18 @@
         @attendance.increment!(:amendment_count)
         if late_cancellation_by_client
           @purchase.increment!(:late_cancels)
-          late_cancels_max = amnesty_limit[:late_cancel][@purchase.product_type]
+          late_cancels_max = amnesty_limit[:cancel_late][@purchase.product_type]
           if @purchase.reload.late_cancels > late_cancels_max
             late_cancellation_penalty(@purchase.product_type)
+            # amnesty remains false from earlier booking
           else
             @attendance.update(amnesty: true)
           end
+        elsif early_cancellation_by_client
+          @purchase.increment!(:early_cancels)
+          @attendance.update(amnesty: true)
+        else # a rebook (and bookings always count)
+          @attendance.update(amnesty: false)
         end
         respond_to do |format|
           format.html do
@@ -119,7 +131,7 @@
           end
         end
      else
-       flash[:warning] = "Booking was not updated. Please contact The Space."
+       flash[booking_flash_hash[:update][:unsuccessful][:colour]] = send booking_flash_hash[:update][:unsuccessful][:message]
      end
    end
 
@@ -128,13 +140,13 @@
    def flash_for_successful_client_update
      if @original_status == 'booked'
        if @time_of_request == 'early'
-         flash[:success] = send booking_flash_hash[:update][:cancel_early][:message], @wkclass_name, @wkclass_day
+         flash[booking_flash_hash[:update][:cancel_early][:colour]] = send booking_flash_hash[:update][:cancel_early][:message], @wkclass_name, @wkclass_day
        else # late
          cancel_late_type = @penalty_given ? :cancel_late_no_amnesty : :cancel_late_amnesty
-         flash[:warning] = send booking_flash_hash[:update][cancel_late_type][:message], @wkclass_name, @wkclass_day
+         flash[booking_flash_hash[:update][cancel_late_type][:colour]] = send booking_flash_hash[:update][cancel_late_type][:message], @wkclass_name, @wkclass_day
        end
-     else #cancelled to booked
-       flash[:success] = send booking_flash_hash[:update][:successful][:message], @wkclass_name, @wkclass_day
+     else # cancelled to booked
+       flash[booking_flash_hash[:update][:successful][:colour]] = send booking_flash_hash[:update][:successful][:message], @wkclass_name, @wkclass_day
      end
    end
 
@@ -145,12 +157,15 @@
        attendance_status = attendance_status_params[:status]
        if attendance_status == 'cancelled late'
          @purchase.increment!(:late_cancels)
-         late_cancels_max = amnesty_limit[:late_cancel][@purchase.product_type]
+         late_cancels_max = amnesty_limit[:canceL_late][@purchase.product_type]
          if @purchase.reload.late_cancels > late_cancels_max
            late_cancellation_penalty(@purchase.product_type)
          else
            @attendance.update(amnesty: true)
          end
+       elsif attendance_status == 'cancelled early'
+         @purchase.increment!(:early_cancels)
+         @attendance.update(amnesty: true)
        elsif attendance_status == 'no show'
          @purchase.increment!(:no_shows)
          no_shows_max = amnesty_limit[:no_show][@purchase.product_type]
@@ -159,6 +174,8 @@
          else
            @attendance.update(amnesty: true)
          end
+       else # attended or a rebook (which always count)
+         @attendance.update(amnesty: false)
        end
        respond_to do |format|
           format.html do
@@ -253,14 +270,15 @@
       return true if logged_in_as?('junioradmin', 'admin', 'superadmin')
       false
     end
+
     # example1 - browser loads, time passes, client logged as no show, client through browser sends request to cancel booking
     # example2 - non-browser request to update 'attended' to 'cancelled early'
     def modifiable_status
       # admin can modify status explicitly, but clients can't
       # client can't rebook after cancelling late
-      modifiable_statuses = Rails.application.config_for(:constants)["attendance_status_does_count"] - ['booked']
-      if modifiable_statuses.include?(@attendance.status) && !admin_modification?
-        flash[:warning] = send booking_flash_hash[:update][:unmodifiable][:message], @attendance.status
+      unmodifiable_statuses = Rails.application.config_for(:constants)["attendance_status_client_cant_modify"]
+      if unmodifiable_statuses.include?(@attendance.status) && !admin_modification?
+        flash[booking_flash_hash[:update][:unmodifiable][:colour]] = send booking_flash_hash[:update][:unmodifiable][:message], @attendance.status
         redirect_to client_book_path(@client)
       end
     end
@@ -271,7 +289,7 @@
       window_start = wkclass.start_time.ago(days_before.days).beginning_of_day
       window_end = wkclass.start_time - 5.minutes
       if !(window_start..window_end).cover?(Time.now) && !admin_modification?
-        flash[:warning] = send booking_flash_hash[:booking][:too_late][:message], false
+        flash[booking_flash_hash[:booking][:too_late][:colour]] = send booking_flash_hash[:booking][:too_late][:message], false
         redirect_to client_book_path(@client)
       end
     end
@@ -281,7 +299,7 @@
       booking_type = request.post? ? :booking: :update
       @wkclass = booking_type == :booking ? Wkclass.find(params[:attendance][:wkclass_id].to_i) : @attendance.wkclass
       if @wkclass.booking_on_same_day?(@client)
-        flash[:warning] = send booking_flash_hash[booking_type][:daily_limit_met][:message]
+        flash[booking_flash_hash[booking_type][:daily_limit_met][:colour]] = send booking_flash_hash[booking_type][:daily_limit_met][:message]
         if logged_in_as?('client')
           redirect_to client_book_path(@client)
         else # must be admin
@@ -298,12 +316,12 @@
         if request.post?
           @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
           if @wkclass.attendances.provisional.count >= @wkclass.max_capacity
-            flash[:warning] = send booking_flash_hash[:booking][:fully_booked][:message], false
+            flash[booking_flash_hash[:booking][:fully_booked][:colour]] = send booking_flash_hash[:booking][:fully_booked][:message], false
             redirect_to client_book_path(@client)
           end
         else # patch
           if @wkclass.attendances.provisional.count == @wkclass.max_capacity && @attendance.status == 'cancelled early'
-            flash[:warning] = send booking_flash_hash[:update][:fully_booked][:message], true
+            flash[booking_flash_hash[:update][:fully_booked][:colour]] = send booking_flash_hash[:update][:fully_booked][:message], true
             redirect_to client_book_path(@client)
           end
         end
@@ -313,8 +331,8 @@
      def reached_max_amendments
        if logged_in_as?('client')
          # book(0), cancel(1), book(2), cancel(3), book(fail)
-         if @attendance.amendment_count >= 3
-           flash[:warning] = send booking_flash_hash[:update][:prior_amendments][:message]
+         if @attendance.amendment_count >= settings[:amendment_count]
+           flash[booking_flash_hash[:update][:prior_amendments][:colour]] = send booking_flash_hash[:update][:prior_amendments][:message]
            redirect_to client_book_path(@client)
          end
        end

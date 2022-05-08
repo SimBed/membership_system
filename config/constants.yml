@@ -19,6 +19,18 @@ default: &default
  gst_rate:
   - 18
 
+ attendance_statuses:
+  - booked
+  - attended
+  - cancelled early  
+  - cancelled late
+  - no show
+
+ attendance_status_client_cant_modify:
+  - attended
+  - cancelled late
+  - no show
+
  attendance_status_does_count:
   - booked
   - attended

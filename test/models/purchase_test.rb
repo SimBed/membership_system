@@ -17,6 +17,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase_fixed = purchases(:tina8c5wong)
     @purchase_trial = purchases(:purchase_trial)
     @wkclass1 = wkclasses(:hiitfeb26)
+    @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
   end
 
   test 'should be valid' do
@@ -115,9 +116,14 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 6000 / 8, @purchase_fixed.revenue_for_class(@purchase_fixed.attendances.last.wkclass)
   end
 
-  test 'self.qualifying_for(wkclass)' do
+  test 'qualifying_for method' do
     assert_equal [441, 374, 201, 212, 335, 459, 381, 406, 368, 229, 438, 382, 200, 407, 377, 99, 198, 389, 399,
                   120, 224, 360, 125, 341, 119, 390, 416], Purchase.qualifying_for(@wkclass1).pluck(:id)
+  end
+
+  test 'available_for_booking' do
+    travel_to (@tomorrows_class_early.start_time.beginning_of_day)
+    assert_equal 343, Purchase.available_for_booking(@tomorrows_class_early, @client).id
   end
 
   test 'name_with_dop method' do

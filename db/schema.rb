@@ -188,6 +188,7 @@ ActiveRecord::Schema.define(version: 2022_05_06_093728) do
     t.date "expiry_date"
     t.date "start_date"
     t.boolean "tax_included", default: true
+    t.integer "early_cancels", default: 0
     t.integer "late_cancels", default: 0
     t.integer "no_shows", default: 0
     t.index ["client_id"], name: "index_purchases_on_client_id"
