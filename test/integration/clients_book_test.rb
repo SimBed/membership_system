@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ClientsBookTest < ActionDispatch::IntegrationTest
+class ClientBookingTest < ActionDispatch::IntegrationTest
   def setup
     # travel_to Date.parse('20 April 2022')
     @account_client = accounts(:client_for_booking)

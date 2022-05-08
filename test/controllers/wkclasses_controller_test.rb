@@ -10,7 +10,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     @time = '2022-02-13 10:30:00'
     @workout = workouts(:hiit)
     @instructor = instructors(:amit)
-    @wkclass = wkclasses(:wkclass_89)
+    @wkclass = wkclasses(:wkclass_mat)
   end
 
   test 'should redirect new when not logged in as junioradmin or more senior' do

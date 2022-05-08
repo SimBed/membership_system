@@ -8,6 +8,8 @@ class WkclassTest < ActiveSupport::TestCase
                            start_time: '2022-02-01 10:30:00',
                            instructor_id: @instructor.id,
                            instructor_cost: 500)
+    @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
+    @client = clients(:aparna)
   end
 
   test 'should be valid' do
@@ -18,5 +20,10 @@ class WkclassTest < ActiveSupport::TestCase
     @duplicate_class = @wkclass.dup
     @wkclass.save
     refute @duplicate_class.valid?
+  end
+
+  test 'show_in_bookings_for' do
+    travel_to (@tomorrows_class_early.start_time.beginning_of_day)
+    assert_equal [569, 570, 548, 568], Wkclass.show_in_bookings_for(@client).pluck(:id)
   end
 end

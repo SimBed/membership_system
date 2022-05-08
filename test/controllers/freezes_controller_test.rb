@@ -8,8 +8,8 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @purchase = purchases(:purchase_20)
-    @freeze = freezes(:freeze_1)
+    @purchase = purchases(:purchase_for_freeze)
+    @freeze = freezes(:freeze_test)
   end
 
   # no index method for freezes controller
@@ -38,8 +38,8 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
         post admin_freezes_path, params:
          { freeze:
             { purchase_id: @purchase.id,
-              start_date: '2022-03-01',
-              end_date: '2022-03-10' } }
+              start_date: '2021-12-26',
+              end_date: '2022-01-02' } }
       end
     end
   end
