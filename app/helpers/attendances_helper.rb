@@ -125,7 +125,7 @@ module AttendancesHelper
   delegate :fixed_package?, to: :product
 
   def amnesty_limit
-    { late_cancel:
+    { cancel_late:
         { unlimited_package: 2,
           fixed_package: 1,
           trial: 100,
@@ -139,6 +139,8 @@ module AttendancesHelper
         }
     }
   end
-end
 
-#send booking_flash_hash[:booking][:successful], 'HIIT', 'Sun'
+  def settings
+    {amendment_count: 3}
+  end
+end
