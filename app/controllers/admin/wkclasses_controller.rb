@@ -3,6 +3,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :junioradmin_account, only: %i[ show index new edit create update ]
   before_action :set_wkclass, only: %i[ show edit update destroy ]
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
+  # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
 
   def index

@@ -31,8 +31,9 @@ class Purchase < ApplicationRecord
   validates :fitternity, presence: true, if: :fitternity_id
   # scope :not_expired, -> { where('expired = ?', false) }
   scope :not_expired, -> { where.not(status: ['expired', 'provisionally expired', 'provisionally expired (and frozen)']) }
+  scope :not_fully_expired, -> { where.not(status: 'expired') }
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
-  # scope :started, -> { joins(:attendances).merge(Attendance.provisional).distinct }
+  # scope :started, -> { joins(:attendances).merge(Attendance.no_amnesty).distinct }
   scope :started, -> { where.not(status: 'not started') }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
@@ -88,7 +89,7 @@ class Purchase < ApplicationRecord
   end
 
   def self.available_for_booking(wkclass, client)
-    purchases = Purchase.not_expired
+    purchases = Purchase.not_fully_expired
                         .joins(product: [:workout_group])
                         .joins(:client)
                         .merge(WorkoutGroup.includes_workout_of(wkclass))
@@ -171,12 +172,12 @@ class Purchase < ApplicationRecord
 
   def will_expire_on
     return nil unless provisionally_expired?
-    attendances.provisional.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
+    attendances.no_amnesty.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
   end
 
   def expiry_date_calc
     return ar_date if adjust_restart
-    return 'n/a' if attendances.provisional.size.zero?
+    return 'n/a' if attendances.no_amnesty.size.zero?
     # expiry date is undefined for dropins. Avoid unexpected issues by setting to a day in the future
     return Date.tomorrow if product.dropin?
     start_date = self.start_date_calc
@@ -238,7 +239,7 @@ class Purchase < ApplicationRecord
   end
 
   def attendances_remain(provisional: true, unlimited_text: true)
-    attendance_count = provisional ? attendances.no_amnesty.provisional.size : attendances.no_amnesty.confirmed.size
+    attendance_count = provisional ? attendances.no_amnesty.size : attendances.no_amnesty.confirmed.size
     return 'unlimited' if max_classes == 1000 && unlimited_text == true
     max_classes - attendance_count
   end
@@ -251,7 +252,7 @@ class Purchase < ApplicationRecord
   end
 
   def start_date_calc
-    attendances.provisional.includes(:wkclass).map(&:start_time).min&.to_date
+    attendances.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
   end
 
   # def attendances_remain_format
@@ -319,7 +320,7 @@ class Purchase < ApplicationRecord
     end
 
     def status_hash
-      attendance_provisional_count = self.attendances.no_amnesty.provisional.size
+      attendance_provisional_count = self.attendances.no_amnesty.size
       attendance_confirmed_count = self.attendances.no_amnesty.confirmed.size
       { attendance_provisional_status: attendance_status(attendance_provisional_count, max_classes),
         attendance_confirmed_status: attendance_status(attendance_confirmed_count, max_classes),

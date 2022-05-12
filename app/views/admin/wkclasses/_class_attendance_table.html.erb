@@ -1,6 +1,6 @@
 <!--#% @wkclass.clients.each do |client| %-->
-<% Rails.application.config_for(:constants)["attendance_status_does_count"].each do |attendance_status| %>
-  <% Attendance.by_status(@wkclass, attendance_status).each do |attendance| %>
+<% Rails.application.config_for(:constants)["attendance_statuses"].each do |attendance_status| %>
+  <% Attendance.by_status(@wkclass, attendance_status).no_amnesty.each do |attendance| %>
     <div class ="d-flex bg-light">
         <div class ="cell c-class-name"><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></div>
         <div class ="cell c-class-date"><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button" %></div>
@@ -21,8 +21,8 @@
 
 <hr>
 
-<% Rails.application.config_for(:constants)["attendance_status_doesnt_count"].each do |attendance_status| %>
-  <% Attendance.by_status(@wkclass, attendance_status).each do |attendance| %>
+<% Rails.application.config_for(:constants)["attendance_statuses"].each do |attendance_status| %>
+  <% Attendance.by_status(@wkclass, attendance_status).where(amnesty: true).each do |attendance| %>
     <div class ="d-flex bg-light">
         <div class ="cell c-class-name"><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></div>
         <div class ="cell c-class-date"><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button" %></div>

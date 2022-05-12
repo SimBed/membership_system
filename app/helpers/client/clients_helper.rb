@@ -2,7 +2,7 @@ module Client::ClientsHelper
   def booking_link_and_class_for(wkclass, client)
     attendance = Attendance.applicable_to(wkclass, client)
     if attendance.nil?
-      if wkclass.booking_on_same_day?(client)
+      if wkclass.booking_on_same_day?(client) || ['provisionally expired', 'provisionally expired (and frozen)'].include?(Purchase.available_for_booking(wkclass, client).status) 
         ['unbooked', '']
       else
         ['unbooked', link_to(image_tag('add.png', class: "grid_table_icon"), admin_attendances_path('attendance[wkclass_id]': wkclass.id, 'attendance[purchase_id]': Purchase.available_for_booking(wkclass, client).id), method: :post, data: { confirm: 'You will be booked for this class. Are you sure?' }, class: "icon-container")]

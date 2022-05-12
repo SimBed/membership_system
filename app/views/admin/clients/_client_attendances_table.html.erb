@@ -4,9 +4,9 @@
   <div class ="cell d-inline-block px-2"><%= purchase.price.name %></div>
   <%= render partial: 'admin/purchases/purchase_table', locals: {setting: "clientshow"} %>
   <div class="grid-container-client-attendances">
-    <% attendances = purchase.attendances.provisional.order_by_date %>
+    <% attendances = purchase.attendances.no_amnesty.order_by_date %>
     <% attendances.each_with_index do |attendance, index| %>
-      <div class ="grid-cell"><%= attendances.provisional.size - index %></div>
+      <div class ="grid-cell"><%= attendances.no_amnesty.size - index %></div>
       <!--div class ="grid-cell"><%#= link_to attendance.wkclass.date, admin_wkclass_path(attendance.wkclass, classes_period: attendance.wkclass.start_time.beginning_of_month.to_date.strftime('%b %Y'), setting: "clientshow" ), class: "like_button" %></div-->
       <div class ="grid-cell"><%= link_to attendance.wkclass.date, admin_wkclass_path(attendance.wkclass, no_scroll: true), class: "like_button" %></div>
       <div class ="grid-cell"><%= attendance.wkclass.workout.name %></div>

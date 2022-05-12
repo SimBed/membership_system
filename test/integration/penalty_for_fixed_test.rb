@@ -1,8 +1,8 @@
 require "test_helper"
 
-class PenaltyForFlexTest < ActionDispatch::IntegrationTest
+class PenaltyForFixedTest < ActionDispatch::IntegrationTest
   def setup
-    @account_client = accounts(:client_for_flex)
+    @account_client = accounts(:client_for_fixed)
     @client = @account_client.clients.first
     @purchase = @client.purchases.last
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
@@ -13,7 +13,7 @@ class PenaltyForFlexTest < ActionDispatch::IntegrationTest
     travel_to (@tomorrows_class_early.start_time.beginning_of_day)
   end
 
-  test 'warning then class deduction after cancel flex package late' do
+  test 'amnesty then class deduction after cancel fixed package late' do
     log_in_as(@account_client)
     # book a class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
@@ -55,7 +55,7 @@ class PenaltyForFlexTest < ActionDispatch::IntegrationTest
     assert_equal 1, @purchase.reload.attendances.size - @purchase.reload.attendances.no_amnesty.size
   end
 
-  test 'immediate class deduction after flex package no show' do
+  test 'immediate class deduction after fixed package no show' do
     log_in_as(@admin)
     # book a class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,

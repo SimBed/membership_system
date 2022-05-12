@@ -15,7 +15,7 @@ module AttendancesHelper
         },
         too_late:
         { colour: :secondary,
-          message: :fully_booked
+          message: :too_late
         },
         unsuccessful:
         { colour: :secondary,

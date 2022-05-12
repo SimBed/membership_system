@@ -3,12 +3,15 @@ require "test_helper"
 class ClientBookingTest < ActionDispatch::IntegrationTest
   def setup
     # travel_to Date.parse('20 April 2022')
-    @account_client = accounts(:client_for_booking)
+    @account_client = accounts(:client_for_unlimited)
     @client = @account_client.clients.first
     @purchase = @client.purchases.last
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     @tomorrows_class_late = wkclasses(:wkclass_for_booking_late)
     @admin = accounts(:admin)
+    @account_other_client = accounts(:client1)
+    @other_client = @account_other_client.clients.first
+    @other_client_purchase = @other_client.purchases.last
     travel_to (@tomorrows_class_early.start_time.beginning_of_day)
   end
 
@@ -129,22 +132,19 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     assert_equal ["Booking is 'no show' and can't now be changed.", "Please contact the Space for help"], flash[:secondary]
   end
 
-  test 'boook class after reached maximum capacity' do
+  test 'book class after reached maximum capacity' do
     wkclass_max_capacity = 4
     @tomorrows_class_early.update(max_capacity: wkclass_max_capacity)
     log_in_as(@admin)
     # admin books to max capacity
-    @account_other_client = accounts(:client1)
-    @other_client = @account_other_client.clients.first
-    @other_client_purchase = @other_client.purchases.last
     wkclass_max_capacity.times {
         post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                              purchase_id: @other_client_purchase.id } }
                                }
-    assert_equal @tomorrows_class_early.attendances.provisional.count, wkclass_max_capacity
+    assert_equal @tomorrows_class_early.attendances.no_amnesty.count, wkclass_max_capacity
     # client attempts to book
     log_in_as(@account_client)
-    assert_difference 'Attendance.provisional.count', 0 do
+    assert_difference '@client.attendances.no_amnesty.count', 0 do
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     end
@@ -153,30 +153,31 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     # 1 cancellation
     log_in_as(@admin)
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @other_client)
-    assert_difference 'Attendance.provisional.count', -1 do
+    assert_difference 'Attendance.no_amnesty.count', -1 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
     end
+    assert_equal @tomorrows_class_early.attendances.no_amnesty.count, wkclass_max_capacity - 1
     # client now books
     log_in_as(@account_client)
-    assert_difference 'Attendance.provisional.count', 1 do
+    assert_difference 'Attendance.no_amnesty.count', 1 do
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     end
     # client now cancels
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    assert_difference 'Attendance.provisional.count', -1 do
+    assert_difference 'Attendance.no_amnesty.count', -1 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
     # class gets full again
     log_in_as(@admin)
-    assert_difference 'Attendance.provisional.count', 1 do
+    assert_difference 'Attendance.no_amnesty.count', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                              purchase_id: @other_client_purchase.id } }
                                                         end
     # client attempts to rebook
     log_in_as(@account_client)
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    assert_difference 'Attendance.provisional.count', 0 do
+    assert_difference 'Attendance.no_amnesty.count', 0 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
     assert_equal "Rebooking not possible. Class fully booked", flash[:secondary]

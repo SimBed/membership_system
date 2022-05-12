@@ -2,7 +2,7 @@ require "test_helper"
 
 class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
   def setup
-    @account_client = accounts(:client_for_booking)
+    @account_client = accounts(:client_for_unlimited)
     @client = @account_client.clients.first
     @purchase = @client.purchases.last
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)

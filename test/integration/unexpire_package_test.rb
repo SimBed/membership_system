@@ -8,12 +8,13 @@ class UnexpirePackageTest < ActionDispatch::IntegrationTest
 
   test 'package expired due to validity should revert to ongoing with a suitable freeze' do
     travel_to (Date.parse('May 9 2022').beginning_of_day)
-    # 8 class package with 1 10 day freeze
+    # start with 8 class expired package with 1 10 day freeze
     assert_equal 7, @purchase.attendances.size
-    assert_equal 10, @purchase.reload.freezes.map { |f| f.duration}.inject(0, :+)
-    assert_equal Date.parse('Nov 20 2021'), @purchase.reload.expiry_date
-    assert_equal 'expired', @purchase.reload.status
+    assert_equal 10, @purchase.freezes.map { |f| f.duration}.inject(0, :+)
+    assert_equal Date.parse('Nov 20 2021'), @purchase.expiry_date
+    assert_equal 'expired', @purchase.status
 
+    # give long freeze
     log_in_as(@admin)
     post admin_freezes_path, params:
      { freeze:
@@ -23,8 +24,8 @@ class UnexpirePackageTest < ActionDispatch::IntegrationTest
 
     # freeze unexpires
     assert_equal 180, @purchase.reload.freezes.map { |f| f.duration}.inject(0, :+)
-    assert_equal Date.parse('May 9 2022'), @purchase.reload.expiry_date
-    assert_equal 'ongoing', @purchase.reload.status
+    assert_equal Date.parse('May 9 2022'), @purchase.expiry_date
+    assert_equal 'ongoing', @purchase.status
     # will expire again
     travel_to (Date.parse('May 11 2022').beginning_of_day)
     @purchase.update(status: @purchase.status_calc)

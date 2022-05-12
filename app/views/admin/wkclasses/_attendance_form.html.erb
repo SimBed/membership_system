@@ -6,7 +6,7 @@
     <%#= form.select :status, options_for_select(%w[attended cancelled\ early no\ show booked], @attendance.status), {}, onchange: "Rails.fire(this.form, 'submit')" %>
     <select name="attendance[status]" onchange="Rails.fire(this.form, 'submit')" class= "sort">
       <%#%w[booked attended cancelled\ late cancelled\ early no\ show]%>
-      <% attendance_status = Rails.application.config_for(:constants)["attendance_status_does_count"] + Rails.application.config_for(:constants)["attendance_status_doesnt_count"] %>
+      <% attendance_status = Rails.application.config_for(:constants)["attendance_statuses"] %>
       <%= options_for_select(attendance_status, object.status) %>
     </select>
   </div>

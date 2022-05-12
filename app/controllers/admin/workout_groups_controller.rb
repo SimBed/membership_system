@@ -115,7 +115,9 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     end
 
     def partner_or_admin_account
-      redirect_to login_path unless logged_in_as?('admin', 'superadmin') || logged_in_as?('partner')
-      flash[:warning] = 'Forbidden'
+      unless logged_in_as?('admin', 'superadmin') || logged_in_as?('partner')
+        redirect_to login_path
+        flash[:warning] = 'Forbidden'
+      end
     end
 end

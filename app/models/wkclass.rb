@@ -1,7 +1,7 @@
 class Wkclass < ApplicationRecord
   has_many :attendances, dependent: :destroy
-  has_many :confirmed_attendances, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }, class_name: 'Attendance'
-  has_many :provisional_attendances, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }, class_name: 'Attendance'
+  has_many :confirmed_attendances, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"].reject { |a| a == 'booked'}).where.not(amnesty: true) }, class_name: 'Attendance'
+  has_many :provisional_attendances, -> { where.not(amnesty: true) }, class_name: 'Attendance'
   has_many :physical_attendances, -> { where(status: 'attended') }, class_name: 'Attendance'
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
@@ -37,7 +37,7 @@ class Wkclass < ApplicationRecord
     Wkclass.in_booking_visibility_window
     .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
     .where("clients.id": client.id)
-    .merge(Purchase.not_expired)
+    .merge(Purchase.not_fully_expired)
     #.where.not(["attendances.status = ?", 'booked'])
     # .joins(attendances: [purchase: [:client]])
     # .where.not(["clients.id = ? AND attendances.status = ?", client.id, 'booked'])
@@ -46,7 +46,7 @@ class Wkclass < ApplicationRecord
   def booking_on_same_day?(client)
     bookings_on_same_day =
     Wkclass.where.not(id: self.id).on_date(self.start_time.to_date).joins(attendances: [purchase: [:client]])
-    .where("clients.id = ? AND attendances.status IN (?)", client.id, Rails.application.config_for(:constants)["attendance_status_cant_rebook"])
+    .where("clients.id = ? AND attendances.status IN (?)", client.id, Rails.application.config_for(:constants)["attendance_status_cant_book_sameday"])
     return false if bookings_on_same_day.empty?
     return true
   end
@@ -81,7 +81,7 @@ class Wkclass < ApplicationRecord
   end
 
   def day_already_has_booking_by(client)
-    client.attendances.provisional.map do |a|
+    client.attendances.no_amnesty.map do |a|
       a.start_time.to_date
     end
     .include?(self.start_time.to_date)
@@ -134,7 +134,7 @@ class Wkclass < ApplicationRecord
     # to = Rails.configuration.twilio[:me]
     # client = Twilio::REST::Client.new(account_sid, auth_token)
     # time_str = ((self.start_time).localtime).strftime("%I:%M%p on %b. %d, %Y")
-    # self.attendances.provisional.each do |booking|
+    # self.attendances.no_amnesty.each do |booking|
     #     body = "Hi #{self.purchase.client.first_name}. Just a reminder that you have a class coming up at #{time_str}."
     #     message = client.messages.create(
     #       from: "whatsapp:#{from}",

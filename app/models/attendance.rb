@@ -11,15 +11,12 @@ class Attendance < ApplicationRecord
   delegate :name, to: :client
   delegate :product, to: :purchase
   scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window)}
-  scope :no_amnesty, -> { where.not(amnesty: true) }  
-  scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"].reject { |a| a == 'booked'}) }
-  scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_status_does_count"]) }
+  scope :no_amnesty, -> { where.not(amnesty: true) }
+  scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"].reject { |a| a == 'booked'}) }
+  # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }
   scope :cant_rebook, -> { where(status: Rails.application.config_for(:constants)["attendance_status_cant_rebook"]) }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
-  validates :status, inclusion: { in:
-    Rails.application.config_for(:constants)["attendance_status_does_count"] +
-    Rails.application.config_for(:constants)["attendance_status_doesnt_count"]
-    }
+  validates :status, inclusion: { in: Rails.application.config_for(:constants)["attendance_statuses"] }
 
   def self.applicable_to(wkclass, client)
      joins(:wkclass).where("wkclasses.id = ?", wkclass.id)

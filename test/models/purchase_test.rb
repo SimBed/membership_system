@@ -181,9 +181,8 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal Date.parse('21 Mar 2022'), @purchase_fixed.expiry_date_calc
   end
 
-  # tests based on Date.today need improvement (an environment variable perhaps)
+
   test 'days_to_expiry method' do
-    # test data is based on attendance in the 2030s ie first class is in 2030 and expiry date based on that
     assert_equal 40, @purchase_package.days_to_expiry
     assert_equal 1000, @purchase_dropin.days_to_expiry
     assert_equal 1000, @purchase_dropin2.days_to_expiry
