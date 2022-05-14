@@ -15,7 +15,7 @@ namespace :db do
         File.open(file_path, 'w') do |file|
           rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name}")
           data = rows.each_with_object({}) do |record, hash|
-            suffix = record['id'].blank? ? i.succ! : record['id']
+            suffix = record['id'].presence || i.succ!
             hash["#{table_name.singularize}_#{suffix}"] = record
           end
           puts "Writing table '#{table_name}' to '#{file_path}'"
@@ -23,7 +23,7 @@ namespace :db do
         end
       end
     ensure
-      ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
+      ActiveRecord::Base.connection&.close
     end
   end
 end

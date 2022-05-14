@@ -12,6 +12,7 @@ AllCops:
       - 'script/**/*'
       - 'bin/**/*'
       - !ruby/regexp /old_and_unused\.rb$/
+      - !ruby/regexp /z_unused_code\.rb$/
 Layout/EndOfLine:
     EnforcedStyle: lf
 # toggle between lf & crlf depending on which quirk arises
@@ -31,3 +32,5 @@ Style/ClassAndModuleChildren:
   EnforcedStyle: compact
 Rails/RefuteMethods:
   EnforcedStyle: refute
+Rails/SkipsModelValidations:
+  AllowedMethods: ["increment!"]

@@ -26,28 +26,6 @@ default: &default
   - cancelled late
   - no show
 
- attendance_status_cant_book_sameday:
-  - booked
-  - attended
-
- attendance_status_client_cant_modify:
-  - attended
-  - no show
-
- # attendance_status_does_count:
- #  - booked
- #  - attended
- #  - cancelled late
- #  - no show
-
- attendance_status_doesnt_count:
-  - cancelled early
-
- attendance_status_cant_rebook:
-  - booked
-  - attended
-  - no show
-
 development:
   <<: *default
 

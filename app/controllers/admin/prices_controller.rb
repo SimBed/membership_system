@@ -1,5 +1,5 @@
 class Admin::PricesController < Admin::BaseController
-  before_action :set_price, only: %i[ edit update destroy ]
+  before_action :set_price, only: %i[edit update destroy]
 
   def new
     @price = Price.new
@@ -9,13 +9,13 @@ class Admin::PricesController < Admin::BaseController
   def create
     @price = Price.new(price_params)
 
-      if @price.save
-        redirect_to admin_product_path(Product.find(price_params[:product_id]))
-        flash[:success] = "price was successfully created"
-      else
-        @product = Product.find(price_params[:product_id])
-        render :new, status: :unprocessable_entity
-      end
+    if @price.save
+      redirect_to admin_product_path(Product.find(price_params[:product_id]))
+      flash[:success] = 'price was successfully created'
+    else
+      @product = Product.find(price_params[:product_id])
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -24,7 +24,7 @@ class Admin::PricesController < Admin::BaseController
   def update
     if @price.update(price_params)
       redirect_to admin_product_path(Product.find(price_params[:product_id]))
-      flash[:success] = "price was successfully updated"
+      flash[:success] = 'price was successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -34,16 +34,16 @@ class Admin::PricesController < Admin::BaseController
     @product = @price.product
     @price.destroy
     redirect_to admin_product_path(@product)
-    flash[:success] = "price was successfully deleted"
+    flash[:success] = 'price was successfully deleted'
   end
 
   private
 
-    def set_price
-      @price = Price.find(params[:id])
-    end
+  def set_price
+    @price = Price.find(params[:id])
+  end
 
-    def price_params
-      params.require(:price).permit(:name, :price, :date_from, :product_id, :current)
-    end
+  def price_params
+    params.require(:price).permit(:name, :price, :date_from, :product_id, :current)
+  end
 end

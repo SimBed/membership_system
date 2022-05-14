@@ -16,7 +16,7 @@ class Auth::SessionsController < Auth::BaseController
 
   def destroy
     log_out if logged_in?
-    #reformat - all filters should be cleared
+    # reformat - all filters should be cleared
     clear_session(:filter_workout_group, :filter_status, :search_name)
     redirect_to public_pages_welcome_path
   end

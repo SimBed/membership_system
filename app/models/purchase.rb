@@ -21,7 +21,7 @@ class Purchase < ApplicationRecord
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },
-                    uniqueness: { case_sensitive: false }
+                      uniqueness: { case_sensitive: false }
   # validates :ar_payment, presence: true, if: :adjust_restart?
   with_options if: :adjust_restart? do |ar|
     ar.validates :ar_payment, presence: true
@@ -30,14 +30,16 @@ class Purchase < ApplicationRecord
   validate :fitternity_payment
   validates :fitternity, presence: true, if: :fitternity_id
   # scope :not_expired, -> { where('expired = ?', false) }
-  scope :not_expired, -> { where.not(status: ['expired', 'provisionally expired', 'provisionally expired (and frozen)']) }
+  scope :not_expired, -> {
+                        where.not(status: ['expired', 'provisionally expired', 'provisionally expired (and frozen)'])
+                      }
   scope :not_fully_expired, -> { where.not(status: 'expired') }
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
   # scope :started, -> { joins(:attendances).merge(Attendance.no_amnesty).distinct }
   scope :started, -> { where.not(status: 'not started') }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
-  scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: {name: wg}) }
+  scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: { name: wg }) }
   # stata is an array of purchases statuses
   scope :with_statuses, ->(stata) { where(status: stata) }
   # 'using a scope through an association'
@@ -50,12 +52,12 @@ class Purchase < ApplicationRecord
   scope :order_by_expiry_date, -> { order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
   # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
-  scope :uninvoiced, -> { where(invoice: nil)}
-  scope :requires_invoice, -> { joins(product: [:workout_group]).where(workout_groups: {requires_invoice: true}) }
-  scope :invoiced, -> { where.not(invoice: nil)}
-  scope :unpaid, -> { where(payment_mode: 'Not paid')}
-  scope :classpass, -> { where(payment_mode: 'ClassPass')}
-  #scope :not_used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.not_between(adate, adate.end_of_day)).distinct}
+  scope :uninvoiced, -> { where(invoice: nil) }
+  scope :requires_invoice, -> { joins(product: [:workout_group]).where(workout_groups: { requires_invoice: true }) }
+  scope :invoiced, -> { where.not(invoice: nil) }
+  scope :unpaid, -> { where(payment_mode: 'Not paid') }
+  scope :classpass, -> { where(payment_mode: 'ClassPass') }
+  # scope :not_used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.not_between(adate, adate.end_of_day)).distinct}
   # scope :not_used_on?, ->(adate) { left_outer_joins(attendances: [:wkclass]).where.not(wkclasses: {start_time: adate..adate.end_of_day}).distinct }
   # note the 'unscope' see genkilabs solution @ https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
   # scope :used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.between(adate, adate.end_of_day)).unscope(:order).distinct}
@@ -63,11 +65,12 @@ class Purchase < ApplicationRecord
 
   def revenue_for_class(wkclass)
     return 0 unless wkclass.purchases.include?(self)
+
     payment / attendance_estimate
   end
 
   def committed_on?(adate)
-    attendances.cant_rebook.includes(:wkclass).map { |a| a.start_time.to_date}.include?(adate)
+    attendances.cant_rebook.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
   end
 
   # for qualifying purchases in select box for new attendance form
@@ -85,7 +88,7 @@ class Purchase < ApplicationRecord
                         .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.committed_on?(wkclass.start_time.to_date) }
                         .map(&:id) # or pluck(:id)
                   )
-            .includes(:client).order("clients.first_name", "purchases.dop")
+            .includes(:client).order('clients.first_name', 'purchases.dop')
   end
 
   def self.available_for_booking(wkclass, client)
@@ -97,8 +100,8 @@ class Purchase < ApplicationRecord
     purchases = Purchase.where(id: purchases
                         .to_a.select { |p| !p.freezed?(wkclass.start_time) && !p.committed_on?(wkclass.start_time.to_date) }
                         .map(&:id) # or pluck(:id)
-                  )
-                        .order("purchases.dop")
+                              )
+                        .order('purchases.dop')
     # in unusual case of more than one available purchase, use the started one (earliest dop if still a choice) or the earliest dop if no started one
     started_purchases = purchases.select { |p| !p.not_started? }
     if started_purchases.nil?
@@ -106,14 +109,13 @@ class Purchase < ApplicationRecord
     else
       purchases[0]
     end
-
   end
 
   def self.by_product_date(product_id, start_date, end_date)
-      joins(:product)
-     .where("purchases.dop BETWEEN '#{start_date}' AND '#{end_date}'")
-     .where("products.id = ?", "#{product_id}")
-     .order(dop: :desc)
+    joins(:product)
+      .where("purchases.dop BETWEEN '#{start_date}' AND '#{end_date}'")
+      .where(products: { id: product_id.to_s })
+      .order(dop: :desc)
   end
 
   def name_with_dop
@@ -122,14 +124,25 @@ class Purchase < ApplicationRecord
 
   def status_calc
     return 'expired' if self.adjust_restart?
+
     status_hash = self.status_hash
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
-    return 'expired' if status_hash[:attendance_confirmed_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
+    if status_hash[:attendance_confirmed_status] == 'exhausted' || status_hash[:validity_status] == 'expired'
+      return 'expired'
+    end
+
     freezed = freezed?(Date.today)
-    return 'provisionally expired (and frozen)' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired' && freezed
+    if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired' && freezed
+      return 'provisionally expired (and frozen)'
+    end
     return 'frozen' if freezed
-    return 'provisionally expired' if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired'
-    return 'booked first class' if status_hash[:attendance_confirmed_status] == 'not started' && status_hash[:attendance_provisional_status] != 'not started'
+    if status_hash[:attendance_provisional_status] == 'exhausted' && status_hash[:validity_status] != 'expired'
+      return 'provisionally expired'
+    end
+    if status_hash[:attendance_confirmed_status] == 'not started' && status_hash[:attendance_provisional_status] != 'not started'
+      return 'booked first class'
+    end
+
     'ongoing'
   end
 
@@ -160,6 +173,7 @@ class Purchase < ApplicationRecord
     return unless expired?
     return 'adjust & restart' if adjust_restart
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
+
     return 'max time period'
   end
 
@@ -167,11 +181,13 @@ class Purchase < ApplicationRecord
     return unless expired?
     return ar_date.strftime('%d %b %y') if adjust_restart
     return max_class_expiry_date.strftime('%d %b %y') if attendances.no_amnesty.confirmed.size == max_classes
+
     return expiry_date.strftime('%d %b %y')
   end
 
   def will_expire_on
     return nil unless provisionally_expired?
+
     attendances.no_amnesty.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
   end
 
@@ -180,23 +196,24 @@ class Purchase < ApplicationRecord
     return 'n/a' if attendances.no_amnesty.size.zero?
     # expiry date is undefined for dropins. Avoid unexpected issues by setting to a day in the future
     return Date.tomorrow if product.dropin?
+
     start_date = self.start_date_calc
     end_date = case product.validity_unit
-      when 'D'
-        start_date + product.validity_length.days
-      when 'W'
-        start_date + product.validity_length.weeks
-      when 'M'
-        start_date + product.validity_length.months
-    end
+               when 'D'
+                 start_date + product.validity_length.days
+               when 'W'
+                 start_date + product.validity_length.weeks
+               when 'M'
+                 start_date + product.validity_length.months
+               end
 
-      added_days = adjustments.map { |a| a.adjustment }.inject(0, :+).days
-      frozen_days = freezes.map { |f| f.duration}.inject(0, :+).days
-      penalty_days = penalties.map { |p| p.amount}.inject(0, :+).days
-      # end_date formulae above overstate by 1 day so deduct 1
-      # to_date changes ActiveSupport::TimeWithZone object to Date object
-      # as 'Sun, 12 Dec 2021' preferred to 'Sun, 12 Dec 2021 10:30:00.000000000 UTC +00:00'
-      (end_date + added_days + frozen_days - penalty_days - 1.day).to_date
+    added_days = adjustments.map(&:adjustment).inject(0, :+).days
+    frozen_days = freezes.map(&:duration).inject(0, :+).days
+    penalty_days = penalties.map(&:amount).inject(0, :+).days
+    # end_date formulae above overstate by 1 day so deduct 1
+    # to_date changes ActiveSupport::TimeWithZone object to Date object
+    # as 'Sun, 12 Dec 2021' preferred to 'Sun, 12 Dec 2021 10:30:00.000000000 UTC +00:00'
+    (end_date + added_days + frozen_days - penalty_days - 1.day).to_date
   end
 
   def days_to_expiry
@@ -211,43 +228,50 @@ class Purchase < ApplicationRecord
   # for revenue cashflows
   def attendance_estimate
     return max_classes unless max_classes == 1000
-      case product.validity_unit
-        when 'D'
-          # probably no unlimited products with days but assume every day if so
-          return self.product.validity_length
-        when 'W'
-          # assume 6 classes per week when unlimited and product in weeks
-          return self.product.validity_length * 6
-        when 'M'
-          return self.product.validity_length * 20 unless self.product.validity_length == 1
-          25 # for 1M
-      end
+
+    case product.validity_unit
+    when 'D'
+      # probably no unlimited products with days but assume every day if so
+      return self.product.validity_length
+    when 'W'
+      # assume 6 classes per week when unlimited and product in weeks
+      return self.product.validity_length * 6
+    when 'M'
+      return self.product.validity_length * 20 unless self.product.validity_length == 1
+
+      25 # for 1M
+    end
   end
 
   def expiry_revenue
     return 0 unless expired?
-    attendance_revenue = attendances.no_amnesty.confirmed.map { |a| a.revenue }.inject(0, :+)
+
+    attendance_revenue = attendances.no_amnesty.confirmed.map(&:revenue).inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
     return payment - attendance_revenue unless adjust_restart?
+
     ar_payment - attendance_revenue
   end
 
   def start_to_expiry
     status_hash = self.status_hash
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
+
     return "#{start_date.strftime('%d %b %y')} - #{expiry_date.strftime('%d %b %y')}"
   end
 
   def attendances_remain(provisional: true, unlimited_text: true)
     attendance_count = provisional ? attendances.no_amnesty.size : attendances.no_amnesty.confirmed.size
     return 'unlimited' if max_classes == 1000 && unlimited_text == true
+
     max_classes - attendance_count
   end
 
   # apply to ongoing packages. Not designed to work sensibly with an expired purchase
   def close_to_expiry?(days_remain: 5, attendances_remain: 2)
-    #return false unless ongoing || booked first class || package
+    # return false unless ongoing || booked first class || package
     return true if attendances_remain(unlimited_text: false) < attendances_remain || days_to_expiry < days_remain
+
     false
   end
 
@@ -301,38 +325,40 @@ class Purchase < ApplicationRecord
   # end
 
   private
-    def max_class_expiry_date
-      attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max
-    end
 
-    def attendance_status(attendance_count, max_classes)
-      return 'not started' if attendance_count.zero?
-      return 'unlimited' if max_classes == 1000
-      #should this be max_classes - attendance_count
-      return attendance_count if attendance_count < max_classes
-      'exhausted'
-    end
+  def max_class_expiry_date
+    attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max
+  end
 
-    def validity_status(attendance_count, expiry_date)
-      return 'not started' if attendance_count.zero?
-      return 'expired' if Date.today() > expiry_date
-      expiry_date - start_date_calc
-    end
+  def attendance_status(attendance_count, max_classes)
+    return 'not started' if attendance_count.zero?
+    return 'unlimited' if max_classes == 1000
+    # should this be max_classes - attendance_count
+    return attendance_count if attendance_count < max_classes
 
-    def status_hash
-      attendance_provisional_count = self.attendances.no_amnesty.size
-      attendance_confirmed_count = self.attendances.no_amnesty.confirmed.size
-      { attendance_provisional_status: attendance_status(attendance_provisional_count, max_classes),
-        attendance_confirmed_status: attendance_status(attendance_confirmed_count, max_classes),
-        validity_status: validity_status(attendance_provisional_count, self.expiry_date_calc),
-      }
-    end
+    'exhausted'
+  end
 
-    def fitternity_payment
-        if payment_mode == 'Fitternity'
-          # ong_fit_packages = Fitternity.select { |f| !(f.expired?) }
-          errors.add(:base, "No ongoing Fitternity package") if Fitternity.ongoing.size.zero?
-          return
-        end
+  def validity_status(attendance_count, expiry_date)
+    return 'not started' if attendance_count.zero?
+    return 'expired' if Date.today() > expiry_date
+
+    expiry_date - start_date_calc
+  end
+
+  def status_hash
+    attendance_provisional_count = self.attendances.no_amnesty.size
+    attendance_confirmed_count = self.attendances.no_amnesty.confirmed.size
+    { attendance_provisional_status: attendance_status(attendance_provisional_count, max_classes),
+      attendance_confirmed_status: attendance_status(attendance_confirmed_count, max_classes),
+      validity_status: validity_status(attendance_provisional_count, self.expiry_date_calc), }
+  end
+
+  def fitternity_payment
+    if payment_mode == 'Fitternity'
+      # ong_fit_packages = Fitternity.select { |f| !(f.expired?) }
+      errors.add(:base, 'No ongoing Fitternity package') if Fitternity.ongoing.size.zero?
+      return
     end
+  end
 end

@@ -4,12 +4,12 @@ class Client::ClientsController < ApplicationController
   def show
     clear_session(:purchaseid)
     session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'Ongoing'
-      if session[:purchaseid] == 'All'
-      @purchases = @client.purchases.order_by_dop
-      else
-      # easier than using with_statuses[all except expired] scope
-      @purchases = @client.purchases.order_by_dop.where.not(status: 'expired')
-    end if
+    @purchases = if session[:purchaseid] == 'All'
+                   @client.purchases.order_by_dop
+                 else
+                   # easier than using with_statuses[all except expired] scope
+                   @client.purchases.order_by_dop.where.not(status: 'expired')
+                 end
     @client_hash = {
       attendances: @client.attendances.size,
       last_class: @client.last_class,
@@ -17,7 +17,7 @@ class Client::ClientsController < ApplicationController
       date_last_purchase_expiry: @client.last_purchase&.expiry_date
     }
 
-  @products_purchased = ['Ongoing', 'All']
+    @products_purchased = %w[Ongoing All]
   end
 
   def book
@@ -34,5 +34,4 @@ class Client::ClientsController < ApplicationController
     @client = Client.find(params[:id])
     redirect_to login_path unless current_account?(@client.account)
   end
-
 end

@@ -1,24 +1,25 @@
 class Admin::PartnersController < Admin::BaseController
-  skip_before_action :admin_account, only: %i[ show edit update destroy ]
-  before_action :correct_account_or_superadmin, only: %i[ show ]
-  before_action :superadmin_account, only: %i[ edit update destroy ]
+  skip_before_action :admin_account, only: %i[show edit update destroy]
+  before_action :correct_account_or_superadmin, only: %i[show]
+  before_action :superadmin_account, only: %i[edit update destroy]
   #  before_action :layout_set, only: [:show]
-  before_action :set_partner, only: %i[ show edit update destroy ]
+  before_action :set_partner, only: %i[show edit update destroy]
 
   def index
     @partners = Partner.all
   end
 
   def show
-    session[:revenue_period] = params[:revenue_period] || session[:revenue_period] || Date.today.beginning_of_month.strftime('%b %Y')
+    session[:revenue_period] =
+      params[:revenue_period] || session[:revenue_period] || Date.today.beginning_of_month.strftime('%b %Y')
     start_date = Date.parse(session[:revenue_period])
     end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
     @total_share = 0
-    @partner_share={}
+    @partner_share = {}
     @partner.workout_groups.each do |wg|
       attendances_in_period = Attendance.confirmed.by_workout_group(wg.name, start_date, end_date)
-      base_revenue = attendances_in_period.map { |a| a.revenue }.inject(0, :+)
-      expiry_revenue =  wg.expiry_revenue(session[:revenue_period])
+      base_revenue = attendances_in_period.map(&:revenue).inject(0, :+)
+      expiry_revenue = wg.expiry_revenue(session[:revenue_period])
       gross_revenue = base_revenue + expiry_revenue
       gst = gross_revenue * (1 - 1 / (1 + wg.gst_rate))
       net_revenue = gross_revenue - gst
@@ -50,8 +51,10 @@ class Admin::PartnersController < Admin::BaseController
 
     respond_to do |format|
       if @partner.save
-        format.html { redirect_to admin_partners_path
-                      flash[:success] = "Partner was successfully created" }
+        format.html do
+          redirect_to admin_partners_path
+          flash[:success] = 'Partner was successfully created'
+        end
         format.json { render :show, status: :created, location: @partner }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -63,8 +66,10 @@ class Admin::PartnersController < Admin::BaseController
   def update
     respond_to do |format|
       if @partner.update(partner_params)
-        format.html { redirect_to admin_partners_path
-                      flash[:success] = "Partner was successfully updated" }
+        format.html do
+          redirect_to admin_partners_path
+          flash[:success] = 'Partner was successfully updated'
+        end
         format.json { render :show, status: :ok, location: @partner }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -76,35 +81,38 @@ class Admin::PartnersController < Admin::BaseController
   def destroy
     @partner.destroy
     respond_to do |format|
-      format.html { redirect_to admin_partners_path
-                    flash[:success] = "Expense was successfully updated" }
+      format.html do
+        redirect_to admin_partners_path
+        flash[:success] = 'Expense was successfully updated'
+      end
       format.json { head :no_content }
     end
   end
 
   private
-    def set_partner
-      @partner = Partner.find(params[:id])
-    end
 
-    def partner_params
-      params.require(:partner).permit(:first_name, :last_name, :email, :phone)
-    end
+  def set_partner
+    @partner = Partner.find(params[:id])
+  end
 
-    def correct_account_or_superadmin
-      redirect_to login_path unless Partner.find(params[:id]).account == current_account || logged_in_as?('superadmin')
-    end
+  def partner_params
+    params.require(:partner).permit(:first_name, :last_name, :email, :phone)
+  end
 
-    def superadmin_account
-      redirect_to login_path unless logged_in_as?('superadmin')
-    end
+  def correct_account_or_superadmin
+    redirect_to login_path unless Partner.find(params[:id]).account == current_account || logged_in_as?('superadmin')
+  end
 
-    # def layout_set
-    #   if current_account.superadmin?
-    #     self.class.layout 'admin'
-    #   else
-    #     # fails without self.class
-    #     self.class.layout 'admin'
-    #   end
-    # end
+  def superadmin_account
+    redirect_to login_path unless logged_in_as?('superadmin')
+  end
+
+  # def layout_set
+  #   if current_account.superadmin?
+  #     self.class.layout 'admin'
+  #   else
+  #     # fails without self.class
+  #     self.class.layout 'admin'
+  #   end
+  # end
 end

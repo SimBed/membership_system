@@ -16,5 +16,4 @@ class Admin::BaseController < ApplicationController
     #     expiry_date: p.expiry_date_calc,
     #     start_date: p.start_date_calc })
   end
-
 end

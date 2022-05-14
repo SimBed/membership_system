@@ -53,29 +53,25 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
               payment: 1000,
               dop: '2022-02-15',
               payment_mode: 'Cash',
-              price_id: @purchase1.price.id
-             }
-            }
-        end
+              price_id: @purchase1.price.id } }
       end
     end
+  end
 
   test 'should redirect update when not logged in as junioradmin or more senior' do
     original_payment = @purchase1.payment
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
-    log_in_as(account_holder)
-    patch admin_purchase_path(@purchase1), params:
-     { purchase:
-        { client_id: @purchase1.client_id,
-          product_id: @purchase1.product_id,
-          payment: @purchase1.payment + 500,
-          dop: @purchase1.dop,
-          payment_mode: @purchase1.payment_mode,
-          price_id: @purchase1.price_id
-         }
-        }
-    assert_equal original_payment, @purchase1.reload.payment
-    assert_redirected_to login_path
+      log_in_as(account_holder)
+      patch admin_purchase_path(@purchase1), params:
+       { purchase:
+          { client_id: @purchase1.client_id,
+            product_id: @purchase1.product_id,
+            payment: @purchase1.payment + 500,
+            dop: @purchase1.dop,
+            payment_mode: @purchase1.payment_mode,
+            price_id: @purchase1.price_id } }
+      assert_equal original_payment, @purchase1.reload.payment
+      assert_redirected_to login_path
     end
   end
 
@@ -87,5 +83,4 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
-
 end

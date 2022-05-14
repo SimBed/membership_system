@@ -18,35 +18,36 @@ class Admin::InstructorsController < Admin::BaseController
   def create
     @instructor = Instructor.new(instructor_params)
 
-      if @instructor.save
-        redirect_to admin_instructors_path
-        flash[:success] = "Instructor was successfully created"
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @instructor.save
+      redirect_to admin_instructors_path
+      flash[:success] = 'Instructor was successfully created'
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def update
-      if @instructor.update(instructor_params)
-        redirect_to admin_instructors_path
-        flash[:success] = "Instructor was successfully updated"
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @instructor.update(instructor_params)
+      redirect_to admin_instructors_path
+      flash[:success] = 'Instructor was successfully updated'
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
     @instructor.destroy
-      redirect_to admin_instructors_path
-      flash[:success] = "Instructor was successfully destroyed"
+    redirect_to admin_instructors_path
+    flash[:success] = 'Instructor was successfully destroyed'
   end
 
   private
-    def set_instructor
-      @instructor = Instructor.find(params[:id])
-    end
 
-    def instructor_params
-      params.require(:instructor).permit(:first_name, :last_name)
-    end
+  def set_instructor
+    @instructor = Instructor.find(params[:id])
+  end
+
+  def instructor_params
+    params.require(:instructor).permit(:first_name, :last_name)
+  end
 end

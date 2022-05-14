@@ -1,6 +1,10 @@
 class Wkclass < ApplicationRecord
   has_many :attendances, dependent: :destroy
-  has_many :confirmed_attendances, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"].reject { |a| a == 'booked'}).where.not(amnesty: true) }, class_name: 'Attendance'
+  has_many :confirmed_attendances, -> {
+                                     where(status: Rails.application.config_for(:constants)['attendance_statuses'].reject do |a|
+                                                     a == 'booked'
+                                                   end).where.not(amnesty: true)
+                                   }, class_name: 'Attendance'
   has_many :provisional_attendances, -> { where.not(amnesty: true) }, class_name: 'Attendance'
   has_many :physical_attendances, -> { where(status: 'attended') }, class_name: 'Attendance'
   has_many :purchases, through: :attendances
@@ -16,15 +20,17 @@ class Wkclass < ApplicationRecord
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
   scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
   scope :not_between, ->(start_date, end_date) { where.not({ start_time: (start_date..end_date) }) }
-  scope :todays_class, -> { where(start_time: Date.today.beginning_of_day..Date.today.end_of_day)}
-  scope :yesterdays_class, -> { where(start_time: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)}
-  scope :tomorrows_class, -> { where(start_time: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day)}
-  scope :on_date, ->(date) { where(start_time: date.beginning_of_day..date.end_of_day)}
+  scope :todays_class, -> { where(start_time: Date.today.beginning_of_day..Date.today.end_of_day) }
+  scope :yesterdays_class, -> { where(start_time: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day) }
+  scope :tomorrows_class, -> { where(start_time: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day) }
+  scope :on_date, ->(date) { where(start_time: date.beginning_of_day..date.end_of_day) }
   scope :past, -> { where('start_time < ?', Time.now) }
   scope :future, -> { where('start_time > ?', Time.now) }
   visibility_window = 2.hours
   advance_days = 3
-  scope :in_booking_visibility_window, -> { where({ start_time: ( (Time.now - visibility_window)..Date.tomorrow.advance(days: advance_days).end_of_day.to_time) })}
+  scope :in_booking_visibility_window, -> {
+                                         where({ start_time: ((Time.now - visibility_window)..Date.tomorrow.advance(days: advance_days).end_of_day.to_time) })
+                                       }
   cancellation_window = 2.hours
   scope :in_cancellation_window, -> { where('start_time > ?', Time.now + cancellation_window) }
   scope :future_and_recent, -> { where('start_time > ?', Time.now - cancellation_window) }
@@ -35,25 +41,27 @@ class Wkclass < ApplicationRecord
 
   def self.show_in_bookings_for(client)
     Wkclass.in_booking_visibility_window
-    .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
-    .where("clients.id": client.id)
-    .merge(Purchase.not_fully_expired)
-    #.where.not(["attendances.status = ?", 'booked'])
+           .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
+           .where("clients.id": client.id)
+           .merge(Purchase.not_fully_expired)
+    # .where.not(["attendances.status = ?", 'booked'])
     # .joins(attendances: [purchase: [:client]])
     # .where.not(["clients.id = ? AND attendances.status = ?", client.id, 'booked'])
   end
 
-  def booking_on_same_day?(client)
-    bookings_on_same_day =
-    Wkclass.where.not(id: self.id).on_date(self.start_time.to_date).joins(attendances: [purchase: [:client]])
-    .where("clients.id = ? AND attendances.status IN (?)", client.id, Rails.application.config_for(:constants)["attendance_status_cant_book_sameday"])
-    return false if bookings_on_same_day.empty?
+  # not allowed 2 physical attendances on same day. Used in already_booked_or_attended attendance controller callback
+  def booked_or_attended_on_same_day?(client)
+    bookings_attendances_on_same_day =
+      Wkclass.where.not(id: self.id).on_date(self.start_time.to_date).joins(attendances: [purchase: [:client]])
+             .where('clients.id = ? AND attendances.status IN (?)', client.id, ['booked', 'attended'])
+    return false if bookings_attendances_on_same_day.empty?
+
     return true
   end
 
   def self.not_already_booked_by2(client)
     Wkclass.future_and_recent.left_joins(attendances: [purchase: [:client]])
-    .where.not("clients.id = ? AND attendances.status = ?", client.id, 'booked').or("clients.id IS ?", nil)
+           .where.not('clients.id = ? AND attendances.status = ?', client.id, 'booked').or('clients.id IS ?', nil)
   end
 
   def self.not_already_booked_by(client)
@@ -65,7 +73,7 @@ class Wkclass < ApplicationRecord
            AND NOT (clients.id = #{client.id} AND attendances.status = 'booked')
            OR clients.id IS NULL;"
     wkclasses = ActiveRecord::Base.connection.exec_query(sql)
-    Wkclass.where(id: wkclasses.to_a.map {|r| r['id']})
+    Wkclass.where(id: wkclasses.to_a.map { |r| r['id'] })
   end
 
   # spent ages trying to work out why a.merge(b) wouldn't work (gave nil result).
@@ -75,8 +83,8 @@ class Wkclass < ApplicationRecord
   end
 
   def self.bookable_by(client)
-    self.potentially_bookable_by(client).select do |wkclass|
-      !wkclass.day_already_has_booking_by(client)
+    self.potentially_bookable_by(client).reject do |wkclass|
+      wkclass.day_already_has_booking_by(client)
     end
   end
 
@@ -84,12 +92,12 @@ class Wkclass < ApplicationRecord
     client.attendances.no_amnesty.map do |a|
       a.start_time.to_date
     end
-    .include?(self.start_time.to_date)
+          .include?(self.start_time.to_date)
   end
 
   def self.in_workout_group(workout_group_name)
-     joins(workout: [rel_workout_group_workouts: [:workout_group]])
-    .where("workout_groups.name = ?", "#{workout_group_name}")
+    joins(workout: [rel_workout_group_workouts: [:workout_group]])
+      .where(workout_groups: { name: workout_group_name.to_s })
   end
 
   def date
@@ -109,7 +117,7 @@ class Wkclass < ApplicationRecord
   end
 
   def revenue
-    attendances.confirmed.map { |a| a.revenue }.inject(0, :+)
+    attendances.confirmed.map(&:revenue).inject(0, :+)
   end
 
   # Use a class method with an argument to call send_reminder method rather than call send_reminder directly
@@ -119,13 +127,13 @@ class Wkclass < ApplicationRecord
     def send_reminder(id)
       find(id).send_reminder
     end
-    handle_asynchronously :send_reminder, :run_at => Proc.new { Time.now + 30.seconds }
+    handle_asynchronously :send_reminder, run_at: proc { Time.zone.now + 30.seconds }
   end
 
   def send_reminder
     file_path = "#{Rails.root}/delayed.txt"
     File.open(file_path, 'w') do |file|
-      file.write("delayed job processing at #{Time.now}")
+      file.write("delayed job processing at #{Time.zone.now}")
     end
     # Wkclass.last.update(instructor_cost:100)
     # account_sid = Rails.configuration.twilio[:account_sid]
@@ -143,27 +151,25 @@ class Wkclass < ApplicationRecord
     #     )
     #   end
   end
-    # handle_asynchronously :send_reminder, :run_at => Proc.new { |i| i.when_to_run }
+  # handle_asynchronously :send_reminder, :run_at => Proc.new { |i| i.when_to_run }
 
-
-    # def when_to_run
-    #   minutes_before_class = 60.minutes
-    #   start_time - minutes_before_class
-    # end
+  # def when_to_run
+  #   minutes_before_class = 60.minutes
+  #   start_time - minutes_before_class
+  # end
   private
-    def instructor_rate_exists
-      errors.add(:base, "Instructor does not have a rate") if Instructor.exists?(instructor_id) && instructor.current_rate.nil?
-    end
 
-    def unique_workout_time_instructor_combo
-      wkclass = Wkclass.where(["workout_id = ? and start_time = ? and instructor_id = ?", workout_id, start_time, instructor_id])
-      wkclass.each do |w|
-        if id != wkclass.first.id
-          errors.add(:base, "A class for this workout, instructor and time already exists") if wkclass.present?
-          return
-        end
-      end
-    end
+  def instructor_rate_exists
+    return unless Instructor.exists?(instructor_id) && instructor.current_rate.nil?
 
+    errors.add(:base, 'Instructor does not have a rate')
+  end
 
+  def unique_workout_time_instructor_combo
+    wkclass = Wkclass.where(['workout_id = ? and start_time = ? and instructor_id = ?', workout_id, start_time,
+                             instructor_id]).first
+    return if wkclass.blank?
+
+    errors.add(:base, 'A class for this workout, instructor and time already exists') unless id == wkclass.id
+  end
 end

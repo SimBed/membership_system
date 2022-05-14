@@ -7,6 +7,7 @@ class WorkoutGroup < ApplicationRecord
   has_many :rel_workout_group_workouts, dependent: :destroy
   has_many :workouts, through: :rel_workout_group_workouts
   attr_accessor :workout_ids
+
   validates :name, presence: true
   validates :partner_share, presence: true
   validates :workout_ids, presence: true
@@ -16,7 +17,8 @@ class WorkoutGroup < ApplicationRecord
 
   def self.includes_workout_of(wkclass)
     joins(rel_workout_group_workouts: [:workout])
-    .where("Workouts.name = ?", "#{wkclass.name}")
+      .where(workouts: { name: wkclass.name.to_s })
+    # .where("Workouts.name = ?", "#{wkclass.name}")
   end
 
   def workout_list
@@ -24,8 +26,9 @@ class WorkoutGroup < ApplicationRecord
   end
 
   def gst_rate
-    return 0 if !gst_applies
-    Rails.application.config_for(:constants)["gst_rate"].first.to_f / 100
+    return 0 unless gst_applies
+
+    Rails.application.config_for(:constants)['gst_rate'].first.to_f / 100
   end
 
   def attendances_in(revenue_date)
@@ -33,7 +36,7 @@ class WorkoutGroup < ApplicationRecord
   end
 
   def expiry_revenue(revenue_date)
-    purchases.select { |p| p.expired_in?(revenue_date) }.map { |p| p.expiry_revenue }.inject(0, :+)
+    purchases.select { |p| p.expired_in?(revenue_date) }.map(&:expiry_revenue).inject(0, :+)
   end
 
   def create_rel_workout_group_workout
@@ -42,7 +45,7 @@ class WorkoutGroup < ApplicationRecord
 
   def update_rel_workout_group_workout
     # toimprove
-    rel_workout_group_workouts.each { |rel| rel.destroy }
+    rel_workout_group_workouts.each(&:destroy)
     workout_ids.each { |wid| RelWorkoutGroupWorkout.create(workout_group_id: id, workout_id: wid) }
   end
 end

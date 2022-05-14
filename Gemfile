@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.1'
 gem 'delayed_job_active_record'
-gem "daemons"
+gem 'daemons'
 gem 'twilio-ruby'
 gem 'bcrypt'
 gem 'kaminari'
@@ -35,7 +35,7 @@ group :development do
   gem 'web-console', '>= 4.1.0'
   # Display performance information such as SQL time and flame graphs for each request in your browser.
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
-  # DPS this gem causes an unwanted timer in top left of browser 
+  # DPS this gem causes an unwanted timer in top left of browser
   # https://stackoverflow.com/questions/65589200/how-to-remove-the-top-left-timer-counter-in-react-web-app
   # gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'

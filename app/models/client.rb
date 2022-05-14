@@ -18,19 +18,20 @@ class Client < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validates :account, presence: true, if: :account_id
   scope :order_by_name, -> { order(:first_name, :last_name) }
-  scope :name_like, ->(name) { where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
+  scope :name_like, ->(name) { where('first_name ILIKE ? OR last_name ILIKE ?', "%#{name}%", "%#{name}%") }
   # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
-  scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: {id: nil}) }
+  scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: { id: nil }) }
   scope :hot, -> { where(hotlead: true) }
   # cold failed as a class method (didn't mix well with Client.includes(:account) in the controller. Don't understand why.)
-  scope :cold, -> { clients = Client
-                      .select('clients.id', 'max(start_time) as max')
-                      .joins(purchases: [attendances: [:wkclass]])
-                      .group('clients.id')
-                      .having("max(start_time) < ?", 3.months.ago)
-                    Client.where(id: clients.map(&:id))
-                  }
-  scope :attendances_not_cancelled_early, -> { where("attendances.status != 'cancelled early'") }                
+  scope :cold, -> {
+                 clients = Client
+                           .select('clients.id', 'max(start_time) as max')
+                           .joins(purchases: [attendances: [:wkclass]])
+                           .group('clients.id')
+                           .having('max(start_time) < ?', 3.months.ago)
+                 Client.where(id: clients.map(&:id))
+               }
+  scope :attendances_not_cancelled_early, -> { where("attendances.status != 'cancelled early'") }
 
   paginates_per 20
 
@@ -46,6 +47,7 @@ class Client < ApplicationRecord
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?
+
     date_of_last_class < 3.months.ago
   end
 
@@ -70,22 +72,23 @@ class Client < ApplicationRecord
   end
 
   private
-    def downcase_email
-      self.email = email.downcase
-    end
 
-    def full_name_must_be_unique
-      # complicated due to situation on update. There will of course be one record in the database
-      # with the relevant name on update (the record we are updating) and we don't want its presence
-      # to trigger warnings. We don't however want an exisitng record to have its name changed to
-      # a name that is the same of a (different) already existing record. Note the id of a new record
-      # (not yet saved) will be nil (so won't be equal to the id of any saved record.)
-      client = Client.where(["first_name = ? and last_name = ?", first_name, last_name])
-      client.each do |c|
-        if id != client.first.id
-          errors.add(:base, "Client named #{first_name} #{last_name} already exists") if client.present?
+  def downcase_email
+    self.email = email.downcase
+  end
+
+  def full_name_must_be_unique
+    # complicated due to situation on update. There will of course be one record in the database
+    # with the relevant name on update (the record we are updating) and we don't want its presence
+    # to trigger warnings. We don't however want an exisitng record to have its name changed to
+    # a name that is the same of a (different) already existing record. Note the id of a new record
+    # (not yet saved) will be nil (so won't be equal to the id of any saved record.)
+    client = Client.where(['first_name = ? and last_name = ?', first_name, last_name])
+    client.each do |c|
+      if id != client.first.id
+        errors.add(:base, "Client named #{first_name} #{last_name} already exists") if client.present?
         return
-        end
       end
     end
+  end
 end

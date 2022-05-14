@@ -15,5 +15,4 @@ class InstructorRateTest < ActiveSupport::TestCase
     @instructor_rate.instructor_id = 4000
     refute @instructor_rate.valid?
   end
-
 end

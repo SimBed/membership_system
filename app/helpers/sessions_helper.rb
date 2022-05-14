@@ -1,5 +1,4 @@
 module SessionsHelper
-
   def log_in(account)
     session[:account_id] = account.id
   end
@@ -89,7 +88,6 @@ module SessionsHelper
   end
 
   def logged_in_as?(*ac_types)
-    logged_in? && ac_types.map{ |ac_type| current_account.ac_type == ac_type }.include?(true)
+    logged_in? && ac_types.map { |ac_type| current_account.ac_type == ac_type }.include?(true)
   end
-
 end

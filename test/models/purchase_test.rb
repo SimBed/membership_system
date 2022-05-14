@@ -111,7 +111,7 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'revenue_for_class method' do
-    assert_equal 12750 / 60, @purchase_package.revenue_for_class(@purchase_package.attendances.first.wkclass)
+    assert_equal 12_750 / 60, @purchase_package.revenue_for_class(@purchase_package.attendances.first.wkclass)
     assert_equal 0, @purchase_dropin.revenue_for_class(@wkclass1)
     assert_equal 6000 / 8, @purchase_fixed.revenue_for_class(@purchase_fixed.attendances.last.wkclass)
   end
@@ -122,7 +122,7 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'available_for_booking' do
-    travel_to (@tomorrows_class_early.start_time.beginning_of_day)
+    travel_to(@tomorrows_class_early.start_time.beginning_of_day)
     assert_equal 343, Purchase.available_for_booking(@tomorrows_class_early, @client).id
   end
 
@@ -140,10 +140,10 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'freezed? method' do
-    refute @purchase_package.freezed?(Date.today)
-    refute @purchase_dropin.freezed?(Date.today)
-    refute @purchase_dropin2.freezed?(Date.today)
-    refute @purchase_fixed.freezed?(Date.today)
+    refute @purchase_package.freezed?(Time.zone.today)
+    refute @purchase_dropin.freezed?(Time.zone.today)
+    refute @purchase_dropin2.freezed?(Time.zone.today)
+    refute @purchase_fixed.freezed?(Time.zone.today)
   end
 
   test 'expired_in? method' do
@@ -181,7 +181,6 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal Date.parse('21 Mar 2022'), @purchase_fixed.expiry_date_calc
   end
 
-
   test 'days_to_expiry method' do
     assert_equal 40, @purchase_package.days_to_expiry
     assert_equal 1000, @purchase_dropin.days_to_expiry
@@ -199,10 +198,10 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'start_to_expiry method' do
-    assert_equal "25 Jan 22 - 27 Apr 22", @purchase_package.start_to_expiry
-    assert_equal "25 Feb 22 - 25 Feb 22", @purchase_dropin.start_to_expiry
-    assert_equal "not started", @purchase_dropin2.start_to_expiry
-    assert_equal "15 Feb 22 - 25 Mar 22", @purchase_fixed.start_to_expiry
+    assert_equal '25 Jan 22 - 27 Apr 22', @purchase_package.start_to_expiry
+    assert_equal '25 Feb 22 - 25 Feb 22', @purchase_dropin.start_to_expiry
+    assert_equal 'not started', @purchase_dropin2.start_to_expiry
+    assert_equal '15 Feb 22 - 25 Mar 22', @purchase_fixed.start_to_expiry
   end
 
   test 'attendances_remain method' do
@@ -220,5 +219,4 @@ class PurchaseTest < ActiveSupport::TestCase
     assert @purchase_dropin2.close_to_expiry?
     refute @purchase_fixed.close_to_expiry?
   end
-
 end

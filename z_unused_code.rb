@@ -24,7 +24,6 @@
 #   ActiveRecord::Base.connection.exec_query(sql)
 # end
 
-
 # -------------from Attendance.rb
 # def self.by_workout_group(workout_group, start_date, end_date)
 #     attendance_ids = WorkoutGroup.joins(products: [purchases: [attendances: [:wkclass]]])
@@ -147,7 +146,7 @@
 #           }
 #   end
 
-#AttendancesController
+# AttendancesController
 # refactored to request.get?
 # @wkclass = if params.has_key?(:attendance) && params[:attendance].has_key?(:wkclass_id)
 #           # if create

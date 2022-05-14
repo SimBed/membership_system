@@ -10,19 +10,21 @@ class Attendance < ApplicationRecord
   delegate :client, to: :purchase
   delegate :name, to: :client
   delegate :product, to: :purchase
-  scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window)}
+  scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window) }
   scope :no_amnesty, -> { where.not(amnesty: true) }
-  scope :confirmed, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"].reject { |a| a == 'booked'}) }
+  scope :confirmed, -> { where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']) }
   # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }
-  scope :cant_rebook, -> { where(status: Rails.application.config_for(:constants)["attendance_status_cant_rebook"]) }
+  scope :cant_rebook, -> {
+                        where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['cancelled early', 'cancelled late'])
+                      }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
-  validates :status, inclusion: { in: Rails.application.config_for(:constants)["attendance_statuses"] }
+  validates :status, inclusion: { in: Rails.application.config_for(:constants)['attendance_statuses'] }
 
   def self.applicable_to(wkclass, client)
-     joins(:wkclass).where("wkclasses.id = ?", wkclass.id)
-    .joins([purchase: [:client]])
-    .where("clients.id = ?", client.id)
-    .first
+    joins(:wkclass).where(wkclasses: { id: wkclass.id })
+                   .joins([purchase: [:client]])
+                   .where(clients: { id: client.id })
+                   .first
   end
 
   def revenue
@@ -34,27 +36,27 @@ class Attendance < ApplicationRecord
   end
 
   def self.by_status(wkclass, status)
-     # sort_order = Rails.application.config_for(:constants)["attendance_status"]
-     joins(:wkclass, purchase: [:client])
-    .where(wkclasses: {id: wkclass.id})
-    .where(status: status)
-    .order(:first_name)
+    # sort_order = Rails.application.config_for(:constants)["attendance_status"]
+    joins(:wkclass, purchase: [:client])
+      .where(wkclasses: { id: wkclass.id })
+      .where(status: status)
+      .order(:first_name)
     # .select('attendances.status', 'clients.first_name')
-    #.to_a.sort_by { |a| [sort_order.index(a.status), a.first_name] }
+    # .to_a.sort_by { |a| [sort_order.index(a.status), a.first_name] }
   end
 
   def self.by_workout_group(workout_group_name, start_date, end_date)
-      joins(:wkclass, purchase: [product: [:workout_group]])
-     .merge(Wkclass.between(start_date, end_date))
-     .where(workout_group_condition(workout_group_name))
-     .order(:start_time)
+    joins(:wkclass, purchase: [product: [:workout_group]])
+      .merge(Wkclass.between(start_date, end_date))
+      .where(workout_group_condition(workout_group_name))
+      .order(:start_time)
   end
 
   private
-    # https://api.rubyonrails.org/v6.1.4/classes/ActiveRecord/QueryMethods.html#method-i-where
-    # If an array is passed, then the first element of the array is treated as a template, and the remaining elements are inserted into the template to generate the condition.
-    def self.workout_group_condition(selection)
-      ["workout_groups.name = ?", "#{selection}"] unless selection == 'All'
-    end
 
+  # https://api.rubyonrails.org/v6.1.4/classes/ActiveRecord/QueryMethods.html#method-i-where
+  # If an array is passed, then the first element of the array is treated as a template, and the remaining elements are inserted into the template to generate the condition.
+  def self.workout_group_condition(selection)
+    ['workout_groups.name = ?', selection.to_s] unless selection == 'All'
+  end
 end

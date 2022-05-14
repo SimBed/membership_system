@@ -11,7 +11,8 @@ class Freeze < ApplicationRecord
   end
 
   private
+
   def duration_length
-    errors.add(:base, "must be 5 days or more") if duration < 5
+    errors.add(:base, 'must be 5 days or more') if duration < 5
   end
 end

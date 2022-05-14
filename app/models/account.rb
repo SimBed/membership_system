@@ -2,6 +2,7 @@ class Account < ApplicationRecord
   has_many :clients
   has_many :partners
   attr_accessor :remember_token, :reset_token
+
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
   validates :email, presence: true, length: { maximum: 255 },
@@ -46,7 +47,7 @@ class Account < ApplicationRecord
 
   def self.password_wizard(n)
     # I character appears ambiguous in whatsapp text. Avoid confusion by removing
-    ('A'..'L').reject {|letter| letter == 'I'}
+    ('A'..'L').reject { |letter| letter == 'I' }
               .concat(('m'..'z').to_a)
               .concat((1..9).to_a)
               .concat((1..9).to_a).sample(n).join
@@ -54,7 +55,7 @@ class Account < ApplicationRecord
 
   private
 
-    def downcase_email
-      self.email = email.downcase
-    end
+  def downcase_email
+    self.email = email.downcase
+  end
 end

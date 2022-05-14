@@ -16,14 +16,14 @@ class WkclassTest < ActiveSupport::TestCase
     assert @wkclass.valid?
   end
 
-  test 'workout/time should be unique' do
+  test 'workout/time should be unique when creating new wkclass' do
     @duplicate_class = @wkclass.dup
     @wkclass.save
     refute @duplicate_class.valid?
   end
 
   test 'show_in_bookings_for' do
-    travel_to (@tomorrows_class_early.start_time.beginning_of_day)
+    travel_to(@tomorrows_class_early.start_time.beginning_of_day)
     assert_equal [569, 570, 548, 568], Wkclass.show_in_bookings_for(@client).pluck(:id)
   end
 end

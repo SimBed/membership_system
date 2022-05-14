@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class PenaltyForFixedTest < ActionDispatch::IntegrationTest
   def setup
@@ -10,7 +10,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     @wkclass3 = wkclasses(:wkclass_for_test3)
     @wkclass4 = wkclasses(:wkclass_for_test4)
     @admin = accounts(:admin)
-    travel_to (@tomorrows_class_early.start_time.beginning_of_day)
+    travel_to(@tomorrows_class_early.start_time.beginning_of_day)
   end
 
   test 'amnesty then class deduction after cancel fixed package late' do
@@ -19,7 +19,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    travel_to (@tomorrows_class_early.start_time - 10.minutes)
+    travel_to(@tomorrows_class_early.start_time - 10.minutes)
     # cancel class late
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
@@ -32,7 +32,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                          purchase_id: @purchase.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_late, @client)
-    travel_to (@tomorrows_class_late.start_time - 10.minutes)
+    travel_to(@tomorrows_class_late.start_time - 10.minutes)
     # cancel 2nd class late
     # the decuction is a class not a duration validity penalty
     assert_no_difference '@purchase.penalties.count' do
@@ -43,12 +43,12 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     assert_equal 1, @purchase.reload.attendances.size - @purchase.reload.attendances.no_amnesty.size
 
     # book a 3rd class
-    travel_to (@wkclass3.start_time.beginning_of_day)
+    travel_to(@wkclass3.start_time.beginning_of_day)
     post admin_attendances_path, params: { attendance: { wkclass_id: @wkclass3.id,
                                                          purchase_id: @purchase.id } }
 
     @attendance = Attendance.applicable_to(@wkclass3, @client)
-    travel_to (@wkclass3.start_time - 10.minutes)
+    travel_to(@wkclass3.start_time - 10.minutes)
     # cancel 3rd class late
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     assert_equal 3, @purchase.reload.late_cancels
@@ -61,7 +61,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    travel_to (@tomorrows_class_early.start_time - 10.minutes)
+    travel_to(@tomorrows_class_early.start_time - 10.minutes)
     # no show
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
@@ -72,11 +72,11 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     # book a 2nd class
     # fails because no show on same day prevents booking a second class - not as intended
     assert_difference '@purchase.attendances.size', 1 do
-    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
-                                                         purchase_id: @purchase.id } }
-                                                       end
+      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
+                                                           purchase_id: @purchase.id } }
+    end
     @attendance = Attendance.applicable_to(@tomorrows_class_late, @client)
-    travel_to (@tomorrows_class_late.start_time - 10.minutes)
+    travel_to(@tomorrows_class_late.start_time - 10.minutes)
     # no show a 2nd time
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }

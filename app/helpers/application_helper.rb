@@ -16,7 +16,8 @@ module ApplicationHelper
   end
 
   private
-    def months_between(a, b)
-      (a.beginning_of_month.to_date..b.to_date).select {|d| d.day == 1}.map { |d| d.strftime('%b %Y') }
-    end
+
+  def months_between(a, b)
+    (a.beginning_of_month.to_date..b.to_date).select { |d| d.day == 1 }.map { |d| d.strftime('%b %Y') }
+  end
 end

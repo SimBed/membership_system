@@ -49,25 +49,21 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
         post admin_fitternities_path, params:
          { fitternity:
             { max_classes: 100,
-              expiry_date: '2022-03-01'
-             }
-            }
-        end
+              expiry_date: '2022-03-01' } }
       end
     end
+  end
 
   test 'should redirect update when not logged in as admin or more senior' do
     original_max_classes = @fitternity.max_classes
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
-    log_in_as(account_holder)
-    patch admin_fitternity_path(@fitternity), params:
-     { fitternity:
-        { max_classes: @fitternity.max_classes + 100,
-          expiry_date: @fitternity.expiry_date
-         }
-        }
-    assert_equal original_max_classes, @fitternity.reload.max_classes
-    assert_redirected_to login_path
+      log_in_as(account_holder)
+      patch admin_fitternity_path(@fitternity), params:
+       { fitternity:
+          { max_classes: @fitternity.max_classes + 100,
+            expiry_date: @fitternity.expiry_date } }
+      assert_equal original_max_classes, @fitternity.reload.max_classes
+      assert_redirected_to login_path
     end
   end
 

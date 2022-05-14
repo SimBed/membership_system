@@ -1,10 +1,10 @@
 class Admin::ClientsController < Admin::BaseController
   # skip_before_action :admin_account, only: [:show]
-  skip_before_action :admin_account, only: %i[ index new edit create update clear_filters filter ]
-  before_action :junioradmin_account, only: %i[ index new edit create update clear_filters filter]
+  skip_before_action :admin_account, only: %i[index new edit create update clear_filters filter]
+  before_action :junioradmin_account, only: %i[index new edit create update clear_filters filter]
   # before_action :correct_account_or_admin, only: [:show]
   # before_action :layout_set, only: [:show]
-  before_action :set_client, only: %i[ show edit update destroy ]
+  before_action :set_client, only: %i[show edit update destroy]
 
   def index
     @clients = Client.includes(:account).order_by_name
@@ -19,7 +19,7 @@ class Admin::ClientsController < Admin::BaseController
     end
     respond_to do |format|
       format.html {}
-      format.js {render 'index.js.erb'}
+      format.js { render 'index.js.erb' }
       format.csv { send_data @clients.to_csv }
       format.xls
     end
@@ -30,21 +30,22 @@ class Admin::ClientsController < Admin::BaseController
     # show clientA, select one of clientA's purchases, return to client index, show client B
     clear_session(:purchaseid)
     session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'All'
+    if @client_hash = {
+    attendances: @client.attendances.size,
+    purchases: @client.purchases.size,
+    spend: @client.total_spend,
+    last_class: @client.last_class,
+    date_created: @client.created_at,
+    date_last_purchase_expiry: @client.last_purchase&.expiry_date
+  }
       if session[:purchaseid] == 'All'
-      @purchases = @client.purchases.order_by_dop
+        @purchases = @client.purchases.order_by_dop
       else
-      @purchases = [Purchase.find(session[:purchaseid])]
-    end if
-    @client_hash = {
-      attendances: @client.attendances.size,
-      purchases: @client.purchases.size,
-      spend: @client.total_spend,
-      last_class: @client.last_class,
-      date_created: @client.created_at,
-      date_last_purchase_expiry: @client.last_purchase&.expiry_date
-    }
+        @purchases = [Purchase.find(session[:purchaseid])]
+      end
+    end
 
-    @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id]  }
+    @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id] }
   end
 
   def new
@@ -56,21 +57,21 @@ class Admin::ClientsController < Admin::BaseController
 
   def create
     @client = Client.new(client_params)
-      if @client.save
-        redirect_to admin_clients_path
-        flash[:success] = "#{@client.name} was successfully added"
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @client.save
+      redirect_to admin_clients_path
+      flash[:success] = "#{@client.name} was successfully added"
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def update
-      if @client.update(client_params)
-        redirect_to admin_clients_path
-        flash[:success] = "#{@client.name} was successfully updated"
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @client.update(client_params)
+      redirect_to admin_clients_path
+      flash[:success] = "#{@client.name} was successfully updated"
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -95,40 +96,41 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   private
-    def set_client
-      @client = Client.find(params[:id])
-    end
 
-    def client_params
-      params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
-    end
+  def set_client
+    @client = Client.find(params[:id])
+  end
 
-    # def correct_account
-    #   redirect_to referrer unless Client.find(params[:id]).account == current_account
-    # end
-    #
-    # def correct_account_or_admin
-    #   redirect_to login_path unless Client.find(params[:id]).account == current_account || logged_in_as?('admin', 'superadmin')
-    # end
+  def client_params
+    params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
+  end
 
-    def handle_search_name
-      @clients = @clients.name_like(session[:search_client_name])
-    end
+  # def correct_account
+  #   redirect_to referrer unless Client.find(params[:id]).account == current_account
+  # end
+  #
+  # def correct_account_or_admin
+  #   redirect_to login_path unless Client.find(params[:id]).account == current_account || logged_in_as?('admin', 'superadmin')
+  # end
 
-    def handle_search
-      @clients = @clients.cold if session[:filter_cold].present?
-      @clients = @clients.enquiry if session[:filter_enquiry].present?
-      @clients = @clients.joins(:purchases).merge(Purchase.with_package).distinct if session[:filter_packagee].present?
-      @clients = @clients.hot if session[:filter_hot].present?
-    end
+  def handle_search_name
+    @clients = @clients.name_like(session[:search_client_name])
+  end
 
-    # def layout_set
-    #   if logged_in_as?('admin')
-    #     self.class.layout 'admin'
-    #   else
-    #     # fails without self.class. Solution given here but reason not known.
-    #     # https://stackoverflow.com/questions/33276915/undefined-method-layout-for
-    #     self.class.layout 'application'
-    #   end
-    # end
+  def handle_search
+    @clients = @clients.cold if session[:filter_cold].present?
+    @clients = @clients.enquiry if session[:filter_enquiry].present?
+    @clients = @clients.joins(:purchases).merge(Purchase.with_package).distinct if session[:filter_packagee].present?
+    @clients = @clients.hot if session[:filter_hot].present?
+  end
+
+  # def layout_set
+  #   if logged_in_as?('admin')
+  #     self.class.layout 'admin'
+  #   else
+  #     # fails without self.class. Solution given here but reason not known.
+  #     # https://stackoverflow.com/questions/33276915/undefined-method-layout-for
+  #     self.class.layout 'application'
+  #   end
+  # end
 end
