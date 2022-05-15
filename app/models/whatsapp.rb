@@ -8,7 +8,7 @@ class Whatsapp
   def send_whatsapp
     twilio_initialise
     client = Twilio::REST::Client.new(@account_sid, @auth_token)
-    body = self.send("body_#{@message_type}")
+    body = send("body_#{@message_type}")
     client.messages.create(
       from: "whatsapp:#{@from}",
       to: "whatsapp:#{@to}",

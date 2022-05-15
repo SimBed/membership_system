@@ -15,7 +15,7 @@ module AttendancesHelper
           message: :too_late },
         unsuccessful:
         { colour: :secondary,
-          message: :unsuccessful }, },
+          message: :unsuccessful } },
       update:
       { successful:
         { colour: :success,
@@ -46,7 +46,7 @@ module AttendancesHelper
           message: :unmodifiable },
         unsuccessful:
         { colour: :secondary,
-          message: :unsuccessful }, } }
+          message: :unsuccessful } } }
   end
 
   def successful(wkclass_name, wkclass_day)

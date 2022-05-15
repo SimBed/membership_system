@@ -36,7 +36,7 @@ class Auth::SessionsController < Auth::BaseController
     end
     if logged_in_as?('partner')
       redirect_to admin_partner_path(account.partners.first)
-      return
+      nil
     end
   end
 

@@ -14,7 +14,7 @@ class Attendance < ApplicationRecord
   scope :no_amnesty, -> { where.not(amnesty: true) }
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']) }
   # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }
-  scope :cant_rebook, -> {
+  scope :cant_rebook, lambda {
                         where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['cancelled early', 'cancelled late'])
                       }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
@@ -51,8 +51,6 @@ class Attendance < ApplicationRecord
       .where(workout_group_condition(workout_group_name))
       .order(:start_time)
   end
-
-  private
 
   # https://api.rubyonrails.org/v6.1.4/classes/ActiveRecord/QueryMethods.html#method-i-where
   # If an array is passed, then the first element of the array is treated as a template, and the remaining elements are inserted into the template to generate the condition.

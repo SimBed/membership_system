@@ -1,7 +1,7 @@
 class Fitternity < ApplicationRecord
   has_many :purchases
   has_many :attendances, through: :purchases
-  scope :ongoing, -> { all.select { |f| !(f.expired?) } }
+  scope :ongoing, -> { all.reject(&:expired?) }
 
   def started?
     !purchases.nil?
@@ -12,7 +12,7 @@ class Fitternity < ApplicationRecord
   end
 
   def past_expiry?
-    Date.today() > expiry_date
+    Date.today > expiry_date
   end
 
   def expired?

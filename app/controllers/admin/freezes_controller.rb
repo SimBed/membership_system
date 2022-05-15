@@ -1,8 +1,8 @@
 class Admin::FreezesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
-  before_action :set_freeze, only: %i[edit update destroy]
-  after_action -> { update_purchase_status([@purchase]) }, only: %i[create update destroy]
+  before_action :set_freeze, only: [:edit, :update, :destroy]
+  after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
 
   def new
     @freeze = Freeze.new
@@ -19,8 +19,7 @@ class Admin::FreezesController < Admin::BaseController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @freeze.update(freeze_params)

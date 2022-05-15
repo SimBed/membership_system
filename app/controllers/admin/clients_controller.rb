@@ -1,10 +1,10 @@
 class Admin::ClientsController < Admin::BaseController
   # skip_before_action :admin_account, only: [:show]
-  skip_before_action :admin_account, only: %i[index new edit create update clear_filters filter]
-  before_action :junioradmin_account, only: %i[index new edit create update clear_filters filter]
+  skip_before_action :admin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter]
+  before_action :junioradmin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter]
   # before_action :correct_account_or_admin, only: [:show]
   # before_action :layout_set, only: [:show]
-  before_action :set_client, only: %i[show edit update destroy]
+  before_action :set_client, only: [:show, :edit, :update, :destroy]
 
   def index
     @clients = Client.includes(:account).order_by_name
@@ -52,8 +52,7 @@ class Admin::ClientsController < Admin::BaseController
     @client = Client.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @client = Client.new(client_params)

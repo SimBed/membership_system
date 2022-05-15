@@ -1,8 +1,8 @@
 class Admin::WorkoutGroupsController < Admin::BaseController
   skip_before_action :admin_account, only: [:show, :index]
-  before_action :partner_or_admin_account, only: %i[index]
-  before_action :correct_account_or_superadmin, only: %i[show]
-  before_action :set_workout_group, only: %i[show edit update destroy]
+  before_action :partner_or_admin_account, only: [:index]
+  before_action :correct_account_or_superadmin, only: [:show]
+  before_action :set_workout_group, only: [:show, :edit, :update, :destroy]
 
   def index
     if logged_in_as?('partner')
@@ -27,7 +27,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     base_revenue = attendances_in_period.map(&:revenue).inject(0, :+)
     expiry_revenue = @workout_group.expiry_revenue(session[:revenue_period])
     gross_revenue = base_revenue + expiry_revenue
-    gst = gross_revenue * (1 - 1 / (1 + @workout_group.gst_rate))
+    gst = gross_revenue * (1 - (1 / (1 + @workout_group.gst_rate)))
     net_revenue = gross_revenue - gst
     @fixed_expenses = Expense.by_workout_group(@workout_group.name, start_date, end_date)
     total_fixed_expense = @fixed_expenses.map(&:amount).inject(0, :+)

@@ -1,12 +1,11 @@
 class Admin::WorkoutsController < Admin::BaseController
-  before_action :set_workout, only: %i[show edit update destroy]
+  before_action :set_workout, only: [:show, :edit, :update, :destroy]
 
   def index
     @workouts = Workout.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @workout = Workout.new

@@ -1,5 +1,5 @@
 class Admin::PricesController < Admin::BaseController
-  before_action :set_price, only: %i[edit update destroy]
+  before_action :set_price, only: [:edit, :update, :destroy]
 
   def new
     @price = Price.new
@@ -18,8 +18,7 @@ class Admin::PricesController < Admin::BaseController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @price.update(price_params)

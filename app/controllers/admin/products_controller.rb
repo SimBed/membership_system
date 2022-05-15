@@ -1,8 +1,8 @@
 class Admin::ProductsController < Admin::BaseController
-  skip_before_action :admin_account, only: %i[payment]
-  before_action :junioradmin_account, only: %i[payment]
-  before_action :set_product, only: %i[show edit update destroy]
-  after_action -> { update_purchase_status(@purchases) }, only: %i[update]
+  skip_before_action :admin_account, only: [:payment]
+  before_action :junioradmin_account, only: [:payment]
+  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  after_action -> { update_purchase_status(@purchases) }, only: [:update]
   def index
     @products = Product.order_by_name_max_classes
   end

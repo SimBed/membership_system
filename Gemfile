@@ -2,21 +2,21 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.1'
-gem 'delayed_job_active_record'
-gem 'daemons'
-gem 'twilio-ruby'
 gem 'bcrypt'
+gem 'daemons'
+gem 'delayed_job_active_record'
+gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
-gem 'rubocop', '~> 1.25', require: false
-gem 'rubocop-rails', require: false
-gem 'rubocop-minitest', require: false
-gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
+gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
+gem 'rubocop', require: false
+gem 'rubocop-minitest', require: false
+gem 'rubocop-rails', require: false
 gem 'sass-rails', '>= 6'
-gem 'webpacker', '~> 5.0'
 gem 'turbolinks', '~> 5'
-gem 'jbuilder', '~> 2.7'
+gem 'twilio-ruby'
+gem 'webpacker', '~> 5.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 

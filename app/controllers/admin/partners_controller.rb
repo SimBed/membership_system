@@ -1,9 +1,9 @@
 class Admin::PartnersController < Admin::BaseController
-  skip_before_action :admin_account, only: %i[show edit update destroy]
-  before_action :correct_account_or_superadmin, only: %i[show]
-  before_action :superadmin_account, only: %i[edit update destroy]
+  skip_before_action :admin_account, only: [:show, :edit, :update, :destroy]
+  before_action :correct_account_or_superadmin, only: [:show]
+  before_action :superadmin_account, only: [:edit, :update, :destroy]
   #  before_action :layout_set, only: [:show]
-  before_action :set_partner, only: %i[show edit update destroy]
+  before_action :set_partner, only: [:show, :edit, :update, :destroy]
 
   def index
     @partners = Partner.all
@@ -21,7 +21,7 @@ class Admin::PartnersController < Admin::BaseController
       base_revenue = attendances_in_period.map(&:revenue).inject(0, :+)
       expiry_revenue = wg.expiry_revenue(session[:revenue_period])
       gross_revenue = base_revenue + expiry_revenue
-      gst = gross_revenue * (1 - 1 / (1 + wg.gst_rate))
+      gst = gross_revenue * (1 - (1 / (1 + wg.gst_rate)))
       net_revenue = gross_revenue - gst
       @fixed_expenses = Expense.by_workout_group(wg.name, start_date, end_date)
       total_fixed_expense = @fixed_expenses.sum(:amount)
@@ -43,8 +43,7 @@ class Admin::PartnersController < Admin::BaseController
     @partner = Partner.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @partner = Partner.new(partner_params)

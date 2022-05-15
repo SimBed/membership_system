@@ -7,7 +7,7 @@ class Freeze < ApplicationRecord
   def duration
     # (end_date - start_date + 1.days).to_i #Date - Date returns a rational
     # .. inclusive, ... exclusive
-    (self.start_date..self.end_date).count
+    (start_date..end_date).count
   end
 
   private

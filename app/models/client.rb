@@ -10,8 +10,8 @@ class Client < ApplicationRecord
   validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :whatsapp, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :instagram, uniqueness: { case_sensitive: false }, allow_blank: true
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
-  # note allow_blank will skip the validations on blank fields so multiple clients
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  # NOTE: allow_blank will skip the validations on blank fields so multiple clients
   # with blank email will not fall foul of the uniqueness requirement
   validates :email, allow_blank: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
@@ -23,7 +23,7 @@ class Client < ApplicationRecord
   scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: { id: nil }) }
   scope :hot, -> { where(hotlead: true) }
   # cold failed as a class method (didn't mix well with Client.includes(:account) in the controller. Don't understand why.)
-  scope :cold, -> {
+  scope :cold, lambda {
                  clients = Client
                            .select('clients.id', 'max(start_time) as max')
                            .joins(purchases: [attendances: [:wkclass]])
@@ -52,7 +52,7 @@ class Client < ApplicationRecord
   end
 
   def enquiry?
-    Client.enquiry.where(id: self.id).exists?
+    Client.enquiry.exists?(id: id)
   end
 
   def name
@@ -78,17 +78,17 @@ class Client < ApplicationRecord
   end
 
   def full_name_must_be_unique
-    # complicated due to situation on update. There will of course be one record in the database
+    # complicated due to situation on update.
+    # [not particulary complicated now with reformatting]
+    # There will of course be one record in the database
     # with the relevant name on update (the record we are updating) and we don't want its presence
     # to trigger warnings. We don't however want an exisitng record to have its name changed to
     # a name that is the same of a (different) already existing record. Note the id of a new record
     # (not yet saved) will be nil (so won't be equal to the id of any saved record.)
-    client = Client.where(['first_name = ? and last_name = ?', first_name, last_name])
-    client.each do |c|
-      if id != client.first.id
-        errors.add(:base, "Client named #{first_name} #{last_name} already exists") if client.present?
-        return
-      end
-    end
+    client = Client.where(['first_name = ? and last_name = ?', first_name, last_name]).first
+    return if client.blank?
+
+    # relevant for updates
+    errors.add(:base, "Client named #{first_name} #{last_name} already exists") unless id == client.id
   end
 end

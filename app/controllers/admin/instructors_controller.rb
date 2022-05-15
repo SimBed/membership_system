@@ -1,19 +1,17 @@
 class Admin::InstructorsController < Admin::BaseController
-  before_action :set_instructor, only: %i[show edit update destroy]
+  before_action :set_instructor, only: [:show, :edit, :update, :destroy]
 
   def index
     @instructors = Instructor.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @instructor = Instructor.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @instructor = Instructor.new(instructor_params)

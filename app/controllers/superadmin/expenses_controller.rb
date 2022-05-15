@@ -1,12 +1,11 @@
 class Superadmin::ExpensesController < Superadmin::BaseController
-  before_action :set_expense, only: %i[show edit update destroy]
+  before_action :set_expense, only: [:show, :edit, :update, :destroy]
 
   def index
     @expenses = Expense.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @expense = Expense.new

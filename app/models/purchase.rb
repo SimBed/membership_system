@@ -23,14 +23,14 @@ class Purchase < ApplicationRecord
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 },
                       uniqueness: { case_sensitive: false }
   # validates :ar_payment, presence: true, if: :adjust_restart?
-  with_options if: :adjust_restart? do |ar|
-    ar.validates :ar_payment, presence: true
-    ar.validates :ar_date, presence: true
+  with_options if: :adjust_restart? do
+    validates :ar_payment, presence: true
+    validates :ar_date, presence: true
   end
   validate :fitternity_payment
   validates :fitternity, presence: true, if: :fitternity_id
   # scope :not_expired, -> { where('expired = ?', false) }
-  scope :not_expired, -> {
+  scope :not_expired, lambda {
                         where.not(status: ['expired', 'provisionally expired', 'provisionally expired (and frozen)'])
                       }
   scope :not_fully_expired, -> { where.not(status: 'expired') }
@@ -103,7 +103,7 @@ class Purchase < ApplicationRecord
                               )
                         .order('purchases.dop')
     # in unusual case of more than one available purchase, use the started one (earliest dop if still a choice) or the earliest dop if no started one
-    started_purchases = purchases.select { |p| !p.not_started? }
+    started_purchases = purchases.reject(&:not_started?)
     if started_purchases.nil?
       started_purchases[0]
     else
@@ -123,7 +123,7 @@ class Purchase < ApplicationRecord
   end
 
   def status_calc
-    return 'expired' if self.adjust_restart?
+    return 'expired' if adjust_restart?
 
     status_hash = self.status_hash
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
@@ -174,7 +174,7 @@ class Purchase < ApplicationRecord
     return 'adjust & restart' if adjust_restart
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
 
-    return 'max time period'
+    'max time period'
   end
 
   def expired_on
@@ -182,7 +182,7 @@ class Purchase < ApplicationRecord
     return ar_date.strftime('%d %b %y') if adjust_restart
     return max_class_expiry_date.strftime('%d %b %y') if attendances.no_amnesty.confirmed.size == max_classes
 
-    return expiry_date.strftime('%d %b %y')
+    expiry_date.strftime('%d %b %y')
   end
 
   def will_expire_on
@@ -197,7 +197,7 @@ class Purchase < ApplicationRecord
     # expiry date is undefined for dropins. Avoid unexpected issues by setting to a day in the future
     return Date.tomorrow if product.dropin?
 
-    start_date = self.start_date_calc
+    start_date = start_date_calc
     end_date = case product.validity_unit
                when 'D'
                  start_date + product.validity_length.days
@@ -217,7 +217,7 @@ class Purchase < ApplicationRecord
   end
 
   def days_to_expiry
-    if ['ongoing', 'frozen', 'booked first class'].include?(self.status)
+    if ['ongoing', 'frozen', 'booked first class'].include?(status)
       (expiry_date - Date.today).to_i
     else
       # random high number is useful for sorting by days to expiry
@@ -232,12 +232,12 @@ class Purchase < ApplicationRecord
     case product.validity_unit
     when 'D'
       # probably no unlimited products with days but assume every day if so
-      return self.product.validity_length
+      product.validity_length
     when 'W'
       # assume 6 classes per week when unlimited and product in weeks
-      return self.product.validity_length * 6
+      product.validity_length * 6
     when 'M'
-      return self.product.validity_length * 20 unless self.product.validity_length == 1
+      return product.validity_length * 20 unless product.validity_length == 1
 
       25 # for 1M
     end
@@ -257,7 +257,7 @@ class Purchase < ApplicationRecord
     status_hash = self.status_hash
     return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
 
-    return "#{start_date.strftime('%d %b %y')} - #{expiry_date.strftime('%d %b %y')}"
+    "#{start_date.strftime('%d %b %y')} - #{expiry_date.strftime('%d %b %y')}"
   end
 
   def attendances_remain(provisional: true, unlimited_text: true)
@@ -341,24 +341,24 @@ class Purchase < ApplicationRecord
 
   def validity_status(attendance_count, expiry_date)
     return 'not started' if attendance_count.zero?
-    return 'expired' if Date.today() > expiry_date
+    return 'expired' if Date.today > expiry_date
 
     expiry_date - start_date_calc
   end
 
   def status_hash
-    attendance_provisional_count = self.attendances.no_amnesty.size
-    attendance_confirmed_count = self.attendances.no_amnesty.confirmed.size
+    attendance_provisional_count = attendances.no_amnesty.size
+    attendance_confirmed_count = attendances.no_amnesty.confirmed.size
     { attendance_provisional_status: attendance_status(attendance_provisional_count, max_classes),
       attendance_confirmed_status: attendance_status(attendance_confirmed_count, max_classes),
-      validity_status: validity_status(attendance_provisional_count, self.expiry_date_calc), }
+      validity_status: validity_status(attendance_provisional_count, expiry_date_calc) }
   end
 
   def fitternity_payment
     if payment_mode == 'Fitternity'
       # ong_fit_packages = Fitternity.select { |f| !(f.expired?) }
       errors.add(:base, 'No ongoing Fitternity package') if Fitternity.ongoing.size.zero?
-      return
+      nil
     end
   end
 end

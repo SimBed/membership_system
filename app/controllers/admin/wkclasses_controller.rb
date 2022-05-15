@@ -1,7 +1,7 @@
 class Admin::WkclassesController < Admin::BaseController
-  skip_before_action :admin_account, only: %i[show index new edit create update filter]
-  before_action :junioradmin_account, only: %i[show index new edit create update]
-  before_action :set_wkclass, only: %i[show edit update destroy]
+  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :filter]
+  before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update]
+  before_action :set_wkclass, only: [:show, :edit, :update, :destroy]
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
@@ -122,7 +122,7 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclasses = @wkclasses.tomorrows_class if session[:filter_tomorrows_class].present?
     @wkclasses = @wkclasses.past if session[:filter_past].present?
     @wkclasses = @wkclasses.future if session[:filter_future].present?
-    if session[:classes_period].present? && !(session[:classes_period] == 'All')
+    if session[:classes_period].present? && session[:classes_period] != 'All'
       start_date = Date.parse(session[:classes_period])
       end_date = Date.parse(session[:classes_period]).end_of_month.end_of_day
       @wkclasses = @wkclasses.between(start_date, end_date)

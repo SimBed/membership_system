@@ -34,3 +34,5 @@ Rails/RefuteMethods:
   EnforcedStyle: refute
 Rails/SkipsModelValidations:
   AllowedMethods: ["increment!"]
+Style/LineEndConcatenation:
+  Enabled: false
