@@ -409,6 +409,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def late_cancellation_penalty(package_type)
+    return if Rails.env.production?
     # no more than one penalty per attendance
     return unless package_type == :unlimited_package && @attendance.penalty.nil?
 
@@ -419,6 +420,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def no_show_penalty(package_type)
+    return if Rails.env.production?
     return unless package_type == :unlimited_package && @attendance.penalty.nil?
 
     Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
