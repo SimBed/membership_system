@@ -14,15 +14,16 @@ $gray-darkest: #474444;
 body {
   background-color: #fff;
   color: #333;
-  margin: 0.2rem; }
+  margin: 0.2rem;
+  margin-top: 0; }
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 0.8rem;
   line-height: 1.0rem; }
 
-  .nav-link {
-    padding: 0.1rem 0.2rem;
+.navbar ul li {
+    padding: 0.5rem 0.5rem;
   }
 
 pre {
@@ -38,7 +39,7 @@ a:visited {
 
 a:hover {
   color: #fff;
-  background-color: #000;
+/*  background-color: #000; */
  }
 
  .nav-link:hover {
@@ -172,6 +173,11 @@ img.table_icon {
 img.header_icon {
   width: 1.0rem;
   height: 1.0rem;
+}
+
+a.nav_icon img {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 img.grid_table_icon {
@@ -357,7 +363,7 @@ button.search{
 
 .grid-container-client-data {
   @extend %grid-container;
-  grid-template-columns: 8em 32em;
+  grid-template-columns: 1fr 2fr;
 
   .grid-cell {
     background-color: #e9ecef;
@@ -543,15 +549,18 @@ div.nomobile {
 @media (min-width: 600px) {
 
   body {
-    margin: 33px; }
+    margin: 33px;
+    margin-top: 0; }
 
   body, p, ol, ul, td {
     font-size: 1.3rem;
     line-height: 1.5rem;
    }
-   .nav-link {
+
+  .navbar ul li {
      padding: 0.5rem 1rem;
    }
+
    img.table_icon {
      width: 1.4rem;
      height: 1.4rem;
@@ -561,6 +570,16 @@ div.nomobile {
    img.header_icon {
      width: 1.4rem;
      height: 1.4rem;
+   }
+
+   a.nav_icon {
+    img {
+     width: 1.4rem;
+     height: 1.4rem;
+      }
+     &:hover {
+       filter: opacity(0.2);
+     }
    }
 
    div.nomobile {
@@ -578,4 +597,24 @@ div.nomobile {
    .grid-container-purchase-index {
      grid-template-columns: auto auto auto 2em 2em;
   }
+}
+
+  .Logonavbar {
+  width:7.5em;
+  }
+
+  @media (min-width: 576px) {
+  	.Logonavbar {
+  	width:8.5em;
+  	}
+  }
+
+ /*remove padding from logo in navbar so it fits tightly*/
+.navbar-brand {
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+/*remove padding from navbar so logo fits tightly*/
+.navbar {
+  padding: 0 1rem;
 }

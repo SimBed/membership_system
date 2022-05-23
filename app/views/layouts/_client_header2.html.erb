@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light" data-toggle="affix">
+  <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+    <a class="navbar-brand" href="https://www.thespacejuhu.in/" target="_blank">
+      <%= image_tag('SpaceLogo.png', class: "Logonavbar") %>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#SpaceNavBar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse text-center" id="SpaceNavBar">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+            <%= link_to 'Package', client_client_path(current_account.clients.first), class: "nav-link" %>
+        </li>
+        <li class="nav-item dropdown">
+            <%= link_to 'Book', client_book_path(current_account.clients.first), class: "nav-link" %>
+        </li>
+
+        <% if current_account %>
+          <li class="nav-item">
+            <%= link_to logout_path, method: :delete, class: "nav-link" do %>
+              <i class="fa fa-door-open"></i>
+              <!--span class="link-text">Logout</span-->
+            <% end %>
+          </li>
+        <% end %>
+        <% if !current_account %>
+          <li class="nav-item">
+            <%= link_to login_path, class: "nav-link" do %>
+              <i class="fa fa-sign-in-alt"></i>
+              <!--span class="link-text">Login</span-->
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+  		</div>
+  	</nav>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

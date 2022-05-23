@@ -10,20 +10,29 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
     <script src="https://kit.fontawesome.com/52a30c356b.js" crossorigin="anonymous"></script>
+<!--https://stackoverflow.com/questions/49182263/dropdown-menu-with-bootstrap-4-only-drops-once-in-rails
+feel these scripts shouldn't be needed but samll screen drop down menu not responsive without-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
   </head>
 
   <body>
-    <% if logged_in_as?('partner') %>
-      <%= render 'layouts/partner_header' %>
-    <% elsif logged_in_as?('admin', 'superadmin') %>
-      <%= render 'layouts/admin_header' %>
-    <% elsif logged_in_as?('junioradmin') %>
-      <%= render 'layouts/junioradmin_header' %>
-    <% elsif logged_in_as?('client') %>
-      <%= render 'layouts/client_header' %>
-    <% else %>
-      <%= render 'layouts/not_logged_in_header' %>
-    <% end %>
+
+        <% if logged_in_as?('partner') %>
+          <%= render 'layouts/partner_header' %>
+        <% elsif logged_in_as?('admin', 'superadmin') %>
+          <%= render 'layouts/admin_header' %>
+        <% elsif logged_in_as?('junioradmin') %>
+          <%= render 'layouts/junioradmin_header' %>
+        <% elsif logged_in_as?('client') %>
+          <%= render 'layouts/client_header' %>
+        <% else %>
+          <%= render 'layouts/not_logged_in_header' %>
+        <% end %>
+
+
     <main>
       <!--https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller-->
       <div id="flash_messages">
