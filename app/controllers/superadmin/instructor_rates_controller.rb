@@ -18,44 +18,27 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   def create
     @instructor_rate = InstructorRate.new(instructor_rate_params)
 
-    respond_to do |format|
-      if @instructor_rate.save
-        format.html do
-          redirect_to superadmin_instructor_rates_path
-          flash[:success] = 'Instructor rate was successfully created.'
-        end
-        format.json { render :show, status: :created, location: @instructor_rate }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @instructor_rate.errors, status: :unprocessable_entity }
-      end
+    if @instructor_rate.save
+      redirect_to superadmin_instructor_rates_path
+      flash[:success] = t('.success')
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      if @instructor_rate.update(instructor_rate_params)
-        format.html do
-          redirect_to superadmin_instructor_rates_path
-          flash[:success] = 'Instructor rate was successfully updated.'
-        end
-        format.json { render :show, status: :ok, location: @instructor_rate }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @instructor_rate.errors, status: :unprocessable_entity }
-      end
+    if @instructor_rate.update(instructor_rate_params)
+      redirect_to superadmin_instructor_rates_path
+      flash[:success] = t('.success')
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @instructor_rate.destroy
-    respond_to do |format|
-      format.html do
-        redirect_to superadmin_instructor_rates_path
-        flash[:success] = 'Instructor rate was successfully destroyed.'
-      end
-      format.json { head :no_content }
-    end
+    redirect_to superadmin_instructor_rates_path
+    flash[:success] = t('.success')
   end
 
   private

@@ -3,20 +3,14 @@ class Client::ClientsController < ApplicationController
 
   def show
     clear_session(:purchaseid)
-    session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'Ongoing'
+    session[:purchaseid] ||= params[:purchaseid] || 'Ongoing'
     @purchases = if session[:purchaseid] == 'All'
                    @client.purchases.order_by_dop
                  else
                    # easier than using with_statuses[all except expired] scope
                    @client.purchases.order_by_dop.where.not(status: 'expired')
                  end
-    @client_hash = {
-      attendances: @client.attendances.size,
-      last_class: @client.last_class,
-      date_created: @client.created_at,
-      date_last_purchase_expiry: @client.last_purchase&.expiry_date
-    }
-
+    prepare_data_for_view
     @products_purchased = %w[Ongoing All]
   end
 
@@ -33,5 +27,14 @@ class Client::ClientsController < ApplicationController
   def correct_account
     @client = Client.find(params[:id])
     redirect_to login_path unless current_account?(@client.account)
+  end
+
+  def prepare_data_for_view
+    @client_hash = {
+      attendances: @client.attendances.size,
+      last_class: @client.last_class,
+      date_created: @client.created_at,
+      date_last_purchase_expiry: @client.last_purchase&.expiry_date
+    }
   end
 end

@@ -19,45 +19,27 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
   def create
     @expense = Expense.new(expense_params)
-
-    respond_to do |format|
-      if @expense.save
-        format.html do
-          redirect_to superadmin_expenses_path
-          flash[:success] = 'Expense was successfully created'
-        end
-        format.json { render :show, status: :created, location: @expense }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @expense.errors, status: :unprocessable_entity }
-      end
+    if @expense.save
+      redirect_to superadmin_expenses_path
+      flash[:success] = t('.success')
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      if @expense.update(expense_params)
-        format.html do
-          redirect_to superadmin_expenses_path
-          flash[:success] = 'Expense was successfully updated'
-        end
-        format.json { render :show, status: :ok, location: @expense }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @expense.errors, status: :unprocessable_entity }
-      end
+    if @expense.update(expense_params)
+      redirect_to superadmin_expenses_path
+      flash[:success] = t('.success')
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @expense.destroy
-    respond_to do |format|
-      format.html do
-        redirect_to superadmin_expenses_path
-        flash[:success] = 'Expense was successfully deleted'
-      end
-      format.json { head :no_content }
-    end
+    redirect_to superadmin_expenses_path
+    flash[:success] = t('.success')
   end
 
   private
