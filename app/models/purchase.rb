@@ -255,7 +255,8 @@ class Purchase < ApplicationRecord
 
   def start_to_expiry
     status_hash = self.status_hash
-    return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
+  #  return 'not started' if status_hash[:attendance_provisional_status] == 'not started'
+    return status_hash[:attendance_provisional_status] if ['not started', 'booked but not started'].include?status_hash[:attendance_provisional_status]
 
     "#{start_date.strftime('%d %b %y')} - #{expiry_date.strftime('%d %b %y')}"
   end
@@ -279,50 +280,6 @@ class Purchase < ApplicationRecord
     attendances.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
   end
 
-  # def attendances_remain_format
-  #   ac = attendances.count
-  #   # "[number] [attendances icon] [more icon]"
-  #   base_html = "#{ac} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
-  #   pmc = product.max_classes
-  #   # unlimited
-  #   return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if pmc == 1000
-  #   # unused classes
-  #   return "#{base_html} #{pmc} (#{pmc - ac})".html_safe if ac < pmc
-  #   # otherwise
-  #   "#{base_html} #{pmc}".html_safe
-  # end
-
-  # def days_to_expiry
-  #   return 1000 unless status == 'ongoing'
-  #   (expiry_date.to_date - Date.today).to_i
-  # end
-
-  # def days_to_expiry_format
-  #   return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
-  #   ['','']
-  # end
-
-  # def expiry_date_formatted
-  #   # expiry_date&.strftime('%d %b %y')
-  #   @expiry_date = expiry_date
-  #   return @expiry_date unless @expiry_date.is_a?(Time)
-  #   @expiry_date.strftime('%d %b %y')
-  # end
-
-  # # violates MVC
-  # # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
-  # def full_name
-  #   "#{name_with_dop} - #{helpers.number_to_currency(self.payment, precision: 0, unit: 'Rs.')}"
-  # end
-  #
-  # # http://railscasts.com/episodes/132-helpers-outside-views?autoplay=true  3m.45s
-  # def helpers
-  #   ActionController::Base.helpers
-  # end
-
-  # def name_with_price_name
-  #   "#{name} - #{self.price.name}"
-  # end
 
   private
 
@@ -330,11 +287,13 @@ class Purchase < ApplicationRecord
     attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max
   end
 
-  def attendance_status(attendance_count, max_classes)
-    return 'not started' if attendance_count.zero?
+  def attendance_status(attendance_provisional_count, attendance_confirmed_count, provisional = true)
+    return 'not started' if attendance_provisional_count.zero?
+    return 'booked but not started' if attendance_confirmed_count.zero?
     return 'unlimited' if max_classes == 1000
     # should this be max_classes - attendance_count
-    return attendance_count if attendance_count < max_classes
+    return attendance_provisional_count if attendance_provisional_count < max_classes && provisional
+    return attendance_confirmed_count if attendance_confirmed_count < max_classes && !provisional
 
     'exhausted'
   end
@@ -349,8 +308,8 @@ class Purchase < ApplicationRecord
   def status_hash
     attendance_provisional_count = attendances.no_amnesty.size
     attendance_confirmed_count = attendances.no_amnesty.confirmed.size
-    { attendance_provisional_status: attendance_status(attendance_provisional_count, max_classes),
-      attendance_confirmed_status: attendance_status(attendance_confirmed_count, max_classes),
+    { attendance_provisional_status: attendance_status(attendance_provisional_count, attendance_confirmed_count),
+      attendance_confirmed_status: attendance_status(attendance_confirmed_count, max_classes, false),
       validity_status: validity_status(attendance_provisional_count, expiry_date_calc) }
   end
 
@@ -362,3 +321,48 @@ class Purchase < ApplicationRecord
     end
   end
 end
+
+# def attendances_remain_format
+#   ac = attendances.count
+#   # "[number] [attendances icon] [more icon]"
+#   base_html = "#{ac} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
+#   pmc = product.max_classes
+#   # unlimited
+#   return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if pmc == 1000
+#   # unused classes
+#   return "#{base_html} #{pmc} (#{pmc - ac})".html_safe if ac < pmc
+#   # otherwise
+#   "#{base_html} #{pmc}".html_safe
+# end
+
+# def days_to_expiry
+#   return 1000 unless status == 'ongoing'
+#   (expiry_date.to_date - Date.today).to_i
+# end
+
+# def days_to_expiry_format
+#   return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
+#   ['','']
+# end
+
+# def expiry_date_formatted
+#   # expiry_date&.strftime('%d %b %y')
+#   @expiry_date = expiry_date
+#   return @expiry_date unless @expiry_date.is_a?(Time)
+#   @expiry_date.strftime('%d %b %y')
+# end
+
+# # violates MVC
+# # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
+# def full_name
+#   "#{name_with_dop} - #{helpers.number_to_currency(self.payment, precision: 0, unit: 'Rs.')}"
+# end
+#
+# # http://railscasts.com/episodes/132-helpers-outside-views?autoplay=true  3m.45s
+# def helpers
+#   ActionController::Base.helpers
+# end
+
+# def name_with_price_name
+#   "#{name} - #{self.price.name}"
+# end
