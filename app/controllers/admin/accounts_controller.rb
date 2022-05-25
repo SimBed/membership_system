@@ -8,9 +8,9 @@ class Admin::AccountsController < Admin::BaseController
     @account = Account.new(account_params)
     if @account.save
       associate_account_holder_to_account
-      flash[:success] = 'account was successfully created'
+      flash[:success] = t('.success')
     else
-      flash[:warning] = 'account was not created'
+      flash[:warning] = t('.warning')
     end
     redirect_back fallback_location: admin_clients_path
   end
@@ -18,16 +18,24 @@ class Admin::AccountsController < Admin::BaseController
   private
 
   def correct_credentials
+    only_client_or_partner_accounts_can_be_made_here
+    only_superadmin_makes_partner_accounts
+  end
+
+  def only_client_or_partner_accounts_can_be_made_here
     # administrator accounts cannot be created through the app
-    unless %w[client partner].include?(params[:ac_type])
-      flash[:warning] = 'Forbidden'
-      redirect_to(login_path) and return
-    end
+    return if %w[client partner].include?(params[:ac_type])
+
+    flash[:warning] = t('.warning')
+    redirect_to(login_path) && return
+  end
+
+  def only_superadmin_makes_partner_accounts
     # admin can create client's account, but only superadmin can create partner's account
-    if params[:ac_type] == 'partner' && !logged_in_as?('superadmin')
-      flash[:warning] = 'Forbidden'
-      redirect_to(login_path) and return
-    end
+    return unless params[:ac_type] == 'partner' && !logged_in_as?('superadmin')
+
+    flash[:warning] = t('.warning')
+    redirect_to login_path
   end
 
   def set_account_holder
@@ -35,7 +43,7 @@ class Admin::AccountsController < Admin::BaseController
     # used 'where' rather than 'find' as find returns an error (rather than nil or empty object) when record not found
     @account_holder = Client.where(id: params[:client_id]) if params[:ac_type] == 'client'
     @account_holder = Partner.where(id: params[:partner_id]) if params[:ac_type] == 'partner'
-    (redirect_to(login_path) and return) if @account_holder.empty?
+    (redirect_to(login_path) && return) if @account_holder.empty?
   end
 
   def associate_account_holder_to_account

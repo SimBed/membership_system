@@ -14,7 +14,7 @@ class Admin::AdjustmentsController < Admin::BaseController
     if @adjustment.save
       @purchase = @adjustment.purchase
       redirect_to admin_purchase_path(Purchase.find(adjustment_params[:purchase_id]))
-      flash[:success] = 'adjustment was successfully created'
+      flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class Admin::AdjustmentsController < Admin::BaseController
     if @adjustment.update(adjustment_params)
       @purchase = @adjustment.purchase
       redirect_to admin_purchase_path(Purchase.find(adjustment_params[:purchase_id]))
-      flash[:success] = 'adjustment was successfully updated'
+      flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class Admin::AdjustmentsController < Admin::BaseController
     @purchase = @adjustment.purchase
     @adjustment.destroy
     redirect_to admin_purchase_path(@purchase)
-    flash[:success] = 'adjustment was successfully deleted'
+    flash[:success] = t('.success')
   end
 
   private

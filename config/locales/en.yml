@@ -1,6 +1,19 @@
 
 en:
-  hello: Hello world
+  admin:
+    accounts:
+      create:
+        success: Account was successfully created
+        warning: Account was not created
+      correct_credentials:
+        warning: Forbidden
+    adjustments:
+      create:
+        success: Adjustment was successfully added
+      update:
+        success: Adjustment was successfully updated
+      destroy:
+        success: Adjustment was successfully deleted
   superadmin:
     instructor_rates:
       update:
@@ -15,4 +28,4 @@ en:
       update:
         success: Expense rate was successfully updated
       destroy:
-        success: Expense rate was successfully deleted        
+        success: Expense rate was successfully deleted
