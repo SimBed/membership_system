@@ -15,6 +15,9 @@ AllCops:
       - !ruby/regexp /z_unused_code\.rb$/
 Layout/EndOfLine:
   Enabled: false
+Layout/LineLength:
+  Max: 120
+  AllowedPatterns: ['(\A|\s)#']  
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/Documentation:

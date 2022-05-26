@@ -354,11 +354,11 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def provisionally_expired
-    # eg class shown as bookable, then purchases becomes provsionally expired due to booking of a different class
-    # either on different browser or by admin, attempting to book the class shown as bookable on first broser shoul fail
+    # eg class shown as bookable, then purchase becomes provsionally expired due to booking of a different class
+    # either on different browser or by admin, attempting to book the class shown as bookable on first browser should fail
     if request.post?
       purchase = Purchase.find(params[:attendance][:purchase_id].to_i)
-      if ['provisionally expired', 'provisionally expired (and frozen)'].include?(purchase.status)
+      if ['provisionally expired'].include?(purchase.status)
         if logged_in_as?('client')
           flash[:warning] =
             ['The maximum number of classes has already been booked.',
@@ -371,7 +371,7 @@ class Admin::AttendancesController < Admin::BaseController
       end
     else # patch
       purchase = @attendance.purchase
-      if ['provisionally expired', 'provisionally expired (and frozen)'].include?(purchase.status)
+      if ['provisionally expired'].include?(purchase.status)
         if logged_in_as?('client')
           if @attendance.status != 'booked' # ie trying to change cancelled to booked
             flash[:warning] =

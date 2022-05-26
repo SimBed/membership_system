@@ -155,3 +155,69 @@
 #             # if update
 #             @attendance.wkclass
 #           end
+
+# Purchase.rb
+# for qualifying purchases in select box for new attendance form
+# this seems convoluted:
+# 1.convert the join to an array of purchases
+# 2.apply the purchase instance methods (that can't currently be done at database level)
+# 3.convert back to ActiveRecord_Relation to 'include' the clients so @qualifying purchases can be built
+# note 'where' doesn't preserve the order of the ids, hence the ordering after the 'includes' not as part of the original joins query
+# def self.qualifying_for(wkclass)
+#   purchases = Purchase.not_expired
+#                       .joins(product: [:workout_group])
+#                       .joins(:client)
+#                       .merge(WorkoutGroup.includes_workout_of(wkclass))
+#   Purchase.where(id: purchases
+#                       .to_a.select do |p|
+#                        !p.freezed?(wkclass.start_time) &&
+#                        !p.committed_on?(wkclass.start_time.to_date)
+#                      end
+#                       .map(&:id)) # or pluck(:id)
+#           .includes(:client).order('clients.first_name', 'purchases.dop')
+# end
+
+# def attendances_remain_format
+#   ac = attendances.count
+#   # "[number] [attendances icon] [more icon]"
+#   base_html = "#{ac} #{ActionController::Base.helpers.image_tag('attendances.png', class: 'header_icon')} #{ActionController::Base.helpers.image_tag('more.png', class: 'header_icon')}"
+#   pmc = product.max_classes
+#   # unlimited
+#   return "#{base_html} #{ActionController::Base.helpers.image_tag('infinity.png', class: 'infinity_icon')}".html_safe if pmc == 1000
+#   # unused classes
+#   return "#{base_html} #{pmc} (#{pmc - ac})".html_safe if ac < pmc
+#   # otherwise
+#   "#{base_html} #{pmc}".html_safe
+# end
+
+# def days_to_expiry
+#   return 1000 unless status == 'ongoing'
+#   (expiry_date.to_date - Date.today).to_i
+# end
+
+# def days_to_expiry_format
+#   return [days_to_expiry, ActionController::Base.helpers.image_tag('calendar.png', class: "infinity_icon")] if status == 'ongoing'
+#   ['','']
+# end
+
+# def expiry_date_formatted
+#   # expiry_date&.strftime('%d %b %y')
+#   @expiry_date = expiry_date
+#   return @expiry_date unless @expiry_date.is_a?(Time)
+#   @expiry_date.strftime('%d %b %y')
+# end
+
+# # violates MVC
+# # https://stackoverflow.com/questions/5176718/how-to-use-the-number-to-currency-helper-method-in-the-model-rather-than-view
+# def full_name
+#   "#{name_with_dop} - #{helpers.number_to_currency(self.payment, precision: 0, unit: 'Rs.')}"
+# end
+#
+# # http://railscasts.com/episodes/132-helpers-outside-views?autoplay=true  3m.45s
+# def helpers
+#   ActionController::Base.helpers
+# end
+
+# def name_with_price_name
+#   "#{name} - #{self.price.name}"
+# end

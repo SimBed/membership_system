@@ -34,11 +34,11 @@ class PurchaseTest < ActiveSupport::TestCase
     refute @purchase.valid?
   end
 
-  test 'invoice should be unique' do
+  test 'invoice does not need to be unique' do
     @purchase.invoice = 'a' * 6
     @duplicate_purchase = @purchase.dup
     @purchase.save
-    refute @duplicate_purchase.valid?
+    assert @duplicate_purchase.valid?
   end
 
   test 'associated fitternity (if there is one) should exist' do
@@ -123,7 +123,7 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'available_for_booking' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
-    assert_equal 343, Purchase.available_for_booking(@tomorrows_class_early, @client).id
+    assert_equal 343, Purchase.earliest_available_for_booking(@tomorrows_class_early, @client).id
   end
 
   test 'name_with_dop method' do
@@ -176,8 +176,8 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'expiry_date_calc method' do
     assert_equal Date.parse('25 Apr 2022'), @purchase_package.expiry_date_calc
-    assert_equal Date.parse('19 Mar 2022'), @purchase_dropin.expiry_date_calc
-    assert_equal 'n/a', @purchase_dropin2.expiry_date_calc
+    assert_equal Date.parse('25 Feb 2022'), @purchase_dropin.expiry_date_calc
+    assert_nil @purchase_dropin2.expiry_date_calc
     assert_equal Date.parse('21 Mar 2022'), @purchase_fixed.expiry_date_calc
   end
 
@@ -199,7 +199,7 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'start_to_expiry method' do
     assert_equal '25 Jan 22 - 27 Apr 22', @purchase_package.start_to_expiry
-    assert_equal '25 Feb 22 - 25 Feb 22', @purchase_dropin.start_to_expiry
+    assert_equal '25 Feb 22', @purchase_dropin.start_to_expiry
     assert_equal 'not started', @purchase_dropin2.start_to_expiry
     assert_equal '15 Feb 22 - 25 Mar 22', @purchase_fixed.start_to_expiry
   end
