@@ -38,7 +38,6 @@ a:visited {
   color: #666; }
 
 a:hover {
-  color: #fff;
 /*  background-color: #000; */
  }
 
@@ -532,6 +531,9 @@ a.like_button {
 
 .paginate_icon {
   color: $gray-darkest;
+  &:hover {
+    filter: opacity(0.5);
+  }
 }
 
 div.page_entries_info {

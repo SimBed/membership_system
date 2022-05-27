@@ -98,7 +98,7 @@ class Purchase < ApplicationRecord
   end
 
   def committed_on?(adate)
-    attendances.cant_rebook.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
+    attendances.committed_on.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
   end
 
   def name_with_dop
@@ -192,6 +192,9 @@ class Purchase < ApplicationRecord
 
   def expiry_revenue
     return 0 unless expired?
+    # individual fitternity packages are dummy packages for efficiency
+    # either is ok, just extra failsafe to guard against admin error
+    return 0 if payment_mode == 'Fitternity' || product.price.name == 'Fitternity'
 
     attendance_revenue = attendances.no_amnesty.confirmed.map(&:revenue).inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
