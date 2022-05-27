@@ -23,22 +23,23 @@ class Client < ApplicationRecord
   scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: { id: nil }) }
   scope :hot, -> { where(hotlead: true) }
   # cold failed as a class method (didn't mix well with Client.includes(:account) in the controller. Don't understand why.)
+  # https://stackoverflow.com/questions/18750196/rails-active-record-add-extra-select-column-to-findall
+  # prev method involved detting result of select on clients.id to clients variable, then Client.where(id: clients.map(&:id)
+  scope :packagee, -> { joins(:purchases).merge(Purchase.with_package).distinct }
   scope :cold, lambda {
-                 clients = Client
-                           .select('clients.id', 'max(start_time) as max')
-                           .joins(purchases: [attendances: [:wkclass]])
-                           .group('clients.id')
-                           .having('max(start_time) < ?', 3.months.ago)
-                 Client.where(id: clients.map(&:id))
+                 Client
+                   .select("#{Client.table_name}.*", 'max(start_time) as max')
+                   .joins(purchases: [attendances: [:wkclass]])
+                   .group('clients.id')
+                   .having('max(start_time) < ?', 3.months.ago)
                }
-  scope :attendances_not_cancelled_early, -> { where("attendances.status != 'cancelled early'") }
 
   paginates_per 20
 
   def self.to_csv
     CSV.generate(row_sep: "\n") do |csv|
       csv << column_names
-      all.each do |client|
+      all.find_each do |client|
         csv << client.attributes.values_at(*column_names)
       end
     end

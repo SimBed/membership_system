@@ -8,21 +8,11 @@ class Admin::ClientsController < Admin::BaseController
 
   def index
     @clients = Client.includes(:account).order_by_name
-    # @clients = Client.order_by_name
-    handle_search_name unless session[:search_client_name].blank?
     handle_search
+    handle_filter
     # when exporting data, want it all not just the page of pagination
-    if params[:export_all]
-      @clients = @clients.page(params[:page]).per(1000)
-    else
-      @clients = @clients.page params[:page]
-    end
-    respond_to do |format|
-      format.html {}
-      format.js { render 'index.js.erb' }
-      format.csv { send_data @clients.to_csv }
-      format.xls
-    end
+    handle_export
+    handle_index_response
   end
 
   def show
@@ -30,22 +20,13 @@ class Admin::ClientsController < Admin::BaseController
     # show clientA, select one of clientA's purchases, return to client index, show client B
     clear_session(:purchaseid)
     session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'All'
-    if @client_hash = {
-    attendances: @client.attendances.size,
-    purchases: @client.purchases.size,
-    spend: @client.total_spend,
-    last_class: @client.last_class,
-    date_created: @client.created_at,
-    date_last_purchase_expiry: @client.last_purchase&.expiry_date
-  }
-      if session[:purchaseid] == 'All'
-        @purchases = @client.purchases.order_by_dop
-      else
-        @purchases = [Purchase.find(session[:purchaseid])]
-      end
-    end
-
-    @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id] }
+    @purchases = if session[:purchaseid] == 'All'
+                   @client.purchases.order_by_dop
+                 else
+                   [Purchase.find(session[:purchaseid])]
+                 end
+    set_client_data
+    set_show_dropdown_items
   end
 
   def new
@@ -58,7 +39,7 @@ class Admin::ClientsController < Admin::BaseController
     @client = Client.new(client_params)
     if @client.save
       redirect_to admin_clients_path
-      flash[:success] = "#{@client.name} was successfully added"
+      flash[:success] = t('.success', name: @client.name)
     else
       render :new, status: :unprocessable_entity
     end
@@ -67,7 +48,7 @@ class Admin::ClientsController < Admin::BaseController
   def update
     if @client.update(client_params)
       redirect_to admin_clients_path
-      flash[:success] = "#{@client.name} was successfully updated"
+      flash[:success] = t('.success', name: @client.name)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -76,7 +57,7 @@ class Admin::ClientsController < Admin::BaseController
   def destroy
     @client.destroy
     redirect_to admin_clients_path
-    flash[:success] = "#{@client.name} was successfully deleted"
+    flash[:success] = t('.success', name: @client.name)
   end
 
   def clear_filters
@@ -87,10 +68,7 @@ class Admin::ClientsController < Admin::BaseController
   def filter
     clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_hot, :search_client_name)
     session[:search_client_name] = params[:search_client_name] || session[:search_client_name]
-    session[:filter_cold] = params[:cold] || session[:filter_cold]
-    session[:filter_enquiry] = params[:enquiry] || session[:filter_enquiry]
-    session[:filter_packagee] = params[:packagee] || session[:filter_packagee]
-    session[:filter_hot] = params[:hot] || session[:filter_hot]
+    set_session(:cold, :enquiry, :packagee, :hot)
     redirect_to admin_clients_path
   end
 
@@ -104,25 +82,49 @@ class Admin::ClientsController < Admin::BaseController
     params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
   end
 
-  # def correct_account
-  #   redirect_to referrer unless Client.find(params[:id]).account == current_account
-  # end
-  #
-  # def correct_account_or_admin
-  #   redirect_to login_path unless Client.find(params[:id]).account == current_account || logged_in_as?('admin', 'superadmin')
-  # end
+  def handle_search
+    return if session[:search_client_name].blank?
 
-  def handle_search_name
     @clients = @clients.name_like(session[:search_client_name])
   end
 
-  def handle_search
-    @clients = @clients.cold if session[:filter_cold].present?
-    @clients = @clients.enquiry if session[:filter_enquiry].present?
-    @clients = @clients.joins(:purchases).merge(Purchase.with_package).distinct if session[:filter_packagee].present?
-    @clients = @clients.hot if session[:filter_hot].present?
+  def handle_filter
+    %w[cold enquiry packagee hot].each do |key|
+      @clients = @clients.send(key) if session["filter_#{key}"].present?
+    end
   end
 
+  def handle_export
+    @clients = if params[:export_all]
+                 @clients.page(params[:page]).per(1000)
+               else
+                 @clients.page params[:page]
+               end
+  end
+
+  def handle_index_response
+    respond_to do |format|
+      format.html
+      format.js { render 'index.js.erb' }
+      format.csv { send_data @clients.to_csv }
+      format.xls
+    end
+  end
+
+  def set_client_data
+    @client_hash = {
+      attendances: @client.attendances.size,
+      purchases: @client.purchases.size,
+      spend: @client.total_spend,
+      last_class: @client.last_class,
+      date_created: @client.created_at,
+      date_last_purchase_expiry: @client.last_purchase&.expiry_date
+    }
+  end
+
+  def set_show_dropdown_items
+    @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id] }
+  end
   # def layout_set
   #   if logged_in_as?('admin')
   #     self.class.layout 'admin'

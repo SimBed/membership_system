@@ -87,6 +87,12 @@ module SessionsHelper
     end
   end
 
+  def set_session(*args)
+    args.each do |session_key|
+      session["filter_#{session_key}"] = params[session_key] || session["filter_#{session_key}"]
+    end
+  end
+
   def logged_in_as?(*ac_types)
     logged_in? && ac_types.map { |ac_type| current_account.ac_type == ac_type }.include?(true)
   end

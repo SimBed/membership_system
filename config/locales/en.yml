@@ -14,6 +14,27 @@ en:
         success: Adjustment was successfully updated
       destroy:
         success: Adjustment was successfully deleted
+    clients:
+      create:
+        success: "%{name} was successfully added"
+      update:
+        success: "%{name} was successfully updated"
+      destroy:
+        success: "%{name} was successfully deleted"
+    fitternities:
+      create:
+        success: Fitternity was successfully added
+      update:
+        success: Fitternity was successfully updated
+      destroy:
+        success: Fitternity was successfully deleted
+    freezes:
+      create:
+        success: Freeze was successfully added
+      update:
+        success: Freeze was successfully updated
+      destroy:
+        success: Freeze was successfully deleted                   
   superadmin:
     instructor_rates:
       update:

@@ -22,7 +22,7 @@ class Admin::FitternitiesController < Admin::BaseController
 
     if @fitternity.save
       redirect_to admin_fitternities_path
-      flash[:success] = 'Fitternity was successfully created'
+      flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class Admin::FitternitiesController < Admin::BaseController
   def update
     if @fitternity.update(fitternity_params)
       redirect_to admin_fitternities_path
-      flash[:success] = 'Fitternity was successfully updated'
+      flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class Admin::FitternitiesController < Admin::BaseController
   def destroy
     @fitternity.destroy
     redirect_to admin_fitternities_path
-    flash[:success] = 'Fitternity was successfully destroyed'
+    flash[:success] = t('.success')
   end
 
   private

@@ -2,7 +2,6 @@ class Admin::FreezesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
   before_action :set_freeze, only: [:edit, :update, :destroy]
-  after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
 
   def new
     @freeze = Freeze.new
@@ -13,7 +12,8 @@ class Admin::FreezesController < Admin::BaseController
     if @freeze.save
       @purchase = @freeze.purchase
       redirect_to admin_purchase_path(Purchase.find(freeze_params[:purchase_id]))
-      flash[:success] = 'freeze was successfully created'
+      flash[:success] = t('.success')
+      update_purchase_status([@purchase])
     else
       render :new, status: :unprocessable_entity
     end
@@ -25,7 +25,8 @@ class Admin::FreezesController < Admin::BaseController
     if @freeze.update(freeze_params)
       @purchase = @freeze.purchase
       redirect_to admin_purchase_path(Purchase.find(freeze_params[:purchase_id]))
-      flash[:success] = 'freeze was successfully updated'
+      flash[:success] = t('.success')
+      update_purchase_status([@purchase])
     else
       render :edit, status: :unprocessable_entity
     end
@@ -35,7 +36,8 @@ class Admin::FreezesController < Admin::BaseController
     @purchase = @freeze.purchase
     @freeze.destroy
     redirect_to admin_purchase_path(@purchase)
-    flash[:success] = 'freeze was successfully deleted'
+    flash[:success] = t('.success')
+    update_purchase_status([@purchase])
   end
 
   private
