@@ -34,7 +34,21 @@ en:
       update:
         success: Freeze was successfully updated
       destroy:
-        success: Freeze was successfully deleted                   
+        success: Freeze was successfully deleted
+    instructors:
+      create:
+        success: Instructor was successfully added
+      update:
+        success: Instructor was successfully updated
+      destroy:
+        success: Instructor was successfully deleted
+    partners:
+      create:
+        success: Partner was successfully added
+      update:
+        success: Partner was successfully updated
+      destroy:
+        success: Partner was successfully deleted                                 
   superadmin:
     instructor_rates:
       update:

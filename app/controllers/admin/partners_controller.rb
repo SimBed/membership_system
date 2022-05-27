@@ -2,7 +2,6 @@ class Admin::PartnersController < Admin::BaseController
   skip_before_action :admin_account, only: [:show, :edit, :update, :destroy]
   before_action :correct_account_or_superadmin, only: [:show]
   before_action :superadmin_account, only: [:edit, :update, :destroy]
-  #  before_action :layout_set, only: [:show]
   before_action :set_partner, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -10,24 +9,21 @@ class Admin::PartnersController < Admin::BaseController
   end
 
   def show
-    session[:revenue_period] =
-      params[:revenue_period] || session[:revenue_period] || Date.today.beginning_of_month.strftime('%b %Y')
-    start_date = Date.parse(session[:revenue_period])
-    end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
+    set_date_period
     @total_share = 0
     @partner_share = {}
     @partner.workout_groups.each do |wg|
-      attendances_in_period = Attendance.confirmed.by_workout_group(wg.name, start_date, end_date)
+      attendances_in_period = Attendance.confirmed.by_workout_group(wg.name, @start_date, @end_date)
       base_revenue = attendances_in_period.map(&:revenue).inject(0, :+)
       expiry_revenue = wg.expiry_revenue(session[:revenue_period])
       gross_revenue = base_revenue + expiry_revenue
       gst = gross_revenue * (1 - (1 / (1 + wg.gst_rate)))
       net_revenue = gross_revenue - gst
-      @fixed_expenses = Expense.by_workout_group(wg.name, start_date, end_date)
+      @fixed_expenses = Expense.by_workout_group(wg.name, @start_date, @end_date)
       total_fixed_expense = @fixed_expenses.sum(:amount)
       total_instructor_expense =
         Wkclass.in_workout_group(wg.name)
-               .between(start_date, end_date)
+               .between(@start_date, @end_date)
                .has_instructor_cost
                .sum(:instructor_cost)
       total_expense = total_fixed_expense + total_instructor_expense
@@ -47,48 +43,37 @@ class Admin::PartnersController < Admin::BaseController
 
   def create
     @partner = Partner.new(partner_params)
-
-    respond_to do |format|
-      if @partner.save
-        format.html do
-          redirect_to admin_partners_path
-          flash[:success] = 'Partner was successfully created'
-        end
-        format.json { render :show, status: :created, location: @partner }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @partner.errors, status: :unprocessable_entity }
-      end
+    if @partner.save
+      redirect_to admin_partners_path
+      flash[:success] = t('.success')
+    else
+      format.html { render :new, status: :unprocessable_entity }
     end
   end
 
   def update
-    respond_to do |format|
-      if @partner.update(partner_params)
-        format.html do
-          redirect_to admin_partners_path
-          flash[:success] = 'Partner was successfully updated'
-        end
-        format.json { render :show, status: :ok, location: @partner }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @partner.errors, status: :unprocessable_entity }
-      end
+    if @partner.update(partner_params)
+      redirect_to admin_partners_path
+      flash[:success] = t('.success')
+    else
+      format.html { render :edit, status: :unprocessable_entity }
     end
   end
 
   def destroy
     @partner.destroy
-    respond_to do |format|
-      format.html do
-        redirect_to admin_partners_path
-        flash[:success] = 'Expense was successfully updated'
-      end
-      format.json { head :no_content }
-    end
+    redirect_to admin_partners_path
+    flash[:success] = t('.success')
   end
 
   private
+
+  def set_date_period
+    session[:revenue_period] =
+      params[:revenue_period] || session[:revenue_period] || Time.zone.today.beginning_of_month.strftime('%b %Y')
+    @start_date = Date.parse(session[:revenue_period])
+    @end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
+  end
 
   def set_partner
     @partner = Partner.find(params[:id])
@@ -105,13 +90,4 @@ class Admin::PartnersController < Admin::BaseController
   def superadmin_account
     redirect_to login_path unless logged_in_as?('superadmin')
   end
-
-  # def layout_set
-  #   if current_account.superadmin?
-  #     self.class.layout 'admin'
-  #   else
-  #     # fails without self.class
-  #     self.class.layout 'admin'
-  #   end
-  # end
 end

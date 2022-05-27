@@ -18,7 +18,7 @@ class Admin::InstructorsController < Admin::BaseController
 
     if @instructor.save
       redirect_to admin_instructors_path
-      flash[:success] = 'Instructor was successfully created'
+      flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Admin::InstructorsController < Admin::BaseController
   def update
     if @instructor.update(instructor_params)
       redirect_to admin_instructors_path
-      flash[:success] = 'Instructor was successfully updated'
+      flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class Admin::InstructorsController < Admin::BaseController
   def destroy
     @instructor.destroy
     redirect_to admin_instructors_path
-    flash[:success] = 'Instructor was successfully destroyed'
+    flash[:success] = t('.success')
   end
 
   private
