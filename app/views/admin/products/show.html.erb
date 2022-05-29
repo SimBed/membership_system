@@ -1,8 +1,8 @@
 <div class ="d-flex mb-2">
   <h2><%= @product.name %></h2>
   <form action=<%= "/admin/products/#{params[:id]}" %> method="GET" data-remote="true" class="ms-3 align-with-header">
-      <select name="product_purchased_period" onchange="Rails.fire(this.form, 'submit')" class="sort">
-        <%= options_for_select @months, session[:product_purchased_period] %>
+      <select name="product_period" onchange="Rails.fire(this.form, 'submit')" class="sort">
+        <%= options_for_select @months, session[:product_period] %>
       </select>
   </form>
 </div>

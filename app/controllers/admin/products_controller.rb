@@ -8,22 +8,12 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def show
-    session[:product_purchased_period] =
-      params[:product_purchased_period] || session[:product_purchased_period] || Date.today.beginning_of_month.strftime('%b %Y')
-    start_date = Date.parse(session[:product_purchased_period]).strftime('%Y-%m-%d')
-    end_date = Date.parse(session[:product_purchased_period]).end_of_month.strftime('%Y-%m-%d')
-    @purchases = Purchase.by_product_date(@product.id, start_date, end_date)
-    # @client_hash = {
-    #   number: attendances.size,
-    #   base_revenue: base_revenue,
-    #   expiry_revenue: expiry_revenue,
-    #   total_revenue: base_revenue + expiry_revenue
-    # }
+    set_period
+    @purchases = Purchase.by_product_date(@product.id, session[:product_period])
     @months = months_logged
-    # @prices = @product.prices.sort_by { |p| [p.current? ? 0 : 1, -p.price] }
     @prices = @product.prices.order_by_current_price
     respond_to do |format|
-      format.html {}
+      format.html
       format.js { render 'show.js.erb' }
     end
   end
@@ -41,7 +31,7 @@ class Admin::ProductsController < Admin::BaseController
     @product = Product.new(product_params)
     if @product.save
       redirect_to admin_products_path
-      flash[:success] = 'Product was successfully created'
+      flash[:success] = t('.success')
     else
       @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
       render :new, status: :unprocessable_entity
@@ -52,7 +42,7 @@ class Admin::ProductsController < Admin::BaseController
     if @product.update(product_params)
       @purchases = @product.purchases
       redirect_to admin_products_path
-      flash[:success] = 'Product was successfully updated'
+      flash[:success] = t('.success')
     else
       @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
       render :edit, status: :unprocessable_entity
@@ -62,30 +52,20 @@ class Admin::ProductsController < Admin::BaseController
   def destroy
     @product.destroy
     redirect_to admin_products_path
-    flash[:success] = 'Product was successfully deleted'
+    flash[:success] = t('.success')
   end
 
   def payment
-    # [{"wg_name"=>"Space",.."price"=>500,.."name"=>"Space UC:1W power"}, {...}, {...} ...]
-    # @base_payment = WorkoutGroup.products_hash[params[:selected_product].to_i]['price']
-    # @products_hash = WorkoutGroup.products_hash
-    # @base_payment = @products_hash[@products_hash.index {|p| p['name']==params[:selected_product]}]['price']
     @base_payment = Price.find(params[:selected_price]).price
     render 'payment.js.erb'
   end
 
-  # def payment
-  #   if params[:selected_product_name].blank?
-  #     @product_types = Product.all.map { |p| [p.name, p.id] }
-  #     @product_names = Product.find(params[:selected_product_type]).prices.map { |p| [p.name, p.id] }
-  #     render 'namedropdowns.js.erb'
-  #   else
-  #   @base_payment = Price.find(params[:selected_product_name]).price
-  #   render 'payment.js.erb'
-  #   end
-  # end
-
   private
+
+  def set_period
+    period = params[:product_period] || session[:product_period] || Time.zone.today.beginning_of_month.strftime('%b %Y')
+    session[:product_period] = (Date.parse(period).beginning_of_month..Date.parse(period).end_of_month.end_of_day)
+  end
 
   def set_product
     @product = Product.find(params[:id])

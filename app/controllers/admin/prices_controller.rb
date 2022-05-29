@@ -11,7 +11,7 @@ class Admin::PricesController < Admin::BaseController
 
     if @price.save
       redirect_to admin_product_path(Product.find(price_params[:product_id]))
-      flash[:success] = 'price was successfully created'
+      flash[:success] = t('.success')
     else
       @product = Product.find(price_params[:product_id])
       render :new, status: :unprocessable_entity
@@ -23,7 +23,7 @@ class Admin::PricesController < Admin::BaseController
   def update
     if @price.update(price_params)
       redirect_to admin_product_path(Product.find(price_params[:product_id]))
-      flash[:success] = 'price was successfully updated'
+      flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -33,7 +33,7 @@ class Admin::PricesController < Admin::BaseController
     @product = @price.product
     @price.destroy
     redirect_to admin_product_path(@product)
-    flash[:success] = 'price was successfully deleted'
+    flash[:success] = t('.success')
   end
 
   private

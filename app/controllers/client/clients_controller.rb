@@ -7,7 +7,7 @@ class Client::ClientsController < ApplicationController
     @purchases = if session[:purchaseid] == 'All'
                    @client.purchases.order_by_dop
                  else
-                   # easier than using with_statuses[all except expired] scope
+                   # easier than using statuses[all except expired] scope
                    @client.purchases.order_by_dop.where.not(status: 'expired')
                  end
     prepare_data_for_view

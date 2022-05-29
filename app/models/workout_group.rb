@@ -15,6 +15,30 @@ class WorkoutGroup < ApplicationRecord
   after_update :update_rel_workout_group_workout
   scope :order_by_name, -> { order(:name) }
 
+  def net_revenue(period)
+    attendances_in_period = Attendance.confirmed.by_workout_group(name, period.begin, period.end)
+    base_revenue = attendances_in_period.map(&:revenue).inject(0, :+)
+    expiry_revenue = expiry_revenue(period.end.strftime('%b %Y'))
+    gross_revenue = base_revenue + expiry_revenue
+    gst = gross_revenue * (1 - (1 / (1 + gst_rate)))
+    gross_revenue - gst
+  end
+
+  def expense(period)
+    fixed_expenses = Expense.by_workout_group(name, period.begin, period.end)
+    total_fixed_expense = fixed_expenses.sum(:amount)
+    total_instructor_expense =
+      Wkclass.in_workout_group(name)
+             .between(period.begin, period.end)
+             .has_instructor_cost
+             .sum(:instructor_cost)
+    total_fixed_expense + total_instructor_expense
+  end
+
+  def profit(period)
+    net_revenue(period) - expense(period)
+  end
+
   def self.includes_workout_of(wkclass)
     joins(rel_workout_group_workouts: [:workout])
       .where(workouts: { name: wkclass.name.to_s })

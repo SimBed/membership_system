@@ -25,7 +25,7 @@ class Client < ApplicationRecord
   # cold failed as a class method (didn't mix well with Client.includes(:account) in the controller. Don't understand why.)
   # https://stackoverflow.com/questions/18750196/rails-active-record-add-extra-select-column-to-findall
   # prev method involved detting result of select on clients.id to clients variable, then Client.where(id: clients.map(&:id)
-  scope :packagee, -> { joins(:purchases).merge(Purchase.with_package).distinct }
+  scope :packagee, -> { joins(:purchases).merge(Purchase.package).distinct }
   scope :cold, lambda {
                  Client
                    .select("#{Client.table_name}.*", 'max(start_time) as max')

@@ -18,7 +18,7 @@ class Wkclass < ApplicationRecord
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
   scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
   scope :not_between, ->(start_date, end_date) { where.not({ start_time: (start_date..end_date) }) }
-  scope :todays_class, -> { where(start_time: Date.today.all_day) }
+  scope :todays_class, -> { where(start_time: Time.zone.today.all_day) }
   scope :yesterdays_class, -> { where(start_time: Date.yesterday.all_day) }
   scope :tomorrows_class, -> { where(start_time: Date.tomorrow.all_day) }
   scope :on_date, ->(date) { where(start_time: date.all_day) }
@@ -130,7 +130,8 @@ class Wkclass < ApplicationRecord
   end
 
   def send_reminder
-    file_path = "#{Rails.root}/delayed.txt"
+    # file_path = "#{Rails.root}/delayed.txt"
+    file_path = Rails.root.join('delayed.txt')
     File.write(file_path, "delayed job processing at #{Time.zone.now}")
     # Wkclass.last.update(instructor_cost:100)
     # account_sid = Rails.configuration.twilio[:account_sid]

@@ -48,7 +48,28 @@ en:
       update:
         success: Partner was successfully updated
       destroy:
-        success: Partner was successfully deleted                                 
+        success: Partner was successfully deleted
+    prices:
+      create:
+        success: Price was successfully added
+      update:
+        success: Price was successfully updated
+      destroy:
+        success: Price was successfully deleted
+    products:
+      create:
+        success: Product was successfully added
+      update:
+        success: Product was successfully updated
+      destroy:
+        success: Product was successfully deleted
+    purchases:
+      create:
+        success: Purchase was successfully added
+      update:
+        success: Purchase was successfully updated
+      destroy:
+        success: Purchase was successfully deleted                                                                    
   superadmin:
     instructor_rates:
       update:

@@ -9,29 +9,12 @@ class Admin::PartnersController < Admin::BaseController
   end
 
   def show
-    set_date_period
-    @total_share = 0
+    set_period
     @partner_share = {}
     @partner.workout_groups.each do |wg|
-      attendances_in_period = Attendance.confirmed.by_workout_group(wg.name, @start_date, @end_date)
-      base_revenue = attendances_in_period.map(&:revenue).inject(0, :+)
-      expiry_revenue = wg.expiry_revenue(session[:revenue_period])
-      gross_revenue = base_revenue + expiry_revenue
-      gst = gross_revenue * (1 - (1 / (1 + wg.gst_rate)))
-      net_revenue = gross_revenue - gst
-      @fixed_expenses = Expense.by_workout_group(wg.name, @start_date, @end_date)
-      total_fixed_expense = @fixed_expenses.sum(:amount)
-      total_instructor_expense =
-        Wkclass.in_workout_group(wg.name)
-               .between(@start_date, @end_date)
-               .has_instructor_cost
-               .sum(:instructor_cost)
-      total_expense = total_fixed_expense + total_instructor_expense
-      profit = net_revenue - total_expense
-      partner_share = profit * wg.partner_share.to_f / 100
-      @partner_share[wg.name.to_sym] = partner_share
-      @total_share += partner_share
+      @partner_share[wg.name.to_sym] = wg.profit(session[:revenue_period]) * wg.partner_share.to_f / 100
     end
+    @total_share = @partner_share.each_value.inject(&:+)
     @months = months_logged
   end
 
@@ -68,11 +51,9 @@ class Admin::PartnersController < Admin::BaseController
 
   private
 
-  def set_date_period
-    session[:revenue_period] =
-      params[:revenue_period] || session[:revenue_period] || Time.zone.today.beginning_of_month.strftime('%b %Y')
-    @start_date = Date.parse(session[:revenue_period])
-    @end_date = Date.parse(session[:revenue_period]).end_of_month.end_of_day
+  def set_period
+    period = params[:revenue_period] || session[:revenue_period] || Time.zone.today.beginning_of_month.strftime('%b %Y')
+    session[:revenue_period] = (Date.parse(period).beginning_of_month..Date.parse(period).end_of_month.end_of_day)
   end
 
   def set_partner

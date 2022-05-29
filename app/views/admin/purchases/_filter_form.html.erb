@@ -7,7 +7,7 @@
           <option disabled="disabled" selected="selected" value="">Sort by</option>
           <option value="client_dop" <%="selected" if session[:sort_option] == "client_dop"%> >name</option>
           <option value="dop" <%="selected" if session[:sort_option] == "dop"%> >date of purchase</option>
-          <option value="expiry" <%="selected" if session[:sort_option] == "expiry"%> >expiry date</option>
+          <option value="expiry_date" <%="selected" if session[:sort_option] == "expiry_date"%> >expiry date</option>
           <option value="classes_remain" <%="selected" if session[:sort_option] == "classes_remain"%> >classes remain</option>
         </select>
     </div>
@@ -40,9 +40,9 @@
   <div class="col-4 px-0">
     <fieldset>
       <legend>STATUS</legend>
-      <% @status.each do |status| %>
+      <% @statuses.each do |status| %>
         <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'status[]', status, session[:filter_status].present? ? session[:filter_status].include?(status) : false, class: "checkbox-class", id: "chbox#{status}", onchange: 'Rails.fire(this.form, "submit")'  %>
+          <%= check_box_tag 'statuses[]', status, session[:filter_statuses].present? ? session[:filter_statuses].include?(status) : false, class: "checkbox-class", id: "chbox#{status}", onchange: 'Rails.fire(this.form, "submit")'  %>
           <%= status %>
         <% end %>
       <% end %>
@@ -52,25 +52,11 @@
   <div class="col-4 px-0">
     <fieldset>
       <legend>ATTRIBUTE</legend>
-        <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'invoice', 'not invoiced', session[:filter_invoice].present? ? true : false, class: "checkbox-class", id: "chbox_invoice", onchange: 'Rails.fire(this.form, "submit")'  %>
-          <%= 'not invoiced' %>
-        <% end %>
-        <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'package', 'package', session[:filter_package].present? ? true : false, class: "checkbox-class", id: "chbox_package", onchange: 'Rails.fire(this.form, "submit")'  %>
-          <%= 'package' %>
-        <% end %>
-        <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'close_to_expiry', 'close_to_expiry', session[:filter_close_to_expiry].present? ? true : false, class: "checkbox-class", id: "chbox_close_to_expiry", onchange: 'Rails.fire(this.form, "submit")'  %>
-          <%= 'close to expiry' %>
-        <% end %>
-        <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'unpaid', 'unpaid', session[:filter_unpaid].present? ? true : false, class: "checkbox-class", id: "chbox_unpaid", onchange: 'Rails.fire(this.form, "submit")'  %>
-          <%= 'unpaid' %>
-        <% end %>
-        <%= label_tag nil, class: "purchase-filters" do %>
-          <%= check_box_tag 'classpass', 'classpass', session[:filter_classpass].present? ? true : false, class: "checkbox-class", id: "chbox_classpass", onchange: 'Rails.fire(this.form, "submit")'  %>
-          <%= 'classpass' %>
+        <% @other_attributes.each do |attribute| %>
+          <%= label_tag nil, class: "purchase-filters" do %>
+            <%= check_box_tag attribute, attribute, session["filter_#{attribute}"].present? ? true : false, class: "checkbox-class", id: "chbox#{attribute}", onchange: 'Rails.fire(this.form, "submit")'  %>
+            <%= attribute.split('_').join(' ') %>
+          <% end %>
         <% end %>
     </fieldset>
   </div>

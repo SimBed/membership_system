@@ -28,30 +28,36 @@ class Purchase < ApplicationRecord
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
   # scope :started, -> { joins(:attendances).merge(Attendance.no_amnesty).distinct }
   scope :started, -> { where.not(status: 'not started') }
-  # wg is an array of workout group names
-  # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
-  scope :with_workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: { name: wg }) }
-  # stata is an array of purchases statuses
-  scope :with_statuses, ->(stata) { where(status: stata) }
   # 'using a scope through an association'
   # https://apidock.com/rails/ActiveRecord/SpawnMethods/merge
-  scope :with_package, -> { joins(:product).merge(Product.package) }
+  scope :package, -> { joins(:product).merge(Product.package) }
+  scope :package_started_not_expired, -> { package.started.not_expired }
+  # wg is an array of workout group names
+  # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
+  scope :workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: { name: wg }) }
+  # stata is an array of purchases statuses
+  scope :statuses, ->(stata) { where(status: stata) }
   # alternative 'mixes concerns and logic'
-  # scope :with_package, -> { joins(:product).where("max_classes > 1") }
+  # scope :package, -> { joins(:product).where("max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   scope :order_by_dop, -> { order(dop: :desc) }
-  scope :order_by_expiry_date, -> { order(:expiry_date) }
+  scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
   # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
-  scope :uninvoiced, -> { where(invoice: nil) }
-  scope :requires_invoice, -> { joins(product: [:workout_group]).where(workout_groups: { requires_invoice: true }) }
+  #scope :uninvoiced, -> { where(invoice: nil) }
+  scope :uninvoiced, -> { package.where(invoice: nil).joins(product: [:workout_group]).where(workout_groups: { requires_invoice: true }) }
   scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
-  # scope :not_used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.not_between(adate, adate.end_of_day)).distinct}
-  # scope :not_used_on?, ->(adate) { left_outer_joins(attendances: [:wkclass]).where.not(wkclasses: {start_time: adate..adate.end_of_day}).distinct }
-  # note the 'unscope' see genkilabs solution @ https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
-  # scope :used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.between(adate, adate.end_of_day)).unscope(:order).distinct}
+  scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
+  # used in Purchases controller's handle_sort method
+  # raw SQL in Active Record functions will give an error to guard against SQL injection
+  # in the case where the raw SQl contains user input i.e. a params value
+  # the error can be everriden by converting the raw SQL string literals to an Arel::Nodes::SqlLiteral object.
+  # there is no user input in the converted Arel object, so this is OK
+  # 'id:: text' is equivalent to 'CAST (id AS TEXT)' see https://www.postgresqltutorial.com/postgresql-cast/
+  # position is a Postgresql string function, see https://www.postgresqltutorial.com/postgresql-position/
+  scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per 20
 
   def self.available_to(wkclass)
@@ -84,9 +90,9 @@ class Purchase < ApplicationRecord
     started_purchases.nil? ? started_purchases[0] : purchases[0]
   end
 
-  def self.by_product_date(product_id, start_date, end_date)
+  def self.by_product_date(product_id, period)
     joins(:product)
-      .where("purchases.dop BETWEEN '#{start_date}' AND '#{end_date}'")
+      .where(dop: period)
       .where(products: { id: product_id.to_s })
       .order(dop: :desc)
   end

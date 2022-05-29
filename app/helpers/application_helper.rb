@@ -8,16 +8,13 @@ module ApplicationHelper
     @months = months_between(first_class_date, last_class_date)
   end
 
-  # used in purchases controller
-  def clear_session(*args)
-    args.each do |session_key|
-      session[session_key] = nil
-    end
+  def nillify_when_blank(params, *params_items)
+    params_items.each { |item| params[item] = nil if params[item] == '' }
   end
 
   private
 
-  def months_between(a, b)
-    (a.beginning_of_month.to_date..b.to_date).select { |d| d.day == 1 }.map { |d| d.strftime('%b %Y') }
+  def months_between(start_date, end_date)
+    (start_date.beginning_of_month.to_date..end_date.to_date).select { |d| d.day == 1 }.map { |d| d.strftime('%b %Y') }
   end
 end

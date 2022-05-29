@@ -221,3 +221,12 @@
 # def name_with_price_name
 #   "#{name} - #{self.price.name}"
 # end
+
+# scope :not_used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.not_between(adate, adate.end_of_day)).distinct}
+# scope :not_used_on?, ->(adate) { left_outer_joins(attendances: [:wkclass]).where.not(wkclasses: {start_time: adate..adate.end_of_day}).distinct }
+# note the 'unscope' see genkilabs solution @ https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
+# scope :used_on?, ->(adate) { joins(attendances: [:wkclass]).merge(Wkclass.between(adate, adate.end_of_day)).unscope(:order).distinct}
+
+# -------------from purchases_controller.rb
+# pre sorting at database
+# @purchases = Purchase.all.sort_by { |p| [p.client.name, -p.dop&.to_time.to_i] }

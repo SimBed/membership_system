@@ -10,7 +10,6 @@ class Admin::ClientsController < Admin::BaseController
     @clients = Client.includes(:account).order_by_name
     handle_search
     handle_filter
-    # when exporting data, want it all not just the page of pagination
     handle_export
     handle_index_response
   end
@@ -95,6 +94,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def handle_export
+    # when exporting data, want it all not just the page of pagination    
     @clients = if params[:export_all]
                  @clients.page(params[:page]).per(1000)
                else
