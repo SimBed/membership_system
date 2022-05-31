@@ -69,7 +69,28 @@ en:
       update:
         success: Purchase was successfully updated
       destroy:
-        success: Purchase was successfully deleted                                                                    
+        success: Purchase was successfully deleted
+    wkclasses:
+      create:
+        success: Class was successfully added
+      update:
+        success: Class was successfully updated
+      destroy:
+        success: Class was successfully deleted
+    workout_groups:
+      create:
+        success: Workout Group was successfully added
+      update:
+        success: Workout Group was successfully updated
+      destroy:
+        success: Workout Group was successfully deleted
+    workout_groups:
+      create:
+        success: Workout was successfully added
+      update:
+        success: Workout was successfully updated
+      destroy:
+        success: Workout was successfully deleted
   superadmin:
     instructor_rates:
       update:

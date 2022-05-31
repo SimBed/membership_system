@@ -16,8 +16,8 @@ class Wkclass < ApplicationRecord
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
-  scope :between, ->(start_date, end_date) { where({ start_time: (start_date..end_date) }).order(:start_time) }
-  scope :not_between, ->(start_date, end_date) { where.not({ start_time: (start_date..end_date) }) }
+  scope :during, ->(period) { where({ start_time: period }).order(:start_time) }
+  scope :not_during, ->(period) { where.not({ start_time: period }) }
   scope :todays_class, -> { where(start_time: Time.zone.today.all_day) }
   scope :yesterdays_class, -> { where(start_time: Date.yesterday.all_day) }
   scope :tomorrows_class, -> { where(start_time: Date.tomorrow.all_day) }

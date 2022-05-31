@@ -14,7 +14,7 @@ class Admin::WkclassesController < Admin::BaseController
     @months = ['All'] + months_logged
 
     respond_to do |format|
-      format.html {}
+      format.html
       format.js { render 'index.js.erb' }
     end
   end
@@ -25,24 +25,22 @@ class Admin::WkclassesController < Admin::BaseController
     # clear_session(:filter_workout, :filter_spacegroup, :filter_todays_class, :filter_yesterdays_class, :filter_tomorrows_class, :filter_past, :filter_future, :classes_period) if params[:setting] == 'clientshow'
     # session[:classes_period] = params[:classes_period] || session[:classes_period]
     # set @wkclasses and @wkindex so the wkclasses can be scrolled through from each wkclass show
-    unless params[:no_scroll] then
-      @wkclasses = Wkclass.order_by_date
-      handle_search
-      # @wkindex = @wkclasses.index(@wkclass)
-    end
+    return if params[:no_scroll]
+
+    @wkclasses = Wkclass.order_by_date
+    handle_search
+    # @wkindex = @wkclasses.index(@wkclass)
   end
 
   def new
     @wkclass = Wkclass.new
     # for select in new wkclass form
-    @workouts = Workout.all.map { |w| [w.name, w.id] }
-    @instructors = Instructor.order_by_name.map { |i| [i.name, i.id] }
+    prepare_items_for_dropdowns
   end
 
   def edit
-    @workouts = Workout.all.map { |w| [w.name, w.id] }
+    prepare_items_for_dropdowns
     @workout = @wkclass.workout
-    @instructors = Instructor.has_rate.order_by_name.map { |i| [i.name, i.id] }
     @instructor = @wkclass.instructor&.id
   end
 
@@ -50,13 +48,13 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclass = Wkclass.new(wkclass_params)
     if @wkclass.save
       redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
-      flash[:success] = 'Class was successfully created'
+      flash[:success] = t('.success')
       # @wkclass.delay.send_reminder
       # Wkclass.delay.send_reminder(@wkclass.id)
       # Wkclass.send_reminder(@wkclass.id)
     else
-      @workouts = Workout.all.map { |w| [w.name, w.id] }
-      @instructors = Instructor.order_by_name.map { |i| [i.name, i.id] }
+      # prepare_items_for_dropdowns
+      prepare_items_for_dropdowns
       render :new, status: :unprocessable_entity
     end
   end
@@ -64,11 +62,10 @@ class Admin::WkclassesController < Admin::BaseController
   def update
     if @wkclass.update(wkclass_params)
       redirect_to admin_wkclasses_path
-      flash[:success] = 'Class was successfully updated'
+      flash[:success] = t('.success')
     else
-      @workouts = Workout.all.map { |w| [w.name, w.id] }
+      prepare_items_for_dropdowns
       @workout = @wkclass.workout
-      @instructors = Instructor.has_rate.order_by_name.map { |i| [i.name, i.id] }
       @instructor = @wkclass.instructor&.id
       render :edit, status: :unprocessable_entity
     end
@@ -79,21 +76,15 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclass.destroy
     update_purchase_status(@purchases)
     redirect_to admin_wkclasses_path
-    flash[:success] = 'Class was successfully deleted'
+    flash[:success] = t('.success')
   end
 
   def filter
-    # see application_helper
-    clear_session(:filter_workout, :filter_spacegroup, :filter_todays_class, :filter_yesterdays_class,
-                  :filter_tomorrows_class, :filter_past, :filter_future, :classes_period)
-    session[:filter_workout] = params[:workout] || session[:filter_workout]
-    session[:filter_spacegroup] = params[:spacegroup] || session[:filter_spacegroup]
-    session[:classes_period] = params[:classes_period] || session[:classes_period]
-    session[:filter_todays_class] = params[:todays_class] || session[:filter_todays_class]
-    session[:filter_yesterdays_class] = params[:yesterdays_class] || session[:filter_yesterdays_class]
-    session[:filter_tomorrows_class] = params[:tomorrows_class] || session[:filter_tomorrows_class]
-    session[:filter_past] = params[:past] || session[:filter_past]
-    session[:filter_future] = params[:future] || session[:filter_future]
+    clear_session(*session_filter_list)
+    session[:classes_period] = params[:classes_period]
+    (params_filter_list - [:classes_period]).each do |item|
+      session["filter_#{item}".to_sym] = params[item]
+    end
     redirect_to admin_wkclasses_path
   end
 
@@ -112,6 +103,19 @@ class Admin::WkclassesController < Admin::BaseController
                                     :max_capacity).merge({ instructor_cost: cost })
   end
 
+  def params_filter_list
+    [:workout, :spacegroup, :todays_class, :yesterdays_class, :tomorrows_class, :past, :future, :classes_period]
+  end
+
+  def session_filter_list
+    params_filter_list.map { |i| i == :classes_period ? i : "filter_#{i}" }
+  end
+
+  def prepare_items_for_dropdowns
+    @workouts = Workout.all.map { |w| [w.name, w.id] }
+    @instructors = Instructor.has_rate.order_by_name.map { |i| [i.name, i.id] }
+  end
+
   def handle_search
     if session[:filter_workout].present?
       @wkclasses = Wkclass.joins(:workout).where(workout: { name: session[:filter_workout] }).order(start_time: :desc)
@@ -122,10 +126,11 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclasses = @wkclasses.tomorrows_class if session[:filter_tomorrows_class].present?
     @wkclasses = @wkclasses.past if session[:filter_past].present?
     @wkclasses = @wkclasses.future if session[:filter_future].present?
-    if session[:classes_period].present? && session[:classes_period] != 'All'
-      start_date = Date.parse(session[:classes_period])
-      end_date = Date.parse(session[:classes_period]).end_of_month.end_of_day
-      @wkclasses = @wkclasses.between(start_date, end_date)
-    end
+    return unless session[:classes_period].present? && session[:classes_period] != 'All'
+
+    start_date = Date.parse(session[:classes_period]).beginning_of_month
+    end_date = Date.parse(session[:classes_period]).end_of_month.end_of_day
+    period = (start_date..end_date)
+    @wkclasses = @wkclasses.during(period)
   end
 end

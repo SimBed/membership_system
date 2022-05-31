@@ -23,4 +23,11 @@ class ActiveSupport::TestCase
                                           password: password,
                                           remember_me: remember_me } }
   end
+
+  def month_period(date)
+    date = Date.parse(date) unless date.is_a? Date
+    beginning_of_period = date.beginning_of_month
+    end_of_period = date.end_of_month.end_of_day
+    (beginning_of_period..end_of_period)
+  end  
 end

@@ -12,7 +12,7 @@ class Admin::PartnersController < Admin::BaseController
     set_period
     @partner_share = {}
     @partner.workout_groups.each do |wg|
-      @partner_share[wg.name.to_sym] = wg.profit(session[:revenue_period]) * wg.partner_share.to_f / 100
+      @partner_share[wg.name.to_sym] = wg.partner_share_amount(@period)
     end
     @total_share = @partner_share.each_value.inject(&:+)
     @months = months_logged
@@ -52,8 +52,9 @@ class Admin::PartnersController < Admin::BaseController
   private
 
   def set_period
-    period = params[:revenue_period] || session[:revenue_period] || Time.zone.today.beginning_of_month.strftime('%b %Y')
-    session[:revenue_period] = (Date.parse(period).beginning_of_month..Date.parse(period).end_of_month.end_of_day)
+    default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
+    session[:revenue_month] = params[:revenue_month] || session[:revenue_month] || default_month
+    @period = month_period(session[:revenue_month])
   end
 
   def set_partner

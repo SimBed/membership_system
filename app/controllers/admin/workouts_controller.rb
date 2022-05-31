@@ -21,7 +21,7 @@ class Admin::WorkoutsController < Admin::BaseController
 
     if @workout.save
       redirect_to admin_workouts_path
-      flash[:success] = 'Workout was successfully created.'
+      flash[:success] = t('.success')
     else
       #        @instructors = Instructor.all.map { |i| ["#{i.first_name} #{i.last_name}", i.id] }
       render :new, status: :unprocessable_entity
@@ -31,7 +31,7 @@ class Admin::WorkoutsController < Admin::BaseController
   def update
     if @workout.update(workout_params)
       redirect_to admin_workouts_path
-      flash[:success] = 'Workout was successfully updated.'
+      flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class Admin::WorkoutsController < Admin::BaseController
   def destroy
     @workout.destroy
     redirect_to admin_workouts_path
-    flash[:success] = 'Workout was successfully deleted.'
+    flash[:success] = t('.success')
   end
 
   private

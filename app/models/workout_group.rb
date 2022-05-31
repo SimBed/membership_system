@@ -15,28 +15,51 @@ class WorkoutGroup < ApplicationRecord
   after_update :update_rel_workout_group_workout
   scope :order_by_name, -> { order(:name) }
 
-  def net_revenue(period)
-    attendances_in_period = Attendance.confirmed.by_workout_group(name, period.begin, period.end)
-    base_revenue = attendances_in_period.map(&:revenue).inject(0, :+)
-    expiry_revenue = expiry_revenue(period.end.strftime('%b %Y'))
-    gross_revenue = base_revenue + expiry_revenue
-    gst = gross_revenue * (1 - (1 / (1 + gst_rate)))
-    gross_revenue - gst
+  def attendances_during(period)
+    Attendance.confirmed.no_amnesty.by_workout_group(name, period)
   end
 
-  def expense(period)
-    fixed_expenses = Expense.by_workout_group(name, period.begin, period.end)
-    total_fixed_expense = fixed_expenses.sum(:amount)
-    total_instructor_expense =
-      Wkclass.in_workout_group(name)
-             .between(period.begin, period.end)
-             .has_instructor_cost
-             .sum(:instructor_cost)
-    total_fixed_expense + total_instructor_expense
+  def wkclasses_during(period)
+    Wkclass.in_workout_group(name).during(period)
+  end
+
+  def base_revenue(period)
+    attendances_during(period).map(&:revenue).inject(0, :+)
+  end
+
+  def gross_revenue(period)
+    base_revenue(period) + expiry_revenue(period)
+  end
+
+  def gst(period)
+    gross_revenue(period) * (1 - (1 / (1 + gst_rate)))
+  end
+
+  def net_revenue(period)
+    gross_revenue(period) - gst(period)
+  end
+
+  def fixed_expense(period)
+    Expense.by_workout_group(name, period).sum(:amount)
+  end
+
+  def variable_expense(period)
+    Wkclass.in_workout_group(name)
+           .during(period)
+           .has_instructor_cost
+           .sum(:instructor_cost)
+  end
+
+  def total_expense(period)
+    fixed_expense(period) + variable_expense(period)
   end
 
   def profit(period)
-    net_revenue(period) - expense(period)
+    net_revenue(period) - total_expense(period)
+  end
+
+  def partner_share_amount(period)
+    profit(period) * partner_share.to_f / 100
   end
 
   def self.includes_workout_of(wkclass)
@@ -55,12 +78,12 @@ class WorkoutGroup < ApplicationRecord
     Rails.application.config_for(:constants)['gst_rate'].first.to_f / 100
   end
 
-  def attendances_in(revenue_date)
-    attendances.in_month(Date.parse(revenue_date), Date.parse(revenue_date) + 1.month).count
-  end
+  # def attendances_in(revenue_date)
+  #   attendances.in_month(Date.parse(revenue_date), Date.parse(revenue_date) + 1.month).count
+  # end
 
-  def expiry_revenue(revenue_date)
-    purchases.select { |p| p.expired_in?(revenue_date) }.map(&:expiry_revenue).inject(0, :+)
+  def expiry_revenue(period)
+    purchases.select { |p| p.expired_in?(period) }.map(&:expiry_revenue).inject(0, :+)
   end
 
   def create_rel_workout_group_workout

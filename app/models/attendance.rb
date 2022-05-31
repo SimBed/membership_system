@@ -45,9 +45,9 @@ class Attendance < ApplicationRecord
     # .to_a.sort_by { |a| [sort_order.index(a.status), a.first_name] }
   end
 
-  def self.by_workout_group(workout_group_name, start_date, end_date)
+  def self.by_workout_group(workout_group_name, period)
     joins(:wkclass, purchase: [product: [:workout_group]])
-      .merge(Wkclass.between(start_date, end_date))
+      .merge(Wkclass.during(period))
       .where(workout_group_condition(workout_group_name))
       .order(:start_time)
   end

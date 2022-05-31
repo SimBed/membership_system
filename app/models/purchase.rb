@@ -144,8 +144,9 @@ class Purchase < ApplicationRecord
     ['provisionally expired'].include?(status)
   end
 
-  def expired_in?(month_year)
-    expired? && expiry_date.strftime('%b %Y') == month_year
+  def expired_in?(period)
+    # expired? && expiry_date.strftime('%b %Y') == month_year
+    expired? && period.cover?(expiry_date)
   end
 
   def expiry_cause

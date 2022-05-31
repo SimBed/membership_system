@@ -12,6 +12,13 @@ module ApplicationHelper
     params_items.each { |item| params[item] = nil if params[item] == '' }
   end
 
+  def month_period(date)
+    date = Date.parse(date) unless date.is_a? Date
+    beginning_of_period = date.beginning_of_month
+    end_of_period = date.end_of_month.end_of_day
+    (beginning_of_period..end_of_period)
+  end
+
   private
 
   def months_between(start_date, end_date)

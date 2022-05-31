@@ -147,10 +147,10 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'expired_in? method' do
-    refute @purchase_package.expired_in?('Mar 2022')
-    assert @purchase_dropin.expired_in?('Feb 2022')
-    refute @purchase_dropin2.expired_in?('Feb 2022')
-    refute @purchase_fixed.expired_in?('Mar 2022')
+    refute @purchase_package.expired_in?(month_period 'Mar 2022')
+    assert @purchase_dropin.expired_in?(month_period 'Feb 2022')
+    refute @purchase_dropin2.expired_in?(month_period 'Feb 2022')
+    refute @purchase_fixed.expired_in?(month_period 'Mar 2022')
   end
 
   test 'expiry_cause method' do

@@ -1,6 +1,6 @@
 <h2><strong><i><%= "#{@workout_group.name}" %></i></strong> Profit Share  <form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET">
-              <select name="revenue_period" onchange="this.form.submit()" class= "sort">
-                <%= options_for_select @months, session[:revenue_period] %>
+              <select name="revenue_month" onchange="this.form.submit()" class= "sort">
+                <%= options_for_select @months, session[:revenue_month] %>
               </select>
             </form>
 </h2>
@@ -8,13 +8,13 @@
   <%= render partial: 'revenues_table' %>
 </div>
 
-<% unless @wkclasses_with_instructor_expense.empty? %>
+<% unless @summary[:variable_expense].zero? %>
 <div id="wkclasses-with-expense-table" class="container px-1 mt-5 mb-5 margin-override">
   <%= render partial: 'wkclasses_with_expense_table' %>
 </div>
 <% end %>
 
-<% unless @fixed_expenses.empty? %>
+<% unless @summary[:fixed_expense].zero? %>
 <div id="other-expense-table" class="container px-1 mt-5 mb-3 margin-override">
   <%= render partial: 'other_expense_table' %>
 </div>
