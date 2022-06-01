@@ -20,6 +20,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost
     @fixed_expenses = Expense.by_workout_group(@workout_group.name, @period)
     @months = months_logged
+    @summary = {}
     set_revenue_summary
     set_expense_summary
   end
@@ -74,7 +75,6 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   end
 
   def set_revenue_summary
-    @summary = {}
     revenue_params = {
       attendance_count: @workout_group.attendances_during(@period).size,
       wkclass_count: @wkclasses.size,
@@ -123,6 +123,6 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     return if logged_in_as?('admin', 'superadmin') || logged_in_as?('partner')
 
     redirect_to login_path
-    flash[:warning] = 'Forbidden'
+    flash[:warning] = I18n.t(:forbidden)
   end
 end

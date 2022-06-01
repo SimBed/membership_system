@@ -106,3 +106,4 @@ en:
         success: Expense rate was successfully updated
       destroy:
         success: Expense rate was successfully deleted
+  forbidden: Forbidden

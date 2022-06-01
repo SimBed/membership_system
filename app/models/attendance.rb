@@ -11,6 +11,7 @@ class Attendance < ApplicationRecord
   delegate :name, to: :client
   delegate :product, to: :purchase
   scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window) }
+  scope :amnesty, -> { where(amnesty: true) }  
   scope :no_amnesty, -> { where.not(amnesty: true) }
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']) }
   # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }

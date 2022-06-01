@@ -13,6 +13,7 @@ class Wkclass < ApplicationRecord
   validate :unique_workout_time_instructor_combo
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
+  scope :any_workout_of, ->(workout_filter) { joins(:workout).where(workout: { name: workout_filter }) }
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }

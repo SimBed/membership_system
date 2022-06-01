@@ -1,0 +1,14 @@
+<% unless @attendances_amnesty.empty? %>
+<div class ="d-flex bg-light w-50">
+    <div class ="cell fw-bold">Amnesties</div>
+</div>
+  <% @attendances_amnesty.each_with_index do |a, index| %>
+     <div class='d-flex bg-light w-50'>
+       <div class='cell c-purchases-attendances-index'>
+         <%= @attendances_amnesty.size - index %>
+       </div>
+       <div class='cell'><%= a.date %></div>
+       <div class='cell'><%= a.status %></div>
+     </div>
+  <% end %>
+<% end %>

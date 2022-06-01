@@ -24,15 +24,9 @@ class Admin::AttendancesController < Admin::BaseController
     if @attendance.save
       # needed for after_action callback
       @purchase = @attendance.purchase
-      if logged_in_as?('client')
-        after_successful_create_by_client
-      else
-        after_successful_create_by_admin
-      end
-    elsif logged_in_as?('client')
-      after_unsuccessful_create_by_client
+      logged_in_as?('client') ? after_successful_create_by_client : after_successful_create_by_admin
     else
-      after_unsuccessful_create_by_admin
+      logged_in_as?('client') ? after_unsuccessful_create_by_client : after_unsuccessful_create_by_admin
     end
   end
 
@@ -78,26 +72,12 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def update_by_client
-    @wkclass_name = @wkclass.name
-    @wkclass_day = @wkclass.day_of_week
-    @time_of_request = time_of_request
-    @original_status = @attendance.status
+    set_update_by_client_data
     case @time_of_request
     when 'early'
-      if @original_status == 'booked'
-        @updated_status = 'cancelled early'
-        early_cancellation_by_client = true
-      else
-        @updated_status = 'booked'
-      end
+      action_when_early_client_update
     when 'late'
-      if @original_status == 'booked'
-        @updated_status = 'cancelled late'
-        # late cancellations sometimes count
-        late_cancellation_by_client = true
-      else
-        @updated_status = 'booked'
-      end
+      action_when_late_client_update
     when 'too late'
       flash[booking_flash_hash[:update][:too_late][:colour]] =
         send booking_flash_hash[:update][:too_late][:message], true, @wkclass_name
@@ -106,7 +86,7 @@ class Admin::AttendancesController < Admin::BaseController
     end
     if @attendance.update(status: @updated_status)
       @attendance.increment!(:amendment_count)
-      if late_cancellation_by_client
+      if @late_cancellation_by_client
         @purchase.increment!(:late_cancels)
         late_cancels_max = amnesty_limit[:cancel_late][@purchase.product_type]
         if @purchase.reload.late_cancels > late_cancels_max
@@ -115,7 +95,7 @@ class Admin::AttendancesController < Admin::BaseController
         else
           @attendance.update(amnesty: true)
         end
-      elsif early_cancellation_by_client
+      elsif @early_cancellation_by_client
         @purchase.increment!(:early_cancels)
         @attendance.update(amnesty: true)
       else # a rebook (and bookings always count)
@@ -242,6 +222,13 @@ class Admin::AttendancesController < Admin::BaseController
     @attendance = Attendance.find(params[:id])
   end
 
+  def set_update_by_client_data
+    @wkclass_name = @wkclass.name
+    @wkclass_day = @wkclass.day_of_week
+    @time_of_request = time_of_request
+    @original_status = @attendance.status
+  end
+
   def attendance_params
     params.require(:attendance).permit(:wkclass_id, :purchase_id)
   end
@@ -275,6 +262,24 @@ class Admin::AttendancesController < Admin::BaseController
       'late'
     else
       'too late'
+    end
+  end
+
+  def action_when_early_client_update
+    if @original_status == 'booked'
+      @updated_status = 'cancelled early'
+      @early_cancellation_by_client = true
+    else
+      @updated_status = 'booked'
+    end
+  end
+
+  def action_when_late_client_update
+    if @original_status == 'booked'
+      @updated_status = 'cancelled late'
+      @late_cancellation_by_client = true
+    else
+      @updated_status = 'booked'
     end
   end
 

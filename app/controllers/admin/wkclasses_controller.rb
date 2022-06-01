@@ -8,7 +8,8 @@ class Admin::WkclassesController < Admin::BaseController
 
   def index
     @wkclasses = Wkclass.includes([:confirmed_attendances, :provisional_attendances, :workout]).order_by_date
-    handle_search
+    handle_filter
+    handle_period
     @wkclasses = @wkclasses.page params[:page]
     @workout = Workout.distinct.pluck(:name).sort!
     @months = ['All'] + months_logged
@@ -28,7 +29,8 @@ class Admin::WkclassesController < Admin::BaseController
     return if params[:no_scroll]
 
     @wkclasses = Wkclass.order_by_date
-    handle_search
+    handle_filter
+    handle_period
     # @wkindex = @wkclasses.index(@wkclass)
   end
 
@@ -104,7 +106,8 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def params_filter_list
-    [:workout, :spacegroup, :todays_class, :yesterdays_class, :tomorrows_class, :past, :future, :classes_period]
+    [:any_workout_of, :in_workout_group, :todays_class, :yesterdays_class, :tomorrows_class, :past, :future,
+     :classes_period]
   end
 
   def session_filter_list
@@ -116,21 +119,18 @@ class Admin::WkclassesController < Admin::BaseController
     @instructors = Instructor.has_rate.order_by_name.map { |i| [i.name, i.id] }
   end
 
-  def handle_search
-    if session[:filter_workout].present?
-      @wkclasses = Wkclass.joins(:workout).where(workout: { name: session[:filter_workout] }).order(start_time: :desc)
+  def handle_filter
+    %w[any_workout_of in_workout_group].each do |key|
+      @wkclasses = @wkclasses.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
     end
-    @wkclasses = @wkclasses.in_workout_group(session[:filter_spacegroup]) if session[:filter_spacegroup].present?
-    @wkclasses = @wkclasses.todays_class if session[:filter_todays_class].present?
-    @wkclasses = @wkclasses.yesterdays_class if session[:filter_yesterdays_class].present?
-    @wkclasses = @wkclasses.tomorrows_class if session[:filter_tomorrows_class].present?
-    @wkclasses = @wkclasses.past if session[:filter_past].present?
-    @wkclasses = @wkclasses.future if session[:filter_future].present?
+    %w[todays_class yesterdays_class tomorrows_class past future].each do |key|
+      @wkclasses = @wkclasses.send(key) if session["filter_#{key}"].present?
+    end
+  end
+
+  def handle_period
     return unless session[:classes_period].present? && session[:classes_period] != 'All'
 
-    start_date = Date.parse(session[:classes_period]).beginning_of_month
-    end_date = Date.parse(session[:classes_period]).end_of_month.end_of_day
-    period = (start_date..end_date)
-    @wkclasses = @wkclasses.during(period)
+    @wkclasses = @wkclasses.during(month_period(session[:classes_period]))
   end
 end

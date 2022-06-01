@@ -9,12 +9,9 @@ class Admin::WorkoutsController < Admin::BaseController
 
   def new
     @workout = Workout.new
-    #    @instructors = Instructor.all.map { |i| ["#{i.first_name} #{i.last_name}", i.id] }
   end
 
-  def edit
-    #    @instructors = Instructor.all.map { |i| ["#{i.first_name} #{i.last_name}", i.id] }
-  end
+  def edit; end
 
   def create
     @workout = Workout.new(workout_params)
@@ -23,7 +20,6 @@ class Admin::WorkoutsController < Admin::BaseController
       redirect_to admin_workouts_path
       flash[:success] = t('.success')
     else
-      #        @instructors = Instructor.all.map { |i| ["#{i.first_name} #{i.last_name}", i.id] }
       render :new, status: :unprocessable_entity
     end
   end

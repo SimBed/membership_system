@@ -24,7 +24,8 @@ class Admin::PurchasesController < Admin::BaseController
   def show
     # @attendances = @purchase.attendances.sort_by { |a| -a.start_time.to_i }
     # @attendances = Attendance.joins(:purchase, :wkclass).where(purchase: @purchase).order(start_time: :desc)
-    @attendances = @purchase.attendances.merge(Attendance.order_by_date)
+    @attendances_no_amnesty = @purchase.attendances.no_amnesty.merge(Attendance.order_by_date)
+    @attendances_amnesty = @purchase.attendances.amnesty.merge(Attendance.order_by_date)
   end
 
   def new
@@ -122,6 +123,7 @@ class Admin::PurchasesController < Admin::BaseController
     %w[workout_group statuses].each do |key|
       @purchases = @purchases.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
     end
+    # some scopes will return an array (not an ActiveRecord) eg close_to_expiry so
     # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
     @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
   end
@@ -180,7 +182,7 @@ class Admin::PurchasesController < Admin::BaseController
     update_purchase_status([@purchase])
     whatsapp_recipients = [Rails.configuration.twilio[:me], Rails.configuration.twilio[:boss]]
     return if @purchase.product.dropin?
-    
+
     if @purchase.client.account.nil?
       # setup_account_for_new_client
       whatsapp_recipients.each do |recipient|

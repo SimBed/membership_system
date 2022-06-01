@@ -1,11 +1,11 @@
-<% unless @purchase.status == 'not started' %>
+<% unless @attendances_no_amnesty.empty? %>
 <div class ="d-flex bg-light w-50">
     <div class ="cell fw-bold">Attendances</div>
 </div>
-  <% @attendances.each_with_index do |a, index| %>
+  <% @attendances_no_amnesty.each_with_index do |a, index| %>
      <div class='d-flex bg-light w-50'>
        <div class='cell c-purchases-attendances-index'>
-         <%= @attendances.size - index %>
+         <%= @attendances_no_amnesty.size - index %>
        </div>
        <div class='cell'><%= a.date %></div>
        <div class='cell'><%= a.status %></div>
