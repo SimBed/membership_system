@@ -26,6 +26,11 @@ default: &default
   - cancelled late
   - no show
 
+ settings:
+   amendment_count: 3
+   booking_window_days_before: 1
+   booking_window_minutes_before: 5
+
 development:
   <<: *default
 

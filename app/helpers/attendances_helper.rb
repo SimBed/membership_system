@@ -127,7 +127,4 @@ module AttendancesHelper
       end
   end
 
-  def settings
-    { amendment_count: 3 }
-  end
 end

@@ -11,7 +11,7 @@ class Attendance < ApplicationRecord
   delegate :name, to: :client
   delegate :product, to: :purchase
   scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window) }
-  scope :amnesty, -> { where(amnesty: true) }  
+  scope :amnesty, -> { where(amnesty: true) }
   scope :no_amnesty, -> { where.not(amnesty: true) }
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']) }
   # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }
@@ -29,11 +29,16 @@ class Attendance < ApplicationRecord
   end
 
   def revenue
+    return 0 if amnesty?
     purchase.payment / purchase.attendance_estimate
   end
 
   def workout_group
     purchase.product.workout_group
+  end
+
+  def maxed_out_amendments?
+    amendment_count >= Rails.application.config_for(:constants)['settings'][:amendment_count]
   end
 
   def self.by_status(wkclass, status)

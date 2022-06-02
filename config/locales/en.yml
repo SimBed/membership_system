@@ -1,6 +1,15 @@
 
 en:
   admin:
+    attendances:
+      update_by_admin:
+        warning: Attendance was not updated
+      destroy:
+        success: Attendance was successfully deleted
+      correct_account_or_junioradmin:
+        warning: Forbidden
+      update:
+        success: Attendance was successfully updated
     accounts:
       create:
         success: Account was successfully created

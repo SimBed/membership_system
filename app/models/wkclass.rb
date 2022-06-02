@@ -1,10 +1,13 @@
 class Wkclass < ApplicationRecord
+  # want settings hash from ApplicationHelper
+  include ApplicationHelper
   has_many :attendances, dependent: :destroy
   has_many :confirmed_attendances, lambda {
                                      where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']).where.not(amnesty: true)
                                    }, class_name: 'Attendance'
   has_many :provisional_attendances, -> { where.not(amnesty: true) }, class_name: 'Attendance'
   has_many :physical_attendances, -> { where(status: 'attended') }, class_name: 'Attendance'
+  has_many :spot_takers, -> { where(status: ['booked', 'attended']) }, class_name: 'Attendance'
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
   belongs_to :instructor
@@ -117,6 +120,17 @@ class Wkclass < ApplicationRecord
 
   def revenue
     attendances.confirmed.map(&:revenue).inject(0, :+)
+  end
+
+  def booking_window
+    settings = Rails.application.config_for(:constants)['settings']
+    window_start = start_time.ago(settings[:booking_window_days_before].days).beginning_of_day
+    window_end = start_time - settings[:booking_window_minutes_before].minutes
+    (window_start..window_end)
+  end
+
+  def at_capacity?
+    return true if spot_takers.count >= max_capacity
   end
 
   # Use a class method with an argument to call send_reminder method rather than call send_reminder directly

@@ -47,13 +47,11 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as correct client, junioradmin or more senior' do
     original_status = @attendance.status
-    [nil, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       patch admin_attendance_path(@attendance), params:
        { attendance:
           { id: @attendance.id,
-            wkclass_id: @wkclass.id,
-            purchase_id: @purchase1.id,
             status: 'attended' } }
       assert_equal original_status, @attendance.reload.status
       assert_redirected_to login_path
