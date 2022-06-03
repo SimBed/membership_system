@@ -154,10 +154,10 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def correct_account_or_junioradmin
-    @client = if request.post?
+    @client = if new_booking?
                 Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
               else
-                # if update or destroy
+                # update or destroy
                 @attendance.client
               end
 
@@ -340,7 +340,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def set_wkclass_and_booking_type
-    if request.post?
+    if new_booking?
       @booking_type = :booking
       @rebooking = false
       @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
@@ -360,8 +360,8 @@ class Admin::AttendancesController < Admin::BaseController
     set_wkclass_and_booking_type
     return unless @wkclass.at_capacity?
 
-    action_fully_booked(@booking_type) if request.post? || ['cancelled early',
-                                                            'cancelled late'].include?(@attendance.status)
+    action_fully_booked(@booking_type) if new_booking? || ['cancelled early',
+                                                           'cancelled late'].include?(@attendance.status)
   end
 
   def action_fully_booked(booking_type)
@@ -378,60 +378,87 @@ class Admin::AttendancesController < Admin::BaseController
     redirect_to client_book_path(@client)
   end
 
+  def handle_provisionally_expired_new_booking
+    data_items_provisionally_expired(new_booking: true)
+    return unless @purchase.provisionally_expired?
+
+    if logged_in_as?('client')
+      flash[:warning] =
+        ['The maximum number of classes has already been booked.',
+         'Renew you Package if you wish to attend this class']
+      redirect_to client_book_path(@client)
+    else
+      flash[:warning] = I18n.t 'admin.attendances.action_new_booking_when_prov_expired.admin.warning'
+      redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+    end
+  end
+
+  def action_client_rebook_cancellation_when_prov_expired
+    flash[:warning] =
+      ['The maximum number of classes has already been booked.',
+       'Renew you Package if you wish to attend this class']
+    redirect_to client_book_path(@client)
+  end
+
+  def action_admin_rebook_cancellation_when_prov_expired
+    flash[:warning] =
+      ['The purchase has provisionally expired.',
+       'This change may not be possible without first cancelling a booking']
+    redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
+  end
+
   def provisionally_expired
     # eg class shown as bookable, then purchase becomes provsionally expired due to booking of a different class
-    # either on different browser or by admin, attempting to book the class shown as bookable on first browser should fail
-    if request.post?
-      purchase = Purchase.find(params[:attendance][:purchase_id].to_i)
-      if ['provisionally expired'].include?(purchase.status)
-        if logged_in_as?('client')
-          flash[:warning] =
-            ['The maximum number of classes has already been booked.',
-             'Renew you Package if you wish to attend this class']
-          redirect_to client_book_path(@client)
-        else
-          flash[:warning] = 'The maximum number of classes has already been booked'
-          redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
-        end
-      end
-    else # patch
-      purchase = @attendance.purchase
-      if ['provisionally expired'].include?(purchase.status)
-        if logged_in_as?('client')
-          if @attendance.status != 'booked' # ie trying to change cancelled to booked
-            flash[:warning] =
-              ['The maximum number of classes has already been booked.',
-               'Renew you Package if you wish to attend this class']
-            redirect_to client_book_path(@client)
-          end
-        else # admin
-          late_cancels_max = amnesty_limit[:cancel_late][purchase.product_type]
-          no_shows_max = amnesty_limit[:no_show][purchase.product_type]
-          has_late_cancels_amnesty = purchase.late_cancels < late_cancels_max
-          has_no_show_amnesty = purchase.no_shows < no_shows_max
-          change_results_in_no_amnesty = false
-          if (params[:attendance][:status] == 'no show' &&
-            !has_no_show_amnesty) ||
-             (params[:attendance][:status] == 'cancelled late' &&
-            !has_late_cancels_amnesty)
-            change_results_in_no_amnesty = true
-          end
-          # if the change results in an extra class or validity term reduction
-          # booked and return already count in all circumstances so changing them wont risk providing excess benefit
-          # [this is true in context of fixed classes, not quite true for unlimited.
-          # Deal with eg unlimited attended to no amnesty no show later]
-          return if %w[booked attended].include?(@attendance.status)
-
-          if @attendance.amnesty? && change_results_in_no_amnesty
-            flash[:warning] =
-              ['The purchase has provisionally expired.',
-               'This change may not be possible without first cancelling a booking']
-            redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
-          end
+    # either on different browser or by admin, then attempting to book the class shown as bookable on first browser should fail
+    if new_booking?
+      handle_provisionally_expired_new_booking
+    else # update
+      data_items_provisionally_expired(new_booking: false)
+      if @purchase.provisionally_expired?
+        action_client_rebook_cancellation_when_prov_expired if logged_in_as?('client') && @attendance.status != 'booked'
+        # if the change results in an extra class or validity term reduction
+        if logged_in_as?('junioradmin', 'admin', 'superadmin') && extra_benefits_after_change?
+          action_admin_rebook_cancellation_when_prov_expired
         end
       end
     end
   end
+
+  def extra_benefits_after_change?
+    late_cancels_max = amnesty_limit[:cancel_late][@purchase.product_type]
+    no_shows_max = amnesty_limit[:no_show][@purchase.product_type]
+    has_late_cancels_amnesty = @purchase.late_cancels < late_cancels_max
+    has_no_show_amnesty = @purchase.no_shows < no_shows_max
+    amnesty_when_changed = true
+    if (params[:attendance][:status] == 'no show' && !has_no_show_amnesty) ||
+       (params[:attendance][:status] == 'cancelled late' && !has_late_cancels_amnesty)
+      amnesty_when_changed = false
+    end
+    return true if @attendance.amnesty? && !amnesty_when_changed
+
+    false
+  end
+
+  def new_booking?
+    return true if request.post?
+
+    false
+  end
+
+  def data_items_provisionally_expired(new_booking: true)
+    if new_booking
+      @purchase = Purchase.find(params.dig(:attendance, :purchase_id).to_i)
+      @wkclass = Wkclass.find(params.dig(:attendance, :wkclass_id).to_i)
+    else # update
+      @purchase = @attendance.purchase
+    end
+  end
+
+  # redundant?
+  # booked and attended already count in all circumstances so changing them wont risk providing excess benefit
+  # [this is true in context of fixed classes, not quite true for unlimited.
+  # Deal with eg unlimited attended to no amnesty no show later]
+  # return if %w[booked attended].include?(@attendance.status)
 
   def late_cancellation_penalty(package_type)
     return if Rails.env.production?

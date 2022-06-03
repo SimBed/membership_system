@@ -10,6 +10,9 @@ en:
         warning: Forbidden
       update:
         success: Attendance was successfully updated
+      action_new_booking_when_prov_expired:
+        admin:
+          warning: The maximum number of classes has already been booked
     accounts:
       create:
         success: Account was successfully created

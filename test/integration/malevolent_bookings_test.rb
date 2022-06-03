@@ -87,6 +87,37 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                   'Renew you Package if you wish to attend this class']
   end
 
+  test 'attempt by admin to book class with provisonally expired package should fail' do
+    # create 3 new classes
+    log_in_as @admin
+    assert_difference 'Wkclass.count', 3 do
+      post admin_wkclasses_path,
+           params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: 3, max_capacity: 6 } }
+      post admin_wkclasses_path,
+           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: 3, max_capacity: 6 } }
+      post admin_wkclasses_path,
+           params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: 3, max_capacity: 6 } }
+    end
+
+    travel_to(Date.parse('March 17 2022').beginning_of_day)
+    # provisionally expire purchase by booking 2 classes
+    assert_difference '@purchase.attendances.count', 2 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[0].id,
+                                                           purchase_id: @purchase.id } }
+      post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
+                                                           purchase_id: @purchase.id } }
+    end
+    assert_equal 'provisionally expired', @purchase.reload.status
+
+    # admin attempts to book another class
+    assert_difference '@purchase.attendances.count', 0 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
+                                                           purchase_id: @purchase.id } }
+    end
+    assert_redirected_to admin_wkclass_path(Wkclass.last(3)[2], no_scroll: true)
+    assert_equal flash[:warning], 'The maximum number of classes has already been booked'
+  end
+
   test 'admin should be able to make amendment to booking for provisonally expired package when change wont improve package terms' do
     # create 3 new classes
     log_in_as @admin

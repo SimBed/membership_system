@@ -105,12 +105,12 @@ module AttendancesHelper
     if Rails.env.production?
       { cancel_late:
           { unlimited_package: 100,
-            fixed_package: 100,
+            fixed_package: 1,
             trial: 100,
             dropin: 0 },
         no_show:
           { unlimited_package: 100,
-            fixed_package: 100,
+            fixed_package: 0,
             trial: 100,
             dropin: 0 } }
     else
