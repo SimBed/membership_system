@@ -31,6 +31,8 @@ class Purchase < ApplicationRecord
   # 'using a scope through an association'
   # https://apidock.com/rails/ActiveRecord/SpawnMethods/merge
   scope :package, -> { joins(:product).merge(Product.package) }
+  scope :fixed, -> { joins(:product).merge(Product.fixed) }
+  scope :trial, -> { joins(:product).merge(Product.trial) }
   scope :package_started_not_expired, -> { package.started.not_expired }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions

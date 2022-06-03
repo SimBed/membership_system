@@ -9,6 +9,8 @@ class Product < ApplicationRecord
   validate :product_combo_must_be_unique
   scope :package, -> { where('max_classes > 1') }
   scope :dropin, -> { where(max_classes: 1) }
+  scope :fixed, -> { where('max_classes between ? and ?', 2, 999) }
+  scope :trial, -> { where(validity_length: 1, validity_unit: 'W') }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
 
   def name

@@ -117,7 +117,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def handle_filter
     # arity doesn't work with scopes so struggled to reformat this further. eg Purchase.method(:classpass).arity returns -1 not zero.
-    %w[uninvoiced package close_to_expiry unpaid classpass].each do |key|
+    %w[uninvoiced package close_to_expiry unpaid classpass trial fixed].each do |key|
       @purchases = @purchases.send(key) if session["filter_#{key}"].present?
     end
     %w[workout_group statuses].each do |key|
@@ -132,7 +132,7 @@ class Admin::PurchasesController < Admin::BaseController
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
-    @other_attributes = %w[uninvoiced package close_to_expiry unpaid classpass]
+    @other_attributes = %w[classpass close_to_expiry fixed package trial uninvoiced unpaid]
   end
 
   def handle_sort
@@ -170,7 +170,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def params_filter_list
     [:workout_group, :statuses, :uninvoiced, :package, :close_to_expiry,
-     :unpaid, :classpass, :search_name]
+     :unpaid, :classpass, :trial, :fixed, :search_name]
   end
 
   # ['workout_group_filter',...'invoice_filter',...:search_name]
