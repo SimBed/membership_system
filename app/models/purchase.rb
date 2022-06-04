@@ -46,8 +46,11 @@ class Purchase < ApplicationRecord
   scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
   # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
-  #scope :uninvoiced, -> { where(invoice: nil) }
-  scope :uninvoiced, -> { package.where(invoice: nil).joins(product: [:workout_group]).where(workout_groups: { requires_invoice: true }) }
+  # scope :uninvoiced, -> { where(invoice: nil) }
+  scope :uninvoiced, lambda {
+                       package.where(invoice: nil).joins(product: [:workout_group])
+                              .where(workout_groups: { requires_invoice: true })
+                     }
   scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
@@ -247,13 +250,13 @@ class Purchase < ApplicationRecord
 
   def attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true)
     return 'not started' if attendance_count_provisional.zero?
-    return 'booked but not started' if attendance_count_confirmed.zero?
-    return 'unlimited' if max_classes == 1000
 
     attendance_count = provisional ? attendance_count_provisional : attendance_count_confirmed
+    return 'exhausted' if attendance_count >= max_classes
+    return 'booked but not started' if attendance_count_confirmed.zero?
+    # 'started'
+    return 'unlimited' if max_classes == 1000
     return attendance_count if attendance_count < max_classes
-
-    'exhausted'
   end
 
   def validity(attendance_count, expiry_date)
