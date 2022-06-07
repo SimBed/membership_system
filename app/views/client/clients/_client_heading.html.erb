@@ -5,7 +5,7 @@
   Package History
 </h6>
 <h2>
-  <form action=<%= "/client/clients/#{params[:id]}" %> method="GET" >
+  <form action=<%= "/client/clients/#{params[:id]}/history" %> method="GET" >
     <select name="purchaseid" onchange="this.form.submit()" class= "sort">
       <%= options_for_select @products_purchased, session[:purchaseid] %>
     </select>
