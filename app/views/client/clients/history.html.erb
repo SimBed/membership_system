@@ -1,5 +1,7 @@
+<% provide(:heading, "Package History") %>
+
 <div class="text-center mb-3">
-  <%= render partial: 'client_heading' %>
+  <%= render partial: 'client_heading', locals: {selection: true} %>
 </div>
 
 <div id="packages-table" class="container px-1 margin-override">

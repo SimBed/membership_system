@@ -1,3 +1,9 @@
+<% provide(:heading, "Profile") %>
+
+<div class="text-center mb-3">
+  <%= render partial: 'client_heading', locals: {selection: false} %>
+</div>
+
 <div id="client-data" class="">
   <%= render partial: 'client_data' %>
 </div>

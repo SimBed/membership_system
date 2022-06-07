@@ -2,12 +2,14 @@
   <%= @client.name %>
 </h2>
 <h6 class="bolditalics mb-0">
-  Package History
+  <%= yield(:heading) %>
 </h6>
-<h2>
-  <form action=<%= "/client/clients/#{params[:id]}/history" %> method="GET" >
-    <select name="purchaseid" onchange="this.form.submit()" class= "sort">
-      <%= options_for_select @products_purchased, session[:purchaseid] %>
-    </select>
-  </form>
-</h2>
+<% if selection %>
+  <h2>
+    <form action=<%= "/client/clients/#{params[:id]}/history" %> method="GET" >
+      <select name="purchaseid" onchange="this.form.submit()" class= "sort">
+        <%= options_for_select @products_purchased, session[:purchaseid] %>
+      </select>
+    </form>
+  </h2>
+<% end %>  

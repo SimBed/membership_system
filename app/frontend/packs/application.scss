@@ -562,12 +562,17 @@ div.nomobile {
   display: none;
 }
 
+img.Logobar {
+  width: 8.5rem;
+  display: block;
+  margin: auto;
+}
 
-  img.Logobar {
-    width: 8.5rem;
-    display: block;
-    margin: auto;
-  }
+img.heartlogo {
+  width: 5rem;
+  display: block;
+  margin: auto;
+}
 
  /*remove padding from logo in navbar so it fits tightly*/
 a.navbar-brand {
@@ -759,6 +764,8 @@ main {
    	img.Logobar {
    	width: 10em;
    }
+
+
 
    div.nomobile {
      display: block;
