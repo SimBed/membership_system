@@ -1,0 +1,21 @@
+<div class="grid-container-client-data">
+  <div class="grid-cell name">Email</div>
+  <div class="grid-cell name"><%= @client.email %></div>
+  <div class="grid-cell email">Phone</div>
+  <div class="grid-cell name"><%= @client.phone %></div>
+  <% unless @client.whatsapp.blank? %>
+    <div class="grid-cell name">Whatsapp</div>
+    <div class="grid-cell email"><%= @client.whatsapp %></div>
+  <% end %>
+  <div class="grid-cell name">Instagram</div>
+  <div class="grid-cell email"><%= @client.instagram %></div>
+</div>
+
+<div class="grid-container-client-summary">
+  <div class="grid-cell name">Total classes</div>
+  <div class="grid-cell name"><%= @client_hash[:attendances] %></div>
+  <div class="grid-cell name">Last class</div>
+  <div class="grid-cell email"><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></div>
+  <div class="grid-cell name">Joined</div>
+  <div class="grid-cell email"><%= "#{time_ago_in_words(@client_hash[:date_created])} ago" %></div>
+</div>

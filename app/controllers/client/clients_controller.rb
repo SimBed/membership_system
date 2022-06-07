@@ -2,16 +2,7 @@ class Client::ClientsController < ApplicationController
   before_action :correct_account
 
   def show
-    clear_session(:purchaseid)
-    session[:purchaseid] ||= params[:purchaseid] || 'Ongoing'
-    @purchases = if session[:purchaseid] == 'All'
-                   @client.purchases.order_by_dop
-                 else
-                   # easier than using statuses[all except expired] scope
-                   @client.purchases.order_by_dop.where.not(status: 'expired')
-                 end
     prepare_data_for_view
-    @products_purchased = %w[Ongoing All]
   end
 
   def book
@@ -20,6 +11,19 @@ class Client::ClientsController < ApplicationController
     # @wkclasses_bookable = Wkclass.bookable_by(@client)
     # @wkclasses_potentially_bookable =
     #   Wkclass.potentially_bookable_by(@client) - @wkclasses_bookable - @wkclass_booked
+  end
+
+  def history
+    clear_session(:purchaseid)
+    session[:purchaseid] ||= params[:purchaseid] || 'Ongoing'
+    @purchases = if session[:purchaseid] == 'All'
+                   @client.purchases.order_by_dop
+                 else
+                   # easier than using statuses[all except expired] scope
+                   @client.purchases.order_by_dop.where.not(status: 'expired')
+                 end
+    # prepare_data_for_view
+    @products_purchased = %w[Ongoing All]
   end
 
   private

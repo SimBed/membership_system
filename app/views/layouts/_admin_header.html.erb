@@ -1,69 +1,60 @@
-<div class="d-flex">
-  <nav class="navbar1 mb-4">
-    <ul class="navbar-nav">
-
-      <li class="nav-item">
-        <%= link_to 'clients', admin_clients_path, class: "nav-link" %>
-      </li>
-
-      <li class="nav-item home">
-        <%= link_to 'classes', admin_wkclasses_path, class: "nav-link" %>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to 'purchases', admin_purchases_path, class: "nav-link" %>
-      </li>
-
-    </ul>
-  </nav>
-
-  <nav class="navbar2 mb-4">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <%= link_to 'fitternity', admin_fitternities_path, class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'instructors', admin_instructors_path, class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'partners', admin_partners_path, class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'products', admin_products_path, class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'workouts', admin_workouts_path, class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'workout groups', admin_workout_groups_path, class: "nav-link" %>
-      </li>
-      <% if logged_in_as?('superadmin') %>
-      <li class="nav-item">
-        <%= link_to 'expenses', superadmin_expenses_path, class: "nav-link" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to 'instructor rates', superadmin_instructor_rates_path, class: "nav-link" %>
-      </li>
+<nav class="navbar">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <%= link_to admin_clients_path, class: "nav-link active" do %>
+        <i class="fa fa-user"></i>
+        <span class="link-text">Clients</span>
       <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to admin_wkclasses_path, class: "nav-link" do %>
+        <i class="fa fa-dumbbell"></i>
+        <span class="link-text">Classes</span>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to admin_purchases_path, class: "nav-link" do %>
+        <i class="fa fa-shopping-cart"></i>
+        <span class="link-text">Purchases</span>
+      <% end %>
+    </li>
+  </ul>
 
+  <ul class="navbar-nav">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-list ps-5"></i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><%= link_to 'fitternity', admin_fitternities_path, class: "dropdown-item" %></li>
+        <% unless logged_in_as?('junioradmin') %>
+          <li><%= link_to 'instructors', admin_instructors_path, class: "dropdown-item" %></li>
+          <li><%= link_to 'partners', admin_partners_path, class: "dropdown-item" %></li>
+          <li><%= link_to 'products', admin_products_path, class: "dropdown-item" %></li>
+          <li><%= link_to 'workouts', admin_workouts_path, class: "dropdown-item" %></li>
+          <li><%= link_to 'workout groups', admin_workout_groups_path, class: "dropdown-item" %></li>
+          <li><hr class="dropdown-divider"></li>
+        <% end %>
+        <% if logged_in_as?('superadmin') %>
+          <li>
+            <%= link_to 'expenses', superadmin_expenses_path, class: "dropdown-item" %>
+            <%= link_to 'instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+    <li class="nav-item">
       <% if current_account %>
-        <li class="nav-item">
-          <%= link_to logout_path, method: :delete, class: "nav-link" do %>
-            <i class="fa fa-door-open"></i>
-            <span class="link-text">Logout</span>
-          <% end %>
-        </li>
+        <%= link_to logout_path, method: :delete, class: "nav-link" do %>
+          <i class="fa fa-door-open"></i>
+          <span class="link-text">Logout</span>
+        <% end %>
+      <% else %>
+        <%= link_to login_path, class: "nav-link" do %>
+          <i class="fa fa-sign-in-alt"></i>
+          <span class="link-text">Login</span>
+        <% end %>
       <% end %>
-
-      <% if !current_account %>
-        <li class="nav-item">
-          <%= link_to login_path, class: "nav-link" do %>
-            <i class="fa fa-sign-in-alt"></i>
-            <span class="link-text">Login</span>
-          <% end %>
-        </li>
-      <% end %>
-
-    </ul>
-  </nav>
-</div>
+    </li>
+  </ul>
+</nav>

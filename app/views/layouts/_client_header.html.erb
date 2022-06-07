@@ -1,38 +1,39 @@
-<div class="d-flex flex-row bg-light w-100">
-  <nav class="navbar">
-    <div class="d-flex align-items-center">
-      <ul class="navbar-nav flex-row">
-        <li class="nav-item">
-          <%= link_to client_client_path(current_account.clients.first), class: "nav_icon" do %>
-            <%= image_tag('history.png') %>
-          <% end %>
-        </li>
-        <li class="nav-item">
-          <%= link_to client_book_path(current_account.clients.first), class: "nav_icon" do %>
-            <%= image_tag('book.png') %>
-          <% end %>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <div>
-    <%= link_to "https://www.thespacejuhu.in/", target: "_blank", class: "navbar-brand" do %>
-      <%= image_tag('SpaceLogo.png', alt: "logo", class: "Logonavbar") %>
-    <% end %>
-  </div>
-      <!--button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#SpaceNavBar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-      </button-->
-
-    <nav class="navbar navbar2">
-			<div class="d-flex align-items-center">
-        <ul class="navbar-nav flex-row">
-          <li class="nav-item">
-              <%= link_to logout_path, method: :delete, class: "nav_icon" do %>
-                <%= image_tag('open-door.png') %>
-              <% end %>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+<!-- reference https://getbootstrap.com/docs/5.0/components/navbar/ and amend as needed-->
+<% client = current_account.clients.first %>
+<nav class="navbar">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <%= link_to client_history_path(client), class: "nav-link active" do %>
+        <i class="fa fa-dumbbell"></i>
+        <span class="link-text">Package History</span>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to client_book_path(client), class: "nav-link" do %>
+        <i class="fa fa-calendar"></i>
+        <span class="link-text">Book</span>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <%= link_to client_client_path(client), class: "nav-link" do %>
+        <i class="fa fa-user"></i>
+        <span class="link-text">Profile</span>
+      <% end %>
+    </li>
+  </ul>
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <% if current_account %>
+        <%= link_to logout_path, method: :delete, class: "nav-link" do %>
+          <i class="fa fa-door-open"></i>
+          <span class="link-text">Logout</span>
+        <% end %>
+      <% else %>
+        <%= link_to login_path, class: "nav-link" do %>
+          <i class="fa fa-sign-in-alt"></i>
+          <span class="link-text">Login</span>
+        <% end %>
+      <% end %>
+    </li>
+  </ul>
+</nav>

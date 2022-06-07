@@ -14,19 +14,21 @@
   </head>
 
   <body>
-
-        <% if logged_in_as?('partner') %>
-          <%= render 'layouts/partner_header' %>
-        <% elsif logged_in_as?('admin', 'superadmin') %>
-          <%= render 'layouts/admin_header' %>
-        <% elsif logged_in_as?('junioradmin') %>
-          <%= render 'layouts/junioradmin_header' %>
-        <% elsif logged_in_as?('client') %>
-          <%= render 'layouts/client_header' %>
-        <% else %>
-          <%= render 'layouts/not_logged_in_header' %>
+    <div class="navbar_container">
+      <div class="logo_container">
+        <%= link_to "https://www.thespacejuhu.in/", target: "_blank" do %>
+          <%= image_tag('SpaceLogo.png', alt: "logo", class: "Logobar") %>
         <% end %>
+      </div>
 
+      <% if logged_in_as?('partner') %>
+        <%= render 'layouts/partner_header' %>
+      <% elsif logged_in_as?('junioradmin', 'admin', 'superadmin') %>
+        <%= render 'layouts/admin_header' %>
+      <% elsif logged_in_as?('client') %>
+        <%= render 'layouts/client_header' %>
+      <% end %>
+    </div>
 
     <main>
       <!--https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller-->
@@ -47,6 +49,8 @@
       <%= yield %>
       <%= debug(params) if Rails.env.development? %>
       <%= current_account&.ac_type if Rails.env.development? %>
+
+      <%= render 'layouts/footer' %>
     </main>
   </body>
 </html>

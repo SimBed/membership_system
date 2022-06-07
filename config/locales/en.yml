@@ -105,14 +105,14 @@ en:
         success: Workout was successfully deleted
   superadmin:
     instructor_rates:
-      update:
+      create:
         success: Instructor rate was successfully added
       update:
         success: Instructor rate was successfully updated
       destroy:
         success: Instructor rate was successfully deleted
     expenses:
-      update:
+      create:
         success: Expense was successfully added
       update:
         success: Expense rate was successfully updated

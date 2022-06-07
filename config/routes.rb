@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post   '/login',   to: 'auth/sessions#create'
   delete '/logout',  to: 'auth/sessions#destroy'
   get    'client/clients/:id/book',   to: 'client/clients#book', as: 'client_book'
+  get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
 
   namespace :admin do
     resources :accounts, only: [:create]
