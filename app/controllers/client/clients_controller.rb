@@ -22,7 +22,6 @@ class Client::ClientsController < ApplicationController
                    # easier than using statuses[all except expired] scope
                    @client.purchases.order_by_dop.where.not(status: 'expired')
                  end
-    # prepare_data_for_view
     @products_purchased = %w[Ongoing All]
   end
 

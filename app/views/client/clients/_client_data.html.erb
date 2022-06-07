@@ -1,0 +1,24 @@
+<table class="table table-secondary table-striped caption-top">
+  <tbody>
+    <tr>
+      <th scope="row">Email</th>
+      <td><%= @client.email %></td>
+    </tr>
+    <tr>
+      <th scope="row">Phone</th>
+      <td><%= @client.phone %></td>
+    </tr>
+    <% unless @client.whatsapp.blank? %>
+      <tr>
+        <th scope="row">Whatsapp</th>
+        <td><%= @client.whatsapp %></td>
+      </tr>
+    <% end %>
+    <% unless @client.instagram.blank? %>
+      <tr>
+        <th scope="row">Instagram</th>
+        <td><%= @client.instagram %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

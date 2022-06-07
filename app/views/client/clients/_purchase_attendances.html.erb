@@ -1,0 +1,13 @@
+<% attendances = @purchase.attendances.no_amnesty.order_by_date %>
+  <table class="table table-secondary table-striped caption-top">
+    <tbody>
+      <% attendances.each_with_index do |attendance, index| %>
+        <tr>
+          <th scope="row"><%= attendances.size - index %></th>
+          <td><%= attendance.wkclass.date %></td>
+          <td><%= attendance.wkclass.workout.name %></td>
+          <td><%= attendance.status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

@@ -14,7 +14,12 @@ class Product < ApplicationRecord
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
 
   def name
-    "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit}"
+    "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}"
+  end
+
+  def formal_name
+    formal_unit = {D: 'days', W: 'weeks', M: 'months'}
+    "#{workout_group.name} - #{max_classes < 1000 ? max_classes : 'Unlimited'} Classes #{validity_length} #{formal_unit[validity_unit.to_sym]}"
   end
 
   def unlimited_package?
