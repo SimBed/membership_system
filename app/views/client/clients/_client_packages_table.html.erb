@@ -1,9 +1,11 @@
 <% @purchases.each do |purchase| %>
   <% @purchase = purchase %>
   <%= render partial: 'purchase_summary' %>
-  <%= render partial: 'purchase_attendances' %>
-  <%= render partial: 'freezes_summary' %>
-  <%= render partial: 'adjustments_summary' %>
-  <%= render partial: 'penalties_summary' %>
+  <% if detailed == true %>
+    <%= render partial: 'purchase_attendances' %>
+    <%= render partial: 'freezes_summary' %>
+    <%= render partial: 'adjustments_summary' %>
+    <%= render partial: 'penalties_summary' %>
+  <% end %>
   <hr>
 <% end %>

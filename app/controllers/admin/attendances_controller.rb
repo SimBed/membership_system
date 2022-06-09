@@ -287,7 +287,7 @@ class Admin::AttendancesController < Admin::BaseController
         redirect_back fallback_location: admin_wkclasses_path
       end
       format.js do
-        flash.now[:success] = "#{@client_name}'s attendance was successfully updated to  #{@attendance.status}"
+        flash.now[:success] = "#{@client_name}'s booking was successfully updated to  #{@attendance.status}"
         render 'admin/wkclasses/update_attendance.js.erb'
       end
     end

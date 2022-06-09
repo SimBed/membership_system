@@ -1,3 +1,24 @@
-<div id="bookings-table" class="container px-1 mb-3 margin-override">
+<% provide(:heading, "Classes coming up") %>
+<% provide(:greeting, "Hi #{@client.first_name}!") %>
+
+<div class="text-center mb-3">
+  <%= render partial: 'client_heading', locals: {selection: false} %>
+</div>
+
+<div id="bookings-table" class="container px-1 mb-5">
   <%= render partial: 'client_bookings_table' %>
+</div>
+
+<div id="consistency" class="container px-1 mb-5">
+  <%= render partial: 'consistency' %>
+</div>
+
+<div id="packages-table" class="container px-1">
+  <h6 class="bolditalics mb-0">
+    Package Status
+  </h6>
+  <%= render partial: 'client_packages_table', locals: {detailed: false} %>
+  <%= render partial: 'client_heart' %>
+  <%= render partial: 'renew' %>
+  <%= render partial: 'quotation' %>
 </div>

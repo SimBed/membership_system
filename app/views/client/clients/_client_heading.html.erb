@@ -1,5 +1,5 @@
 <h2>
-  <%= @client.name %>
+  <%= yield(:greeting) %>
 </h2>
 <h6 class="bolditalics mb-0">
   <%= yield(:heading) %>
@@ -12,4 +12,4 @@
       </select>
     </form>
   </h2>
-<% end %>  
+<% end %>

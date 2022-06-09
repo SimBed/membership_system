@@ -14,6 +14,7 @@ class Attendance < ApplicationRecord
   scope :amnesty, -> { where(amnesty: true) }
   scope :no_amnesty, -> { where.not(amnesty: true) }
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']) }
+  scope :attended, -> { where(status: 'attended') }
   # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }
   scope :committed_on, lambda {
                         where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['cancelled early', 'cancelled late'])

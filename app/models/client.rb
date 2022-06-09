@@ -72,6 +72,16 @@ class Client < ApplicationRecord
     purchases.order_by_dop.first
   end
 
+  def lifetime_classes
+    Client.joins(purchases: [:attendances]).where(id: self.id).where(attendances: { status: 'attended' }).size
+  end
+
+  def classes_last(period = 'month')
+    Client.joins(purchases: [attendances: [:wkclass]])
+          .where(id: self.id).where(attendances: { status: 'attended' })
+          .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
+  end
+
   private
 
   def downcase_email

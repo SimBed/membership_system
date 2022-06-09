@@ -1,15 +1,14 @@
-<h5>Coming up</h5>
-<div class="grid-container-client-bookings">
-<% @wkclasses.each do |wkclass| %>
-  <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
-  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.date %></div>
-  <div class= "grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.time %></div>
-  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= wkclass.workout.name %></div>
-  <div class ="grid-cell <%=booking_link_and_class[0]%>"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
-
-  <div class ="grid-cell <%=booking_link_and_class[0]%>">
-    <%= booking_link_and_class_for(wkclass, @client)[1] %>
-  </div>
-  <!--div class ="grid-cell"><%#= render 'client/clients/booking_form' %></div-->
-<% end %>
-</div>
+  <table class="table table-secondary table-striped caption-top">
+    <tbody>
+      <% @wkclasses.each do |wkclass| %>
+        <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
+        <tr class ="<%=booking_link_and_class[0]%>">
+          <th scope="row"><%= wkclass.date %></th>
+          <td><%= wkclass.time %></td>
+          <td><%= wkclass.workout.name %></td>
+          <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
+          <td><%= booking_link_and_class_for(wkclass, @client)[1] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

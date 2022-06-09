@@ -705,6 +705,46 @@ main {
   text-decoration: none;
 }
 
+%circle {
+  width:70px;
+  height:70px;
+  border: 1px solid;
+  border-color: $bg-light;
+  border-radius:50%;
+  font-size:32px;
+  font-weight: bolder;
+  /* color: $greenfly; */
+  color: #454a5d;
+  text-align:center;
+  background-color: $bg-light;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+    &::first-line{
+      line-height:70px;
+    }
+  }
+
+div.bigcircle {
+  @extend %circle;
+  box-shadow: 1px 3px 2px $gray-darker inset;
+}
+
+div.user_score {
+  font-family: $font-stack;
+  font-size:12px;
+  font-weight: normal;
+  /* color:$black-light; */
+  color: #454a5d;
+  letter-spacing: 0.08em;
+  display: inline-block;
+  line-height: 10px;
+  /* hack to force line wrap after each word*/
+  word-spacing: 999px;
+  &::first-line{
+    line-height:20px;
+  }
+}
+
 @media (min-width: 600px) {
 
   body {
@@ -765,7 +805,12 @@ main {
    	width: 10em;
    }
 
-
+   .Circle {
+     display:inline-block;
+     border-radius: 50%;
+     width:10px;
+     height:10px;
+    }
 
    div.nomobile {
      display: block;
