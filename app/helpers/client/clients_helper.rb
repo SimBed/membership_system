@@ -4,7 +4,7 @@ module Client::ClientsHelper
     if attendance.nil?
       handle_new_booking(wkclass, client)
     else
-      handle_update_booking(attendance)
+      handle_update_booking(attendance, wkclass, client)
     end
   end
 
@@ -27,7 +27,7 @@ module Client::ClientsHelper
     end
   end
 
-  def handle_update_booking(attendance)
+  def handle_update_booking(attendance, wkclass, client)
     case attendance.status
     when 'booked'
       { css_class: 'table-success',
