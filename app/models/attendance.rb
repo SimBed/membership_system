@@ -16,9 +16,9 @@ class Attendance < ApplicationRecord
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']) }
   scope :attended, -> { where(status: 'attended') }
   # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }
-  scope :committed_on, lambda {
-                        where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['cancelled early', 'cancelled late'])
-                      }
+  # scope :committed, lambda {
+  #                       where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['cancelled early', 'cancelled late'])
+  #                     }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
   validates :status, inclusion: { in: Rails.application.config_for(:constants)['attendance_statuses'] }
 

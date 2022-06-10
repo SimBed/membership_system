@@ -2,12 +2,12 @@
     <tbody>
       <% @wkclasses.each do |wkclass| %>
         <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
-        <tr class ="<%=booking_link_and_class[0]%>">
+        <tr class ="<%=booking_link_and_class[:css_class]%>">
           <th scope="row"><%= wkclass.date %></th>
           <td><%= wkclass.time %></td>
           <td><%= wkclass.workout.name %></td>
           <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
-          <td><%= booking_link_and_class_for(wkclass, @client)[1] %></td>
+          <td><%= booking_link_and_class_for(wkclass, @client)[:link] %></td>
         </tr>
       <% end %>
     </tbody>

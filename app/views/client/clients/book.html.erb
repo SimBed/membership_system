@@ -5,19 +5,30 @@
   <%= render partial: 'client_heading', locals: {selection: false} %>
 </div>
 
-<div id="bookings-table" class="container px-1 mb-5">
-  <%= render partial: 'client_bookings_table' %>
-</div>
+<% if @wkclasses.empty? %>
+  <div id="bookings-table" class="container px-1 mb-3">
+    <p class="bolditalics mb-0">Your package has expired. <%= link_to 'Renew Now','#', class: "like_button" %> </p>
+  </div>
+<% else %>
+  <div id="bookings-table" class="container px-1 mb-5">
+    <%= render partial: 'client_bookings_table' %>
+  </div>
+<% end %>
 
 <div id="consistency" class="container px-1 mb-5">
   <%= render partial: 'consistency' %>
 </div>
 
-<div id="packages-table" class="container px-1">
-  <h6 class="bolditalics mb-0">
-    Package Status
-  </h6>
-  <%= render partial: 'client_packages_table', locals: {detailed: false} %>
+<% unless @purchases.empty? %>
+  <div id="packages-table" class="container px-1">
+    <h6 class="bolditalics mb-0">
+      Package Status
+    </h6>
+    <%= render partial: 'client_packages_table', locals: {detailed: false} %>
+  </div>
+<% end %>
+
+<div id="heart_renew_quote" class="container px-1">
   <%= render partial: 'client_heart' %>
   <%= render partial: 'renew' %>
   <%= render partial: 'quotation' %>

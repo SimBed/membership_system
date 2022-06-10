@@ -118,4 +118,17 @@ en:
         success: Expense rate was successfully updated
       destroy:
         success: Expense rate was successfully deleted
+  client:
+    clients:
+      attendance:
+        create:
+          confirm: You will be booked for this class. Are you sure?
+        update:
+          from_booked:
+            confirm: You will be cancelled for this class. Deductions may apply to late cancellations and no-shows. Are you sure?
+          from_cancelled_early:
+            confirm: You will be rebooked for this class. Are you sure?
+
+
+
   forbidden: Forbidden

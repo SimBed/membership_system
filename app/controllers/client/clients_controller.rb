@@ -8,10 +8,6 @@ class Client::ClientsController < ApplicationController
   def book
     @wkclasses = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
     @purchases = Purchase.package.not_fully_expired.where(client: @client)
-    # @wkclass_booked = Wkclass.booked_by(@client)
-    # @wkclasses_bookable = Wkclass.bookable_by(@client)
-    # @wkclasses_potentially_bookable =
-    #   Wkclass.potentially_bookable_by(@client) - @wkclasses_bookable - @wkclass_booked
   end
 
   def history

@@ -123,7 +123,7 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'available_for_booking' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
-    assert_equal 343, Purchase.earliest_available_for_booking(@tomorrows_class_early, @client).id
+    assert_equal 343, Purchase.use_for_booking(@tomorrows_class_early, @client).id
   end
 
   test 'name_with_dop method' do

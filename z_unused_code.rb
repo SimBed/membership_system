@@ -129,6 +129,42 @@
 #   ActiveRecord::Base.connection.exec_query(sql).to_a.select { |cp| !Purchase.find(cp["purchaseid"]).expired? && !Purchase.find(cp["purchaseid"]).freezed?(wkclass.start_time) }
 # end
 
+# def self.not_already_booked_by2(client)
+#   Wkclass.future_and_recent.left_joins(attendances: [purchase: [:client]])
+#          .where.not('clients.id = ? AND attendances.status = ?', client.id, 'booked').or('clients.id IS ?', nil)
+# end
+#
+# def self.not_already_booked_by(client)
+#   sql = "SELECT DISTINCT wkclasses.id FROM Wkclasses
+#          LEFT OUTER JOIN attendances ON wkclasses.id = attendances.wkclass_id
+#          LEFT OUTER JOIN purchases on attendances.purchase_id = purchases.id
+#          LEFT OUTER JOIN clients on clients.id = purchases.client_id
+#          WHERE start_time > '#{2.hours.ago}'
+#          AND NOT (clients.id = #{client.id} AND attendances.status = 'booked')
+#          OR clients.id IS NULL;"
+#   wkclasses = ActiveRecord::Base.connection.exec_query(sql)
+#   Wkclass.where(id: wkclasses.to_a.map { |r| r['id'] })
+# end
+#
+# # spent ages trying to work out why a.merge(b) wouldn't work (gave nil result).
+# # Ended up with this hack (intersection of 'arrays')
+# def self.bookable_by1(client)
+#   potentially_available_to(client) & not_already_booked_by(client)
+# end
+#
+# def self.bookable_by(client)
+#   potentially_bookable_by(client).reject do |wkclass|
+#     wkclass.day_already_has_booking_by(client)
+#   end
+# end
+#
+# def day_already_has_booking_by(client)
+#   client.attendances.no_amnesty.map do |a|
+#     a.start_time.to_date
+#   end
+#         .include?(start_time.to_date)
+# end
+
 # -------------from WorkoutGroup.rb
 # products_hash collates the relevant attributes across 3 models which define each product
 # and creates a name out of them

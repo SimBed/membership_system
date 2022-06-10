@@ -1,6 +1,8 @@
 <div class="text-center mb-5">
   <h6 class="bolditalics mb-2">
-  renew your package before expiry and save 10%
+  <% unless @purchases.blank? %>
+    renew your package before expiry and save 10%
+  <% end %>
   </h6>
   <%= link_to 'Renew Now','#', class: "like_button" %>
 </div>

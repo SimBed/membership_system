@@ -9,8 +9,8 @@ class Purchase < ApplicationRecord
   has_many :penalties, dependent: :destroy
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
-  delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type, :max_classes,
-           :attendance_estimate, to: :product
+  delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
+           :max_classes, :attendance_estimate, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 }
@@ -31,6 +31,7 @@ class Purchase < ApplicationRecord
   # 'using a scope through an association'
   # https://apidock.com/rails/ActiveRecord/SpawnMethods/merge
   scope :package, -> { joins(:product).merge(Product.package) }
+  scope :unlimited, -> { joins(:product).merge(Product.unlimited) }
   scope :fixed, -> { joins(:product).merge(Product.fixed) }
   scope :trial, -> { joins(:product).merge(Product.trial) }
   scope :package_started_not_expired, -> { package.started.not_expired }
@@ -83,16 +84,18 @@ class Purchase < ApplicationRecord
 
   def self.available_for_booking(wkclass, client)
     available_to(wkclass).where(client_id: client.id).reject do |p|
-      p.freezed?(wkclass.start_time) ||
-        p.committed_on?(wkclass.start_time.to_date)
+      # p.freezed?(wkclass.start_time) ||
+      p.committed_on?(wkclass.start_time.to_date)
     end
   end
 
-  def self.earliest_available_for_booking(wkclass, client)
-    # in unusual case of more than one available purchase, use the started one (earliest dop if still a choice) or the earliest dop if no started one
+  def self.use_for_booking(wkclass, client)
+    # in unusual case of more than one available purchase, use the started one (earliest dop if 2 started ones) or the earliest dop if no started one
     purchases = available_for_booking(wkclass, client)
+    return purchases.first if purchases.size < 2
+
     started_purchases = purchases.reject(&:not_started?)
-    started_purchases.nil? ? started_purchases[0] : purchases[0]
+    started_purchases.nil? ? purchases.first : started_purchases.first
   end
 
   def self.by_product_date(product_id, period)
@@ -109,7 +112,9 @@ class Purchase < ApplicationRecord
   end
 
   def committed_on?(adate)
-    attendances.committed_on.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
+    return false if fixed_package? # fixed packages can do what they want
+
+    attendances.no_amnesty.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
   end
 
   def name_with_dop

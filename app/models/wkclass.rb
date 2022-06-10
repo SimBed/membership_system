@@ -2,12 +2,21 @@ class Wkclass < ApplicationRecord
   # want settings hash from ApplicationHelper
   include ApplicationHelper
   has_many :attendances, dependent: :destroy
+  # https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsinverseof
+  # rubocop likes dependent and inverse_of to be specified even though they seem superfluous here
   has_many :confirmed_attendances, lambda {
-                                     where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']).where.not(amnesty: true)
-                                   }, class_name: 'Attendance'
-  has_many :provisional_attendances, -> { where.not(amnesty: true) }, class_name: 'Attendance'
-  has_many :physical_attendances, -> { where(status: 'attended') }, class_name: 'Attendance'
-  has_many :spot_takers, -> { where(status: ['booked', 'attended']) }, class_name: 'Attendance'
+                                     where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked'])
+                                       .where.not(amnesty: true)
+                                   }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
+  has_many :provisional_attendances, lambda {
+                                       where.not(amnesty: true)
+                                     }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
+  has_many :physical_attendances, lambda {
+                                    where(status: 'attended')
+                                  }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
+  has_many :spot_takers, lambda {
+                           where(status: %w[booked attended])
+                         }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
   belongs_to :instructor
@@ -31,7 +40,9 @@ class Wkclass < ApplicationRecord
   visibility_window = 2.hours
   advance_days = 3
   scope :in_booking_visibility_window, lambda {
-                                         where({ start_time: ((Time.zone.now - visibility_window)..Date.tomorrow.advance(days: advance_days).end_of_day.to_time) })
+                                         window_start = Time.zone.now - visibility_window
+                                         window_end = Date.tomorrow.advance(days: advance_days).end_of_day.to_time
+                                         where({ start_time: (window_start..window_end) })
                                        }
   cancellation_window = 2.hours
   scope :in_cancellation_window, -> { where('start_time > ?', Time.zone.now + cancellation_window) }
@@ -46,55 +57,27 @@ class Wkclass < ApplicationRecord
            .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
            .where('clients.id': client.id)
            .merge(Purchase.not_fully_expired)
-    # .where.not(["attendances.status = ?", 'booked'])
-    # .joins(attendances: [purchase: [:client]])
-    # .where.not(["clients.id = ? AND attendances.status = ?", client.id, 'booked'])
   end
 
-  # not allowed 2 physical attendances on same day. Used in already_booked_or_attended attendance controller callback
-  def booked_or_attended_on_same_day?(client)
-    bookings_attendances_on_same_day =
+  # not allowed 2 physical attendances on same day. Used in already_committed attendance controller callback
+  # def booked_or_attended_on_same_day?(client)
+  #   bookings_attendances_on_same_day =
+  #     Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
+  #            .where('clients.id = ? AND attendances.status IN (?)', client.id, %w[booked attended])
+  #   return false if bookings_attendances_on_same_day.empty?
+  #
+  #   true
+  # end
+
+  def committed_on_same_day?(client)
+    # fixed packages can be used however the client wants (eg twice a day is ok)
+    non_amnesty_attendances_on_same_day =
       Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
-             .where('clients.id = ? AND attendances.status IN (?)', client.id, %w[booked attended])
-    return false if bookings_attendances_on_same_day.empty?
+             .where('clients.id = ? AND attendances.amnesty = false', client.id)
+             .merge(Purchase.unlimited.package)
+    return false if non_amnesty_attendances_on_same_day.empty?
 
     true
-  end
-
-  def self.not_already_booked_by2(client)
-    Wkclass.future_and_recent.left_joins(attendances: [purchase: [:client]])
-           .where.not('clients.id = ? AND attendances.status = ?', client.id, 'booked').or('clients.id IS ?', nil)
-  end
-
-  def self.not_already_booked_by(client)
-    sql = "SELECT DISTINCT wkclasses.id FROM Wkclasses
-           LEFT OUTER JOIN attendances ON wkclasses.id = attendances.wkclass_id
-           LEFT OUTER JOIN purchases on attendances.purchase_id = purchases.id
-           LEFT OUTER JOIN clients on clients.id = purchases.client_id
-           WHERE start_time > '#{2.hours.ago}'
-           AND NOT (clients.id = #{client.id} AND attendances.status = 'booked')
-           OR clients.id IS NULL;"
-    wkclasses = ActiveRecord::Base.connection.exec_query(sql)
-    Wkclass.where(id: wkclasses.to_a.map { |r| r['id'] })
-  end
-
-  # spent ages trying to work out why a.merge(b) wouldn't work (gave nil result).
-  # Ended up with this hack (intersection of 'arrays')
-  def self.bookable_by1(client)
-    potentially_available_to(client) & not_already_booked_by(client)
-  end
-
-  def self.bookable_by(client)
-    potentially_bookable_by(client).reject do |wkclass|
-      wkclass.day_already_has_booking_by(client)
-    end
-  end
-
-  def day_already_has_booking_by(client)
-    client.attendances.no_amnesty.map do |a|
-      a.start_time.to_date
-    end
-          .include?(start_time.to_date)
   end
 
   def self.in_workout_group(workout_group_name)

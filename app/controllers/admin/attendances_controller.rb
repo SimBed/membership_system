@@ -6,7 +6,7 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :correct_account_or_junioradmin, only: [:create, :update, :destroy]
   before_action :provisionally_expired, only: [:create, :update]
   before_action :modifiable_status, only: [:update]
-  before_action :already_booked_or_attended, only: [:create, :update]
+  before_action :already_committed, only: [:create, :update]
   before_action :in_booking_window, only: [:create]
   before_action :reached_max_capacity, only: [:create, :update]
   before_action :reached_max_amendments, only: [:update]
@@ -326,9 +326,9 @@ class Admin::AttendancesController < Admin::BaseController
     redirect_to client_book_path(@client)
   end
 
-  def already_booked_or_attended
+  def already_committed
     set_wkclass_and_booking_type
-    return unless @wkclass.booked_or_attended_on_same_day?(@client)
+    return unless @wkclass.committed_on_same_day?(@client)
 
     flash_hash = booking_flash_hash.dig(@booking_type, :daily_limit_met)
     flash_hash[:colour] = send flash_hash[:message]

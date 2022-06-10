@@ -3,11 +3,9 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # DPS change - default UTC doesn't have summertime so London is 1 hour out in Summertime
-  # So not computer clock time = Time.now is [date] [computer clock time shown] +0100
-  # and Time.current is [date] [computer clock time shown - 1hr] +00:00
-  # This makes Time.now = Time.current and helpful for testing Delayedjob
-  # config.time_zone = "London"
+  # DPS change - the default UTC doesn't have summertime so London is 1 hour out in Summertime
+  # without this change Time.now (or Time.zone.now) is 1 hour earlier than my computer clock time
+  config.time_zone = "London"
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
