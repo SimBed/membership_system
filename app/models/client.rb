@@ -36,13 +36,16 @@ class Client < ApplicationRecord
 
   paginates_per 20
 
-  def self.to_csv
-    CSV.generate(row_sep: "\n") do |csv|
-      csv << column_names
-      all.find_each do |client|
-        csv << client.attributes.values_at(*column_names)
-      end
-    end
+  def number_formatted(contact_type)
+    number = send(contact_type)&.gsub(/[^0-9+]/, "")
+    return "+91#{number}" unless (number&.first == '+' || number.blank?)
+
+    number
+  end
+
+  def whatsapp_messaging_number
+    # #find returns first element meeting block condition
+    [number_formatted('whatsapp'), number_formatted('phone')].find(&:present?)
   end
 
   def cold?
@@ -80,6 +83,15 @@ class Client < ApplicationRecord
     Client.joins(purchases: [attendances: [:wkclass]])
           .where(id: self.id).where(attendances: { status: 'attended' })
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
+  end
+
+  def self.to_csv
+    CSV.generate(row_sep: "\n") do |csv|
+      csv << column_names
+      all.find_each do |client|
+        csv << client.attributes.values_at(*column_names)
+      end
+    end
   end
 
   private

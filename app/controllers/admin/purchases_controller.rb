@@ -188,11 +188,6 @@ class Admin::PurchasesController < Admin::BaseController
     manage_messaging('new_purchase')
   end
 
-  def whatsapp_recipient_number
-    # find returns first element meeting block condition
-    @recipient_number = [@purchase.client.whatsapp, @purchase.client.phone].find(&:present?)
-  end
-
   # whatsapp_recipient_numbers = [Rails.configuration.twilio[:me], Rails.configuration.twilio[:boss]]
   # whatsapp_recipient_numbers.each do |recipient|
   #   send_new_account_whatsapp(recipient)
@@ -217,12 +212,12 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def manage_messaging(message_type)
-    whatsapp_recipient_number
-    if @recipient_number.nil?
+    recipient_number = @purchase.client.whatsapp_messaging_number
+    if recipient_number.nil?
       flash[:warning] =
         "Client has no contact number. #{message_type == 'new_account'  ? 'Account login' : 'Purchase'} details not sent"
     else
-      send "send_#{message_type}_whatsapp" , @recipient_number
+      send "send_#{message_type}_whatsapp" , recipient_number
       flash[:warning] = ["#{message_type == 'new_account'  ? 'Account login' : 'New  purchase'} message sent"]
     end
   end
