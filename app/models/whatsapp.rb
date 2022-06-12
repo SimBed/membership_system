@@ -13,7 +13,7 @@ class Whatsapp
       from: "whatsapp:#{@from}",
       to: "whatsapp:#{@to}",
       body: body
-    )
+    ) 
   end
 
   private

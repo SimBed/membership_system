@@ -39,6 +39,10 @@ class Product < ApplicationRecord
     max_classes == 1
   end
 
+  def pt?
+    'PT'.in? workout_group.name
+  end
+
   def product_type
     return :unlimited_package if unlimited_package?
     return :fixed_package if fixed_package?
