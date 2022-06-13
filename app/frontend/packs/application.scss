@@ -300,6 +300,18 @@ button.search{
   @extend %buttonsearch;
 }
 
+.alert-success2 {
+  color: #0f5132;
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+}
+
+.alert-warning2 {
+  color: #664d03;
+  background-color: #fff3cd;
+  border-color: #ffecb5;
+}
+
 %grid-container {
   display: grid;
   grid-gap: 0.08em;

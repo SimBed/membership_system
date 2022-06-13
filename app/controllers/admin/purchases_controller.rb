@@ -204,7 +204,8 @@ class Admin::PurchasesController < Admin::BaseController
     )
     if @account.save
       @account_holder.update(account_id: @account.id)
-      flash[:success] = 'Account was successfully created'
+      flash[:success] = flash[:success].to_s + ', Account was successfully created'
+      # flash[:success2] = 'Account was successfully created'
       manage_messaging('new_account')
     else
       flash[:warning] = 'Account was not created'
@@ -218,12 +219,12 @@ class Admin::PurchasesController < Admin::BaseController
         "Client has no contact number. #{message_type == 'new_account'  ? 'Account login' : 'Purchase'} details not sent"
     else
       send "send_#{message_type}_whatsapp" , recipient_number
-      flash[:warning] = ["#{message_type == 'new_account'  ? 'Account login' : 'New  purchase'} message sent"]
+      flash[:warning2] = ["#{message_type == 'new_account'  ? 'Account login' : 'New  purchase'} message sent to #{recipient_number}"]
     end
   end
 
   def send_new_account_whatsapp(to)
-    white_list_whatsapp_receivers
+    return unless white_list_whatsapp_receivers
     whatsapp_params = { to: to,
                         message_type: 'new_account',
                         variable_contents: { password: @password } }
@@ -231,7 +232,7 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def send_new_purchase_whatsapp(to)
-    white_list_whatsapp_receivers
+    return unless white_list_whatsapp_receivers
     whatsapp_params = { to: to,
                         message_type: 'new_purchase' }
     Whatsapp.new(whatsapp_params).send_whatsapp
@@ -246,6 +247,6 @@ class Admin::PurchasesController < Admin::BaseController
 
   def white_list_whatsapp_receivers
     whatsapp_receivers = %w[Amala Aadrak Fluke Cleo James]
-    return unless whatsapp_receivers.include?(@purchase.client.first_name)
+    whatsapp_receivers.include?(@purchase.client.first_name)
   end
 end
