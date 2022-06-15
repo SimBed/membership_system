@@ -1,5 +1,19 @@
 module ApplicationHelper
-  # prepare items for date selection (in revenues index, client show)
+
+  def flash_message(type, text)
+    flash[type] ||= []
+    flash[type] << (text.is_a?(Array) ? text : [text])
+  end
+
+  def render_flash
+    rendered = []
+    flash.each do |message_type, message_array|
+      rendered << render(:partial => 'partials/flash', :locals => {:message_type => message_type, :message_array => message_array}) unless message_array.blank?
+    end
+    raw(rendered.join('<br/>'))
+  end
+
+  # prepare items for date selection
   def months_logged
     # order_by_date sorts descending
     first_class_date = Wkclass.order_by_date.last.start_time - 1.month

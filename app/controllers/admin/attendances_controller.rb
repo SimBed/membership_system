@@ -38,22 +38,27 @@ class Admin::AttendancesController < Admin::BaseController
     # redirect_to "/client/clients/#{@client.id}/book"
     # attendances_helper has booking_flash_hash with a method as a value
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
-    flash[booking_flash_hash[:booking][:successful][:colour]] =
-      send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day
+    flash_message booking_flash_hash[:booking][:successful][:colour],
+                  (send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day)
+    # flash[booking_flash_hash[:booking][:successful][:colour]] =
+    #   send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day
   end
 
   def after_successful_create_by_admin
     @client_name = @attendance.purchase.client.name
     redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
-    flash[:success] = "#{@client_name}'s attendance was successfully logged"
+    flash_message :success, "#{@client_name}'s attendance was successfully logged"
+    # flash[:success] = "#{@client_name}'s attendance was successfully logged"
     # @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
   end
 
   def after_unsuccessful_create_by_client
     redirect_to client_book_path(@client)
     # redirect_to "/client/clients/#{@client.id}/book"
-    flash[booking_flash_hash[:booking][:unsuccessful][:colour]] =
-      send booking_flash_hash[:booking][:unsuccessful][:message]
+    flash_message booking_flash_hash[:booking][:unsuccessful][:colour],
+                  (send booking_flash_hash[:booking][:unsuccessful][:message])
+    # flash[booking_flash_hash[:booking][:unsuccessful][:colour]] =
+    #   send booking_flash_hash[:booking][:unsuccessful][:message]
   end
 
   def after_unsuccessful_create_by_admin
@@ -93,7 +98,8 @@ class Admin::AttendancesController < Admin::BaseController
       action_admin_update_success
       handle_admin_update_response
     else
-      flash[:warning] = t('.warning')
+      flash_message :warning, t('.warning')
+      # flash[:warning] = t('.warning')
     end
   end
 
@@ -102,7 +108,8 @@ class Admin::AttendancesController < Admin::BaseController
     @purchase = @attendance.purchase
     @attendance.destroy
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
-    flash[:success] = t('.success')
+    flash_message :success, t('.success')
+    # flash[:success] = t('.success')
   end
 
   # index of attendances not used - available by explicit url but not by navigation link
@@ -142,7 +149,8 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def set_flash(hash, event)
-    flash[hash.dig(event, :colour)] = send hash.dig(event, :message), @wkclass_name, @wkclass_day
+    flash_message hash.dig(event, :colour), (send hash.dig(event, :message), @wkclass_name, @wkclass_day)
+    # flash[hash.dig(event, :colour)] = send hash.dig(event, :message), @wkclass_name, @wkclass_day
   end
 
   def attendance_params
@@ -163,7 +171,8 @@ class Admin::AttendancesController < Admin::BaseController
 
     return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
 
-    flash[:warning] = t('.warning')
+    flash_message flash[:warning], t('.warning')
+    # flash[:warning] = t('.warning')
     redirect_to login_path
   end
 
@@ -200,7 +209,8 @@ class Admin::AttendancesController < Admin::BaseController
 
   def action_client_update_too_late
     flash_hash = booking_flash_hash[:update][:too_late]
-    flash[flash_hash[:colour]] = send flash_hash[:message], true, @wkclass_name
+    flash_message flash_hash[:colour], (send flash_hash[:message], true, @wkclass_name)
+    # flash[flash_hash[:colour]] = send flash_hash[:message], true, @wkclass_name
     redirect_to client_book_path(@client)
   end
 
@@ -283,7 +293,8 @@ class Admin::AttendancesController < Admin::BaseController
   def handle_admin_update_response
     respond_to do |format|
       format.html do
-        flash[:success] = t('.success')
+        flash_message :success, t('.success')
+        # flash[:success] = t('.success')
         redirect_back fallback_location: admin_wkclasses_path
       end
       format.js do
@@ -295,7 +306,8 @@ class Admin::AttendancesController < Admin::BaseController
 
   def flash_client_update_fail
     flash_hash = booking_flash_hash[:update][:unsuccessful]
-    flash[flash_hash[:colour]] = send flash_hash[:message]
+    flash_message flash_hash[:colour], (send flash_hash[:message])
+    # flash[flash_hash[:colour]] = send flash_hash[:message]
   end
 
   def admin_modification?
@@ -312,8 +324,9 @@ class Admin::AttendancesController < Admin::BaseController
     return if ['attended', 'no show'].exclude?(@attendance.status) || admin_modification?
 
     flash_hash = booking_flash_hash[:update][:unmodifiable]
-    flash[flash_hash[:colour]] =
-      send flash_hash[:message], @attendance.status
+    flash_message flash_hash[:colour], (send flash_hash[:message], @attendance.status)
+    # flash[flash_hash[:colour]] =
+    #   send flash_hash[:message], @attendance.status
     redirect_to client_book_path(@client)
   end
 
@@ -322,7 +335,8 @@ class Admin::AttendancesController < Admin::BaseController
     return if (wkclass.booking_window).cover?(Time.zone.now) || admin_modification?
 
     flash_hash = booking_flash_hash.dig(:booking, :too_late)
-    flash_hash[:colour] = send flash_hash[:message], false
+    flash_message flash_hash[:colour], (send flash_hash[:message], false)
+    # flash_hash[:colour] = send flash_hash[:message], false
     redirect_to client_book_path(@client)
   end
 
@@ -331,7 +345,8 @@ class Admin::AttendancesController < Admin::BaseController
     return unless @wkclass.committed_on_same_day?(@client)
 
     flash_hash = booking_flash_hash.dig(@booking_type, :daily_limit_met)
-    flash_hash[:colour] = send flash_hash[:message]
+    flash_message flash_hash[:colour], (send flash_hash[:message])
+    # flash_hash[:colour] = send flash_hash[:message]
     if logged_in_as?('client')
       redirect_to client_book_path(@client)
     else # must be admin
@@ -366,44 +381,48 @@ class Admin::AttendancesController < Admin::BaseController
 
   def action_fully_booked(booking_type)
     flash_hash = booking_flash_hash[booking_type][:fully_booked]
-    flash[flash_hash[:colour]] = send flash_hash[:message], @rebooking
+    flash_message flash_hash[:colour], (send flash_hash[:message], @rebooking)
+    # flash[flash_hash[:colour]] = send flash_hash[:message], @rebooking
     redirect_to client_book_path(@client)
   end
 
   def reached_max_amendments
     return unless logged_in_as?('client') && @attendance.maxed_out_amendments?
-
-    flash[booking_flash_hash[:update][:prior_amendments][:colour]] =
-      send booking_flash_hash[:update][:prior_amendments][:message]
+    flash_message booking_flash_hash[:update][:prior_amendments][:colour], (send booking_flash_hash[:update][:prior_amendments][:message])
+    # flash[booking_flash_hash[:update][:prior_amendments][:colour]] =
+    #   send booking_flash_hash[:update][:prior_amendments][:message]
     redirect_to client_book_path(@client)
   end
 
   def handle_provisionally_expired_new_booking
     data_items_provisionally_expired(new_booking: true)
     return unless @purchase.provisionally_expired?
-
     if logged_in_as?('client')
-      flash[:warning] =
-        ['The maximum number of classes has already been booked.',
-         'Renew you Package if you wish to attend this class']
+      flash_message :warning, ['The maximum number of classes has already been booked.', 'Renew you Package if you wish to attend this class']
+      # flash[:warning] =
+      #   ['The maximum number of classes has already been booked.',
+      #    'Renew you Package if you wish to attend this class']
       redirect_to client_book_path(@client)
     else
-      flash[:warning] = I18n.t 'admin.attendances.action_new_booking_when_prov_expired.admin.warning'
+      flash_message :warning, t('admin.attendances.action_new_booking_when_prov_expired.admin.warning')
+      # flash[:warning] = I18n.t 'admin.attendances.action_new_booking_when_prov_expired.admin.warning'
       redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     end
   end
 
   def action_client_rebook_cancellation_when_prov_expired
-    flash[:warning] =
-      ['The maximum number of classes has already been booked.',
-       'Renew you Package if you wish to attend this class']
+    flash_message :warning, ['The maximum number of classes has already been booked.', 'Renew you Package if you wish to attend this class']
+    # flash[:warning] =
+    #   ['The maximum number of classes has already been booked.',
+    #    'Renew you Package if you wish to attend this class']
     redirect_to client_book_path(@client)
   end
 
   def action_admin_rebook_cancellation_when_prov_expired
-    flash[:warning] =
-      ['The purchase has provisionally expired.',
-       'This change may not be possible without first cancelling a booking']
+    flash_message :warning, ['The purchase has provisionally expired.', 'This change may not be possible without first cancelling a booking']
+    # flash[:warning] =
+    #   ['The purchase has provisionally expired.',
+    #    'This change may not be possible without first cancelling a booking']
     redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
   end
 

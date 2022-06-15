@@ -9,11 +9,12 @@ module Client::ClientsHelper
   end
 
   def handle_new_booking(wkclass, client)
-    if wkclass.committed_on_same_day?(client) ||
+    purchase = Purchase.use_for_booking(wkclass, client)
+    if purchase.nil? ||
+       wkclass.committed_on_same_day?(client) ||
        !wkclass.booking_window.cover?(Time.zone.now)
       { css_class: 'table-secondary', link: '' }
     else
-      purchase = Purchase.use_for_booking(wkclass, client)
       { css_class: 'table-secondary',
         link: link_to(
           image_tag('add.png', class: 'grid_table_icon'),

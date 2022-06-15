@@ -42,20 +42,19 @@ class Admin::PurchasesController < Admin::BaseController
     if @purchase.save
       # equivalent to redirect_to admin_purchase_path @purchase
       redirect_to [:admin, @purchase]
-      flash[:success] = t('.success')
+      flash_message :success, t('.success')
+      # flash[:success] = t('.success')
       post_purchase_processing
     else
       prepare_items_for_dropdowns
       render :new, status: :unprocessable_entity
     end
-    # send_sms
-    # send_whatsapp(@purchase.payment)
   end
 
   def update
     if @purchase.update(purchase_params)
       redirect_to [:admin, @purchase]
-      flash[:success] = t('.success')
+      flash_message :success, t('.success')
       update_purchase_status([@purchase])
     else
       prepare_items_for_dropdowns
@@ -66,7 +65,7 @@ class Admin::PurchasesController < Admin::BaseController
   def destroy
     @purchase.destroy
     redirect_to admin_purchases_path
-    flash[:success] = t('.success')
+    flash_message :success, t('.success')
   end
 
   def clear_filters
@@ -204,22 +203,25 @@ class Admin::PurchasesController < Admin::BaseController
     )
     if @account.save
       @account_holder.update(account_id: @account.id)
-      flash[:success] = flash[:success].to_s + ', Account was successfully created'
-      # flash[:success2] = 'Account was successfully created'
+      flash_message :success, t('admin.accounts.create.success')
+      # flash[:success] = I18n.t 'admin.accounts.create.success'
+      # flash[:success] = 'Account was successfully created'
       manage_messaging('new_account')
     else
-      flash[:warning] = 'Account was not created'
+      flash_message :warning, t('admin.accounts.create.warning')
+      # flash[:warning] = I18n.t 'admin.accounts.create.warning'
+      # flash[:warning] = 'Account was not created'
     end
   end
 
   def manage_messaging(message_type)
     recipient_number = @purchase.client.whatsapp_messaging_number
     if recipient_number.nil?
-      flash[:warning] =
-        "Client has no contact number. #{message_type == 'new_account'  ? 'Account login' : 'Purchase'} details not sent"
+      flash_message :warning, "Client has no contact number. #{message_type == 'new_account'  ? 'Account login' : 'Purchase'} details not sent"
     else
+      return unless white_list_whatsapp_receivers
       send "send_#{message_type}_whatsapp" , recipient_number
-      flash[:warning2] = ["#{message_type == 'new_account'  ? 'Account login' : 'New  purchase'} message sent to #{recipient_number}"]
+      flash_message :warning, "#{message_type == 'new_account'  ? 'Account login' : 'New  purchase'} message sent to #{recipient_number}"
     end
   end
 

@@ -23,6 +23,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: 3, max_capacity: 6 } }
     end
+    follow_redirect!
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
@@ -32,8 +33,8 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
+    follow_redirect!
     assert_equal 'provisionally expired', @purchase.reload.status
-
     # client attempts to book another class
     log_in_as @account_client
     assert_difference '@purchase.attendances.count', 0 do
@@ -42,8 +43,8 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to client_book_path @client
     assert_equal flash[:warning],
-                 ['The maximum number of classes has already been booked.',
-                  'Renew you Package if you wish to attend this class']
+                 [['The maximum number of classes has already been booked.',
+                  'Renew you Package if you wish to attend this class']]
   end
 
   test 'attempt by client to update class from cancelled early with provisonally expired package should fail' do
@@ -56,7 +57,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: 3, max_capacity: 6 } }
     end
-
+    follow_redirect!
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
     assert_difference '@purchase.attendances.count', 2 do
@@ -65,7 +66,6 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
-
     # cancel last booking
     @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
     patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled early' } }
@@ -81,10 +81,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     assert_difference '@purchase.attendances.count', 0 do
       patch admin_attendance_path(@attendance)
     end
+
     assert_redirected_to client_book_path @client
     assert_equal flash[:warning],
-                 ['The maximum number of classes has already been booked.',
-                  'Renew you Package if you wish to attend this class']
+                 [['The maximum number of classes has already been booked.',
+                  'Renew you Package if you wish to attend this class']]
   end
 
   test 'attempt by admin to book class with provisonally expired package should fail' do
@@ -98,6 +99,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: 3, max_capacity: 6 } }
     end
+    follow_redirect!
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
@@ -115,7 +117,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
     assert_redirected_to admin_wkclass_path(Wkclass.last(3)[2], no_scroll: true)
-    assert_equal flash[:warning], 'The maximum number of classes has already been booked'
+    assert_equal flash[:warning], [['The maximum number of classes has already been booked']]
   end
 
   test 'admin should be able to make amendment to booking for provisonally expired package when change wont improve package terms' do
@@ -129,6 +131,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: 3, max_capacity: 6 } }
     end
+    follow_redirect!
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
@@ -153,7 +156,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     end
     # assert_redirected_to admin_wkclass_path @attendance.wkclass, {no_scroll: true}
     assert_redirected_to admin_wkclasses_path
-    assert_equal flash[:success], 'Attendance was successfully updated'
+    assert_equal flash[:success], [['Attendance was successfully updated']]
   end
 
   test 'admin should not be able to make amendment to booking for provisonally expired package when change will improve package terms' do
@@ -167,6 +170,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: 3, max_capacity: 6 } }
     end
+    follow_redirect!
 
     # remove late_cancellation amnesty from purchase
     @purchase.update(late_cancels: amnesty_limit[:cancel_late][@purchase.product_type])
@@ -192,8 +196,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled late' } }
     end
     assert_redirected_to admin_wkclass_path @attendance.wkclass, { no_scroll: true }
-    assert_equal flash[:warning],
-                 ['The purchase has provisionally expired.',
-                  'This change may not be possible without first cancelling a booking']
+    assert_equal [['The purchase has provisionally expired.',
+                   'This change may not be possible without first cancelling a booking']], flash[:warning]
   end
 end

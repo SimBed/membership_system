@@ -53,8 +53,8 @@ class PenaltyForTrialTest < ActionDispatch::IntegrationTest
     assert_equal 3, @purchase.reload.late_cancels
 
     assert_redirected_to client_book_path(@client.id)
-    assert_equal ["HIIT on Sunday is 'cancelled late'", 'There is no deduction for this change this time.',
-                  'Avoid deductions by making changes to bookings before the deadlines'], flash[:primary]
+    assert_equal [["HIIT on Sunday is 'cancelled late'", 'There is no deduction for this change this time.',
+                  'Avoid deductions by making changes to bookings before the deadlines']], flash[:primary]
     assert_equal 3, @purchase.attendances.confirmed.size
     assert_equal 0, @purchase.attendances.confirmed.no_amnesty.size
   end

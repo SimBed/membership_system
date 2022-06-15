@@ -38,7 +38,8 @@ class Admin::ClientsController < Admin::BaseController
     @client = Client.new(client_params)
     if @client.save
       redirect_to admin_clients_path
-      flash[:success] = t('.success', name: @client.name)
+      flash_message :success, t('.success', name: @client.name)
+      # flash[:success] = t('.success', name: @client.name)
     else
       render :new, status: :unprocessable_entity
     end
@@ -47,7 +48,8 @@ class Admin::ClientsController < Admin::BaseController
   def update
     if @client.update(client_params)
       redirect_to admin_clients_path
-      flash[:success] = t('.success', name: @client.name)
+      flash_message :success, t('.success', name: @client.name)
+      # flash[:success] = t('.success', name: @client.name)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -56,7 +58,8 @@ class Admin::ClientsController < Admin::BaseController
   def destroy
     @client.destroy
     redirect_to admin_clients_path
-    flash[:success] = t('.success', name: @client.name)
+    flash_message :success, t('.success', name: @client.name)
+    # flash[:success] = t('.success', name: @client.name)
   end
 
   def clear_filters
@@ -94,7 +97,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def handle_export
-    # when exporting data, want it all not just the page of pagination    
+    # when exporting data, want it all not just the page of pagination
     @clients = if params[:export_all]
                  @clients.page(params[:page]).per(1000)
                else

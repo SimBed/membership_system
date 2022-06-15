@@ -7,7 +7,7 @@
           <td><%= wkclass.time %></td>
           <td><%= wkclass.workout.name %></td>
           <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
-          <td><%= booking_link_and_class_for(wkclass, @client)[:link] %></td>
+          <td><%= booking_link_and_class[:link] %></td>
         </tr>
       <% end %>
     </tbody>

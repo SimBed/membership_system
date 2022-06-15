@@ -126,7 +126,8 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # book late class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                          purchase_id: @purchase.id } }
-
+    assert_redirected_to client_book_path(@client.id)
+    assert_equal [['Booked for HIIT on Friday']], flash[:success]
     # cancel late class early
     @attendance = Attendance.applicable_to(@tomorrows_class_late, @client)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
