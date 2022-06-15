@@ -18,9 +18,13 @@ class Product < ApplicationRecord
     "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}"
   end
 
+  # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
+  # https://stackoverflow.com/questions/10522414/breaking-up-long-strings-on-multiple-lines-in-ruby-without-stripping-newlines
   def formal_name
-    formal_unit = {D: 'days', W: 'weeks', M: 'months'}
-    "#{workout_group.name} - #{max_classes < 1000 ? max_classes : 'Unlimited'} Classes #{validity_length} #{formal_unit[validity_unit.to_sym]}"
+    formal_unit = {D: 'Day', W: 'Week', M: 'Month'}
+    "#{workout_group.name} - "\
+     "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} "\
+     "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
   end
 
   def unlimited_package?

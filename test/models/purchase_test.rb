@@ -70,6 +70,12 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 'Pilates 8C:5W', @purchase_fixed.name
   end
 
+  test 'delegated formal_name method' do
+    assert_equal 'Space Group - Unlimited Classes 3 Months', @purchase_package.formal_name
+    assert_equal 'Space Group - 1 Class 1 Day', @purchase_dropin.formal_name
+    assert_equal 'Pilates - 8 Classes 5 Weeks', @purchase_fixed.formal_name
+  end
+
   test 'delegated dropin? method' do
     refute @purchase_package.dropin?
     assert @purchase_dropin.dropin?
