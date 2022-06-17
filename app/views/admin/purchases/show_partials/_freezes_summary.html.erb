@@ -1,0 +1,28 @@
+<% unless @purchase.freezes.count.zero? %>
+<% freezes = @purchase.freezes %>
+  <table class="table table-secondary table-striped caption-top">
+    <caption><%= "#{pluralize(freezes.size, 'Freeze')} (#{pluralize(freezes.map(&:duration).inject(&:+), 'day')})" %></caption>
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Start</th>
+        <th scope="col">Days</th>
+        <th scope="col">Note</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% freezes.each_with_index do |f, index| %>
+        <tr>
+          <th scope="row"><%= index + 1 %></th>
+          <td><%= f.start_date.strftime('%d %b %y') %></td>
+          <td><%= "#{pluralize(f.duration, 'day')}" %></td>
+          <td><%= f.note %></td>
+          <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_freeze_path(f), class: "icon-container" %></td>
+          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_freeze_path(f), method: :delete, data: { confirm: 'Freeze will be deleted Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

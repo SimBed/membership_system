@@ -1,11 +1,12 @@
-<% attendances = @purchase.attendances.no_amnesty.order_by_date %>
+<% attendances = @purchase.attendances.amnesty.order_by_date %>
   <table class="table table-secondary table-striped caption-top">
-    <caption>Attendances</caption>    
+    <caption>Amnesties</caption>
     <tbody>
       <% attendances.each_with_index do |attendance, index| %>
+        <% wkclass = attendance.wkclass %>
         <tr>
           <th scope="row"><%= attendances.size - index %></th>
-          <td><%= attendance.wkclass.summary %></td>
+          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button" %></td>
           <td><%= attendance.status %></td>
         </tr>
       <% end %>

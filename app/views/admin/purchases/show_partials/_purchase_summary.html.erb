@@ -1,9 +1,16 @@
 <table class="table table-secondary table-striped caption-top">
-  <caption><%= @purchase.formal_name %></caption>
+  <caption>
+    <%= link_to @purchase.formal_name, admin_purchase_path(@purchase), class: "like_button" if setting == 'admin_client_show' %>
+    <%= 'Summary' if setting == 'admin_purchase_show' %>
+  </caption>
   <tbody>
     <tr>
       <th scope="row">Payment</th>
       <td><%= number_to_currency(@purchase.payment, precision: 0, unit: 'Rs. ') %></td>
+    </tr>
+    <tr>
+      <th scope="row">Price</th>
+      <td><%= @purchase.price.name %></td>
     </tr>
     <tr>
       <th scope="row">Paid on</th>
@@ -55,5 +62,13 @@
         <td><%= @purchase.ar_date.strftime('%d %b %y') %></td>
       </tr>
     <% end %>
+    <tr>
+      <th scope="row">Invoice</th>
+      <td><%= @purchase.invoice %></td>
+    </tr>
+    <tr>
+      <th scope="row">Note</th>
+      <td><%= @purchase.note %></td>
+    </tr>
   </tbody>
 </table>

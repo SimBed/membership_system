@@ -1,27 +1,53 @@
-<div class="grid-container-client-data">
-  <div class="grid-cell name">Email</div>
-  <div class="grid-cell name"><%= @client.email %></div>
-  <div class="grid-cell email">Phone</div>
-  <div class="grid-cell name"><%= @client.phone %></div>
-  <div class="grid-cell name">Whatsapp</div>
-  <div class="grid-cell email"><%= @client.whatsapp %></div>
-  <div class="grid-cell name">Instagram</div>
-  <div class="grid-cell email"><%= @client.instagram %></div>
-  <div class="grid-cell name">Note</div>
-  <div class="grid-cell email"><%= @client.note %></div>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <caption>Contact</caption>
+  <tbody>
+    <tr>
+      <th scope="row">Email</th>
+      <td><%= @client.email %></td>
+    </tr>
+    <tr>
+      <th scope="row">Phone</th>
+      <td><%= @client.phone %></td>
+    </tr>
+    <tr>
+      <th scope="row">Whatsapp</th>
+      <td><%= @client.whatsapp %></td>
+    </tr>
+    <tr>
+      <th scope="row">Instagram</th>
+      <td><%= @client.instagram %></td>
+    </tr>
+    <tr>
+      <th scope="row">Note</th>
+      <td><%= @client.note %></td>
+    </tr>
+  </tbody>
+</table>
 
-<div class="grid-container-client-summary">
-  <div class="grid-cell name">Total classes</div>
-  <div class="grid-cell name"><%= @client_hash[:attendances] %></div>
-  <div class="grid-cell name">Total purchases</div>
-  <div class="grid-cell name"><%= @client_hash[:purchases] %></div>
-  <% if logged_in_as?('superadmin') %>
-    <div class="grid-cell email">Total spend</div>
-    <div class="grid-cell name"><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></div>
-  <% end %>
-  <div class="grid-cell name">Last class</div>
-  <div class="grid-cell email"><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></div>
-  <div class="grid-cell name">First contact</div>
-  <div class="grid-cell email"><%= "#{time_ago_in_words(@client_hash[:date_created])} ago" %></div>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <caption>History</caption>
+  <tbody>
+    <tr>
+      <th scope="row">Total classes</th>
+      <td><%= @client_hash[:attendances] %></td>
+    </tr>
+    <tr>
+      <th scope="row">Total purchases</th>
+      <td><%= @client_hash[:purchases] %></td>
+    </tr>
+    <% if logged_in_as?('superadmin') %>
+      <tr>
+        <th scope="row">Total spend</th>
+        <td><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th scope="row">Last class</th>
+      <td><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></td>
+    </tr>
+    <tr>
+      <th scope="row">First contact</th>
+      <td><%= "#{time_ago_in_words(@client_hash[:date_created])} ago" %></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,13 +1,13 @@
-<h5><%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "text-decoration-none" %>
-  <div class = "mt-1"><%= link_to @purchase.name, admin_product_path(@purchase.product), class: "text-decoration-none" %></div>
-  <div class = "mt-1 mb-3"><%= @purchase.price.name %></div>
-</h5>
-
-<div id="purchase-table" class="container px-1 mb-2 margin-override">
-  <%= render partial: 'purchase_table', locals: {setting: "purchaseshow"} %>
+<div id="client-heading" class="text-center mb-3">
+  <%= render partial: 'admin/purchases/show_partials/client_heading' %>
 </div>
 
-<div class="mb-3 d-flex">
+<div id="purchase-table" class="container px-1 mb-2 margin-override">
+  <%= render partial: 'admin/purchases/show_partials/purchase_summary', locals: {setting: 'admin_purchase_show'} %>
+  <%= render partial: 'admin/purchases/show_partials/purchase_details' %>
+</div>
+
+<div id="amendment-links" class="mb-3 d-flex">
   <div>
     <%= link_to image_tag('freeze.png', class: "back_icon" ), new_admin_freeze_path(purchase: @purchase.id), class: "icon-container" %> |
     <%= link_to image_tag('adjust.png', class: "back_icon" ), new_admin_adjustment_path(purchase: @purchase.id), class: "icon-container" %> |
@@ -16,13 +16,4 @@
   <div class="me-3 ms-auto">
     <%= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>
   </div>
-</div>
-
-
-<div id="attendance_table" class="container px-1 mt-4 mb-1 margin-override">
-  <%= render partial: 'attendance_table' %>
-</div>
-
-<div id="amnesty_table" class="container px-1 mt-4 mb-1 margin-override">
-  <%= render partial: 'amnesty_table' %>
 </div>

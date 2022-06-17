@@ -1,7 +1,9 @@
-<%= @client.name %>
-<%= image_tag(status_icon(@client)) unless status_icon(@client).nil? %>
-<form action=<%= "/admin/clients/#{params[:id]}" %> method="GET" >
-  <select name="purchaseid" onchange="this.form.submit()" class= "sort">
-    <%= options_for_select @products_purchased, session[:purchaseid] %>
-  </select>
-</form>
+<h2>
+  <%= @client.name %>
+  <%= image_tag(status_icon(@client)) unless status_icon(@client).nil? %>
+  <form action=<%= "/admin/clients/#{params[:id]}" %> method="GET" >
+    <select name="purchaseid" onchange="this.form.submit()" class= "sort">
+      <%= options_for_select @products_purchased, session[:purchaseid] %>
+    </select>
+  </form>
+</h2>

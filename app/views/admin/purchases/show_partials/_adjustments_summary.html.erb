@@ -1,0 +1,28 @@
+<% adjustments = @purchase.adjustments %>
+<% unless adjustments.count.zero? %>
+  <table class="table table-secondary table-striped caption-top">
+    <caption><%= "#{pluralize(adjustments.size, 'Adjustment')} (#{pluralize(adjustments.map(&:adjustment).inject(&:+), 'day')})" %></caption>
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Date</th>
+        <th scope="col">Days</th>
+        <th scope="col">Note</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% adjustments.each_with_index do |adj, index| %>
+        <tr>
+          <th scope="row"><%= index + 1 %></th>
+          <td><%= adj.created_at.strftime('%d %b %y') %></td>
+          <td><%= "#{pluralize(adj.adjustment, 'day')}" %></td>
+          <td><%= adj.note %></td>
+          <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_adjustment_path(adj), class: "icon-container" %></td>
+          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_adjustment_path(adj), method: :delete, data: { confirm: 'Adjustment will be deleted. Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
