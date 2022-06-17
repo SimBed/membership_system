@@ -37,13 +37,14 @@ class Wkclass < ApplicationRecord
   scope :on_date, ->(date) { where(start_time: date.all_day) }
   scope :past, -> { where('start_time < ?', Time.zone.now) }
   scope :future, -> { where('start_time > ?', Time.zone.now) }
-  visibility_window = 2.hours
-  advance_days = 3
-  scope :in_booking_visibility_window, lambda {
-                                         window_start = Time.zone.now - visibility_window
-                                         window_end = Date.tomorrow.advance(days: advance_days).end_of_day.to_time
-                                         where({ start_time: (window_start..window_end) })
-                                       }
+  # visibility_window = 2.hours
+  # advance_days = 3
+  # scope :in_booking_visibility_window, lambda {
+  #                                        window_start = Time.zone.now - visibility_window
+  #                                        window_end = Date.tomorrow.advance(days: advance_days).end_of_day.to_time
+  #                                        where({ start_time: (window_start..window_end) })
+  #                                      }
+  scope :in_booking_visibility_window, -> { where({ start_time: visibility_window }) }
   cancellation_window = 2.hours
   scope :in_cancellation_window, -> { where('start_time > ?', Time.zone.now + cancellation_window) }
   scope :future_and_recent, -> { where('start_time > ?', Time.zone.now - cancellation_window) }
@@ -109,6 +110,13 @@ class Wkclass < ApplicationRecord
     settings = Rails.application.config_for(:constants)['settings']
     window_start = start_time.ago(settings[:booking_window_days_before].days).beginning_of_day
     window_end = start_time - settings[:booking_window_minutes_before].minutes
+    (window_start..window_end)
+  end
+
+  def Wkclass.visibility_window
+    settings = Rails.application.config_for(:constants)['settings']
+    window_start = Time.zone.now - settings[:visibility_window_hours_before].hours
+    window_end = Time.zone.now.advance(days: settings[:visibility_window_days_ahead]).end_of_day
     (window_start..window_end)
   end
 

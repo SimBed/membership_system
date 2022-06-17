@@ -100,7 +100,8 @@ class Admin::WkclassesController < Admin::BaseController
     if Instructor.exists?(params[:wkclass][:instructor_id])
       cost = Instructor.find(params[:wkclass][:instructor_id]).current_rate
     end
-    cost = nil if cost.zero?
+    # cost is nil in client_booking_interface_test when admin just updates wkclass time, hence the nil protecting '&'
+    cost = nil if cost&.zero?
     params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id,
                                     :max_capacity).merge({ instructor_cost: cost })
   end

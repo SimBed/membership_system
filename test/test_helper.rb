@@ -29,5 +29,11 @@ class ActiveSupport::TestCase
     beginning_of_period = date.beginning_of_month
     end_of_period = date.end_of_month.end_of_day
     (beginning_of_period..end_of_period)
-  end  
+  end
+
+  def booking_count(booking_type)
+    booked_count = 0
+    (css_select "td").each {|td| booked_count += 1 if td.text == booking_type}
+    booked_count
+  end
 end

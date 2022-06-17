@@ -17,12 +17,7 @@ gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
 gem 'twilio-ruby'
 gem 'webpacker', '~> 5.0'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
-
-# Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
-
+gem 'rails-controller-testing'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 

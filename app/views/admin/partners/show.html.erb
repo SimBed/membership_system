@@ -6,4 +6,4 @@
   <%= render partial: 'revenues_table' %>
 </div>
 
-<%= link_to image_tag('back.png', class: "back_icon"), admin_partners_path, class: "icon-container" %>
+<%= (link_to image_tag('back.png', class: "back_icon"), admin_partners_path, class: "icon-container") unless logged_in_as?('partner')%>
