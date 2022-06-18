@@ -1,11 +1,11 @@
 class Superadmin::ExpensesController < Superadmin::BaseController
-  before_action :set_expense, only: [:show, :edit, :update, :destroy]
+  before_action :set_expense, only: [:edit, :update, :destroy]
 
   def index
-    @expenses = Expense.all
+    set_period
+    @expenses = Expense.during(@period).order_by_date
+    @months = months_logged
   end
-
-  def show; end
 
   def new
     @expense = Expense.new
@@ -44,6 +44,12 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
   private
 
+  def set_period
+    default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
+    session[:revenue_month] = params[:revenue_month] || session[:revenue_month] || default_month
+    @period = month_period(session[:revenue_month])
+  end
+
   def set_expense
     @expense = Expense.find(params[:id])
   end
@@ -51,4 +57,5 @@ class Superadmin::ExpensesController < Superadmin::BaseController
   def expense_params
     params.require(:expense).permit(:item, :amount, :date, :workout_group_id)
   end
+
 end

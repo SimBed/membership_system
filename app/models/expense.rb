@@ -1,5 +1,7 @@
 class Expense < ApplicationRecord
   belongs_to :workout_group
+  scope :order_by_date, -> { order(date: :desc) }
+  scope :during, ->(period) { where({ date: period }) }
 
   def self.by_workout_group(workout_group, period)
     joins(:workout_group)

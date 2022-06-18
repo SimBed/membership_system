@@ -1,18 +1,21 @@
-<div class='d-flex bg-light flex-column w-75'>
-   <div class='d-flex bg-light flex-row'>
-     <div class='cell c-fitternity-row-headers'>Max classes</div>
-     <div class='cell px-1'><%= @fitternity.max_classes %></div>
-   </div>
-   <div class='d-flex bg-light flex-row'>
-     <div class='cell c-fitternity-row-headers'>Classes remain (confirmed)</div>
-     <div class='cell px-1'><%= @fitternity.classes_remain %></div>
-   </div>
-   <div class='d-flex bg-light flex-row'>
-     <div class='cell c-fitternity-row-headers'>Classes remain (provisional)</div>
-     <div class='cell px-1'><%= @fitternity.classes_remain(provisional: true) %></div>
-   </div>
-   <div class='d-flex bg-light flex-row'>
-     <div class='cell c-fitternity-row-headers'>Expiry</div>
-     <div class='cell px-1'><%= @fitternity.expiry_date.strftime('%d %b %y') %></div>
-   </div>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <caption>Summary</caption>
+  <tbody>
+    <tr>
+      <th scope="row">Max classes</th>
+      <td><%= @fitternity.max_classes %></td>
+    </tr>
+    <tr>
+      <th scope="row">Classes remain (confirmed)</th>
+      <td><%= @fitternity.classes_remain %></td>
+    </tr>
+    <tr>
+      <th scope="row">Classes remain (provisional)</th>
+      <td><%= @fitternity.classes_remain(provisional: true) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Expiry</th>
+      <td><%= @fitternity.expiry_date.strftime('%d %b %y') %></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,17 +1,21 @@
-<h4>* Classes with Instructor Expense</h4>
-<% @wkclasses_with_instructor_expense.each_with_index do |w, index| %>
-<div class ="d-flex bg-light">
-    <div class='cell c-purchases-attendances-index'>
-      <%= index + 1 %>
-    </div>
-    <div class ="cell c-revenue-attend "><%= w.name %></div>
-    <div class ="cell c-revenue-name"><%= w.start_time.strftime('%d %b %y') %></div>
-    <div class ="cell c-revenue-name"><%= w.start_time.strftime('%I:%M %p') %></div>
-    <div class ="cell c-revenue-attend "><%= w.instructor_name %></div>
-    <div class ="cell c-revenue-attend "><%= w.instructor_cost %></div>
-</div>
-<% end %>
-<div class ="d-flex bg-light w-50">
-    <div class ="cell c-revenue-name">Total</div>
-    <div class ="cell c-revenue-attend "><%= number_to_currency(@summary[:variable_expense], precision: 0, unit: 'Rs. ') %></div>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <caption>* Classes with Instructor Expense</caption>
+  <tbody>
+    <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
+      <tr>
+        <th scope="row"><%= index + 1 %></th>
+        <% if logged_in_as?('superadmin') %>
+          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button" %></td>
+        <% else %>
+          <td><%= wkclass.summary %></td>
+        <% end %>
+        <td><%= wkclass.instructor_name %></td>
+        <td><%= wkclass.instructor_cost %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th scope="row">Total</th>
+      <td><%= number_to_currency(@summary[:variable_expense], precision: 0, unit: 'Rs. ') %></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,14 +1,15 @@
-<% @expenses.each do |expense| %>
-  <div class ="d-flex bg-light">
-      <div class ="cell c-instructor-name"><%= expense.item %></div>
-      <div class ="cell c-instructor-name"><%= expense.amount %></div>
-      <div class ="cell c-instructor-name"><%= expense.date.strftime '%b %y' %></div>
-      <div class ="cell c-instructor-name"><%= expense.workout_group.name %></div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_expense_path(expense), class: "icon-container" %>
-      </div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), superadmin_expense_path(expense), method: :delete, data: { confirm: 'Expense will be deleted. Are you sure?' }, class: "icon-container" %>
-      </div>
-  </div>
-<% end %>
+<table class="table table-secondary table-striped caption-top">
+  <caption></caption>
+  <tbody>
+    <% @expenses.each do |expense| %>
+      <tr>
+        <th scope="row"><%= expense.item %></th>
+        <td><%= expense.amount %></td>
+        <td><%= expense.date.strftime '%b %y' %></td>
+        <td><%= expense.workout_group.name %></td>
+        <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_superadmin_expense_path(expense) %></td>
+        <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), superadmin_expense_path(expense), method: :delete, data: { confirm: 'Expense will be deleted. Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

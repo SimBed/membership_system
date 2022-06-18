@@ -741,6 +741,17 @@ div.user_score {
   }
 }
 
+@media (max-width: 900px) {
+  td.extra_small {
+    font-size: 0.8em;
+  }
+
+  td a.extra_small {
+    font-size: 0.8em;
+    padding:0;
+  }
+}
+
 @media (min-width: 600px) {
 
   body {

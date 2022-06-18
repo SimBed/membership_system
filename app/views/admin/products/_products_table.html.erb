@@ -1,19 +1,18 @@
-<div class ="d-flex bg-light">
-    <div class ="cell c-product-purchases fw-bold">Product</div>
-    <div class ="cell c-product-purchases fw-bold">Current Prices</div>
-    <div class ="cell c-class-icon"></div>
-    <div class ="cell c-class-icon"></div>
-</div>
-<% @products.each do |product| %>
-  <div class ="d-flex bg-light">
-      <div class ="cell c-product-purchases"><%=link_to product.name, admin_product_path(product) %></div>
-      <div class ="cell c-product-purchases"><%= product.current_prices %></div>
-      <!--div class ="cell c-product-purchases"><%#= product.prices.map {|p| p.price} %></div-->
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product), class: "icon-container" %>
-      </div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }, class: "icon-container" %>
-      </div>
-  </div>
-<% end %>
+<table class="table table-secondary table-striped caption-top">
+  <tbody>
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Current Prices</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+    <% @products.each do |product| %>
+      <tr>
+        <th scope="row" class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
+        <td><%= product.current_prices %></td>
+        <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_product_path(product) %></td>
+        <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

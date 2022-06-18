@@ -1,10 +1,14 @@
-<% @partner.workout_groups.each do |wg| %>
-<div class ="d-flex bg-light">
-    <div class ="cell c-revenue-name"><%= link_to wg.name, admin_workout_group_path(wg) %></div>
-    <div class ="cell c-revenue-attend "><%= number_to_currency(@partner_share[wg.name.to_sym], precision: 0, unit: '') %></div>
-</div>
-<% end %>
-<div class ="d-flex bg-light fw-bold">
-    <div class ="cell c-revenue-name">Total</div>
-    <div class ="cell c-revenue-attend "><%= number_to_currency(@total_share, precision: 0, unit: 'Rs. ') %></div>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <tbody>
+    <% @partner.workout_groups.each do |wg| %>
+      <tr>
+        <th scope="row"><%= link_to wg.name, admin_workout_group_path(wg), class: 'like_button' %></th>
+        <td><%= number_to_currency(@partner_share[wg.name.to_sym], precision: 0, unit: '') %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th scope="row">Total</th>
+      <td class="fw-bold"><%= number_to_currency(@total_share, precision: 0, unit: 'Rs. ') %></td>
+    </tr>
+  </tbody>
+</table>

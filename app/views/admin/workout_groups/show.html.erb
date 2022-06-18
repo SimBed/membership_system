@@ -1,8 +1,10 @@
-<h2><strong><i><%= "#{@workout_group.name}" %></i></strong> Profit Share  <form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET">
-              <select name="revenue_month" onchange="this.form.submit()" class= "sort">
-                <%= options_for_select @months, session[:revenue_month] %>
-              </select>
-            </form>
+<h2><strong><i><%= "#{@workout_group.name}" %></i></strong> Profit Share
+<form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET">
+  <select name="revenue_month" onchange="this.form.submit()" class= "sort">
+    <%= options_for_select @months, session[:revenue_month] %>
+  </select>
+</form>
+
 </h2>
 <div id="revenues-table" class="container px-1 mb-5 margin-override">
   <%= render partial: 'revenues_table' %>

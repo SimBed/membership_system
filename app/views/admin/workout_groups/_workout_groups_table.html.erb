@@ -1,22 +1,32 @@
-<% @workout_groups.each do |workout_group| %>
-  <div class ="d-flex bg-light">
-      <% if logged_in_as?('partner', 'superadmin') %>
-        <div class ="cell c-wg-name"><%= link_to workout_group.name, admin_workout_group_path(workout_group) %></div>
-        <div class ="cell c-wg-name"><%= link_to workout_group.partner.name, admin_partner_path(workout_group.partner) %></div>
-      <% else %>
-        <div class ="cell c-wg-name"><%= workout_group.name %></div>
-        <div class ="cell c-wg-name"><%= workout_group.partner.name %></div>
-      <% end %>
-      <div class ="cell c-wg-name"><%= workout_group.workout_list %></div>
-      <% unless logged_in_as?('partner') %>
-      <div class ="cell c-class-icon"><%= image_tag('gst.png', class: "table_icon") if workout_group.gst_applies %></div>
-      <div class ="cell c-class-icon"><%= image_tag('invoice.png', class: "table_icon") if workout_group.requires_invoice %></div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_workout_group_path(workout_group), class: "icon-container" %>
-      </div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), admin_workout_group_path(workout_group), method: :delete, data: { confirm: 'Workout Group & its products will be deleted. Are you sure?' }, class: "icon-container" %>
-      </div>
-      <% end %>
-  </div>
-<% end %>
+<table class="table table-secondary table-striped caption-top">
+  <caption>Workout Group List <small><%="(#{@workout_groups.size})"%></small></caption>
+  <tbody >
+    <tr>
+      <th scope="col">Group</th>
+      <th scope="col">Partner</th>
+      <th scope="col">Workout</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+    <% @workout_groups.each do |workout_group| %>
+      <tr>
+        <% if logged_in_as?('partner', 'superadmin') %>
+          <td><%= link_to workout_group.name, admin_workout_group_path(workout_group), class: 'like_button extra_small' %></td>
+          <td><%= link_to workout_group.partner.name, admin_partner_path(workout_group.partner), class: 'like_button extra_small' %></td>
+        <% else %>
+          <td><%= workout_group.name %></td>
+          <td><%= workout_group.partner.name %></td>
+        <% end %>
+        <td class="extra_small"><%= workout_group.workout_list %></td>
+        <% unless logged_in_as?('partner') %>
+          <td><%= image_tag('gst.png', class: "grid_table_icon") if workout_group.gst_applies %></td>
+          <td><%= image_tag('invoice.png', class: "grid_table_icon") if workout_group.requires_invoice %></td>
+          <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_workout_group_path(workout_group)%></td>
+          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_workout_group_path(workout_group), method: :delete, data: { confirm: 'Workout Group & its products will be deleted. Are you sure?' }%></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

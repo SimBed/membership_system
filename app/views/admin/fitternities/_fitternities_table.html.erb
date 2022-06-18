@@ -1,19 +1,15 @@
-<% @fitternities.each do |fitternity| %>
-  <div class ="d-flex bg-light">
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('clipboard.png', class: "table_icon"), admin_fitternity_path(fitternity), class: "icon-container" %>
-      </div>
-      <div class ="cell c-instructor-name"><%= fitternity.max_classes %></div>
-      <div class ="cell c-instructor-workouts"><%= fitternity.expiry_date.strftime('%d %b %y') %></div>
-      <div class ="cell c-class-icon">
+<table class="table table-secondary table-striped caption-top">
+  <tbody>
+    <% @fitternities.each do |fitternity| %>
+      <tr>
+        <td><%= link_to image_tag('clipboard.png', class: "grid_table_icon"), admin_fitternity_path(fitternity), class: "icon-container" %></td>
+        <td><%= fitternity.max_classes %></td>
+        <td><%= fitternity.expiry_date.strftime('%d %b %y') %></td>
         <% unless logged_in_as?('junioradmin') %>
-          <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_fitternity_path(fitternity), class: "icon-container" %>
+          <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_fitternity_path(fitternity) %></td>
+          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_fitternity_path(fitternity), method: :delete, data: { confirm: 'Fitternity and all its purchases will be deleted. Are you sure?' } %></td>
         <% end %>
-      </div>
-      <div class ="cell c-class-icon">
-        <% unless logged_in_as?('junioradmin') %>
-          <%= link_to image_tag('delete.png', class: "table_icon"), admin_fitternity_path(fitternity), method: :delete, data: { confirm: 'Fitternity and all its purchases will be deleted. Are you sure?' }, class: "icon-container" %>
-        <% end %>
-      </div>
-  </div>
-<% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

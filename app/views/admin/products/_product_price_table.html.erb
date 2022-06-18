@@ -1,24 +1,23 @@
-<div class ="d-flex bg-light">
-  <div class ="cell c-product-name fw-bold">Name</div>
-  <div class ="cell c-product-name fw-bold">Price</div>
-  <div class ="cell c-product-name fw-bold">From</div>
-  <div class ="cell c-product-name fw-bold">Status</div>
-  <div class ="cell c-class-icon">
-    <%= link_to image_tag('add.png', class:'table_icon'), new_admin_price_path(product_id: params[:id]) %>
-  </div>
-  <div class ="cell c-class-icon"></div>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <caption>Product Categories</caption>
+  <tbody>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">From</th>
+      <th scope="col">Status</th>
+      <th scope="col"><%= link_to image_tag('add.png', class:'grid_table_icon'), new_admin_price_path(product_id: params[:id]) %></th>
+      <th scope="col"></th>
+    </tr>
 <% @prices.each do |price| %>
-  <div class ="d-flex bg-light">
-    <div class ="cell c-client-product"><%= price.name %></div>
-    <div class ="cell c-client-product"><%= number_to_currency(price.price, precision: 0, unit: 'Rs. ') %></div>
-    <div class ="cell c-client-wkname"><%= price.date_from.strftime('%d %b %y') %></div>
-    <div class ="cell c-client-product"><%= price.current? ? 'current' : 'old' %></div>
-    <div class ="cell c-class-icon">
-      <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_price_path(price), class: "icon-container" %>
-    </div>
-    <div class ="cell c-class-icon">
-      <%= link_to image_tag('delete.png', class: "table_icon"), admin_price_path(price), method: :delete, data: { confirm: 'Price will be deleted. Are you sure?' }, class: "icon-container" %>
-    </div>
-  </div>
-<% end %>
+      <tr>
+        <th scope="row" class="fw-light"><%= price.name %></th>
+        <td><%= number_to_currency(price.price, precision: 0, unit: 'Rs. ') %></td>
+        <td><%= price.date_from.strftime('%d %b %y') %></td>
+        <td><%= price.current? ? 'current' : 'old' %></td>
+        <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_price_path(price)%></td>
+        <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_price_path(price), method: :delete, data: { confirm: 'Price will be deleted. Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

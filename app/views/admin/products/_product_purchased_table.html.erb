@@ -1,12 +1,17 @@
-<div class ="d-flex bg-light">
-  <div class ="cell c-product-name fw-bold">Date of Purchase</div>
-  <div class ="cell c-product-name fw-bold">Client</div>
-  <div class ="cell c-product-name fw-bold">Payment</div>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <caption>Purchases of Product Made <small><%="(#{@purchases.size})"%></small></caption>
+  <tbody>
+    <tr>
+      <th scope="col">Date of Purchase</th>
+      <th scope="col">Client</th>
+      <th scope="col">Payment</th>
+    </tr>
 <% @purchases.each do |purchase| %>
-  <div class ="d-flex bg-light">
-      <div class ="cell c-client-date"><%= purchase.dop.strftime('%d %b %y') %></div>
-      <div class ="cell c-client-wkname"><%= purchase.client.name %></div>
-      <div class ="cell c-client-product"><%= number_to_currency(purchase.payment, precision: 0, unit: 'Rs. ') %></div>
-  </div>
-<% end %>
+      <tr>
+        <td><%= purchase.dop.strftime('%d %b %y') %></td>
+        <td><%= purchase.client.name %></td>
+        <td><%= number_to_currency(purchase.payment, precision: 0, unit: 'Rs. ') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

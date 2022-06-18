@@ -1,23 +1,13 @@
-<div class ="d-flex bg-light w-75">
-    <div class ="cell fw-bold">Attendances</div>
-</div>
-  <% @attendances.each_with_index do |attendance, index| %>
-     <div class='d-flex bg-light w-75'>
-       <div class='cell c-purchases-attendances-index'>
-         <%= @attendances.size - index %>
-       </div>
-       <div class='cell'>
-         <%= link_to attendance.date, admin_wkclass_path(attendance.wkclass, no_scroll: true) %>
-       </div>
-       <div class='cell c-class-time'>
-         <%= attendance.time %>
-       </div>
-       <div class='cell'>
-         <%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %>
-       </div>
-       <div class='cell'>
-         <%= attendance.status %>
-       </div>
-
-     </div>
-  <% end %>
+<table class="table table-secondary table-striped caption-top">
+  <caption>Attendances</caption>
+  <tbody>
+    <% @attendances.each_with_index do |attendance, index| %>
+      <tr>
+        <th scope="row"><%= @attendances.size - index %></th>
+        <td><%= link_to attendance.wkclass.summary, admin_wkclass_path(attendance.wkclass, no_scroll: true), class: "like_button" %></td>
+        <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></td>
+        <td><%= attendance.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

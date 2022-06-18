@@ -1,4 +1,4 @@
 class Superadmin::BaseController < ApplicationController
-  layout 'admin'
+  # layout 'admin'
   before_action :superadmin_account
 end
