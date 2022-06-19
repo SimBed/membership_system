@@ -2,14 +2,15 @@ class Admin::ClientsController < Admin::BaseController
   # skip_before_action :admin_account, only: [:show]
   skip_before_action :admin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter]
   before_action :junioradmin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter]
-  # before_action :correct_account_or_admin, only: [:show]
+  before_action :initialize_sort, only: :index
   # before_action :layout_set, only: [:show]
   before_action :set_client, only: [:show, :edit, :update, :destroy]
 
   def index
-    @clients = Client.includes(:account).order_by_name
+    @clients = Client.includes(:account)
     handle_search
     handle_filter
+    handle_sort
     handle_export
     handle_index_response
   end
@@ -84,6 +85,10 @@ class Admin::ClientsController < Admin::BaseController
     params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
   end
 
+  def initialize_sort
+    session[:sort_option] = params[:sort_option] || session[:sort_option] || 'name'
+  end
+
   def handle_search
     return if session[:search_client_name].blank?
 
@@ -94,6 +99,10 @@ class Admin::ClientsController < Admin::BaseController
     %w[cold enquiry packagee hot].each do |key|
       @clients = @clients.send(key) if session["filter_#{key}"].present?
     end
+  end
+
+  def handle_sort
+    @clients = @clients.send("order_by_#{session[:sort_option]}").page params[:page]
   end
 
   def handle_export

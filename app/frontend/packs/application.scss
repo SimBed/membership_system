@@ -554,7 +554,7 @@ div.page_entries_info {
   color: red;
 }
 
-div.nomobile {
+td.nomobile {
   display: none;
 }
 
@@ -823,8 +823,8 @@ div.user_score {
      height:10px;
     }
 
-   div.nomobile {
-     display: block;
+   td.nomobile {
+     display: table-cell;
    }
 
    .grid-container-client-index {

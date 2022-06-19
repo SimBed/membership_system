@@ -18,6 +18,8 @@ class Client < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validates :account, presence: true, if: :account_id
   scope :order_by_name, -> { order(:first_name, :last_name) }
+  scope :order_by_last_name, -> { order(:last_name, :first_name) }
+  scope :order_by_created_at, -> { order(created_at: :desc) }
   scope :name_like, ->(name) { where('first_name ILIKE ? OR last_name ILIKE ?', "%#{name}%", "%#{name}%") }
   # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
   scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: { id: nil }) }
