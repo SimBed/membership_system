@@ -557,6 +557,9 @@ div.page_entries_info {
 td.nomobile {
   display: none;
 }
+div.nomobile {
+  display: none;
+}
 
 img.Logobar {
   width: 8.5rem;
@@ -825,6 +828,10 @@ div.user_score {
 
    td.nomobile {
      display: table-cell;
+   }
+
+   div.nomobile {
+     display: block;
    }
 
    .grid-container-client-index {

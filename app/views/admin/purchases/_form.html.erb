@@ -18,7 +18,7 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
   <div class="field">
     <%= form.label :client_id %>
     <%#= form.select :client_id, @clients, include_blank: true %>
-    <%= form.collection_select :client_id, Client.order_by_name, :id, :name, include_blank: true %>
+    <%= form.collection_select :client_id, Client.order_by_first_name, :id, :name, include_blank: true %>
   </div>
 
   <!--div class="field">

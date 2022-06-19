@@ -17,7 +17,7 @@ class Client < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   validates :account, presence: true, if: :account_id
-  scope :order_by_name, -> { order(:first_name, :last_name) }
+  scope :order_by_first_name, -> { order(:first_name, :last_name) }
   scope :order_by_last_name, -> { order(:last_name, :first_name) }
   scope :order_by_created_at, -> { order(created_at: :desc) }
   scope :name_like, ->(name) { where('first_name ILIKE ? OR last_name ILIKE ?', "%#{name}%", "%#{name}%") }

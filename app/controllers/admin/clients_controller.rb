@@ -86,7 +86,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def initialize_sort
-    session[:sort_option] = params[:sort_option] || session[:sort_option] || 'name'
+    session[:client_sort_option] = params[:client_sort_option] || session[:client_sort_option] || 'first_name'
   end
 
   def handle_search
@@ -102,7 +102,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def handle_sort
-    @clients = @clients.send("order_by_#{session[:sort_option]}").page params[:page]
+    @clients = @clients.send("order_by_#{session[:client_sort_option]}").page params[:page]
   end
 
   def handle_export
