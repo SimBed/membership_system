@@ -71,6 +71,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def set_period
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
     session[:revenue_month] = params[:revenue_month] || session[:revenue_month] || default_month
+    session[:revenue_month] = default_month if session[:revenue_month] == 'All'
     @period = month_period(session[:revenue_month])
   end
 

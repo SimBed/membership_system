@@ -4,12 +4,16 @@
     <% @expenses.each do |expense| %>
       <tr>
         <th scope="row"><%= expense.item %></th>
-        <td><%= expense.amount %></td>
+        <td><%= number_with_delimiter(expense.amount) %></td>
         <td><%= expense.date.strftime '%b %y' %></td>
         <td><%= expense.workout_group.name %></td>
         <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_superadmin_expense_path(expense) %></td>
         <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), superadmin_expense_path(expense), method: :delete, data: { confirm: 'Expense will be deleted. Are you sure?' } %></td>
       </tr>
     <% end %>
+    <tr>
+      <th scope="row">Total</th>
+      <td colspan="2" class="fw-bold"><%= number_to_currency( @expenses.sum(:amount), precision: 0, unit: 'Rs. ') %></td>
+    </tr>
   </tbody>
 </table>

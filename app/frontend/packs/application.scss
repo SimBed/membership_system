@@ -530,7 +530,7 @@ img.back_icon {
 a.like_button {
   border-radius: 1rem;
   line-height: 1.25;
-  padding: 0.1rem 0.5rem;
+  padding: 0;
   box-shadow: 0 1px #999;
   text-decoration: none;
   color: black;
@@ -765,6 +765,10 @@ div.user_score {
 
    main {
      padding-top: 13rem;
+   }
+
+   a.like_button {
+     padding: 0.1rem 0.5rem;
    }
 
    .GeneralText {

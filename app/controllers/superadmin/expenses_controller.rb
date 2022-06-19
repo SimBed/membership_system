@@ -2,9 +2,9 @@ class Superadmin::ExpensesController < Superadmin::BaseController
   before_action :set_expense, only: [:edit, :update, :destroy]
 
   def index
-    set_period
-    @expenses = Expense.during(@period).order_by_date
-    @months = months_logged
+    @expenses = Expense.order_by_date
+    handle_period
+    @months = ['All'] + months_logged
   end
 
   def new
@@ -42,12 +42,19 @@ class Superadmin::ExpensesController < Superadmin::BaseController
     flash[:success] = t('.success')
   end
 
+  def filter
+    session[:revenue_month] = params[:revenue_month]
+    redirect_to superadmin_expenses_path
+  end
+
   private
 
-  def set_period
+  def handle_period
+    return unless session[:revenue_month].present? && session[:revenue_month] != 'All'
+
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
     session[:revenue_month] = params[:revenue_month] || session[:revenue_month] || default_month
-    @period = month_period(session[:revenue_month])
+    @expenses = @expenses.during(month_period(session[:revenue_month]))
   end
 
   def set_expense

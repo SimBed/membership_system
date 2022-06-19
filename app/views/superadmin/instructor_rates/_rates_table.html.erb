@@ -1,13 +1,14 @@
-<% @instructor_rates.each do |rate| %>
-  <div class ="d-flex bg-light">
-      <div class ="cell c-instructor-name"><%= rate.instructor.name %></div>
-      <div class ="cell c-instructor-name"><%= rate.rate %></div>
-      <div class ="cell c-instructor-name"><%= rate.date_from.strftime('%d %b %y') %></div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_instructor_rate_path(rate), class: "icon-container" %>
-      </div>
-      <div class ="cell c-class-icon">
-        <%= link_to image_tag('delete.png', class: "table_icon"), superadmin_instructor_rate_path(rate), method: :delete, data: { confirm: 'Instructor rate will be deleted. Are you sure?' }, class: "icon-container" %>
-      </div>
-  </div>
-<% end %>
+<table class="table table-secondary table-striped caption-top">
+  <caption></caption>
+  <tbody>
+    <% @instructor_rates.each do |rate| %>
+      <tr>
+        <th scope="row"><%= rate.instructor.name %></th>
+        <td><%= number_with_delimiter(rate.rate) %></td>
+        <td><%= rate.date_from.strftime('%d %b %y') %></td>
+        <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_superadmin_instructor_rate_path(rate) %></td>
+        <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), superadmin_instructor_rate_path(rate), method: :delete, data: { confirm: 'Instructor rate will be deleted. Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
