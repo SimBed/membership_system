@@ -12,7 +12,7 @@
         <td class="nomobile"><%= client.email %></td>
         <td><%= client.phone %></td>
         <td class="nomobile"><%= client.instagram %></td>
-        <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_client_path(client), class: "icon-container" %></td>
+        <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_client_path(client) %></td>
         <!--td class="nomobile"><%#= link_to image_tag('delete.png', class: "grid_table_icon"), admin_client_path(client), method: :delete, data: { confirm: 'Client and its purchases and attendances will be deleted. Are you sure?' } unless logged_in_as?('junioradmin') %></td-->
         <td class="nomobile">
           <% if client.account.nil? %>

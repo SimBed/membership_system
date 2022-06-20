@@ -8,7 +8,6 @@
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
-      <th scope="col"></th>
     </tr>
     <% @workout_groups.each do |workout_group| %>
       <tr>
@@ -24,7 +23,7 @@
           <td><%= image_tag('gst.png', class: "grid_table_icon") if workout_group.gst_applies %></td>
           <td><%= image_tag('invoice.png', class: "grid_table_icon") if workout_group.requires_invoice %></td>
           <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_workout_group_path(workout_group)%></td>
-          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_workout_group_path(workout_group), method: :delete, data: { confirm: 'Workout Group & its products will be deleted. Are you sure?' }%></td>
+          <!--td><%#= link_to image_tag('delete.png', class: "grid_table_icon"), admin_workout_group_path(workout_group), method: :delete, data: { confirm: 'Workout Group & its products will be deleted. Are you sure?' }%></td-->
         <% end %>
       </tr>
     <% end %>

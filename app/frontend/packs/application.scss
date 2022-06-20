@@ -547,14 +547,14 @@ a.like_button {
 }
 
 div.page_entries_info {
-  font-size: 0.6em;
+  font-size: 0.9em;
 }
 
 .close_to_expiry {
   color: red;
 }
 
-td.nomobile {
+td.nomobile, th.nomobile {
   display: none;
 }
 div.nomobile {
@@ -744,18 +744,27 @@ div.user_score {
   }
 }
 
-@media (max-width: 900px) {
-  td.extra_small {
-    font-size: 0.8em;
-  }
+td.extra_small, th.extra_small, tr.extra_small {
+  font-size: 0.95em;
+}
 
-  td a.extra_small {
-    font-size: 0.8em;
-    padding:0;
-  }
+td a.extra_small {
+  font-size: 0.9em;
+  padding:0;
 }
 
 @media (min-width: 600px) {
+  td.nomobile, th.nomobile {
+    display: table-cell;
+  }
+
+  div.nomobile {
+    display: block;
+  }
+
+}
+
+@media (min-width: 900px) {
 
   body {
     margin: 1rem;
@@ -768,6 +777,15 @@ div.user_score {
 
    main {
      padding-top: 13rem;
+   }
+
+   td.extra_small, th.extra_small, tr.extra_small {
+     font-size: 0.8em;
+   }
+
+   td a.extra_small {
+     font-size: 0.8em;
+     padding:0;
    }
 
    a.like_button {
@@ -826,14 +844,6 @@ div.user_score {
      height:10px;
     }
 
-   td.nomobile {
-     display: table-cell;
-   }
-
-   div.nomobile {
-     display: block;
-   }
-
    .grid-container-client-index {
      grid-template-columns: auto auto auto auto 2em 2em 2em;
    }
@@ -844,5 +854,16 @@ div.user_score {
 
    .grid-container-purchase-index {
      grid-template-columns: auto auto auto 2em 2em;
+  }
+}
+
+@media (min-width: 1200px) {
+  td.extra_small, th.extra_small, tr.extra_small {
+    font-size: 0.9em;
+  }
+
+  td a.extra_small {
+    font-size: 0.9em;
+    padding:0;
   }
 }

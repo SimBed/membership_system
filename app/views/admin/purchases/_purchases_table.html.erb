@@ -2,16 +2,24 @@
   <%= paginate @purchases, remote: true %>
   <%= page_entries_info @purchases %>
 </div>
-<div class="grid-container-purchase-index">
-  <% @purchases.each do |purchase| %>
-    <div class="grid-cell"><%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %></div>
-    <div class="grid-cell"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></div>
-    <div class="grid-cell nomobile"><%= purchase.start_to_expiry %></div>
-    <div class="grid-cell icon nomobile">
-      <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase), class: "icon-container" %>
-    </div>
-    <div class="grid-cell icon nomobile">
-      <%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' }, class: "icon-container" %>
-    </div>
-  <% end %>
-</div>
+
+<table class="table table-secondary table-striped caption-top">
+  <caption></caption>
+  <tbody>
+    <tr class="extra_small">
+      <th scope="col">Client</th>
+      <th scope="col">Purchase Date</th>
+      <th scope="col" class="nomobile">Start to Expiry</th>
+      <th scope="col" class="nomobile"></th>
+    </tr>
+    <% @purchases.each do |purchase| %>
+      <tr class="extra_small">
+        <th scope="row" class="extra_small"><%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %></th>
+        <td class="extra_small"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></td>
+        <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
+        <td class="nomobile"><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_purchase_path(purchase) %></td>
+        <!--td class="nomobile"><%#= link_to image_tag('delete.png', class: "grid_table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' } %></td-->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
