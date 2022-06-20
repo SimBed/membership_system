@@ -52,6 +52,18 @@
         <td><%= @purchase.will_expire_on %></td>
       </tr>
     <% end %>
+    <tr>
+      <th scope="row">Payment mode</th>
+      <td><%= @purchase.payment_mode%></td>
+    </tr>
+    <tr>
+      <th scope="row">Invoice</th>
+      <td><%= @purchase.invoice %></td>
+    </tr>
+    <tr>
+      <th scope="row">Note</th>
+      <td><%= @purchase.note %></td>
+    </tr>
     <% if @purchase.adjust_restart %>
       <tr>
         <th scope="row">A&R paid</th>
@@ -62,13 +74,6 @@
         <td><%= @purchase.ar_date.strftime('%d %b %y') %></td>
       </tr>
     <% end %>
-    <tr>
-      <th scope="row">Invoice</th>
-      <td><%= @purchase.invoice %></td>
-    </tr>
-    <tr>
-      <th scope="row">Note</th>
-      <td><%= @purchase.note %></td>
-    </tr>
+
   </tbody>
 </table>
