@@ -194,8 +194,8 @@ a.nav_icon img {
 }
 
 img.grid_table_icon {
-  width: 1.3rem;
-  height: 1.3rem;
+  width: 1.0rem;
+  height: 1.0rem;
 }
 
 .icon-container:hover {
@@ -779,6 +779,11 @@ td a.extra_small {
      padding-top: 13rem;
    }
 
+   img.grid_table_icon {
+     width: 1.3rem;
+     height: 1.3rem;
+   }
+
    td.extra_small, th.extra_small, tr.extra_small {
      font-size: 0.8em;
    }
@@ -866,4 +871,11 @@ td a.extra_small {
     font-size: 0.9em;
     padding:0;
   }
+}
+
+@media (max-width: 900px) {
+ tr.less-padding td    {
+   padding-left: 0.1rem;
+   padding-right: 0.1rem;
+ }
 }

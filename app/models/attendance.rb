@@ -20,6 +20,8 @@ class Attendance < ApplicationRecord
   #                       where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['cancelled early', 'cancelled late'])
   #                     }
   scope :order_by_date, -> { joins(:wkclass).order(start_time: :desc) }
+  scope :order_by_status, -> { joins(purchase: [:client]).order(:status, :first_name) }
+
   validates :status, inclusion: { in: Rails.application.config_for(:constants)['attendance_statuses'] }
 
   def self.applicable_to(wkclass, client)

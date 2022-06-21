@@ -32,6 +32,8 @@ class Admin::WkclassesController < Admin::BaseController
     handle_filter
     handle_period
     # @wkindex = @wkclasses.index(@wkclass)
+    @attendances = @wkclass.attendances.no_amnesty.order_by_status
+    @amnesties = @wkclass.attendances.amnesty.order_by_status
   end
 
   def new

@@ -278,6 +278,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def handle_client_update_response
+    set_attendances
     respond_to do |format|
       format.html do
         flash_client_update_success
@@ -307,6 +308,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def handle_admin_update_response
+    set_attendances
     respond_to do |format|
       format.html do
         flash_message :success, t('.success')
@@ -318,6 +320,11 @@ class Admin::AttendancesController < Admin::BaseController
         render 'admin/wkclasses/update_attendance.js.erb'
       end
     end
+  end
+
+  def set_attendances
+    @attendances = @wkclass.attendances.no_amnesty.order_by_status
+    @amnesties = @wkclass.attendances.amnesty.order_by_status
   end
 
   def flash_client_update_fail

@@ -1,42 +1,35 @@
-<!--#% @wkclass.clients.each do |client| %-->
-<% Rails.application.config_for(:constants)["attendance_statuses"].each do |attendance_status| %>
-  <% Attendance.by_status(@wkclass, attendance_status).no_amnesty.each do |attendance| %>
-    <div class ="d-flex bg-light">
-        <div class ="cell c-class-name"><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></div>
-        <div class ="cell c-class-date"><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button" %></div>
-        <% unless logged_in_as?('junioradmin') %>
-        <div class ="cell c-class-attendance-revenue"><%= number_to_currency(attendance.purchase.revenue_for_class(@wkclass), precision: 0, unit: 'Rs. ') %></div>
+  <table class="table table-secondary table-striped caption-top">
+    <caption>Attendances <small><%= "(#{@attendances.size})" %> </small></caption>
+    <tbody>
+        <% @attendances.each do |attendance| %>
+          <tr class="less-padding">
+            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
+            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
+            <% unless logged_in_as?('junioradmin') %>
+              <td class="extra_small"><%= number_with_delimiter(attendance.purchase.revenue_for_class(@wkclass)) %></td>
+            <% end %>
+            <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
+            <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+          </tr>
         <% end %>
-        <%# @attendance = attendance.client.attendances.where(wkclass_id: @wkclass.id).first %>
-        <!--div class ="cell c-class-name"><%#= @attendance.status %></div-->
-        <div class ="cell c-class-name">
-          <%= render 'admin/wkclasses/attendance_form', object: attendance %>
-        </div>
-        <div class ="cell c-class-icon">
-          <%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' }, class: "icon-container" %>
-        </div>
-    </div>
-  <% end %>
-<% end %>
+    </tbody>
+  </table>
 
-<hr>
+  <hr>
 
-<% Rails.application.config_for(:constants)["attendance_statuses"].each do |attendance_status| %>
-  <% Attendance.by_status(@wkclass, attendance_status).where(amnesty: true).each do |attendance| %>
-    <div class ="d-flex bg-light">
-        <div class ="cell c-class-name"><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></div>
-        <div class ="cell c-class-date"><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button" %></div>
-        <% unless logged_in_as?('junioradmin') %>
-          <div class ="cell c-class-attendance-revenue"><%= number_to_currency(attendance.purchase.revenue_for_class(@wkclass), precision: 0, unit: 'Rs. ') %></div>
+  <table class="table table-secondary table-striped caption-top">
+    <caption>Amnesties <small><%= "(#{@amnesties.size})" %> </small></caption>
+    <tbody>
+        <% @amnesties.each do |attendance| %>
+          <tr class="less-padding">
+            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
+            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
+            <% unless logged_in_as?('junioradmin') %>
+              <td class="extra_small"><%= number_with_delimiter(attendance.purchase.revenue_for_class(@wkclass)) %></td>
+            <% end %>
+            <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
+            <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+          </tr>
         <% end %>
-        <%# @attendance = attendance.client.attendances.where(wkclass_id: @wkclass.id).first %>
-        <!--div class ="cell c-class-name"><%#= @attendance.status %></div-->
-        <div class ="cell c-class-name">
-          <%= render 'admin/wkclasses/attendance_form', object: attendance %>
-        </div>
-        <div class ="cell c-class-icon">
-          <%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' }, class: "icon-container" %>
-        </div>
-    </div>
-  <% end %>
-<% end %>
+    </tbody>
+  </table>
