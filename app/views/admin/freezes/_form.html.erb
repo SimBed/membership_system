@@ -13,12 +13,12 @@
 
   <div><%= form.hidden_field :purchase_id, value: params[:purchase] || freeze.purchase_id %></div>
 
-  <div class="field">
+  <div class="field" id="freeze_start">
     <%= form.label :start_date %>
-    <%= form.date_field :start_date %>
+    <%= form.date_field :start_date, default: Time.zone.now %>
   </div>
 
-  <div class="field">
+  <div class="field" id="freeze_end">
     <%= form.label :end_date %>
     <%= form.date_field :end_date %>
   </div>
@@ -32,3 +32,18 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<script>
+  document.getElementById("freeze_start_date").onchange =  function () {
+    // dynamically make freeze period default to 14 days
+    // surprisingly awkward to manage date objects in javascript
+    const start_date_string = document.getElementById("freeze_start_date").value;
+    const start_date_array = start_date_string.split('-');
+    // https://attacomsian.com/blog/javascript-date-add-days    
+    const start_date = new Date(start_date_array[0], start_date_array[1] - 1, start_date_array[2]);
+    const end_date = new Date();
+    end_date.setDate(start_date.getDate() + 13);
+    end_date_string = end_date.toISOString().slice(0,10)
+    document.getElementById("freeze_end_date").value = end_date_string;
+  }
+</script>

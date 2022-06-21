@@ -13,7 +13,7 @@ class FreezeTest < ActiveSupport::TestCase
   end
 
   test 'duration should not be too short' do
-    @freeze.end_date = @freeze.start_date + 3.days
+    @freeze.end_date = @freeze.start_date + 0.days
     refute @freeze.valid?
   end
 

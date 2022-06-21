@@ -123,7 +123,7 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'qualifying_for method' do
-    assert_equal [441, 374, 201, 212, 335, 459, 381, 406, 368, 229, 438, 382, 200, 407, 377, 99, 198, 389, 399,
+    assert_equal [441, 374, 201, 212, 335, 459, 381, 368, 229, 438, 382, 200, 407, 377, 99, 198, 389, 399,
                   120, 224, 360, 125, 341, 119, 390, 416], Purchase.qualifying_for(@wkclass1).pluck(:id)
   end
 

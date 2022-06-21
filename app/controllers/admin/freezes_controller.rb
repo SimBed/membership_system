@@ -4,7 +4,9 @@ class Admin::FreezesController < Admin::BaseController
   before_action :set_freeze, only: [:edit, :update, :destroy]
 
   def new
-    @freeze = Freeze.new
+    start_date = Time.zone.now
+    end_date = start_date.advance(days: (14 - 1))
+    @freeze = Freeze.new(start_date: start_date, end_date: end_date)
   end
 
   def create

@@ -22,6 +22,6 @@ class Fitternity < ApplicationRecord
   def classes_remain(provisional: true)
     return (max_classes - attendances.no_amnesty.size) if provisional
 
-    max_classes - attendances.confirmed.size
+    max_classes - attendances.confirmed.no_amnesty.size
   end
 end

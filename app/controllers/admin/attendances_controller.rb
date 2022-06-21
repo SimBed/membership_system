@@ -24,6 +24,7 @@ class Admin::AttendancesController < Admin::BaseController
     if @attendance.save
       # needed for after_action callback
       @purchase = @attendance.purchase
+      handle_freeze
       logged_in_as?('client') ? after_successful_create_by_client : after_successful_create_by_admin
     else
       logged_in_as?('client') ? after_unsuccessful_create_by_client : after_unsuccessful_create_by_admin
@@ -83,6 +84,7 @@ class Admin::AttendancesController < Admin::BaseController
     send "set_data_client_#{@time_of_request}_cancel"
     if @attendance.update(status: @updated_status)
       action_client_update_success
+
       handle_client_update_response
     else
       flash_client_update_fail
@@ -135,6 +137,18 @@ class Admin::AttendancesController < Admin::BaseController
 
   def set_attendance
     @attendance = Attendance.find(params[:id])
+  end
+
+  def handle_freeze
+    wkclass_date = @attendance.wkclass.start_time.to_date
+    # unlikley to be more than 1, but you never know
+    applicable_freezes = @purchase.freezes_cover(wkclass_date)
+    return if applicable_freezes.empty?
+    applicable_freezes.each do |f|
+      # wish to bypass validation, else would just use update method
+      f.end_date = wkclass_date.advance(days: -1)
+      f.save(validate: false)
+     end
   end
 
   def basic_data(account)
@@ -222,6 +236,7 @@ class Admin::AttendancesController < Admin::BaseController
       action_cancelled_early
     else # a rebook (and bookings always count)
       @attendance.update(amnesty: false)
+      handle_freeze
     end
   end
 
@@ -232,6 +247,7 @@ class Admin::AttendancesController < Admin::BaseController
       send "action_#{attendance_status.split.join('_')}"
     else # attended or a rebook (which always count)
       @attendance.update(amnesty: false)
+      handle_freeze
     end
   end
 
