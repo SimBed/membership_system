@@ -1,5 +1,5 @@
   <table class="table table-secondary table-striped caption-top">
-    <caption>Attendances <small><%= "(#{@attendances.size})" %> </small></caption>
+    <caption>Attendances <small><%= "(#{@attendances&.size || 0})" %> </small></caption>
     <tbody>
         <% @attendances.each do |attendance| %>
           <tr class="less-padding">
@@ -18,7 +18,7 @@
   <hr>
 
   <table class="table table-secondary table-striped caption-top">
-    <caption>Amnesties <small><%= "(#{@amnesties.size})" %> </small></caption>
+    <caption>Amnesties <small><%= "(#{@amnesties&.size || 0})" %> </small></caption>
     <tbody>
         <% @amnesties.each do |attendance| %>
           <tr class="less-padding">
