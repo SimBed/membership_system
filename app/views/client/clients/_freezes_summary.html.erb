@@ -6,6 +6,7 @@
       <tr>
         <th scope="col"></th>
         <th scope="col">Start</th>
+        <th scope="col">End</th>
         <th scope="col">Days</th>
       </tr>
     </thead>
@@ -14,6 +15,7 @@
         <tr>
           <th scope="row"><%= index + 1 %></th>
           <td><%= f.start_date.strftime('%d %b %y') %></td>
+          <td><%= f.end_date.strftime('%d %b %y') %></td>
           <td><%= "#{pluralize(f.duration, 'day')}" %></td>
         </tr>
       <% end %>

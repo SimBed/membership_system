@@ -66,25 +66,18 @@ class Purchase < ApplicationRecord
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per 20
 
-  def self.available_to(wkclass)
-    not_expired
-      .joins(product: [:workout_group])
-      .joins(:client)
-      .merge(WorkoutGroup.includes_workout_of(wkclass))
-      .includes(:client)
-      .order('clients.first_name', 'purchases.dop')
-  end
 
+  # reformat qualifying_for and available_for_booking into single method
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|
-      p.freezed?(wkclass.start_time) ||
+        p.purchased_after?(wkclass.start_time.to_date) ||
         p.committed_on?(wkclass.start_time.to_date)
     end
   end
 
   def self.available_for_booking(wkclass, client)
     available_to(wkclass).where(client_id: client.id).reject do |p|
-      # p.freezed?(wkclass.start_time) ||
+      p.purchased_after?(wkclass.start_time.to_date) ||
       p.committed_on?(wkclass.start_time.to_date)
     end
   end
@@ -115,6 +108,11 @@ class Purchase < ApplicationRecord
     return false if fixed_package? # fixed packages can do what they want
 
     attendances.no_amnesty.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
+  end
+
+  def purchased_after?(adate)
+    # (adate..Float::INFINITY).cover? dop
+    dop > adate
   end
 
   def name_with_dop
@@ -252,6 +250,15 @@ class Purchase < ApplicationRecord
   end
 
   private
+
+  def self.available_to(wkclass)
+    not_expired
+      .joins(product: [:workout_group])
+      .joins(:client)
+      .merge(WorkoutGroup.includes_workout_of(wkclass))
+      .includes(:client)
+      .order('clients.first_name', 'purchases.dop')
+  end
 
   def max_class_expiry_date
     attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max

@@ -3,6 +3,7 @@ class PurchaseTest < ActiveSupport::TestCase
   def setup
     travel_to Date.parse('18 March 2022')
     @client = clients(:aparna)
+    @client2 = clients(:bhavik)
     @product = products(:unlimited3m)
     @price = prices(:base_new_unlimited3m)
     @purchase =
@@ -123,13 +124,28 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'qualifying_for method' do
-    assert_equal [441, 374, 201, 212, 335, 459, 381, 368, 229, 438, 382, 200, 407, 377, 99, 198, 389, 399,
-                  120, 224, 360, 125, 341, 119, 390, 416], Purchase.qualifying_for(@wkclass1).pluck(:id)
+    assert_equal [374, 201, 212, 4, 335, 368, 229, 200, 99, 198, 120, 224, 360, 125, 341, 119, 90],
+                  Purchase.qualifying_for(@wkclass1).pluck(:id)
+  end
+  # 90 are frozen, but correctly still appears
+
+  test 'available_for_booking method' do
+    assert_equal [4], Purchase.available_for_booking(@wkclass1, @client2).pluck(:id)
   end
 
-  test 'available_for_booking' do
+  test 'use_for_booking method' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
     assert_equal 343, Purchase.use_for_booking(@tomorrows_class_early, @client).id
+  end
+
+  test 'committed_on? method' do
+    assert @purchase_package.committed_on? Date.parse('22 Feb 2022')
+    refute @purchase_package.committed_on? @wkclass1.start_time
+  end
+
+  test 'purchased_after? method' do
+    assert @purchase_package.purchased_after? Date.parse('23 Jan 2022')
+    refute @purchase_package.purchased_after? @wkclass1.start_time
   end
 
   test 'name_with_dop method' do
