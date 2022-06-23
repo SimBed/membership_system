@@ -19,7 +19,6 @@
         <th scope="row" class="extra_small"><%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %></th>
         <td class="extra_small"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></td>
         <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
-        <td class="extra_small nomobile"><%= purchase.payment %></td>
         <td class="nomobile"><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_purchase_path(purchase) %></td>
         <!--td class="nomobile"><%#= link_to image_tag('delete.png', class: "grid_table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' } %></td-->
       </tr>
