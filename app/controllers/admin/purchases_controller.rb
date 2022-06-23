@@ -10,7 +10,7 @@ class Admin::PurchasesController < Admin::BaseController
   # after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update]
 
   def index
-    @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client).all
+    @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
     handle_search
     handle_filter
     handle_period
@@ -150,10 +150,17 @@ class Admin::PurchasesController < Admin::BaseController
     when 'classes_remain'
       sort_on_object
     end
+    # ingore pagination for monthly revenue summary
+    # would liuke to sum at the database directly but unexpected results when applying sum after includes ie
+    # Purchase.includes(:attendances, :product, :freezes, :adjustments, :client).sum(:payment) does not give expected result
+    # Lots of technical explanation abounds re includes/joins/preload/eager_load
+    @purchases_all_pages_sum = Purchase.where(id: @purchases_all_pages.pluck(:id)).sum(:payment)
+    # @purchases_all_pages_sum = @purchases_all_pages&.map(&:payment).inject(0, &:+)
   end
 
   def sort_on_database
-    @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
+    @purchases_all_pages = @purchases.send("order_by_#{session[:sort_option]}")
+    @purchases = @purchases_all_pages.page params[:page]
   end
 
   def sort_on_object
@@ -162,7 +169,8 @@ class Admin::PurchasesController < Admin::BaseController
     end
     # restore to ActiveRecord and recover order.
     ids = @purchases.map(&:id)
-    @purchases = Purchase.recover_order(ids).page params[:page]
+    @purchases_all_pages = Purchase.recover_order(ids)
+    @purchases = @purchases_all_pages.page params[:page]
     # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
     # 'where' method does not retain the order of the items searched for, hence the more complicated approach
     # Detailed explanation in comments under 'recover_order' scope
@@ -183,7 +191,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   # ['workout_group_filter',...'invoice_filter',...:search_name]
   def session_filter_list
-    params_filter_list.map { |i| [:search_name, :purchases_period].include? i ? i : "filter_#{i}" }
+    params_filter_list.map { |i| [:search_name, :purchases_period].include?(i) ? i : "filter_#{i}" }
   end
 
   def post_purchase_processing
