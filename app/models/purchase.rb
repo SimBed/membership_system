@@ -56,6 +56,7 @@ class Purchase < ApplicationRecord
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
   scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
+  scope :during, ->(period) { where({ dop: period }) }
   # used in Purchases controller's handle_sort method
   # raw SQL in Active Record functions will give an error to guard against SQL injection
   # in the case where the raw SQl contains user input i.e. a params value

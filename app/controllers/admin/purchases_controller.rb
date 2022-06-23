@@ -13,6 +13,7 @@ class Admin::PurchasesController < Admin::BaseController
     @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client).all
     handle_search
     handle_filter
+    handle_period
     handle_sort
     prepare_items_for_filters
     respond_to do |format|
@@ -78,7 +79,8 @@ class Admin::PurchasesController < Admin::BaseController
   def filter
     clear_session(*session_filter_list)
     session[:search_name] = params[:search_name]
-    (params_filter_list - [:search_name]).each do |item|
+    session[:purchases_period] = params[:purchases_period]
+    (params_filter_list - [:search_name, :purchases_period]).each do |item|
       session["filter_#{item}".to_sym] = params[item]
     end
     redirect_to admin_purchases_path
@@ -127,11 +129,18 @@ class Admin::PurchasesController < Admin::BaseController
     @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
   end
 
+  def handle_period
+    return unless session[:purchases_period].present? && session[:purchases_period] != 'All'
+
+    @purchases = @purchases.during(month_period(session[:purchases_period]))
+  end
+
   def prepare_items_for_filters
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
     @other_attributes = %w[classpass close_to_expiry fixed package trial uninvoiced unpaid]
+    @months = ['All'] + months_logged
   end
 
   def handle_sort
@@ -169,12 +178,12 @@ class Admin::PurchasesController < Admin::BaseController
 
   def params_filter_list
     [:workout_group, :statuses, :uninvoiced, :package, :close_to_expiry,
-     :unpaid, :classpass, :trial, :fixed, :search_name]
+     :unpaid, :classpass, :trial, :fixed, :search_name, :purchases_period]
   end
 
   # ['workout_group_filter',...'invoice_filter',...:search_name]
   def session_filter_list
-    params_filter_list.map { |i| i == :search_name ? i : "filter_#{i}" }
+    params_filter_list.map { |i| [:search_name, :purchases_period].include? i ? i : "filter_#{i}" }
   end
 
   def post_purchase_processing

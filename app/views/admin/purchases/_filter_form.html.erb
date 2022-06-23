@@ -64,6 +64,12 @@
   <div class="container d-flex">
     <%= link_to image_tag('clear_filter.png', class: "filter_icon"), clear_purchase_filters_path, {remote: true, class: "search searchdelete icon-container"} %>
   </div>
+
+  <fieldset class="mt-2">
+    <select name="purchases_period" onchange="this.form.submit()" class= "sort">
+      <%= options_for_select @months, session[:purchases_period] %>
+    </select>
+  </fieldset>
   <% end %>
 
   </div>

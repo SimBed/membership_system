@@ -4,7 +4,9 @@
 </div>
 
 <table class="table table-secondary table-striped caption-top">
-  <caption></caption>
+  <% if logged_in_as?('superadmin') %>
+    <caption><%= "#{number_to_currency(@purchases.map(&:payment).inject(0, &:+), precision: 0, unit: 'Rs. ')}" %></caption>
+  <% end %>
   <tbody>
     <tr class="extra_small">
       <th scope="col">Client</th>
