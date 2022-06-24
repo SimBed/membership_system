@@ -264,8 +264,4 @@ class Admin::PurchasesController < Admin::BaseController
   #   Whatsapp.new(whatsapp_params).send_whatsapp
   # end
 
-  def white_list_whatsapp_receivers
-    whatsapp_receivers = %w[Amala Aadrak Fluke Cleo James]
-    whatsapp_receivers.include?(@purchase.client.first_name)
-  end
 end

@@ -7,6 +7,5 @@ attendances_count.innerHTML = "<%= j(render inline: "#{@wkclass.attendances.conf
 var attendances_revenue = document.getElementById('attendances_revenue')
 attendances_revenue.innerHTML = "<%= j(render inline: number_to_currency(@wkclass.revenue, precision: 0, unit: 'Rs. ')) %>";
 
-<% flash.each do |message_type, message| %>
-  $("#flash_messages").html("<div class='alert alert-<%= message_type %>'><%= message.html_safe %></div>")
-<% end %>
+var flash_messages = document.getElementById('flash_messages')
+flash_messages.innerHTML = "<%= j(render_flash) %>";

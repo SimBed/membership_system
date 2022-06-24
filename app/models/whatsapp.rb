@@ -13,7 +13,7 @@ class Whatsapp
       from: "whatsapp:#{@from}",
       to: "whatsapp:#{@to}",
       body: body
-    ) 
+    )
   end
 
   private
@@ -37,6 +37,14 @@ class Whatsapp
       "\nEmail: the email you registered with us" +
       "\nPassword: #{@variable_contents[:password]}" +
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
+  def body_no_show_penalty
+    "Sorry you missed your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
+      "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
+      "\nA deduction has been applied to your Package this time, in line with the no-show policy." +
+      "\nPlease log in to your account to see updated attendance and expiry details." +
+      "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
   def body_new_booking
