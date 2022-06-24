@@ -14,6 +14,13 @@ class Admin::PurchasesController < Admin::BaseController
     handle_search
     handle_filter
     handle_period
+    # would like to sum more directly but unexpected results when applying sum after includes ie
+    # Purchase.includes(:attendances, :product, :freezes, :adjustments, :client).sum(:payment) does not give expected result
+    # Lots of technical explanation abounds re includes/joins/preload/eager_load
+    # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
+    # much slower if unneccessarily done after sort
+    # want the the total pages sum (not just the current page sum)
+    @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('superadmin')
     handle_sort
     prepare_items_for_filters
     respond_to do |format|
@@ -140,7 +147,7 @@ class Admin::PurchasesController < Admin::BaseController
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
     @other_attributes = %w[classpass close_to_expiry fixed package trial uninvoiced unpaid]
-    @months = ['All'] + months_logged
+    @months = months_logged + ['All']
   end
 
   def handle_sort
@@ -150,17 +157,10 @@ class Admin::PurchasesController < Admin::BaseController
     when 'classes_remain'
       sort_on_object
     end
-    # ingore pagination for monthly revenue summary
-    # would liuke to sum at the database directly but unexpected results when applying sum after includes ie
-    # Purchase.includes(:attendances, :product, :freezes, :adjustments, :client).sum(:payment) does not give expected result
-    # Lots of technical explanation abounds re includes/joins/preload/eager_load
-    @purchases_all_pages_sum = Purchase.where(id: @purchases_all_pages.pluck(:id)).sum(:payment)
-    # @purchases_all_pages_sum = @purchases_all_pages&.map(&:payment).inject(0, &:+)
   end
 
   def sort_on_database
-    @purchases_all_pages = @purchases.send("order_by_#{session[:sort_option]}")
-    @purchases = @purchases_all_pages.page params[:page]
+    @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
   end
 
   def sort_on_object
