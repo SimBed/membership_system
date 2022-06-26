@@ -10,17 +10,19 @@ class Admin::PurchasesController < Admin::BaseController
   # after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update]
 
   def index
-    @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
+    # @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
+    # associations referrred to in view - attendances, product in start_to_expiry method, client directly in purchase.client.name
+    @purchases = Purchase.includes(:attendances, :product, :client)
     handle_search
     handle_filter
     handle_period
-    # would like to sum more directly but unexpected results when applying sum after includes ie
-    # Purchase.includes(:attendances, :product, :freezes, :adjustments, :client).sum(:payment) does not give expected result
-    # Lots of technical explanation abounds re includes/joins/preload/eager_load
+    # Purchase.includes(:attendances, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
     # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
     # much slower if unneccessarily done after sort
     # want the the total pages sum (not just the current page sum)
-    @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('superadmin')
+    # https://stackoverflow.com/questions/5483407/subqueries-in-activerecord - jan 3, 2012
+    @purchases_all_pages_sum = Purchase.where("id IN (#{@purchases.select(:id).to_sql})").sum(:payment) if logged_in_as?('superadmin')
+    # @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('superadmin')
     handle_sort
     prepare_items_for_filters
     respond_to do |format|
