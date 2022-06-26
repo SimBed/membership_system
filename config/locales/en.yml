@@ -128,7 +128,4 @@ en:
             confirm: You will be cancelled for this class. Deductions may apply to late cancellations and no-shows. Are you sure?
           from_cancelled_early:
             confirm: You will be rebooked for this class. Are you sure?
-
-
-
   forbidden: Forbidden

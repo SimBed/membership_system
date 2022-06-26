@@ -94,9 +94,6 @@ class Admin::AttendancesController < Admin::BaseController
   def update_by_admin
     basic_data('admin')
     if @attendance.update(attendance_status_params)
-      # if the amendment count is not incremented when admin does it, risk getting out of sync if client does one,
-      # then admin does the next such that a) 3rd amendment is breeched and
-      # b) client stranded with a booked class she cant cancel herself
       action_admin_update_success
       handle_admin_update_response
     else
@@ -241,6 +238,9 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def action_admin_update_success
+    # if the amendment count is not incremented when admin does it, risk getting out of sync if client does one,
+    # then admin does the next such that a) 3rd amendment is breeched and
+    # b) client stranded with a booked class she cant cancel herself
     @attendance.increment!(:amendment_count)
     attendance_status = attendance_status_params[:status]
     if ['cancelled early', 'cancelled late', 'no show'].include? attendance_status
@@ -518,7 +518,27 @@ class Admin::AttendancesController < Admin::BaseController
     return unless package_type == :unlimited_package && @attendance.penalty.nil?
 
     Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
+    manage_messaging('no_show_penalty')
     update_purchase_status([@purchase])
+  end
+
+  def manage_messaging(message_type)
+    recipient_number = @purchase.client.whatsapp_messaging_number
+    if recipient_number.nil?
+      flash_message :warning, "Client has no contact number. No Show Penalty message not sent"
+    else
+      return unless white_list_whatsapp_receivers
+      send "send_#{message_type}_whatsapp" , recipient_number
+      flash_message :warning, "No Show Penalty message sent to #{recipient_number}"
+    end
+  end
+
+  def send_no_show_penalty_whatsapp(to)
+    return unless white_list_whatsapp_receivers
+    whatsapp_params = { to: to,
+                        message_type: 'no_show_penalty',
+                        variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }
+    Whatsapp.new(whatsapp_params).send_whatsapp
   end
 
   def set_period
