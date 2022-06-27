@@ -21,8 +21,11 @@ class Admin::PurchasesController < Admin::BaseController
     # much slower if unneccessarily done after sort
     # want the the total pages sum (not just the current page sum)
     # https://stackoverflow.com/questions/5483407/subqueries-in-activerecord - jan 3, 2012
-    @purchases_all_pages_sum = Purchase.where("id IN (#{@purchases.select(:id).to_sql})").sum(:payment) if logged_in_as?('superadmin')
-    # @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('superadmin')
+    # this appeared to work bu in some situations ic ouldn't resolve fails with
+    # ActiveRecord::StatementInvalid Exception: PG::SyntaxError: ERROR:  subquery has too many columns
+    # so reverted to previous lessefficent 2 query approach
+    # @purchases_all_pages_sum = Purchase.where("id IN (#{@purchases.select(:id).to_sql})").sum(:payment) if logged_in_as?('superadmin')
+    @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('superadmin')
     handle_sort
     prepare_items_for_filters
     respond_to do |format|
