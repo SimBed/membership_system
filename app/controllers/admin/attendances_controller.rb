@@ -255,9 +255,10 @@ class Admin::AttendancesController < Admin::BaseController
     @purchase.increment!(:late_cancels)
     late_cancels_max = amnesty_limit[:cancel_late][@purchase.product_type]
     if @purchase.reload.late_cancels > late_cancels_max
-      late_cancellation_penalty(@purchase.product_type)
+      late_cancellation_penalty @purchase.product_type, penalty: true
       # amnesty remains false from earlier booking
     else
+      late_cancellation_penalty @purchase.product_type, penalty: false
       @attendance.update(amnesty: true)
     end
   end
@@ -271,8 +272,9 @@ class Admin::AttendancesController < Admin::BaseController
     @purchase.increment!(:no_shows)
     no_shows_max = amnesty_limit[:no_show][@purchase.product_type]
     if @purchase.reload.no_shows > no_shows_max
-      no_show_penalty(@purchase.product_type)
+      no_show_penalty @purchase.product_type, penalty: true
     else
+      no_show_penalty @purchase.product_type, penalty: false
       @attendance.update(amnesty: true)
     end
   end
@@ -502,41 +504,50 @@ class Admin::AttendancesController < Admin::BaseController
   # Deal with eg unlimited attended to no amnesty no show later]
   # return if %w[booked attended].include?(@attendance.status)
 
-  def late_cancellation_penalty(package_type)
-    return if Rails.env.production?
+  def late_cancellation_penalty(package_type, penalty: true)
+    # return if Rails.env.production?
     # no more than one penalty per attendance
     return unless package_type == :unlimited_package && @attendance.penalty.nil?
 
-    Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1,
-                     reason: 'late cancellation' })
-    @penalty_given = true # for the flash
-    update_purchase_status([@purchase])
+    if penalty
+      Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1,
+                       reason: 'late cancellation' })
+      update_purchase_status([@purchase])
+      @penalty_given = true # for the flash
+      manage_messaging 'late_cancel_penalty'
+    else
+      manage_messaging 'late_cancel_no_penalty'
+    end
   end
 
-  def no_show_penalty(package_type)
-    return if Rails.env.production?
+  def no_show_penalty(package_type, penalty: true)
+    # return if Rails.env.production?
     return unless package_type == :unlimited_package && @attendance.penalty.nil?
 
-    Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
-    manage_messaging('no_show_penalty')
-    update_purchase_status([@purchase])
+    if penalty
+      Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
+      update_purchase_status([@purchase])
+      manage_messaging 'no_show_penalty'
+    else
+      manage_messaging 'no_show_no_penalty'
+    end
   end
 
   def manage_messaging(message_type)
     recipient_number = @purchase.client.whatsapp_messaging_number
     if recipient_number.nil?
-      flash_message :warning, "Client has no contact number. No Show Penalty message not sent"
+      flash_message :warning, "Client has no contact number. #{message_type} message not sent"
     else
       return unless white_list_whatsapp_receivers
-      send "send_#{message_type}_whatsapp" , recipient_number
-      flash_message :warning, "No Show Penalty message sent to #{recipient_number}"
+      send_message recipient_number, message_type
+      flash_message :warning, "#{message_type} message sent to #{recipient_number}"
     end
   end
 
-  def send_no_show_penalty_whatsapp(to)
+  def send_message(to, message_type)
     return unless white_list_whatsapp_receivers
     whatsapp_params = { to: to,
-                        message_type: 'no_show_penalty',
+                        message_type: message_type,
                         variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }
     Whatsapp.new(whatsapp_params).send_whatsapp
   end

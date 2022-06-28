@@ -47,6 +47,30 @@ class Whatsapp
       "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
+  def body_no_show_no_penalty
+    "Sorry you missed your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
+      "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
+      "\nA deduction has not been applied to your Package this time. If you no-show again, a deduction will apply, in line with the no-show policy." +
+      "\nPlease log in to your account to see attendance and expiry details." +
+      "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
+  def body_late_cancel_penalty
+    "Thanks for letting us know you couldn't make your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
+      "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
+      "\nA deduction has been applied to your Package this time, in line with the late cancellation policy." +
+      "\nPlease log in to your account to see updated attendance and expiry details." +
+      "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
+  def body_late_cancel_no_penalty
+    "Thanks for letting us know you couldn't make your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
+      "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
+      "\nA deduction has not been applied to your Package this time. If you cancel late again, a deduction may apply, in line with the late cancellation policy." +
+      "\nPlease log in to your account to see attendance and expiry details." +
+      "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
   def body_new_booking
     'Thank you for booking for HIIT on Monday.' +
       "\nYou can cancel this booking up to 3 hours before the class start time without incurring any penalty." +
