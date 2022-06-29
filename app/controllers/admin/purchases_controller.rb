@@ -39,6 +39,7 @@ class Admin::PurchasesController < Admin::BaseController
     # @attendances = Attendance.joins(:purchase, :wkclass).where(purchase: @purchase).order(start_time: :desc)
     @attendances_no_amnesty = @purchase.attendances.no_amnesty.merge(Attendance.order_by_date)
     @attendances_amnesty = @purchase.attendances.amnesty.merge(Attendance.order_by_date)
+    @frozen_now = @purchase.freezed?(Time.zone.now)
   end
 
   def new

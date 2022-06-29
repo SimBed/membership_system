@@ -123,9 +123,11 @@ en:
       attendance:
         create:
           confirm: You will be booked for this class. Are you sure?
+          confirm_unfreeze: Your Package is currently frozen. You will be booked for this class and your freeze will end. Are you sure?
         update:
           from_booked:
             confirm: You will be cancelled for this class. Deductions may apply to late cancellations and no-shows. Are you sure?
           from_cancelled_early:
             confirm: You will be rebooked for this class. Are you sure?
+            confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?
   forbidden: Forbidden

@@ -25,7 +25,7 @@ class Admin::ClientsController < Admin::BaseController
                  else
                    [Purchase.find(session[:purchaseid])]
                  end
-    set_client_data
+    prepare_data_for_view
     set_show_dropdown_items
   end
 
@@ -123,9 +123,9 @@ class Admin::ClientsController < Admin::BaseController
     end
   end
 
-  def set_client_data
+  def prepare_data_for_view
     @client_hash = {
-      attendances: @client.attendances.size,
+      attendances: @client.attendances.attended.size,
       purchases: @client.purchases.size,
       spend: @client.total_spend,
       last_class: @client.last_class,

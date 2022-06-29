@@ -31,7 +31,7 @@ class Client::ClientsController < ApplicationController
 
   def prepare_data_for_view
     @client_hash = {
-      attendances: @client.attendances.size,
+      attendances: @client.attendances.attended.size,
       last_class: @client.last_class,
       date_created: @client.created_at,
       date_last_purchase_expiry: @client.last_purchase&.expiry_date

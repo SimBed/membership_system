@@ -15,13 +15,15 @@ module Client::ClientsHelper
        !wkclass.booking_window.cover?(Time.zone.now)
       { css_class: 'table-secondary', link: '' }
     else
+      confirmation = t('client.clients.attendance.create.confirm')
+      confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(Time.zone.today)
       { css_class: 'table-secondary',
         link: link_to(
           image_tag('add.png', class: 'grid_table_icon'),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id),
           method: :post,
-          data: { confirm: t('client.clients.attendance.create.confirm') },
+          data: { confirm: confirmation },
           class: 'icon-container'
         ) }
 
@@ -54,6 +56,7 @@ module Client::ClientsHelper
     else
       png = 'add.png'
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
+      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(Time.zone.today)
     end
     link_to(
       image_tag(png, class: 'grid_table_icon'),

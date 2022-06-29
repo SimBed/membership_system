@@ -3,4 +3,7 @@
 </h2>
 <h7 class="bolditalics mb-0">
   <%= link_to @purchase.formal_name, admin_product_path(@purchase.product), class: "like_button" %>
+  <% if @frozen_now %>
+    <%= image_tag('cold.png')%>
+  <% end %>
 </h7>
