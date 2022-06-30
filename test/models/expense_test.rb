@@ -9,11 +9,11 @@ class ExpenseTest < ActiveSupport::TestCase
   end
 
   test 'should be valid' do
-    assert @expense.valid?
+    assert_predicate @expense, :valid?
   end
 
   test 'workout_group should be valid' do
     @expense.workout_group_id = 4000
-    refute @expense.valid?
+    refute_predicate @expense, :valid?
   end
 end

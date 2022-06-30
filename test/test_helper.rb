@@ -33,7 +33,7 @@ class ActiveSupport::TestCase
 
   def booking_count(booking_type)
     booked_count = 0
-    (css_select "td").each {|td| booked_count += 1 if td.text == booking_type}
+    (css_select 'td').each { |td| booked_count += 1 if td.text == booking_type }
     booked_count
   end
 end

@@ -7,7 +7,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @client_with_no_account = clients(:client_14)
+    @client_with_no_account = clients(:client_no_account)
     @partner_without_account = partners(:bibi)
   end
 

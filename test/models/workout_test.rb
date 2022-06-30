@@ -6,11 +6,11 @@ class WorkoutTest < ActiveSupport::TestCase
   end
 
   test 'should be valid' do
-    assert @workout.valid?
+    assert_predicate @workout, :valid?
   end
 
   test 'name should be present' do
     @workout.name = '      '
-    refute @workout.valid?
+    refute_predicate @workout, :valid?
   end
 end

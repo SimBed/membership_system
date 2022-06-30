@@ -9,7 +9,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
     @purchase1 = purchases(:AparnaUC1Mong)
-    @adjustment = adjustments(:adjustment_2)
+    @adjustment = adjustments(:adjustment2)
   end
 
   # no index method for adjustments controller

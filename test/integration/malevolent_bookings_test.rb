@@ -42,9 +42,8 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
     assert_redirected_to client_book_path @client
-    assert_equal flash[:warning],
-                 [['The maximum number of classes has already been booked.',
-                  'Renew you Package if you wish to attend this class']]
+    assert_equal([['The maximum number of classes has already been booked.',
+                   'Renew you Package if you wish to attend this class']], flash[:warning])
   end
 
   test 'attempt by client to update class from cancelled early with provisonally expired package should fail' do
@@ -83,9 +82,8 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to client_book_path @client
-    assert_equal flash[:warning],
-                 [['The maximum number of classes has already been booked.',
-                  'Renew you Package if you wish to attend this class']]
+    assert_equal([['The maximum number of classes has already been booked.',
+                   'Renew you Package if you wish to attend this class']], flash[:warning])
   end
 
   test 'attempt by admin to book class with provisonally expired package should fail' do
@@ -117,7 +115,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
     assert_redirected_to admin_wkclass_path(Wkclass.last(3)[2], no_scroll: true)
-    assert_equal flash[:warning], [['The maximum number of classes has already been booked']]
+    assert_equal([['The maximum number of classes has already been booked']], flash[:warning])
   end
 
   test 'admin should be able to make amendment to booking for provisonally expired package when change wont improve package terms' do
@@ -156,7 +154,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     end
     # assert_redirected_to admin_wkclass_path @attendance.wkclass, {no_scroll: true}
     assert_redirected_to admin_wkclasses_path
-    assert_equal flash[:success], [['Attendance was successfully updated']]
+    assert_equal([['Attendance was successfully updated']], flash[:success])
   end
 
   test 'admin should not be able to make amendment to booking for provisonally expired package when change will improve package terms' do

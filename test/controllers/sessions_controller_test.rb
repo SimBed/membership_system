@@ -22,17 +22,17 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     [@junioradmin, @admin, @superadmin].each do |account_holder|
       post login_path, params: { session: { email: account_holder.email, password: '' } }
       # assert_template 'sessions/new' - deprecated
-      refute flash.empty?
+      refute_predicate flash, :empty?
     end
   end
 
   test 'client invalid login' do
     post login_path, params: { session: { email: @account_client1.email, password: '' } }
-    refute flash.empty?
+    refute_predicate flash, :empty?
   end
 
   test 'partner invalid login' do
     post login_path, params: { session: { email: @account_partner1.email, password: '' } }
-    refute flash.empty?
+    refute_predicate flash, :empty?
   end
 end

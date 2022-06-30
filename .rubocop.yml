@@ -1,5 +1,6 @@
 require:
   - rubocop-rails
+  - rubocop-minitest
 AllCops:
     NewCops: enable
     Exclude:
@@ -11,13 +12,12 @@ AllCops:
       - 'config/**/*'
       - 'script/**/*'
       - 'bin/**/*'
-      - !ruby/regexp /old_and_unused\.rb$/
       - !ruby/regexp /z_unused_code\.rb$/
 Layout/EndOfLine:
   Enabled: false
 Layout/LineLength:
   Max: 120
-  AllowedPatterns: ['(\A|\s)#']  
+  AllowedPatterns: ['(\A|\s)#']
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/Documentation:
@@ -38,3 +38,5 @@ Rails/SkipsModelValidations:
   AllowedMethods: ["increment!"]
 Style/LineEndConcatenation:
   Enabled: false
+Minitest/MultipleAssertions:
+  Max: 6

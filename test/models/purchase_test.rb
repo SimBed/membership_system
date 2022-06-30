@@ -22,47 +22,47 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'should be valid' do
-    assert @purchase.valid?
+    assert_predicate @purchase, :valid?
   end
 
   test 'payment should be present' do
     @purchase.payment = '     '
-    refute @purchase.valid?
+    refute_predicate @purchase, :valid?
   end
 
   test 'invoice should not be too short' do
     @purchase.invoice = 'a' * 4
-    refute @purchase.valid?
+    refute_predicate @purchase, :valid?
   end
 
   test 'invoice does not need to be unique' do
     @purchase.invoice = 'a' * 6
     @duplicate_purchase = @purchase.dup
     @purchase.save
-    assert @duplicate_purchase.valid?
+    assert_predicate @duplicate_purchase, :valid?
   end
 
   test 'associated fitternity (if there is one) should exist' do
     @purchase.fitternity_id = 21
-    refute @purchase.valid?
+    refute_predicate @purchase, :valid?
   end
 
   test 'if payment_method is Fitternity then a Fitternity should be ongoing' do
     @purchase.payment_mode = 'Fitternity'
     @fitternity.update(max_classes: @fitternity.purchases.size)
-    refute @purchase.valid?
+    refute_predicate @purchase, :valid?
   end
 
   test 'if A&R then A&R date should be present' do
     @purchase.adjust_restart = true
     @purchase.ar_payment = 1000
-    refute @purchase.valid?
+    refute_predicate @purchase, :valid?
   end
 
   test 'if A&R then A&R payment should be present' do
     @purchase.adjust_restart = true
     @purchase.ar_date = '2022-02-01'
-    refute @purchase.valid?
+    refute_predicate @purchase, :valid?
   end
 
   test 'delegated name method' do
@@ -78,31 +78,31 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'delegated dropin? method' do
-    refute @purchase_package.dropin?
-    assert @purchase_dropin.dropin?
-    refute @purchase_fixed.dropin?
-    refute @purchase_trial.dropin?
+    refute_predicate @purchase_package, :dropin?
+    assert_predicate @purchase_dropin, :dropin?
+    refute_predicate @purchase_fixed, :dropin?
+    refute_predicate @purchase_trial, :dropin?
   end
 
   test 'delegated trial? method' do
-    refute @purchase_package.trial?
-    refute @purchase_dropin.trial?
-    refute @purchase_fixed.trial?
-    assert @purchase_trial.trial?
+    refute_predicate @purchase_package, :trial?
+    refute_predicate @purchase_dropin, :trial?
+    refute_predicate @purchase_fixed, :trial?
+    assert_predicate @purchase_trial, :trial?
   end
 
   test 'delegated unlimited_package? method' do
-    assert @purchase_package.unlimited_package?
-    refute @purchase_dropin.unlimited_package?
-    refute @purchase_fixed.unlimited_package?
-    refute @purchase_trial.unlimited_package?
+    assert_predicate @purchase_package, :unlimited_package?
+    refute_predicate @purchase_dropin, :unlimited_package?
+    refute_predicate @purchase_fixed, :unlimited_package?
+    refute_predicate @purchase_trial, :unlimited_package?
   end
 
   test 'delegated fixed_package? method' do
-    refute @purchase_package.fixed_package?
-    refute @purchase_dropin.fixed_package?
-    assert @purchase_fixed.fixed_package?
-    refute @purchase_trial.fixed_package?
+    refute_predicate @purchase_package, :fixed_package?
+    refute_predicate @purchase_dropin, :fixed_package?
+    assert_predicate @purchase_fixed, :fixed_package?
+    refute_predicate @purchase_trial, :fixed_package?
   end
 
   test 'delegated max_classes method' do
@@ -125,7 +125,7 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'qualifying_for method' do
     assert_equal [374, 201, 212, 4, 335, 368, 229, 200, 99, 198, 120, 224, 360, 125, 341, 119, 90],
-                  Purchase.qualifying_for(@wkclass1).pluck(:id)
+                 Purchase.qualifying_for(@wkclass1).pluck(:id)
   end
   # 90 are frozen, but correctly still appears
 
@@ -162,17 +162,17 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'freezed? method' do
-    refute @purchase_package.freezed?(Time.zone.today)
-    refute @purchase_dropin.freezed?(Time.zone.today)
-    refute @purchase_dropin2.freezed?(Time.zone.today)
-    refute @purchase_fixed.freezed?(Time.zone.today)
+    refute @purchase_package.freezed? Time.zone.today
+    refute @purchase_dropin.freezed? Time.zone.today
+    refute @purchase_dropin2.freezed? Time.zone.today
+    refute @purchase_fixed.freezed? Time.zone.today
   end
 
   test 'expired_in? method' do
-    refute @purchase_package.expired_in?(month_period 'Mar 2022')
-    assert @purchase_dropin.expired_in?(month_period 'Feb 2022')
-    refute @purchase_dropin2.expired_in?(month_period 'Feb 2022')
-    refute @purchase_fixed.expired_in?(month_period 'Mar 2022')
+    refute @purchase_package.expired_in? month_period('Mar 2022')
+    assert @purchase_dropin.expired_in? month_period('Feb 2022')
+    refute @purchase_dropin2.expired_in? month_period('Feb 2022')
+    refute @purchase_fixed.expired_in? month_period('Mar 2022')
   end
 
   test 'expiry_cause method' do
@@ -236,9 +236,9 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'close_to_expiry? method' do
-    refute @purchase_package.close_to_expiry?
-    assert @purchase_dropin.close_to_expiry?
-    assert @purchase_dropin2.close_to_expiry?
-    refute @purchase_fixed.close_to_expiry?
+    refute_predicate @purchase_package, :close_to_expiry?
+    assert_predicate @purchase_dropin, :close_to_expiry?
+    assert_predicate @purchase_dropin2, :close_to_expiry?
+    refute_predicate @purchase_fixed, :close_to_expiry?
   end
 end

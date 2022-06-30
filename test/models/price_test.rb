@@ -10,31 +10,31 @@ class PriceTest < ActiveSupport::TestCase
   end
 
   test 'should be valid' do
-    assert @price.valid?
+    assert_predicate @price, :valid?
   end
 
   test 'price should be present' do
     @price.price = '     '
-    refute @price.valid?
+    refute_predicate @price, :valid?
   end
 
   test 'price should be integer' do
     @price.price = 'cheap'
-    refute @price.valid?
+    refute_predicate @price, :valid?
   end
 
   test 'name should be present' do
     @price.name = '     '
-    refute @price.valid?
+    refute_predicate @price, :valid?
   end
 
   test 'date_from should not be blank' do
     @price.date_from = '     '
-    refute @price.valid?
+    refute_predicate @price, :valid?
   end
 
   test 'product should be valid' do
     @price.product_id = 4000
-    refute @price.valid?
+    refute_predicate @price, :valid?
   end
 end

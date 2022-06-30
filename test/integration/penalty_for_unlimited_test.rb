@@ -68,7 +68,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_equal 4, @purchase.reload.late_cancels
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["HIIT on Monday is 'cancelled late'", 'A deduction will be made to your Package.',
-                  'Avoid deductions by making changes to bookings before the deadlines']], flash[:danger]
+                   'Avoid deductions by making changes to bookings before the deadlines']], flash[:danger]
   end
 
   test 'warning then penalty after no show multiple times' do

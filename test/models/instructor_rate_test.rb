@@ -8,11 +8,11 @@ class InstructorRateTest < ActiveSupport::TestCase
   end
 
   test 'should be valid' do
-    assert @instructor_rate.valid?
+    assert_predicate @instructor_rate, :valid?
   end
 
   test 'instructor should be valid' do
     @instructor_rate.instructor_id = 4000
-    refute @instructor_rate.valid?
+    refute_predicate @instructor_rate, :valid?
   end
 end

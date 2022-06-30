@@ -8,7 +8,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @expense = expenses(:expense_1)
+    @expense = expenses(:expense1)
   end
 
   # no show method for expenses controller

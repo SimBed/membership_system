@@ -40,7 +40,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     assert_equal 'cancelled early', @attendance.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["HIIT on Friday is 'cancelled early'",
-                  'There is no deduction for this change.']], flash[:primary]
+                   'There is no deduction for this change.']], flash[:primary]
   end
 
   test 'cancel booking late' do
@@ -58,8 +58,8 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     assert_equal 'cancelled late', @attendance.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["HIIT on Friday is 'cancelled late'",
-                  'There is no deduction for this change this time.',
-                  'Avoid deductions by making changes to bookings before the deadlines']], flash[:primary]
+                   'There is no deduction for this change this time.',
+                   'Avoid deductions by making changes to bookings before the deadlines']], flash[:primary]
   end
 
   test '2nd booking on same day' do
@@ -72,7 +72,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to client_book_path(@client.id)
     # assert_redirected_to "/client/clients/#{@client.id}/book"
-    refute flash.empty?
+    refute_predicate flash, :empty?
   end
 
   test 'rebook same day after cancel early' do
@@ -101,7 +101,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
     assert_redirected_to client_book_path(@client.id)
-    refute flash.empty?
+    refute_predicate flash, :empty?
   end
 
   test 'change booking from booked after class started (before admin updates attendance)' do
@@ -212,6 +212,6 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     refute_equal 'booked', @attendance.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal [['Change not possible. Too many prior amendments.',
-                  'Please contact the Space for help']], flash[:secondary]
+                   'Please contact the Space for help']], flash[:secondary]
   end
 end

@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
   setup do
@@ -18,11 +18,11 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     assert_template 'client/clients/book'
-    #assert_select 'a[href=?]', admin_attendances_path, count: 2
+    # assert_select 'a[href=?]', admin_attendances_path, count: 2
     assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
     # the path is to the create method (i.e. for a new booking, not an amendmdent to an existing booking)
     # no bookings made yet
-    assert_equal 0,  booking_count('booked')
+    assert_equal 0, booking_count('booked')
     log_in_as(@admin)
     # follow_redirect!
     # add an extra wkclass within the visibility and booking window
@@ -39,7 +39,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     @wkclass = Wkclass.last
     # push the date outside of the booking window (no test yet for whether it is visible (which it should be) just not bookable)
-    patch admin_wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.days} } # 25/4 (booking starts on 23/4)
+    patch admin_wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.day } } # 25/4 (booking starts on 23/4)
     log_in_as(@account_client)
     follow_redirect!
     # no booking link for the later dated wkclass
