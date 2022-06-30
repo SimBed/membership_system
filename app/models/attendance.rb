@@ -33,6 +33,7 @@ class Attendance < ApplicationRecord
 
   def revenue
     return 0 if amnesty?
+
     purchase.payment / purchase.attendance_estimate
   end
 

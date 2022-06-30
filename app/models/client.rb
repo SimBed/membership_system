@@ -34,12 +34,12 @@ class Client < ApplicationRecord
                    .group('clients.id')
                    .having('max(start_time) < ?', 3.months.ago)
                }
-  scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }               
+  scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
 
   paginates_per 20
 
   def number_formatted(contact_type)
-    number = send(contact_type)&.gsub(/[^0-9+]/, "")
+    number = send(contact_type)&.gsub(/[^0-9+]/, '')
     return "+91#{number}" unless (number&.first == '+' || number.blank?)
 
     number
@@ -78,12 +78,12 @@ class Client < ApplicationRecord
   end
 
   def lifetime_classes
-    Client.joins(purchases: [:attendances]).where(id: self.id).where(attendances: { status: 'attended' }).size
+    Client.joins(purchases: [:attendances]).where(id: id).where(attendances: { status: 'attended' }).size
   end
 
   def classes_last(period = 'month')
     Client.joins(purchases: [attendances: [:wkclass]])
-          .where(id: self.id).where(attendances: { status: 'attended' })
+          .where(id: id).where(attendances: { status: 'attended' })
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
   end
 

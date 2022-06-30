@@ -12,7 +12,7 @@ class Fitternity < ApplicationRecord
   end
 
   def past_expiry?
-    Date.today > expiry_date
+    Time.zone.today > expiry_date
   end
 
   def expired?

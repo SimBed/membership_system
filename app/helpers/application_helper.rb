@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   def flash_message(type, text)
     flash[type] ||= []
     flash[type] << (text.is_a?(Array) ? text : [text])
@@ -8,7 +7,9 @@ module ApplicationHelper
   def render_flash
     rendered = []
     flash.each do |message_type, message_array|
-      rendered << render(:partial => 'partials/flash', :locals => {:message_type => message_type, :message_array => message_array}) unless message_array.blank?
+      if message_array.present?
+        rendered << render(partial: 'partials/flash', locals: { message_type: message_type, message_array: message_array })
+      end
     end
     raw(rendered.join('<br/>'))
   end
@@ -38,5 +39,4 @@ module ApplicationHelper
   def months_between(start_date, end_date)
     (start_date.beginning_of_month.to_date..end_date.to_date).select { |d| d.day == 1 }.map { |d| d.strftime('%b %Y') }.reverse
   end
-
 end

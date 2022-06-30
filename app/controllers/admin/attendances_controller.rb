@@ -141,11 +141,12 @@ class Admin::AttendancesController < Admin::BaseController
     # unlikley to be more than 1, but you never know
     applicable_freezes = @purchase.freezes_cover(wkclass_date)
     return if applicable_freezes.empty?
+
     applicable_freezes.each do |f|
       # wish to bypass validation, else would just use update method
       f.end_date = wkclass_date.advance(days: -1)
       f.save(validate: false)
-     end
+    end
   end
 
   def basic_data(account)
@@ -413,6 +414,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def reached_max_amendments
     return unless logged_in_as?('client') && @attendance.maxed_out_amendments?
+
     flash_message booking_flash_hash[:update][:prior_amendments][:colour], (send booking_flash_hash[:update][:prior_amendments][:message])
     # flash[booking_flash_hash[:update][:prior_amendments][:colour]] =
     #   send booking_flash_hash[:update][:prior_amendments][:message]
@@ -422,6 +424,7 @@ class Admin::AttendancesController < Admin::BaseController
   def handle_provisionally_expired_new_booking
     data_items_provisionally_expired(new_booking: true)
     return unless @purchase.provisionally_expired?
+
     if logged_in_as?('client')
       flash_message :warning, ['The maximum number of classes has already been booked.', 'Renew you Package if you wish to attend this class']
       # flash[:warning] =
@@ -539,6 +542,7 @@ class Admin::AttendancesController < Admin::BaseController
       flash_message :warning, "Client has no contact number. #{message_type} message not sent"
     else
       return unless white_list_whatsapp_receivers
+
       send_message recipient_number, message_type
       flash_message :warning, "#{message_type} message sent to #{recipient_number}"
     end
@@ -546,6 +550,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def send_message(to, message_type)
     return unless white_list_whatsapp_receivers
+
     whatsapp_params = { to: to,
                         message_type: message_type,
                         variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }

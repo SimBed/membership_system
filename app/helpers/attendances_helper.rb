@@ -124,7 +124,6 @@ module AttendancesHelper
             fixed_package: 0,
             trial: 100,
             dropin: 0 } }
-      end
+    end
   end
-
 end

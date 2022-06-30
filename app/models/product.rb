@@ -21,10 +21,10 @@ class Product < ApplicationRecord
   # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
   # https://stackoverflow.com/questions/10522414/breaking-up-long-strings-on-multiple-lines-in-ruby-without-stripping-newlines
   def formal_name
-    formal_unit = {D: 'Day', W: 'Week', M: 'Month'}
+    formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
     "#{workout_group.name} - "\
-     "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} "\
-     "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
+      "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} "\
+      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
   end
 
   def unlimited_package?
@@ -63,8 +63,10 @@ class Product < ApplicationRecord
   # probably no unlimited products with days but assume every day if so
   def attendance_estimate
     return max_classes unless max_classes == 1000
+
     times_per_unit_hash = { 'D' => 1, 'W' => 6, 'M' => 20 }
     return validity_length * times_per_unit_hash[validity_unit] unless "#{validity_length}#{validity_unit}" == '1M'
+
     25 # for 1M
   end
 

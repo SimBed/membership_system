@@ -5,7 +5,6 @@ class Freeze < ApplicationRecord
   validate :duration_length
   validate :no_attendance_during
 
-
   def duration
     # (end_date - start_date + 1.days).to_i #Date - Date returns a rational
     # .. inclusive, ... exclusive
@@ -23,7 +22,9 @@ class Freeze < ApplicationRecord
     return if purchase.nil?
 
     purchase.attendances.each do |a|
-      errors.add(:base, 'bookings already during freeze period') and return if (start_date..end_date).cover?(a.wkclass.start_time)
+      if (start_date..end_date).cover?(a.wkclass.start_time)
+        errors.add(:base, 'bookings already during freeze period') and break
+      end
     end
   end
 end

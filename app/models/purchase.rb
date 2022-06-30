@@ -67,11 +67,10 @@ class Purchase < ApplicationRecord
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per 20
 
-
   # reformat qualifying_for and available_for_booking into single method
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|
-        p.purchased_after?(wkclass.start_time.to_date) ||
+      p.purchased_after?(wkclass.start_time.to_date) ||
         p.committed_on?(wkclass.start_time.to_date)
     end
   end
@@ -79,7 +78,7 @@ class Purchase < ApplicationRecord
   def self.available_for_booking(wkclass, client)
     available_to(wkclass).where(client_id: client.id).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
-      p.committed_on?(wkclass.start_time.to_date)
+        p.committed_on?(wkclass.start_time.to_date)
     end
   end
 
@@ -250,7 +249,8 @@ class Purchase < ApplicationRecord
     attendances.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
   end
 
-  private
+  # rubocop advises Lint/IneffectiveAccessModifier: private does not make singleton methods private
+  # https://stackoverflow.com/questions/4952980/how-to-create-a-private-class-method
 
   def self.available_to(wkclass)
     not_expired
@@ -260,6 +260,8 @@ class Purchase < ApplicationRecord
       .includes(:client)
       .order('clients.first_name', 'purchases.dop')
   end
+
+  private
 
   def max_class_expiry_date
     attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max

@@ -82,6 +82,6 @@ class Whatsapp
   end
 
   def test
-    "Thanks for all the templates. We would be delighted to resubmit all the templates."
+    'Thanks for all the templates. We would be delighted to resubmit all the templates.'
   end
 end

@@ -113,7 +113,7 @@ class Wkclass < ApplicationRecord
     (window_start..window_end)
   end
 
-  def Wkclass.visibility_window
+  def self.visibility_window
     settings = Rails.application.config_for(:constants)['settings']
     window_start = Time.zone.now - settings[:visibility_window_hours_before].hours
     window_end = Time.zone.now.advance(days: settings[:visibility_window_days_ahead]).end_of_day

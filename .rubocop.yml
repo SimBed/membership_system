@@ -40,3 +40,6 @@ Style/LineEndConcatenation:
   Enabled: false
 Minitest/MultipleAssertions:
   Max: 6
+Style/StringConcatenation:
+  Exclude:
+    - 'app/models/whatsapp.rb'

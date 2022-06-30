@@ -64,5 +64,4 @@ class Superadmin::ExpensesController < Superadmin::BaseController
   def expense_params
     params.require(:expense).permit(:item, :amount, :date, :workout_group_id)
   end
-
 end

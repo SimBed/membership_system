@@ -204,9 +204,7 @@ class Admin::PurchasesController < Admin::BaseController
     update_purchase_status([@purchase])
     return if @purchase.dropin? || @purchase.pt?
 
-    if @purchase.client.account.nil?
-      setup_account_for_new_client
-    end
+    setup_account_for_new_client if @purchase.client.account.nil?
     manage_messaging('new_purchase')
   end
 
@@ -240,16 +238,18 @@ class Admin::PurchasesController < Admin::BaseController
   def manage_messaging(message_type)
     recipient_number = @purchase.client.whatsapp_messaging_number
     if recipient_number.nil?
-      flash_message :warning, "Client has no contact number. #{message_type == 'new_account'  ? 'Account login' : 'Purchase'} details not sent"
+      flash_message :warning, "Client has no contact number. #{message_type == 'new_account' ? 'Account login' : 'Purchase'} details not sent"
     else
       return unless white_list_whatsapp_receivers
-      send "send_#{message_type}_whatsapp" , recipient_number
-      flash_message :warning, "#{message_type == 'new_account'  ? 'Account login' : 'New  purchase'} message sent to #{recipient_number}"
+
+      send "send_#{message_type}_whatsapp", recipient_number
+      flash_message :warning, "#{message_type == 'new_account' ? 'Account login' : 'New  purchase'} message sent to #{recipient_number}"
     end
   end
 
   def send_new_account_whatsapp(to)
     return unless white_list_whatsapp_receivers
+
     whatsapp_params = { to: to,
                         message_type: 'new_account',
                         variable_contents: { password: @password } }
@@ -258,6 +258,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def send_new_purchase_whatsapp(to)
     return unless white_list_whatsapp_receivers
+
     whatsapp_params = { to: to,
                         message_type: 'new_purchase' }
     Whatsapp.new(whatsapp_params).send_whatsapp
@@ -269,5 +270,4 @@ class Admin::PurchasesController < Admin::BaseController
   #                       variable_contents: { email: @purchase.client.email } }
   #   Whatsapp.new(whatsapp_params).send_whatsapp
   # end
-
 end

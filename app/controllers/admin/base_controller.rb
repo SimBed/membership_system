@@ -20,5 +20,5 @@ class Admin::BaseController < ApplicationController
   def white_list_whatsapp_receivers
     whatsapp_receivers = %w[Amala Aadrak Fluke Cleo James]
     whatsapp_receivers.include?(@purchase.client.first_name)
-  end  
+  end
 end

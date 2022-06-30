@@ -4,5 +4,4 @@ module ClientsHelper
     return 'cold.png' if client.cold?
     return 'enquiry.png' if client.enquiry?
   end
-
 end
