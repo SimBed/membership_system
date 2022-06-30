@@ -71,6 +71,7 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
     <%= form.check_box :adjust_restart, onclick: "toggleHide()" %>
   </div>
 
+  <%# class arvalue is for identification with javascript, not for styling %>
   <div id="ar_payment" class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
     <%= form.label :ar_payment %>
     <%= form.number_field :ar_payment, class: "arvalue" %>
@@ -78,7 +79,7 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
 
   <div class="field ar <%= 'ar_hide' unless @purchase.adjust_restart %>">
     <%= form.label :ar_date %>
-    <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date || Date.today}, {class: "arvalue"} %>
+    <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date || Time.zone.today}, {class: "arvalue"} %>
   </div>
   <% end %>
 

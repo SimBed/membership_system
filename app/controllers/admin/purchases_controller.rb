@@ -115,7 +115,14 @@ class Admin::PurchasesController < Admin::BaseController
     nillify_when_blank(params[:purchase], :invoice, :note)
     params[:purchase].tap do |params|
       params[:fitternity_id] = Fitternity.ongoing.first&.id if params[:payment_mode] == 'Fitternity'
-      # params[:product_id] = nil if params[:product_id].blank?
+      # prevent ar_date becoming not nil after an update
+      # checkbox values in form are strings
+      if params[:adjust_restart] == '0'
+        params['ar_date(1i)'] = ''
+        params['ar_date(2i)'] = ''
+        params['ar_date(3i)'] = ''
+      end
+
     end
   end
 
