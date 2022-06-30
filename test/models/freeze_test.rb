@@ -3,8 +3,8 @@ require 'test_helper'
 class FreezeTest < ActiveSupport::TestCase
   def setup
     @freeze = Freeze.new(purchase_id: purchases(:AnushkaUC3Mong).id,
-                         start_date: '2022-02-05',
-                         end_date: '2022-02-15',
+                         start_date: '2022-03-08',
+                         end_date: '2022-03-14',
                          note: 'caca is here')
   end
 
@@ -13,7 +13,13 @@ class FreezeTest < ActiveSupport::TestCase
   end
 
   test 'duration should not be too short' do
-    @freeze.end_date = @freeze.start_date + 0.days
+    @freeze.end_date = @freeze.start_date + 1.days
+    refute @freeze.valid?
+  end
+
+  test 'period should not overlap an attendance' do
+    # attendances on "Tue 22 Feb 22", "Mon 28 Feb 22", "Wed 23 Feb 22", "Wed 23 Feb 22", "Tue 25 Jan 22"
+    @freeze.start_date = Date.parse('2022-02-27')
     refute @freeze.valid?
   end
 
@@ -23,6 +29,6 @@ class FreezeTest < ActiveSupport::TestCase
   end
 
   test 'duration method' do
-    assert_equal 11, @freeze.duration
+    assert_equal 7, @freeze.duration
   end
 end

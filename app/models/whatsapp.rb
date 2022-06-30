@@ -80,4 +80,8 @@ class Whatsapp
   def body_temp_email_confirm
     "The email for the last message is: #{@variable_contents[:email]}"
   end
+
+  def test
+    "Thanks for all the templates. We would be delighted to resubmit all the templates."
+  end
 end

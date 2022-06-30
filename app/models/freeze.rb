@@ -3,6 +3,8 @@ class Freeze < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
   validate :duration_length
+  validate :no_attendance_during
+
 
   def duration
     # (end_date - start_date + 1.days).to_i #Date - Date returns a rational
@@ -13,6 +15,15 @@ class Freeze < ApplicationRecord
   private
 
   def duration_length
-    errors.add(:base, 'must be 5 days or more') if duration < 5
+    errors.add(:base, 'must be 3 days or more') if duration < 3
+  end
+
+  def no_attendance_during
+    # purchases is only nil when we force it to be during tests
+    return if purchase.nil?
+
+    purchase.attendances.each do |a|
+      errors.add(:base, 'bookings already during freeze period') and return if (start_date..end_date).cover?(a.wkclass.start_time)
+    end
   end
 end

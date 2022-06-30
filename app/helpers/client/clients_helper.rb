@@ -16,7 +16,7 @@ module Client::ClientsHelper
       { css_class: 'table-secondary', link: '' }
     else
       confirmation = t('client.clients.attendance.create.confirm')
-      confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(Time.zone.today)
+      confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
       { css_class: 'table-secondary',
         link: link_to(
           image_tag('add.png', class: 'grid_table_icon'),
@@ -56,7 +56,7 @@ module Client::ClientsHelper
     else
       png = 'add.png'
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
-      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(Time.zone.today)
+      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
     end
     link_to(
       image_tag(png, class: 'grid_table_icon'),
