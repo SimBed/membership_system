@@ -43,7 +43,7 @@ class Purchase < ApplicationRecord
   # alternative 'mixes concerns and logic'
   # scope :package, -> { joins(:product).where("max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
-  scope :order_by_dop, -> { order(dop: :desc) }
+  scope :order_by_dop, -> { order(dop: :desc, adjust_restart: :asc) }
   scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
   # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
