@@ -5,12 +5,14 @@ class Admin::AccountsController < Admin::BaseController
   # admin accounts cant be created through the app
 
   def create
+    @password = Account.password_wizard(6)
     @account = Account.new(account_params)
     if @account.save
       associate_account_holder_to_account
-      flash[:success] = t('.success')
+      flash_message :success, t('.success')
+      flash_message *Whatsapp.new(whatsapp_params).manage_messaging
     else
-      flash[:warning] = t('.warning')
+      flash_message :warning, t('.warning')
     end
     redirect_back fallback_location: admin_clients_path
   end
@@ -41,9 +43,9 @@ class Admin::AccountsController < Admin::BaseController
   def set_account_holder
     # don't create account if for some reason there is no associated account holder
     # used 'where' rather than 'find' as find returns an error (rather than nil or empty object) when record not found
-    @account_holder = Client.where(id: params[:client_id]) if params[:ac_type] == 'client'
-    @account_holder = Partner.where(id: params[:partner_id]) if params[:ac_type] == 'partner'
-    (redirect_to(login_path) && return) if @account_holder.empty?
+    @account_holder = Client.where(id: params[:client_id]).first if params[:ac_type] == 'client'
+    @account_holder = Partner.where(id: params[:partner_id]).first if params[:ac_type] == 'partner'
+    (redirect_to(login_path) && return) if @account_holder.nil?
   end
 
   def associate_account_holder_to_account
@@ -51,8 +53,14 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def account_params
-    password_params = { password: 'password', password_confirmation: 'password' }
+    password_params = { password: @password, password_confirmation: @password }
     activation_params = { activated: true, ac_type: params[:ac_type] }
     params.permit(:email, :ac_type).merge(password_params).merge(activation_params)
+  end
+
+  def whatsapp_params
+    { receiver: @account_holder,
+      message_type: 'new_account',
+      variable_contents: { password: @password }  }
   end
 end

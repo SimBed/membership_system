@@ -62,7 +62,7 @@ class Admin::PartnersController < Admin::BaseController
   end
 
   def partner_params
-    params.require(:partner).permit(:first_name, :last_name, :email, :phone)
+    params.require(:partner).permit(:first_name, :last_name, :email, :phone, :whatsapp, :instagram)
   end
 
   def correct_account_or_superadmin

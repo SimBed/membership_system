@@ -11,6 +11,8 @@
         </th>
         <td class="nomobile"><%= partner.email %></td>
         <td><%= partner.phone %></td>
+        <td class="nomobile"><%= partner.whatsapp %></td>
+        <td class="nomobile"><%= partner.instagram %></td>
         <td><%= partner.workout_group_list %></td>
         <% if logged_in_as?('superadmin') %>
           <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_partner_path(partner)%></td>

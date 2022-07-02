@@ -1,8 +1,21 @@
 class Whatsapp
   def initialize(attributes = {})
-    @to = attributes[:to]
+    @receiver = attributes[:receiver]
     @message_type = attributes[:message_type]
     @variable_contents = attributes[:variable_contents]
+    @to_number = @receiver.whatsapp_messaging_number
+  end
+
+  def manage_messaging
+    if @to_number.nil?
+      # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
+      return :warning, "Client has no contact number. #{@message_type} details not sent"
+    else
+      return nil, nil unless white_list_whatsapp_receivers
+
+      send_whatsapp
+      return :warning, "#{@message_type} message sent to #{@to_number}"
+    end
   end
 
   def send_whatsapp
@@ -10,8 +23,8 @@ class Whatsapp
     client = Twilio::REST::Client.new(@account_sid, @auth_token)
     body = send("body_#{@message_type}")
     client.messages.create(
-      from: "whatsapp:#{@from}",
-      to: "whatsapp:#{@to}",
+      from: "whatsapp:#{@from_number}",
+      to: "whatsapp:#{@to_number}",
       body: body
     )
   end
@@ -21,7 +34,12 @@ class Whatsapp
   def twilio_initialise
     @account_sid = Rails.configuration.twilio[:account_sid]
     @auth_token = Rails.configuration.twilio[:auth_token]
-    @from = Rails.configuration.twilio[:whatsapp_number]
+    @from_number = Rails.configuration.twilio[:whatsapp_number]
+  end
+
+  def white_list_whatsapp_receivers
+    whatsapp_receivers = %w[Amala Aadrak Fluke Cleo James]
+    whatsapp_receivers.include?(@receiver.first_name)
   end
 
   # space between '\n' and '\nPlease' is required for conformity to nuance of template. Fails to deliver without.
@@ -81,7 +99,7 @@ class Whatsapp
     "The email for the last message is: #{@variable_contents[:email]}"
   end
 
-  def test
-    'Thanks for all the templates. We would be delighted to resubmit all the templates.'
+  def body_test
+    "Thanks for all the templates. We would be delighted to resubmit all the templates.\nReply directly\nhttps://api.whatsapp.com/send/?phone=919619348427&text&type=phone_number&app_absent=0"
   end
 end

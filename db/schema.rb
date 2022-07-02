@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_06_093728) do
+ActiveRecord::Schema.define(version: 2022_07_02_124524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,8 @@ ActiveRecord::Schema.define(version: 2022_05_06_093728) do
     t.integer "account_id"
     t.string "email"
     t.string "phone"
+    t.string "whatsapp"
+    t.string "instagram"
     t.index ["account_id"], name: "index_partners_on_account_id"
   end
 

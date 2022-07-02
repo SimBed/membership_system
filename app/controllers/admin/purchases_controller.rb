@@ -211,8 +211,13 @@ class Admin::PurchasesController < Admin::BaseController
     update_purchase_status([@purchase])
     return if @purchase.dropin? || @purchase.pt?
 
-    setup_account_for_new_client if @purchase.client.account.nil?
-    manage_messaging('new_purchase')
+    client = @purchase.client
+    # setup account which returns some flashes as an array of type/message arrays
+    if client.account.nil?
+      Account.setup_for(client).each {|item| flash_message *item}
+    end
+    # use splat to turn array returned into separate arguments
+    flash_message *Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging
   end
 
   # whatsapp_recipient_numbers = [Rails.configuration.twilio[:me], Rails.configuration.twilio[:boss]]
@@ -222,59 +227,10 @@ class Admin::PurchasesController < Admin::BaseController
   #   # send_temp_email_confirm_whatsapp(recipient)
   # end
 
-  def setup_account_for_new_client
-    @account_holder = @purchase.client
-    @password = Account.password_wizard(6)
-    @account = Account.new(
-      { password: @password, password_confirmation: @password,
-        activated: true, ac_type: 'client', email: @account_holder.email }
-    )
-    if @account.save
-      @account_holder.update(account_id: @account.id)
-      flash_message :success, t('admin.accounts.create.success')
-      # flash[:success] = I18n.t 'admin.accounts.create.success'
-      # flash[:success] = 'Account was successfully created'
-      manage_messaging('new_account')
-    else
-      flash_message :warning, t('admin.accounts.create.warning')
-      # flash[:warning] = I18n.t 'admin.accounts.create.warning'
-      # flash[:warning] = 'Account was not created'
-    end
+  # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
+  def whatsapp_params(message_type)
+    { receiver: @purchase.client,
+      message_type: message_type,
+      variable_contents: { password: (@password if message_type == 'new_account') }.compact  }
   end
-
-  def manage_messaging(message_type)
-    recipient_number = @purchase.client.whatsapp_messaging_number
-    if recipient_number.nil?
-      flash_message :warning, "Client has no contact number. #{message_type == 'new_account' ? 'Account login' : 'Purchase'} details not sent"
-    else
-      return unless white_list_whatsapp_receivers
-
-      send "send_#{message_type}_whatsapp", recipient_number
-      flash_message :warning, "#{message_type == 'new_account' ? 'Account login' : 'New  purchase'} message sent to #{recipient_number}"
-    end
-  end
-
-  def send_new_account_whatsapp(to)
-    return unless white_list_whatsapp_receivers
-
-    whatsapp_params = { to: to,
-                        message_type: 'new_account',
-                        variable_contents: { password: @password } }
-    Whatsapp.new(whatsapp_params).send_whatsapp
-  end
-
-  def send_new_purchase_whatsapp(to)
-    return unless white_list_whatsapp_receivers
-
-    whatsapp_params = { to: to,
-                        message_type: 'new_purchase' }
-    Whatsapp.new(whatsapp_params).send_whatsapp
-  end
-
-  # def send_temp_email_confirm_whatsapp(to)
-  #   whatsapp_params = { to: to,
-  #                       message_type: 'temp_email_confirm',
-  #                       variable_contents: { email: @purchase.client.email } }
-  #   Whatsapp.new(whatsapp_params).send_whatsapp
-  # end
 end

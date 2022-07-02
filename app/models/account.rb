@@ -53,6 +53,35 @@ class Account < ApplicationRecord
               .concat((1..9).to_a).sample(n).join
   end
 
+  def number_formatted(contact_type)
+    number = send(contact_type)&.gsub(/[^0-9+]/, '')
+    return "+91#{number}" unless (number&.first == '+' || number.blank?)
+
+    number
+  end
+
+  def whatsapp_messaging_number
+    # #find returns first element meeting block condition
+    [number_formatted('whatsapp'), number_formatted('phone')].find(&:present?)
+  end
+
+  def self.setup_for(client)
+    password = Account.password_wizard(6)
+    @account = Account.new(
+      { password: password, password_confirmation: password,
+        activated: true, ac_type: 'client', email: client.email }
+    )
+    if @account.save
+      client.update(account_id: @account.id)
+      flash_for_account = :success, I18n.t('admin.accounts.create.success')
+      # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
+      flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account', variable_contents: { password: password }).manage_messaging
+      return flash_for_account, flash_for_whatsapp # an array of arrays
+    else
+      return [[:warning, I18n.t('admin.accounts.create.warning')]]
+    end
+  end
+
   private
 
   def downcase_email

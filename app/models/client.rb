@@ -1,4 +1,5 @@
 class Client < ApplicationRecord
+  include WhatsappNumber
   has_many :purchases, dependent: :destroy
   has_many :attendances, through: :purchases
   belongs_to :account, optional: true
@@ -37,18 +38,6 @@ class Client < ApplicationRecord
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
 
   paginates_per 20
-
-  def number_formatted(contact_type)
-    number = send(contact_type)&.gsub(/[^0-9+]/, '')
-    return "+91#{number}" unless (number&.first == '+' || number.blank?)
-
-    number
-  end
-
-  def whatsapp_messaging_number
-    # #find returns first element meeting block condition
-    [number_formatted('whatsapp'), number_formatted('phone')].find(&:present?)
-  end
 
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max

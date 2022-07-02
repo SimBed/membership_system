@@ -150,9 +150,9 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def basic_data(account)
+    @wkclass_name = @wkclass.name
+    @wkclass_day = @wkclass.day_of_week
     if account == 'client'
-      @wkclass_name = @wkclass.name
-      @wkclass_day = @wkclass.day_of_week
       @time_of_request = time_of_request
       @original_status = @attendance.status
     else # admin
@@ -517,9 +517,11 @@ class Admin::AttendancesController < Admin::BaseController
                        reason: 'late cancellation' })
       update_purchase_status([@purchase])
       @penalty_given = true # for the flash
-      manage_messaging 'late_cancel_penalty'
+      flash_message *Whatsapp.new(whatsapp_params('late_cancel_penalty')).manage_messaging
+      # manage_messaging 'late_cancel_penalty'
     else
-      manage_messaging 'late_cancel_no_penalty'
+      flash_message *Whatsapp.new(whatsapp_params('late_cancel_no_penalty')).manage_messaging
+      # manage_messaging 'late_cancel_no_penalty'
     end
   end
 
@@ -530,32 +532,40 @@ class Admin::AttendancesController < Admin::BaseController
     if penalty
       Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
       update_purchase_status([@purchase])
-      manage_messaging 'no_show_penalty'
+      flash_message *Whatsapp.new(whatsapp_params('no_show_penalty')).manage_messaging
+      # manage_messaging 'no_show_penalty'
     else
-      manage_messaging 'no_show_no_penalty'
+      flash_message *Whatsapp.new(whatsapp_params('no_show_no_penalty')).manage_messaging
+      # manage_messaging 'no_show_no_penalty'
     end
   end
 
-  def manage_messaging(message_type)
-    recipient_number = @purchase.client.whatsapp_messaging_number
-    if recipient_number.nil?
-      flash_message :warning, "Client has no contact number. #{message_type} message not sent"
-    else
-      return unless white_list_whatsapp_receivers
-
-      send_message recipient_number, message_type
-      flash_message :warning, "#{message_type} message sent to #{recipient_number}"
-    end
+  def whatsapp_params(message_type)
+    { receiver: @purchase.client,
+      message_type: message_type,
+      variable_contents: { name: @wkclass_name, day: @wkclass_day } }
   end
 
-  def send_message(to, message_type)
-    return unless white_list_whatsapp_receivers
-
-    whatsapp_params = { to: to,
-                        message_type: message_type,
-                        variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }
-    Whatsapp.new(whatsapp_params).send_whatsapp
-  end
+  # def manage_messaging(message_type)
+  #   recipient_number = @purchase.client.whatsapp_messaging_number
+  #   if recipient_number.nil?
+  #     flash_message :warning, "Client has no contact number. #{message_type} message not sent"
+  #   else
+  #     return unless white_list_whatsapp_receivers
+  #
+  #     send_message recipient_number, message_type
+  #     flash_message :warning, "#{message_type} message sent to #{recipient_number}"
+  #   end
+  # end
+  #
+  # def send_message(to, message_type)
+  #   return unless white_list_whatsapp_receivers
+  #
+  #   whatsapp_params = { to: to,
+  #                       message_type: message_type,
+  #                       variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }
+  #   Whatsapp.new(whatsapp_params).send_whatsapp
+  # end
 
   def set_period
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')

@@ -16,9 +16,4 @@ class Admin::BaseController < ApplicationController
     #     expiry_date: p.expiry_date_calc,
     #     start_date: p.start_date_calc })
   end
-
-  def white_list_whatsapp_receivers
-    whatsapp_receivers = %w[Amala Aadrak Fluke Cleo James]
-    whatsapp_receivers.include?(@purchase.client.first_name)
-  end
 end
