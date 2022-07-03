@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
 
   namespace :admin do
-    resources :accounts, only: [:create]
+    resources :accounts, only: [:create, :update]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
     resources :attendances, only: [:index, :new, :create, :update, :destroy]
     resources :clients

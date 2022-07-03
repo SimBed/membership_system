@@ -89,6 +89,14 @@ class Whatsapp
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
+  def body_password_reset
+    'Thank you for your request to reset your password. If you are not expecting this message, please notify The Space.' +
+      "\n\nTo see details of your membership, please login with your new password:" +
+      "\nEmail: the email you registered with us" +
+      "\nPassword: #{@variable_contents[:password]}" +
+      "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
   def body_new_booking
     'Thank you for booking for HIIT on Monday.' +
       "\nYou can cancel this booking up to 3 hours before the class start time without incurring any penalty." +
