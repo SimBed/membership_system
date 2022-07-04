@@ -17,6 +17,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase_dropin2 = purchases(:kiran1c1d_notstarted)
     @purchase_fixed = purchases(:tina8c5wong)
     @purchase_trial = purchases(:purchase_trial)
+    @purchase_with_freeze = purchases(:purchase_with_freeze) # freeze 10/1/22 - 28/3/22
     @wkclass1 = wkclasses(:hiitfeb26)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
   end
@@ -162,10 +163,18 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'freezed? method' do
-    refute @purchase_package.freezed? Time.zone.today
-    refute @purchase_dropin.freezed? Time.zone.today
-    refute @purchase_dropin2.freezed? Time.zone.today
-    refute @purchase_fixed.freezed? Time.zone.today
+    # testing on eg Date.parse('10 Jan 2022') is not good enough as the limit of the day is 24 hours later
+    refute @purchase_with_freeze.freezed? '9 Jan 2022 10:30'.to_datetime
+    assert @purchase_with_freeze.freezed? '10 Jan 2022 10:30'.to_datetime
+    assert @purchase_with_freeze.freezed? '28 March 10:30'.to_datetime
+    refute @purchase_with_freeze.freezed? '29 March 10:30'.to_datetime
+  end
+
+  test 'freezes_cover method' do
+    assert_equal [], @purchase_with_freeze.freezes_cover('9 Jan 2022 10:30'.to_datetime).pluck(:id)
+    assert_equal [48], @purchase_with_freeze.freezes_cover('10 Jan 2022 10:30'.to_datetime).pluck(:id)
+    assert_equal [48], @purchase_with_freeze.freezes_cover('28 March 10:30'.to_datetime).pluck(:id)
+    assert_equal [], @purchase_with_freeze.freezes_cover('29 March 10:30'.to_datetime).pluck(:id)
   end
 
   test 'expired_in? method' do

@@ -135,13 +135,13 @@ class Purchase < ApplicationRecord
 
   def freezed?(adate)
     freezes.each do |f|
-      return true if adate.between?(f.start_date, f.end_date)
+      return true if adate.between?(f.start_date, f.end_date.end_of_day)
     end
     false
   end
 
   def freezes_cover(adate)
-    freezes.select { |f| adate.between?(f.start_date, f.end_date) }
+    freezes.select { |f| adate.between?(f.start_date, f.end_date.end_of_day) }
   end
 
   def expired?

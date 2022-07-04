@@ -14,7 +14,7 @@ class Wkclass < ApplicationRecord
   has_many :physical_attendances, lambda {
                                     where(status: 'attended')
                                   }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
-  has_many :spot_takers, lambda {
+  has_many :spots_taken, lambda {
                            where(status: %w[booked attended])
                          }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
   has_many :purchases, through: :attendances
@@ -121,7 +121,7 @@ class Wkclass < ApplicationRecord
   end
 
   def at_capacity?
-    return true if spot_takers.count >= max_capacity
+    return true if spots_taken.count >= max_capacity
   end
 
   # Use a class method with an argument to call send_reminder method rather than call send_reminder directly

@@ -137,14 +137,14 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def handle_freeze
-    wkclass_date = @attendance.wkclass.start_time.to_date
+    wkclass_datetime = @attendance.wkclass.start_time
     # unlikley to be more than 1, but you never know
-    applicable_freezes = @purchase.freezes_cover(wkclass_date)
+    applicable_freezes = @purchase.freezes_cover(wkclass_datetime)
     return if applicable_freezes.empty?
 
     applicable_freezes.each do |f|
       # wish to bypass validation, else would just use update method
-      f.end_date = wkclass_date.advance(days: -1)
+      f.end_date = wkclass_datetime.advance(days: -1).to_date
       f.save(validate: false)
     end
   end

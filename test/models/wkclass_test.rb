@@ -9,6 +9,7 @@ class WkclassTest < ActiveSupport::TestCase
                            instructor_id: @instructor.id,
                            instructor_cost: 500)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
+    @wkclass_many_attendances = wkclasses(:wkclass_many_attendances)
     @client = clients(:aparna)
   end
 
@@ -26,4 +27,9 @@ class WkclassTest < ActiveSupport::TestCase
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
     assert_equal [569, 570, 548, 568], Wkclass.show_in_bookings_for(@client).pluck(:id)
   end
+
+  test 'spots_taken' do
+    assert_equal 7, @wkclass_many_attendances.spots_taken.size
+  end
+
 end
