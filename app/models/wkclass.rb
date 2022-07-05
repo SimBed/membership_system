@@ -54,10 +54,12 @@ class Wkclass < ApplicationRecord
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
   def self.show_in_bookings_for(client)
+    # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate
     Wkclass.in_booking_visibility_window
            .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
            .where('clients.id': client.id)
            .merge(Purchase.not_fully_expired)
+           .distinct
   end
 
   # not allowed 2 physical attendances on same day. Used in already_committed attendance controller callback

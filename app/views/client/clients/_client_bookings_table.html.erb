@@ -1,14 +1,34 @@
-<table class="table table-secondary table-striped caption-top">
-  <tbody>
-    <% @wkclasses.each do |wkclass| %>
-      <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
-      <tr class ="<%=booking_link_and_class[:css_class]%>">
-        <th scope="row"><%= wkclass.date %></th>
-        <td><%= wkclass.time %></td>
-        <td><%= wkclass.workout.name %></td>
-        <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
-        <td><%= booking_link_and_class[:link] %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <table class="table table-striped">
+    <tbody>
+      <% unless @wkclasses_in_booking_window.empty? %>
+        <tr>
+          <th class="stripe-override" colspan="5">booking window open</th>
+        </tr>
+        <% @wkclasses_in_booking_window.each do |wkclass| %>
+          <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
+          <tr class ="<%=booking_link_and_class[:css_class]%>">
+            <th scope="row"><%= wkclass.date %></th>
+            <td><%= wkclass.time %></td>
+            <td><%= wkclass.workout.name %></td>
+            <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
+            <td><%= booking_link_and_class[:link] %></td>
+          </tr>
+        <% end %>
+      <% end %>
+      <% unless @wkclasses_not_in_booking_window.empty? %>
+        <tr>
+          <th class="stripe-override" colspan="5">booking window opening soon</th>
+        </tr>
+        <% @wkclasses_not_in_booking_window.each do |wkclass| %>
+          <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
+          <tr class ="<%=booking_link_and_class[:css_class]%>">
+            <th scope="row"><%= wkclass.date %></th>
+            <td><%= wkclass.time %></td>
+            <td><%= wkclass.workout.name %></td>
+            <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
+            <td><%= booking_link_and_class[:link] %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>

@@ -25,7 +25,7 @@ class WkclassTest < ActiveSupport::TestCase
 
   test 'show_in_bookings_for' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
-    assert_equal [569, 570, 548, 568], Wkclass.show_in_bookings_for(@client).pluck(:id)
+    assert_equal [548, 568, 569, 570], Wkclass.show_in_bookings_for(@client).pluck(:id)
   end
 
   test 'spots_taken' do

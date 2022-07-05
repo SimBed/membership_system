@@ -88,7 +88,7 @@ class Purchase < ApplicationRecord
     return purchases.first if purchases.size < 2
 
     started_purchases = purchases.reject(&:not_started?)
-    started_purchases.nil? ? purchases.first : started_purchases.first
+    started_purchases.empty? ? purchases.first : started_purchases.first
   end
 
   def self.by_product_date(product_id, period)

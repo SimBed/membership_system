@@ -5,13 +5,13 @@
   <%= render partial: 'client_heading', locals: {selection: false} %>
 </div>
 
-<% if @wkclasses.empty? %>
+<% if @wkclasses_visible.empty? %>
   <div id="bookings-table" class="container px-1 mb-3">
     <% if @purchases.empty? %>
       <p class="bolditalics mb-0">Your package has expired. <%= link_to 'Renew Now','#', class: "like_button" %> </p>
     <% else %>
       <p class="bolditalics mb-0">There are no classes currently in the booking window.</p>
-    <% end %>  
+    <% end %>
   </div>
 <% else %>
   <div id="bookings-table" class="container px-1 mb-5">

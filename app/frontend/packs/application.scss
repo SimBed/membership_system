@@ -753,6 +753,13 @@ td a.extra_small {
   padding:0;
 }
 
+
+.table-striped>tbody>tr:nth-child(odd)>th.stripe-override,
+.table-striped>tbody>tr:nth-child(even)>th.stripe-override {
+  background-color: white;
+  background: linear-gradient($gray-darker, #dddddd);
+}
+
 @media (min-width: 600px) {
   td.nomobile, th.nomobile {
     display: table-cell;
