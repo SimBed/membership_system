@@ -326,8 +326,9 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def set_attendances
-    @attendances = @wkclass.attendances.no_amnesty.order_by_status
-    @amnesties = @wkclass.attendances.amnesty.order_by_status
+    @physical_attendances = @wkclass.physical_attendances.order_by_status
+    @ethereal_attendances_no_amnesty = @wkclass.ethereal_attendances.no_amnesty.order_by_status
+    @ethereal_attendances_amnesty = @wkclass.ethereal_attendances.amnesty.order_by_status
   end
 
   def flash_client_update_fail
@@ -415,7 +416,8 @@ class Admin::AttendancesController < Admin::BaseController
   def reached_max_amendments
     return unless logged_in_as?('client') && @attendance.maxed_out_amendments?
 
-    flash_message booking_flash_hash[:update][:prior_amendments][:colour], (send booking_flash_hash[:update][:prior_amendments][:message])
+    flash_message booking_flash_hash[:update][:prior_amendments][:colour],
+                  (send booking_flash_hash[:update][:prior_amendments][:message])
     # flash[booking_flash_hash[:update][:prior_amendments][:colour]] =
     #   send booking_flash_hash[:update][:prior_amendments][:message]
     redirect_to client_book_path(@client)
@@ -426,7 +428,9 @@ class Admin::AttendancesController < Admin::BaseController
     return unless @purchase.provisionally_expired?
 
     if logged_in_as?('client')
-      flash_message :warning, ['The maximum number of classes has already been booked.', 'Renew you Package if you wish to attend this class']
+      flash_message :warning,
+                    ['The maximum number of classes has already been booked.',
+                     'Renew you Package if you wish to attend this class']
       # flash[:warning] =
       #   ['The maximum number of classes has already been booked.',
       #    'Renew you Package if you wish to attend this class']
@@ -439,7 +443,9 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def action_client_rebook_cancellation_when_prov_expired
-    flash_message :warning, ['The maximum number of classes has already been booked.', 'Renew you Package if you wish to attend this class']
+    flash_message :warning,
+                  ['The maximum number of classes has already been booked.',
+                   'Renew you Package if you wish to attend this class']
     # flash[:warning] =
     #   ['The maximum number of classes has already been booked.',
     #    'Renew you Package if you wish to attend this class']
@@ -447,7 +453,9 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def action_admin_rebook_cancellation_when_prov_expired
-    flash_message :warning, ['The purchase has provisionally expired.', 'This change may not be possible without first cancelling a booking']
+    flash_message :warning,
+                  ['The purchase has provisionally expired.',
+                   'This change may not be possible without first cancelling a booking']
     # flash[:warning] =
     #   ['The purchase has provisionally expired.',
     #    'This change may not be possible without first cancelling a booking']
@@ -517,10 +525,10 @@ class Admin::AttendancesController < Admin::BaseController
                        reason: 'late cancellation' })
       update_purchase_status([@purchase])
       @penalty_given = true # for the flash
-      flash_message *Whatsapp.new(whatsapp_params('late_cancel_penalty')).manage_messaging
+      flash_message(*Whatsapp.new(whatsapp_params('late_cancel_penalty')).manage_messaging)
       # manage_messaging 'late_cancel_penalty'
     else
-      flash_message *Whatsapp.new(whatsapp_params('late_cancel_no_penalty')).manage_messaging
+      flash_message(*Whatsapp.new(whatsapp_params('late_cancel_no_penalty')).manage_messaging)
       # manage_messaging 'late_cancel_no_penalty'
     end
   end
@@ -532,10 +540,10 @@ class Admin::AttendancesController < Admin::BaseController
     if penalty
       Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
       update_purchase_status([@purchase])
-      flash_message *Whatsapp.new(whatsapp_params('no_show_penalty')).manage_messaging
+      flash_message(*Whatsapp.new(whatsapp_params('no_show_penalty')).manage_messaging)
       # manage_messaging 'no_show_penalty'
     else
-      flash_message *Whatsapp.new(whatsapp_params('no_show_no_penalty')).manage_messaging
+      flash_message(*Whatsapp.new(whatsapp_params('no_show_no_penalty')).manage_messaging)
       # manage_messaging 'no_show_no_penalty'
     end
   end

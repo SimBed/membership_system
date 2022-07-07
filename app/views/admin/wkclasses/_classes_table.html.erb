@@ -7,12 +7,13 @@
   <caption></caption>
   <tbody>
     <% @wkclasses.each do |wkclass| %>
+    <% physical_attendances = wkclass.physical_attendances.size %>
       <tr>
         <th scope="row"><%= link_to wkclass.name, admin_wkclass_path(wkclass), class: "like_button" %></th>
         <td><%= wkclass.date %></td>
         <td><%= wkclass.time %></td>
-        <td><%= wkclass.provisional_attendances.size %> <%= image_tag('reserve.png', class: "header_icon")%></td>
-        <td><%= wkclass.physical_attendances.size %> <%= image_tag('group.png', class: "header_icon")%></td>
+        <td><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></td>
+        <td><%= wkclass.max_capacity - physical_attendances %> <%= image_tag('group.png', class: "header_icon")%></td>
         <td class="nomobile"><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_wkclass_path(wkclass) %></td>
         <!--td class="nomobile"><%#= link_to image_tag('delete.png', class: "grid_table_icon"), admin_wkclass_path(wkclass), method: :delete, data: { confirm: 'Class and its attendances will be deleted. Are you sure?' } %></td-->
       </tr>

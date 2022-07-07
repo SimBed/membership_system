@@ -98,11 +98,11 @@ class Purchase < ApplicationRecord
       .order(dop: :desc)
   end
 
-  def revenue_for_class(wkclass)
-    return 0 unless wkclass.purchases.include?(self)
-
-    payment / product.attendance_estimate
-  end
+  # def revenue_for_class(wkclass)
+  #   return 0 unless wkclass.purchases.include?(self)
+  #
+  #   payment / product.attendance_estimate
+  # end
 
   def committed_on?(adate)
     return false if fixed_package? # fixed packages can do what they want

@@ -43,3 +43,6 @@ Minitest/MultipleAssertions:
 Style/StringConcatenation:
   Exclude:
     - 'app/models/whatsapp.rb'
+Layout/LineLength:
+  Exclude:
+    - 'app/models/whatsapp.rb'

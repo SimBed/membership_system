@@ -4,19 +4,12 @@ class Wkclass < ApplicationRecord
   has_many :attendances, dependent: :destroy
   # https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsinverseof
   # rubocop likes dependent and inverse_of to be specified even though they seem superfluous here
-  has_many :confirmed_attendances, lambda {
-                                     where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked'])
-                                       .where.not(amnesty: true)
-                                   }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
-  has_many :provisional_attendances, lambda {
-                                       where.not(amnesty: true)
-                                     }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
   has_many :physical_attendances, lambda {
-                                    where(status: 'attended')
+                                    where(status: %w[booked attended])
                                   }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
-  has_many :spots_taken, lambda {
-                           where(status: %w[booked attended])
-                         }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
+  has_many :ethereal_attendances, lambda {
+                                    where.not(status: %w[booked attended])
+                                  }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
   belongs_to :instructor
@@ -105,7 +98,7 @@ class Wkclass < ApplicationRecord
   end
 
   def revenue
-    attendances.confirmed.map(&:revenue).inject(0, :+)
+    attendances.map(&:revenue).inject(0, :+)
   end
 
   def booking_window
@@ -123,7 +116,9 @@ class Wkclass < ApplicationRecord
   end
 
   def at_capacity?
-    return true if spots_taken.count >= max_capacity
+    return true if physical_attendances.count >= max_capacity
+
+    false
   end
 
   # Use a class method with an argument to call send_reminder method rather than call send_reminder directly

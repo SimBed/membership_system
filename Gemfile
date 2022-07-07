@@ -10,11 +10,11 @@ gem 'kaminari'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
+gem 'rails-controller-testing'
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
 gem 'twilio-ruby'
 gem 'webpacker', '~> 5.0'
-gem 'rails-controller-testing'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 

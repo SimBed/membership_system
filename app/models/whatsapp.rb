@@ -7,15 +7,13 @@ class Whatsapp
   end
 
   def manage_messaging
-    if @to_number.nil?
-      # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
-      return :warning, "Client has no contact number. #{@message_type} details not sent"
-    else
-      return nil, nil unless white_list_whatsapp_receivers
+    # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
+    return :warning, "Client has no contact number. #{@message_type} details not sent" if @to_number.nil?
 
-      send_whatsapp
-      return :warning, "#{@message_type} message sent to #{@to_number}"
-    end
+    return nil, nil unless white_list_whatsapp_receivers
+
+    send_whatsapp
+    [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
   def send_whatsapp

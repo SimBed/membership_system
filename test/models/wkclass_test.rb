@@ -28,8 +28,19 @@ class WkclassTest < ActiveSupport::TestCase
     assert_equal [548, 568, 569, 570], Wkclass.show_in_bookings_for(@client).pluck(:id)
   end
 
-  test 'spots_taken' do
-    assert_equal 7, @wkclass_many_attendances.spots_taken.size
+  test 'physical_attendances' do
+    assert_equal 3, @wkclass_many_attendances.physical_attendances.size
   end
 
+  test 'ethereal_attendances' do
+    assert_equal 4, @wkclass_many_attendances.ethereal_attendances.size
+  end
+
+  test 'revenue' do
+    assert_equal 1694, @wkclass_many_attendances.revenue
+  end
+
+  test 'at_capacity?' do
+    refute_predicate @wkclass_many_attendances, :at_capacity?
+  end
 end

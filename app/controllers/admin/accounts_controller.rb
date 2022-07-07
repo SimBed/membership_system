@@ -11,17 +11,17 @@ class Admin::AccountsController < Admin::BaseController
     if @account.save
       associate_account_holder_to_account
       flash_message :success, t('.success')
-      flash_message *Whatsapp.new(whatsapp_params('new_account')).manage_messaging
+      flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
     else
       flash_message :warning, t('.warning')
     end
     redirect_back fallback_location: admin_clients_path
   end
 
-  def update #reset password
+  def update
     @password = Account.password_wizard(6)
     @account.update(password: @password, password_confirmation: @password)
-    flash_message *Whatsapp.new(whatsapp_params'password_reset').manage_messaging
+    flash_message(*Whatsapp.new(whatsapp_params('password_reset')).manage_messaging)
     redirect_back fallback_location: admin_clients_path
   end
 
@@ -74,6 +74,6 @@ class Admin::AccountsController < Admin::BaseController
   def whatsapp_params(message_type)
     { receiver: @account_holder,
       message_type: message_type,
-      variable_contents: { password: @password }  }
+      variable_contents: { password: @password } }
   end
 end

@@ -118,11 +118,11 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 8, @purchase_fixed.attendance_estimate
   end
 
-  test 'revenue_for_class method' do
-    assert_equal 12_750 / 60, @purchase_package.revenue_for_class(@purchase_package.attendances.first.wkclass)
-    assert_equal 0, @purchase_dropin.revenue_for_class(@wkclass1)
-    assert_equal 6000 / 8, @purchase_fixed.revenue_for_class(@purchase_fixed.attendances.last.wkclass)
-  end
+  # test 'revenue_for_class method' do
+  #   assert_equal 12_750 / 60, @purchase_package.revenue_for_class(@purchase_package.attendances.first.wkclass)
+  #   assert_equal 0, @purchase_dropin.revenue_for_class(@wkclass1)
+  #   assert_equal 6000 / 8, @purchase_fixed.revenue_for_class(@purchase_fixed.attendances.last.wkclass)
+  # end
 
   test 'qualifying_for method' do
     assert_equal [374, 201, 212, 4, 335, 368, 229, 200, 99, 198, 120, 224, 360, 125, 341, 119, 90],
@@ -171,10 +171,10 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'freezes_cover method' do
-    assert_equal [], @purchase_with_freeze.freezes_cover('9 Jan 2022 10:30'.to_datetime).pluck(:id)
+    assert_empty @purchase_with_freeze.freezes_cover('9 Jan 2022 10:30'.to_datetime).pluck(:id)
     assert_equal [48], @purchase_with_freeze.freezes_cover('10 Jan 2022 10:30'.to_datetime).pluck(:id)
     assert_equal [48], @purchase_with_freeze.freezes_cover('28 March 10:30'.to_datetime).pluck(:id)
-    assert_equal [], @purchase_with_freeze.freezes_cover('29 March 10:30'.to_datetime).pluck(:id)
+    assert_empty @purchase_with_freeze.freezes_cover('29 March 10:30'.to_datetime).pluck(:id)
   end
 
   test 'expired_in? method' do

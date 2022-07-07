@@ -4,7 +4,7 @@ module WhatsappNumber
   included do
     def number_formatted(contact_type)
       number = send(contact_type)&.gsub(/[^0-9+]/, '')
-      return "+91#{number}" unless (number&.first == '+' || number.blank?)
+      return "+91#{number}" unless number&.first == '+' || number.blank?
 
       number
     end

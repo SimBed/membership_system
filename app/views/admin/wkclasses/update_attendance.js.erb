@@ -1,8 +1,8 @@
 var classes_table = document.getElementById('classes_table')
 classes_table.innerHTML = "<%= j(render partial: 'admin/wkclasses/class_attendance_table') %>";
 
-var attendances_count = document.getElementById('attendances_count')
-attendances_count.innerHTML = "<%= j(render inline: "#{@wkclass.attendances.confirmed.count} #{image_tag('group.png', class: "header_icon")} |") %>";
+// var attendances_count = document.getElementById('attendances_count')
+// attendances_count.innerHTML = "<%= j(render inline: "#{@wkclass.attendances.confirmed.count} #{image_tag('group.png', class: "header_icon")} |") %>";
 
 var attendances_revenue = document.getElementById('attendances_revenue')
 attendances_revenue.innerHTML = "<%= j(render inline: number_to_currency(@wkclass.revenue, precision: 0, unit: 'Rs. ')) %>";

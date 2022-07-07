@@ -1,35 +1,50 @@
-  <table class="table table-secondary table-striped caption-top">
-    <caption>Attendances <small><%= "(#{@attendances&.size || 0})" %> </small></caption>
+  <table class="table table-secondary table-striped">
     <tbody>
-        <% @attendances.each do |attendance| %>
+      <tr>
+        <th class="stripe-override" colspan="5">Attendances <small><%= "(#{@physical_attendances&.size || 0})" %> </small></th>
+      </tr>
+      <% @physical_attendances.each do |attendance| %>
+        <tr class="less-padding">
+          <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
+          <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
+          <% unless logged_in_as?('junioradmin') %>
+            <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
+          <% end %>
+          <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
+          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+        </tr>
+      <% end %>
+      <% unless @ethereal_attendances_no_amnesty.empty? %>
+        <tr>
+          <th class="stripe-override" colspan="5">No-amnesties <small><%= "(#{@ethereal_attendances_no_amnesty&.size || 0})" %> </small></th>
+        </tr>
+        <% @ethereal_attendances_no_amnesty.each do |attendance| %>
           <tr class="less-padding">
             <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
             <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
             <% unless logged_in_as?('junioradmin') %>
-              <td class="extra_small"><%= number_with_delimiter(attendance.purchase.revenue_for_class(@wkclass)) %></td>
+              <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
             <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
           </tr>
         <% end %>
-    </tbody>
-  </table>
-
-  <hr>
-
-  <table class="table table-secondary table-striped caption-top">
-    <caption>Amnesties <small><%= "(#{@amnesties&.size || 0})" %> </small></caption>
-    <tbody>
-        <% @amnesties.each do |attendance| %>
+      <% end %>
+      <% unless @ethereal_attendances_amnesty.empty? %>
+        <tr>
+          <th class="stripe-override" colspan="5">Amnesties <small><%= "(#{@ethereal_attendances_amnesty&.size || 0})" %> </small></th>
+        </tr>
+        <% @ethereal_attendances_amnesty.each do |attendance| %>
           <tr class="less-padding">
             <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
             <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
             <% unless logged_in_as?('junioradmin') %>
-              <td class="extra_small"><%= number_with_delimiter(attendance.purchase.revenue_for_class(@wkclass)) %></td>
+              <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
             <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
           </tr>
         <% end %>
+      <% end %>
     </tbody>
   </table>

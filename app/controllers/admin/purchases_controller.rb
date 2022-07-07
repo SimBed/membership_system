@@ -122,7 +122,6 @@ class Admin::PurchasesController < Admin::BaseController
         params['ar_date(2i)'] = ''
         params['ar_date(3i)'] = ''
       end
-
     end
   end
 
@@ -213,11 +212,9 @@ class Admin::PurchasesController < Admin::BaseController
 
     client = @purchase.client
     # setup account which returns some flashes as an array of type/message arrays
-    if client.account.nil?
-      Account.setup_for(client).each {|item| flash_message *item}
-    end
+    Account.setup_for(client).each { |item| flash_message(*item) } if client.account.nil?
     # use splat to turn array returned into separate arguments
-    flash_message *Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging
+    flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
   end
 
   # whatsapp_recipient_numbers = [Rails.configuration.twilio[:me], Rails.configuration.twilio[:boss]]
@@ -231,6 +228,6 @@ class Admin::PurchasesController < Admin::BaseController
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
       message_type: message_type,
-      variable_contents: { password: (@password if message_type == 'new_account') }.compact  }
+      variable_contents: { password: (@password if message_type == 'new_account') }.compact }
   end
 end

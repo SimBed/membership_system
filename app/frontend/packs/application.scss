@@ -758,6 +758,8 @@ td a.extra_small {
 .table-striped>tbody>tr:nth-child(even)>th.stripe-override {
   background-color: white;
   background: linear-gradient($gray-darker, #dddddd);
+  box-shadow: none;
+  /*box-shadow: none;*/
 }
 
 @media (min-width: 600px) {
