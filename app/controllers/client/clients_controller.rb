@@ -7,9 +7,10 @@ class Client::ClientsController < ApplicationController
 
   def book
     @wkclasses_visible = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
-    @wkclasses_in_booking_window = @wkclasses_visible.select { |w| w.booking_window.cover?(Time.zone.now) }
-    @wkclasses_not_in_booking_window = @wkclasses_visible - @wkclasses_in_booking_window
-
+    @wkclasses_window_closed = @wkclasses_visible.select { |w| w.booking_window.end < Time.zone.now }
+    @wkclasses_not_yet_open = @wkclasses_visible.select { |w| w.booking_window.begin > Time.zone.now }
+    @wkclasses_in_booking_window = @wkclasses_visible - @wkclasses_window_closed - @wkclasses_not_yet_open
+    # @wkclasses_in_booking_window = @wkclasses_visible.select { |w| w.booking_window.cover?(Time.zone.now) }
     @purchases = Purchase.package.not_fully_expired.where(client: @client)
   end
 
