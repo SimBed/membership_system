@@ -16,7 +16,7 @@ class Admin::AttendancesController < Admin::BaseController
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
-    @qualifying_purchases = qualifying_purchases
+    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
   end
 
   def create
@@ -41,16 +41,11 @@ class Admin::AttendancesController < Admin::BaseController
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
     flash_message booking_flash_hash[:booking][:successful][:colour],
                   (send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day)
-    # flash[booking_flash_hash[:booking][:successful][:colour]] =
-    #   send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day
   end
 
   def after_successful_create_by_admin
-    @client_name = @attendance.purchase.client.name
     redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
-    flash_message :success, "#{@client_name}'s attendance was successfully logged"
-    # flash[:success] = "#{@client_name}'s attendance was successfully logged"
-    # @wkclass = Wkclass.find(params[:attendance][:wkclass_id])
+    flash_message :success, "#{@attendance.client_name}'s attendance was successfully logged"
   end
 
   def after_unsuccessful_create_by_client
@@ -58,23 +53,26 @@ class Admin::AttendancesController < Admin::BaseController
     # redirect_to "/client/clients/#{@client.id}/book"
     flash_message booking_flash_hash[:booking][:unsuccessful][:colour],
                   (send booking_flash_hash[:booking][:unsuccessful][:message])
-    # flash[booking_flash_hash[:booking][:unsuccessful][:colour]] =
-    #   send booking_flash_hash[:booking][:unsuccessful][:message]
   end
 
   def after_unsuccessful_create_by_admin
     session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
-    @qualifying_purchases = qualifying_purchases
+    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
     render :new, status: :unprocessable_entity
   end
 
   def update
     @purchase = @attendance.purchase
-    @wkclass = Wkclass.find(@attendance.wkclass.id)
+    @wkclass = @attendance.wkclass
     update_by_client if logged_in_as?('client')
-    update_by_admin if logged_in_as?('junioradmin', 'admin', 'superadmin')
+    if logged_in_as?('junioradmin', 'admin', 'superadmin')
+      result =  AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update
+      flash_message(*result.flash_array)
+      update_purchase_status([@purchase]) if result.penalty_change?
+      handle_admin_update_response if result.success?
+    end
   end
 
   def update_by_client
@@ -88,17 +86,6 @@ class Admin::AttendancesController < Admin::BaseController
       handle_client_update_response
     else
       flash_client_update_fail
-    end
-  end
-
-  def update_by_admin
-    basic_data('admin')
-    if @attendance.update(attendance_status_params)
-      action_admin_update_success
-      handle_admin_update_response
-    else
-      flash_message :warning, t('.warning')
-      # flash[:warning] = t('.warning')
     end
   end
 
@@ -122,15 +109,6 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   private
-
-  # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2, {class: "close_to_expiry"}], ...]
-  def qualifying_purchases
-    Purchase.qualifying_for(@wkclass).map do |p|
-      close_to_expiry = 'close_to_expiry' if p.close_to_expiry? && !p.dropin?
-      ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id,
-       { class: close_to_expiry }]
-    end
-  end
 
   def set_attendance
     @attendance = Attendance.find(params[:id])
@@ -156,13 +134,12 @@ class Admin::AttendancesController < Admin::BaseController
       @time_of_request = time_of_request
       @original_status = @attendance.status
     else # admin
-      @client_name = @attendance.purchase.client.name
+      @client_name = @attendance.client_name
     end
   end
 
   def set_flash(hash, event)
     flash_message hash.dig(event, :colour), (send hash.dig(event, :message), @wkclass_name, @wkclass_day)
-    # flash[hash.dig(event, :colour)] = send hash.dig(event, :message), @wkclass_name, @wkclass_day
   end
 
   def attendance_params
@@ -238,23 +215,9 @@ class Admin::AttendancesController < Admin::BaseController
     end
   end
 
-  def action_admin_update_success
-    # if the amendment count is not incremented when admin does it, risk getting out of sync if client does one,
-    # then admin does the next such that a) 3rd amendment is breeched and
-    # b) client stranded with a booked class she cant cancel herself
-    @attendance.increment!(:amendment_count)
-    attendance_status = attendance_status_params[:status]
-    if ['cancelled early', 'cancelled late', 'no show'].include? attendance_status
-      send "action_#{attendance_status.split.join('_')}"
-    else # attended or a rebook (which always count)
-      @attendance.update(amnesty: false)
-      handle_freeze
-    end
-  end
-
   def action_cancelled_late
     @purchase.increment!(:late_cancels)
-    late_cancels_max = amnesty_limit[:cancel_late][@purchase.product_type]
+    late_cancels_max = amnesty_limit[:late_cancels][@purchase.product_type]
     if @purchase.reload.late_cancels > late_cancels_max
       late_cancellation_penalty @purchase.product_type, penalty: true
       # amnesty remains false from earlier booking
@@ -267,17 +230,6 @@ class Admin::AttendancesController < Admin::BaseController
   def action_cancelled_early
     @purchase.increment!(:early_cancels)
     @attendance.update(amnesty: true)
-  end
-
-  def action_no_show
-    @purchase.increment!(:no_shows)
-    no_shows_max = amnesty_limit[:no_show][@purchase.product_type]
-    if @purchase.reload.no_shows > no_shows_max
-      no_show_penalty @purchase.product_type, penalty: true
-    else
-      no_show_penalty @purchase.product_type, penalty: false
-      @attendance.update(amnesty: true)
-    end
   end
 
   def handle_client_update_response
@@ -319,8 +271,8 @@ class Admin::AttendancesController < Admin::BaseController
         redirect_back fallback_location: admin_wkclasses_path
       end
       format.js do
-        flash.now[:success] = "#{@client_name}'s booking was successfully updated to  #{@attendance.status}"
-        render 'admin/wkclasses/update_attendance.js.erb'
+        flash.now[:success] = "#{@attendance.client_name}'s booking was successfully updated to  #{@attendance.status}"
+        render template: 'admin/wkclasses/update_attendance', formats: :js
       end
     end
   end
@@ -480,8 +432,8 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def extra_benefits_after_change?
-    late_cancels_max = amnesty_limit[:cancel_late][@purchase.product_type]
-    no_shows_max = amnesty_limit[:no_show][@purchase.product_type]
+    late_cancels_max = amnesty_limit[:late_cancels][@purchase.product_type]
+    no_shows_max = amnesty_limit[:no_shows][@purchase.product_type]
     has_late_cancels_amnesty = @purchase.late_cancels < late_cancels_max
     has_no_show_amnesty = @purchase.no_shows < no_shows_max
     amnesty_when_changed = true
@@ -509,12 +461,6 @@ class Admin::AttendancesController < Admin::BaseController
     end
   end
 
-  # redundant?
-  # booked and attended already count in all circumstances so changing them wont risk providing excess benefit
-  # [this is true in context of fixed classes, not quite true for unlimited.
-  # Deal with eg unlimited attended to no amnesty no show later]
-  # return if %w[booked attended].include?(@attendance.status)
-
   def late_cancellation_penalty(package_type, penalty: true)
     # return if Rails.env.production?
     # no more than one penalty per attendance
@@ -533,47 +479,26 @@ class Admin::AttendancesController < Admin::BaseController
     end
   end
 
-  def no_show_penalty(package_type, penalty: true)
-    # return if Rails.env.production?
-    return unless package_type == :unlimited_package && @attendance.penalty.nil?
-
-    if penalty
-      Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
-      update_purchase_status([@purchase])
-      flash_message(*Whatsapp.new(whatsapp_params('no_show_penalty')).manage_messaging)
-      # manage_messaging 'no_show_penalty'
-    else
-      flash_message(*Whatsapp.new(whatsapp_params('no_show_no_penalty')).manage_messaging)
-      # manage_messaging 'no_show_no_penalty'
-    end
-  end
+  # def no_show_penalty(package_type, penalty: true)
+  #   # return if Rails.env.production?
+  #   return unless package_type == :unlimited_package && @attendance.penalty.nil?
+  #
+  #   if penalty
+  #     Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
+  #     update_purchase_status([@purchase])
+  #     flash_message(*Whatsapp.new(whatsapp_params('no_show_penalty')).manage_messaging)
+  #     # manage_messaging 'no_show_penalty'
+  #   else
+  #     flash_message(*Whatsapp.new(whatsapp_params('no_show_no_penalty')).manage_messaging)
+  #     # manage_messaging 'no_show_no_penalty'
+  #   end
+  # end
 
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
       message_type: message_type,
       variable_contents: { name: @wkclass_name, day: @wkclass_day } }
   end
-
-  # def manage_messaging(message_type)
-  #   recipient_number = @purchase.client.whatsapp_messaging_number
-  #   if recipient_number.nil?
-  #     flash_message :warning, "Client has no contact number. #{message_type} message not sent"
-  #   else
-  #     return unless white_list_whatsapp_receivers
-  #
-  #     send_message recipient_number, message_type
-  #     flash_message :warning, "#{message_type} message sent to #{recipient_number}"
-  #   end
-  # end
-  #
-  # def send_message(to, message_type)
-  #   return unless white_list_whatsapp_receivers
-  #
-  #   whatsapp_params = { to: to,
-  #                       message_type: message_type,
-  #                       variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }
-  #   Whatsapp.new(whatsapp_params).send_whatsapp
-  # end
 
   def set_period
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')

@@ -24,4 +24,8 @@ class AttendanceTest < ActiveSupport::TestCase
     @attendance.status = 'half-booked'
     refute_predicate @attendance, :valid?
   end
+
+  test 'delegated client_name method' do
+    assert_equal @attendance.client_name, 'Chintan Suchak'
+  end
 end

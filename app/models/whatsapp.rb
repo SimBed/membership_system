@@ -8,9 +8,11 @@ class Whatsapp
 
   def manage_messaging
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
-    return :warning, "Client has no contact number. #{@message_type} details not sent" if @to_number.nil?
+    return [nil] if @message_type == 'early_cancels_no_penalty'
 
-    return nil, nil unless white_list_whatsapp_receivers
+    return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil?
+
+    return [nil] unless white_list_whatsapp_receivers
 
     send_whatsapp
     [:warning, "#{@message_type} message sent to #{@to_number}"]
@@ -55,7 +57,7 @@ class Whatsapp
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
-  def body_no_show_penalty
+  def body_no_shows_penalty
     "Sorry you missed your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
       "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
       "\nA deduction has been applied to your Package this time, in line with the no-show policy." +
@@ -63,7 +65,7 @@ class Whatsapp
       "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
-  def body_no_show_no_penalty
+  def body_no_shows_no_penalty
     "Sorry you missed your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
       "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
       "\nA deduction has not been applied to your Package this time. If you no-show again, a deduction will apply, in line with the no-show policy." +
@@ -71,7 +73,7 @@ class Whatsapp
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
-  def body_late_cancel_penalty
+  def body_late_cancels_penalty
     "Thanks for letting us know you couldn't make your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
       "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
       "\nA deduction has been applied to your Package this time, in line with the late cancellation policy." +
@@ -79,7 +81,7 @@ class Whatsapp
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
-  def body_late_cancel_no_penalty
+  def body_late_cancels_no_penalty
     "Thanks for letting us know you couldn't make your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +
       "\nPlease try and make changes to your bookings in time to avoid late cancellation and no-show deductions." +
       "\nA deduction has not been applied to your Package this time. If you cancel late again, a deduction may apply, in line with the late cancellation policy." +

@@ -82,6 +82,16 @@ class Purchase < ApplicationRecord
     end
   end
 
+  # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2, {class: "close_to_expiry"}], ...]
+  # used in attendances controller to populate dropdown for new booking
+  def self.qualifying_purchases(wkclass)
+    qualifying_for(wkclass).map do |p|
+      close_to_expiry = 'close_to_expiry' if p.close_to_expiry? && !p.dropin?
+      ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id,
+       { class: close_to_expiry }]
+    end
+  end
+
   def self.use_for_booking(wkclass, client)
     # in unusual case of more than one available purchase, use the started one (earliest dop if 2 started ones) or the earliest dop if no started one
     purchases = available_for_booking(wkclass, client)

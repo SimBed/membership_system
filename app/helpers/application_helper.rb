@@ -1,5 +1,7 @@
 module ApplicationHelper
-  def flash_message(type, text)
+  def flash_message(type, text = nil)
+    return if type.nil?
+
     flash[type] ||= []
     flash[type] << (text.is_a?(Array) ? text : [text])
   end
