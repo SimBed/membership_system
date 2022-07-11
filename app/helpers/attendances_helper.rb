@@ -103,27 +103,45 @@ module AttendancesHelper
 
   def amnesty_limit
     if Rails.env.production?
-      { cancel_late:
+      { late_cancels:
           { unlimited_package: 2,
             fixed_package: 1,
             trial: 100,
-            dropin: 0 },
-        no_show:
+            dropin: 0,
+            penalty: {amount: 1} },
+        no_shows:
           { unlimited_package: 1,
             fixed_package: 0,
             trial: 100,
-            dropin: 0 } }
+            dropin: 0,
+            penalty: {amount: 2} },
+        early_cancels:
+          { unlimited_package: 1000,
+            fixed_package: 1000,
+            trial: 1000,
+            dropin: 1000,
+            penalty: {amount: 1} }
+       }
     else
-      { cancel_late:
+      { late_cancels:
           { unlimited_package: 2,
             fixed_package: 1,
             trial: 100,
-            dropin: 0 },
-        no_show:
+            dropin: 0,
+            penalty: {amount: 1} },
+        no_shows:
           { unlimited_package: 1,
             fixed_package: 0,
             trial: 100,
-            dropin: 0 } }
+            dropin: 0,
+            penalty: {amount: 2} },
+        early_cancels:
+          { unlimited_package: 1000,
+            fixed_package: 1000,
+            trial: 1000,
+            dropin: 1000,
+            penalty: {amount: 1} }
+       }
     end
   end
 end

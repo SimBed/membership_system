@@ -8,7 +8,7 @@ class Attendance < ApplicationRecord
   # date is a Wkclass instance method that formats start_time
   delegate :start_time, :date, :time, to: :wkclass
   delegate :client, to: :purchase
-  delegate :name, to: :client
+  delegate :name, to: :client, prefix: :client
   delegate :product, to: :purchase
   scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window) }
   scope :amnesty, -> { where(amnesty: true) }
