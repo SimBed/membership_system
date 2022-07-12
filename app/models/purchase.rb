@@ -71,14 +71,16 @@ class Purchase < ApplicationRecord
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
-        p.committed_on?(wkclass.start_time.to_date)
+        p.committed_on?(wkclass.start_time.to_date) ||
+          p.expires_before?(wkclass.start_time.to_date)
     end
   end
 
   def self.available_for_booking(wkclass, client)
     available_to(wkclass).where(client_id: client.id).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
-        p.committed_on?(wkclass.start_time.to_date)
+        p.committed_on?(wkclass.start_time.to_date)  ||
+          p.expires_before?(wkclass.start_time.to_date)
     end
   end
 
@@ -123,6 +125,12 @@ class Purchase < ApplicationRecord
   def purchased_after?(adate)
     # (adate..Float::INFINITY).cover? dop
     dop > adate
+  end
+
+  def expires_before?(wkclass_date)
+    return false if expiry_date.nil?
+    
+    expiry_date < wkclass_date
   end
 
   def name_with_dop

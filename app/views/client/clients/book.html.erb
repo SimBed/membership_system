@@ -8,7 +8,8 @@
 <% if @wkclasses_visible.empty? %>
   <div id="bookings-table" class="container px-1 mb-3">
     <% if @purchases.empty? %>
-      <p class="bolditalics mb-0">Your package has expired. <%= link_to 'Renew Now','#', class: "like_button" %> </p>
+      <p class="bolditalics mb-0">Your package has expired.</p>
+      <p class="bolditalics mb-0"> Contact The Space & Renew Now!<%#= link_to 'Renew Now','#', class: "like_button" %></p>
     <% else %>
       <p class="bolditalics mb-0">There are no classes currently in the booking window.</p>
     <% end %>

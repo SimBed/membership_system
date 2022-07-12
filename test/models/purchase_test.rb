@@ -135,8 +135,10 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'use_for_booking method' do
+    # expiry date of @client's purchase (2022-03-22) is before wkclass date
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
-    assert_equal 343, Purchase.use_for_booking(@tomorrows_class_early, @client).id
+    assert_nil Purchase.use_for_booking(@tomorrows_class_early, @client)
+    assert_equal 4, Purchase.use_for_booking(@tomorrows_class_early, @client2).id
   end
 
   test 'committed_on? method' do
