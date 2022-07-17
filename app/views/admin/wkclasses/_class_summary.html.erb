@@ -5,7 +5,7 @@
 <%= link_to '<<', admin_wkclass_path(@wkclasses.next_item(params[:id].to_i)), {class: "paginate_icon"} unless params[:no_scroll] %>
 <div class ="d-inline-block">
 <%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
-</div-->
+</div>
 <% unless logged_in_as?('junioradmin') %>
 <div id="attendances_revenue" class ="d-inline-block">
 <%= number_to_currency(@wkclass.revenue, precision: 0, unit: 'Rs. ') %> |

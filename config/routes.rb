@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   namespace :superadmin do
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]
+    resource :settings
   end
   namespace :client do
     resources :clients, only: [:show]

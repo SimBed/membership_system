@@ -36,10 +36,10 @@
           <li><hr class="dropdown-divider"></li>
         <% end %>
         <% if logged_in_as?('superadmin') %>
-          <li>
-            <%= link_to 'expenses', superadmin_expenses_path, class: "dropdown-item" %>
-            <%= link_to 'instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %>
-          </li>
+          <li><%= link_to 'expenses', superadmin_expenses_path, class: "dropdown-item" %></li>
+          <li><%= link_to 'instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><%= link_to 'settings', superadmin_settings_path, class: "dropdown-item" %></li>
         <% end %>
       </ul>
     </li>

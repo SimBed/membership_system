@@ -1,0 +1,33 @@
+<%= form_for(Setting.new, url: superadmin_settings_path) do |f| %>
+  <% if @errors.any? %>
+    <div class="alert alert-block alert-danger">
+      <ul>
+        <% @errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <label class="control-label">Whitelist</label>
+    <%= f.text_area :whitelist, value: Setting.whitelist.join("\n"), class: "form-control" %>
+  </div>  
+
+  <div class="form-group">
+    <label class="control-label">Quotation</label>
+    <%= f.text_field :quotation, value: Setting.quotation, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">Amnesty Options</label>
+    <%= f.text_area :amnesty_limit, value: @amnesties, class: "form-control", style: "height: 480px;"  %>
+    <div class="form-text">
+      Be careful. Don't change layout or App will break.
+    </div>
+  </div>
+
+  <div>
+    <%= f.submit 'Update Settings' %>
+  </div>
+<% end %>

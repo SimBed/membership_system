@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_02_124524) do
+ActiveRecord::Schema.define(version: 2022_07_14_120449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,6 +207,14 @@ ActiveRecord::Schema.define(version: 2022_07_02_124524) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["workout_group_id"], name: "index_rel_workout_group_workouts_on_workout_group_id"
     t.index ["workout_id"], name: "index_rel_workout_group_workouts_on_workout_id"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["var"], name: "index_settings_on_var", unique: true
   end
 
   create_table "wkclasses", force: :cascade do |t|
