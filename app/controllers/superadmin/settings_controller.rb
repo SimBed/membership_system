@@ -29,7 +29,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
 
   private
     def setting_params
-      params.require(:setting).permit(:quotation, :amnesty_limit)
+      params.require(:setting).permit(:whitelist, :quotation, :amnesty_limit)
     end
 
 end
