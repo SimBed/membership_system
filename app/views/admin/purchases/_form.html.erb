@@ -1,3 +1,5 @@
+
+
 <%#= https://stackoverflow.com/questions/48197245/form-for-vs-form-with-in-rails-5-with-namespace
 prior to introduction of the admin folder structure/namespace the named route for the url "/purchases" was purchases_path
 With the admin namespace, the required url is "/admin/purchase" with named route admin_purchases_path.
@@ -88,29 +90,28 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
   </div>
 <% end %>
 
+<%# javascript_pack_tag 'payment_method' %>
 <script>
-  // update value of payment field based on product selected
-  // $(function() {
-  //     $("select#purchase_product_name").on("change", function() {
-  //         $.ajax({
-  //             url:  '/products/payment',
-  //             type: 'post',
-  //             data: { selected_product: $("select#purchase_product_name").val()
-  //            }
-  //         });
-  //     });
-  // });
+// update value of payment field based on product selected
+// ensure payment method if fitternity if price is fitternity
+$(function() {
 
-  $(function() {
-      $("select#purchase_price_id").on("change", function() {
-          $.ajax({
-              url:  '/products/payment',
-              type: 'post',
-              data: { selected_price: $("select#purchase_price_id").val()
-             }
-          });
-      });
-  });
+    $("select#purchase_price_id").on("change", function() {
+      selection = document.getElementById("purchase_price_id");
+      fitternity = false;
+      selection_text = selection.options[selection.selectedIndex].text;
+      if (selection_text.substring(0,10) == 'Fitternity') {
+        // fitternity = true
+        var q = document.getElementById('purchase_payment_mode');
+        q.selectedIndex = 7;
+      }
+        // $.ajax({
+        //     url:  '/products/payment',
+        //     type: 'post',
+        //     data: { selected_price: selection.value, fitternity: fitternity }
+        // });
+    });
+});
 </script>
 
 <script>

@@ -57,6 +57,8 @@ class Admin::ProductsController < Admin::BaseController
 
   def payment
     @base_payment = Price.find(params[:selected_price]).price
+    # https://stackoverflow.com/questions/36228873/ruby-how-to-convert-a-string-to-boolean
+    @fitternity = ActiveModel::Type::Boolean.new.cast(params[:fitternity])
     render 'payment.js.erb'
   end
 
