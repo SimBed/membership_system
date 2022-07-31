@@ -93,7 +93,7 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
 <%# javascript_pack_tag 'payment_method' %>
 <script>
 // update value of payment field based on product selected
-// ensure payment method if fitternity if price is fitternity
+// ensure payment method is fitternity if price is fitternity
 $(function() {
 
     $("select#purchase_price_id").on("change", function() {
@@ -105,11 +105,12 @@ $(function() {
         var q = document.getElementById('purchase_payment_mode');
         q.selectedIndex = 7;
       }
-        // $.ajax({
-        //     url:  '/products/payment',
-        //     type: 'post',
-        //     data: { selected_price: selection.value, fitternity: fitternity }
-        // });
+        $.ajax({
+            url:  '/products/payment',
+            type: 'post',
+            data: { selected_price: selection.value }
+            // data: { selected_price: selection.value, fitternity: fitternity }
+        });
     });
 });
 </script>

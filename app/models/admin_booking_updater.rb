@@ -39,6 +39,8 @@ class AdminBookingUpdater
     cancel_attribute = self.class.status_map(new_status)
     @purchase.increment!(cancel_attribute)
     if @purchase.send(cancel_attribute) > amnesty_limit[cancel_attribute][@purchase.product_type]
+      # typically will already be false eg booked to no show, but could be correction of eg cancellation early (with amnesty) to cancellation late (without amnesty)
+      @attendance.update(amnesty: false)
       cancellation_penalty @purchase.product_type, cancel_attribute: cancel_attribute
     else
       @attendance.update(amnesty: true)

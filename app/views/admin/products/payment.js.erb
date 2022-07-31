@@ -1,2 +1,6 @@
 var p = document.getElementById('purchase_payment')
 p.value = "<%= j(@base_payment) %>";
+<%# if @fitternity %>
+  // var q = document.getElementById('purchase_payment_mode')
+  // q.selectedIndex = 7
+<%# end %>
