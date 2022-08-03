@@ -15,6 +15,7 @@ default: &default
   - Not paid
   - Paid to instructor
   - PayTM
+  - Razorpay
 
  gst_rate:
   - 18
