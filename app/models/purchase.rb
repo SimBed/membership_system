@@ -19,8 +19,9 @@ class Purchase < ApplicationRecord
     validates :ar_payment, presence: true
     validates :ar_date, presence: true
   end
-  validate :fitternity_payment
   validates :fitternity, presence: true, if: :fitternity_id
+  validate :fitternity_payment
+  validate :fitternity_ongoing_package
   scope :not_expired, lambda {
                         where.not(status: ['expired', 'provisionally expired'])
                       }
@@ -129,7 +130,7 @@ class Purchase < ApplicationRecord
 
   def expires_before?(wkclass_date)
     return false if expiry_date.nil?
-    
+
     expiry_date < wkclass_date
   end
 
@@ -314,6 +315,16 @@ class Purchase < ApplicationRecord
   end
 
   def fitternity_payment
+    if ('Fitternity'.in? price.name) && (payment_mode != 'Fitternity')
+      errors.add(:base, 'A Fitternity price must have a Fitternity payment mode')
+    end
+
+    if !('Fitternity'.in? price.name) && (payment_mode == 'Fitternity')
+      errors.add(:base, 'A price that is not Fitternity can not have a Fitternity payment mode')
+    end
+  end
+
+  def fitternity_ongoing_package
     return unless payment_mode == 'Fitternity'
 
     errors.add(:base, 'No ongoing Fitternity package') if Fitternity.ongoing.size.zero?

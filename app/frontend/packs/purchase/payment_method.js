@@ -34,13 +34,14 @@ $('select#purchase_product_id').on('change', function() {
   if (options) {
     $('#purchase_price_id').html(options);}
   else {
-    $('#purchase_price_id').empty();}
-    $.ajax({
-        url:  '/products/payment',
-        type: 'get',
-        data: { selected_price: $("select#purchase_price_id").val()
-       }
-    });
+    $('#purchase_price_id').empty();
+  }
+  $.ajax({
+      url:  '/products/payment',
+      type: 'get',
+      data: { selected_price: $("select#purchase_price_id").val()
+     }
+  });
  });
 
  $(document).ready(()=>{

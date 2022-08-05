@@ -55,8 +55,8 @@ class Admin::WkclassesController < Admin::BaseController
   def create
     @wkclass = Wkclass.new(wkclass_params)
     if @wkclass.save
-      @attendances = @wkclass.attendances.no_amnesty.order_by_status
-      @amnesties = @wkclass.attendances.amnesty.order_by_status
+      # @attendances = @wkclass.attendances.no_amnesty.order_by_status
+      # @amnesties = @wkclass.attendances.amnesty.order_by_status
       redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
       flash[:success] = t('.success')
       # @wkclass.delay.send_reminder

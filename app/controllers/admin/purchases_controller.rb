@@ -192,7 +192,7 @@ class Admin::PurchasesController < Admin::BaseController
     # mapping now done by form.collection_select in view
     # @clients = Client.order_by_first_name.map { |c| [c.name, c.id] }
     @clients = Client.order_by_first_name
-    @product_names = Product.order_by_name_max_classes
+    @products = Product.order_by_name_max_classes
     @payment_methods = Rails.application.config_for(:constants)['payment_methods']
   end
 

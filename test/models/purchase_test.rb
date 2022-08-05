@@ -6,6 +6,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @client2 = clients(:bhavik)
     @product = products(:unlimited3m)
     @price = prices(:base_new_unlimited3m)
+    @price_fitternity = prices(:price2)
     @purchase =
       Purchase.new(client_id: @client.id,
                    product_id: @product.id,
@@ -51,6 +52,16 @@ class PurchaseTest < ActiveSupport::TestCase
   test 'if payment_method is Fitternity then a Fitternity should be ongoing' do
     @purchase.payment_mode = 'Fitternity'
     @fitternity.update(max_classes: @fitternity.purchases.size)
+    refute_predicate @purchase, :valid?
+  end
+
+  test 'A Fitternity price must have a Fitternity payment mode' do
+    @purchase.price = @price_fitternity
+    refute_predicate @purchase, :valid?
+  end
+
+  test 'A price that is not Fitternity can not have a Fitternity payment mode' do
+    @purchase.payment_mode = 'Fitternity'
     refute_predicate @purchase, :valid?
   end
 
