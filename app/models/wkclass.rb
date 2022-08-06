@@ -65,13 +65,28 @@ class Wkclass < ApplicationRecord
   #   true
   # end
 
+  # def committed_on_same_day?(client)
+  #   # fixed packages can be used however the client wants (eg twice a day is ok)
+  #   non_amnesty_attendances_on_same_day =
+  #     Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
+  #            .where('clients.id = ? AND attendances.amnesty = false', client.id)
+  #            .merge(Purchase.unlimited.package)
+  #   return false if non_amnesty_attendances_on_same_day.empty?
+  #
+  #   true
+  # end
+
   def committed_on_same_day?(client)
+    # Used in already_committed attendances_controller before_action callback
     # fixed packages can be used however the client wants (eg twice a day is ok)
-    non_amnesty_attendances_on_same_day =
+    # unlimited packages not allowed 2 physical attendances on same day, but allowed to cancel or no show and then book another classes
+    # (originally for Unlimited we only allowed booking another class after LC or no show if it was an amnesty)
+    attendances_on_same_day =
       Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
-             .where('clients.id = ? AND attendances.amnesty = false', client.id)
+             .where('clients.id = ?', client.id)
+             .merge(Attendance.committed)
              .merge(Purchase.unlimited.package)
-    return false if non_amnesty_attendances_on_same_day.empty?
+    return false if attendances_on_same_day.empty?
 
     true
   end

@@ -120,7 +120,7 @@ class Purchase < ApplicationRecord
   def committed_on?(adate)
     return false if fixed_package? # fixed packages can do what they want
 
-    attendances.no_amnesty.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
+    attendances.committed.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
   end
 
   def purchased_after?(adate)

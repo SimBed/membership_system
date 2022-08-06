@@ -136,7 +136,7 @@ class PurchaseTest < ActiveSupport::TestCase
   # end
 
   test 'qualifying_for method' do
-    assert_equal [374, 201, 212, 4, 335, 368, 229, 200, 99, 198, 120, 224, 360, 125, 341, 119, 90],
+    assert_equal [374, 201, 343, 212, 4, 335, 312, 368, 229, 200, 99, 198, 339, 120, 224, 360, 125, 341, 119, 230, 90],
                  Purchase.qualifying_for(@wkclass1).pluck(:id)
   end
   # 90 are frozen, but correctly still appears

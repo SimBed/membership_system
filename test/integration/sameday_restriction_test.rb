@@ -59,7 +59,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'client cant book 2nd class on same day after cancelling first class late (without amnesty)' do
+  test 'client can (now) book 2nd class on same day after cancelling first class late (without amnesty)' do
     log_in_as(@account_client)
     # book a class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
@@ -73,8 +73,8 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
 
-    # client tries but fails to book 2nd class same day after late cancellation of first (with amnesty used up)
-    assert_difference '@client.attendances.no_amnesty.size', 0 do
+    # client succeeds in booking 2nd class same day after late cancellation of first (even with amnesty used up)
+    assert_difference '@client.attendances.no_amnesty.size', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
@@ -99,7 +99,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'client cant book 2nd class on same day after no show on first class (without amnesty)' do
+  test 'client (now) can book 2nd class on same day after no show on first class (without amnesty)' do
     log_in_as(@account_client)
     # book a class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
@@ -113,9 +113,9 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
 
-    # client tries and fails to book 2nd class same day after late cancellation of first
+    # client succeeds in booking 2nd class same day after no show of first (even with amnesty used up)
     log_in_as(@account_client)
-    assert_difference '@client.attendances.no_amnesty.size', 0 do
+    assert_difference '@client.attendances.no_amnesty.size', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
