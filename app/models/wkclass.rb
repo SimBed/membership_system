@@ -1,4 +1,5 @@
 class Wkclass < ApplicationRecord
+  include Csv  
   # want settings hash from ApplicationHelper
   include ApplicationHelper
   has_many :attendances, dependent: :destroy

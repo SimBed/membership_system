@@ -1,4 +1,5 @@
 class Expense < ApplicationRecord
+  include Csv  
   belongs_to :workout_group
   scope :order_by_date, -> { order(date: :desc) }
   scope :during, ->(period) { where({ date: period }) }

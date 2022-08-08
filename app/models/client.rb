@@ -1,5 +1,6 @@
 class Client < ApplicationRecord
   include WhatsappNumber
+  include Csv
   has_many :purchases, dependent: :destroy
   has_many :attendances, through: :purchases
   belongs_to :account, optional: true
@@ -74,15 +75,6 @@ class Client < ApplicationRecord
     Client.joins(purchases: [attendances: [:wkclass]])
           .where(id: id).where(attendances: { status: 'attended' })
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
-  end
-
-  def self.to_csv
-    CSV.generate(row_sep: "\n") do |csv|
-      csv << column_names
-      all.find_each do |client|
-        csv << client.attributes.values_at(*column_names)
-      end
-    end
   end
 
   private

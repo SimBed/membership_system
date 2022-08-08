@@ -1,4 +1,10 @@
 <h2>Products <%= link_to image_tag('add.png', class: "button_icon"), new_admin_product_path, class: "icon-container" %></h2>
+<% if logged_in_as?('superadmin') %>
+<p>
+  Download:
+  <%= link_to "Full Data", admin_products_path(format: "csv", export_all: true) %>
+</p>
+<% end %>
 <div id="products-table" class="container px-1 mb-5 margin-override">
   <%= render partial: 'products_table' %>
 </div>

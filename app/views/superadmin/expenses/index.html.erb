@@ -4,6 +4,12 @@
     <%= options_for_select @months, session[:revenue_month] %>
   </select>
 </form>
+<% if logged_in_as?('superadmin') %>
+<p>
+  Download:
+  <%= link_to "Full Data", superadmin_expenses_path(format: "csv", export_all: true) %>
+</p>
+<% end %>
 <div id="expenses_table" class="container px-1 mb-5 margin-override">
   <%= render partial: 'expenses_table' %>
 </div>

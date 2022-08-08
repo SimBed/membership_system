@@ -2,6 +2,12 @@
 <div id="purchases-filter" class="container px-1 mb-5 margin-override">
 <%= render partial: 'filter_form' %>
 </div>
+<% if logged_in_as?('superadmin') %>
+<p>
+  Download:
+  <%= link_to "Full Data", admin_purchases_path(format: "csv", export_all: true) %>
+</p>
+<% end %>
 <div id="purchases-table" class="container purchases-table px-1 mb-5 margin-override">
   <%= render partial: 'purchases_table' %>
 </div>

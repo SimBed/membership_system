@@ -4,7 +4,7 @@ class Admin::FitternitiesController < Admin::BaseController
   before_action :set_fitternity, only: [:show, :edit, :update, :destroy]
 
   def index
-    @fitternities = Fitternity.all
+    @fitternities = Fitternity.order(expiry_date: :desc)
   end
 
   def show

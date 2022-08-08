@@ -106,6 +106,11 @@ class Admin::AttendancesController < Admin::BaseController
     @revenue = @attendances.map(&:revenue).inject(0, :+)
     @months = months_logged
     @workout_groups = ['All'] + WorkoutGroup.all.map { |wg| [wg.name.to_s] }
+    @attendances = Attendance.all if params[:export_all]
+    respond_to do |format|
+      format.html
+      format.csv { send_data @attendances.to_csv }
+    end
   end
 
   private

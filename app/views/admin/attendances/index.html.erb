@@ -7,10 +7,13 @@
               </select>
             </form>
 </h2>
-<%# unless session[:workout_group] == 'All' %>
-  <p> <%= number_to_currency(@revenue, precision: 0, unit: 'Rs.') %> </p>
-<%# end %>
-
+<p> <%= number_to_currency(@revenue, precision: 0, unit: 'Rs.') %> </p>
+<% if logged_in_as?('superadmin') %>
+<p>
+  Download:
+  <%= link_to "Full Data", admin_attendances_path(format: "csv", export_all: true) %>
+</p>
+<% end %>
 <div id="attendances_table" class="container px-1 mb-5 margin-override">
   <%= render partial: 'attendances_table' %>
 </div>

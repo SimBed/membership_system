@@ -2,6 +2,12 @@
 <div id="wkclasses-filter" class="container px-1 mb-5 margin-override">
 <%= render partial: 'filter_form' %>
 </div>
+<% if logged_in_as?('superadmin') %>
+<p>
+  Download:
+  <%= link_to "Full Data", admin_wkclasses_path(format: "csv", export_all: true) %>
+</p>
+<% end %>
 <div id="wkclasses-table" class="container px-1 mb-5 margin-override">
   <%= render partial: 'classes_table' %>
 </div>

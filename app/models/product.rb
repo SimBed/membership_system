@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  include Csv  
   has_many :purchases, dependent: :destroy
   has_many :prices, dependent: :destroy
   belongs_to :workout_group

@@ -118,6 +118,8 @@ class Admin::ClientsController < Admin::BaseController
     respond_to do |format|
       format.html
       format.js { render 'index.js.erb' }
+      # Railscasts #362 Exporting Csv And Excel
+      # https://www.youtube.com/watch?v=SelheZSdZj8      
       format.csv { send_data @clients.to_csv }
       format.xls
     end

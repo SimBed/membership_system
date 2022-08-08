@@ -28,10 +28,8 @@ class Admin::PurchasesController < Admin::BaseController
     @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('superadmin')
     handle_sort
     prepare_items_for_filters
-    respond_to do |format|
-      format.html
-      format.js { render 'index.js.erb' }
-    end
+    handle_export
+    handle_index_response
   end
 
   def show
@@ -229,5 +227,24 @@ class Admin::PurchasesController < Admin::BaseController
     { receiver: @purchase.client,
       message_type: message_type,
       variable_contents: { password: (@password if message_type == 'new_account') }.compact }
+  end
+
+  def handle_export
+    # when exporting data, want it all not just the page of pagination
+    @purchases = if params[:export_all]
+                 @purchases.page(params[:page]).per(1000)
+               else
+                 @purchases.page params[:page]
+               end
+  end
+
+  def handle_index_response
+    respond_to do |format|
+      format.html
+      format.js { render 'index.js.erb' }
+      # Railscasts #362 Exporting Csv And Excel
+      # https://www.youtube.com/watch?v=SelheZSdZj8
+      format.csv { send_data @purchases.to_csv }
+    end
   end
 end

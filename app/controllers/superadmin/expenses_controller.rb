@@ -3,8 +3,12 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
   def index
     @expenses = Expense.order_by_date
-    handle_period
     @months = ['All'] + months_logged
+    handle_period unless params[:export_all]
+    respond_to do |format|
+      format.html
+      format.csv { send_data @expenses.to_csv }
+    end
   end
 
   def new

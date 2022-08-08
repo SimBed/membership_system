@@ -14,11 +14,8 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclasses = @wkclasses.page params[:page]
     @workout = Workout.distinct.pluck(:name).sort!
     @months = ['All'] + months_logged
-
-    respond_to do |format|
-      format.html
-      format.js { render 'index.js.erb' }
-    end
+    handle_export
+    handle_index_response
   end
 
   def show
@@ -141,5 +138,24 @@ class Admin::WkclassesController < Admin::BaseController
     return unless session[:classes_period].present? && session[:classes_period] != 'All'
 
     @wkclasses = @wkclasses.during(month_period(session[:classes_period]))
+  end
+
+  def handle_export
+    # when exporting data, want it all not just the page of pagination
+    @wkclasses = if params[:export_all]
+                 @wkclasses.page(params[:page]).per(1000)
+               else
+                 @wkclasses.page params[:page]
+               end
+  end
+
+  def handle_index_response
+    respond_to do |format|
+      format.html
+      format.js { render 'index.js.erb' }
+      # Railscasts #362 Exporting Csv And Excel
+      # https://www.youtube.com/watch?v=SelheZSdZj8
+      format.csv { send_data @wkclasses.to_csv }
+    end
   end
 end

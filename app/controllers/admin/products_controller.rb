@@ -3,8 +3,13 @@ class Admin::ProductsController < Admin::BaseController
   before_action :junioradmin_account, only: [:payment]
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   after_action -> { update_purchase_status(@purchases) }, only: [:update]
+
   def index
     @products = Product.order_by_name_max_classes
+    respond_to do |format|
+      format.html
+      format.csv { send_data @products.to_csv }
+    end
   end
 
   def show
