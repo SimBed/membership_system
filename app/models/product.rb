@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-  include Csv  
+  include Csv
   has_many :purchases, dependent: :destroy
   has_many :prices, dependent: :destroy
   belongs_to :workout_group
@@ -53,6 +53,12 @@ class Product < ApplicationRecord
     return :fixed_package if fixed_package?
     return :trial if trial?
     return :dropin if dropin?
+  end
+
+  def product_style
+    return :pt if pt?
+
+    :group
   end
 
   def duration_days

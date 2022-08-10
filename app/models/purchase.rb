@@ -11,7 +11,7 @@ class Purchase < ApplicationRecord
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
-           :pt?, :max_classes, :attendance_estimate, to: :product
+           :product_style, :pt?, :max_classes, :attendance_estimate, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 }

@@ -38,7 +38,7 @@ class AdminBookingUpdater
   def action_cancel(new_status)
     cancel_attribute = self.class.status_map(new_status)
     @purchase.increment!(cancel_attribute)
-    if @purchase.send(cancel_attribute) > amnesty_limit[cancel_attribute][@purchase.product_type]
+    if @purchase.send(cancel_attribute) > amnesty_limit[@purchase.product_style][cancel_attribute][@purchase.product_type]
       # typically will already be false eg booked to no show, but could be correction of eg cancellation early (with amnesty) to cancellation late (without amnesty)
       @attendance.update(amnesty: false)
       cancellation_penalty @purchase.product_type, cancel_attribute: cancel_attribute
@@ -64,7 +64,7 @@ class AdminBookingUpdater
   def cancellation_penalty(package_type, cancel_attribute: :early_cancels)
     return unless package_type == :unlimited_package && @attendance.reload.penalty.nil?
       Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id,
-                       amount: amnesty_limit[cancel_attribute][:penalty][:amount],
+                       amount: amnesty_limit[:group][cancel_attribute][:penalty][:amount],
                        reason: @new_status })
       @penalty_change = true
       @flash_array = Whatsapp.new(whatsapp_params("#{cancel_attribute}_penalty")).manage_messaging

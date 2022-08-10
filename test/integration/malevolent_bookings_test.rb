@@ -171,7 +171,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     # remove late_cancellation amnesty from purchase
-    @purchase.update(late_cancels: amnesty_limit[:late_cancels][@purchase.product_type])
+    @purchase.update(late_cancels: amnesty_limit[:group][:late_cancels][@purchase.product_type])
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
