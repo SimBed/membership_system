@@ -476,10 +476,10 @@ class Admin::AttendancesController < Admin::BaseController
                        reason: 'late cancellation' })
       update_purchase_status([@purchase])
       @penalty_given = true # for the flash
-      flash_message(*Whatsapp.new(whatsapp_params('late_cancel_penalty')).manage_messaging)
+      flash_message(*Whatsapp.new(whatsapp_params('late_cancels_penalty')).manage_messaging)
       # manage_messaging 'late_cancel_penalty'
     else
-      flash_message(*Whatsapp.new(whatsapp_params('late_cancel_no_penalty')).manage_messaging)
+      flash_message(*Whatsapp.new(whatsapp_params('late_cancels_no_penalty')).manage_messaging)
       # manage_messaging 'late_cancel_no_penalty'
     end
   end

@@ -90,6 +90,7 @@ class AdminBookingUpdater
   end
 
   def self.status_map(status)
+    # status is of form 'cancelled early'
     status_map = { cancelled_early: :early_cancels, cancelled_late: :late_cancels, no_show: :no_shows }
     status_map[status.split.join('_').to_sym]
   end

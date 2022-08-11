@@ -14,6 +14,8 @@ class Whatsapp
 
     return [nil] unless white_list_whatsapp_receivers
 
+    # return [nil] unless Rails.env.production?  
+
     send_whatsapp
     [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
