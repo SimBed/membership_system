@@ -1,0 +1,15 @@
+<table class="table table-secondary table-striped caption-top">
+  <caption>Instructor Expense Subtotals</caption>
+  <tbody>
+    <% @instructor_cost_subtotals.each do |instructor, expense| %>
+      <tr>
+        <th scope="row"><%= instructor %></th>
+        <td><%= number_with_delimiter(expense) %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th scope="row">Total</th>
+      <td><%= number_with_delimiter(@instructor_cost_subtotals.values.sum)  %></td>
+    </tr>
+  </tbody>
+</table>

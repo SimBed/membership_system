@@ -18,6 +18,8 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     set_period
     @wkclasses = @workout_group.wkclasses_during(@period)
     @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost
+    # unscope :order from wkclasses_during method otherwise get an ActiveRecord::StatementInvalid Exception: PG::GroupingError: ERROR
+    @instructor_cost_subtotals = @wkclasses_with_instructor_expense.unscope(:order).group_by_instructor_cost.delete_if { |k, v| v.zero? }
     @fixed_expenses = Expense.by_workout_group(@workout_group.name, @period)
     @months = months_logged
     @summary = {}

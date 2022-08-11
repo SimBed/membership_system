@@ -1,5 +1,5 @@
 class Wkclass < ApplicationRecord
-  include Csv  
+  include Csv
   # want settings hash from ApplicationHelper
   include ApplicationHelper
   has_many :attendances, dependent: :destroy
@@ -23,6 +23,7 @@ class Wkclass < ApplicationRecord
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
+  scope :group_by_instructor_cost, -> { joins(:instructor).group("first_name || ' ' || last_name").sum(:instructor_cost) }
   scope :during, ->(period) { where({ start_time: period }).order(:start_time) }
   scope :not_during, ->(period) { where.not({ start_time: period }) }
   scope :todays_class, -> { where(start_time: Time.zone.today.all_day) }

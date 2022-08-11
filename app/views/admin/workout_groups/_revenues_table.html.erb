@@ -10,15 +10,15 @@
     </tr>
     <tr>
       <th scope="row" class="fw-light">Base Revenue</th>
-      <td><%= number_to_currency(@summary[:base_revenue], precision: 0, unit: '') %></td>
+      <td><%= number_with_delimiter(@summary[:base_revenue]) %></td>
     </tr>
     <tr>
       <th scope="row" class="fw-light">Expiry Revenue</th>
-      <td><%= number_to_currency(@summary[:expiry_revenue], precision: 0, unit: '') %></td>
+      <td><%= number_with_delimiter(@summary[:expiry_revenue]) %></td>
     </tr>
     <tr>
       <th scope="row">Gross Revenue</th>
-      <td><%= number_to_currency(@summary[:gross_revenue], precision: 0, unit: '') %></td>
+      <td><%= number_with_delimiter(@summary[:gross_revenue]) %></td>
     </tr>
     <tr>
       <th scope="row" class="fw-light">GST</th>
@@ -31,18 +31,18 @@
     <% unless @summary[:variable_expense].zero? %>
       <tr>
         <th scope="row" class="fw-light">Instructor (per-class) Expense*</th>
-        <td><%= number_to_currency(@summary[:variable_expense], precision: 0, unit: '') %></td>
+        <td><%= number_with_delimiter(@summary[:variable_expense]) %></td>
       </tr>
     <% end %>
     <% unless @summary[:fixed_expense].zero? %>
     <tr>
       <th scope="row" class="fw-light">Other Expenses**</th>
-      <td><%= number_to_currency(@summary[:fixed_expense], precision: 0, unit: '') %></td>
+      <td><%= number_with_delimiter(@summary[:fixed_expense]) %></td>
     </tr>
     <% end %>
     <tr>
       <th scope="row">Total Expense</th>
-      <td><%= number_to_currency(@summary[:total_expense], precision: 0, unit: '') %></td>
+      <td><%= number_with_delimiter(@summary[:total_expense]) %></td>
     </tr>
     <tr>
       <th scope="row">Profit</th>
