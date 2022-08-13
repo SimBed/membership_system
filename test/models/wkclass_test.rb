@@ -3,7 +3,9 @@ require 'test_helper'
 class WkclassTest < ActiveSupport::TestCase
   def setup
     @workout = workouts(:hiit)
+    @workout_pt = workouts(:pt_apoorv)
     @instructor = instructors(:amit)
+    @instructor_pt = instructors(:amit_pt)
     @wkclass = Wkclass.new(workout_id: @workout.id,
                            start_time: '2022-02-01 10:30:00',
                            instructor_id: @instructor.id,
@@ -21,6 +23,16 @@ class WkclassTest < ActiveSupport::TestCase
     @duplicate_class = @wkclass.dup
     @wkclass.save
     refute_predicate @duplicate_class, :valid?
+  end
+
+  test 'A PT wkclass must have a PT instructor' do
+    @wkclass.workout = @workout_pt
+    refute_predicate @wkclass, :valid?
+  end
+
+  test 'A non-PT wkclass must not have a PT instructor' do
+    @wkclass.instructor =  @instructor_pt
+    refute_predicate @wkclass, :valid?
   end
 
   test 'show_in_bookings_for' do

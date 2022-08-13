@@ -91,7 +91,8 @@ class Purchase < ApplicationRecord
   def self.qualifying_purchases(wkclass)
     qualifying_for(wkclass).map do |p|
       close_to_expiry = 'close_to_expiry' if p.close_to_expiry? && !p.dropin?
-      ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{p.dop.strftime('%b %d')}", p.id,
+      date_if_multiple_purchases = p.dop.strftime('%b %d') if p.client.purchases.not_expired.size > 1
+      ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id,
        { class: close_to_expiry }]
     end
   end

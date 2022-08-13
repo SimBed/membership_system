@@ -17,6 +17,7 @@ class Wkclass < ApplicationRecord
   belongs_to :workout
   validate :instructor_rate_exists
   validate :unique_workout_time_instructor_combo
+  validate :pt_instructor
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
   scope :any_workout_of, ->(workout_filter) { joins(:workout).where(workout: { name: workout_filter }) }
@@ -189,5 +190,16 @@ class Wkclass < ApplicationRecord
     return if wkclass.blank?
 
     errors.add(:base, 'A class for this workout, instructor and time already exists') unless id == wkclass.id
+  end
+
+  def pt_instructor
+    if ('PT'.in? name) && !('PT'.in? instructor.name)
+      errors.add(:base, 'Personal Training must have a PT instructor')
+    end
+
+    if !('PT'.in? name) && ('PT'.in? instructor.name)
+      errors.add(:base, 'PT instructor only available for PT')
+    end
+
   end
 end
