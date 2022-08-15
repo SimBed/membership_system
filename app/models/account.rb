@@ -11,6 +11,11 @@ class Account < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :ac_type, presence: true
   has_secure_password
+  
+  def clean_up
+    clients.first.update(account_id: nil)
+    destroy
+  end
 
   def self.digest(string)
     cost = if ActiveModel::SecurePassword.min_cost

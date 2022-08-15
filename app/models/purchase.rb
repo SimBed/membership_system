@@ -11,7 +11,7 @@ class Purchase < ApplicationRecord
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
-           :product_style, :pt?, :max_classes, :attendance_estimate, to: :product
+           :product_style, :max_classes, :attendance_estimate, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 }
@@ -69,6 +69,9 @@ class Purchase < ApplicationRecord
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per 20
 
+  def pt?
+    product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
+  end
   # reformat qualifying_for and available_for_booking into single method
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|

@@ -40,6 +40,13 @@ class Client < ApplicationRecord
 
   paginates_per 20
 
+  def message_blast(message)
+    Whatsapp.new(:receiver => self,
+                 :message_type => message,
+                 :variable_contents => {:first_name => self.first_name})
+                 .manage_messaging
+  end
+
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?
@@ -65,6 +72,14 @@ class Client < ApplicationRecord
 
   def last_purchase
     purchases.order_by_dop.first
+  end
+
+  def pt?
+    last_purchase.pt?
+  end
+
+  def groupex?
+    !last_purchase.pt?
   end
 
   def lifetime_classes

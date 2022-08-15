@@ -14,7 +14,7 @@ class Whatsapp
 
     return [nil] unless white_list_whatsapp_receivers
 
-    # return [nil] unless Rails.env.production?  
+    # return [nil] unless Rails.env.production?
 
     send_whatsapp
     [:warning, "#{@message_type} message sent to #{@to_number}"]
@@ -108,6 +108,19 @@ class Whatsapp
     'Thank you for booking for HIIT on Monday.' +
       "\nYou can cancel this booking up to 3 hours before the class start time without incurring any penalty." +
       "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
+  def body_membership_system_upgrade
+    'THE SPACE' +
+      "\nMembership System Upgrade" +
+      "\n\nDear #{@variable_contents[:first_name]}" +
+      "\n\nYou may receive a message from us in the coming weeks from this number +18168375076." +
+      "\nThis is our automated number for communicating information about your Package at The Space. Please save this number in your contacts" +
+      " so you do not miss out on important information." +
+      "\n\nThank You" +
+      "\nThe Space" +
+
+      "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
   def body_temp_email_confirm
