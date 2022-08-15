@@ -12,7 +12,7 @@ class Whatsapp
 
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil?
 
-    return [nil] unless white_list_whatsapp_receivers
+    # return [nil] unless white_list_whatsapp_receivers
 
     # return [nil] unless Rails.env.production?
 
