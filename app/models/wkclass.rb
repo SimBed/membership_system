@@ -194,7 +194,7 @@ class Wkclass < ApplicationRecord
 
   def pt_instructor
     if ('PT'.in? name) && !('PT'.in? instructor.name)
-      errors.add(:base, 'Personal Training must have a PT instructor')
+      errors.add(:base, 'Personal Training must have a PT instructor') unless [1,2].include? instructor.id # Apoorv, Gigi 
     end
 
     if !('PT'.in? name) && ('PT'.in? instructor.name)
