@@ -82,6 +82,9 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def client_params
+    # the update method (and therefore the client_params method) is used through a form but also clicking on a link on the clients page
+    return {fitternity: params[:fitternity] } if params[:fitternity].present?
+
     params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
   end
 
@@ -119,7 +122,7 @@ class Admin::ClientsController < Admin::BaseController
       format.html
       format.js { render 'index.js.erb' }
       # Railscasts #362 Exporting Csv And Excel
-      # https://www.youtube.com/watch?v=SelheZSdZj8      
+      # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @clients.to_csv }
       format.xls
     end

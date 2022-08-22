@@ -8,6 +8,8 @@ class ClientTest < ActiveSupport::TestCase
                          phone: '914567890',
                          instagram: '#paw',
                          note: 'our top client')
+    @client2 = clients(:bhavik)
+    @booked_class = wkclasses(:wkclass_2)
   end
 
   test 'should be valid' do
@@ -79,6 +81,11 @@ class ClientTest < ActiveSupport::TestCase
 
   test 'name method' do
     assert_equal 'Amala Paw', @client.name
+  end
+
+  test 'booked? method' do
+    assert @client2.booked? @booked_class
+    refute @client.booked? @booked_class
   end
 
   test 'associated account (if there is one) should exist' do

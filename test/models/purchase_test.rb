@@ -20,6 +20,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase_trial = purchases(:purchase_trial)
     @purchase_with_freeze = purchases(:purchase_with_freeze) # freeze 10/1/22 - 28/3/22
     @wkclass1 = wkclasses(:hiitfeb26)
+    @wkclass_already_attended = wkclasses(:wkclass_362)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
   end
 
@@ -136,7 +137,7 @@ class PurchaseTest < ActiveSupport::TestCase
   # end
 
   test 'qualifying_for method' do
-    assert_equal [374, 201, 343, 212, 4, 335, 312, 368, 229, 200, 99, 198, 339, 120, 224, 360, 125, 341, 119, 230, 90],
+    assert_equal [374, 201, 212, 4, 335, 312, 368, 229, 200, 99, 198, 120, 224, 360, 125, 341, 119, 90],
                  Purchase.qualifying_for(@wkclass1).pluck(:id)
   end
   # 90 are frozen, but correctly still appears
@@ -155,6 +156,11 @@ class PurchaseTest < ActiveSupport::TestCase
   test 'committed_on? method' do
     assert @purchase_package.committed_on? Date.parse('22 Feb 2022')
     refute @purchase_package.committed_on? @wkclass1.start_time
+  end
+
+  test 'already_used_for? method' do
+    assert @purchase_package.already_used_for? @wkclass_already_attended
+    refute @purchase_package.already_used_for? @wkclass1
   end
 
   test 'purchased_after? method' do

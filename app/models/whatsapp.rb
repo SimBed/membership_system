@@ -8,6 +8,7 @@ class Whatsapp
 
   def manage_messaging
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
+    return [nil] if Rails.env.test?
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil?

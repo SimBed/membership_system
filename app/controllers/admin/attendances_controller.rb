@@ -1,12 +1,14 @@
 class Admin::AttendancesController < Admin::BaseController
   include AttendancesHelper
   skip_before_action :admin_account
+  before_action :fitternity?
   before_action :set_attendance, only: [:update, :destroy]
   before_action :junioradmin_account, only: [:new, :destroy, :index]
   before_action :correct_account_or_junioradmin, only: [:create, :update, :destroy]
-  before_action :provisionally_expired, only: [:create, :update]
+  before_action :provisionally_expired, only: [:create, :update], unless: -> { fitternity? }
   before_action :modifiable_status, only: [:update]
-  before_action :already_committed, only: [:create, :update]
+  # https://stackoverflow.com/questions/49414318/how-to-use-rails-before-action-conditional-for-only-some-actions
+  before_action :already_committed, only: [:create, :update], unless: -> { fitternity? }
   before_action :in_booking_window, only: [:create]
   before_action :reached_max_capacity, only: [:create, :update]
   before_action :reached_max_amendments, only: [:update]
@@ -16,10 +18,13 @@ class Admin::AttendancesController < Admin::BaseController
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
-    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
+    # [["Aakash Shah (Fitternity)", "Fitternity 271"],...]
+    set_new_attendance_dropdown_options
   end
 
   def create
+    handle_fitternity and return if fitternity?
+
     @attendance = Attendance.new(attendance_params)
     if @attendance.save
       # needed for after_action callback
@@ -28,6 +33,28 @@ class Admin::AttendancesController < Admin::BaseController
       logged_in_as?('client') ? after_successful_create_by_client : after_successful_create_by_admin
     else
       logged_in_as?('client') ? after_unsuccessful_create_by_client : after_unsuccessful_create_by_admin
+    end
+  end
+
+  def handle_fitternity
+    purchase_hash = { client_id: @client.id,
+                      product_id: 1,
+                      price_id: 2,
+                      payment: 550,
+                      dop: Date.today(),
+                      payment_mode: "Fitternity",
+                      fitternity_id: Fitternity.ongoing.first&.id }
+
+    @purchase = Purchase.new(purchase_hash)
+    if @purchase.save
+      @attendance = Attendance.new(wkclass_id: params[:attendance][:wkclass_id].to_i, purchase_id: @purchase.id)
+      if @attendance.save
+        after_successful_create_by_admin
+      else
+        after_unsuccessful_create_by_admin
+      end
+    else
+      after_unsuccessful_create_by_admin
     end
   end
 
@@ -59,7 +86,7 @@ class Admin::AttendancesController < Admin::BaseController
     session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new
     @wkclass = Wkclass.find(session[:wkclass_id])
-    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
+    set_new_attendance_dropdown_options
     render :new, status: :unprocessable_entity
   end
 
@@ -115,8 +142,19 @@ class Admin::AttendancesController < Admin::BaseController
 
   private
 
+  def fitternity?
+    return true if params.dig(:attendance, :purchase_id)&.split&.first == 'Fitternity'
+
+    false
+  end
+
   def set_attendance
     @attendance = Attendance.find(params[:id])
+  end
+
+  def set_new_attendance_dropdown_options
+    fitternity_options = Client.select {|c| c.fitternity}.reject {|c| c.booked?(@wkclass)}.map {|c| ["#{c.name} (Fitternity)", "Fitternity #{c.id}"] }
+    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass) + fitternity_options
   end
 
   def handle_freeze
@@ -157,7 +195,12 @@ class Admin::AttendancesController < Admin::BaseController
 
   def correct_account_or_junioradmin
     @client = if new_booking?
-                Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
+                if fitternity?
+                  # purchase_id key is now not well named as for fitternity its of the form ['Fitternity <client_id>']
+                  Client.find(params.dig(:attendance, :purchase_id).split.last.to_i)
+                else
+                  Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
+                end
               else
                 # update or destroy
                 @attendance.client
@@ -325,6 +368,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def already_committed
+
     set_wkclass_and_booking_type
     return unless @wkclass.committed_on_same_day?(@client)
 

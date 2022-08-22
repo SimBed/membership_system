@@ -77,7 +77,8 @@ class Purchase < ApplicationRecord
     available_to(wkclass).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
         p.committed_on?(wkclass.start_time.to_date) ||
-          p.expires_before?(wkclass.start_time.to_date)
+          p.expires_before?(wkclass.start_time.to_date) ||
+            p.already_used_for?(wkclass)
     end
   end
 
@@ -85,7 +86,8 @@ class Purchase < ApplicationRecord
     available_to(wkclass).where(client_id: client.id).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
         p.committed_on?(wkclass.start_time.to_date)  ||
-          p.expires_before?(wkclass.start_time.to_date)
+          p.expires_before?(wkclass.start_time.to_date) ||
+            p.already_used_for?(wkclass)
     end
   end
 
@@ -123,9 +125,15 @@ class Purchase < ApplicationRecord
   # end
 
   def committed_on?(adate)
-    return false if fixed_package? # fixed packages can do what they want
+    return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
 
     attendances.committed.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
+  end
+
+  def already_used_for?(wkclass)
+    return true if wkclass.purchases.include? self
+
+    false
   end
 
   def purchased_after?(adate)

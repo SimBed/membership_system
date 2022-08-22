@@ -92,6 +92,12 @@ class Client < ApplicationRecord
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
   end
 
+  def booked?(wkclass)
+    return true if attendances.includes(:wkclass).map(&:wkclass).include? wkclass
+
+    return false
+  end
+
   private
 
   def downcase_email

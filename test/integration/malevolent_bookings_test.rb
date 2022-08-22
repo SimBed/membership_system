@@ -77,6 +77,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # client attempts to rebook previously cancelled class
     log_in_as @account_client
     @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
+
     assert_difference '@purchase.attendances.count', 0 do
       patch admin_attendance_path(@attendance)
     end
