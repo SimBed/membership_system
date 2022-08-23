@@ -50,7 +50,6 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def create
-    byebug
     @purchase = Purchase.new(purchase_params)
     if @purchase.save
       # equivalent to redirect_to admin_purchase_path @purchase

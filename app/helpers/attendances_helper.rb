@@ -125,6 +125,9 @@ module AttendancesHelper
       pt:
        { late_cancels:
            { fixed_package: 0,
+             dropin: 0 },
+         no_shows:
+           { fixed_package: 0,
              dropin: 0 } } }
   end
 end
