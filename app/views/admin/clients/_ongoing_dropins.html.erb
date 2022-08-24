@@ -1,0 +1,7 @@
+<% @ongoing_dropins.each_with_index do |purchase, index| %>
+  <% @purchase = purchase %>
+  <%= render partial: 'purchase_summary' %>
+  <% unless index == @ongoing_dropins.size - 1 %>
+    <hr>
+  <% end %>
+<% end %>

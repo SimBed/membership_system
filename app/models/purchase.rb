@@ -27,6 +27,7 @@ class Purchase < ApplicationRecord
                         where.not(status: ['expired', 'provisionally expired'])
                       }
   scope :not_fully_expired, -> { where.not(status: 'expired') }
+  scope :fully_expired, -> { where(status: 'expired') }
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
   # scope :started, -> { joins(:attendances).merge(Attendance.no_amnesty).distinct }
   scope :started, -> { where.not(status: 'not started') }
@@ -34,6 +35,7 @@ class Purchase < ApplicationRecord
   # https://apidock.com/rails/ActiveRecord/SpawnMethods/merge
   scope :package, -> { joins(:product).merge(Product.package) }
   scope :unlimited, -> { joins(:product).merge(Product.unlimited) }
+  scope :dropin, -> { joins(:product).merge(Product.dropin) }
   scope :fixed, -> { joins(:product).merge(Product.fixed) }
   scope :trial, -> { joins(:product).merge(Product.trial) }
   scope :package_started_not_expired, -> { package.started.not_expired }

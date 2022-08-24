@@ -18,13 +18,17 @@ class Admin::ClientsController < Admin::BaseController
   def show
     # without clearing the session, the following sequence will show the attendances of the purchase of the preiously viewed client:
     # show clientA, select one of clientA's purchases, return to client index, show client B
-    clear_session(:purchaseid)
-    session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'All'
-    @purchases = if session[:purchaseid] == 'All'
-                   @client.purchases.order_by_dop
-                 else
-                   [Purchase.find(session[:purchaseid])]
-                 end
+    # no longer want selection
+    # clear_session(:purchaseid)
+    # session[:purchaseid] = params[:purchaseid] || session[:purchaseid] || 'All'
+    # @packages = if session[:purchaseid] == 'All'
+    #                @client.purchases.package.order_by_dop
+    #              else
+    #                [Purchase.find(session[:purchaseid])]
+    #              end
+    @ongoing_packages = @client.purchases.not_fully_expired.package.order_by_dop
+    @ongoing_dropins = @client.purchases.not_fully_expired.dropin.order_by_dop
+    @expired_purchases = @client.purchases.fully_expired.order_by_dop
     prepare_data_for_view
     set_show_dropdown_items
   end
@@ -131,7 +135,8 @@ class Admin::ClientsController < Admin::BaseController
   def prepare_data_for_view
     @client_hash = {
       attendances: @client.attendances.attended.size,
-      purchases: @client.purchases.size,
+      packages: @client.purchases.package.size,
+      dropins: @client.purchases.dropin.size,
       spend: @client.total_spend,
       last_class: @client.last_class,
       date_created: @client.created_at,

@@ -9,18 +9,24 @@
       <th scope="row">Phone</th>
       <td><%= @client.phone %></td>
     </tr>
-    <tr>
-      <th scope="row">Whatsapp</th>
-      <td><%= @client.whatsapp %></td>
-    </tr>
-    <tr>
-      <th scope="row">Instagram</th>
-      <td><%= @client.instagram %></td>
-    </tr>
-    <tr>
-      <th scope="row">Note</th>
-      <td><%= @client.note %></td>
-    </tr>
+    <% unless @client.whatsapp.nil? || @client.whatsapp.empty? %>
+      <tr>
+        <th scope="row">Whatsapp</th>
+        <td><%= @client.whatsapp %></td>
+      </tr>
+    <% end %>
+    <% unless @client.instagram.nil? || @client.instagram.empty? %>
+      <tr>
+        <th scope="row">Instagram</th>
+        <td><%= @client.instagram %></td>
+      </tr>
+    <% end %>
+    <% unless @client.note.nil? || @client.note.empty? %>
+      <tr>
+        <th scope="row">Note</th>
+        <td><%= @client.note %></td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
@@ -32,17 +38,21 @@
       <td><%= @client_hash[:attendances] %></td>
     </tr>
     <tr>
-      <th scope="row">Total purchases</th>
-      <td><%= @client_hash[:purchases] %></td>
+      <th scope="row">Total Packages</th>
+      <td><%= @client_hash[:packages] %></td>
+    </tr>
+    <tr>
+      <th scope="row">Total DropIns</th>
+      <td><%= @client_hash[:dropins] %></td>
     </tr>
     <% if logged_in_as?('superadmin') %>
       <tr>
-        <th scope="row">Total spend</th>
+        <th scope="row">Total Spend</th>
         <td><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></td>
       </tr>
     <% end %>
     <tr>
-      <th scope="row">Last class</th>
+      <th scope="row">Last Class</th>
       <td><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></td>
     </tr>
     <tr>

@@ -196,7 +196,7 @@ a.nav_icon img {
 img.grid_table_icon {
   width: 1.0rem;
   height: 1.0rem;
-  opacity: 1.0;  
+  opacity: 1.0;
 }
 
 img.fitternity {
@@ -315,6 +315,10 @@ button.search{
   color: #664d03;
   background-color: #fff3cd;
   border-color: #ffecb5;
+}
+
+.thick-divide {
+  border-top: 0.3rem solid;
 }
 
 %grid-container {

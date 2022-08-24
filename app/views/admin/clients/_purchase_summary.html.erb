@@ -1,0 +1,57 @@
+<table class="table table-secondary table-striped caption-top">
+  <caption>
+    <%= link_to @purchase.formal_name, admin_purchase_path(@purchase), class: "like_button" %>
+    <%=image_tag(@purchase.expired? ? 'expired.png' : 'attendances.png', class: "grid_table_icon")%>
+  </caption>
+  <tbody>
+    <% unless @purchase.expired? %>
+      <tr>
+        <th scope="row">Payment</th>
+        <td><%= number_to_currency(@purchase.payment, precision: 0, unit: 'Rs. ') %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th scope="row">Price</th>
+      <td><%= @purchase.price.name %></td>
+    </tr>
+    <% unless @purchase.dropin? %>
+      <tr>
+        <th scope="row">Paid on</th>
+        <td><%= @purchase.dop.strftime('%d %b %y') %></td>
+      </tr>
+      <tr>
+        <th scope="row">Status</th>
+        <td><%= @purchase.status %></td>
+      </tr>
+    <% end %>
+    <% unless @purchase.not_started? || @purchase.expired? %>
+      <tr>
+        <th scope="row">Expiry date</th>
+        <td><%= @purchase.expiry_date.strftime('%d %b %y') %></td>
+      </tr>
+      <tr>
+        <th scope="row">Bookings left</th>
+        <td><%= @purchase.attendances_remain(provisional: true) %></td>
+      </tr>
+    <% end %>
+    <% if @purchase.expired? %>
+      <tr>
+        <th scope="row">Expired on</th>
+        <td><%= @purchase.expired_on %></td>
+      </tr>
+    <% end %>
+    <% if @purchase.provisionally_expired? %>
+      <tr>
+        <th scope="row">Will expire on</th>
+        <td><%= @purchase.will_expire_on %></td>
+      </tr>
+    <% end %>
+    <% unless @purchase.note.nil? %>
+      <tr>
+        <th scope="row">Note</th>
+        <td><%= @purchase.note %></td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>

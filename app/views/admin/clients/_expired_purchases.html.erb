@@ -1,0 +1,7 @@
+<% @expired_purchases.each_with_index do |purchase, index| %>
+  <% @purchase = purchase %>
+  <%= render partial: 'purchase_summary' %>
+  <% unless index == @expired_purchases.size - 1 %>
+    <hr>
+  <% end %>
+<% end %>

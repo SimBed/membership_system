@@ -1,0 +1,9 @@
+<%# would use each (rather than each_with_index) but want to identify the last purchase and avoid having a dividing line under it) %>
+<% @ongoing_packages.each_with_index do |purchase, index| %>
+  <% @purchase = purchase %>
+  <%#= render partial: 'admin/purchases/show_partials/purchase_summary', locals: {setting: 'admin_client_show'} %>
+  <%= render partial: 'purchase_summary' %>
+  <% unless index == @ongoing_packages.size - 1 %>
+    <hr>
+  <% end %>
+<% end %>
