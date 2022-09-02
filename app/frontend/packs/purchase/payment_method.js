@@ -44,6 +44,10 @@ $('select#purchase_product_id').on('change', function() {
   });
  });
 
+
+// reformat as not dry. This code is repeated in the 'on change' function above
+// makes sure the dropdown is empty of options on new purchase before a product has been selected
+// but is correctly populated on purchase edit
  $(document).ready(()=>{
    prices = $('select#purchase_price_id').html();
    product = $('#purchase_product_id :selected').text();

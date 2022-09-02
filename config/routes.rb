@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'shop/index'
   namespace :admin do
     get 'penalties/create'
   end

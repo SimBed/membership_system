@@ -1,5 +1,3 @@
-
-
 <%#= https://stackoverflow.com/questions/48197245/form-for-vs-form-with-in-rails-5-with-namespace
 prior to introduction of the admin folder structure/namespace the named route for the url "/purchases" was purchases_path
 With the admin namespace, the required url is "/admin/purchase" with named route admin_purchases_path.
@@ -22,15 +20,6 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
     <%#= form.select :client_id, @clients, include_blank: true %>
     <%= form.collection_select :client_id, @clients, :id, :name, include_blank: true %>
   </div>
-
-  <!--div class="field">
-    <%#= form.label :product_id %>
-    <%#= form.select :product_id, @products, { include_blank: true },{ data: {
-    remote: true,
-    url: '/products/payment',
-    method: 'get'
-  }} %>
-  </div-->
 
   <div class="field">
     <%= form.label :product_id, 'Product' %>
@@ -112,3 +101,12 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
       }
     }
 </script>
+
+  <!--div class="field">
+    <%#= form.label :product_id %>
+    <%#= form.select :product_id, @products, { include_blank: true },{ data: {
+    remote: true,
+    url: '/products/payment',
+    method: 'get'
+  }} %>
+  </div-->
