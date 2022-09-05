@@ -60,7 +60,6 @@ class Admin::WkclassesController < Admin::BaseController
       # Wkclass.delay.send_reminder(@wkclass.id)
       # Wkclass.send_reminder(@wkclass.id)
     else
-      # prepare_items_for_dropdowns
       prepare_items_for_dropdowns
       render :new, status: :unprocessable_entity
     end
@@ -121,8 +120,10 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def prepare_items_for_dropdowns
-    @workouts = Workout.all.map { |w| [w.name, w.id] }
-    @instructors = Instructor.has_rate.order_by_name.map { |i| [i.name, i.id] }
+    # @workouts = Workout.all.map { |w| [w.name, w.id] }
+    @workouts = Workout.all
+    @instructors = Instructor.has_rate.order_by_name
+    @capacities = (0..30).to_a + [500]
   end
 
   def handle_filter

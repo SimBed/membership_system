@@ -2,7 +2,6 @@
   <% if product.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
-
       <ul>
         <% product.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -23,12 +22,12 @@
 
   <div class="field">
     <%= form.label :validity_unit %>
-    <%= form.select :validity_unit, options_for_select([['days', 'D'], ['weeks', 'W'], ['months', 'M']], @product.validity_unit) %>
+    <%= form.select :validity_unit, options_for_select(@validity_units, @product.validity_unit) %>
   </div>
 
   <div class="field">
     <%= form.label :workout_group_id, 'Workout Group' %>
-    <%= form.select :workout_group_id, options_for_select(@workout_groups, @product.workout_group&.id || @workout_groups.first)%>
+    <%= form.collection_select :workout_group_id, @workout_groups, :id, :name, selected: @product.workout_group&.id || @workout_groups.first%>
   </div>
 
   <div class="actions">

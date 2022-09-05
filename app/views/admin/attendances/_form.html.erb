@@ -2,7 +2,6 @@
   <% if attendance.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(attendance.errors.count, "error") %> prohibited this attendance from being saved:</h2>
-
       <ul>
         <% attendance.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -12,7 +11,7 @@
   <% end %>
 
   <div><%= form.hidden_field :wkclass_id, :value => @wkclass&.id || attendance.wkclass.id %> </div>
-    <%= form.select :purchase_id, options_for_select(@qualifying_purchases) %>
+  <%= form.select :purchase_id, options_for_select(@qualifying_purchases) %>
   <div class="actions mt-3">
     <%= form.submit 'Log attendance' %>
   </div>

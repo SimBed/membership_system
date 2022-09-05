@@ -2,7 +2,6 @@
   <% if workout_group.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(workout_group.errors.count, "error") %> prohibited this workout_group from being saved:</h2>
-
       <ul>
         <% workout_group.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -18,7 +17,7 @@
 
   <div class="field">
     <%= form.label :partner_id %>
-    <%= form.select :partner_id, options_for_select(@partners, @partner&.id), { include_blank: true } %>
+    <%= form.collection_select :partner_id, @partners, :id, :first_name, selected: @partner&.id, include_blank: (true unless @partner&.id)  %>
   </div>
 
   <div class="field">

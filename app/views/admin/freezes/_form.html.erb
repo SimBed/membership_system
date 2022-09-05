@@ -2,7 +2,6 @@
   <% if freeze.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(freeze.errors.count, "error") %> prohibited this adjustment from being saved:</h2>
-
       <ul>
         <% freeze.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -39,7 +38,7 @@
     // surprisingly awkward to manage date objects in javascript
     const start_date_string = document.getElementById("freeze_start_date").value;
     const start_date_array = start_date_string.split('-');
-    // https://attacomsian.com/blog/javascript-date-add-days    
+    // https://attacomsian.com/blog/javascript-date-add-days
     const start_date = new Date(start_date_array[0], start_date_array[1] - 1, start_date_array[2]);
     const end_date = new Date();
     end_date.setDate(start_date.getDate() + 13);

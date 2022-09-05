@@ -25,11 +25,11 @@ class Admin::ProductsController < Admin::BaseController
 
   def new
     @product = Product.new
-    @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
+    prepare_items_for_dropdowns
   end
 
   def edit
-    @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
+    prepare_items_for_dropdowns
   end
 
   def create
@@ -69,13 +69,18 @@ class Admin::ProductsController < Admin::BaseController
 
   private
 
+  def set_product
+    @product = Product.find(params[:id])
+  end
+
   def set_period
     period = params[:product_period] || session[:product_period] || Time.zone.today.beginning_of_month.strftime('%b %Y')
     session[:product_period] = (Date.parse(period).beginning_of_month..Date.parse(period).end_of_month.end_of_day)
   end
 
-  def set_product
-    @product = Product.find(params[:id])
+  def prepare_items_for_dropdowns
+    @workout_groups = WorkoutGroup.all
+    @validity_units = [['days', 'D'], ['weeks', 'W'], ['months', 'M']]
   end
 
   def product_params

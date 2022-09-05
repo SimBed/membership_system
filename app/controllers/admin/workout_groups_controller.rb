@@ -30,12 +30,12 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def new
     @workout_group = WorkoutGroup.new
     @workouts = Workout.all
-    @partners = Partner.all.map { |p| [p.first_name, p.id] }
+    @partners = Partner.all
   end
 
   def edit
     @workouts = Workout.all
-    @partners = Partner.all.map { |p| [p.first_name, p.id] }
+    @partners = Partner.all
     @partner = @workout_group.partner
   end
 
@@ -47,7 +47,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       flash[:success] = t('.success')
     else
       @workouts = Workout.all
-      @partners = Partner.all.map { |p| [p.first_name, p.id] }
+      @partners = Partner.all
       render :new, status: :unprocessable_entity
     end
   end

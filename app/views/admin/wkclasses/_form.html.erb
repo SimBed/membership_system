@@ -2,7 +2,6 @@
   <% if wkclass.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>
-
       <ul>
         <% wkclass.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -12,8 +11,8 @@
   <% end %>
 
   <div class="field">
-    <%# the wkclass must not be edited after an attendance has been added, otherwise careless  administration may cause clients to attend a class for which they do not have an applicable product %>
-    <%= form.select :workout_id, options_for_select(@workouts, @wkclass.workout&.id || @workouts.first),{}, {disabled: (true unless @wkclass.attendances.size.zero?)} %>
+    <%# the wkclass must not be edited after an attendance has been added, otherwise careless administration may cause clients to attend a class for which they do not have an applicable product %>
+    <%= form.collection_select :workout_id, @workouts, :id, :name, { selected: (@wkclass.workout&.id || @workouts.first) }, { disabled: (true unless @wkclass.attendances.size.zero?) } %>
   </div>
 
   <div class="field">
@@ -23,12 +22,12 @@
 
   <div class="field">
     <%= form.label :instructor_id %>
-    <%= form.select :instructor_id, options_for_select(@instructors, @instructor), include_blank: true %>
+    <%= form.collection_select :instructor_id, @instructors, :id, :name, selected: @instructor, include_blank: true %>
   </div>
 
   <div class="field">
     <%= form.label :max_capacity, 'Maximum capacity' %>
-    <%= form.select :max_capacity, options_for_select((0..30).to_a + [500], @wkclass.max_capacity || 12) %>
+    <%= form.select :max_capacity, options_for_select(@capacities, @wkclass.max_capacity || 12) %>
   </div>
 
   <div class="actions">
@@ -36,29 +35,4 @@
   </div>
 <% end %>
 
-  <script>
-    // max-capacity field based on workout selected
-
-    document.getElementById('wkclass_workout_id').onchange =  function () {
-      var sel = document.getElementById('wkclass_workout_id');
-      var text = sel.options[sel.selectedIndex].text
-      switch (text.substring(0, 3)) {
-        case 'PT ':
-        case 'InB':
-          max_capacity = 1;
-          break;
-        case 'PSM':
-        case 'Mat':
-          max_capacity = 6;
-          break;
-        case 'Eve':
-          max_capacity = 500;
-          break;
-        default:
-          max_capacity = 12;
-          break;
-      }
-      // alert (text.substring(0, 3));
-      document.getElementById('wkclass_max_capacity').value = max_capacity;
-    }
-  </script>
+<%= javascript_pack_tag 'wkclass/max_capacity' %>
