@@ -224,19 +224,26 @@ class Admin::PurchasesController < Admin::BaseController
   # end
 
   # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
+  # def whatsapp_params(message_type)
+  #   { receiver: @purchase.client,
+  #     message_type: message_type,
+  #     variable_contents: { password: (@password if message_type == 'new_account') }.compact }
+  # end
+
+  # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
       message_type: message_type,
-      variable_contents: { password: (@password if message_type == 'new_account') }.compact }
+      variable_contents: { first_name: @purchase.client.first_name } }
   end
 
   def handle_export
     # when exporting data, want it all not just the page of pagination
     @purchases = if params[:export_all]
-                 @purchases.page(params[:page]).per(1000)
-               else
-                 @purchases.page params[:page]
-               end
+                   @purchases.page(params[:page]).per(1000)
+                 else
+                   @purchases.page params[:page]
+                 end
   end
 
   def handle_index_response

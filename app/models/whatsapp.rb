@@ -53,9 +53,10 @@ class Whatsapp
 
   # space between '\n' and '\nPlease' is required for conformity to nuance of template. Fails to deliver without.
   def body_new_purchase
-    'Thank you for your new purchase.' +
+    "Thank you for your new purchase #{@variable_contents[:first_name]}." +
       "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
-      "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
+      "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
+      "\nTerms & Conditions: https://www.thespacejuhu.in/PackagePolicy.html"
   end
 
   def body_new_account
