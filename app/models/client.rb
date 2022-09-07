@@ -36,9 +36,26 @@ class Client < ApplicationRecord
                    .group('clients.id')
                    .having('max(start_time) < ?', 3.months.ago)
                }
+
+  scope :recently_attended, lambda {
+                 Client
+                   .select("#{Client.table_name}.*", 'max(start_time) as max')
+                   .joins(purchases: [attendances: [:wkclass]])
+                   .group('clients.id')
+                   .having('max(start_time) >= ?', 3.months.ago)
+               }
+
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
 
   paginates_per 20
+
+  # would like to use #or method eg Client.recently_attended.or(Client.packagee) but couldn't resolve error:
+  # Relation passed to #or must be structurally compatible. Incompatible values: [:joins, :distinct]
+  def self.active
+    recently_attended_clients = Client.recently_attended.map(&:id)
+    packageed_clients = Client.packagee.map(&:id)
+    Client.where(id: (recently_attended_clients + packageed_clients).uniq)
+  end
 
   def message_blast(message)
     Whatsapp.new(:receiver => self,

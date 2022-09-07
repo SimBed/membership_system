@@ -40,8 +40,8 @@
         <%= 'has package' %>
       <% end %>
       <%= label_tag nil, class: "purchase-filters" do %>
-        <%= check_box_tag 'hot', 'hot', session[:filter_hot].present? ? true : false, class: "checkbox-class", id: "chbox_hot", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'hot' %>
+        <%= check_box_tag 'active', 'active', session[:filter_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
+        <%= 'active' %>
       <% end %>
     </fieldset>
   </div>
