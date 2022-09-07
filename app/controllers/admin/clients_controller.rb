@@ -68,7 +68,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def clear_filters
-    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_hot, :search_client_name)
+    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_active, :search_client_name)
     redirect_to admin_clients_path
   end
 
@@ -88,6 +88,7 @@ class Admin::ClientsController < Admin::BaseController
   def client_params
     # the update method (and therefore the client_params method) is used through a form but also clicking on a link on the clients page
     return {fitternity: params[:fitternity] } if params[:fitternity].present?
+    return {waiver: params[:waiver] } if params[:waiver].present?    
 
     params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
   end
