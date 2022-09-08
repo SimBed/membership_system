@@ -128,6 +128,9 @@ module AttendancesHelper
              dropin: 0 },
          no_shows:
            { fixed_package: 0,
-             dropin: 0 } } }
+             dropin: 0 },
+         early_cancels:
+           { fixed_package: 1000,
+             dropin: 1000 } } }
   end
 end

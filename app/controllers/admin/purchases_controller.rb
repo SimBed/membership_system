@@ -137,13 +137,13 @@ class Admin::PurchasesController < Admin::BaseController
     # arity doesn't work with scopes so struggled to reformat this further. eg Purchase.method(:classpass).arity returns -1 not zero.
     %w[uninvoiced package close_to_expiry unpaid classpass trial fixed].each do |key|
       @purchases = @purchases.send(key) if session["filter_#{key}"].present?
+      # some scopes will return an array (not an ActiveRecord) eg close_to_expiry so
+      # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
+      @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
     end
     %w[workout_group statuses].each do |key|
       @purchases = @purchases.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
     end
-    # some scopes will return an array (not an ActiveRecord) eg close_to_expiry so
-    # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
-    @purchases = Purchase.where(id: @purchases.map(&:id)) if @purchases.is_a?(Array)
   end
 
   def handle_period
