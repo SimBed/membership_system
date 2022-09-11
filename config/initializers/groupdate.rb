@@ -1,1 +1,1 @@
-Groupdate.time_zone = 'Kolkata'
+Groupdate.time_zone = 'UTC'

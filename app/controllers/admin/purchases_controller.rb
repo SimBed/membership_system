@@ -16,9 +16,12 @@ class Admin::PurchasesController < Admin::BaseController
     handle_search
     handle_filter
     handle_period
+    # hack for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+    Purchase.default_timezone = :utc
     # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but wihtout this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
     @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
     @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
+    Purchase.default_timezone = 'Kolkata'
     # Purchase.includes(:attendances, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
     # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
     # much slower if unneccessarily done after sort
