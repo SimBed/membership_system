@@ -8,7 +8,8 @@ class Product < ApplicationRecord
   validates :validity_unit, presence: true
   # validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
   validate :product_combo_must_be_unique
-  scope :package, -> { where('max_classes > 1') }
+  # Client.packagee.active gives 'PG ambiguous column max classes' error unless 'products.max_classes' rather than just 'max_classes'.
+  scope :package, -> { where('products.max_classes > 1') }
   scope :unlimited, -> { where(max_classes: 1000) }
   scope :dropin, -> { where(max_classes: 1) }
   scope :fixed, -> { where('max_classes between ? and ?', 2, 999) }
