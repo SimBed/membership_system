@@ -9,19 +9,19 @@
       <th scope="row">Phone</th>
       <td><%= @client.phone %></td>
     </tr>
-    <% unless @client.whatsapp.nil? || @client.whatsapp.empty? %>
+    <% unless @client.whatsapp.blank? %>
       <tr>
         <th scope="row">Whatsapp</th>
         <td><%= @client.whatsapp %></td>
       </tr>
     <% end %>
-    <% unless @client.instagram.nil? || @client.instagram.empty? %>
+    <% unless @client.instagram.blank? %>
       <tr>
         <th scope="row">Instagram</th>
         <td><%= @client.instagram %></td>
       </tr>
     <% end %>
-    <% unless @client.note.nil? || @client.note.empty? %>
+    <% unless @client.note.blank? %>
       <tr>
         <th scope="row">Note</th>
         <td><%= @client.note %></td>
