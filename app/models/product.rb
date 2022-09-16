@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   include Csv
   has_many :purchases, dependent: :destroy
   has_many :prices, dependent: :destroy
+  has_many :orders  
   belongs_to :workout_group
   validates :max_classes, presence: true
   validates :validity_length, presence: true

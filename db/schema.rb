@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_20_152125) do
+ActiveRecord::Schema.define(version: 2022_09_14_114358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2022_08_20_152125) do
     t.string "whatsapp"
     t.boolean "hotlead", default: false
     t.boolean "fitternity", default: false
+    t.boolean "waiver", default: false
     t.index ["account_id"], name: "index_clients_on_account_id"
     t.index ["first_name", "last_name"], name: "index_clients_on_first_name_and_last_name"
   end
@@ -123,6 +124,16 @@ ActiveRecord::Schema.define(version: 2022_08_20_152125) do
   create_table "instructors", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "price"
+    t.string "status"
+    t.string "payment_id"
+    t.integer "account_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
