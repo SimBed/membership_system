@@ -2,7 +2,7 @@ class Product < ApplicationRecord
   include Csv
   has_many :purchases, dependent: :destroy
   has_many :prices, dependent: :destroy
-  has_many :orders  
+  has_many :orders
   belongs_to :workout_group
   validates :max_classes, presence: true
   validates :validity_length, presence: true
@@ -84,6 +84,14 @@ class Product < ApplicationRecord
 
   def current_prices
     prices.current.map(&:price).join(', ')
+  end
+
+  def renewal_price(discounted: true)
+    discount_price = prices.where(name: '10% pre-expiry Discount').where(current: true).first
+    undiscounted_price = prices.where(name: 'Base').where(current: true).first
+    return (discount_price || undiscounted_price)  if discounted
+
+    undiscounted_price
   end
 
   private

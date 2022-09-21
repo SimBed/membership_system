@@ -1,9 +1,10 @@
 <div class="text-center bolditalics mb-5">
-  <!--p class="mb-2">renew your package before expiry and save 10%</p-->
+  <p class="mb-0">Your package has expired</p>
   <p class="mb-2">
-    <small>renew</small> <%= @purchases.first.product.formal_name %> <small>before expiry and save 10%</small>
+    <small>renew</small> <%= @renewal_package.formal_name %>
   </p>
     <%= render partial: 'razor_form' %>
   <%#= link_to 'Renew Now','#', class: "like_button" %>
   <!--form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_JkXZKlxoQDQJdG" async> </script> </form-->
 </div>
+<!--p class="bolditalics mb-0"> Contact The Space & Renew Now!<%#= link_to 'Renew Now','#', class: "like_button" %></p-->

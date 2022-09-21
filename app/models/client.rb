@@ -47,6 +47,18 @@ class Client < ApplicationRecord
                  .manage_messaging
   end
 
+  def renewal_package
+    groupex_packages = purchases.package.order_by_dop.reject(&:pt?)
+    return nil if groupex_packages.empty?
+
+    ongoing_groupex_packages = groupex_packages.reject(&:expired? )# groupex_packages.not_fully_expired fails because reject returns array not ActiveRecord
+    if ongoing_groupex_packages.empty?
+      {ongoing: false, package: groupex_packages.first}
+    else
+      {ongoing: true, package: ongoing_groupex_packages.first}
+    end
+  end
+
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?

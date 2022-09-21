@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'shop/index'
-  get "refund/:id", to: "orders#refund"  
+  get "refund/:id", to: "orders#refund"
   resources :orders
   namespace :admin do
     get 'penalties/create'

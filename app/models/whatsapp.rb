@@ -7,11 +7,12 @@ class Whatsapp
   end
 
   def manage_messaging
+    # the arrays returned are for the flash
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
     return [nil] if Rails.env.test?
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
-    return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil?
+    return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? unless @message_type == 'renew'
 
     # return [nil] unless white_list_whatsapp_receivers
     # return [:warning, "Personal Training purchase. Send details to client manually."] if @receiver.pt? && @message_type == 'new_purchase'
@@ -19,6 +20,8 @@ class Whatsapp
     # return [nil] unless Rails.env.production?
 
     send_whatsapp
+    return [:warning, "Thank you for your renewal. You should receive a whatsapp message shortly to confirm"] if @message_type == 'renew'
+        
     [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
@@ -110,6 +113,13 @@ class Whatsapp
     'Thank you for booking for HIIT on Monday.' +
       "\nYou can cancel this booking up to 3 hours before the class start time without incurring any penalty." +
       "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
+  def body_renew
+    "Thank you for your renewal, #{@variable_contents[:name]}." +
+      "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
+      "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
+      "\nTerms & Conditions: https://www.thespacejuhu.in/PackagePolicy.html"
   end
 
   def body_membership_system_upgrade

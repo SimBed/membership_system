@@ -11,15 +11,33 @@ class OrdersController < ApplicationController
 
   def create
     begin
-      byebug
       @order = Order.process_razorpayment(order_params)
       # redirect_to :action => "show", :id => @order.id
       # if @order.cpatured maybe create account, create purchase and send twillio
-      redirect_to orders_path
+      if @order.status == 'captured'
+        renewed_purchase = Purchase.find(order_params[:purchase_id])
+        purchase_params = { client_id: current_account.clients.first.id, product_id: @order.product_id, price_id: renewed_purchase.renewal_price.id,
+                            payment: @order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
+        @purchase = Purchase.new(purchase_params)
+        if @purchase.save
+          flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
+          redirect_to client_history_path current_account.clients.first
+        else
+          flash[:alert] = "Unable to process payment."
+          redirect_to root_path
+        end
+      end
+
     rescue Exception
       flash[:alert] = "Unable to process payment."
       redirect_to root_path
     end
+  end
+
+  def whatsapp_params(message_type)
+    { receiver: @purchase.client,
+      message_type: message_type,
+      variable_contents: { name:  @purchase.client.first_name } }
   end
 
   def refund
@@ -35,7 +53,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    p = params.permit(:product_id, :account_id, :razorpay_payment_id, :payment_id, :price)
+    p = params.permit(:product_id, :account_id, :razorpay_payment_id, :payment_id, :purchase_id)
     p.merge!({payment_id: p.delete(:razorpay_payment_id) || p[:payment_id]})
     p
   end
