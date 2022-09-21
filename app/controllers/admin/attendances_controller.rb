@@ -14,6 +14,14 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :reached_max_amendments, only: [:update]
   after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
 
+  def footfall
+    Purchase.default_timezone = :utc
+    @footfall_for_chart_day = Attendance.joins(:wkclass).attended.group_by_day(:start_time).count
+    @footfall_for_chart_week = Attendance.joins(:wkclass).attended.group_by_week(:start_time).count
+    @footfall_for_chart_month = Attendance.joins(:wkclass).attended.group_by_month(:start_time).count
+    Purchase.default_timezone = :local
+  end
+
   def new
     session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
     @attendance = Attendance.new

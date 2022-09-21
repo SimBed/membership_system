@@ -1,0 +1,7 @@
+<h3>Footfall (All classes)</h3>
+<h6>actually attended by day/week/month</h6>
+<% if logged_in_as?('superadmin') %>
+  <%= line_chart @footfall_for_chart_day, ytitle: "Count" %>
+  <%= line_chart @footfall_for_chart_week, ytitle: "Count" %>
+  <%= line_chart @footfall_for_chart_month, ytitle: "Count" %>
+<% end %>

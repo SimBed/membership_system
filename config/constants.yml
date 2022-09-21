@@ -32,7 +32,7 @@ default: &default
    visibility_window_hours_before: 2
    visibility_window_days_ahead: 6
    booking_window_days_before: 2
-   booking_window_minutes_before: -1
+   booking_window_minutes_before: -5
 
 development:
   <<: *default
