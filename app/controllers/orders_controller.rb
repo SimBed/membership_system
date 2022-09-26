@@ -15,8 +15,8 @@ class OrdersController < ApplicationController
       # redirect_to :action => "show", :id => @order.id
       # if @order.cpatured maybe create account, create purchase and send twillio
       if @order.status == 'captured'
-        renewed_purchase = Purchase.find(order_params[:purchase_id])
-        purchase_params = { client_id: current_account.clients.first.id, product_id: @order.product_id, price_id: renewed_purchase.renewal_price.id,
+        #renewed_purchase = Purchase.find(order_params[:purchase_id])
+        purchase_params = { client_id: current_account.clients.first.id, product_id: @order.product_id, price_id: order_params[:price_id],
                             payment: @order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
         @purchase = Purchase.new(purchase_params)
         if @purchase.save
@@ -53,7 +53,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    p = params.permit(:product_id, :account_id, :razorpay_payment_id, :payment_id, :purchase_id)
+    p = params.permit(:product_id, :account_id, :price_id, :razorpay_payment_id, :payment_id)
     p.merge!({payment_id: p.delete(:razorpay_payment_id) || p[:payment_id]})
     p
   end

@@ -9,7 +9,9 @@ class Client < ApplicationRecord
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
   validate :full_name_must_be_unique
-  validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
+  unless Rails.env.development?
+    validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
+  end
   validates :whatsapp, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :instagram, uniqueness: { case_sensitive: false }, allow_blank: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -47,15 +49,28 @@ class Client < ApplicationRecord
                  .manage_messaging
   end
 
-  def renewal_package
-    groupex_packages = purchases.package.order_by_dop.reject(&:pt?)
-    return nil if groupex_packages.empty?
+  def renewal
+    groupex_package_purchases = purchases.package.order_by_dop.reject(&:pt?)
+    return nil if groupex_package_purchases.empty?
 
-    ongoing_groupex_packages = groupex_packages.reject(&:expired? )# groupex_packages.not_fully_expired fails because reject returns array not ActiveRecord
-    if ongoing_groupex_packages.empty?
-      {ongoing: false, package: groupex_packages.first}
+    unlimited3m = Product.where(max_classes: 1000, validity_length: 3, validity_unit: 'M').first
+    ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
+    if ongoing_groupex_package_purchases.empty?
+      last_groupex_package_purchase = groupex_package_purchases.first
+      if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited (15%/10% pre-expiry/expired)
+        { ongoing: false, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("10% pre-expiry Discount"), base_price: unlimited3m.renewal_price("Base") }
+      else
+        product = last_groupex_package_purchase.product
+        { ongoing: false, trial: false, product: product, price: product.renewal_price("Base") }
+      end
     else
-      {ongoing: true, package: ongoing_groupex_packages.first}
+      ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
+      if ongoing_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited
+        { ongoing: true, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("15% First Package Discount"), base_price: unlimited3m.renewal_price("Base") }
+      else
+        product = ongoing_groupex_package_purchase.product
+        { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
+      end
     end
   end
 

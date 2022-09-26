@@ -2,15 +2,15 @@
       <script
           src="https://checkout.razorpay.com/v1/checkout.js"
           data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-          data-amount="<%= "#{@renewal_package.renewal_price.price}" %>"
+          data-amount="<%= "#{@renewal[:price].price}" %>"
           data-name="<%= "The Space" %>"
-          data-description="<%= "#{@renewal_package.formal_name}" %>"
+          data-description="<%= "#{@renewal[:product].formal_name}" %>"
           data-image="/SpaceLogo.png"
           data-prefill.email="<%= "#{current_account.email}" %>"
           data-theme.color="#F37254"
       >
       </script>
-      <input type="hidden" value="<%= "#{@renewal_package.product.id}" %>" name="product_id">
-      <input type="hidden" value="<%= "#{@renewal_package.id}" %>" name="purchase_id">
+      <input type="hidden" value="<%= "#{@renewal[:product].id}" %>" name="product_id">
+      <input type="hidden" value="<%= "#{@renewal[:price].id}" %>" name="price_id">
       <input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
   </form>

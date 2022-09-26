@@ -12,8 +12,7 @@ class Client::ClientsController < ApplicationController
     @wkclasses_in_booking_window = @wkclasses_visible - @wkclasses_window_closed - @wkclasses_not_yet_open
     # @wkclasses_in_booking_window = @wkclasses_visible.select { |w| w.booking_window.cover?(Time.zone.now) }
     @purchases = @client.purchases.package.not_fully_expired
-    @ongoing = @client.renewal_package[:ongoing]
-    @renewal_package = @client.renewal_package[:package]
+    @renewal = @client.renewal
     @quotation = Setting.quotation
   end
 

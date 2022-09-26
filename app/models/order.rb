@@ -9,9 +9,7 @@ class Order < ApplicationRecord
 
   class << self
     def process_razorpayment(params)
-      purchase = Purchase.find(params[:purchase_id])
-      price = purchase.renewal_price.price
-      # price = product.prices.first.price
+      price = Price.find(params[:price_id]).price
       Razorpay.setup(Rails.configuration.razorpay[:key_id], Rails.configuration.razorpay[:key_secret])
       razorpay_pmnt_obj = fetch_payment(params[:payment_id])
       status = fetch_payment(params[:payment_id]).status
@@ -20,7 +18,7 @@ class Order < ApplicationRecord
         razorpay_pmnt_obj = fetch_payment(params[:payment_id])
         params.merge!({ status: razorpay_pmnt_obj.status,
                         price: price })
-        # don't want purchase_id from params
+        # don't want price_id from params
         Order.create(params.permit(:product_id, :price, :status, :payment_id, :account_id))
       else
         raise StandardError, "Unable to capture payment"

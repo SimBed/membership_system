@@ -1,9 +1,12 @@
 <div class="text-center bolditalics mb-5">
   <!--p class="mb-2">renew your package before expiry and save 10%</p-->
-  <p class="mb-2">
-    <small>renew</small> <%= @purchases.first.product.formal_name %> <small>before expiry and save 10%</small>
-  </p>
+  <p class="mb-2"> <%= yield(:renewal_statement) %> </p>
+  <p class="mb-0"> <%= yield(:renewal_product) %> </p>
+  <p class="mb-2"> <%= number_to_currency(yield(:renewal_price), precision: 0, unit: 'Rs. ') %> </p>
+  <p class="mb-2"> <small> <%= "normal price: #{number_to_currency(yield(:base_price), precision: 0, unit: 'Rs. ')}" %> </small> </p>
+  <% if Setting.whitelist.include?(@client.email.slice(0,7)) %>
     <%= render partial: 'razor_form' %>
-  <%#= link_to 'Renew Now','#', class: "like_button" %>
-  <!--form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_JkXZKlxoQDQJdG" async> </script> </form-->
+  <% else %>
+    <p class="bolditalics mb-0"> <%= link_to 'Contact The Space & Renew Now!','#', class: "like_button" %></p>
+  <% end %>
 </div>

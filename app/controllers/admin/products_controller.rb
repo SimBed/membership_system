@@ -6,6 +6,11 @@ class Admin::ProductsController < Admin::BaseController
 
   def index
     @products = Product.order_by_name_max_classes
+    ongoing_purchases = Purchase.not_fully_expired
+    @product_count = {}
+    @products.each do |product|
+      @product_count[product.name.to_sym] = ongoing_purchases.where(product_id: product.id).size
+    end
     respond_to do |format|
       format.html
       format.csv { send_data @products.to_csv }

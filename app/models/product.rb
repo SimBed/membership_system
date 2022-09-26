@@ -86,12 +86,17 @@ class Product < ApplicationRecord
     prices.current.map(&:price).join(', ')
   end
 
-  def renewal_price(discounted: true)
-    discount_price = prices.where(name: '10% pre-expiry Discount').where(current: true).first
-    undiscounted_price = prices.where(name: 'Base').where(current: true).first
-    return (discount_price || undiscounted_price)  if discounted
+  def renewal_price(price_name)
+    renewal_price = prices.where(name: price_name).where(current: true)&.first
+    base_price = prices.where(name: 'Base').where(current: true).first
 
-    undiscounted_price
+    renewal_price || base_price
+
+  end
+
+  def ongoing_count # not directly used
+    # Purchase.joins(:product).not_fully_expired.map{|p| p.name}.tally[name]
+    Purchase.not_fully_expired.where(product_id: id).size
   end
 
   private

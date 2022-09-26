@@ -71,10 +71,6 @@ class Purchase < ApplicationRecord
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per 20
 
-  def renewal_price
-    expired? ? product.renewal_price(discounted: false) : product.renewal_price(discounted: true)
-  end
-
   def pt?
     product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
   end
