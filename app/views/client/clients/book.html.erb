@@ -1,24 +1,30 @@
-<% provide(:heading, "Classes coming up") %>
 <% provide(:greeting, "Hi #{@client.first_name}!") %>
+<% provide(:heading, ('Classes coming up' if @renewal[:ongoing]) ) %>
+<% provide(:expiry_statement, (@renewal[:trial] ? 'Your Trial has expired' : 'Your Package has expired') ) %>
+<% provide(:renewal_statement, renewal_statement(@renewal[:ongoing], @renewal[:trial])) %>
+<% provide(:renewal_product, @renewal[:product].formal_name ) %>
+<% provide(:renewal_price, @renewal[:price].price.to_s ) %>
+<% provide(:base_price, @renewal[:base_price]&.price.to_s ) %>
 
 <div class="text-center mb-3">
   <%= render partial: 'client_heading', locals: {selection: false} %>
 </div>
 
-<% if @wkclasses_visible.empty? %>
-  <div id="bookings-table" class="container px-1 mb-3">
-    <% if @purchases.empty? %>
-      <p class="bolditalics mb-0">Your package has expired.</p>
-      <p class="bolditalics mb-0"> Contact The Space & Renew Now!<%#= link_to 'Renew Now','#', class: "like_button" %></p>
-    <% else %>
-      <p class="bolditalics mb-0">There are no classes currently in the booking window.</p>
-    <% end %>
-  </div>
-<% else %>
-  <div id="bookings-table" class="container px-1 mb-5">
-    <%= render partial: 'client_bookings_table' %>
-  </div>
-<% end %>
+<div class="text-center mb-3">
+  <% if @wkclasses_visible.empty? %>
+    <div id="bookings-table" class="container px-1 mb-3">
+      <% unless @renewal[:ongoing] %>
+        <%= render partial: 'expired_package' %>
+      <% else %>
+        <p class="bolditalics mb-0">There are no classes currently in the booking window.</p>
+      <% end %>
+    </div>
+  <% else %>
+    <div id="bookings-table" class="container px-1 mb-5">
+      <%= render partial: 'client_bookings_table' %>
+    </div>
+  <% end %>
+</div>
 
 <div id="consistency" class="container px-1 mb-5">
   <%= render partial: 'consistency' %>
@@ -35,6 +41,8 @@
 
 <div id="heart_renew_quote" class="container px-1">
   <%= render partial: 'client_heart' %>
-  <%= render partial: 'renew' %>
+  <% if @renewal[:ongoing] %>
+    <%= render partial: 'renew' %>
+  <% end %>
   <%= render partial: 'quotation' %>
 </div>

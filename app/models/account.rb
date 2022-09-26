@@ -1,6 +1,7 @@
 class Account < ApplicationRecord
   has_many :clients
   has_many :partners
+  has_many :orders
   attr_accessor :remember_token, :reset_token
 
   before_save :downcase_email
@@ -11,7 +12,7 @@ class Account < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :ac_type, presence: true
   has_secure_password
-  
+
   def clean_up
     clients.first.update(account_id: nil)
     destroy

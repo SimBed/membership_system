@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   include Csv
   has_many :purchases, dependent: :destroy
   has_many :prices, dependent: :destroy
+  has_many :orders
   belongs_to :workout_group
   validates :max_classes, presence: true
   validates :validity_length, presence: true
@@ -84,6 +85,19 @@ class Product < ApplicationRecord
 
   def current_prices
     prices.current.map(&:price).join(', ')
+  end
+
+  def renewal_price(price_name)
+    renewal_price = prices.where(name: price_name).where(current: true)&.first
+    base_price = prices.where(name: 'Base').where(current: true).first
+
+    renewal_price || base_price
+
+  end
+
+  def ongoing_count # not directly used
+    # Purchase.joins(:product).not_fully_expired.map{|p| p.name}.tally[name]
+    Purchase.not_fully_expired.where(product_id: id).size
   end
 
   private

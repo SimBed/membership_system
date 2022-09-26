@@ -880,6 +880,13 @@ td a.extra_small {
   }
 }
 
+.razorpay-payment-button {
+  // display: none;
+}
+
+// .razorpay-payment-button_override {
+// }
+
 @media (min-width: 1200px) {
   td.extra_small, th.extra_small, tr.extra_small {
     font-size: 0.9em;
