@@ -519,7 +519,6 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def late_cancellation_penalty(package_type, penalty: true)
-    # return if Rails.env.production?
     # no more than one penalty per attendance
     return unless package_type == :unlimited_package && @attendance.penalty.nil?
 
@@ -528,28 +527,12 @@ class Admin::AttendancesController < Admin::BaseController
                        reason: 'late cancellation' })
       update_purchase_status([@purchase])
       @penalty_given = true # for the flash
-      flash_message(*Whatsapp.new(whatsapp_params('late_cancels_penalty')).manage_messaging)
-      # manage_messaging 'late_cancel_penalty'
+      # no longer whatsapp as the flash already informs (also the flash below is appropriate for admin but not for a client)
+      # flash_message(*Whatsapp.new(whatsapp_params('late_cancels_penalty')).manage_messaging)
     else
-      flash_message(*Whatsapp.new(whatsapp_params('late_cancels_no_penalty')).manage_messaging)
-      # manage_messaging 'late_cancel_no_penalty'
+      # flash_message(*Whatsapp.new(whatsapp_params('late_cancels_no_penalty')).manage_messaging)
     end
   end
-
-  # def no_show_penalty(package_type, penalty: true)
-  #   # return if Rails.env.production?
-  #   return unless package_type == :unlimited_package && @attendance.penalty.nil?
-  #
-  #   if penalty
-  #     Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 2, reason: 'no show' })
-  #     update_purchase_status([@purchase])
-  #     flash_message(*Whatsapp.new(whatsapp_params('no_show_penalty')).manage_messaging)
-  #     # manage_messaging 'no_show_penalty'
-  #   else
-  #     flash_message(*Whatsapp.new(whatsapp_params('no_show_no_penalty')).manage_messaging)
-  #     # manage_messaging 'no_show_no_penalty'
-  #   end
-  # end
 
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
