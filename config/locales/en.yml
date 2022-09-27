@@ -96,7 +96,7 @@ en:
         success: Workout Group was successfully updated
       destroy:
         success: Workout Group was successfully deleted
-    workout_groups:
+    workouts:
       create:
         success: Workout was successfully added
       update:

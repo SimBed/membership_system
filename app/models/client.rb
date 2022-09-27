@@ -74,8 +74,8 @@ class Client < ApplicationRecord
     ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
     if ongoing_groupex_package_purchases.empty?
       last_groupex_package_purchase = groupex_package_purchases.first
-      if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited (15%/10% pre-expiry/expired)
-        { ongoing: false, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("10% pre-expiry Discount"), base_price: unlimited3m.renewal_price("Base") }
+      if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited (20%/15% pre-expiry/expired)
+        { ongoing: false, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("15% post-trial-expiry Discount"), base_price: unlimited3m.renewal_price("Base") }
       else
         product = last_groupex_package_purchase.product
         { ongoing: false, trial: false, product: product, price: product.renewal_price("Base") }
@@ -83,7 +83,7 @@ class Client < ApplicationRecord
     else
       ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
       if ongoing_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited
-        { ongoing: true, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("15% First Package Discount"), base_price: unlimited3m.renewal_price("Base") }
+        { ongoing: true, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("20% pre-trial-expiry Discount"), base_price: unlimited3m.renewal_price("Base") }
       else
         product = ongoing_groupex_package_purchase.product
         { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
