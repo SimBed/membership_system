@@ -9,6 +9,7 @@ class Setting < RailsSettings::Base
   scope :booking do
     field :quotation, default: "Exercise is King. Nutrition is Queen. Put them together & you've got a Kingdom.",
                      validates: { presence: true, length: { in: 2..200 } }
+    field :expiry_message_days, default: 3, validates: { presence: true, numericality: { only_integer: true } }
     field :amnesty_limit, type: :hash, default: {
        late_cancels:
           { unlimited_package: 2,

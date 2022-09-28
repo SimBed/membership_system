@@ -31,6 +31,7 @@ class Purchase < ApplicationRecord
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
   # scope :started, -> { joins(:attendances).merge(Attendance.no_amnesty).distinct }
   scope :started, -> { where.not(status: 'not started') }
+  scope :not_started, -> { where(status: 'not started') }
   # 'using a scope through an association'
   # https://apidock.com/rails/ActiveRecord/SpawnMethods/merge
   scope :package, -> { joins(:product).merge(Product.package) }
@@ -39,6 +40,7 @@ class Purchase < ApplicationRecord
   scope :fixed, -> { joins(:product).merge(Product.fixed) }
   scope :trial, -> { joins(:product).merge(Product.trial) }
   scope :package_started_not_expired, -> { package.started.not_expired }
+  scope :package_started_not_fully_expired, -> { package.started.not_fully_expired }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
   scope :workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: { name: wg }) }
@@ -74,6 +76,7 @@ class Purchase < ApplicationRecord
   def pt?
     product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
   end
+  
   # reformat qualifying_for and available_for_booking into single method
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|

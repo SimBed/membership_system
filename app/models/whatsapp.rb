@@ -21,7 +21,7 @@ class Whatsapp
 
     send_whatsapp
     return [:warning, "Thank you for your renewal. You should receive a whatsapp message shortly to confirm"] if @message_type == 'renew'
-        
+
     [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
@@ -60,6 +60,21 @@ class Whatsapp
       "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
       "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
       "\nTerms & Conditions: https://www.thespacejuhu.in/PackagePolicy.html"
+  end
+
+  def body_package_expiry_minus_3
+    "Hi #{@variable_contents[:first_name]}" +
+    "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
+    "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
+    "\n \nLogin to your account to renew or contact us to discuss more options." +
+    "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
+  end
+
+  def body_package_expiry_minus_3_temp
+    "Hi #{@variable_contents[:first_name]}" +
+    "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
+    "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
+    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
   end
 
   def body_new_account
