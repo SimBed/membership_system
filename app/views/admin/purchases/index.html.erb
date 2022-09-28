@@ -12,6 +12,6 @@
   <%= render partial: 'purchases_table' %>
 </div>
 <% if logged_in_as?('superadmin') %>
-  <%#= line_chart @purchase_count_for_chart, ytitle: "Count" %>
-  <%#= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>
+  <%= line_chart @purchase_count_for_chart, ytitle: "Count" %>
+  <%= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>
 <% end %>

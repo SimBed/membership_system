@@ -16,7 +16,12 @@
 
   <div class="form-group">
     <label class="control-label">Expiry Message (days)</label>
-    <%= f.number_field :expiry_message_days, value: Setting.expiry_message_days, class: "form-control", style: "width: 5rem;" %>
+    <%= f.number_field :package_expiry_message_days, value: Setting.package_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">Expiry Message (days)</label>
+    <%= f.number_field :trial_expiry_message_days, value: Setting.trial_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
   </div>
 
   <div class="form-group">

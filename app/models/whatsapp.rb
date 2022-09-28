@@ -9,15 +9,13 @@ class Whatsapp
   def manage_messaging
     # the arrays returned are for the flash
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
-    return [nil] if Rails.env.test?
+    return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? unless @message_type == 'renew'
 
     # return [nil] unless white_list_whatsapp_receivers
     # return [:warning, "Personal Training purchase. Send details to client manually."] if @receiver.pt? && @message_type == 'new_purchase'
-
-    # return [nil] unless Rails.env.production?
 
     send_whatsapp
     return [:warning, "Thank you for your renewal. You should receive a whatsapp message shortly to confirm"] if @message_type == 'renew'
@@ -74,6 +72,21 @@ class Whatsapp
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
     "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
+    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
+  end
+
+  def body_trial_expiry_minus_2
+    "Hi #{@variable_contents[:first_name]}" +
+    "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
+    "\nRenew before expiry & save 20% on your first Package!" +
+    "\n \nLogin to your account to renew or contact us to discuss more options." +
+    "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
+  end
+
+  def body_trial_expiry_minus_2_temp
+    "Hi #{@variable_contents[:first_name]}" +
+    "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
+    "\nRenew before expiry & save 20% on your first Package!" +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
   end
 

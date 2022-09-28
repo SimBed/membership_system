@@ -29,7 +29,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
 
   private
     def setting_params
-      params.require(:setting).permit(:whitelist, :expiry_message_days, :quotation, :amnesty_limit)
+      params.require(:setting).permit(:whitelist, :package_expiry_message_days, :trial_expiry_message_days, :quotation, :amnesty_limit)
     end
 
 end
