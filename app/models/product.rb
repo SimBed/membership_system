@@ -2,6 +2,9 @@ class Product < ApplicationRecord
   include Csv
   has_many :purchases, dependent: :destroy
   has_many :prices, dependent: :destroy
+  # see usage of current_price_objects in form.grouped_collection_select :price_id in view/.../purchases/_form
+  # previously all prices (current and old) were available to select for a given product
+  has_many :current_price_objects, lambda { where(current: true) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
   has_many :orders
   belongs_to :workout_group
   validates :max_classes, presence: true

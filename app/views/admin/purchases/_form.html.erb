@@ -27,7 +27,7 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
 
   <div class="field">
     <%= form.label :price_id, 'Price' %>
-    <%= form.grouped_collection_select :price_id, @products, :prices, :name, :id, :name, include_blank: true %>
+    <%= form.grouped_collection_select :price_id, @products, :current_price_objects, :name, :id, :name, include_blank: true %>
   </div>
 
   <div class="field">

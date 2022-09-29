@@ -37,7 +37,7 @@ $('select#purchase_product_id').on('change', function() {
   else {
     $('#purchase_price_id').empty();
   }
-  // makee this dry as almost identical to code above when directly change the price dropdown
+  // make this dry as almost identical to code above when directly change the price dropdown
   // go back to the database, find the payment for this price (ie the value of the first price in the now populated price dropdown and)
   // which in the ajax response will update the payment field
   $.ajax({
@@ -50,7 +50,7 @@ $('select#purchase_product_id').on('change', function() {
 
 // reformat as not dry. (This code is repeated in the 'on change' function above).
 // This code ensures on new purchase the price dropdown is empty of options initially (before a product has been selected)
-// but is correctly populated on purchase edit (when the purchase's esisting product will be selected)
+// but is correctly populated on purchase edit (when the purchase's existing product will be selected)
 // jquery html method sets content (when given an argument) and returns content (when no argument)
 
  $(document).ready(()=>{
