@@ -30,7 +30,9 @@
         <% unless logged_in_as?('junioradmin') %>
           <li><%= link_to 'instructors', admin_instructors_path, class: "dropdown-item" %></li>
           <li><%= link_to 'partners', admin_partners_path, class: "dropdown-item" %></li>
+        <% end %>
           <li><%= link_to 'products', admin_products_path, class: "dropdown-item" %></li>
+        <% unless logged_in_as?('junioradmin') %>
           <li><%= link_to 'workouts', admin_workouts_path, class: "dropdown-item" %></li>
           <li><%= link_to 'workout groups', admin_workout_groups_path, class: "dropdown-item" %></li>
           <li><hr class="dropdown-divider"></li>

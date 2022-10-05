@@ -2,7 +2,7 @@
       <script
           src="https://checkout.razorpay.com/v1/checkout.js"
           data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-          data-amount="<%= "#{@renewal[:price].price}" %>"
+          data-amount="<%= "#{@renewal[:price].discounted_price}" %>"
           data-name="<%= "The Space" %>"
           data-description="<%= "#{@renewal[:product].formal_name}" %>"
           data-image="/SpaceLogo.png"

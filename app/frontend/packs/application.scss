@@ -887,6 +887,10 @@ td a.extra_small {
 // .razorpay-payment-button_override {
 // }
 
+.pre_oct22_price {
+  color: red
+}
+
 @media (min-width: 1200px) {
   td.extra_small, th.extra_small, tr.extra_small {
     font-size: 0.9em;

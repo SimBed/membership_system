@@ -2,9 +2,12 @@
   <!--p class="mb-2">renew your package before expiry and save 10%</p-->
   <p class="mb-2"> <%= yield(:renewal_statement) %> </p>
   <p class="mb-0"> <%= yield(:renewal_product) %> </p>
-  <p class="mb-2"> <%= number_to_currency(yield(:renewal_price), precision: 0, unit: 'Rs. ') %> </p>
-  <p class="mb-2"> <small> <%= "normal price: #{number_to_currency(yield(:base_price), precision: 0, unit: 'Rs. ')}" %> </small> </p>
-  <% if Setting.whitelist.include?(@client.email.slice(0,7)) %>
+  <% if @renewal[:valid] %>
+    <p class="mb-2"> <%= number_to_currency(yield(:renewal_price), precision: 0, unit: 'Rs. ') %> </p>
+    <p class="mb-2"> <small> <%= "normal price: #{number_to_currency(yield(:base_price), precision: 0, unit: 'Rs. ')}" %> </small> </p>
+  <% end %>
+
+  <% if Setting.whitelist.include?(@client.email.slice(0,7)) && @renewal[:valid] %>
     <%= render partial: 'razor_form' %>
   <% else %>
     <p class="bolditalics mb-0"> <%= link_to 'Contact The Space & Renew Now!','#', class: "like_button" %></p>

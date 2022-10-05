@@ -9,7 +9,7 @@ class Order < ApplicationRecord
 
   class << self
     def process_razorpayment(params)
-      price = Price.find(params[:price_id]).price
+      price = Price.find(params[:price_id]).discounted_price
       Razorpay.setup(Rails.configuration.razorpay[:key_id], Rails.configuration.razorpay[:key_secret])
       razorpay_pmnt_obj = fetch_payment(params[:payment_id])
       status = fetch_payment(params[:payment_id]).status

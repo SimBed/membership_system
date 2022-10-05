@@ -19,6 +19,7 @@ class Product < ApplicationRecord
   scope :fixed, -> { where('max_classes between ? and ?', 2, 999) }
   scope :trial, -> { where(validity_length: 1, validity_unit: 'W') }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
+  scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Space Group'") }
 
   def name
     "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}"
@@ -86,16 +87,23 @@ class Product < ApplicationRecord
     "#{wg_name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit} #{price_name}"
   end
 
-  def current_prices
-    prices.current.map(&:price).join(', ')
-  end
+  # no longer used
+  # def current_prices
+  #   prices.current.map(&:price).join(', ')
+  # end
 
-  def renewal_price(price_name)
-    renewal_price = prices.where(name: price_name).where(current: true)&.first
-    base_price = prices.where(name: 'Base').where(current: true).first
+  # def renewal_price(price_name)
+  #   renewal_price = prices.where(name: price_name).where(current: true)&.first
+  #   base_price = prices.where(name: 'Base').where(current: true).first
+  #
+  #   renewal_price || base_price
+  #
+  # end
 
+  def renewal_price(purpose)
+    renewal_price = prices.where(purpose => true).where(current: true).first
+    base_price = prices.where(base: true).where(current: true).first
     renewal_price || base_price
-
   end
 
   def ongoing_count # not directly used

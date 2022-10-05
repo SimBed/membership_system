@@ -3,7 +3,7 @@
 <% provide(:expiry_statement, (@renewal[:trial] ? 'Your Trial has expired' : 'Your Package has expired') ) %>
 <% provide(:renewal_statement, renewal_statement(@renewal[:ongoing], @renewal[:trial])) %>
 <% provide(:renewal_product, @renewal[:product].formal_name ) %>
-<% provide(:renewal_price, @renewal[:price].price.to_s ) %>
+<% provide(:renewal_price, @renewal[:price]&.discounted_price.to_s ) %>
 <% provide(:base_price, @renewal[:base_price]&.price.to_s ) %>
 
 <div class="text-center mb-3">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_14_114358) do
+ActiveRecord::Schema.define(version: 2022_09_30_174821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,7 +170,16 @@ ActiveRecord::Schema.define(version: 2022_09_14_114358) do
     t.integer "product_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "discount", default: 0
+    t.boolean "base", default: false
+    t.boolean "renewal_pre_expiry", default: false
+    t.boolean "renewal_pretrial_expiry", default: false
+    t.boolean "renewal_posttrial_expiry", default: false
+    t.index ["base"], name: "index_prices_on_base"
     t.index ["product_id"], name: "index_prices_on_product_id"
+    t.index ["renewal_posttrial_expiry"], name: "index_prices_on_renewal_posttrial_expiry"
+    t.index ["renewal_pre_expiry"], name: "index_prices_on_renewal_pre_expiry"
+    t.index ["renewal_pretrial_expiry"], name: "index_prices_on_renewal_pretrial_expiry"
   end
 
   create_table "products", force: :cascade do |t|

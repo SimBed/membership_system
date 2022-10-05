@@ -11,28 +11,125 @@
   <% end %>
 
   <div><%= form.hidden_field :product_id, value: params[:product_id] || price.product_id %></div>
+  <div><%= hidden_field_tag :base_price, @base_price %></div>
+  <div><%= hidden_field_tag :pre_oct22_price, nil, { data: {pre_oct22_price: session[:pre_oct22_price]}, id: 'pre_oct22_price'} %></div>
 
   <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
 
-  <div class="field">
-    <%= form.label :price, 'Rs.' %>
-    <%= form.number_field :price %>
+  <legend>PURPOSE</legend>
+  <div class="field" id="base">
+    <%= form.label :base do %>
+      <%= form.check_box :base, { checked: form.object.base, onclick: "action_base()" } %>
+      Base
+    <% end %>
   </div>
 
   <div class="field">
+    <%= form.label :renewal_pre_expiry do %>
+      <%= form.check_box :renewal_pre_expiry, { checked: form.object.renewal_pre_expiry } %>
+      Early Renewal
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :renewal_pretrial_expiry do %>
+      <%= form.check_box :renewal_pretrial_expiry, { checked: form.object.renewal_pretrial_expiry } %>
+      Early Trial Renewal
+    <% end %>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :renewal_posttrial_expiry do %>
+      <%= form.check_box :renewal_posttrial_expiry, { checked: form.object.renewal_posttrial_expiry } %>
+      Late Trial Renewal
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :discount, 'Discount %' %>
+    <%= form.number_field :discount, value: form.object.discount, onchange: "recalc_price()", id: "discount" %>
+  </div>
+
+  <div class="field" >
+    <%= form.label :price, 'Price (Rs.)' %>
+    <%= form.number_field :price, value: (form.object.new_record? ? @base_price : @discounted_price),
+                                  readonly: (true unless @price.base?),
+                                  id: "price" %>
+  </div>
+
+  <div class="field mb-3">
     <%= form.label :date_from, 'starting on' %>
-    <%= form.date_field :date_from %>
+    <%= form.date_field :date_from, value: (form.object.new_record? ? Date.today : form.object.date_from) %>
   </div>
 
-  <div class="field">
-    <%= form.label :current, 'current?' %>
-    <%= form.check_box :current, { checked: @price.new_record? || form.object.current? } %>
+  <%# Keep label and checkbox on same line, Benoit answer:
+      https://stackoverflow.com/questions/12488051/how-to-keep-a-checkbox-and-label-on-the-same-line-in-a-rails-form %>
+  <div class="field mb-3">
+    <%= form.label :current do %>
+      <%= form.check_box :current, { checked: @price.new_record? || form.object.current? } %>
+      Price is Currently Available
+    <% end %>
   </div>
+
+  <% if @pre_oct22_price %>
+    <div class="field mb-3">
+      <%= form.label :pre_oct22 do %>
+        <%= form.check_box :pre_oct22, { checked: @pre_oct22_price, disabled: true } %>
+        Price set before October 2022
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<script>
+
+  function action_base() {
+    price_toggle_readonly();
+    discount_toggle_readonly();
+    //recalc_price();
+  }
+
+  function price_toggle_readonly() {
+    var price = document.getElementById("price");
+    price.readOnly = !price.readOnly ;
+    }
+
+  function discount_toggle_readonly() {
+    var discount_element = document.getElementById("discount");
+    discount_element.value = 0;
+    discount.readOnly = !discount.readOnly;
+  }
+
+  function recalc_price() {
+    // var current = document.getElementById("current").checked;
+    //
+    // if (current == false) {
+    //       alert("changing the discount won't affect the stored price of an old (not current) price");
+    //       return;
+    //     }
+    var pre_oct22_price = document.getElementById("pre_oct22_price").dataset.preOct22Price;
+
+    if (pre_oct22_price == 'true') {
+          alert("This Price was created before October 22. Changing the discount will not affect the Price's stored price.");
+          return;
+        }
+
+    var price_element = document.getElementById("price");
+    var base_price = document.getElementById("base_price").value;
+    var discount = document.getElementById("discount").value;
+    var raw_price = base_price*(1-(discount/100));
+    price_element.value = round50(raw_price);
+    }
+
+  function round50(x)  {
+    return Math.ceil(x/50)*50;
+  }
+
+</script>

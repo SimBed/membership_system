@@ -13,15 +13,16 @@ class PriceTest < ActiveSupport::TestCase
     assert_predicate @price, :valid?
   end
 
-  test 'price should be present' do
-    @price.price = '     '
-    refute_predicate @price, :valid?
-  end
+  # post Oct 22, price is calculated based on base and discount
+  # test 'price should be present' do
+  #   @price.price = '     '
+  #   refute_predicate @price, :valid?
+  # end
 
-  test 'price should be integer' do
-    @price.price = 'cheap'
-    refute_predicate @price, :valid?
-  end
+  # test 'price should be integer' do
+  #   @price.price = 'cheap'
+  #   refute_predicate @price, :valid?
+  # end
 
   test 'name should be present' do
     @price.name = '     '

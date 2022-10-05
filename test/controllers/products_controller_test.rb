@@ -18,7 +18,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect index when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_products_path
       assert_redirected_to login_path

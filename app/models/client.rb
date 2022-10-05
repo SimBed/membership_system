@@ -5,11 +5,13 @@ class Client < ApplicationRecord
   has_many :attendances, through: :purchases
   belongs_to :account, optional: true
   before_save :downcase_email
+  before_save :uppercase_names
   # validates :first_name, uniqueness: {scope: :last_name}
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
   validate :full_name_must_be_unique
   unless Rails.env.development?
+    # helpful to use my phone number for mutiple clients in development
     validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
   end
   validates :whatsapp, uniqueness: { case_sensitive: false }, allow_blank: true
@@ -75,18 +77,30 @@ class Client < ApplicationRecord
     if ongoing_groupex_package_purchases.empty?
       last_groupex_package_purchase = groupex_package_purchases.first
       if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited (20%/15% pre-expiry/expired)
-        { ongoing: false, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("15% post-trial-expiry Discount"), base_price: unlimited3m.renewal_price("Base") }
+        renewal_price = unlimited3m.renewal_price("renewal_posttrial_expiry")
+        base_price = unlimited3m.renewal_price("base")
+        valid = !renewal_price.nil? && !base_price.nil?
+        { ongoing: false, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid }
       else
         product = last_groupex_package_purchase.product
-        { ongoing: false, trial: false, product: product, price: product.renewal_price("Base") }
+        renewal_price = product.renewal_price("base")
+        valid = !renewal_price.nil?
+        { ongoing: false, trial: false, product: product, price: renewal_price, valid: valid }
       end
     else
       ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
       if ongoing_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited
-        { ongoing: true, trial: true, product: unlimited3m, price: unlimited3m.renewal_price("20% pre-trial-expiry Discount"), base_price: unlimited3m.renewal_price("Base") }
+        renewal_price = product.renewal_price("renewal_pretrial_expiry")
+        base_price = unlimited3m.renewal_price("base")
+        valid = !renewal_price.nil? && !base_price.nil?
+        { ongoing: true, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid }
       else
         product = ongoing_groupex_package_purchase.product
-        { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
+        # { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
+        renewal_price = product.renewal_price("renewal_pre_expiry")
+        base_price = product.renewal_price("base")
+        valid = !renewal_price.nil? && !base_price.nil?
+        { ongoing: true, trial: false, product: product, price: renewal_price, base_price: base_price, valid: valid }
       end
     end
   end
@@ -146,6 +160,12 @@ class Client < ApplicationRecord
 
   def downcase_email
     self.email = email.downcase
+  end
+
+  def uppercase_names
+    # self.first_name = first_name.split.map(&:capitalize)
+    self.first_name = first_name.titleize
+    self.last_name = last_name.titleize
   end
 
   def full_name_must_be_unique

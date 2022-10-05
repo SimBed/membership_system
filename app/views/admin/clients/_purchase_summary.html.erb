@@ -12,7 +12,7 @@
     <% end %>
     <tr>
       <th scope="row">Price</th>
-      <td><%= @purchase.price.name %></td>
+      <td><%= @purchase.price.full_name %></td>
     </tr>
     <% unless @purchase.dropin? %>
       <tr>

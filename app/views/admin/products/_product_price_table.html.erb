@@ -3,21 +3,26 @@
   <tbody>
     <tr>
       <th scope="col">Name</th>
-      <th scope="col">Price</th>
+      <th scope="col">Discount</th>
+      <th scope="col">Price (Rs.)</th>
       <th scope="col">From</th>
       <th scope="col">Status</th>
+      <th scope="col">Purpose</th>
       <th scope="col"><%= link_to image_tag('add.png', class:'grid_table_icon'), new_admin_price_path(product_id: params[:id]) %></th>
       <th scope="col"></th>
     </tr>
 <% @prices.each do |price| %>
       <tr>
-        <th scope="row" class="fw-light"><%= price.name %></th>
-        <td><%= number_to_currency(price.price, precision: 0, unit: 'Rs. ') %></td>
+        <th scope="row" class="fw-light" style="color: <%='red' if price.pre_oct22_price?%>"><%= price.name %></th>
+        <td><%= "#{price.discount}%" %></td>
+        <td><%= number_with_delimiter(price.discounted_price) %></td>
         <td><%= price.date_from.strftime('%d %b %y') %></td>
         <td><%= price.current? ? 'current' : 'old' %></td>
+        <td><%= purpose(price) %></td>
         <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_price_path(price)%></td>
         <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_price_path(price), method: :delete, data: { confirm: 'Price will be deleted. Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
+  <caption style="caption-side: bottom">Prices from before October 22 used a different design and are shown in red. For these, The Price's price is correctly shown, but may not be reconcilable as base price x discount.</caption>
 </table>
