@@ -90,7 +90,7 @@ class Client < ApplicationRecord
     else
       ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
       if ongoing_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited
-        renewal_price = product.renewal_price("renewal_pretrial_expiry")
+        renewal_price = unlimited3m.renewal_price("renewal_pretrial_expiry")
         base_price = unlimited3m.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?
         { ongoing: true, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid }

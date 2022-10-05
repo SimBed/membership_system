@@ -38,7 +38,7 @@ class Admin::PricesController < Admin::BaseController
     else
       @base_price = @price.base_price || 0
       @discounted_price = @price.discounted_price || 0
-      @pre_oct22_price = @price.pre_oct22_price
+      @pre_oct22_price = @price.pre_oct22_price?
       render :edit, status: :unprocessable_entity
     end
   end
