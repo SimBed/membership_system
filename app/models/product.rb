@@ -101,6 +101,8 @@ class Product < ApplicationRecord
   # end
 
   def renewal_price(purpose)
+    return nil unless purpose == 'base' || workout_group.name == 'Space Group'
+    
     renewal_price = prices.where(purpose => true).where(current: true).first
     base_price = prices.where(base: true).where(current: true).first
     renewal_price || base_price

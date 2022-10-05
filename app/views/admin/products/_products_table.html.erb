@@ -2,7 +2,7 @@
   <tbody>
     <tr>
       <th scope="col">Product</th>
-      <% if logged_in_as?('admin') %>
+      <% if logged_in_as?('admin', 'superadmin') %>
         <th scope="col">Ongoing Count</th>
       <% end %>
       <th scope="col">Base (Rs)</th>
@@ -16,7 +16,7 @@
     <% @products.each do |product| %>
       <tr>
         <th scope="row" class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
-        <% if logged_in_as?('admin') %>
+        <% if logged_in_as?('admin', 'superadmin') %>
           <td><%= @product_count[product.name.to_sym] %></td>
         <% end %>
         <td><%= number_with_delimiter(product.renewal_price("base")&.discounted_price) %></td>
