@@ -91,6 +91,7 @@ class Admin::ClientsController < Admin::BaseController
     # the update method (and therefore the client_params method) is used through a form but also clicking on a link on the clients page
     return {fitternity: params[:fitternity] } if params[:fitternity].present?
     return {waiver: params[:waiver] } if params[:waiver].present?
+    return {instawaiver: params[:instawaiver] } if params[:instawaiver].present?
 
     params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
   end

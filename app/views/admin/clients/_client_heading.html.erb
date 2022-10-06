@@ -1,6 +1,9 @@
 <h2>
   <%= @client.name %>
   <%= image_tag(status_icon(@client)) unless status_icon(@client).nil? %>
+  <%= image_tag('insta.png', class: ["grid_table_icon",("instawaiver" unless @client.instawaiver?)].compact.join(' ')) %>
+  <%= image_tag('waiver.png', class: ["grid_table_icon",("waiver" unless @client.waiver?)].compact.join(' ')) %>
+  <%= image_tag('eff.png', class: ["grid_table_icon",("fitternity" unless @client.fitternity?)].compact.join(' ')) %>
   <!--form action=<%#= "/admin/clients/#{params[:id]}" %> method="GET" >
     <select name="purchaseid" onchange="this.form.submit()" class= "sort">
       <%#= options_for_select @products_purchased, session[:purchaseid] %>
