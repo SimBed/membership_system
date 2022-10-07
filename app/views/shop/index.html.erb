@@ -3,6 +3,30 @@
   <table class="table table-secondary table-striped caption-top">
     <caption></caption>
     <tbody>
+
+      <tr>
+        <th scope="row"><%= @test_price&.product&.formal_name %></th>
+        <td><form action="/orders" method="POST">
+              <script
+                  src="https://checkout.razorpay.com/v1/checkout.js"
+                  data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
+
+                  data-amount="<%= "#{100 * (@test_price&.price || 0)}" %>"
+                  data-name="<%= "The Space" %>"
+                  data-description="<%= @test_price&.product&.formal_name %>"
+                  data-image="/SpaceLogo.png"
+
+                  data-prefill.email="<%= "#{current_account&.email}" %>"
+                  data-theme.color="#F37254"
+              >
+              </script>
+              <input type="hidden" value="<%= "#{@test_price&.product&.id}" %>" name="product_id">
+              <input type="hidden" value="<%= "#{@test_price&.id}" %>" name="price_id">
+              <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
+          </form>
+        </td>
+      </tr>
+
       <% @products.each do |product| %>
         <tr>
           <th scope="row"><%= product.formal_name %></th>
@@ -11,7 +35,7 @@
                     src="https://checkout.razorpay.com/v1/checkout.js"
                     data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
 
-                    data-amount="<%= "#{product.prices.first.price}" %>"
+                    data-amount="<%= "#{product.prices.first.price * 100}" %>"
                     data-name="<%= "The Space" %>"
                     data-description="<%= "#{product.formal_name}" %>"
                     data-image="assets/images/images/attendances.png"

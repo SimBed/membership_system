@@ -9,13 +9,13 @@ class ShopControllerTest < ActionDispatch::IntegrationTest
     @junioradmin = accounts(:junioradmin)
   end
 
-  test 'should redirect index when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @admin, @junioradmin].each do |account_holder|
-      log_in_as(account_holder)
-      get '/shop/index'
-      assert_redirected_to login_path
-    end
-  end
+  # test 'should redirect index when not logged in as superadmin' do
+  #   [nil, @account_client1, @account_partner1, @admin, @junioradmin].each do |account_holder|
+  #     log_in_as(account_holder)
+  #     get '/shop/index'
+  #     assert_redirected_to login_path
+  #   end
+  # end
 
   test "should get index" do
     log_in_as(@superadmin)
