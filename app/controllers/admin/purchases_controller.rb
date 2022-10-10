@@ -246,7 +246,7 @@ class Admin::PurchasesController < Admin::BaseController
   def handle_export
     # when exporting data, want it all not just the page of pagination
     @purchases = if params[:export_all]
-                   @purchases.page(params[:page]).per(1000)
+                   @purchases.page(params[:page]).per(100000)
                  else
                    @purchases.page params[:page]
                  end

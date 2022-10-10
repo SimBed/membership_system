@@ -119,7 +119,7 @@ class Admin::ClientsController < Admin::BaseController
   def handle_export
     # when exporting data, want it all not just the page of pagination
     @clients = if params[:export_all]
-                 @clients.page(params[:page]).per(1000)
+                 @clients.page(params[:page]).per(100000)
                else
                  @clients.page params[:page]
                end

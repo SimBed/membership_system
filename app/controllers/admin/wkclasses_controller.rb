@@ -144,7 +144,7 @@ class Admin::WkclassesController < Admin::BaseController
   def handle_export
     # when exporting data, want it all not just the page of pagination
     @wkclasses = if params[:export_all]
-                 @wkclasses.page(params[:page]).per(1000)
+                 @wkclasses.page(params[:page]).per(100000)
                else
                  @wkclasses.page params[:page]
                end
