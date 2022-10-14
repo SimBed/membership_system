@@ -1,5 +1,5 @@
 <h2>Products
-  <% if logged_in_as?('admin') %>
+  <% if logged_in_as?('admin', 'superadmin') %>
     <%= link_to image_tag('add.png', class: "button_icon"), new_admin_product_path, class: "icon-container" %>
    <% end %>
 </h2>

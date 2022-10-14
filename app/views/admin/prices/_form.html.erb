@@ -50,7 +50,7 @@
 
   <div class="field">
     <%= form.label :discount, 'Discount %' %>
-    <%= form.number_field :discount, value: form.object.discount, onchange: "recalc_price()", id: "discount" %>
+    <%= form.number_field :discount, value: form.object.discount, step: 0.1, onchange: "recalc_price()", id: "discount" %>
   </div>
 
   <div class="field" >
