@@ -2,7 +2,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
 
   def show
     @errors = []
-    @amnesties = YAML.dump(Setting.amnesty_limit).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess','')
+    # @amnesties = YAML.dump(Setting.amnesty_limit).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess','')
   end
 
   def create
