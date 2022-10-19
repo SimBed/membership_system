@@ -2,9 +2,9 @@
   <p class="mb-0"> <%= yield(:expiry_statement) %> </p>
   <p class="mb-2"> <%= yield(:renewal_statement) %> </p>
   <p class="mb-0"> <%= yield(:renewal_product) %> </p>
-  <p class="mb-2"> <%= number_to_currency(yield(:renewal_price), precision: 0, unit: 'Rs. ') %> </p>
+  <p class="mb-2"> <%= rupees(yield(:renewal_price)) %> </p>
   <% if @renewal[:trial] %>
-    <p class="mb-2"> <%= "normal price: #{number_to_currency(yield(:base_price), precision: 0, unit: 'Rs. ')}" %> </p>
+    <p class="mb-2"> <%= "normal price: #{rupees(yield(:base_price))}" %> </p>
   <% end %>
   <% if Setting.whitelist.include?(@client.email.slice(0,7)) %>
     <%= render partial: 'razor_form' %>

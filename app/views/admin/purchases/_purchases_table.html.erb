@@ -5,7 +5,7 @@
 
 <table class="table table-secondary table-striped caption-top">
   <% if logged_in_as?('superadmin') %>
-    <caption><%= "#{number_to_currency(@purchases_all_pages_sum, precision: 0, unit: 'Rs. ')}" %><small> (all pages)</small></caption>
+    <caption><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
   <% end %>
   <tbody>
     <tr class="extra_small">

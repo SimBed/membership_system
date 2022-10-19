@@ -7,12 +7,12 @@
     <% unless @purchase.expired? %>
       <tr>
         <th scope="row">Payment</th>
-        <td><%= number_to_currency(@purchase.payment, precision: 0, unit: 'Rs. ') %></td>
+        <td><%= rupees(@purchase.payment) %></td>
       </tr>
     <% end %>
     <tr>
       <th scope="row">Price</th>
-      <td><%= @purchase.price.full_name %></td>
+      <td><%= full_name(@purchase.price) %></td>
     </tr>
     <% unless @purchase.dropin? %>
       <tr>

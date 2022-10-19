@@ -48,7 +48,7 @@
     <% if logged_in_as?('superadmin') %>
       <tr>
         <th scope="row">Total Spend</th>
-        <td><%= number_to_currency(@client_hash[:spend], precision: 0, unit: 'Rs. ') %></td>
+        <td><%= rupees(@client_hash[:spend]) %></td>
       </tr>
     <% end %>
     <tr>

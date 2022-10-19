@@ -3,7 +3,7 @@
   <tbody>
     <tr>
       <th scope="row">Payment</th>
-      <td><%= number_to_currency(@purchase.payment, precision: 0, unit: 'Rs. ') %></td>
+      <td><%= rupees(@purchase.payment) %></td>
     </tr>
     <tr>
       <th scope="row">Paid on</th>
@@ -48,7 +48,7 @@
     <% if @purchase.adjust_restart %>
       <tr>
         <th scope="row">A&R paid</th>
-        <td><%= number_to_currency(@purchase.ar_payment, precision: 0, unit: 'Rs. ') %></td>
+        <td><%= rupees(@purchase.ar_payment) %></td>
       </tr>
       <tr>
         <th scope="row">A&R paid on</th>

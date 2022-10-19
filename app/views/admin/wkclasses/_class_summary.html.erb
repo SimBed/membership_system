@@ -8,7 +8,7 @@
 </div>
 <% unless logged_in_as?('junioradmin') %>
 <div id="attendances_revenue" class ="d-inline-block">
-<%= number_to_currency(@wkclass.revenue, precision: 0, unit: 'Rs. ') %> |
+<%= rupees(@wkclass.revenue) %> |
 </div>
 <% end %>
 <%= @wkclass.instructor&.name %>

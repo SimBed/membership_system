@@ -7,7 +7,7 @@
               </select>
             </form>
 </h2>
-<p> <%= number_to_currency(@revenue, precision: 0, unit: 'Rs.') %> </p>
+<p> <%= rupees(@revenue) %> </p>
 <% if logged_in_as?('superadmin') %>
 <p>
   Download:

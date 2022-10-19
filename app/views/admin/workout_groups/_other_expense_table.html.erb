@@ -5,12 +5,12 @@
       <tr>
         <th scope="row"><%= index + 1 %></th>
         <td><%= x.item %></td>
-        <td><%= number_to_currency(x.amount, precision: 0, unit: 'Rs. ') %></td>
+        <td><%= rupees(x.amount) %></td>
       </tr>
     <% end %>
     <tr>
       <th scope="row">Total</th>
-      <td><%= number_to_currency(@summary[:fixed_expense], precision: 0, unit: 'Rs. ') %></td>
+      <td><%= rupees(@summary[:fixed_expense]) %></td>
     </tr>
   </tbody>
 </table>

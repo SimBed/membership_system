@@ -36,6 +36,10 @@ module ApplicationHelper
     (beginning_of_period..end_of_period)
   end
 
+  def rupees(amount)
+    number_to_currency(amount, precision: 0, unit: 'Rs. ')
+  end
+
   private
 
   def months_between(start_date, end_date)

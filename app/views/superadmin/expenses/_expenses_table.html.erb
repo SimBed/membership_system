@@ -13,7 +13,7 @@
     <% end %>
     <tr>
       <th scope="row">Total</th>
-      <td colspan="2" class="fw-bold"><%= number_to_currency( @expenses.sum(:amount), precision: 0, unit: 'Rs. ') %></td>
+      <td colspan="2" class="fw-bold"><%= rupees(@expenses.sum(:amount)) %></td>
     </tr>
   </tbody>
 </table>

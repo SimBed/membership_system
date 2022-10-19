@@ -15,7 +15,7 @@
     <% end %>
     <tr>
       <th scope="row">Total</th>
-      <td><%= number_to_currency(@summary[:variable_expense], precision: 0, unit: 'Rs. ') %></td>
+      <td><%= rupees(@summary[:variable_expense]) %></td>
     </tr>
   </tbody>
 </table>

@@ -10,7 +10,7 @@
       <tr>
         <td><%= purchase.dop.strftime('%d %b %y') %></td>
         <td><%= purchase.client.name %></td>
-        <td><%= number_to_currency(purchase.payment, precision: 0, unit: 'Rs. ') %></td>
+        <td><%= rupees(purchase.payment) %></td>
       </tr>
     <% end %>
   </tbody>

@@ -8,7 +8,7 @@
     <% end %>
     <tr>
       <th scope="row">Total</th>
-      <td class="fw-bold"><%= number_to_currency(@total_share, precision: 0, unit: 'Rs. ') %></td>
+      <td class="fw-bold"><%= rupees(@total_share) %></td>
     </tr>
   </tbody>
 </table>
