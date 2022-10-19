@@ -14,7 +14,7 @@
 <% @prices.each do |price| %>
       <tr>
         <th scope="row" class="fw-light" style="color: <%='red' if price.pre_oct22_price?%>"><%= price.name %></th>
-        <td><%= "#{price.discount}%" %></td>
+        <td><%= discount_format(price.discount) %></td>
         <td><%= number_with_delimiter(price.discounted_price) %></td>
         <td><%= price.date_from.strftime('%d %b %y') %></td>
         <td><%= price.current? ? 'current' : 'old' %></td>

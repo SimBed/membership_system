@@ -42,9 +42,16 @@ class Price < ApplicationRecord
     return false
   end
 
-  def full_name
-    "#{name} #{discount}%".gsub(' 0%', '')
-  end
+  # def full_name
+  #   # "#{name} #{discount}%".gsub(' 0%', '')
+  #   "#{name} #{Price.discount_format(self)}%"
+  # end
+  #
+  # def self.discount_format(price)
+  #   # hack to access helpers in model
+  #   # https://www.quora.com/How-do-I-use-helper-methods-in-models-in-rails
+  #   ApplicationController.helpers.number_with_precision(price.discount, precision: 2,significant: false, strip_insignificant_zeros: true)
+  # end
 
   private
   def current_base_check
