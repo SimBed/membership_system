@@ -9,7 +9,8 @@ module PricesHelper
   end
 
   def full_name(price)
-    "#{price.name} #{number_with_precision(price.discount, precision: 2, strip_insignificant_zeros: true)}%"
+    discount = price.discount.zero? ? '' : " #{number_with_precision(price.discount, precision: 2, strip_insignificant_zeros: true)}%"
+    "#{price.name}#{discount}"
   end
 
     def discount_format(discount)
