@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AttendanceSystem</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_pack_tag 'pricing', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'pricing', 'data-turbolinks-track': 'reload' %>
+
+  </head>
+
+  <body>
+    <div class="navbar_container">
+      <div class="logo_container">
+        <%= link_to "https://www.thespacejuhu.in/", target: "_blank" do %>
+          <%= image_tag('SpaceLogo.png', alt: "logo", class: "Logobar") %>
+        <% end %>
+      </div>
+    </div>
+
+    <main>
+      <div id="flash_messages">
+        <%= render_flash %>
+      </div>
+
+      <%= yield %>
+      <%= debug(params) if Rails.env.development? %>
+      <%= render 'layouts/footer' %>
+    </main>
+  </body>
+</html>

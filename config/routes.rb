@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get 'shop/index'
+  get 'shop/sell'
+  get 'shop/wedontsupport'  
   get "refund/:id", to: "orders#refund"
   resources :orders
   namespace :admin do
