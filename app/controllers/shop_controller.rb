@@ -10,4 +10,8 @@ class ShopController < ApplicationController
     # render layout: false
     render layout: "pricing_layout"
   end
+
+  def timetable
+    render layout: "timetable"
+  end
 end
