@@ -1,0 +1,29 @@
+<%= form_with(model: [:admin, table_day]) do |form| %>
+  <% if table_day.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(table_day.errors.count, "error") %> prohibited this table_day from being saved:</h2>
+
+      <ul>
+        <% table_day.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div><%= form.hidden_field :timetable_id, value: params[:timetable_id] || table_day.timetable_id %></div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :short_name %>
+    <%= form.text_field :short_name %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

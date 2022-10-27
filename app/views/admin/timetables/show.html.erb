@@ -1,0 +1,137 @@
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">New Year Discount</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Grab Your New Year Discount Now!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+
+<div class="positioning-wrap">
+  <div><h4><%= @timetable.title %> <small></small></div>
+  <div class="GeneralText mb-2">
+    <input style= "display:inline;" id="btnPreview" type="button" class="btn btn-info btn-generaltext"
+    onclick="return toggle_visibility('editButton')" value="Preview...">
+  </div>
+</div>
+
+  <p class="GeneralText mb-1">All classes are 60mins unless stated otherwise.</p>
+  <p class="GeneralText mb-2">
+    <input style= "display:inline;" id="btnSpacePackage" type="button" class="btn btn-info btn-generaltext"
+    onclick="return toggle_visibility_classes('nonSpacePackageClass')" value="Show All Classes...">
+  </p>
+
+<table class="TimetableTable">
+  <thead>
+    <tr style="background-color:white;">
+      <th>
+        <div class = "editButton">
+          <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_table_time_path(timetable_id: params[:id]) %>time
+        </div>
+        <div class = "editButton">
+          <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_table_day_path(timetable_id: params[:id]) %>day
+        </div>
+      </th>
+      <% @timetable.table_days.each do |day| %>
+        <th class= "large-screen" style="text-align:center;"><%=day.name%></th>
+        <th class= "small-screen" style="text-align:center;"><%=day.short_name%></th>
+      <%end%>
+    </tr>
+  </thead>
+
+  <tr style="background:linear-gradient(white,#dddddd)">
+    <th colspan="7">MORNING</th>
+  </tr>
+  <% @timetable.table_times.each do |time| %>
+  <tr>
+    <th><%=time.start.strftime("%l.%M")%></th>
+    <% @timetable.table_days.each do |day| %>
+      <td>
+        <% entry = Entry.where(table_time_id: time.id, table_day_id: day.id).first %>
+        <div class = <%= "nonSpacePackageClass" if entry&.visibility_switch? %> >
+          <div class="Workout-Name" data-toggle="tooltip" title=<%="#{day.name}-#{time.start.strftime("%l.%M")}"%> ><%=entry&.workout%></div>
+          <div class="Bodypart"><%=entry&.subheading1%></div>
+          <div class="Studio mt-2"><%=entry&.subheading2%></div>
+          <div class="Studio mt-2"><%=entry&.studio%></div>
+        </div>
+        <div class = "editButton">
+          <% if entry.nil? %>
+            <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_entry_path(timetable_id: params[:id], table_day_id: day.id, table_time_id: time.id) %>
+          <% else %>
+          <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_entry_path(entry) %>
+          <%= link_to image_tag('delete.png', class: "edit_icon"), admin_entry_path(entry), method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %>
+        </div>
+      </td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<tr><td>
+</div>
+
+<script>
+  $(window).on('load', function() {
+  $('#staticBackdrop').modal('show');
+});
+</script>
+
+<script>
+<!--Switch between edit and preview mode-->
+function toggle_visibility(className){
+  var elements = document.getElementsByClassName(className);
+  var btnValue = document.getElementById("btnPreview");
+  n = elements.length;
+    for (var i = 0; i < n; i++) {
+    var e = elements[i];
+    if(e.style.display != 'none') {
+      e.style.display = 'none';
+    } else {
+      e.style.display = 'inline';
+    }
+  }
+  if(elements[0].style.display == 'none') {
+    btnValue.value="Edit Mode...";
+  } else {
+    btnValue.value="Preview...";
+    }
+  return true;
+}
+</script>
+
+<script>
+<!--Switch between all classes and just the The Space classes-->
+function toggle_visibility_classes(className){
+var elements = document.getElementsByClassName(className);
+var btnValue = document.getElementById("btnSpacePackage");
+n = elements.length;
+  for (var i = 0; i < n; i++) {
+  var e = elements[i];
+  if(e.style.display == 'inline') {
+    e.style.display = 'none';
+  } else {
+    e.style.display = 'inline';
+  }
+}
+if( (elements.length === 0) || (elements[0].style.display == 'none') ) {
+  btnValue.value="Show All Classes...";
+} else {
+  btnValue.value="Show Space Package Classes Only...";
+  }
+return true;
+}
+</script>

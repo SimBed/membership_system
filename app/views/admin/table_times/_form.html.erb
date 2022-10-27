@@ -1,0 +1,24 @@
+<%= form_with(model: [:admin, table_time]) do |form| %>
+  <% if table_time.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(table_time.errors.count, "error") %> prohibited this table_time from being saved:</h2>
+
+      <ul>
+        <% table_time.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div><%= form.hidden_field :timetable_id, value: params[:timetable_id] || table_time.timetable_id %></div>    
+
+  <div class="field">
+    <%= form.label :start %>
+    <%= form.time_select :start %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

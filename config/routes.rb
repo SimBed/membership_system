@@ -26,6 +26,10 @@ Rails.application.routes.draw do
   get '/footfall', to: 'admin/attendances#footfall'
 
   namespace :admin do
+    resources :entries
+    resources :table_times
+    resources :table_days
+    resources :timetables
     resources :accounts, only: [:create, :update]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
     resources :attendances, only: [:index, :new, :create, :update, :destroy]

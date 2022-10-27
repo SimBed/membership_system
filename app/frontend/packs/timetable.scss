@@ -1,0 +1,298 @@
+// Import Bootstrap v5
+@import "bootstrap/scss/bootstrap";
+
+/* mixins, variables, etc. */
+$font-stack:  verdana, Arial;
+$gray-light:  #d8d8d8; /*medium grey*/
+$gray-darker:  #808080;
+$gray-darkest: #474444;
+$bg-light: #f8f9fa;
+$bg-dark:#343a40;
+$blue-search: #6cbbf7;
+$gray-darkest: #474444;
+$greenfly: #126774;
+
+:root {
+  font-size: 16px;
+  --text-primary: #b6b6b6;
+  --text-secondary: #ececec;
+  --bg-primary: #23232e;
+  --bg-secondary: #141418;
+  --transition-speed: 600ms;
+}
+
+.TimetableTable {
+   background-color: #dddddd;
+   border-spacing: 0;
+   border-top-right-radius: 0.6em;
+   border-top-left-radius: 0.6em;
+   font-size: 0.78em;
+   color: #707070;
+   font-weight:bold;
+   margin-left:0;
+   margin-top:-0.5em;
+   margin-bottom:2.5em;
+   text-align:center;
+   width:99%;
+   position:relative;
+   font-family: "Quicksand", "Arial";
+  }
+
+   @media (max-width: 768px) {
+	.TimetableTable {
+    font-size: 0.9em;
+	}
+ }
+
+ .TimetableTable tr:hover {background-color: white}
+
+ .TimetableTable td {
+	 position:relative; /*DPS added June 2019 so symbol could be paced in bottom corner of data cell */
+	 width:13%;
+	 border: white solid 0.14em;
+ }
+
+ .TimetableTable th {
+	 position:relative; /*DPS added June 2019 so symbol could be paced in bottom corner of data cell */
+	 width:7%;
+	 border: white solid 0.14em;
+ }
+
+  .TimetableTable a, .TimetableTable a:hover {
+   color: #707070;
+   text-decoration: none;
+ }
+
+
+ .Garden, .Garden:hover {
+  color:#18b413;
+  text-decoration: none;
+ }
+
+ .Firstfloor, .Firstfloor:hover {
+  color:#4fc2d6;
+  text-decoration: none;
+ }
+
+ table.TimetableTable .Workout-Name {
+   font-size: 0.9em;
+   font-weight:normal;
+ }
+
+ .Bodypart {
+	font-size: 0.9rem;
+	font-weight:normal;
+}
+
+ .Studio {
+	font-size: 0.8rem;
+	font-weight:normal;
+ }
+
+.Starts {
+	font-size: 0.75rem;
+	font-weight: normal;
+	font-style: italic;
+ }
+
+ .Unimportant  {
+	 display:none;
+  }
+
+  @media (min-width: 576px) {
+	.Unimportant  {
+	display:none;
+	}
+  }
+
+  @media (min-width: 768px) {
+	.Unimportant  {
+	display:none;
+	}
+  }
+
+  @media (min-width: 992px) {
+	.Unimportant  {
+	display:inline;
+	}
+  }
+
+  @media (min-width: 1200px) {
+	.Unimportant  {
+	display:inline;
+	}
+  }
+
+   .VUnimportant  {
+	 display:none;
+  }
+
+  @media (min-width: 576px) {
+	.VUnimportant  {
+	display:inline;
+	}
+  }
+
+  @media (min-width: 768px) {
+	.VUnimportant  {
+	display:inline;
+	}
+  }
+
+  @media (min-width: 992px) {
+	.VUnimportant  {
+	display:inline;
+	}
+  }
+
+  @media (min-width: 1200px) {
+	.VUnimportant  {
+	display:inline;
+	}
+  }
+
+
+
+ @media (max-width: 576px) {
+  .TimetableTable td , .TimetableTable th{
+    padding-right: 0.2em;
+    padding-left: 0.2em;
+  }
+}
+
+.btn-TimeTable {
+  white-space: normal;
+  line-height: 1.25;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size:0.9em;
+  border-radius: 0.25rem;
+  background-color: white;
+  color:#635869;
+  border-color: #635869;
+}
+
+.btn-TimeTable:hover  {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #2aabd2;
+}
+
+.Gardenbtn {
+  color:#18b413;
+  text-decoration: none;
+ }
+
+ .btn-TimeTable:hover .Gardenbtn {
+  color: #fff;
+ }
+
+ .listgroup-Timetable {
+   display:block;
+   padding-left: 0;
+   margin-bottom: 0;
+}
+
+ .listitem-Timetable {
+  position: relative;
+  display: block;
+  margin-bottom:1px;
+  font-size: 12px;
+    }
+
+	@media (min-width: 576px) {
+
+	.listgroup-Timetable {
+		margin-bottom: 0.5rem;
+	}
+	.listitem-Timetable{
+	position: relative;
+	display: inline;
+	margin-bottom:0px;
+	font-size: 14px;
+  }
+}
+
+ #btnScreenSize {
+	display:inline;
+}
+
+ @media (min-width: 992px) {
+	#btnScreenSize  {
+	display:none;
+	}
+
+  img.edit_icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    opacity: 1.0;
+  }
+
+  // can't seem to exclude application.css, so have to override its bootstrap override!
+  main .container {
+    max-width: 90%;
+  }
+
+  th.small-screen {
+    display: none;
+  }
+  }
+
+  @media (max-width: 992px) {
+  .container {
+    padding-right: 2px;
+    padding-left: 2px;
+  }
+
+  th.large-screen {
+    display: none;
+  }
+}
+
+  .nonSpacePackageClass {
+	display: none;
+}
+
+  // override bootstrap
+  div.modal {
+    top: 10rem;
+  }
+
+  img.edit_icon {
+    width: 1.0rem;
+    height: 1.0rem;
+    opacity: 1.0;
+  }
+
+  table.TimetableTable td {
+   border: white solid 0.06em;
+   padding: 0.4em 0.4em 0.4em 0.4em;
+ }
+
+  table.TimetableTable th {
+   border: white solid 0.06em;
+   text-align: left;
+   padding: 0.4em 0.8em 0.4em 0.4em;
+   font-weight: bold;
+   color: black
+ }
+
+ /*retains bootstrap colours for hover etc...*/
+ input.btn-generaltext {
+   white-space: normal;
+   line-height: 1.25;
+   padding-top: 0;
+   padding-bottom: 0;
+   font-size:0.9em;
+   border-radius: 0.25rem;
+   background-color: white;
+   color:#635869;
+   border-color: #635869;
+ }
+
+   .positioning-wrap {
+     display: flex;
+       div:last-child {
+         margin-left: auto;
+       }
+   }

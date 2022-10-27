@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Entries</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Workout</th>
+      <th>Subheading1</th>
+      <th>Subheading2</th>
+      <th>Studio</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @entries.each do |entry| %>
+      <tr>
+        <td><%= entry.workout %></td>
+        <td><%= entry.subheading1 %></td>
+        <td><%= entry.subheading2 %></td>
+        <td><%= entry.studio %></td>
+        <td><%= link_to 'Show', [:admin, entry] %></td>
+        <td><%= link_to 'Edit', edit_admin_entry_path(entry) %></td>
+        <td><%= link_to 'Destroy', [:admin, entry], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Entry', new_admin_entry_path %>

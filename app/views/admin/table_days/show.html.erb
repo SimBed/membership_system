@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @table_day.name %>
+</p>
+
+<p>
+  <strong>Short name:</strong>
+  <%= @table_day.short_name %>
+</p>
+
+<%= link_to 'Edit', edit_admin_table_day_path(@table_day) %> |
+<%= link_to 'Back', admin_table_days_path %>

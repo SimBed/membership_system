@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_19_124723) do
+ActiveRecord::Schema.define(version: 2022_10_25_220850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,21 @@ ActiveRecord::Schema.define(version: 2022_10_19_124723) do
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "entries", force: :cascade do |t|
+    t.string "workout"
+    t.string "subheading1"
+    t.string "subheading2"
+    t.string "studio"
+    t.boolean "visibility_switch", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "table_time_id"
+    t.bigint "table_day_id"
+    t.index ["table_day_id"], name: "index_entries_on_table_day_id"
+    t.index ["table_time_id"], name: "index_entries_on_table_time_id"
+    t.index ["workout"], name: "index_entries_on_workout"
   end
 
   create_table "expenses", force: :cascade do |t|
@@ -237,6 +252,32 @@ ActiveRecord::Schema.define(version: 2022_10_19_124723) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["var"], name: "index_settings_on_var", unique: true
+  end
+
+  create_table "table_days", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "timetable_id"
+    t.index ["name"], name: "index_table_days_on_name"
+    t.index ["timetable_id"], name: "index_table_days_on_timetable_id"
+  end
+
+  create_table "table_times", force: :cascade do |t|
+    t.time "start"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "timetable_id"
+    t.index ["start"], name: "index_table_times_on_start"
+    t.index ["timetable_id"], name: "index_table_times_on_timetable_id"
+  end
+
+  create_table "timetables", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["title"], name: "index_timetables_on_title"
   end
 
   create_table "wkclasses", force: :cascade do |t|

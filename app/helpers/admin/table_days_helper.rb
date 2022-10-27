@@ -1,0 +1,2 @@
+module Admin::TableDaysHelper
+end
