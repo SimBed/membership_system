@@ -2,7 +2,8 @@ class Admin::ProductsController < Admin::BaseController
   skip_before_action :admin_account, only: [:payment, :index]
   before_action :junioradmin_account, only: [:payment, :index]
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  after_action -> { update_purchase_status(@purchases) }, only: [:update]
+  # don't do as callback because only on successful update not failed update
+  # after_action -> { update_purchase_status(@purchases) }, only: [:update]
 
   def index
     @products = Product.order_by_name_max_classes
@@ -45,7 +46,7 @@ class Admin::ProductsController < Admin::BaseController
       redirect_to admin_products_path
       flash[:success] = t('.success')
     else
-      @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
+      prepare_items_for_dropdowns
       render :new, status: :unprocessable_entity
     end
   end
@@ -55,8 +56,9 @@ class Admin::ProductsController < Admin::BaseController
       @purchases = @product.purchases
       redirect_to admin_products_path
       flash[:success] = t('.success')
+      update_purchase_status(@purchases)
     else
-      @workout_groups = WorkoutGroup.all.map { |wg| [wg.name, wg.id] }
+      prepare_items_for_dropdowns
       render :edit, status: :unprocessable_entity
     end
   end
