@@ -273,7 +273,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def action_cancelled_late
     @purchase.increment!(:late_cancels)
-    late_cancels_max = amnesty_limit[@purchase.product_style][:late_cancels][@purchase.product_type]
+    late_cancels_max = Setting.amnesty_limit[@purchase.product_style][:late_cancels][@purchase.product_type]
     if @purchase.reload.late_cancels > late_cancels_max
       late_cancellation_penalty @purchase.product_type, penalty: true
       # amnesty remains false from earlier booking
@@ -489,8 +489,8 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def extra_benefits_after_change?
-    late_cancels_max = amnesty_limit[@purchase.product_style][:late_cancels][@purchase.product_type]
-    no_shows_max = amnesty_limit[@purchase.product_style][:no_shows][@purchase.product_type]
+    late_cancels_max = Setting.amnesty_limit[@purchase.product_style][:late_cancels][@purchase.product_type]
+    no_shows_max = Setting.amnesty_limit[@purchase.product_style][:no_shows][@purchase.product_type]
     has_late_cancels_amnesty = @purchase.late_cancels < late_cancels_max
     has_no_show_amnesty = @purchase.no_shows < no_shows_max
     amnesty_when_changed = true
