@@ -7,6 +7,7 @@ class Admin::TimetablesController < Admin::BaseController
 
   def show
     #build a #entries hash to avoid database lookups in the view
+    # not sure how to name/file layout/timetable.html.eb to make this next line redundant
     render layout: "timetable"
   end
 

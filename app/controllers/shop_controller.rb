@@ -8,7 +8,7 @@ class ShopController < ApplicationController
 
   def sell
     # render layout: false
-    render layout: "pricing_layout"
+    # render layout: "pricing_layout"
   end
 
 end
