@@ -41,7 +41,7 @@
 
 <div id="heart_renew_quote" class="container px-1">
   <%= render partial: 'client_heart' %>
-  <% if @renewal[:ongoing] %>
+  <% if @renewal[:offer_early_renewal_discount?] %>
     <%= render partial: 'renew' %>
   <% end %>
   <%= render partial: 'quotation' %>

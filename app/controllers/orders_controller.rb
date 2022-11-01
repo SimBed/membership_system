@@ -21,7 +21,8 @@ class OrdersController < ApplicationController
         @purchase = Purchase.new(purchase_params)
         if @purchase.save
           flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
-          redirect_to client_history_path current_account.clients.first
+          # redirect_to client_history_path current_account.clients.first
+          redirect_to client_book_path current_account.clients.first
         else
           flash[:alert] = "Unable to process payment."
           redirect_to root_path
@@ -41,9 +42,14 @@ class OrdersController < ApplicationController
   end
 
   def refund
-    payment_id = Order.find_by_id(params[:id]).payment_id
-    @order = Order.process_refund(payment_id)
-    redirect_to :action => "show", :id => @order.id
+    begin
+      payment_id = Order.find_by_id(params[:id]).payment_id
+      @order = Order.process_refund(payment_id)
+      redirect_to :action => "show", :id => @order.id
+    rescue Exception
+      flash[:alert] = "Unable to refund payment (probably not enough credit on account)."
+      redirect_to orders_path
+    end
   end
 
   private

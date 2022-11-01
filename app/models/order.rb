@@ -32,7 +32,9 @@ class Order < ApplicationRecord
     def process_refund(payment_id)
       fetch_payment(payment_id).refund
       record = Order.find_by_payment_id(payment_id)
-      record.update_attributes(status: fetch_payment(payment_id).status)
+      # record.update_attributes(status: fetch_payment(payment_id).status)
+      # update_attributes (from RazorPay default code) deprecated
+      record.update(status: fetch_payment(payment_id).status)
       return record
     end
 

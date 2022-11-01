@@ -73,10 +73,11 @@ class Purchase < ApplicationRecord
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per 20
 
+  # reformat? pt? can just be a method of Product.
   def pt?
     product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
   end
-  
+
   # reformat qualifying_for and available_for_booking into single method
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|

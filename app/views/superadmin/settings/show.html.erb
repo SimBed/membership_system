@@ -15,12 +15,17 @@
   </div>
 
   <div class="form-group">
-    <label class="control-label">Expiry Message (days)</label>
+    <label class="control-label">Renew Online?</label>
+    <%= f.check_box :renew_online %>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">Send expiry message for Package this number of days before expiry</label>
     <%= f.number_field :package_expiry_message_days, value: Setting.package_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
   </div>
 
   <div class="form-group">
-    <label class="control-label">Expiry Message (days)</label>
+    <label class="control-label">end expiry message for Trial this number of days before expiry</label>
     <%= f.number_field :trial_expiry_message_days, value: Setting.trial_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
   </div>
 

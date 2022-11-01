@@ -80,12 +80,12 @@ class Client < ApplicationRecord
         renewal_price = unlimited3m.renewal_price("renewal_posttrial_expiry")
         base_price = unlimited3m.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?
-        { ongoing: false, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid }
+        { ongoing: false, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, offer_early_renewal_discount?: false }
       else
         product = last_groupex_package_purchase.product
         renewal_price = product.renewal_price("base")
         valid = !renewal_price.nil?
-        { ongoing: false, trial: false, product: product, price: renewal_price, valid: valid }
+        { ongoing: false, trial: false, product: product, price: renewal_price, valid: valid, offer_early_renewal_discount?: false }
       end
     else
       ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
@@ -93,14 +93,14 @@ class Client < ApplicationRecord
         renewal_price = unlimited3m.renewal_price("renewal_pretrial_expiry")
         base_price = unlimited3m.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?
-        { ongoing: true, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid }
+        { ongoing: true, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, offer_early_renewal_discount?: offer_early_renewal_discount? }
       else
         product = ongoing_groupex_package_purchase.product
         # { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
         renewal_price = product.renewal_price("renewal_pre_expiry")
         base_price = product.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?
-        { ongoing: true, trial: false, product: product, price: renewal_price, base_price: base_price, valid: valid }
+        { ongoing: true, trial: false, product: product, price: renewal_price, base_price: base_price, valid: valid, offer_early_renewal_discount?: offer_early_renewal_discount? }
       end
     end
   end
@@ -154,6 +154,40 @@ class Client < ApplicationRecord
     return true if attendances.includes(:wkclass).map(&:wkclass).include? wkclass
 
     return false
+  end
+
+  # not used
+  def has_renewed?
+    purchases.not_fully_expired.reject { |p| p.pt? }.size > 1
+  end
+
+  # not used
+  def recently_purchased?
+    ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
+    return false if ongoing_group_packages.empty?
+
+    return true if ongoing_group_packages.max_by {|h| h.dop}.dop > 7.days.ago
+
+    false
+  end
+
+  # not used
+  def renewal_time?
+    ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
+    return false if ongoing_group_packages.empty?
+
+    return true if ongoing_group_packages.select { |p| p.close_to_expiry? }.include?(true)
+
+    false
+  end
+
+  def offer_early_renewal_discount?
+    ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? }
+    return false if ongoing_group_packages.empty?
+
+    return false if ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: 14, attendances_remain: 4)}.include? false
+
+    true
   end
 
   private
