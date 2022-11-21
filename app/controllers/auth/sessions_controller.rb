@@ -18,7 +18,7 @@ class Auth::SessionsController < Auth::BaseController
     log_out if logged_in?
     # reformat - all filters should be cleared
     clear_session(:filter_workout_group, :filter_statuses, :search_name)
-    redirect_to public_pages_welcome_path
+    redirect_to root_path
   end
 
   private

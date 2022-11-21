@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   namespace :admin do
     get 'penalties/create'
   end
-  # get 'client/clients/show', to: 'client/clients#show', as: 'client_show'
-  get 'public_pages/welcome'
+
+  # get 'public_pages/welcome'
   root 'public_pages#welcome'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
@@ -42,7 +42,6 @@ Rails.application.routes.draw do
     resources :products
     resources :purchases
     # resources :rel_workout_group_workouts, only: [:create, :update, :destroy]
-    resources :revenues, only: [:index]
     resources :wkclasses
     resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :workout_groups
@@ -52,6 +51,7 @@ Rails.application.routes.draw do
     resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]
     resource :settings
   end
+  # get 'client/clients/:id', to: 'client/clients#show', as: 'client_show'
   namespace :client do
     resources :clients, only: [:show]
   end
