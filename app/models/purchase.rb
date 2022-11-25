@@ -66,7 +66,7 @@ class Purchase < ApplicationRecord
   # used in Purchases controller's handle_sort method
   # raw SQL in Active Record functions will give an error to guard against SQL injection
   # in the case where the raw SQl contains user input i.e. a params value
-  # the error can be everriden by converting the raw SQL string literals to an Arel::Nodes::SqlLiteral object.
+  # the error can be overriden by converting the raw SQL string literals to an Arel::Nodes::SqlLiteral object.
   # there is no user input in the converted Arel object, so this is OK
   # 'id:: text' is equivalent to 'CAST (id AS TEXT)' see https://www.postgresqltutorial.com/postgresql-cast/
   # position is a Postgresql string function, see https://www.postgresqltutorial.com/postgresql-position/

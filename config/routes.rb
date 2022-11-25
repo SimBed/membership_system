@@ -1,14 +1,4 @@
 Rails.application.routes.draw do
-  get 'shop/index'
-  get 'shop/sell'
-  get 'shop/wedontsupport'
-  get "refund/:id", to: "orders#refund"
-  resources :orders
-  namespace :admin do
-    get 'penalties/create'
-  end
-
-  # get 'public_pages/welcome'
   root 'public_pages#welcome'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
@@ -41,7 +31,6 @@ Rails.application.routes.draw do
     resources :prices, only: [:new, :edit, :create, :update, :destroy]
     resources :products
     resources :purchases
-    # resources :rel_workout_group_workouts, only: [:create, :update, :destroy]
     resources :wkclasses
     resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :workout_groups
@@ -55,4 +44,10 @@ Rails.application.routes.draw do
   namespace :client do
     resources :clients, only: [:show]
   end
+
+  get 'shop/index'
+  get 'shop/sell'
+  get 'shop/wedontsupport'
+  get "refund/:id", to: "orders#refund"
+  resources :orders
 end

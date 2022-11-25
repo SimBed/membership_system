@@ -18,7 +18,7 @@ class Admin::PurchasesController < Admin::BaseController
     handle_period
     # hack for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
     Purchase.default_timezone = :utc
-    # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but wihtout this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
+    # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
     @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
     @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
     Purchase.default_timezone = :local

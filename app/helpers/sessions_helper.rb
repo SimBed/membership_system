@@ -94,6 +94,8 @@ module SessionsHelper
   end
 
   def logged_in_as?(*ac_types)
-    logged_in? && ac_types.map { |ac_type| current_account.ac_type == ac_type }.include?(true)
+    #refactor with any?
+    logged_in? && ac_types.any? { |ac_type| current_account.ac_type == ac_type }
+    # logged_in? && ac_types.map { |ac_type| current_account.ac_type == ac_type }.include?(true)
   end
 end
