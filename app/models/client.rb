@@ -40,6 +40,12 @@ class Client < ApplicationRecord
                    .group('clients.id')
                    .having('max(start_time) < ?', 3.months.ago)
                }
+               
+  scope :one_time_trial, lambda {
+                c_trials= Client.joins(purchases: [:product]).merge(Purchase.trial).map(&:id)
+                c_oneonly =  Client.joins(:purchases).group('clients.id').having('count(client_id) = 1').map(&:id)
+                Client.where(id: c_trials).where(id: c_oneonly)
+               }
 
   scope :recently_attended, lambda {
                  Client

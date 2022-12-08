@@ -43,6 +43,10 @@
         <%= check_box_tag 'active', 'active', session[:filter_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
         <%= 'active' %>
       <% end %>
+      <%= label_tag nil, class: "purchase-filters" do %>
+        <%= check_box_tag 'one_time_trial', 'one_time_trial', session[:filter_one_time_trial].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
+        <%= 'one time trial' %>
+      <% end %>
     </fieldset>
   </div>
 
