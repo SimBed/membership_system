@@ -1,0 +1,77 @@
+<%# <%= render 'modal' %>
+<div class="container">
+  <div class="positioning-wrap">
+    <div><h4><%= @timetable.title %> <small></small></div>
+  </div>
+
+  <p class="GeneralText mb-1">All classes are 60mins unless stated otherwise.</p>
+  <p class="GeneralText mb-2">
+    <input style= "display:inline;" id="btnSpacePackage" type="button" class="btn btn-dark btn-generaltext"
+    onclick="return toggle_visibility_classes('nonSpacePackageClass')" value="Show All Classes...">
+  </p>
+
+  <table class="TimetableTable">
+    <thead>
+      <tr style="background-color:white;">
+        <th></th>
+        <% @days.each do |day| %>
+          <th class= "large-screen" style="text-align:center;"><%=day.name%></th>
+          <th class= "small-screen" style="text-align:center;"><%=day.short_name%></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tr style="background:linear-gradient(white,#dddddd)">
+      <th colspan="7">MORNING</th>
+    </tr>
+    <% @morning_times.each do |time| %>
+      <%= render 'public_pages/time_period_table_body', time: time %>
+    <% end %>
+
+    <tr style="background:linear-gradient(white,#dddddd)">
+      <th colspan="7">AFTERNOON</th>
+    </tr>
+    <% @afternoon_times.each do |time| %>
+      <%= render 'public_pages/time_period_table_body', time: time %>
+    <% end %>  
+
+    <tr style="background:linear-gradient(white,#dddddd)">
+      <th colspan="7">EVENING</th>
+    </tr>
+    <% @evening_times.each do |time| %>
+      <%= render 'public_pages/time_period_table_body', time: time %>
+    <% end %>  
+  
+  </table>
+
+  <tr><td>
+</div>
+
+<script>
+  $(window).on('load', function() {
+  $('#staticBackdrop').modal('show');
+});
+</script>
+
+<script>
+<!--Switch between all classes and just the The Space classes-->
+function toggle_visibility_classes(className){
+var elements = document.getElementsByClassName(className);
+var btnValue = document.getElementById("btnSpacePackage");
+n = elements.length;
+  for (var i = 0; i < n; i++) {
+  var e = elements[i];
+  if(e.style.display == 'inline') {
+    e.style.display = 'none';
+  } else {
+    e.style.display = 'inline';
+  }
+}
+if( (elements.length === 0) || (elements[0].style.display == 'none') ) {
+  btnValue.value="Show All Classes...";
+} else {
+  btnValue.value="Show Space Package Classes Only...";
+  }
+return true;
+}
+</script>

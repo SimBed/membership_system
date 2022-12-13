@@ -1,0 +1,42 @@
+<%#= javascript_pack_tag 'headroom', 'data-turbolinks-track': 'reload' %>
+<nav id="mainNav" class="headroom navbar navbar-expand-lg navbar-sticky navbar-dark">
+
+  <div class="container">
+    <%#= link_to "https://www.thespacejuhu.in/", target: "_blank", class: "navbar-brand" do %>
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <%= image_tag('SpaceLogo.png', alt: "logo") %>
+    <% end %>
+
+    <ul class="navbar-nav navbar-nav-secondary order-lg-3">
+      <li class="nav-item d-lg-none">
+        <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+          aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="bi bi-list"></span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <%= link_to "Timetable", "/timetable", class: "nav-link" %>
+        </li>
+
+        <li class="nav-item">
+          <% if current_account %>
+            <%= link_to logout_path, method: :delete, class: "nav-link active" do %>
+              <i class="fa fa-door-open"></i>
+            <% end %>
+          <% else %>
+            <%= link_to login_path, class: "nav-link" do %>
+              <i class="fa fa-sign-in-alt"></i>
+              <span class="link-text">Login</span>
+            <% end %>
+          <% end %>
+        </li>
+
+      </ul>
+
+      </div>
+  </div>
+</nav>

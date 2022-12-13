@@ -49,8 +49,8 @@ class Auth::SessionsController < Auth::BaseController
   end
 
   def action_when_not_activated
-    message  = 'Account not activated. '
-    message += 'Please advise The Space that your account is not activated.'
+    message  = 'Account not activated'
+    message += 'Please advise The Space that your account is not activated'
     flash[:warning] = message
     render 'new'
   end

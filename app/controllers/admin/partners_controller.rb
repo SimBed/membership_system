@@ -4,6 +4,9 @@ class Admin::PartnersController < Admin::BaseController
   before_action :superadmin_account, only: [:edit, :update, :destroy]
   before_action :set_partner, only: [:show, :edit, :update, :destroy]
 
+  # layout 'application', :only => :show
+  # layout 'admin', except: [:show]
+
   def index
     @partners = Partner.all
   end
@@ -72,4 +75,5 @@ class Admin::PartnersController < Admin::BaseController
   def superadmin_account
     redirect_to login_path unless logged_in_as?('superadmin')
   end
+
 end

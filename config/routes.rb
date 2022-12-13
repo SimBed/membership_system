@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
+  get 'cube/index'
   root 'public_pages#welcome'
+  # temp home page while building
+  get '/welcome_home', to: 'public_pages#welcome_home'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
   # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
@@ -14,11 +17,12 @@ Rails.application.routes.draw do
   get    'client/clients/:id/book',   to: 'client/clients#book', as: 'client_book'
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
   get '/footfall', to: 'admin/attendances#footfall'
+  get "timetable", to: 'admin/timetables#show_public'
 
   namespace :admin do
-    resources :entries
-    resources :table_times
-    resources :table_days
+    resources :entries, only: [:new, :edit, :create, :update, :destroy]
+    resources :table_times, only: [:new, :edit, :create, :update, :destroy]
+    resources :table_days, only: [:new, :edit, :create, :update, :destroy]
     resources :timetables
     resources :accounts, only: [:create, :update]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
@@ -39,6 +43,8 @@ Rails.application.routes.draw do
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]
     resource :settings
+    resources :orders
+    get "refund/:id", to: "orders#refund" 
   end
   # get 'client/clients/:id', to: 'client/clients#show', as: 'client_show'
   namespace :client do
@@ -48,6 +54,5 @@ Rails.application.routes.draw do
   get 'shop/index'
   get 'shop/sell'
   get 'shop/wedontsupport'
-  get "refund/:id", to: "orders#refund"
-  resources :orders
+
 end

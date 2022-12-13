@@ -2,7 +2,7 @@ require "test_helper"
 
 class Admin::TimetablesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @timetable = timetables(:one)
+    @timetable = timetables(:publictim)
     @admin = accounts(:admin)
   end
 

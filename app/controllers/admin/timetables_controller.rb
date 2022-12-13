@@ -1,4 +1,5 @@
 class Admin::TimetablesController < Admin::BaseController
+  skip_before_action :admin_account, only: :show_public  
   before_action :set_timetable, only: %i[ show edit update destroy ]
 
   def index
@@ -7,8 +8,21 @@ class Admin::TimetablesController < Admin::BaseController
 
   def show
     #build a #entries hash to avoid database lookups in the view
-    # not sure how to name/file layout/timetable.html.eb to make this next line redundant
+    @days = @timetable.table_days.order_by_day
+    @morning_times = @timetable.table_times.during('morning').order_by_time
+    @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
+    @evening_times = @timetable.table_times.during('evening').order_by_time
     render layout: "timetable"
+  end
+
+  def show_public
+    # update
+    @timetable = Timetable.first 
+    @days = @timetable.table_days.order_by_day
+    @morning_times = @timetable.table_times.during('morning').order_by_time
+    @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
+    @evening_times = @timetable.table_times.during('evening').order_by_time
+    render "public_pages/timetable", layout: "timetable"
   end
 
   def new

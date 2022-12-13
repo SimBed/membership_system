@@ -8,12 +8,6 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
   end
 
-  test "should get index" do
-    log_in_as(@admin)
-    get admin_entries_url
-    assert_response :success
-  end
-
   test "should get new" do
     log_in_as(@admin)
     get new_admin_entry_url
@@ -34,12 +28,6 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to admin_timetable_url(@table_day.timetable)
-  end
-
-  test "should show entry" do
-    log_in_as(@admin)
-    get admin_entry_url(@entry)
-    assert_response :success
   end
 
   test "should get edit" do

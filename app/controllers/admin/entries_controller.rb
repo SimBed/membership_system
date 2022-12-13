@@ -5,9 +5,6 @@ class Admin::EntriesController < Admin::BaseController
     @entries = Entry.all
   end
 
-  def show
-  end
-
   def new
     @entry = Entry.new
   end

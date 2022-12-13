@@ -1,0 +1,14 @@
+<tr>
+  <th><%=time.start.strftime("%l.%M")%></th>
+  <% @days.each do |day| %>
+    <td>
+    <% entry = Entry.where(table_time_id: time.id, table_day_id: day.id).first %>
+        <div class = <%= "nonSpacePackageClass" if entry&.visibility_switch? %> >
+            <div class="Workout-Name" data-toggle="tooltip" title=<%="#{time.start.strftime("%l.%M")}-#{day.name}"%> ><%=entry&.workout%></div>
+            <div class="Bodypart"><%=entry&.subheading1%></div>
+            <div class="Studio mt-2"><%=entry&.subheading2%></div>
+            <div class="Studio mt-2"><%=entry&.studio%></div>
+        </div>
+    </td>
+  <% end %>
+</tr>

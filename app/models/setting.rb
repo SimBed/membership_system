@@ -7,6 +7,10 @@ class Setting < RailsSettings::Base
     field :renew_online, type: :boolean, default: false
   end
 
+  scope :timetable do
+    field :timetable, type: :integer, default: 1
+  end
+
   scope :booking do
     field :quotation, default: "Exercise is King. Nutrition is Queen. Put them together & you've got a Kingdom.",
                      validates: { presence: true, length: { in: 2..200 } }

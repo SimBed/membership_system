@@ -1,4 +1,5 @@
 class PublicPagesController < ApplicationController
+  layout 'public'
   def welcome
     if logged_in_as?('junioradmin', 'admin', 'superadmin')
       # not && return won't work because of precedence of operator over method call
@@ -8,6 +9,9 @@ class PublicPagesController < ApplicationController
     elsif logged_in_as?('partner')
       redirect_to admin_partner_path(current_account.partners.first) and return
     end
-    render template: 'auth/sessions/new'
+    # render template: 'auth/sessions/new'
+  end
+
+  def welcome_home
   end
 end
