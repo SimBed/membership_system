@@ -40,6 +40,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit @entry.new_record? ? 'Add Entry' : 'Update Entry' %>     
   </div>
 <% end %>

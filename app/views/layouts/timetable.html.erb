@@ -6,46 +6,40 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'timetable', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'timetable', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'general', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'general', 'data-turbolinks-track': 'reload' %>
+    <%#= stylesheet_pack_tag 'general', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_pack_tag 'general', 'data-turbolinks-track': 'reload' %>
+
+    <%#= javascript_pack_tag 'general', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'admin', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'admin', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'timetable', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'timetable', 'data-turbolinks-track': 'reload' %>    
 
     <script src="https://kit.fontawesome.com/52a30c356b.js" crossorigin="anonymous"></script>
 
   </head>
 
   <body>
-    <div class="navbar_container">
-      <div class="logo_container">
-        <%= link_to "https://www.thespacejuhu.in/", target: "_blank" do %>
-          <%= image_tag('SpaceLogo.png', alt: "logo", class: "Logobar") %>
-        <% end %>
-      </div>
-
-      <% if logged_in_as?('partner') %>
-        <%= render 'layouts/partner_header' %>
-      <% elsif logged_in_as?('junioradmin', 'admin', 'superadmin') %>
-        <%= render 'layouts/admin_header' %>
-      <% elsif logged_in_as?('client') %>
-        <%= render 'layouts/client_header' %>
-      <% end %>
-    </div>
+    <%= render 'layouts/public_timetable_navbar' unless logged_in? %>
+    <%= render 'layouts/admin_navbar' if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
+    <%= render 'layouts/client_navbar' if logged_in_as?('client') %>
 
     <main>
-
-      <% # https://stackoverflow.com/questions/2448789/rails-easy-way-to-add-more-than-one-flashnotice-at-a-time %>
-      <div id="flash_messages">
-        <%= render_flash %>
+      <div class="offcanvas-wrap">
+        <section class="overflow-hidden">
+            <% # https://stackoverflow.com/questions/2448789/rails-easy-way-to-add-more-than-one-flashnotice-at-a-time %>
+            <div id="flash_messages">
+              <%= render_flash %>
+            </div>
+            <%= yield %>
+            <%= debug(params) if Rails.env.development? %>
+            <%= debug(current_account&.ac_type) if Rails.env.development? %>
+        </section>
       </div>
-
-      <%= yield %>
-      <%= debug(params) if Rails.env.development? %>
-      <%= current_account&.ac_type if Rails.env.development? %>
-
-      <%= render 'layouts/footer' %>
     </main>
+
+   <%= render 'layouts/footer' %>   
   </body>
 </html>

@@ -1,13 +1,8 @@
-<h2>
-  <%= @partner.name %>
-</h2>
-<h6 class="bolditalics mb-0">
-  Payment Summary
-</h6>
-<h2>
-  <form action=<%= "/admin/partners/#{params[:id]}" %> method="GET">
-    <select name="revenue_month" onchange="this.form.submit()" class= "sort">
-      <%= options_for_select @months, session[:revenue_month] %>
-    </select>
-  </form>
-</h2>
+<h4> <%= @partner.name %> </h4>
+<h6 class="fw-bolder fst-italic mb-0"> Payment Summary </h6>
+<form action=<%= "/admin/partners/#{params[:id]}" %> method="GET">
+  <select name="revenue_month" onchange="this.form.submit()" class= "sort">
+    <%= options_for_select @months, session[:revenue_month] %>
+  </select>
+</form>
+

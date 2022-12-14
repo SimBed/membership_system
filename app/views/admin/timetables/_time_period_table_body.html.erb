@@ -1,0 +1,27 @@
+<tr>
+  <th><%=time.start.strftime("%l.%M")%>
+    <div class = "editButton">
+      <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_table_time_path(time) %>
+      <%= link_to image_tag('delete.png', class: "edit_icon"), admin_table_time_path(time), method: :delete, data: { confirm: 'This will delete the timetable row and all the entries for that time. Are you sure?' } %>
+    </div>
+  </th>
+  <% @days.each do |day| %>
+    <td>
+      <% entry = Entry.where(table_time_id: time.id, table_day_id: day.id).first %>
+      <div class = <%= "nonSpacePackageClass" if entry&.visibility_switch? %> >
+        <div class="Workout-Name" data-toggle="tooltip" title=<%="#{time.start.strftime("%l.%M")}-#{day.name}"%> ><%=entry&.workout%></div>
+        <div class="Bodypart"><%=entry&.subheading1%></div>
+        <div class="Studio mt-1"><%=entry&.subheading2%></div>
+        <div class="Studio mt-1"><%=entry&.studio%></div>
+      </div>
+      <div class = "editButton">
+        <% if entry.nil? %>
+          <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_entry_path(timetable_id: params[:id], table_day_id: day.id, table_time_id: time.id) %>
+        <% else %>
+        <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_entry_path(entry) %>
+        <%= link_to image_tag('delete.png', class: "edit_icon"), admin_entry_path(entry), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <% end %>
+      </div>
+    </td>
+  <% end %>
+</tr>

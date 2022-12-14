@@ -4,6 +4,8 @@
 // that code so it'll be compiled.
 
 import "../scss/application.scss";
+// https://stackoverflow.com/questions/60727460/using-bootstrap-icons-in-rails-6-with-webpacker
+import "bootstrap-icons/font/bootstrap-icons.css"
 
 import Rails from "@rails/ujs"; global.Rails = Rails;
 import Turbolinks from "turbolinks"

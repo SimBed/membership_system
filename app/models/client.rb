@@ -57,7 +57,7 @@ class Client < ApplicationRecord
 
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
 
-  paginates_per 20
+  paginates_per 50
 
   # would like to use #or method eg Client.recently_attended.or(Client.packagee) but couldn't resolve error:
   # Relation passed to #or must be structurally compatible. Incompatible values: [:joins, :distinct]

@@ -10,11 +10,13 @@
     <%#= javascript_pack_tag 'index', 'data-turbolinks-track': 'reload', defer:true %>  
     <%#= javascript_pack_tag 'libs', 'data-turbolinks-track': 'reload' %>  
     <%#= javascript_pack_tag 'public', 'data-turbolinks-track': 'reload', defer:true %>
-    <%= javascript_pack_tag 'libs', media: 'all', 'data-turbolinks-track': 'reload' %> 
+
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'general', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'general', 'data-turbolinks-track': 'reload' %>  
+    <%#= stylesheet_pack_tag 'general', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_pack_tag 'general', 'data-turbolinks-track': 'reload' %> 
+    <%= stylesheet_pack_tag 'public', media: 'all', 'data-turbolinks-track': 'reload' %>  
+    <%= javascript_pack_tag 'public', media: 'all', 'data-turbolinks-track': 'reload' %>  
 
     <script src="https://kit.fontawesome.com/52a30c356b.js" crossorigin="anonymous"></script>
 

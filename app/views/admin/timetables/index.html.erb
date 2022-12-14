@@ -1,27 +1,8 @@
-<p id="notice"><%= notice %></p>
+<div class="container px-1 margin-override">
+  <h4> Timetables <%= link_to image_tag('add.png'), new_admin_timetable_path %></h4>
+</div>
 
-<h1>Timetables</h1>
+<div id="purchases-table" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'timetables_table' %>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @timetables.each do |timetable| %>
-      <tr>
-        <td><%= timetable.title %></td>
-        <td><%= link_to 'Show', [:admin, timetable] %></td>
-        <td><%= link_to 'Edit', edit_admin_timetable_path(timetable) %></td>
-        <td><%= link_to 'Destroy', [:admin, timetable], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Timetable', new_admin_timetable_path %>

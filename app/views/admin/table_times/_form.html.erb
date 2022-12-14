@@ -19,6 +19,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit @table_time.new_record? ? 'Add Time' : 'Update Time' %>
   </div>
 <% end %>

@@ -28,7 +28,7 @@
     <fieldset>
       <legend>WORKOUT GROUP</legend>
       <% @workout_group.each do |wg| %>
-        <%= label_tag nil, class: "purchase-filters" do %>
+        <%= label_tag nil, class: "chbox-lbl-filters" do %>
           <!-- onChange: "this.form.submit()" won't fire ajax request. See Gamliela answer https://stackoverflow.com/questions/6959481/rails-trying-to-submit-a-form-onchange-of-dropdown -->
           <%= check_box_tag 'workout_group[]', wg, session[:filter_workout_group].present? ? session[:filter_workout_group].include?(wg) : false, id: "chbox#{wg}", onchange: 'Rails.fire(this.form, "submit")' %>
           <%= wg %>
@@ -41,7 +41,7 @@
     <fieldset>
       <legend>STATUS</legend>
       <% @statuses.each do |status| %>
-        <%= label_tag nil, class: "purchase-filters" do %>
+        <%= label_tag nil, class: "chbox-lbl-filters" do %>
           <%= check_box_tag 'statuses[]', status, session[:filter_statuses].present? ? session[:filter_statuses].include?(status) : false, class: "checkbox-class", id: "chbox#{status}", onchange: 'Rails.fire(this.form, "submit")'  %>
           <%= status %>
         <% end %>
@@ -53,7 +53,7 @@
     <fieldset>
       <legend>ATTRIBUTE</legend>
         <% @other_attributes.each do |attribute| %>
-          <%= label_tag nil, class: "purchase-filters" do %>
+          <%= label_tag nil, class: "chbox-lbl-filters" do %>
             <%= check_box_tag attribute, attribute, session["filter_#{attribute}"].present? ? true : false, class: "checkbox-class", id: "chbox#{attribute}", onchange: 'Rails.fire(this.form, "submit")'  %>
             <%= attribute.split('_').join(' ') %>
           <% end %>
