@@ -10,7 +10,7 @@
     <%#= javascript_pack_tag 'index', 'data-turbolinks-track': 'reload', defer:true %>  
     <%#= javascript_pack_tag 'libs', 'data-turbolinks-track': 'reload' %>  
     <%#= javascript_pack_tag 'public', 'data-turbolinks-track': 'reload', defer:true %>
-    
+    <%= javascript_pack_tag 'libs', media: 'all', 'data-turbolinks-track': 'reload' %> 
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_pack_tag 'general', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -21,7 +21,7 @@
   </head>
 
   <body>
-    <%#= javascript_pack_tag 'aos', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'aos', 'data-turbolinks-track': 'reload' %>
     <!-- <script src="../app/frontend/packs/modules/aos"></script> -->
     <%= render 'layouts/public_navbar' %>
 
