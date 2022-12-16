@@ -18,10 +18,11 @@
 
     <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
       <ul class="navbar-nav">
-        <!--li class="nav-item">
+      <% if request.fullpath.include? ("welcome") %>
+        <li class="nav-item">
           <%= link_to "Timetable", "/timetable", class: "nav-link" %>
-        </li-->
-
+        </li>
+      <% end %>
         <li class="nav-item">
           <% if current_account %>
             <%= link_to logout_path, method: :delete, class: "nav-link active" do %>
