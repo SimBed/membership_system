@@ -19,8 +19,8 @@
           <td><%= adj.created_at.strftime('%d %b %y') %></td>
           <td><%= "#{pluralize(adj.adjustment, 'day')}" %></td>
           <td><%= adj.note %></td>
-          <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_adjustment_path(adj), class: "icon-container" %></td>
-          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_adjustment_path(adj), method: :delete, data: { confirm: 'Adjustment will be deleted. Are you sure?' } %></td>
+          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_adjustment_path(adj), class: "icon-container" %></td>
+          <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_adjustment_path(adj), method: :delete, data: { confirm: 'Adjustment will be deleted. Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>

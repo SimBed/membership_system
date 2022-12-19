@@ -154,6 +154,11 @@ a {
     height: 1.0rem;
     opacity: 1.0;
   }
+
+  img.header_icon {
+    width: 1.0rem;
+    height: 1.0rem;
+  }  
   
   img.fitternity, img.waiver, img.instawaiver {
     opacity: 0.1;
@@ -262,7 +267,13 @@ a {
   img.table_icon {
     width: 1.3rem;
     height: 1.3rem;
-  }     
+  }
+  
+  img.header_icon {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+    
 }
 
 @media (min-width: 600px) {

@@ -21,8 +21,8 @@
           <td><%= f.end_date.strftime('%d %b %y') %></td>
           <td><%= "#{pluralize(f.duration, 'day')}" %></td>
           <td><%= f.note %></td>
-          <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_freeze_path(f), class: "icon-container" %></td>
-          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_freeze_path(f), method: :delete, data: { confirm: 'Freeze will be deleted Are you sure?' } %></td>
+          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(f), class: "icon-container" %></td>
+          <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(f), method: :delete, data: { confirm: 'Freeze will be deleted Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>

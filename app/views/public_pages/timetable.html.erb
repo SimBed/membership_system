@@ -20,26 +20,32 @@
         <% end %>
       </tr>
     </thead>
-
-    <tr style="background:linear-gradient(white,#dddddd)">
-      <th colspan="7">MORNING</th>
-    </tr>
-    <% @morning_times.each do |time| %>
-      <%= render 'public_pages/time_period_table_body', time: time %>
+    
+    <% unless @morning_times.empty? %>
+      <tr style="background:linear-gradient(white,#dddddd)">
+        <th colspan="7">MORNING</th>
+      </tr>
+      <% @morning_times.each do |time| %>
+        <%= render 'public_pages/time_period_table_body', time: time %>
+      <% end %>
     <% end %>
 
-    <tr style="background:linear-gradient(white,#dddddd)">
-      <th colspan="7">AFTERNOON</th>
-    </tr>
-    <% @afternoon_times.each do |time| %>
-      <%= render 'public_pages/time_period_table_body', time: time %>
+    <% unless @afternoon_times.empty? %>
+      <tr style="background:linear-gradient(white,#dddddd)">
+        <th colspan="7">AFTERNOON</th>
+      </tr>
+      <% @afternoon_times.each do |time| %>
+        <%= render 'public_pages/time_period_table_body', time: time %>
+      <% end %>  
     <% end %>  
 
-    <tr style="background:linear-gradient(white,#dddddd)">
-      <th colspan="7">EVENING</th>
-    </tr>
-    <% @evening_times.each do |time| %>
-      <%= render 'public_pages/time_period_table_body', time: time %>
+    <% unless @evening_times.empty? %>
+      <tr style="background:linear-gradient(white,#dddddd)">
+        <th colspan="7">EVENING</th>
+      </tr>
+      <% @evening_times.each do |time| %>
+        <%= render 'public_pages/time_period_table_body', time: time %>
+      <% end %>  
     <% end %>  
   
   </table>

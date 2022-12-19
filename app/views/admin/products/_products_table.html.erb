@@ -23,10 +23,10 @@
         <td><%= number_with_delimiter(product.renewal_price("renewal_pre_expiry")&.discounted_price) %></td>
         <td><%= number_with_delimiter(product.renewal_price("renewal_pretrial_expiry")&.discounted_price) %></td>
         <td><%= number_with_delimiter(product.renewal_price("renewal_posttrial_expiry")&.discounted_price) %></td>
-        <% if logged_in_as?('admin') %>
-          <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_product_path(product) %></td>
-        <% end %>
-        <!--td><%#= link_to image_tag('delete.png', class: "grid_table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }%></td-->
+        <%# if logged_in_as?('superadmin') %>
+          <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
+        <%# end %>
+        <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }%></td-->
       </tr>
     <% end %>
   </tbody>

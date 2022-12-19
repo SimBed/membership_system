@@ -1,7 +1,7 @@
 <table class="table table-secondary table-striped caption-top">
   <caption>
     <%= link_to @purchase.formal_name, admin_purchase_path(@purchase), class: "like_button" %>
-    <%=image_tag(@purchase.expired? ? 'expired.png' : 'attendances.png', class: "grid_table_icon")%>
+    <%=image_tag(@purchase.expired? ? 'expired.png' : 'attendances.png', class: "table_icon")%>
   </caption>
   <tbody>
     <% unless @purchase.expired? %>

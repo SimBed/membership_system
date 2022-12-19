@@ -7,7 +7,7 @@
         <td><%= fitternity.expiry_date.strftime('%d %b %y') %></td>
         <% unless logged_in_as?('junioradmin') %>
           <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_fitternity_path(fitternity) %></td>
-          <!--td><%#= link_to image_tag('delete.png', class: "grid_table_icon"), admin_fitternity_path(fitternity), method: :delete, data: { confirm: 'Fitternity and all its purchases will be deleted. Are you sure?' } %></td-->
+          <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_fitternity_path(fitternity), method: :delete, data: { confirm: 'Fitternity and all its purchases will be deleted. Are you sure?' } %></td-->
         <% end %>
       </tr>
     <% end %>

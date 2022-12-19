@@ -7,7 +7,7 @@
         <td><%= number_with_delimiter(rate.rate) %></td>
         <td><%= rate.date_from.strftime('%d %b %y') %></td>
         <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_instructor_rate_path(rate) %></td>
-        <!--td><%#= link_to image_tag('delete.png', class: "grid_table_icon"), superadmin_instructor_rate_path(rate), method: :delete, data: { confirm: 'Instructor rate will be deleted. Are you sure?' } %></td-->
+        <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), superadmin_instructor_rate_path(rate), method: :delete, data: { confirm: 'Instructor rate will be deleted. Are you sure?' } %></td-->
       </tr>
     <% end %>
   </tbody>

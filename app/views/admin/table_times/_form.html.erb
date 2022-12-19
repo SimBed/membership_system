@@ -15,7 +15,7 @@
 
   <div class="field">
     <%= form.label :start %>
-    <%= form.time_select :start %>
+    <%= form.time_select :start, default: {hour: 9, min: 0} %>
   </div>
 
   <div class="actions">

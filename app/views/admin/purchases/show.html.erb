@@ -9,9 +9,9 @@
 
 <div id="amendment-links" class="mb-3 d-flex">
   <div>
-    <%= link_to image_tag('freeze.png', class: "back_icon" ), new_admin_freeze_path(purchase: @purchase.id), class: "icon-container" %> |
-    <%= link_to image_tag('adjust.png', class: "back_icon" ), new_admin_adjustment_path(purchase: @purchase.id), class: "icon-container" %> |
-    <%= link_to image_tag('edit.png', class: "back_icon" ), edit_admin_purchase_path(@purchase), class: "icon-container" %>
+    <%= link_to image_tag('freeze.png', class: "table_icon" ), new_admin_freeze_path(purchase: @purchase.id), class: "icon-container" %> |
+    <%= link_to image_tag('adjust.png', class: "table_icon" ), new_admin_adjustment_path(purchase: @purchase.id), class: "icon-container" %> |
+    <%= link_to image_tag('edit.png', class: "table_icon" ), edit_admin_purchase_path(@purchase), class: "icon-container" %>
   </div>
   <div class="me-3 ms-auto">
     <%= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>

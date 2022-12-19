@@ -53,7 +53,7 @@
     <% end %>
     <tr>
       <th scope="row">Last Class</th>
-      <td><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></td>
+      <td><%= @client_hash[:last_class].nil? ? "not yet attended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></td>
     </tr>
     <tr>
       <th scope="row">First contact</th>

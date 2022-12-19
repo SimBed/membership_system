@@ -8,7 +8,7 @@
       <th scope="col">From</th>
       <th scope="col">Status</th>
       <th scope="col">Purpose</th>
-      <th scope="col"><%= link_to image_tag('add.png', class:'grid_table_icon'), new_admin_price_path(product_id: params[:id]) %></th>
+      <th scope="col"><%= link_to image_tag('add.png', class:'table_icon'), new_admin_price_path(product_id: params[:id]) %></th>
       <th scope="col"></th>
     </tr>
 <% @prices.each do |price| %>
@@ -19,8 +19,8 @@
         <td><%= price.date_from.strftime('%d %b %y') %></td>
         <td><%= price.current? ? 'current' : 'old' %></td>
         <td><%= purpose(price) %></td>
-        <td><%= link_to image_tag('edit.png', class: "grid_table_icon"), edit_admin_price_path(price)%></td>
-        <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_price_path(price), method: :delete, data: { confirm: 'Price will be deleted. Are you sure?' } %></td>
+        <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_price_path(price)%></td>
+        <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_price_path(price), method: :delete, data: { confirm: 'Price will be deleted. Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

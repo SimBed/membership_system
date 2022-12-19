@@ -11,7 +11,7 @@
             <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
           <% end %>
           <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-          <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+          <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
         </tr>
       <% end %>
       <% unless @ethereal_attendances_no_amnesty.empty? %>
@@ -26,7 +26,7 @@
               <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-            <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+            <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
           </tr>
         <% end %>
       <% end %>
@@ -42,7 +42,7 @@
               <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-            <td><%= link_to image_tag('delete.png', class: "grid_table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+            <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
           </tr>
         <% end %>
       <% end %>
