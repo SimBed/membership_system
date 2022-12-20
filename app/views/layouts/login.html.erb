@@ -8,8 +8,8 @@
 <!--comment-->
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'public', media: 'all', 'data-turbolinks-track': 'reload' %>  
-    <%= javascript_pack_tag 'public', media: 'all', 'data-turbolinks-track': 'reload' %> 
+    <%= stylesheet_pack_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload' %>  
+    <%= javascript_pack_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload' %> 
     <%= javascript_pack_tag 'isotope', 'data-turbolinks-track': 'reload', defer:true %>    
 
     <script src="https://kit.fontawesome.com/52a30c356b.js" crossorigin="anonymous"></script>
@@ -19,8 +19,8 @@
   <body>
     <%= render 'layouts/public_navbar_black' %>
 
-    <main>
-      <div class="offcanvas-wrap" style= "padding-top: 10rem;">
+    <main id="white-canvas">
+      <div class="offcanvas-wrap">
         <section class="overflow-hidden">    
           <%= yield %>
           <%#= debug(params) if Rails.env.development? %>

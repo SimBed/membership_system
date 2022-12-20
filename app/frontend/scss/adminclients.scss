@@ -40,8 +40,13 @@ body, p, ol, ul, td {
   }
 }
 
-#loggedIn .offcanvas-wrap {
-  padding-top: 10rem;
+#white-canvas {
+  .offcanvas-wrap {
+    padding-top: 10rem;
+  }
+  .btn-primary {
+    background-color: black;
+  }  
 }
 
 .margin-override {
