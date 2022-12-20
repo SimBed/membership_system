@@ -22,7 +22,7 @@
     <%= render 'layouts/client_navbar' if logged_in_as?('client') %>
     <%= render 'layouts/partner_navbar' if logged_in_as?('partner') %>
 
-    <main>
+    <main id="white-canvas">
       <div class="offcanvas-wrap">
         <section class="overflow-hidden">
             <% # https://stackoverflow.com/questions/2448789/rails-easy-way-to-add-more-than-one-flashnotice-at-a-time %>

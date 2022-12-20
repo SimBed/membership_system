@@ -1,267 +1,273 @@
-/* mixins, variables, etc. */
-$font-stack:  verdana, Arial;
-$gray-darker:  #808080;
-$gray-darkest: #474444;
-$bg-light: #f8f9fa;
+// can be deleted
 
-body {
-  background-color: #fff;
-  color: #333;
-  margin: 0;
-  margin-top: 0; }
+// /* mixins, variables, etc. */
+// $font-stack:  verdana, Arial;
+// $gray-darker:  #808080;
+// $gray-darkest: #474444;
+// $bg-light: #f8f9fa;
 
-body, p, ol, ul, td {
-  font-family: $font-stack;
-  font-size: 0.8rem;  
-  line-height: 1.0rem; }
+// body {
+//   background-color: #fff;
+//   color: #333;
+//   margin: 0;
+//   margin-top: 0; }
 
-.navbar div {
-  justify-content: space-between;
-}
+// body, p, ol, ul, td {
+//   font-family: $font-stack;
+//   font-size: 0.8rem;  
+//   line-height: 1.0rem; }
+
+// .navbar div {
+//   justify-content: space-between;
+// }
   
-// override components/_navbar.scss
-.navbar-brand img {
-  max-height: 3rem;
-}
+// // override components/_navbar.scss
+// .navbar-brand img {
+//   max-height: 3rem;
+// }
 
-.nav-link {
+// .nav-link {
 
-}
+// }
 
-.nav-link:hover {
+// .nav-link:hover {
 
-}
+// }
 
-.offcanvas-wrap {
+// .offcanvas-wrap {
 
-}
+// }
 
-.margin-override {
+// .margin-override {
 
-}
+// }
 
-div.search {
-	position:relative;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin:0;
-}
+// div.search {
+// 	position:relative;
+//   padding-right: 15px;
+//   padding-left: 15px;
+//   margin:0;
+// }
 
-div i.fa, i.fas {
-  font-size: 1.1rem;
-}
+// div i.fa, i.fas {
+//   font-size: 1.1rem;
+// }
 
-div i.fa-sort-alpha-down{
-  color: $gray-darker;
-}
+// div i.fa-sort-alpha-down{
+//   color: $gray-darker;
+// }
 
-select.sort {
-  color: $gray-darker;
-  border: solid;
-  border-color: $bg-light;
-  border-width: 1px;
-  background-color: $bg-light;
-  padding: 0.5rem 0.5rem;  
-  min-height: calc(1.5em + 0.5rem + 2px);  
-}
+// select.sort {
+//   color: $gray-darker;
+//   border: solid;
+//   border-color: $bg-light;
+//   border-width: 1px;
+//   background-color: $bg-light;
+//   padding: 0.5rem 0.5rem;  
+//   min-height: calc(1.5em + 0.5rem + 2px);  
+// }
 
-.form-control-sm {
-  min-height: calc(1.5em + 0.5rem + 2px);
-  padding: 0.25rem 0.5rem;
-  font-size: .875rem;
-  border-radius: 0.2rem;
-}
+// .form-control-sm {
+//   min-height: calc(1.5em + 0.5rem + 2px);
+//   padding: 0.25rem 0.5rem;
+//   font-size: .875rem;
+//   border-radius: 0.2rem;
+// }
 
-form fieldset {
-  color: $gray-darkest;
-  font-family: $font-stack;
-  font-size: 0.9em;
-  font-weight: normal;
-  label {
-    margin-right: 0.5rem;
-    margin-bottom: 0.4rem;
-  }
-}
+// form fieldset {
+//   color: $gray-darkest;
+//   font-family: $font-stack;
+//   font-size: 0.9em;
+//   font-weight: normal;
+//   label {
+//     margin-right: 0.5rem;
+//     margin-bottom: 0.4rem;
+//   }
+// }
 
-legend {
-  width:auto;
-  font-size: 0.9rem;
-  font-weight: normal;
-  padding-right: 0.75rem;
-}
+// legend {
+//   width:auto;
+//   font-size: 0.9rem;
+//   font-weight: normal;
+//   padding-right: 0.75rem;
+// }
 
-.chbox-lbl-filters {
-  font-size: 0.8rem;
-}
+// .chbox-lbl-filters {
+//   font-size: 0.8rem;
+// }
 
-label {
-  display: block; }
+// label {
+//   display: block; }
 
-/*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
-input[type="checkbox"] {
-  vertical-align: middle
-}
+// /*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
+// input[type="checkbox"] {
+//   vertical-align: middle
+// }
 
-.searchdelete {
-  margin-left:auto;
-}
+// .searchdelete {
+//   margin-left:auto;
+// }
 
-div.page_entries_info {
-  font-size: 0.9em;
-  // override components/_pagination.scss
-  .pagination {
-    display: flex;
-  }
-}
+// div.page_entries_info {
+//   font-size: 0.9em;
+//   // override components/_pagination.scss
+//   .pagination {
+//     display: flex;
+//   }
+// }
 
-.icon-container:hover {
-  background-color: $gray-darker;
-} 
+// .icon-container:hover {
+//   background-color: $gray-darker;
+// } 
 
-a {
-  color: #000; }
+// a {
+//   color: #000; }
 
-  a.like_button {
-    border-radius: 1rem;
-    line-height: 1.25;
-    padding: 0;
-    box-shadow: 0 1px #999;
-    text-decoration: none;
-    color: black;
-    &:hover {
-      color: $gray-darker;
-    }
-  }
+//   a.like_button {
+//     border-radius: 1rem;
+//     line-height: 1.25;
+//     padding: 0;
+//     box-shadow: 0 1px #999;
+//     text-decoration: none;
+//     color: black;
+//     &:hover {
+//       color: $gray-darker;
+//     }
+//   }
 
-  td.nomobile, th.nomobile {
-    display: none;
-  }
-  div.nomobile {
-    display: none;
-  }
+//   td.nomobile, th.nomobile {
+//     display: none;
+//   }
+//   div.nomobile {
+//     display: none;
+//   }
   
-  img.table_icon {
-    width: 1.0rem;
-    height: 1.0rem;
-    opacity: 1.0;
-  }
+//   img.table_icon {
+//     width: 1.0rem;
+//     height: 1.0rem;
+//     opacity: 1.0;
+//   }
   
-  img.fitternity, img.waiver, img.instawaiver {
-    opacity: 0.1;
-  }
+//   img.fitternity, img.waiver, img.instawaiver {
+//     opacity: 0.1;
+//   }
 
-  table.table th, table.table td {
-    padding: 0.5rem;
-  }
+//   table.table th, table.table td {
+//     padding: 0.5rem;
+//   }
 
-  // override /components/_table.scss whcih for some reaosn removes padding at beginning and end
-  .table tbody tr {
-    border-top-width: 0;
+//   // override /components/_table.scss whcih for some reaosn removes padding at beginning and end
+//   .table tbody tr {
+//     border-top-width: 0;
 
-    > *:first-child {
-      padding-left: 0.5rem;
-    }
+//     > *:first-child {
+//       padding-left: 0.5rem;
+//     }
 
-    > *:last-child {
-      padding-right: 0.5rem;
-    }
-  }
+//     > *:last-child {
+//       padding-right: 0.5rem;
+//     }
+//   }
 
-  .GeneralText {
-    font-size: 0.8rem;
-    color: #707070;
-    font-family: $font-stack;
-  }
+//   .GeneralText {
+//     font-size: 0.8rem;
+//     color: #707070;
+//     font-family: $font-stack;
+//   }
   
-  .SocMedFoot {
-   display: block;
-   background-color: white;
-   list-style: none;
-   margin-top:1em;
-   text-align:center;
-   margin-right:0;
-   margin-left:0;
-   padding-left:0;
-   padding-right:0;
-  }
+//   .SocMedFoot {
+//    display: block;
+//    background-color: white;
+//    list-style: none;
+//    margin-top:1em;
+//    text-align:center;
+//    margin-right:0;
+//    margin-left:0;
+//    padding-left:0;
+//    padding-right:0;
+//   }
   
-  .SocMedFoot li{
-   display: inline-block;
-   padding: 0 0.3em 0.5em 0;
-    }
+//   .SocMedFoot li{
+//    display: inline-block;
+//    padding: 0 0.3em 0.5em 0;
+//     }
   
   
-  .FooterLinks  {
-   list-style: none;
-   text-align:center;
-  }
+//   .FooterLinks  {
+//    list-style: none;
+//    text-align:center;
+//   }
   
-   .FooterLinks li a  {
-    color: #707070;
-    text-decoration: none;
-  }  
+//    .FooterLinks li a  {
+//     color: #707070;
+//     text-decoration: none;
+//   }  
 
-  img.back_icon {
-    width: 2.0rem;
-    height: 2.0rem;
-  }
+//   img.back_icon {
+//     width: 2.0rem;
+//     height: 2.0rem;
+//   }
 
-  div.field, div.actions {
-    margin-bottom: 0.4rem;
-  }
+//   div.field, div.actions {
+//     margin-bottom: 0.4rem;
+//   }
 
-  h4 {
-    margin-bottom: 0.5rem;
-  }
+//   h4 {
+//     margin-bottom: 0.5rem;
+//   }
 
-  h6 {
-    font-size: 1rem;
-  }
+//   h6 {
+//     font-size: 1rem;
+//   }
 
-@media (min-width: 900px) {
+//   .btn-primary {
+//     background-color: black;
+//   }  
 
-  body {
-    margin: 1rem;
-    margin-top: 0; }
+// @media (min-width: 900px) {
 
-  body, p, ol, ul, td {
-    font-size: 1.1rem;
-    // line-height: 1.5rem;
-   }
+//   body {
+//     margin: 1rem;
+//     margin-top: 0; }
 
-  // override components/_navbar.scss
-  .navbar-brand img {
-    max-height: 3.5rem;
-  }
+//   body, p, ol, ul, td {
+//     font-size: 1.1rem;
+//     // line-height: 1.5rem;
+//    }
 
-    // override components/_dropdowsn.scss which hides the caret
-    .dropdown-hover >
-    .dropdown-toggle:after {
-    display: inline-block;
-  }
+//   // override components/_navbar.scss
+//   .navbar-brand img {
+//     max-height: 3.5rem;
+//   }
 
-   main {
-    //  padding-top: 10rem;
-     margin: 1rem;
-     margin-top: 0;     
-   }
+//     // override components/_dropdowsn.scss which hides the caret
+//     .dropdown-hover >
+//     .dropdown-toggle:after {
+//     display: inline-block;
+//   }
 
-   a.like_button {
-    padding: 0.1rem 0.5rem;
-  }
+//    main {
+//     //  padding-top: 10rem;
+//      margin: 1rem;
+//      margin-top: 0;     
+//    }
 
-  img.table_icon {
-    width: 1.3rem;
-    height: 1.3rem;
-  }     
-}
+//    a.like_button {
+//     padding: 0.1rem 0.5rem;
+//   }
 
-@media (min-width: 600px) {
-  td.nomobile, th.nomobile {
-    display: table-cell;
-  }
+//   img.table_icon {
+//     width: 1.3rem;
+//     height: 1.3rem;
+//   }     
+// }
 
-  div.nomobile {
-    display: block;
-  }
-}
+// @media (min-width: 600px) {
+//   td.nomobile, th.nomobile {
+//     display: table-cell;
+//   }
+
+//   div.nomobile {
+//     display: block;
+//   }
+// }
