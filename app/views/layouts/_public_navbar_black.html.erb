@@ -1,5 +1,5 @@
 <%= javascript_pack_tag 'headroom', 'data-turbolinks-track': 'reload' %>
-<nav id="publicNav" class="headroom navbar navbar-expand-lg navbar-sticky navbar-dark">
+<nav id="mainNav" class="headroom navbar navbar-expand-lg navbar-sticky navbar-dark navbar-dark bg-black inverted">
 
   <div class="container">
     <%#= link_to "https://www.thespacejuhu.in/", target: "_blank", class: "navbar-brand" do %>
@@ -16,7 +16,7 @@
       </li>
     </ul>
 
-    <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#publicNav">
+    <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
       <ul class="navbar-nav">
       <% if request.fullpath.include? ("welcome") %>
         <li class="nav-item">

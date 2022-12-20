@@ -1,4 +1,6 @@
 class Auth::SessionsController < Auth::BaseController
+  layout 'login'
+
   def new; end
 
   def create

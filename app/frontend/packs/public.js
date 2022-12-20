@@ -1,1 +1,3 @@
-import '../scss/public.scss';
+// can be deleted
+
+// import '../scss/public.scss';

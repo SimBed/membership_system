@@ -24,7 +24,7 @@ body, p, ol, ul, td {
   max-height: 3rem;
 }
 
-.nav-link {
+#mainNav .nav-link {
   display: flex;
   align-items: center;
   color: var(--text-primary);
@@ -33,14 +33,14 @@ body, p, ol, ul, td {
   transition: var(--transition-speed);
 }
 
-.nav-link:hover {
+#mainNav .nav-link:hover {
   filter: grayscale(0%) opacity(1);
     i.fa {
       color: green;
   }
 }
 
-.offcanvas-wrap {
+#loggedIn .offcanvas-wrap {
   padding-top: 10rem;
 }
 
