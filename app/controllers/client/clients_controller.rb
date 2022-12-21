@@ -1,4 +1,5 @@
 class Client::ClientsController < ApplicationController
+  layout 'client'
   before_action :correct_account
 
   def show

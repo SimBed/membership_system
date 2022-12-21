@@ -1,1 +1,1 @@
-import '../scss/adminclients.scss';
+import '../scss/admin.scss';

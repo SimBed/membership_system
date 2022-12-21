@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>AttendanceSystem</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,8 +22,6 @@
           <%= image_tag('SpaceLogo.png', alt: "logo", class: "Logobar") %>
         <% end %>
       </div>
-
-      
 
       <% if logged_in_as?('partner') %>
         <%= render 'layouts/partner_header' %>

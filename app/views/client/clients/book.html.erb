@@ -16,7 +16,7 @@
       <% unless @renewal[:ongoing] %>
         <%= render partial: 'expired_package' %>
       <% else %>
-        <p class="bolditalics mb-0">There are no classes currently in the booking window.</p>
+        <p class="fw-bolder fst-italic mb-0">There are no classes currently in the booking window.</p>
       <% end %>
     </div>
   <% else %>
@@ -32,7 +32,7 @@
 
 <% unless @purchases.empty? %>
   <div id="packages-table" class="container px-1">
-    <h6 class="bolditalics mb-0">
+    <h6 class="fw-bolder fst-italic mb-0">
       Package Status
     </h6>
     <%= render partial: 'client_packages_table', locals: {detailed: false} %>

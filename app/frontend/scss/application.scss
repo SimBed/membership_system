@@ -16,3 +16,114 @@
 // @import "~bootstrap-icons/font/bootstrap-icons";
 @import "~aos/dist/aos";
 // @import "~nouislider/dist/nouislider";
+
+/* mixins, variables, etc. */
+$font-stack:  "Quicksand", "Arial";
+$gray-darker:  #808080;
+$gray-darkest: #474444;
+$bg-light: #f8f9fa;
+
+body {
+  background-color: #fff;
+  color: #333;
+  margin: 0;
+  margin-top: 0; }
+
+body, p, ol, ul, td {
+  font-family: $font-stack;
+  font-size: 0.8rem;  
+  line-height: 1.0rem; }
+
+.navbar div {
+  justify-content: space-between; }
+
+a {
+    color: #000; }
+
+// override components/_navbar.scss
+.navbar-brand img {
+    max-height: 3rem; }
+  
+#mainNav .nav-link {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  text-decoration: none;
+  filter: grayscale(100%) opacity(0.7);
+  transition: var(--transition-speed); }
+
+#mainNav .nav-link:hover {
+  filter: grayscale(0%) opacity(1);
+    i.fa {
+    color: green; } }
+
+#white-canvas {
+  .offcanvas-wrap {
+    padding-top: 10rem; }
+  .btn-primary {
+    background-color: black; } }
+
+.table-striped>tbody>tr:nth-child(odd)>th.stripe-override,
+.table-striped>tbody>tr:nth-child(even)>th.stripe-override {
+  background-color: white;
+  background: linear-gradient($gray-darker, #dddddd);
+  box-shadow: none; }
+
+.GeneralText {
+  font-size: 0.8rem;
+  color: #707070;
+  font-family: $font-stack; }
+
+img.table_icon {
+  width: 1.0rem;
+  height: 1.0rem;
+  opacity: 1.0; }  
+
+.icon-container:hover {
+  background-color: $gray-darker; } 
+
+.SocMedFoot {
+  display: block;
+  background-color: white;
+  list-style: none;
+  margin-top:1em;
+  text-align:center;
+  margin-right:0;
+  margin-left:0;
+  padding-left:0;
+  padding-right:0; }
+   
+.SocMedFoot li {
+  display: inline-block;
+  padding: 0 0.3em 0.5em 0; }
+  
+.FooterLinks {
+  list-style: none;
+  text-align:center; }
+
+.FooterLinks li a {
+  color: #707070;
+  text-decoration: none; }  
+
+
+@media (min-width: 900px) {
+  body, p, ol, ul, td {
+    font-size: 1.1rem; }
+
+  // override components/_navbar.scss
+  .navbar-brand img {
+    max-height: 3.5rem; }
+  
+  main {
+    margin: 1rem;
+    margin-top: 0; }
+    
+  img.table_icon {
+    width: 1.3rem;
+    height: 1.3rem; }
+
+ // override components/_dropdowsn.scss which hides the caret
+  .dropdown-hover >
+  .dropdown-toggle:after {
+    display: inline-block; }  
+} 

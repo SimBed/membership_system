@@ -4,51 +4,6 @@ $gray-darker:  #808080;
 $gray-darkest: #474444;
 $bg-light: #f8f9fa;
 
-body {
-  background-color: #fff;
-  color: #333;
-  margin: 0;
-  margin-top: 0; }
-
-body, p, ol, ul, td {
-  font-family: $font-stack;
-  font-size: 0.8rem;  
-  line-height: 1.0rem; }
-
-.navbar div {
-  justify-content: space-between;
-}
-  
-// override components/_navbar.scss
-.navbar-brand img {
-  max-height: 3rem;
-}
-
-#mainNav .nav-link {
-  display: flex;
-  align-items: center;
-  color: var(--text-primary);
-  text-decoration: none;
-  filter: grayscale(100%) opacity(0.7);
-  transition: var(--transition-speed);
-}
-
-#mainNav .nav-link:hover {
-  filter: grayscale(0%) opacity(1);
-    i.fa {
-      color: green;
-  }
-}
-
-#white-canvas {
-  .offcanvas-wrap {
-    padding-top: 10rem;
-  }
-  .btn-primary {
-    background-color: black;
-  }  
-}
-
 .margin-override {
   margin-left: 0;
   margin-right: 0;
@@ -128,13 +83,6 @@ div.page_entries_info {
   }
 }
 
-.icon-container:hover {
-  background-color: $gray-darker;
-} 
-
-a {
-  color: #000; }
-
   a.like_button {
     border-radius: 1rem;
     line-height: 1.25;
@@ -152,12 +100,6 @@ a {
   }
   div.nomobile {
     display: none;
-  }
-  
-  img.table_icon {
-    width: 1.0rem;
-    height: 1.0rem;
-    opacity: 1.0;
   }
 
   img.header_icon {
@@ -235,6 +177,7 @@ a {
 
   h6 {
     font-size: 1rem;
+
   }
 
 @media (min-width: 900px) {
@@ -243,37 +186,16 @@ a {
     margin: 1rem;
     margin-top: 0; }
 
-  body, p, ol, ul, td {
-    font-size: 1.1rem;
-    // line-height: 1.5rem;
-   }
-
-  // override components/_navbar.scss
-  .navbar-brand img {
-    max-height: 3.5rem;
-  }
-
     // override components/_dropdowsn.scss which hides the caret
     .dropdown-hover >
     .dropdown-toggle:after {
     display: inline-block;
   }
 
-   main {
-    //  padding-top: 10rem;
-     margin: 1rem;
-     margin-top: 0;     
-   }
-
    a.like_button {
     padding: 0.1rem 0.5rem;
   }
-
-  img.table_icon {
-    width: 1.3rem;
-    height: 1.3rem;
-  }
-  
+ 
   img.header_icon {
     width: 1.4rem;
     height: 1.4rem;

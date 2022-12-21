@@ -19,7 +19,7 @@ module Client::ClientsHelper
       confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
       { css_class: 'table-secondary',
         link: link_to(
-          image_tag('add.png', class: 'grid_table_icon'),
+          image_tag('add.png', class: 'table_icon'),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id),
           method: :post,
@@ -61,7 +61,7 @@ module Client::ClientsHelper
       end
     end
     link_to(
-      image_tag(png, class: 'grid_table_icon'),
+      image_tag(png, class: 'table_icon'),
       admin_attendance_path(attendance),
       method: :patch,
       data: { confirm: confirmation },
