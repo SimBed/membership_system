@@ -2,7 +2,7 @@
   <tbody>
     <% @instructors.each do |instructor| %>
       <tr>
-        <th scope="row"><%= instructor.name %></th>
+        <%=content_tag(:th, instructor.name, class: ("fw-light" unless instructor.current?), scope: 'row')%>
         <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_instructor_path(instructor) %></td>
         <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_instructor_path(instructor), method: :delete, data: { confirm: 'Instructor and all its workouts will be deleted. Are you sure?' } %></td-->
       </tr>

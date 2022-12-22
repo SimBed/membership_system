@@ -20,6 +20,13 @@
     <%= form.text_field :last_name %>
   </div>
 
+  <div class="field mb-3">
+    <%= form.label :current do %>
+      <%= form.check_box :current, { checked: @instructor.new_record? || form.object.current? } %>
+      Instructor is Active
+    <% end %>
+  </div>  
+
   <div class="actions">
     <%= form.submit %>
   </div>

@@ -122,7 +122,7 @@ class Admin::WkclassesController < Admin::BaseController
   def prepare_items_for_dropdowns
     # @workouts = Workout.all.map { |w| [w.name, w.id] }
     @workouts = Workout.current.order_by_name
-    @instructors = Instructor.has_rate.order_by_name
+    @instructors = Instructor.current.has_rate.order_by_name
     @capacities = (0..30).to_a + [500]
   end
 

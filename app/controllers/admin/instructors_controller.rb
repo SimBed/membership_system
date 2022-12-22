@@ -2,7 +2,7 @@ class Admin::InstructorsController < Admin::BaseController
   before_action :set_instructor, only: [:show, :edit, :update, :destroy]
 
   def index
-    @instructors = Instructor.all
+    @instructors = Instructor.order_by_current.order_by_name
   end
 
   def show; end
@@ -46,6 +46,6 @@ class Admin::InstructorsController < Admin::BaseController
   end
 
   def instructor_params
-    params.require(:instructor).permit(:first_name, :last_name)
+    params.require(:instructor).permit(:first_name, :last_name, :current)
   end
 end
