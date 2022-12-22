@@ -2,7 +2,7 @@ class Admin::WorkoutsController < Admin::BaseController
   before_action :set_workout, only: [:show, :edit, :update, :destroy]
 
   def index
-    @workouts = Workout.all
+    @workouts = Workout.order_by_current
   end
 
   def show; end
@@ -14,6 +14,7 @@ class Admin::WorkoutsController < Admin::BaseController
   def edit; end
 
   def create
+    byebug
     @workout = Workout.new(workout_params)
 
     if @workout.save
@@ -46,6 +47,6 @@ class Admin::WorkoutsController < Admin::BaseController
   end
 
   def workout_params
-    params.require(:workout).permit(:name)
+    params.require(:workout).permit(:name, :current)
   end
 end
