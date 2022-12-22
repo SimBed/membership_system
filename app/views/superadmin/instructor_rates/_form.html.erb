@@ -26,6 +26,13 @@
     <%= form.select :instructor_id, options_for_select(@instructors, @instructor), include_blank: true %>
   </div>
 
+  <div class="field mb-3">
+    <%= form.label :current do %>
+      <%= form.check_box :current, { checked: @instructor_rate.new_record? || form.object.current? } %>
+      Instructor Rate is Current
+    <% end %>
+  </div>    
+
   <div class="actions">
     <%= form.submit %>
   </div>

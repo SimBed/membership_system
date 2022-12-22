@@ -181,7 +181,7 @@ class Wkclass < ApplicationRecord
   def instructor_rate_exists
     return unless Instructor.exists?(instructor_id) && instructor.current_rate.nil?
 
-    errors.add(:base, 'Instructor does not have a rate')
+    errors.add(:base, 'Instructor does not have a current rate')
   end
 
   def unique_workout_time_instructor_combo

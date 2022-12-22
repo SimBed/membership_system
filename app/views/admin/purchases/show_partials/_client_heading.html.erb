@@ -1,8 +1,16 @@
 <h4>
-  <%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "like_button" %>
+  <% if logged_in_as?('admin', 'superadmin') %>
+    <%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "like_button" %>
+  <% else %>
+    <%=@purchase.client.name %>
+  <% end %>
 </h4>
 <h7 class="bolditalics mb-0">
-  <%= link_to @purchase.formal_name, admin_product_path(@purchase.product), class: "like_button" %>
+  <% if logged_in_as?('admin', 'superadmin') %>
+    <%= link_to @purchase.formal_name, admin_product_path(@purchase.product), class: "like_button" %>
+  <% else %>
+    <%=@purchase.formal_name %>
+  <% end %>
   <% if @frozen_now %>
     <%= image_tag('cold.png')%>
   <% end %>

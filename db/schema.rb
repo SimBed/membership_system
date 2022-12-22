@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_22_112813) do
+ActiveRecord::Schema.define(version: 2022_12_22_144226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(version: 2022_12_22_112813) do
     t.bigint "instructor_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "current", default: true
     t.index ["instructor_id"], name: "index_instructor_rates_on_instructor_id"
   end
 

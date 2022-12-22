@@ -14,6 +14,6 @@ class Instructor < ApplicationRecord
   end
 
   def current_rate
-    instructor_rates.order_recent_first.first&.rate
+    instructor_rates.current.order_recent_first.first&.rate
   end
 end

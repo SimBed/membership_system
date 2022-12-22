@@ -2,7 +2,7 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   before_action :set_instructor_rate, only: [:edit, :update, :destroy]
 
   def index
-    @instructor_rates = InstructorRate.order_by_instructor
+    @instructor_rates = InstructorRate.order_by_current.order_by_instructor
   end
 
   def new
@@ -48,6 +48,6 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   end
 
   def instructor_rate_params
-    params.require(:instructor_rate).permit(:rate, :date_from, :instructor_id)
+    params.require(:instructor_rate).permit(:rate, :date_from, :instructor_id, :current)
   end
 end

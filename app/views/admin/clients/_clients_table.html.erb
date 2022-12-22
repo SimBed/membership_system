@@ -8,7 +8,13 @@
   <tbody>
     <% @clients.each do |client| %>
       <tr>
-        <th scope="row"><%= link_to client.name, admin_client_path(client), class: "like_button" %></th>
+        <th scope="row">
+          <% if logged_in_as?('admin', 'superadmin') %>
+            <%= link_to client.name, admin_client_path(client), class: "like_button" %>
+          <% else %>
+            <%= client.name %>
+          <% end %>
+        </th>
         <td class="nomobile"><%= client.email %></td>
         <td><%= client.phone %></td>
         <!--td class="nomobile"><%= client.instagram %></td-->

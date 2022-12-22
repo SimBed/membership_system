@@ -3,7 +3,7 @@
   <tbody>
     <% @instructor_rates.each do |rate| %>
       <tr>
-        <th scope="row"><%= rate.instructor.name %></th>
+        <%=content_tag(:th, rate.instructor.name, class: ("fw-light" unless rate.current?), scope: 'row')%>
         <td><%= number_with_delimiter(rate.rate) %></td>
         <td><%= rate.date_from.strftime('%d %b %y') %></td>
         <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_instructor_rate_path(rate) %></td>
