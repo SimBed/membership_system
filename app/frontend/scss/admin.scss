@@ -24,14 +24,22 @@ div i.fa-sort-alpha-down{
   color: $gray-darker;
 }
 
-select.sort {
+%select {
   color: $gray-darker;
   border: solid;
   border-color: $bg-light;
   border-width: 1px;
   background-color: $bg-light;
+}
+
+select.sort {
+  @extend %select;
   padding: 0.5rem 0.5rem;  
-  min-height: calc(1.5em + 0.5rem + 2px);  
+  min-height: calc(1.5em + 0.5rem + 2px);    
+}
+
+select.attendance {
+  @extend %select;
 }
 
 .form-control-sm {
@@ -49,6 +57,7 @@ form fieldset {
   label {
     margin-right: 0.5rem;
     margin-bottom: 0.4rem;
+    line-height: 0.7rem;
   }
 }
 
@@ -64,7 +73,8 @@ legend {
 }
 
 label {
-  display: block; }
+  display: block;
+  line-height: 1.1rem; }
 
 /*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
 input[type="checkbox"] {
