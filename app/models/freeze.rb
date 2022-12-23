@@ -11,6 +11,11 @@ class Freeze < ApplicationRecord
     (start_date..end_date).count
   end
 
+  # use for manually automating bulk freezes over holidays
+  def applies_during(period)
+    (start_date..end_date).overlaps?(period)
+  end
+
   private
 
   def duration_length

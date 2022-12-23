@@ -182,6 +182,11 @@ class Purchase < ApplicationRecord
     freezes.select { |f| adate.between?(f.start_date, f.end_date.end_of_day) }
   end
 
+  # use for manually automating bulk freezes over holidays
+  def freezes_cover?(period)
+    freezes.map { |f| f.applies_during(period) }.any?
+  end
+
   def expired?
     status == 'expired'
   end
