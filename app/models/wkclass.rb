@@ -115,6 +115,12 @@ class Wkclass < ApplicationRecord
     "#{workout.name}, #{date}, #{time}"
   end
 
+  def table_name
+    return name unless workout.instructor_initials?
+
+    "#{name} (#{instructor.initials})"
+  end
+  
   def revenue
     attendances.map(&:revenue).inject(0, :+)
   end

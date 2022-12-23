@@ -16,4 +16,8 @@ class Instructor < ApplicationRecord
   def current_rate
     instructor_rates.current.order_recent_first.first&.rate
   end
+
+  def initials
+    name.split().map(&:first).join
+  end
 end

@@ -9,7 +9,7 @@
     <% @wkclasses.each do |wkclass| %>
     <% physical_attendances = wkclass.physical_attendances.size %>
       <tr>
-        <th scope="row"><%= link_to wkclass.name, admin_wkclass_path(wkclass), class: "like_button" %></th>
+        <th scope="row"><%= link_to wkclass.table_name, admin_wkclass_path(wkclass), class: "like_button" %></th>
         <td><%= wkclass.date %></td>
         <td><%= wkclass.time %></td>
         <td><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></td>

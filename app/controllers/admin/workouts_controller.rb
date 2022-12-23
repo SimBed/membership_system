@@ -14,7 +14,6 @@ class Admin::WorkoutsController < Admin::BaseController
   def edit; end
 
   def create
-    byebug
     @workout = Workout.new(workout_params)
 
     if @workout.save
@@ -47,6 +46,6 @@ class Admin::WorkoutsController < Admin::BaseController
   end
 
   def workout_params
-    params.require(:workout).permit(:name, :current)
+    params.require(:workout).permit(:name, :current, :instructor_initials)
   end
 end

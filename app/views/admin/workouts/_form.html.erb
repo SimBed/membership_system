@@ -22,6 +22,13 @@
     <% end %>
   </div>
 
+  <div class="field mb-3">
+    <%= form.label :instructor_initials do %>
+      <%= form.check_box :instructor_initials, { checked: !@workout.new_record? && form.object.instructor_initials? } %>
+      Include Instructor Inititals in Workout Name in Classes Table
+    <% end %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
