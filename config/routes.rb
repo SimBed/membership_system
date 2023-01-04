@@ -17,7 +17,8 @@ Rails.application.routes.draw do
   get    'client/clients/:id/book',   to: 'client/clients#book', as: 'client_book'
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
   get '/footfall', to: 'admin/attendances#footfall'
-  get "timetable", to: 'admin/timetables#show_public'
+  get '/timetable', to: 'admin/timetables#show_public'
+  get '/client/timetable', to: 'client/clients#timetable', as: 'client_timetable'
 
   namespace :admin do
     resources :entries, only: [:new, :edit, :create, :update, :destroy]

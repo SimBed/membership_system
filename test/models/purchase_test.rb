@@ -185,15 +185,15 @@ class PurchaseTest < ActiveSupport::TestCase
     # testing on eg Date.parse('10 Jan 2022') is not good enough as the limit of the day is 24 hours later
     refute @purchase_with_freeze.freezed? '9 Jan 2022 10:30'.to_datetime
     assert @purchase_with_freeze.freezed? '10 Jan 2022 10:30'.to_datetime
-    assert @purchase_with_freeze.freezed? '28 March 10:30'.to_datetime
-    refute @purchase_with_freeze.freezed? '29 March 10:30'.to_datetime
+    assert @purchase_with_freeze.freezed? '28 March 2022 10:30'.to_datetime
+    refute @purchase_with_freeze.freezed? '29 March 2022 10:30'.to_datetime
   end
 
   test 'freezes_cover method' do
     assert_empty @purchase_with_freeze.freezes_cover('9 Jan 2022 10:30'.to_datetime).pluck(:id)
     assert_equal [48], @purchase_with_freeze.freezes_cover('10 Jan 2022 10:30'.to_datetime).pluck(:id)
-    assert_equal [48], @purchase_with_freeze.freezes_cover('28 March 10:30'.to_datetime).pluck(:id)
-    assert_empty @purchase_with_freeze.freezes_cover('29 March 10:30'.to_datetime).pluck(:id)
+    assert_equal [48], @purchase_with_freeze.freezes_cover('28 March 2022 10:30'.to_datetime).pluck(:id)
+    assert_empty @purchase_with_freeze.freezes_cover('29 March 2022 10:30'.to_datetime).pluck(:id)
   end
 
   test 'expired_in? method' do

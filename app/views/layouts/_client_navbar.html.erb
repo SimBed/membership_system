@@ -19,19 +19,16 @@
           <ul class="navbar-nav">
           <% client = current_account.clients.first %>
             <li class="nav-item">
-              <%= link_to client_history_path(client), class: "nav-link" do %>
-                <i class="fa fa-dumbbell"></i>
-              <% end %>
+              <%= link_to "History", client_history_path(client), class: "nav-link"%>
             </li>
             <li class="nav-item">
-              <%= link_to client_book_path(client), class: "nav-link" do %>
-                <i class="fa fa-calendar"></i>
-              <% end %>
+              <%= link_to "Book", client_book_path(client), class: "nav-link"%>
             </li>
             <li class="nav-item">
-              <%= link_to client_client_path(client), class: "nav-link" do %>
-                <i class="fa fa-user"></i>
-              <% end %>
+              <%= link_to "Timetable", client_timetable_path, class: "nav-link"%>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Profile", client_client_path(client), class: "nav-link"%>
             </li>
           </ul>
 

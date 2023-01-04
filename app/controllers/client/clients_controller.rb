@@ -1,6 +1,6 @@
 class Client::ClientsController < ApplicationController
   layout 'client'
-  before_action :correct_account
+  before_action :correct_account, except: [:timetable]
 
   def show
     prepare_data_for_view
@@ -16,6 +16,16 @@ class Client::ClientsController < ApplicationController
     @renewal = @client.renewal
     @quotation = Setting.quotation
   end
+
+  def timetable
+    # update to base on Setting
+    @timetable = Timetable.first 
+    @days = @timetable.table_days.order_by_day
+    @morning_times = @timetable.table_times.during('morning').order_by_time
+    @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
+    @evening_times = @timetable.table_times.during('evening').order_by_time
+    render "public_pages/timetable", layout: "timetable"
+  end  
 
   def history
     clear_session(:purchaseid)
