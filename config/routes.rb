@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'public_pages#welcome'
   # temp home page while building
   get '/welcome_home', to: 'public_pages#welcome_home'
+  get '/space_home', to: 'public_pages#space_home'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
   # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')

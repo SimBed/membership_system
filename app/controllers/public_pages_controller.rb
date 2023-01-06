@@ -14,4 +14,7 @@ class PublicPagesController < ApplicationController
 
   def welcome_home
   end
+  
+  def space_home
+  end
 end

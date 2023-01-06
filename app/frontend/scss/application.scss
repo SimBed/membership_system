@@ -1,3 +1,4 @@
+
 // Import Bootstrap v5
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Quicksand");
@@ -7,10 +8,11 @@
 @import "variables";
 @import "utilities";
 
+
 @import "bootstrap/scss/bootstrap";
+
 @import 'components/_index';
 
-// @import "~tiny-slider/src/tiny-slider";
 // @import "~plyr/dist/plyr";
 // @import "~prismjs/themes/prism";
 // @import "~bootstrap-icons/font/bootstrap-icons";
