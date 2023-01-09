@@ -282,11 +282,15 @@
 
     &.tns-nav-active::before,
     &.tns-nav-active:hover::before {
-      background: $black;
+      // DPS
+      // background: $black;
+      background: grey;
     }
 
     &:hover::before {
-      background: rgba($black, 0.4);
+      // DPS
+      // background: rgba($black, 0.4);
+      background: grey;
     }
   }
 }
@@ -295,6 +299,8 @@
 #tns1 {display:flex;}
 #tns2 {display:flex;}
 .tns-visually-hidden { display: none; }
+// .tns-nav button {background-color: white;}
+.tns-nav button::before {background-color: white;}
 
 
 
