@@ -43,6 +43,6 @@ class Admin::EntriesController < Admin::BaseController
     end
 
     def entry_params
-      params.require(:entry).permit(:workout, :subheading1, :subheading2, :studio, :visibility_switch, :table_time_id, :table_day_id)
+      params.require(:entry).permit(:workout, :goal, :level, :studio, :duration, :visibility_switch, :table_time_id, :table_day_id)
     end
 end

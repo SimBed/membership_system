@@ -192,58 +192,58 @@
   }
 }
 
-// controls
-.tns-controls {
-  @include nofocus;
-  display: flex;
-  justify-content: space-between;
+// // controls
+// .tns-controls {
+//   @include nofocus;
+//   display: flex;
+//   justify-content: space-between;
 
-  button {
-    transition: all 0.2s;
-    border: 0;
-    display: flex;
-    width: rem(56);
-    height: rem(56);
-    padding: 0;
-    text-align: center;
-    font-size: rem(20);
-    color: $black;
-    border-radius: 50%;
-    background: rgba($black, 0.4);
-    opacity: 0;
+//   button {
+//     transition: all 0.2s;
+//     border: 0;
+//     display: flex;
+//     width: rem(56);
+//     height: rem(56);
+//     padding: 0;
+//     text-align: center;
+//     font-size: rem(20);
+//     color: $black;
+//     border-radius: 50%;
+//     background: rgba($black, 0.4);
+//     opacity: 0;
 
-    position: absolute;
-    top: 50%;
-    z-index: 4;
-    margin-top: rem(-24);
+//     position: absolute;
+//     top: 50%;
+//     z-index: 4;
+//     margin-top: rem(-24);
 
-    .bi {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 1em;
-      height: 1em;
-      margin: -0.5em 0 0 -0.5em;
-      color: $white;
-    }
+//     .bi {
+//       position: absolute;
+//       top: 50%;
+//       left: 50%;
+//       width: 1em;
+//       height: 1em;
+//       margin: -0.5em 0 0 -0.5em;
+//       color: $white;
+//     }
 
-    &:hover {
-      background: $black;
-    }
+//     &:hover {
+//       background: $black;
+//     }
 
-    &[disabled] {
-      opacity: 0.2;
-    }
+//     &[disabled] {
+//       opacity: 0.2;
+//     }
 
-    &[data-controls="prev"] {
-      left: rem(24);
-    }
+//     &[data-controls="prev"] {
+//       left: rem(24);
+//     }
 
-    &[data-controls="next"] {
-      right: rem(24);
-    }
-  }
-}
+//     &[data-controls="next"] {
+//       right: rem(24);
+//     }
+//   }
+// }
 
 // nav
 .tns-nav {
@@ -293,4 +293,32 @@
 
 // DPS
 #tns1 {display:flex;}
+#tns2 {display:flex;}
 .tns-visually-hidden { display: none; }
+
+
+
+.carousel div.tt-date-title {
+  font-size: 1.25rem;
+  color: white;
+}
+.carousel div.tt-date {
+  font-size: 0.8rem;
+  border-bottom: thin solid grey;
+  color: grey;
+}
+.carousel div.tt-class-title {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+}
+.carousel div.tt-time {
+  font-size: 0.8rem;
+  color: grey;
+  padding-bottom: 0.25rem;
+}
+.carousel div.tt-studio {
+  font-size: 1.0rem;
+  color: grey;
+}

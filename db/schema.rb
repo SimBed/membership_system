@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_23_095919) do
+ActiveRecord::Schema.define(version: 2023_01_09_082538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,14 +87,15 @@ ActiveRecord::Schema.define(version: 2022_12_23_095919) do
 
   create_table "entries", force: :cascade do |t|
     t.string "workout"
-    t.string "subheading1"
-    t.string "subheading2"
+    t.string "goal"
+    t.string "level"
     t.string "studio"
     t.boolean "visibility_switch", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "table_time_id"
     t.bigint "table_day_id"
+    t.integer "duration", default: 60
     t.index ["table_day_id"], name: "index_entries_on_table_day_id"
     t.index ["table_time_id"], name: "index_entries_on_table_time_id"
     t.index ["workout"], name: "index_entries_on_workout"

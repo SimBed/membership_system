@@ -20,18 +20,23 @@
   </div>
 
   <div class="field">
-    <%= form.label :subheading1 %>
-    <%= form.text_field :subheading1 %>
+    <%= form.label :goal %>
+    <%= form.text_field :goal %>
   </div>
 
   <div class="field">
-    <%= form.label :subheading2 %>
-    <%= form.text_field :subheading2 %>
+    <%= form.label :level %>
+    <%= form.text_field :level %>
   </div>
 
   <div class="field">
     <%= form.label :studio %>
     <%= form.text_field :studio %>
+  </div>
+
+  <div class="field">
+    <%= form.label :duration, 'Duration (mins)' %>
+    <%= form.number_field :duration, value: form.object.duration, step: 5 %>
   </div>
 
   <div class="field">

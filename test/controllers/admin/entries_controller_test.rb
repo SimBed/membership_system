@@ -20,8 +20,8 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
       post admin_entries_url, params: {
                                 entry: {
                                   studio: @entry.studio,
-                                  subheading1: @entry.subheading1,
-                                  subheading2: @entry.subheading2,
+                                  goal: @entry.goal,
+                                  level: @entry.level,
                                   workout: @entry.workout,
                                   table_day_id: @table_day.id,
                                   table_time_id: @table_time.id } }
@@ -38,7 +38,7 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should update entry" do
     log_in_as(@admin)
-    patch admin_entry_url(@entry), params: { entry: { studio: @entry.studio, subheading1: @entry.subheading1, subheading2: @entry.subheading2, workout: @entry.workout } }
+    patch admin_entry_url(@entry), params: { entry: { studio: @entry.studio, goal: @entry.goal, level: @entry.level, workout: @entry.workout } }
     assert_redirected_to admin_timetable_url(@entry.table_day.timetable)
   end
 
