@@ -13,6 +13,10 @@ class Account < ApplicationRecord
   validates :ac_type, presence: true
   has_secure_password
 
+  def without_purchase?
+    clients.first.purchases.empty?
+  end
+
   def clean_up
     clients.first.update(account_id: nil)
     destroy

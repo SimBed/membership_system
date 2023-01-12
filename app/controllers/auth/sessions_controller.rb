@@ -43,7 +43,10 @@ class Auth::SessionsController < Auth::BaseController
   end
 
   def deal_with_client
-    redirect_to client_book_path(@account.clients.first) if logged_in_as?('client')
+    client = @account.clients.first
+    (redirect_to client_buy_path(client) if logged_in_as?('client') && @account.without_purchase?) and return
+
+    redirect_to client_book_path(client) if logged_in_as?('client')
   end
 
   def deal_with_partner

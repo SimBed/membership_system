@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   # temp home page while building
   get '/welcome_home', to: 'public_pages#welcome_home'
   get '/space_home', to: 'public_pages#space_home'
+  get '/signup',  to: 'public_pages#signup'
+  post '/signup',  to: 'public_pages#create_account'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
   # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
@@ -17,9 +19,11 @@ Rails.application.routes.draw do
   delete '/logout',  to: 'auth/sessions#destroy'
   get    'client/clients/:id/book',   to: 'client/clients#book', as: 'client_book'
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
+  get    'client/clients/:id/buy',   to: 'client/clients#buy', as: 'client_buy'
+  get '/client/timetable', to: 'client/clients#timetable', as: 'client_timetable' 
   get '/footfall', to: 'admin/attendances#footfall'
   get '/timetable', to: 'admin/timetables#show_public'
-  get '/client/timetable', to: 'client/clients#timetable', as: 'client_timetable'
+
 
   namespace :admin do
     resources :entries, only: [:new, :edit, :create, :update, :destroy]

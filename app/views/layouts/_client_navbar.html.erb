@@ -18,12 +18,19 @@
         <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
           <ul class="navbar-nav">
           <% client = current_account.clients.first %>
+            <% if current_account.without_purchase? %>        
+              <li class="nav-item">
+                <%= link_to "Buy", client_buy_path(client), class: "nav-link"%>
+              </li>
+            <% end %>
             <li class="nav-item">
               <%= link_to "History", client_history_path(client), class: "nav-link"%>
             </li>
-            <li class="nav-item">
-              <%= link_to "Book", client_book_path(client), class: "nav-link"%>
-            </li>
+            <% unless current_account.without_purchase? %>
+              <li class="nav-item">
+                <%= link_to "Book", client_book_path(client), class: "nav-link"%>
+              </li>
+            <% end %>
             <li class="nav-item">
               <%= link_to "Timetable", client_timetable_path, class: "nav-link"%>
             </li>

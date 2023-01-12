@@ -6,6 +6,10 @@ class Client::ClientsController < ApplicationController
     prepare_data_for_view
   end
 
+  def buy
+    
+  end
+
   def book
     @wkclasses_visible = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
     @wkclasses_window_closed = @wkclasses_visible.select { |w| w.booking_window.end < Time.zone.now }

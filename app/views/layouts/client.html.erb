@@ -16,6 +16,8 @@
   </head>
 
   <body>
+ 
+    <%= javascript_pack_tag 'aos', 'data-turbolinks-track': 'reload' %>
     <%#= javascript_pack_tag 'aos', 'data-turbolinks-track': 'reload' %>
     <%= render 'layouts/home_navbar' unless logged_in? %>
     <%= render 'layouts/admin_navbar' if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
@@ -30,7 +32,11 @@
             <div id="flash_messages">
               <%= render_flash %>
             </div>
+        </section>
+            <!-- when in head failed after going to history page and then back to buy page-->
+            <%= javascript_pack_tag 'isotope', 'data-turbolinks-track': 'reload', defer:true %>          
             <%= yield %>
+        <section>            
             <%= debug(params) if Rails.env.development? %>
             <%= debug(current_account&.ac_type) if Rails.env.development? %>
         </section>
