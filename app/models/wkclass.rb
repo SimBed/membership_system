@@ -49,11 +49,14 @@ class Wkclass < ApplicationRecord
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
+  # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
+  # need a client_bookable attribute in workout_group
   def self.show_in_bookings_for(client)
     # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate
     Wkclass.in_booking_visibility_window
            .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
            .where('clients.id': client.id)
+           .where('workout_group.id': 1)
            .merge(Purchase.not_fully_expired)
            .distinct
   end

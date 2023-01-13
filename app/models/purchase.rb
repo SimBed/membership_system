@@ -136,6 +136,12 @@ class Purchase < ApplicationRecord
     attendances.committed.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
   end
 
+  def restricted_on?(wkclass)
+    return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
+
+    attendances.committed.includes(:wkclass).reject { |a| a.wkclass == wkclass }.map { |a| a.start_time.to_date }.include?(wkclass.start_time.to_date)
+  end
+
   def already_used_for?(wkclass)
     return true if wkclass.purchases.include? self
 

@@ -376,9 +376,11 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def already_committed
-
     set_wkclass_and_booking_type
-    return unless @wkclass.committed_on_same_day?(@client)
+    # return unless @wkclass.committed_on_same_day?(@client)
+    # the old method (above) incorrectly restricted 2 bookings on same day from separate
+    # unlimitied packages eg group package and nutrition package 
+    return unless @purchase.restricted_on?(@wkclass)
 
     flash_hash = booking_flash_hash.dig(@booking_type, :daily_limit_met)
     flash_message flash_hash[:colour], (send flash_hash[:message])
@@ -395,10 +397,12 @@ class Admin::AttendancesController < Admin::BaseController
       @booking_type = :booking
       @rebooking = false
       @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
+      @purchase = Purchase.find(params.dig(:attendance, :purchase_id).to_i)      
     else
       @booking_type = :update
       @rebooking = true
       @wkclass = @attendance.wkclass
+      @purchase = @attendance.purchase
     end
   end
 

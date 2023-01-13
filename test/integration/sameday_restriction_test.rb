@@ -4,26 +4,28 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   def setup
     @account_client = accounts(:client_for_unlimited)
     @client = @account_client.clients.first
-    @purchase = @client.purchases.last
+    # @purchase = @client.purchases.last
+    @purchase = purchases(:test_ekta_unlimited)
+    @purchase2 = purchases(:ekta_nutrition)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     @tomorrows_class_late = wkclasses(:wkclass_for_booking_late)
     @admin = accounts(:admin)
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
   end
 
-  test 'cant book 2 classes on same day' do
+  test 'cant book 2 classes (with one unlimited package) on same day' do
     log_in_as(@account_client)
     # book a class
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
 
-    # client attempts to book 2nd class same day
+    # client attempts to book 2nd class on same day (with one unlimited package)
     assert_difference '@client.attendances.size', 0 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
 
-    # admin attempts to book 2nd class same day
+    # admin attempts to book 2nd class on same day (with one unlimited package)
     log_in_as(@admin)
     assert_difference '@client.attendances.size', 0 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
@@ -40,6 +42,12 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
+
+    # client attempts to book 2nd class on same day (with a different unlimited package)
+    assert_difference '@client.attendances.size', 1 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
+                                                           purchase_id: @purchase2.id } }
+    end    
   end
 
   test 'client can book 2nd class on same day after cancelling first class late (with amnesty)' do

@@ -8,10 +8,12 @@ module Client::ClientsHelper
     end
   end
 
+  # updated - if already booked for eg nutrition on a separate package would not be able to book a group class on same day
   def handle_new_booking(wkclass, client)
     purchase = Purchase.use_for_booking(wkclass, client)
     if purchase.nil? ||
-       wkclass.committed_on_same_day?(client) ||
+      # wkclass.committed_on_same_day?(client) ||      
+       purchase.restricted_on?(wkclass) ||
        !wkclass.booking_window.cover?(Time.zone.now)
       { css_class: 'table-secondary', link: '' }
     else
@@ -36,7 +38,8 @@ module Client::ClientsHelper
       { css_class: 'table-success',
         link: link_to_update(attendance, amendment: 'cancel') }
     when 'cancelled early'
-      if wkclass.committed_on_same_day?(client)
+        # if wkclass.committed_on_same_day?(client)
+        if attendance.purchase.restricted_on?(wkclass)
         { css_class: 'table-secondary', link: '' }
       else
         { css_class: 'table-secondary',
