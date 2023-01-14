@@ -41,103 +41,10 @@
       </div>
     </section>
  
-
- 
-
-    <!-- categories -->
-    <section class="">
-      <div class="container">
-
-        <div class="row g-3 g-xl-4" data-masonry>
-          <div class="col-md-6" data-aos="fade-up">
-            <a href="" class="card equal-md-1-1 card-hover-gradient">
-              <div class="card-wrap">
-                <div class="card-footer my-auto">
-                  <div class="text-center text-shadow">
-                    <h3 class="mb-0 fw-bold text-white">Group</h3>
-                  </div>
-                </div>
-              </div>
-              <figure class="background" style="background-image: url(<%= asset_path 'home/stock1.jpg' %>"></figure>
-            </a>
-          </div>
-          <div class="col-md-6" data-aos="fade-up">
-            <a href="" class="card equal-md-16-9 card-hover-gradient">
-              <div class="card-wrap">
-                <div class="card-footer my-auto">
-                  <div class="text-center text-shadow">
-                    <h3 class="mb-0 fw-bold text-white">Private</h3>
-                  </div>
-                </div>
-              </div>
-              <figure class="background" style="background-image: url(<%= asset_path 'home/stock1.jpg' %>"></figure>
-            </a>
-          </div>
-          <div class="col-md-6" data-aos="fade-up">
-            <a href="" class="card equal-md-1-1 card-hover-gradient">
-              <div class="card-wrap">
-                <div class="card-footer my-auto">
-                  <div class="text-center text-shadow">
-                    <h3 class="mb-0 fw-bold text-white">Nutrition</h3>
-                  </div>
-                </div>
-              </div>
-              <figure class="background" style="background-image: url(<%= asset_path 'home/stock1.jpg' %>"></figure>
-            </a>
-          </div>
-          <div class="col-md-6" data-aos="fade-up">
-            <a href="" class="card equal-md-16-9 card-hover-gradient">
-              <div class="card-wrap">
-                <div class="card-footer my-auto">
-                  <div class="text-center text-shadow">
-                    <h3 class="mb-0 fw-bold text-white">Online</h3>
-                  </div>
-                </div>
-              </div>
-              <figure class="background" style="background-image: url(<%= asset_path 'home/stock1.jpg' %>"></figure>
-            </a>
-          </div>
-        </div>
-      </div>
+    <%= render 'categories' %>
+    <section class="overflow-hidden pt-3 pt-xl-4 bg-dark text-white text-center mt-4">    
+        <%= render 'timetable_slider' %>
     </section>
-
-    <!-- timetable carousel -->
-    <section class="overflow-hidden pt-3 pt-xl-4 bg-dark text-white text-center mt-4">
-      <div class="container">
-        <div class="carousel carousel-visible">
-          <div
-            data-carousel='{"controls":true, "nav": true,"mouseDrag": true, "gutter": 32, "loop": false, "responsive": {"0": {"items": 1}, "768": {"items": 2}, "1200": {"items": 3}, "1800": {"items": 4}}}'>
-            <% @days.each do |day| %>
-            <div class="d-flex flex-column mb-3">
-              <div class="d-flex flex-column mb-3">
-                <div class="tt-date-title pt-2 pb-1"><%= day.name %></div>
-                <div class="tt-date pb-2"><%= Date.yesterday.next_occurring(day.name.downcase.to_sym).strftime("%b %e") %></div>
-              </div>
-              <% @entries = Entry.where(table_day_id: day.id) %>
-              <% @entries.order_by_start.each do |entry| %>
-                <div class="d-flex flex-column mb-3 border-bottom border-grey border-1">
-                  <div class="tt-class-title pb-1"><%= entry&.workout %></div>
-
-                  <% time = entry.table_time&.start %>
-                  <% time_end = time&.advance(minutes: entry&.duration) %>
-                  <div class="tt-time"><%= "#{time.strftime("%l.%M")} - #{time_end.strftime("%l.%M")}" %></div>
-
-                  <% goal = entry&.goal.blank? ? '-' : entry&.goal %>                 
-                  <div class="tt-studio pb-3"><%= goal %></div>
-
-                  <% level = entry&.level.blank? ? '-' : entry&.level %>                 
-                  <div class="tt-studio pb-3"><%= level %></div>
-                  <div class="tt-studio pb-3"><%= entry&.studio %></div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
       <!-- product carousel -->
      <!--section class="overflow-hidden pt-3 pt-xl-4">
       <div class="container">
