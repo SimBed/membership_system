@@ -20,7 +20,7 @@
       <ul class="navbar-nav">
       <% if request.fullpath.include? ("welcome") %>
         <li class="nav-item">
-          <%= link_to "Timetable", "/timetable", class: "nav-link" %>
+          <%= link_to "Timetable", "/timetable", class: "nav-link", 'data-turbolinks': false %>
         </li>
       <% end %>
         <li class="nav-item">
