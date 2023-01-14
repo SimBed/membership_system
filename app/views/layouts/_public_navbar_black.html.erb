@@ -1,5 +1,5 @@
 <%= javascript_pack_tag 'headroom', 'data-turbolinks-track': 'reload' %>
-<nav id="mainNav" class="headroom navbar navbar-expand-lg navbar-sticky navbar-dark navbar-dark bg-black inverted">
+<nav id="mainNav" class="headroom navbar navbar-expand-lg navbar-sticky navbar-dark bg-black inverted">
 
   <div class="container">
     <%#= link_to "https://www.thespacejuhu.in/", target: "_blank", class: "navbar-brand" do %>
@@ -20,7 +20,7 @@
       <ul class="navbar-nav">
       <% if request.fullpath.include? ("welcome") %>
         <li class="nav-item">
-          <%= link_to "Timetable", "/timetable", class: "nav-link" %>
+          <%= link_to "Timetable", "/timetable", class: "nav-link", 'data-turbolinks': false %>
         </li>
       <% end %>
         <li class="nav-item">

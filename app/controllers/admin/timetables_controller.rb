@@ -17,12 +17,17 @@ class Admin::TimetablesController < Admin::BaseController
 
   def show_public
     # update
+    # @timetable = Timetable.first 
+    # @days = @timetable.table_days.order_by_day
+    # @morning_times = @timetable.table_times.during('morning').order_by_time
+    # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
+    # @evening_times = @timetable.table_times.during('evening').order_by_time
+    # render "public_pages/timetable", layout: "timetable"
+
+    # update with timetable from settings
     @timetable = Timetable.first 
     @days = @timetable.table_days.order_by_day
-    @morning_times = @timetable.table_times.during('morning').order_by_time
-    @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
-    @evening_times = @timetable.table_times.during('evening').order_by_time
-    render "public_pages/timetable", layout: "timetable"
+    render "public_pages/timetable", layout: "public"
   end
 
   def new
