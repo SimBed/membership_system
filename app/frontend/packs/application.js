@@ -8,7 +8,7 @@ import "../scss/application.scss";
 import "bootstrap-icons/font/bootstrap-icons.css"
 
 import Rails from "@rails/ujs"; global.Rails = Rails;
-import Turbolinks from "turbolinks"
+// import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import '../js/bootstrap_js_files.js'
