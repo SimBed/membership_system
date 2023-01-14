@@ -16,7 +16,7 @@ gem 'rails-controller-testing'
 gem "rails-settings-cached", "~> 2.8"
 gem 'razorpay'
 gem 'sass-rails', '>= 6'
-# gem 'turbolinks', '~> 5'
+gem 'turbolinks', '~> 5'
 gem 'twilio-ruby'
 gem 'webpacker', '~> 5.0'
 # Reduces boot times through caching; required in config/boot.rb
