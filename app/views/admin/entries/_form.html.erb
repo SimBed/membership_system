@@ -15,8 +15,9 @@
   <div><%= form.hidden_field :table_day_id, value: params[:table_day_id] || entry.table_day_id %></div>
 
   <div class="field">
-    <%= form.label :workout %>
-    <%= form.text_field :workout %>
+    <%= form.label :workout_id %>
+    <%#= form.text_field :workout %>
+    <%= form.collection_select :workout_id, @workouts, :id, :name, { selected: (@entry.workout&.id || @workouts.first) } %>      
   </div>
 
   <div class="field">
@@ -37,11 +38,6 @@
   <div class="field">
     <%= form.label :duration, 'Duration (mins)' %>
     <%= form.number_field :duration, value: form.object.duration, step: 5 %>
-  </div>
-
-  <div class="field">
-    <%= form.label :visibility_switch, 'switch visibility' %>
-    <%= form.check_box :visibility_switch,  { checked: form.object.visibility_switch } %>
   </div>
 
   <div class="actions">

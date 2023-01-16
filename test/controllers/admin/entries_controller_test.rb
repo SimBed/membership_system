@@ -6,6 +6,7 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
     @table_day = table_days(:one)
     @table_time = table_times(:one)
     @admin = accounts(:admin)
+    @workout = workouts(:hiit)
   end
 
   test "should get new" do
@@ -22,7 +23,7 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
                                   studio: @entry.studio,
                                   goal: @entry.goal,
                                   level: @entry.level,
-                                  workout: @entry.workout,
+                                  workout_id: @workout.id,
                                   table_day_id: @table_day.id,
                                   table_time_id: @table_time.id } }
     end
@@ -38,7 +39,7 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should update entry" do
     log_in_as(@admin)
-    patch admin_entry_url(@entry), params: { entry: { studio: @entry.studio, goal: @entry.goal, level: @entry.level, workout: @entry.workout } }
+    patch admin_entry_url(@entry), params: { entry: { studio: @entry.studio, goal: @entry.goal, level: @entry.level, workout_id: 4 } }
     assert_redirected_to admin_timetable_url(@entry.table_day.timetable)
   end
 

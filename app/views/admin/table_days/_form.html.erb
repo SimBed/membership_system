@@ -15,7 +15,8 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%#= form.text_field :name %>
+    <%= form.select :name, Date::DAYNAMES %>
   </div>
 
   <div class="field">

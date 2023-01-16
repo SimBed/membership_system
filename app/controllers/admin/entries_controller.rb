@@ -7,9 +7,11 @@ class Admin::EntriesController < Admin::BaseController
 
   def new
     @entry = Entry.new
+    @workouts = Workout.current.order_by_name
   end
 
   def edit
+    @workouts = Workout.current.order_by_name
   end
 
   def create
@@ -43,6 +45,6 @@ class Admin::EntriesController < Admin::BaseController
     end
 
     def entry_params
-      params.require(:entry).permit(:workout, :goal, :level, :studio, :duration, :visibility_switch, :table_time_id, :table_day_id)
+      params.require(:entry).permit(:goal, :level, :studio, :duration, :workout_id, :table_time_id, :table_day_id)
     end
 end

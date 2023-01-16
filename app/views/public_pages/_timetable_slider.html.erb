@@ -11,7 +11,7 @@
         <% @entries = Entry.where(table_day_id: day.id) %>
         <% @entries.order_by_start.each do |entry| %>
           <div class="d-flex flex-column mb-3 border-bottom border-grey border-1">
-            <div class="tt-class-title pb-1"><%= entry&.workout %></div>
+            <div class="tt-class-title pb-1"><%= entry&.workout.name %></div>
 
             <% time = entry.table_time&.start %>
             <% time_end = time&.advance(minutes: entry&.duration) %>
