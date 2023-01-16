@@ -27,7 +27,8 @@
 
   <div class="field">
     <%= form.label :level %>
-    <%= form.text_field :level %>
+    <%= form.select :level, options_for_select(@levels, @entry.level) %>
+    
   </div>
 
   <div class="field">

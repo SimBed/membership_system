@@ -5,7 +5,7 @@
       <% @days.each do |day| %>
       <div class="d-flex flex-column mb-3">
         <div class="d-flex flex-column mb-3">
-          <div class="tt-date-title pt-2 pb-1"><%= day.name %></div>
+          <div class="tt-date-title pt-2 pb-1"><%= day.name.upcase %></div>
           <div class="tt-date pb-2"><%= Date.yesterday.next_occurring(day.name.downcase.to_sym).strftime("%b %e") %></div>
         </div>
         <% @entries = Entry.where(table_day_id: day.id) %>
@@ -18,10 +18,10 @@
             <div class="tt-time"><%= "#{time.strftime("%l.%M")} - #{time_end.strftime("%l.%M")}" %></div>
 
             <% goal = entry&.goal.blank? ? '-' : entry&.goal %>                 
-            <div class="tt-studio pb-3"><%= goal %></div>
+            <div class="tt-goal pb-3"><%= goal %></div>
 
             <% level = entry&.level.blank? ? '-' : entry&.level %>                 
-            <div class="tt-studio pb-3"><%= level %></div>
+            <div class="tt-level"><%= level %></div>
             <div class="tt-studio pb-3"><%= entry&.studio %></div>
           </div>
         <% end %>

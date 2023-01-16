@@ -30,6 +30,11 @@
     <%= form.select :max_capacity, options_for_select(@capacities, @wkclass.max_capacity || 12) %>
   </div>
 
+  <div class="field">
+    <%= form.label :level, 'Level' %>
+    <%= form.select :level, options_for_select(@levels, @wkclass.level) %>
+  </div>
+
   <div class="actions">
     <%= form.submit wkclass.new_record? ? 'create class' : 'update class' %>
   </div>

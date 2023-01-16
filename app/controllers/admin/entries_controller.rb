@@ -7,11 +7,11 @@ class Admin::EntriesController < Admin::BaseController
 
   def new
     @entry = Entry.new
-    @workouts = Workout.current.order_by_name
+    prepare_items_for_dropdowns 
   end
 
   def edit
-    @workouts = Workout.current.order_by_name
+    prepare_items_for_dropdowns 
   end
 
   def create
@@ -47,4 +47,9 @@ class Admin::EntriesController < Admin::BaseController
     def entry_params
       params.require(:entry).permit(:goal, :level, :studio, :duration, :workout_id, :table_time_id, :table_day_id)
     end
+
+    def prepare_items_for_dropdowns
+      @workouts = Workout.current.order_by_name
+      @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']    
+    end    
 end

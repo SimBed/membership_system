@@ -107,7 +107,7 @@ class Admin::WkclassesController < Admin::BaseController
     # cost is nil in client_booking_interface_test when admin just updates wkclass time, hence the nil protecting '&'
     cost = nil if cost&.zero?
     params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id,
-                                    :max_capacity).merge({ instructor_cost: cost })
+                                    :max_capacity, :level).merge({ instructor_cost: cost })
   end
 
   def params_filter_list
@@ -124,6 +124,7 @@ class Admin::WkclassesController < Admin::BaseController
     @workouts = Workout.current.order_by_name
     @instructors = Instructor.current.has_rate.order_by_name
     @capacities = (0..30).to_a + [500]
+    @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
   end
 
   def handle_filter
