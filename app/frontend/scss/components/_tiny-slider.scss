@@ -334,6 +334,11 @@
   font-size: 1.0rem;
   color: grey;
 }
+@media (min-width: 900px) {
+  .carousel div.tt-goal {
+    font-size: 0.6rem;
+  }
+}
 .carousel div.tt-level {
   font-size: 01.0rem;
   color: grey;
