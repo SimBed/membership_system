@@ -42,12 +42,7 @@ class Whatsapp
     @from_number = Rails.configuration.twilio[:whatsapp_number]
   end
 
-  # def white_list_whatsapp_receivers
-  #   whatsapp_receivers = %w[Amala Aadrak Fluke Cleo James]
-  #   whatsapp_receivers.include?(@receiver.first_name)
-  # end
   def white_list_whatsapp_receivers
-    # whatsapp_receivers = %w[nishaap trivedi james@t]
     whatsapp_receivers = Setting.whitelist
     whatsapp_receivers.include?(@receiver.email.slice(0,7))
   end

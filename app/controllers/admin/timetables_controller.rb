@@ -25,7 +25,7 @@ class Admin::TimetablesController < Admin::BaseController
     # render "public_pages/timetable", layout: "timetable"
 
     # update with timetable from settings
-    @timetable = Timetable.first 
+    @timetable = Timetable.find(Setting.timetable) 
     @days = @timetable.table_days.order_by_day
     render "public_pages/timetable", layout: "public"
   end

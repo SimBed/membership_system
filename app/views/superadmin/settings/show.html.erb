@@ -14,10 +14,17 @@
     <%= f.text_area :whitelist, value: Setting.whitelist.join("\n"), class: "form-control", style: "height: 10rem; width: 40rem;" %>
   </div>
 
+  <!--div class="form-group">
+    <label class="control-label">Timetable</label>
+    <%#= f.number_field :timetable, value: Setting.timetable, class: "form-control", style: "width: 5rem;" %>
+  </div-->
+
   <div class="form-group">
     <label class="control-label">Timetable</label>
-    <%= f.number_field :timetable, value: Setting.timetable, class: "form-control", style: "width: 5rem;" %>
+    <%= f.collection_select :timetable, Timetable.all, :id, :title, { selected: (Setting.timetable || Timetable.first.id) }, class: "form-control", style: "width: 10rem;" %>
   </div>
+
+
 
   <div class="form-group">
     <label class="control-label">Renew Online?</label>

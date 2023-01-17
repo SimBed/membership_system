@@ -17,7 +17,7 @@ class PublicPagesController < ApplicationController
   end
   
   def space_home
-    @timetable = Timetable.first 
+    @timetable = Timetable.find(Setting.timetable) 
     @days = @timetable.table_days.order_by_day
     # @morning_times = @timetable.table_times.during('morning').order_by_time
     # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time

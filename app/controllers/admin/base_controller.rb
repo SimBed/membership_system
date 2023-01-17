@@ -29,7 +29,7 @@ class Admin::BaseController < ApplicationController
       if Rails.env.test?
         @timetable = Timetable.first
       else
-      @timetable = Timetable.find(Setting.timetable)
+        @timetable = Timetable.find(Setting.timetable)
       end
     end
 end
