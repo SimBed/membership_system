@@ -1,9 +1,8 @@
 class PublicPagesController < ApplicationController
+  before_action :set_timetable, only: [:welcome, :space_home]
   layout 'public'
   
   def welcome
-    @timetable = Timetable.find(Setting.timetable) 
-    @days = @timetable.table_days.order_by_day    
     if logged_in_as?('junioradmin', 'admin', 'superadmin')
       # not && return won't work because of precedence of operator over method call
       redirect_to admin_clients_path and return
@@ -19,8 +18,6 @@ class PublicPagesController < ApplicationController
   end
   
   def space_home
-    @timetable = Timetable.find(Setting.timetable) 
-    @days = @timetable.table_days.order_by_day
     # @morning_times = @timetable.table_times.during('morning').order_by_time
     # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
     # @evening_times = @timetable.table_times.during('evening').order_by_time
@@ -55,6 +52,16 @@ class PublicPagesController < ApplicationController
   end
   
   private
+
+  def set_timetable
+    if Rails.env.test?
+      @timetable = Timetable.first
+    else
+      @timetable = Timetable.find(Setting.timetable)
+    end
+
+    @days = @timetable.table_days.order_by_day    
+  end
 
   def associate_account_holder_to_account
     @client.update(account_id: @account.id)

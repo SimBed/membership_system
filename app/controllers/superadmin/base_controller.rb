@@ -5,6 +5,10 @@ class Superadmin::BaseController < ApplicationController
 
   private
     def set_public_timetable
-      @timetable = Timetable.find(Setting.timetable)
+      if Rails.env.test?
+        @timetable = Timetable.first
+      else
+        @timetable = Timetable.find(Setting.timetable)
+      end
     end
 end

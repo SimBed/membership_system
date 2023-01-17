@@ -1,6 +1,7 @@
 class Client::ClientsController < ApplicationController
   layout 'client'
   before_action :correct_account, except: [:timetable]
+  before_action :set_timetable, only: [:welcome, :space_home]  
 
   def show
     prepare_data_for_view
@@ -29,7 +30,11 @@ class Client::ClientsController < ApplicationController
     # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
     # @evening_times = @timetable.table_times.during('evening').order_by_time
     # render "public_pages/timetable", layout: "timetable"
-    @timetable = Timetable.find(Setting.timetable) 
+    if Rails.env.test?
+      @timetable = Timetable.first
+    else
+      @timetable = Timetable.find(Setting.timetable)
+    end
     @days = @timetable.table_days.order_by_day
     render "timetable", layout: 'client_black'    
   end

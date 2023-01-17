@@ -19,9 +19,9 @@
     <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#publicNav">
       <ul class="navbar-nav">
       <%# if request.fullpath.include? ("welcome") %>
-        <!li class="nav-item">
+        <!--li class="nav-item">
           <%#= link_to "Timetable", "/timetable", class: "nav-link", 'data-turbolinks': false %>
-        </!li>
+        </li-->
       <%# end %>
         <li class="nav-item">
           <% if current_account %>
@@ -35,9 +35,7 @@
             <% end %>
           <% end %>
         </li>
-
       </ul>
-
-      </div>
+    </div>
   </div>
 </nav>

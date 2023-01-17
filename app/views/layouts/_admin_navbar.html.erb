@@ -44,7 +44,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown-4">
                   <li>
-                    <%= link_to 'Timetable', admin_timetable_path(Timetable.find(Setting.timetable)), class: 'dropdown-item' %>
+                    <%= link_to 'Timetable', admin_timetable_path(@timetable), class: 'dropdown-item' %>
                   </li>
                   <li class="dropend dropend-hover">
                     <a class="dropdown-item dropdown-toggle  "
