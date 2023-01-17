@@ -2,6 +2,8 @@ class PublicPagesController < ApplicationController
   layout 'public'
   
   def welcome
+    @timetable = Timetable.find(Setting.timetable) 
+    @days = @timetable.table_days.order_by_day    
     if logged_in_as?('junioradmin', 'admin', 'superadmin')
       # not && return won't work because of precedence of operator over method call
       redirect_to admin_clients_path and return
