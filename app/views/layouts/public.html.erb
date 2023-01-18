@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>The Space Fitness</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content=
-		"Juhu, Mumbai's high-specification boutique studios, specialises in strength & conditioning fitness and private training with qualified instructors who care." />
+		"Juhu, Mumbai's high-specification boutique studios, specialises in strength & conditioning fitness and private training with qualified instructors who care.">
 	  <meta property="og:title" content="The Space Fitness">
-    <meta property="og:description" content="Strength & conditioning, fitness and private training with qualified instructors who care.">
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content=<%= image_url 'spaceog.jpg' %> >
-    <meta property="og:image:secure_url" content=<%= image_url 'spaceog.jpg' %> >
+    <meta property="og:description" content="where strength happens">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content = <%= image_url 'opengraph/spacefitness_square.png' %> >
+    <meta property="og:image:secure_url" content = <%= image_url 'opengraph/spacefitness_square.png' %> >
     <meta property="og:url" content="https://www.thespacefitness.in" >
+    <%# https://stackoverflow.com/questions/27195019/how-to-disable-turbolinks-in-a-specific-page %>
+    <meta name="turbolinks-visit-control" content="reload">
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -18,7 +20,7 @@
     <%= stylesheet_pack_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
     <%= stylesheet_pack_tag 'admin', media: 'all' %>  
-    <%= javascript_pack_tag 'admin', media: 'all' %>
+    <%= javascript_pack_tag 'admin' %>
     <%= javascript_pack_tag 'typed', defer:true %>    
     <%= javascript_pack_tag 'isotope', defer:true %>    
 
