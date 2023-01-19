@@ -11,6 +11,10 @@ class Setting < RailsSettings::Base
     field :timetable, type: :integer, default: 1
   end
 
+  scope :wkclassmaker do
+    field :classmaker_advance, type: :integer, default: 4
+  end
+
   scope :booking do
     field :quotation, default: "Exercise is King. Nutrition is Queen. Put them together & you've got a Kingdom.",
                      validates: { presence: true, length: { in: 2..200 } }
