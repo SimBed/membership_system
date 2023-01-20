@@ -237,13 +237,13 @@
 }
 
 // DPS
-#package_policy p, #package_policy ol, #package_policy ul {
+#policy p, #policy ol, #policy ul {
   font-size: 0.9rem;
   line-height: 1.1rem;
 }
 
 @media (min-width: 900px) {
-#package_policy p, #package_policy ol, #package_policy ul {
+#policy p, #policy ol, #policy ul {
   font-size: 1.1rem;
   line-height: 1.3rem;
 }}

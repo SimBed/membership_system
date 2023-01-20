@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  get 'cube/index'
+  get '/about',  to: 'footer#about'
+  get '/terms&conditions',  to: 'footer#package_policy'
+  get '/charges&deductions',  to: 'footer#charges'
+  get '/privacy_policy',  to: 'footer#privacy_policy'
+  get '/payment_policy',  to: 'footer#payment_policy'
   root 'public_pages#welcome'
   # temp home page while building
   get '/welcome_home', to: 'public_pages#welcome_home'
   get '/space_home', to: 'public_pages#space_home'
-  get '/termsconditions',  to: 'public_pages#package_policy'
+  # get '/termsconditions',  to: 'public_pages#package_policy'
   get '/signup',  to: 'public_pages#signup'
   post '/signup',  to: 'public_pages#create_account'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'

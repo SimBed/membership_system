@@ -23,10 +23,6 @@ class PublicPagesController < ApplicationController
     # @evening_times = @timetable.table_times.during('evening').order_by_time
   end
 
-  def package_policy
-    render layout: 'login'
-  end
-
   def signup
     @account = Account.new
     render layout: 'login'

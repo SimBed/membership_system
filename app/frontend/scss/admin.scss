@@ -225,3 +225,29 @@ div.page_entries_info {
     display: block;
   }
 }
+
+.DeductionTable {
+  background-color: #dddddd;
+  border-spacing: 0;
+  border-top-right-radius: 0.6em;
+  border-top-left-radius: 0.6em;
+  font-size: 0.75em;
+  color: #707070;
+  font-weight:bold;
+  font-family: "Muli", "Arial";
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:2.5em;
+  text-align:center;
+  width:90%;
+ }
+ 
+ .DeductionTable td, .DeductionTable th{
+  padding: 0.2em 0.4em 0.2em 0.4em;
+ }   
+
+@media (max-width: 576px) {
+ .DeductionTable td, .DeductionTable th{
+  padding: 0.4em, 0 ,0.4em, 0;
+ }
+}  

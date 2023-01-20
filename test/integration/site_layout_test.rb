@@ -30,12 +30,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
 
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Aboutus.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/PackagePolicy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Charges.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Privacy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Paymentpolicy.html'
-    assert_select 'a[href=?]', 'https://thespacejuhu.in/blog/'
+    assert_select 'a[href=?]', about_path
+    assert_select 'a[href=?]', '/terms&conditions'
+    assert_select 'a[href=?]', '/charges&deductions'
+    assert_select 'a[href=?]', privacy_policy_path
+    assert_select 'a[href=?]', payment_policy_path
     assert_select 'a[href=?]', 'https://www.instagram.com/thespace.juhu/'
     assert_select 'a[href=?]', 'https://www.facebook.com/TheSpace.Mumbai/timeline'
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
@@ -60,12 +59,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
 
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Aboutus.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/PackagePolicy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Charges.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Privacy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Paymentpolicy.html'
-    assert_select 'a[href=?]', 'https://thespacejuhu.in/blog/'
+    assert_select 'a[href=?]', about_path
+    assert_select 'a[href=?]', '/terms&conditions'
+    assert_select 'a[href=?]', '/charges&deductions'
+    assert_select 'a[href=?]', privacy_policy_path
+    assert_select 'a[href=?]', payment_policy_path
     assert_select 'a[href=?]', 'https://www.instagram.com/thespace.juhu/'
     assert_select 'a[href=?]', 'https://www.facebook.com/TheSpace.Mumbai/timeline'
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
@@ -90,12 +88,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
 
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Aboutus.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/PackagePolicy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Charges.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Privacy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Paymentpolicy.html'
-    assert_select 'a[href=?]', 'https://thespacejuhu.in/blog/'
+    assert_select 'a[href=?]', about_path
+    assert_select 'a[href=?]', '/terms&conditions'
+    assert_select 'a[href=?]', '/charges&deductions'
+    assert_select 'a[href=?]', privacy_policy_path
+    assert_select 'a[href=?]', payment_policy_path
     assert_select 'a[href=?]', 'https://www.instagram.com/thespace.juhu/'
     assert_select 'a[href=?]', 'https://www.facebook.com/TheSpace.Mumbai/timeline'
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
@@ -127,12 +124,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
 
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Aboutus.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/PackagePolicy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Charges.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Privacy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Paymentpolicy.html'
-    assert_select 'a[href=?]', 'https://thespacejuhu.in/blog/'
+    assert_select 'a[href=?]', about_path
+    assert_select 'a[href=?]', '/terms&conditions'
+    assert_select 'a[href=?]', '/charges&deductions'
+    assert_select 'a[href=?]', privacy_policy_path
+    assert_select 'a[href=?]', payment_policy_path
     assert_select 'a[href=?]', 'https://www.instagram.com/thespace.juhu/'
     assert_select 'a[href=?]', 'https://www.facebook.com/TheSpace.Mumbai/timeline'
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
@@ -162,12 +158,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
 
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Aboutus.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/PackagePolicy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Charges.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Privacy.html'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/Paymentpolicy.html'
-    assert_select 'a[href=?]', 'https://thespacejuhu.in/blog/'
+    assert_select 'a[href=?]', about_path
+    assert_select 'a[href=?]', '/terms&conditions'
+    assert_select 'a[href=?]', '/charges&deductions'
+    assert_select 'a[href=?]', privacy_policy_path
+    assert_select 'a[href=?]', payment_policy_path
     assert_select 'a[href=?]', 'https://www.instagram.com/thespace.juhu/'
     assert_select 'a[href=?]', 'https://www.facebook.com/TheSpace.Mumbai/timeline'
     assert_select 'a[href=?]', 'https://wa.me/919619348427'

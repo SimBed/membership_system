@@ -1,12 +1,12 @@
 <div class="container flex-container">
 
   <ul class="FooterLinks GeneralText mb-0 ps-0">
-    <li> <a href="https://www.thespacejuhu.in/Aboutus.html">About Us</a></li>
-    <li> <a href="https://www.thespacejuhu.in/PackagePolicy.html">Terms & Conditions</a></li>
-    <li> <a href="https://www.thespacejuhu.in/Charges.html">Charges & Deductions</a></li>
-    <li> <a href="https://www.thespacejuhu.in/Privacy.html">Privacy Policy</a></li>
-    <li> <a href="https://www.thespacejuhu.in/Paymentpolicy.html">Payment Policy</a></li>
-    <li> <a href="https://thespacejuhu.in/blog/">Blog</a></li>
+    <li> <%= link_to 'About Us', about_path %> </li>
+    <li> <%= link_to 'Terms & Conditions', '/terms&conditions' %> </li>
+    <li> <%= link_to 'Charges & Deductions', '/charges&deductions' %> </li>
+    <li> <%= link_to 'Privacy Policy', privacy_policy_path %> </li>    
+    <li> <%= link_to 'Payment Policy', payment_policy_path %> </li>    
+    <%# <li> <a href="https://thespacejuhu.in/blog/">Blog</a></li> %>
   </ul>
 
   <ul class="SocMedFoot mb-2">
