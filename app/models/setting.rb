@@ -15,6 +15,12 @@ class Setting < RailsSettings::Base
     field :classmaker_advance, type: :integer, default: 4
   end
 
+  scope :renewal_discount do
+    field :pre_expiry_package_renewal, type: :integer, default: 0
+    field :post_expiry_trial_renewal, type: :integer, default: 0
+    field :pre_expiry_trial_renewal, type: :integer, default: 0
+  end
+
   scope :booking do
     field :quotation, default: "Exercise is King. Nutrition is Queen. Put them together & you've got a Kingdom.",
                      validates: { presence: true, length: { in: 2..200 } }

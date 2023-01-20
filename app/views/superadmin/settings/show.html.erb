@@ -30,12 +30,27 @@
   </div>
 
   <div class="form-group">
+    <label class="control-label">Discount (%) for renewal of Package before expiry</label>
+    <%= f.number_field :pre_expiry_package_renewal, value: Setting.pre_expiry_package_renewal, class: "form-control", style: "width: 5rem;" %>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">Discount (%) for renewal of Trial after expiry</label>
+    <%= f.number_field :post_expiry_trial_renewal, value: Setting.post_expiry_trial_renewal, class: "form-control", style: "width: 5rem;" %>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">Discount (%) for renewal of Trial before expiry</label>
+    <%= f.number_field :pre_expiry_trial_renewal, value: Setting.pre_expiry_trial_renewal, class: "form-control", style: "width: 5rem;" %>
+  </div>
+
+  <div class="form-group">
     <label class="control-label">Send expiry message for Package this number of days before expiry</label>
     <%= f.number_field :package_expiry_message_days, value: Setting.package_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
   </div>
 
   <div class="form-group">
-    <label class="control-label">end expiry message for Trial this number of days before expiry</label>
+    <label class="control-label">Send expiry message for Trial this number of days before expiry</label>
     <%= f.number_field :trial_expiry_message_days, value: Setting.trial_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
   </div>
 
