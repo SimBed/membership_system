@@ -15,7 +15,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@superadmin)
     follow_redirect!
     assert_template 'admin/clients/index'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/'
+    assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', admin_clients_path
     assert_select 'a[href=?]', admin_wkclasses_path
     assert_select 'a[href=?]', admin_purchases_path
@@ -44,7 +44,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     follow_redirect!
     assert_template 'admin/clients/index'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/'
+    assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', admin_clients_path
     assert_select 'a[href=?]', admin_wkclasses_path
     assert_select 'a[href=?]', admin_purchases_path
@@ -73,7 +73,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@junioradmin)
     follow_redirect!
     assert_template 'admin/clients/index'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/'
+    assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', admin_clients_path
     assert_select 'a[href=?]', admin_wkclasses_path
     assert_select 'a[href=?]', admin_purchases_path
@@ -102,7 +102,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     assert_template 'client/clients/book'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/'
+    assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', client_history_path(@client)
     assert_select 'a[href=?]', client_book_path(@client)
     assert_select 'a[href=?]', client_client_path(@client)
@@ -138,7 +138,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@account_partner)
     follow_redirect!
     assert_template 'admin/partners/show'
-    assert_select 'a[href=?]', 'https://www.thespacejuhu.in/'
+    assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', admin_workout_groups_path
     assert_select 'a[href=?]', admin_partner_path(@partner)
     assert_select 'a[href=?]', admin_clients_path, count: 0
