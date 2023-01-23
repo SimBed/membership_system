@@ -76,14 +76,15 @@ class Client < ApplicationRecord
   end
 
   def renewal
-    groupex_package_purchases = purchases.package.order_by_dop.reject(&:pt?)
+    # groupex_package_purchases = purchases.package.order_by_dop.reject(&:pt?)
+    groupex_package_purchases = purchases.package.order_by_dop.renewable
     return nil if groupex_package_purchases.empty?
 
     unlimited3m = Product.where(max_classes: 1000, validity_length: 3, validity_unit: 'M').first
     ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
     if ongoing_groupex_package_purchases.empty?
       last_groupex_package_purchase = groupex_package_purchases.first
-      if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited (20%/15% pre-expiry/expired)
+      if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a discounted 3m unlimited
         renewal_price = unlimited3m.renewal_price("renewal_posttrial_expiry")
         base_price = unlimited3m.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?
@@ -96,7 +97,7 @@ class Client < ApplicationRecord
       end
     else
       ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
-      if ongoing_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a 3m unlimited
+      if ongoing_groupex_package_purchase.name == 'Space Group UC:1W'
         renewal_price = unlimited3m.renewal_price("renewal_pretrial_expiry")
         base_price = unlimited3m.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?
@@ -169,30 +170,31 @@ class Client < ApplicationRecord
   end
 
   # not used
-  def recently_purchased?
-    ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
-    return false if ongoing_group_packages.empty?
+  # def recently_purchased?
+  #   ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
+  #   return false if ongoing_group_packages.empty?
 
-    return true if ongoing_group_packages.max_by {|h| h.dop}.dop > 7.days.ago
+  #   return true if ongoing_group_packages.max_by {|h| h.dop}.dop > 7.days.ago
 
-    false
-  end
+  #   false
+  # end
 
   # not used
-  def renewal_time?
-    ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
-    return false if ongoing_group_packages.empty?
+  # def renewal_time?
+  #   ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
+  #   return false if ongoing_group_packages.empty?
 
-    return true if ongoing_group_packages.select { |p| p.close_to_expiry? }.include?(true)
+  #   return true if ongoing_group_packages.select { |p| p.close_to_expiry? }.include?(true)
 
-    false
-  end
+  #   false
+  # end
 
   def offer_early_renewal_discount?
-    ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? }
+    # ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? }
+    ongoing_group_packages = purchases.not_fully_expired.renewable
     return false if ongoing_group_packages.empty?
 
-    return false if ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: 14, attendances_remain: 4)}.include? false
+    return false unless ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: Setting.days_remain, attendances_remain: Setting.attendances_remain)}.all?
 
     true
   end

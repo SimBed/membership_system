@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_16_170619) do
+ActiveRecord::Schema.define(version: 2023_01_21_062453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -304,6 +304,7 @@ ActiveRecord::Schema.define(version: 2023_01_16_170619) do
     t.integer "partner_share"
     t.boolean "gst_applies", default: true
     t.boolean "requires_invoice", default: true
+    t.boolean "renewable", default: false
     t.index ["name"], name: "index_workout_groups_on_name"
   end
 

@@ -15,10 +15,12 @@ class Setting < RailsSettings::Base
     field :classmaker_advance, type: :integer, default: 4
   end
 
-  scope :renewal_discount do
+  scope :renewal do
     field :pre_expiry_package_renewal, type: :integer, default: 0
     field :post_expiry_trial_renewal, type: :integer, default: 0
     field :pre_expiry_trial_renewal, type: :integer, default: 0
+    field :days_remain, type: :integer, default: 14
+    field :attendances_remain, type: :integer, default: 4
   end
 
   scope :booking do

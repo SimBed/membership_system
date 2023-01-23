@@ -55,7 +55,7 @@ class Whatsapp
       "\nTerms & Conditions: https://www.thespacejuhu.in/PackagePolicy.html"
   end
 
-  def body_package_expiry_minus_3
+  def body_package_expiry
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
     "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
@@ -63,25 +63,25 @@ class Whatsapp
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
 
-  def body_package_expiry_minus_3_temp
+  def body_package_expiry_temp
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
     "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
   end
 
-  def body_trial_expiry_minus_2
+  def body_trial_expiry
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew before expiry & save 20% on your first Package!" +
+    "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
     "\n \nLogin to your account to renew or contact us to discuss more options." +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
 
-  def body_trial_expiry_minus_2_temp
+  def body_trial_expiry
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew before expiry & save 20% on your first Package!" +
+    "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
   end
 

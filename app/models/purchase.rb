@@ -41,6 +41,7 @@ class Purchase < ApplicationRecord
   scope :trial, -> { joins(:product).merge(Product.trial) }
   scope :package_started_not_expired, -> { package.started.not_expired }
   scope :package_started_not_fully_expired, -> { package.started.not_fully_expired }
+  scope :renewable, -> { joins(product: [:workout_group]).where(workout_groups: { renewable: true }) }
   # wg is an array of workout group names
   # see 3.3.3 subset conditions https://guides.rubyonrails.org/active_record_querying.html#pure-string-conditions
   scope :workout_group, ->(wg) { joins(product: [:workout_group]).where(workout_groups: { name: wg }) }

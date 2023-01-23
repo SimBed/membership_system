@@ -37,6 +37,8 @@ class Price < ApplicationRecord
     # Price's price used to be explicitly retained in the price field for each Price. The new design of the Price method calculate
     # the Price's price based on base price and discount.
     # percentage discounts were crudely calculated and input. The new design of the Price method calculates precisely and rounds up to nearest Rs.50
+    return false if created_at.nil?
+
     return true if created_at < Date.new(2022,10,05)
 
     return false

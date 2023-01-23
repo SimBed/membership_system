@@ -92,6 +92,7 @@ class WorkoutGroup < ApplicationRecord
 
   def update_rel_workout_group_workout
     # toimprove
+    # this prevents updates (with update method) through the console as workout_ids is nil...use update_column which won't trigger callbacks
     rel_workout_group_workouts.each(&:destroy)
     workout_ids.each { |wid| RelWorkoutGroupWorkout.create(workout_group_id: id, workout_id: wid) }
   end

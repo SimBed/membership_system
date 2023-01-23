@@ -73,9 +73,9 @@ module Client::ClientsHelper
   end
 
   def renewal_statement(ongoing, trial)
-    return 'Buy your first Package before your trial expires with a 20% discount!' if ongoing && trial
-    return 'Renew your Package before expiry with a 10% discount!' if ongoing
-    return "Buy your first Package with a 15% discount!" if trial
+    return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% discount!" if ongoing && trial
+    return "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% discount!" if ongoing
+    return "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% discount!" if trial
 
     "Renew your Package now!"
   end
