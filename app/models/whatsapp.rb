@@ -52,28 +52,13 @@ class Whatsapp
     "Thank you for your new purchase #{@variable_contents[:first_name]}." +
       "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
       "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
-      "\nTerms & Conditions: https://www.thespacejuhu.in/PackagePolicy.html"
+      "\nTerms & Conditions: https://www.thespacefitness.in/terms&conditions"
   end
 
   def body_package_expiry
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
-    "\n \nLogin to your account to renew or contact us to discuss more options." +
-    "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
-  end
-
-  def body_package_expiry_temp
-    "Hi #{@variable_contents[:first_name]}" +
-    "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
-    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
-  end
-
-  def body_trial_expiry
-    "Hi #{@variable_contents[:first_name]}" +
-    "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
+    "\nRenew today & save #{Setting.pre_expiry_package_renewal}% on your next Package!. After expiry, full price rates will apply." +
     "\n \nLogin to your account to renew or contact us to discuss more options." +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
@@ -82,11 +67,12 @@ class Whatsapp
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
     "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
-    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
+    "\n \nLogin to your account to renew or contact us to discuss more options." +
+    "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
 
   def body_new_account
-    'Welcome to The Space!' +
+    "Welcome to The Space #{@variable_contents[:first_name]}!" +
       "\n\nTo see details of your membership, please login:" +
       "\nEmail: the email you registered with us" +
       "\nPassword: #{@variable_contents[:password]}" +
@@ -166,4 +152,18 @@ class Whatsapp
   def body_test
     "Thanks for all the templates. We would be delighted to resubmit all the templates.\nReply directly\nhttps://api.whatsapp.com/send/?phone=919619348427&text&type=phone_number&app_absent=0"
   end
+
+  def body_package_expiry_retired
+    "Hi #{@variable_contents[:first_name]}" +
+    "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
+    "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
+    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
+  end
+
+  def body_trial_expiry_retired
+    "Hi #{@variable_contents[:first_name]}" +
+    "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
+    "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
+    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
+  end  
 end

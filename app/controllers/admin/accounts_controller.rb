@@ -74,6 +74,6 @@ class Admin::AccountsController < Admin::BaseController
   def whatsapp_params(message_type)
     { receiver: @account_holder,
       message_type: message_type,
-      variable_contents: { password: @password } }
+      variable_contents: { first_name: @account_holder.first_name, password: @password } }      
   end
 end
