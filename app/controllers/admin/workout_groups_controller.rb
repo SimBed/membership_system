@@ -17,7 +17,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def show
     set_period
     @wkclasses = @workout_group.wkclasses_during(@period)
-    @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost
+    @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost.includes(:workout, :instructor)
     # unscope :order from wkclasses_during method otherwise get an ActiveRecord::StatementInvalid Exception: PG::GroupingError: ERROR
     # @instructor_cost_subtotals = @wkclasses_with_instructor_expense.unscope(:order).group_by_instructor_cost.delete_if { |k, v| v.zero? }
     # @instructor_cost_counts = @wkclasses_with_instructor_expense.unscope(:order).joins(:instructor).group("first_name || ' ' || last_name").count(:instructor_cost).delete_if { |k, v| v.zero? }

@@ -16,7 +16,7 @@ class WorkoutGroup < ApplicationRecord
   scope :order_by_name, -> { order(:name) }
 
   def attendances_during(period)
-    Attendance.confirmed.no_amnesty.by_workout_group(name, period)
+    Attendance.includes(purchase: [:product]).confirmed.no_amnesty.by_workout_group(name, period)
   end
 
   def wkclasses_during(period)
@@ -83,7 +83,7 @@ class WorkoutGroup < ApplicationRecord
   # end
 
   def expiry_revenue(period)
-    purchases.select { |p| p.expired_in?(period) }.map(&:expiry_revenue).inject(0, :+)
+    purchases.fully_expired.select { |p| p.expired_in?(period) }.map(&:expiry_revenue).inject(0, :+)
   end
 
   def create_rel_workout_group_workout
