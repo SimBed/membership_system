@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @superadmin_regular_expense.item %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @superadmin_regular_expense.amount %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @superadmin_regular_expense.date %>
+</p>
+
+<p>
+  <strong>Workout group:</strong>
+  <%= @superadmin_regular_expense.workout_group_id %>
+</p>
+
+<%= link_to 'Edit', edit_superadmin_regular_expense_path(@superadmin_regular_expense) %> |
+<%= link_to 'Back', superadmin_regular_expenses_path %>

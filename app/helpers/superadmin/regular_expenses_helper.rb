@@ -1,0 +1,2 @@
+module Superadmin::RegularExpensesHelper
+end

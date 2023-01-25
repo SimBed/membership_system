@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_21_062453) do
+ActiveRecord::Schema.define(version: 2023_01_24_133943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,6 +239,15 @@ ActiveRecord::Schema.define(version: 2023_01_21_062453) do
     t.index ["status"], name: "purchases_status_index"
   end
 
+  create_table "regular_expenses", force: :cascade do |t|
+    t.string "item"
+    t.integer "amount"
+    t.bigint "workout_group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["workout_group_id"], name: "index_regular_expenses_on_workout_group_id"
+  end
+
   create_table "rel_workout_group_workouts", force: :cascade do |t|
     t.integer "workout_group_id"
     t.integer "workout_id"
@@ -322,4 +331,5 @@ ActiveRecord::Schema.define(version: 2023_01_21_062453) do
   add_foreign_key "instructor_rates", "instructors"
   add_foreign_key "penalties", "attendances"
   add_foreign_key "penalties", "purchases"
+  add_foreign_key "regular_expenses", "workout_groups"
 end

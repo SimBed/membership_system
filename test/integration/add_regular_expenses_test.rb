@@ -1,0 +1,41 @@
+require "test_helper"
+
+class AddRegularExpensesTest < ActionDispatch::IntegrationTest
+  def setup
+    @superadmin = accounts(:superadmin)
+    log_in_as @superadmin
+    travel_to(Date.parse('Jan 1 2023'))
+    @regular_expense = regular_expenses(:one)
+  end
+
+  test 'add new expenses from regular expenses' do
+    assert_equal 3, RegularExpense.all.size
+
+    assert_difference 'Expense.all.size', 3 do
+      get '/superadmin/regular_expenses/add'
+    end
+
+    # they wil be duplicates if added again so rejected
+    assert_difference 'Expense.all.size', 0 do
+      get '/superadmin/regular_expenses/add'
+    end
+  end
+
+  test 'add duplicate expenses' do
+
+    get '/superadmin/regular_expenses/add'
+    assert_difference 'RegularExpense.all.size', 1 do
+      RegularExpense.create(
+        item: 'roti',
+        amount: 25,
+        workout_group_id: @regular_expense.workout_group_id
+      )
+    end
+
+    # only the new (non-duplicate) regular expenses should be responsible for a new expense)
+    assert_difference 'Expense.all.size', 1 do
+      get '/superadmin/regular_expenses/add'
+    end
+  end  
+
+end

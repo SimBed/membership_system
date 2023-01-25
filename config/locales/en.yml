@@ -115,9 +115,16 @@ en:
       create:
         success: Expense was successfully added
       update:
-        success: Expense rate was successfully updated
+        success: Expense was successfully updated
       destroy:
-        success: Expense rate was successfully deleted
+        success: Expense was successfully deleted
+    regular_expenses:
+      create:
+        success: Regular Expense was successfully added
+      update:
+        success: Regular Expense was successfully updated
+      destroy:
+        success: Regular Expense was successfully deleted
   client:
     clients:
       attendance:

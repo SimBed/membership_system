@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   get '/client/timetable', to: 'client/clients#timetable', as: 'client_timetable' 
   get '/footfall', to: 'admin/attendances#footfall'
   get '/timetable', to: 'admin/timetables#show_public'
-
+  get '/superadmin/regular_expenses/add'
 
   namespace :admin do
     resources :entries, only: [:new, :edit, :create, :update, :destroy]
@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   end
   namespace :superadmin do
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :regular_expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]
     resource :settings
     resources :orders

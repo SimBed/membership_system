@@ -1,0 +1,32 @@
+<%= form_with(model: [:superadmin, regular_expense]) do |form| %>
+  <% if regular_expense.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(regular_expense.errors.count, "error") %> prohibited this superadmin_regular_expense from being saved:</h2>
+
+      <ul>
+        <% regular_expense.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :item %>
+    <%= form.text_field :item %>
+  </div>
+
+  <div class="field">
+    <%= form.label :amount %>
+    <%= form.number_field :amount %>
+  </div>
+
+  <div class="field">
+    <%= form.label :workout_group_id %>
+    <%= form.select :workout_group_id, options_for_select(@workout_groups, 1) %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
