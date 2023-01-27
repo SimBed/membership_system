@@ -9,6 +9,9 @@ class Setting < RailsSettings::Base
 
   scope :timetable do
     field :timetable, type: :integer, default: 1
+    field :studios, type: :array, default: %w[Cellar Window Den]
+    field :levels, type: :array, default: ['Beginner Friendly', 'All Levels', 'Intermediate']  
+    field :goals, type: :array, default: ['Hypertrophy', 'Foundations', 'HIIT & Core']  
   end
 
   scope :wkclassmaker do

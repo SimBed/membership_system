@@ -50,6 +50,8 @@ class Admin::EntriesController < Admin::BaseController
 
     def prepare_items_for_dropdowns
       @workouts = Workout.current.order_by_name
-      @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']    
+      @levels = Setting.levels 
+      @studios = Setting.studios  
+      @goals = Setting.goals    
     end    
 end

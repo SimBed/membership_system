@@ -30,11 +30,12 @@ class Client::ClientsController < ApplicationController
     # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
     # @evening_times = @timetable.table_times.during('evening').order_by_time
     # render "public_pages/timetable", layout: "timetable"
-    if Rails.env.test?
-      @timetable = Timetable.first
-    else
-      @timetable = Timetable.find(Setting.timetable)
-    end
+    # if Rails.env.test?
+    #   @timetable = Timetable.first
+    # else
+    #   @timetable = Timetable.find(Setting.timetable)
+    # end
+    @timetable = Timetable.find(Setting.timetable)  
     @days = @timetable.table_days.order_by_day
     render "timetable", layout: 'client_black'    
   end

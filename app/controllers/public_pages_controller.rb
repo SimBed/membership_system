@@ -54,12 +54,12 @@ class PublicPagesController < ApplicationController
   private
 
   def set_timetable
-    if Rails.env.test?
-      @timetable = Timetable.first
-    else
-      @timetable = Timetable.find(Setting.timetable)
-    end
-
+    # if Rails.env.test?
+    #   @timetable = Timetable.first
+    # else
+    #   @timetable = Timetable.find(Setting.timetable)
+    # end
+    @timetable = Timetable.find(Setting.timetable)
     @days = @timetable.table_days.order_by_day    
   end
 

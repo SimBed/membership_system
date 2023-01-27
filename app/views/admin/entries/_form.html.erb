@@ -22,18 +22,17 @@
 
   <div class="field">
     <%= form.label :goal %>
-    <%= form.text_field :goal %>
+    <%= form.select :goal, options_for_select(@goals, @entry.goal) %>
   </div>
 
   <div class="field">
     <%= form.label :level %>
     <%= form.select :level, options_for_select(@levels, @entry.level) %>
-    
   </div>
 
   <div class="field">
     <%= form.label :studio %>
-    <%= form.text_field :studio %>
+    <%= form.select :studio, options_for_select(@studios, @entry.studio) %>
   </div>
 
   <div class="field">
