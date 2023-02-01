@@ -123,6 +123,12 @@ class Wkclass < ApplicationRecord
 
     "#{name} (#{instructor.initials})"
   end
+
+  def deletable?
+    return true if attendances.empty?
+
+    false
+  end
   
   def revenue
     attendances.map(&:revenue).inject(0, :+)

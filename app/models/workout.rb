@@ -7,5 +7,4 @@ class Workout < ApplicationRecord
   scope :order_by_current, -> { order(current: :desc, name: :asc) }
   scope :current, -> { where(current: true) }
   validates :name, presence: true
-
 end

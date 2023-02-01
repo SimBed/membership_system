@@ -55,4 +55,10 @@ class WkclassTest < ActiveSupport::TestCase
   test 'at_capacity?' do
     refute_predicate @wkclass_many_attendances, :at_capacity?
   end
+
+  test 'deletable? method' do
+    @wkclass.save
+    assert @wkclass.deletable?
+    refute @wkclass_many_attendances.deletable?
+  end    
 end

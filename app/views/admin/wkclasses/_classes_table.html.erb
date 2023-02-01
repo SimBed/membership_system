@@ -15,8 +15,15 @@
         <td><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></td>
         <td><%= wkclass.max_capacity - physical_attendances %> <%= image_tag('group.png', class: "header_icon")%></td>
         <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass) %></td>
-        <!--td class="nomobile"><%#= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), method: :delete, data: { confirm: 'Class and its attendances will be deleted. Are you sure?' } %></td-->
+        <% if logged_in_as?('admin', 'superadmin') && wkclass.deletable? %>         
+          <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), method: :delete, data: { confirm: 'Class can be deleted as it has no attendances. But are you sure?' } %></td>
+        <% else %>
+          <td class="nomobile"></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+
+
