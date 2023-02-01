@@ -88,6 +88,21 @@ class ClientTest < ActiveSupport::TestCase
     refute @client.booked? @booked_class
   end
 
+  test 'deletable? method' do
+    # no purchase or account
+    assert @client.deletable?
+    # has purchase
+    refute @client2.deletable?
+
+    @account = Account.create(email: @client.email,
+                              password: 'foobar',
+                              password_confirmation: 'foobar',
+                              ac_type: 'client')
+    @client.update(account_id: @account.id) 
+    # has account but no purchase
+    refute @client.deletable?  
+  end
+
   test 'associated account (if there is one) should exist' do
     @client.account_id = 4000
     refute_predicate @client, :valid?

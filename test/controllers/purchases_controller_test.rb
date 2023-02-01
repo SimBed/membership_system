@@ -75,8 +75,8 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should redirect destroy when not logged in as junioradmin or more senior' do
-    [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
+  test 'should redirect destroy when not logged in as admin or more senior' do
+    [nil, @purchase1.client.account, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Purchase.count' do
         delete admin_purchase_path(@purchase1)

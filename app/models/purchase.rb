@@ -79,6 +79,12 @@ class Purchase < ApplicationRecord
     product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
   end
 
+  def deletable?
+    return true if attendances.empty? && freezes.empty? && adjustments.empty?
+
+    false
+  end
+
   # reformat qualifying_for and available_for_booking into single method
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|

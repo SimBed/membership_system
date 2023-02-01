@@ -269,4 +269,11 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_predicate @purchase_dropin2, :close_to_expiry?
     refute_predicate @purchase_fixed, :close_to_expiry?
   end
+
+  test 'deletable? method' do
+    @purchase.save
+    assert @purchase.deletable?
+    refute @purchase_with_freeze.deletable?
+    refute @purchase_package.deletable?
+  end  
 end

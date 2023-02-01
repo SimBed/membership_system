@@ -124,6 +124,12 @@ class Client < ApplicationRecord
     Client.enquiry.exists?(id: id)
   end
 
+  def deletable?
+    return true if purchases.empty? & account.nil?
+
+    false
+  end
+
   def name
     "#{first_name} #{last_name}"
   end

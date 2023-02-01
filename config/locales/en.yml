@@ -81,7 +81,7 @@ en:
       update:
         success: Purchase was successfully updated
       destroy:
-        success: Purchase was successfully deleted
+        success: "%{name}'s purchase was successfully deleted"
     wkclasses:
       create:
         success: Class was successfully added

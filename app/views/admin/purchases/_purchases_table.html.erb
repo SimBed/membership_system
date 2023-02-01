@@ -13,6 +13,7 @@
       <th scope="col">Purchase Date</th>
       <th scope="col" class="nomobile">Start to Expiry</th>
       <th scope="col" class="nomobile"></th>
+      <th scope="col" class="nomobile"></th>
     </tr>
     <% @purchases.each do |purchase| %>
       <tr class="extra_small">
@@ -26,7 +27,11 @@
         <td class="extra_small"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></td>
         <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
         <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase) %></td>
-        <!--td class="nomobile"><%#= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase and its attendances will be deleted. Are you sure?' } %></td-->
+        <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
+          <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase can deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></td>
+        <% else %>
+          <td class="nomobile"></td>
+        <% end %>           
       </tr>
     <% end %>
   </tbody>

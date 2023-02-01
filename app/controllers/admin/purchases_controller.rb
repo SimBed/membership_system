@@ -1,6 +1,6 @@
 class Admin::PurchasesController < Admin::BaseController
-  skip_before_action :admin_account
-  before_action :junioradmin_account
+  skip_before_action :admin_account, except: [:destroy]
+  before_action :junioradmin_account, except: [:destroy]
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: [:show, :edit, :update, :destroy]
   before_action :sanitize_params, only: [:create, :update]
@@ -83,7 +83,7 @@ class Admin::PurchasesController < Admin::BaseController
   def destroy
     @purchase.destroy
     redirect_to admin_purchases_path
-    flash_message :success, t('.success')
+    flash_message :success, t('.success', name: @purchase.client.name)
   end
 
   def clear_filters
