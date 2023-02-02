@@ -27,8 +27,8 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should redirect show when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
+  test 'should redirect show when not logged in as junioradmin or more senior' do
+    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_client_path(@client)
       assert_redirected_to login_path

@@ -9,7 +9,7 @@
     <% @clients.each do |client| %>
       <tr>
         <th scope="row">
-          <% if logged_in_as?('admin', 'superadmin') %>
+          <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
             <%= link_to client.name, admin_client_path(client), class: "like_button" %>
           <% else %>
             <%= client.name %>

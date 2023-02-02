@@ -1,7 +1,7 @@
 class Admin::ClientsController < Admin::BaseController
   # skip_before_action :admin_account, only: [:show]
-  skip_before_action :admin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter]
-  before_action :junioradmin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter]
+  skip_before_action :admin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter, :show]
+  before_action :junioradmin_account, only: [:index, :new, :edit, :create, :update, :clear_filters, :filter, :show]
   before_action :initialize_sort, only: :index
   # before_action :layout_set, only: [:show]
   before_action :set_client, only: [:show, :edit, :update, :destroy]

@@ -18,7 +18,7 @@
     <% @purchases.each do |purchase| %>
       <tr class="extra_small">
         <th scope="row" class="extra_small">
-          <% if logged_in_as?('admin', 'superadmin') %>
+          <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
             <%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %>
           <% else %>
             <%= purchase.client.name %>
