@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   root 'public_pages#welcome'
   # temp home page while building
   get '/welcome_home', to: 'public_pages#welcome_home'
-  get '/space_home', to: 'public_pages#space_home'
+  get '/space_home', to: 'public_pages#space_home', as: 'wip_home'
   # get '/termsconditions',  to: 'public_pages#package_policy'
   get '/signup',  to: 'public_pages#signup'
   post '/signup',  to: 'public_pages#create_account'

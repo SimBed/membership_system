@@ -132,13 +132,19 @@ img.table_icon {
     font-size: 12px;
     list-style: square; }
 
+.float {
+  position:fixed;
+	bottom: 15%;
+	right: 5%;
+}    
+
 @media (min-width: 900px) {
   body, p, ol, ul, td {
     font-size: 1.1rem; }
 
   // override components/_navbar.scss
   .navbar-brand img {
-    max-height: 3.5rem; }
+    max-height: 4.5rem; }
   
   main {
     margin: 1rem;
