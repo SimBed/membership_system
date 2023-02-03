@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   # temp home page while building
   get '/welcome_home', to: 'public_pages#welcome_home'
   get '/space_home', to: 'public_pages#space_home', as: 'wip_home'
-  # get '/termsconditions',  to: 'public_pages#package_policy'
+  get '/shop', to: 'public_pages#shop'
+  get '/sell', to: 'public_pages#sell'
   get '/signup',  to: 'public_pages#signup'
   post '/signup',  to: 'public_pages#create_account'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
@@ -63,7 +64,7 @@ Rails.application.routes.draw do
     resources :clients, only: [:show]
   end
 
-  get 'shop/index'
+  # get 'shop/index'
   get 'shop/sell'
   get 'shop/wedontsupport'
 

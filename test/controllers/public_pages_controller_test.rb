@@ -35,4 +35,9 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_redirected_to admin_partner_path(@partner)
   end
+
+  test "should get shop" do
+    get '/shop'
+    assert_response :success
+  end  
 end

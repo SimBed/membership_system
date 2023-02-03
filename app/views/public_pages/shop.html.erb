@@ -1,0 +1,55 @@
+<section>
+  <div class="px-2" id="shop">
+    <div class="col">
+      <h2>Shop</h2>
+      <div class="card bg-opaque-white">
+        <div class="card-body bg-white px-md-2">
+          <div class="accordion" id="accordion-1">
+            <% @products.each_with_index do |product, index| %>
+              <div class="accordion-item">
+                <div class="accordion-header" id=<%="heading-1-#{index}"%>>
+                  <div class="accordion-button collapsed" role="button" data-bs-toggle="collapse"
+                    data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>
+                    <div class="row g-1 g-xl-5 align-items-center">
+                      <div class="col-6 col-md-3"><%= product.workout_group.name %></div>
+                      <div class="col-6 col-md-3 text-secondary"><%= product.shop_name_classes%></div>
+                      <div class="col-6 col-md-3 text-secondary"><%= pluralize(product.max_classes, product.formal_unit)%></div>
+                      <div class="col-6 col-md-3"><span class="badge bg-primary rounded-pill">
+                      <form action="/orders" method="POST">
+                        <script
+                            src="https://checkout.razorpay.com/v1/checkout.js"
+                            data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
+
+                            data-amount="<%= "#{product.prices.first.price * 100}" %>"
+                            data-name="<%= "The Space" %>"
+                            data-description="<%= "#{product.formal_name}" %>"
+                            data-image="images/attendances.png"
+
+                            data-prefill.email="<%= "#{current_account&.email}" %>"
+                            data-theme.color="#F37254"
+                        >
+                        </script>
+                        <input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
+                        <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
+                      </form></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id=<%="collapse-1-#{index}"%> class="accordion-collapse collapse" aria-labelledby=<%="heading-1-#{index}"%>
+                  data-bs-parent="#accordion-1">
+                  <div class="accordion-body">
+                    <p class="text-secondary"><%= product.workout_group.name %></p>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+

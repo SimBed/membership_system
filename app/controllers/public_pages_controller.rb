@@ -50,6 +50,14 @@ class PublicPagesController < ApplicationController
     end
 
   end
+
+  def shop
+    @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt?}
+    render layout: 'white_canvas'
+  end
+
+  def sell
+  end
   
   private
 

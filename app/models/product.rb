@@ -34,6 +34,19 @@ class Product < ApplicationRecord
       "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
   end
 
+  def shop_name_classes
+      "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'}"
+  end  
+
+  def shop_name_duration
+    formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
+      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
+  end
+
+  def formal_unit
+    { D: 'Day', W: 'Week', M: 'Month' }[validity_unit.to_sym]
+  end  
+
   def unlimited_package?
     max_classes == 1000 && !trial?
   end

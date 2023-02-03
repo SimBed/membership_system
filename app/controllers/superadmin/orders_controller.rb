@@ -10,6 +10,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
   end
 
   def create
+    byebug
     begin
       @order = Order.process_razorpayment(order_params)
       # redirect_to :action => "show", :id => @order.id
@@ -48,7 +49,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
       redirect_to :action => "show", :id => @order.id
     rescue Exception
       flash[:alert] = "Unable to refund payment (probably not enough credit on account)."
-      redirect_to orders_path
+      redirect_to superadmin_orders_path
     end
   end
 

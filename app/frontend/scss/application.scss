@@ -136,7 +136,14 @@ img.table_icon {
   position:fixed;
 	bottom: 15%;
 	right: 5%;
-}    
+}
+
+#shop .card-body {
+  padding-left: 0rem;
+  padding-right: 0rem;
+  padding-top: 0;
+  padding-bottom: 0;  
+}
 
 @media (min-width: 900px) {
   body, p, ol, ul, td {
@@ -158,4 +165,12 @@ img.table_icon {
   .dropdown-hover >
   .dropdown-toggle:after {
     display: inline-block; }  
+
+  #shop .card-body {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;   
+
+  }    
 }

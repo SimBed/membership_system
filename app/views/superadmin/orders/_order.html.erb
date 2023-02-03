@@ -3,7 +3,7 @@
     <%= order.id %>
   </td>
   <td>
-    <%= link_to order.payment_id, order_path(order) %>
+    <%= link_to order.payment_id, superadmin_order_path(order) %>
   </td>
   <%if params[:status]== "captured" %>
     <td>

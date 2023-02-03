@@ -2,16 +2,16 @@
     <ul class="nav" id="tabs_space">
       <input type="hidden" id="target_search" value="<%= params[:status] unless params[:status].nil? %>">
       <li class="nav-item"   id="authorized">
-        <%= link_to "Authorized", orders_path({status: "authorized"}), class:"nav-link" %>
+        <%= link_to "Authorized", superadmin_orders_path({status: "authorized"}), class:"nav-link" %>
       </li>
       <li id="captured">
-        <%= link_to "Captured", orders_path({status: "captured"}), class:"nav-link" %>
+        <%= link_to "Captured", superadmin_orders_path({status: "captured"}), class:"nav-link" %>
       </li>
       <li id="refunded">
-        <%= link_to "Refunded", orders_path({status: "refunded"}), class:"nav-link" %>
+        <%= link_to "Refunded", superadmin_orders_path({status: "refunded"}), class:"nav-link" %>
       </li>
       <li id="error">
-        <%= link_to "Failed", orders_path({status: "error"}), class:"nav-link" %>
+        <%= link_to "Failed", superadmin_orders_path({status: "error"}), class:"nav-link" %>
       </li>
     </ul>
 
