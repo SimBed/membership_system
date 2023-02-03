@@ -12,18 +12,18 @@ class AddRegularExpensesTest < ActionDispatch::IntegrationTest
     assert_equal 3, RegularExpense.all.size
 
     assert_difference 'Expense.all.size', 3 do
-      get '/superadmin/regular_expenses/add'
+      get "/superadmin/regular_expenses/add?date='Jan 1 2023'"
     end
 
     # they wil be duplicates if added again so rejected
     assert_difference 'Expense.all.size', 0 do
-      get '/superadmin/regular_expenses/add'
+      get "/superadmin/regular_expenses/add?date='Jan 1 2023'"
     end
   end
 
   test 'add duplicate expenses' do
 
-    get '/superadmin/regular_expenses/add'
+    get "/superadmin/regular_expenses/add?date='Jan 1 2023'"
     assert_difference 'RegularExpense.all.size', 1 do
       RegularExpense.create(
         item: 'roti',
@@ -34,7 +34,7 @@ class AddRegularExpensesTest < ActionDispatch::IntegrationTest
 
     # only the new (non-duplicate) regular expenses should be responsible for a new expense)
     assert_difference 'Expense.all.size', 1 do
-      get '/superadmin/regular_expenses/add'
+      get "/superadmin/regular_expenses/add?date='Jan 1 2023'"
     end
   end  
 

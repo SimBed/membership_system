@@ -1,7 +1,16 @@
 <h4>Regular Expenses <%= link_to image_tag('add.png'), new_superadmin_regular_expense_path %></h4>
-<form action="/superadmin/regular_expenses/add">
-  <input type="submit" value="Add All Regular Expenses to <%= @month %>">
-</form>
+  <form action="/superadmin/regular_expenses/add" class="mb-1">
+    <input type="submit" value="Add All Regular Expenses to <%= @last_month %>">
+    <input type="hidden" name="date" value="<%= @last_month %>">
+  </form>
+  <form action="/superadmin/regular_expenses/add" class="mb-1">
+    <input type="submit" value="Add All Regular Expenses to <%= @this_month %>">
+    <input type="hidden" name="date" value="<%= @this_month %>">
+  </form>
+  <form action="/superadmin/regular_expenses/add">
+    <input type="submit" value="Add All Regular Expenses to <%= @next_month %>">
+    <input type="hidden" name="date" value="<%= @next_month %>">
+  </form>
 <div id="regular_expenses_table" class="container px-1 mb-5 margin-override">
   <table class="table table-secondary table-striped caption-top">
     <caption></caption>

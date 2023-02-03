@@ -3,7 +3,7 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
   def index
     @expenses = Expense.order_by_date
-    @months = ['All'] + months_logged
+    @months = ['All'] + months_logged(advanced: 2)
     handle_period unless params[:export_all]
     respond_to do |format|
       format.html

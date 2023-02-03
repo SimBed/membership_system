@@ -3,7 +3,9 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
 
   def index
     @regular_expenses = RegularExpense.all
-    @month = Time.zone.now.strftime('%b %Y')
+    @last_month = Time.zone.now.last_month.strftime('%b %Y')
+    @this_month = Time.zone.now.strftime('%b %Y')
+    @next_month = Time.zone.now.next_month.strftime('%b %Y')
   end
 
   def new
@@ -41,7 +43,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
   end
 
   def add
-    date = Time.zone.now.beginning_of_month.to_date
+    date = params[:date].to_date #Time.zone.now.beginning_of_month.to_date
     rejected = 0
     total = RegularExpense.all.size
     RegularExpense.all.each do |r| 
