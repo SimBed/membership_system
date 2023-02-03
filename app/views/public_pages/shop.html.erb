@@ -23,7 +23,7 @@
                             data-amount="<%= "#{product.prices.first.price * 100}" %>"
                             data-name="<%= "The Space" %>"
                             data-description="<%= "#{product.formal_name}" %>"
-                            data-image="images/attendances.png"
+                            data-image="<%= asset_path 'favicon.ico' %>"
 
                             data-prefill.email="<%= "#{current_account&.email}" %>"
                             data-theme.color="#F37254"
