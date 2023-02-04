@@ -13,25 +13,24 @@
                     <div class="row g-1 g-xl-5 align-items-center">
                       <div class="col-6 col-md-3"><%= product.workout_group.name %></div>
                       <div class="col-6 col-md-3 text-secondary"><%= product.shop_name_classes%></div>
-                      <div class="col-6 col-md-3 text-secondary"><%= pluralize(product.max_classes, product.formal_unit)%></div>
-                      <div class="col-6 col-md-3"><span class="badge bg-primary rounded-pill">
-                      <form action="/orders" method="POST">
-                        <script
-                            src="https://checkout.razorpay.com/v1/checkout.js"
-                            data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-
-                            data-amount="<%= "#{product.prices.first.price * 100}" %>"
-                            data-name="<%= "The Space" %>"
-                            data-description="<%= "#{product.formal_name}" %>"
-                            data-image="<%= asset_path 'favicon.ico' %>"
-
-                            data-prefill.email="<%= "#{current_account&.email}" %>"
-                            data-theme.color="#F37254"
-                        >
-                        </script>
-                        <input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
-                        <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
-                      </form></span>
+                      <div class="col-6 col-md-3 text-secondary"><%= pluralize(product.validity_length, product.formal_unit)%></div>
+                      <div class="col-6 col-md-3">
+                        <form action=<%= superadmin_orders_path %> method="POST">
+                          <script
+                              src="https://checkout.razorpay.com/v1/checkout.js"
+                              data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
+                              data-amount="<%= "#{product.base_price.price * 100}" %>"
+                              data-name="<%= "The Space" %>"
+                              data-description="<%= "#{product.formal_name}" %>"
+                              data-image="<%= asset_path 'favicon.ico' %>"
+                              data-prefill.email="<%= "#{current_account&.email}" %>"
+                              data-theme.color="#1a2b3c"
+                          >
+                          </script>
+                          <input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
+                          <input type="hidden" value="<%= "#{product.base_price&.id}" %>" name="price_id">                            
+                          <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -49,6 +48,59 @@
       </div>
     </div>
   </div>
+
+
+  <!--button id="rzp-button1">Pay</button-->
+<!--script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!--script>
+var options = {
+    "key": "<%#= "#{Rails.configuration.razorpay[:key_id]}" %>", // Enter the Key ID generated from the Dashboard
+    "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "notes": {
+                    "billing_name": "Stripe",
+                    "billing_address_country": "United States",
+                    "billing_address_zip": "94111",
+                    "billing_address_state": "CA",
+                    "billing_address_line1": "1234 Main Street",
+                    "billing_address_city": "San Francisco",
+                    "billing_address_country_code": "US",
+                },
+    "handler": function (response){
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script->
 </section>
 
 

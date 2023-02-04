@@ -1,5 +1,6 @@
 class Superadmin::OrdersController < Superadmin::BaseController
   skip_before_action :verify_authenticity_token
+  skip_before_action :superadmin_account, only: [:create]
   before_action :set_order, only: [:show, :refund]
 
   def index
@@ -23,7 +24,8 @@ class Superadmin::OrdersController < Superadmin::BaseController
         if @purchase.save
           flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
           # redirect_to client_history_path current_account.clients.first
-          redirect_to client_book_path current_account.clients.first
+          # redirect_to client_book_path current_account.clients.first
+          redirect_to thankyou_path
         else
           flash[:alert] = "Unable to process payment."
           redirect_to root_path

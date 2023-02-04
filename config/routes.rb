@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get '/space_home', to: 'public_pages#space_home', as: 'wip_home'
   get '/shop', to: 'public_pages#shop'
   get '/sell', to: 'public_pages#sell'
+  get '/thankyou', to: 'public_pages#thankyou'
   get '/signup',  to: 'public_pages#signup'
   post '/signup',  to: 'public_pages#create_account'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'

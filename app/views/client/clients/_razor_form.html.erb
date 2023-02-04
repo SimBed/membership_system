@@ -1,16 +1,32 @@
-<form action="/orders" method="POST">
-      <script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-          data-amount="<%= "#{@renewal[:price].discounted_price * 100}" %>"
-          data-name="<%= "The Space" %>"
-          data-description="<%= "#{@renewal[:product].formal_name}" %>"
-          data-image="/SpaceLogo.png"
-          data-prefill.email="<%= "#{current_account.email}" %>"
-          data-theme.color="#F37254"
-      >
-      </script>
-      <input type="hidden" value="<%= "#{@renewal[:product].id}" %>" name="product_id">
-      <input type="hidden" value="<%= "#{@renewal[:price].id}" %>" name="price_id">
-      <input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
-  </form>
+<form action=<%= superadmin_orders_path %> method="POST">
+	<script
+		src="https://checkout.razorpay.com/v1/checkout.js"
+		data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
+		data-amount="<%= "#{@renewal[:price].discounted_price * 100}" %>"
+		data-name="<%= "The Space" %>"
+		data-description="<%= "#{@renewal[:product].formal_name}" %>"
+		data-image="<%= asset_path 'SpaceLogo.png' %>"
+		data-prefill.email="<%= "#{current_account.email}" %>"
+		data-theme.color="#1a2b3c"
+	>
+	</script>
+	<input type="hidden" value="<%= "#{@renewal[:product].id}" %>" name="product_id">
+	<input type="hidden" value="<%= "#{@renewal[:price].id}" %>" name="price_id">
+	<input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
+</form>
+
+<form action=<%= superadmin_orders_path %> method="POST">
+	<script
+		src="https://checkout.razorpay.com/v1/checkout.js"
+		data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
+		data-amount="<%= "#{product.prices.first.price * 100}" %>"
+		data-name="<%= "The Space" %>"
+		data-description="<%= "#{product.formal_name}" %>"
+		data-image="<%= asset_path 'favicon.ico' %>"
+		data-prefill.email="<%= "#{current_account&.email}" %>"
+		data-theme.color="#1a2b3c"
+	>
+	</script>
+<input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
+<input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
+</form>
