@@ -11,24 +11,26 @@ class Superadmin::OrdersController < Superadmin::BaseController
   end
 
   def create
-    byebug
     begin
       @order = Order.process_razorpayment(order_params)
       # redirect_to :action => "show", :id => @order.id
       # if @order.cpatured maybe create account, create purchase and send twillio
       if @order.status == 'captured'
-        #renewed_purchase = Purchase.find(order_params[:purchase_id])
-        purchase_params = { client_id: current_account.clients.first.id, product_id: @order.product_id, price_id: order_params[:price_id],
-                            payment: @order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
-        @purchase = Purchase.new(purchase_params)
-        if @purchase.save
-          flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
-          # redirect_to client_history_path current_account.clients.first
-          # redirect_to client_book_path current_account.clients.first
-          redirect_to thankyou_path
+        if logged_in_as?('client')
+          #renewed_purchase = Purchase.find(order_params[:purchase_id])
+          purchase_params = { client_id: current_account.clients.first.id, product_id: @order.product_id, price_id: order_params[:price_id],
+                              payment: @order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
+          @purchase = Purchase.new(purchase_params)
+          if @purchase.save
+            flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
+            redirect_to client_history_path current_account.clients.first
+            # redirect_to client_book_path current_account.clients.first
+          else
+            flash[:alert] = "Unable to process payment."
+            redirect_to root_path
+          end
         else
-          flash[:alert] = "Unable to process payment."
-          redirect_to root_path
+          redirect_to thankyou_path
         end
       end
 

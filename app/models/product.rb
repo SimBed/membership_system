@@ -21,6 +21,10 @@ class Product < ApplicationRecord
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Space Group'") }
 
+  def css_class
+    max_classes < 1000 ? 'fixed' : 'unlimited' 
+  end
+    
   def name
     "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}"
   end

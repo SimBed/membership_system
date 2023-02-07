@@ -1,12 +1,20 @@
+
 <section>
   <div class="px-2" id="shop">
     <div class="col">
-      <h2>Shop</h2>
+        <div class="row justify-content-center mb5">
+          <div class="col-lg-10 col-xl-8 text-center">
+            <h2 class="display-2 fw-light">Shop</h2>
+              <button id="Window_btn" class="btn_product_type btn btn-filter rounded-pill current" onclick="showProduct(event, 'all')" >All</button>
+              <button id="Cellar_btn" class="btn_product_type btn btn-filter rounded-pill" onclick="showProduct(event, 'unlimited')">Unlimited</button>
+              <button id="Patio_btn" class="btn_product_type btn btn-filter rounded-pill" onclick="showProduct(event, 'fixed')">Fixed</button>
+          </div>
+        </div>
       <div class="card bg-opaque-white">
         <div class="card-body bg-white px-md-2">
           <div class="accordion" id="accordion-1">
             <% @products.each_with_index do |product, index| %>
-              <div class="accordion-item">
+              <div class="accordion-item product <%=product.css_class%>">
                 <div class="accordion-header" id=<%="heading-1-#{index}"%>>
                   <div class="accordion-button collapsed" role="button" data-bs-toggle="collapse"
                     data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>
@@ -48,60 +56,44 @@
       </div>
     </div>
   </div>
-
-
-  <!--button id="rzp-button1">Pay</button-->
-<!--script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<!--script>
-var options = {
-    "key": "<%#= "#{Rails.configuration.razorpay[:key_id]}" %>", // Enter the Key ID generated from the Dashboard
-    "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "Acme Corp",
-    "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
-    "notes": {
-                    "billing_name": "Stripe",
-                    "billing_address_country": "United States",
-                    "billing_address_zip": "94111",
-                    "billing_address_state": "CA",
-                    "billing_address_line1": "1234 Main Street",
-                    "billing_address_city": "San Francisco",
-                    "billing_address_country_code": "US",
-                },
-    "handler": function (response){
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature)
-    },
-    "prefill": {
-        "name": "Gaurav Kumar",
-        "email": "gaurav.kumar@example.com",
-        "contact": "9000090000"
-    },
-    "notes": {
-        "address": "Razorpay Corporate Office"
-    },
-    "theme": {
-        "color": "#3399cc"
-    }
-};
-var rzp1 = new Razorpay(options);
-rzp1.on('payment.failed', function (response){
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
-});
-document.getElementById('rzp-button1').onclick = function(e){
-    rzp1.open();
-    e.preventDefault();
-}
-</script->
 </section>
+
+  <script>
+	function showProduct(evt, productType) {
+
+	  var i, product, product_type_btns, display_var;
+
+    display_var = "none";
+    if (productType == 'all') {
+      display_var = "block";
+    }
+
+	  // Get all elements with class= "product" and hide them 
+	  product = document.getElementsByClassName("product");
+	  for (i = 0; i < product.length; i++) {
+    product[i].style.display = display_var;
+	  }
+
+	  // Get all elements with class="btn_product_type" and remove the class "active"
+	  product_type_btns = document.getElementsByClassName("btn_product_type");
+	  for (i = 0; i < product_type_btns.length; i++) {
+		product_type_btns[i].className = product_type_btns[i].className.replace(" current", "");
+	  }
+
+  	// Get all elements with class= "productType" and show them
+	  selected_products = document.getElementsByClassName(productType);
+	  for (i = 0; i < selected_products.length; i++) {
+		selected_products[i].style.display = "block";
+	  }  
+
+	  // add an "active" class to the button that opened the tab
+		  evt.currentTarget.className += " current";
+
+  	  // Click on option wanted to be visible as default
+  	  // document.getElementById("default"+featureName).click();
+	}
+  </script>
+
 
 
 
