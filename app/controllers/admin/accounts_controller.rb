@@ -2,6 +2,9 @@ class Admin::AccountsController < Admin::BaseController
   before_action :correct_credentials, only: [:create]
   before_action :set_account_holder, only: [:create]
   before_action :set_account, only: [:update]
+  # junioradmin can now do password reset
+  skip_before_action :admin_account,  only: [:update]
+  before_action :junioradmin_account, only: [:update]
   # accounts can't be updated/destroyed through the app
   # admin accounts cant be created through the app
 

@@ -72,7 +72,7 @@ class Whatsapp
   end
 
   def body_new_account
-    "Welcome to The Space #{@variable_contents[:first_name]}!" +
+    "Welcome to The Space #{@receiver.first_name}!" +
       "\n\nTo see details of your membership, please login:" +
       "\nEmail: the email you registered with us" +
       "\nPassword: #{@variable_contents[:password]}" +
