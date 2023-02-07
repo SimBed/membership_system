@@ -1,7 +1,7 @@
 class Order < ApplicationRecord
   include OrderConcerns::Razorpay
   belongs_to :product
-  belongs_to :account
+  belongs_to :account, optional: true
 
   [:authorized, :captured, :refunded, :error].each do |scoped_key|
     scope scoped_key, -> { where('LOWER(status) = ?', scoped_key.to_s.downcase) }

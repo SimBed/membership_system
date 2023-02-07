@@ -141,8 +141,12 @@ img.table_icon {
 #shop .card-body {
   padding-left: 0rem;
   padding-right: 0rem;
-  padding-top: 0;
-  padding-bottom: 0;  
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;  
+}
+
+#shop .btn {
+  padding: 0.5rem 1rem;
 }
 
 // more or less properties of classes badge bg-primary rounded-pill
