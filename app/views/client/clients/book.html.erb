@@ -6,9 +6,7 @@
 <% provide(:renewal_price, @renewal[:price]&.discounted_price.to_s ) %>
 <% provide(:base_price, @renewal[:base_price]&.price.to_s ) %>
 
-<div class="text-center mb-3">
-  <%= render partial: 'client_heading', locals: {selection: false} %>
-</div>
+<%= render partial: 'client_heading', locals: {selection: false} %>
 
 <div class="text-center mb-3">
   <% if @wkclasses_visible.empty? %>
@@ -20,9 +18,7 @@
       <% end %>
     </div>
   <% else %>
-    <div id="bookings-table" class="container px-1 mb-5">
-      <%= render partial: 'client_bookings_table' %>
-    </div>
+    <%= render partial: 'client_bookings_table' %>
   <% end %>
 </div>
 
@@ -31,8 +27,8 @@
 </div>
 
 <% unless @purchases.empty? %>
-  <div id="packages-table" class="container px-1">
-    <h6 class="fw-bolder fst-italic mb-0">
+  <div id="packages-table" class="container px-0">
+    <h6 class="fw-bolder fst-italic mb-0 ps-1">
       Package Status
     </h6>
     <%= render partial: 'client_packages_table', locals: {detailed: false} %>

@@ -1,7 +1,7 @@
 <% adjustments = @purchase.adjustments %>
 <% unless adjustments.count.zero? %>
   <table class="table table-secondary table-striped caption-top">
-    <caption><%= "#{pluralize(adjustments.size, 'Adjustment')} (#{pluralize(adjustments.map(&:adjustment).inject(&:+), 'day')})" %></caption>
+    <caption class="ps-1"><%= "#{pluralize(adjustments.size, 'Adjustment')} (#{pluralize(adjustments.map(&:adjustment).inject(&:+), 'day')})" %></caption>
     <thead>
       <tr>
         <th scope="col"></th>

@@ -1,8 +1,8 @@
 <table class="table table-secondary table-striped caption-top">
-  <caption class="ps-2"><%= @purchase.formal_name %> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%></caption>
+  <caption class="ps-1"><%= @purchase.formal_name %> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%></caption>
   <tbody>
     <tr>
-      <th scope="row" class="ps-2">Payment</th>
+      <th scope="row" >Payment</th>
       <td><%= rupees(@purchase.payment) %></td>
     </tr>
     <tr>

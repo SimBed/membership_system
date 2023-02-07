@@ -1,7 +1,7 @@
 <% unless @purchase.freezes.count.zero? %>
 <% freezes = @purchase.freezes %>
   <table class="table table-secondary table-striped caption-top">
-    <caption><%= "#{pluralize(freezes.size, 'Freeze')} (#{pluralize(freezes.map(&:duration).inject(&:+), 'day')})" %></caption>
+    <caption class="ps-1"><%= "#{pluralize(freezes.size, 'Freeze')} (#{pluralize(freezes.map(&:duration).inject(&:+), 'day')})" %></caption>
     <thead>
       <tr>
         <th scope="col"></th>

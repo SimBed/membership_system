@@ -1,6 +1,6 @@
 <% attendances = @purchase.attendances.no_amnesty.order_by_date %>
-  <table class="table table-secondary table-striped caption-top">
-    <caption>Attendances</caption>    
+  <table class="table table-secondary table-striped caption-top ">
+    <caption class="ps-1">Attendances</caption>    
     <tbody>
       <% attendances.each_with_index do |attendance, index| %>
         <tr>

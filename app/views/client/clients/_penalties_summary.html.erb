@@ -1,7 +1,7 @@
 <% penalties = @purchase.penalties %>
 <% unless penalties.count.zero? %>
   <table class="table table-secondary table-striped caption-top">
-    <caption><%= "#{pluralize(penalties.size, 'Penalty')} (#{pluralize(penalties.map(&:amount).inject(&:+), 'day')})" %></caption>
+    <caption class="ps-1"><%= "#{pluralize(penalties.size, 'Penalty')} (#{pluralize(penalties.map(&:amount).inject(&:+), 'day')})" %></caption>
     <thead>
       <tr>
         <th scope="col"></th>
