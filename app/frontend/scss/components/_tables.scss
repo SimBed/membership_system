@@ -16,7 +16,10 @@
 
   tr {
     > *:first-child {
-      padding-left: 0;
+    // font-weight: $font-weight-normal;
+    // DPS      
+    // padding-left: 0;
+      padding-left: rem(2);
     }
 
     > *:last-child {

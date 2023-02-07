@@ -2,57 +2,56 @@
   <hr class = "search mb-3"></hr>
 
   <%= form_with(url: wkclass_filter_path, method: "get", local: false, class: "form-class") do %>
-  <div class="container mb-1 px-0">
-  <div class="row">
-    <div class="col-4 px-0">
-    <fieldset>
-      <legend>WORKOUT</legend>
-      <% @workout.each do |wk| %>
-        <%= label_tag nil, class: "chbox-lbl-filters" do %>
-          <%= check_box_tag 'any_workout_of[]', wk, session[:filter_any_workout_of].present? ? session[:filter_any_workout_of].include?(wk) : false, id: "chbox#{wk}", onchange: 'Rails.fire(this.form, "submit")' %>
-          <%= wk %>
-        <% end %>
-      <% end %>
-    </fieldset>
+    <div class="container mb-1 px-1">
+      <div class="row">
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>WORKOUT</legend>
+            <% @workout.each do |wk| %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'any_workout_of[]', wk, session[:filter_any_workout_of].present? ? session[:filter_any_workout_of].include?(wk) : false, id: "chbox#{wk}", onchange: 'Rails.fire(this.form, "submit")' %>
+                <%= wk %>
+              <% end %>
+            <% end %>
+          </fieldset>
+        </div>
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>ATTRIBUTE</legend>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%#= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
+              <%= check_box_tag 'in_workout_group', 'Space Group', session[:filter_in_workout_group].present? ? true : false, class: "checkbox-class", id: "chbox_in_workout_group", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Space group' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'todays_class', 'todays_class', session[:filter_todays_class].present? ? true : false, class: "checkbox-class", id: "chbox_todays_class",onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Today' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'yesterdays_class', 'yesterdays_class', session[:filter_yesterdays_class].present? ? true : false, class: "checkbox-class", id: "chbox_yesterdays_class", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Yesterday' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'tomorrows_class', 'tomorrows_class', session[:filter_tomorrows_class].present? ? true : false, class: "checkbox-class", id: "chbox_tomorrows_class", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Tomorrow' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'past', 'past', session[:filter_past].present? ? true : false, class: "checkbox-class", id: "chbox_past", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Past' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'future', 'future', session[:filter_future].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Future' %>
+            <% end %>
+          </fieldset>
+        </div>
+        <fieldset class="mt-2">
+          <select name="classes_period" onchange="this.form.submit()" class= "sort">
+            <%= options_for_select @months, session[:classes_period] %>
+          </select>
+        </fieldset>
+      </div>
     </div>
-    <div class="col-4 px-0">
-    <fieldset>
-      <legend>ATTRIBUTE</legend>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%#= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
-        <%= check_box_tag 'in_workout_group', 'Space Group', session[:filter_in_workout_group].present? ? true : false, class: "checkbox-class", id: "chbox_in_workout_group", onchange: 'Rails.fire(this.form, "submit")'  %>
-        <%= 'Space group' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'todays_class', 'todays_class', session[:filter_todays_class].present? ? true : false, class: "checkbox-class", id: "chbox_todays_class",onchange: 'Rails.fire(this.form, "submit")'  %>
-        <%= 'Today' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'yesterdays_class', 'yesterdays_class', session[:filter_yesterdays_class].present? ? true : false, class: "checkbox-class", id: "chbox_yesterdays_class", onchange: 'Rails.fire(this.form, "submit")'  %>
-        <%= 'Yesterday' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'tomorrows_class', 'tomorrows_class', session[:filter_tomorrows_class].present? ? true : false, class: "checkbox-class", id: "chbox_tomorrows_class", onchange: 'Rails.fire(this.form, "submit")'  %>
-        <%= 'Tomorrow' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'past', 'past', session[:filter_past].present? ? true : false, class: "checkbox-class", id: "chbox_past", onchange: 'Rails.fire(this.form, "submit")'  %>
-        <%= 'Past' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'future', 'future', session[:filter_future].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
-        <%= 'Future' %>
-      <% end %>
-    </fieldset>
-    </div>
-    <fieldset class="mt-2">
-      <select name="classes_period" onchange="this.form.submit()" class= "sort">
-        <%= options_for_select @months, session[:classes_period] %>
-      </select>
-    </fieldset>
-  </div>
-
   <% end %>
   <hr class = "search mb-3"></hr>
-
 </div>

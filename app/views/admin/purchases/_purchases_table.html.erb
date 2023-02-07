@@ -1,38 +1,40 @@
-<div class="page_entries_info">
-  <%= paginate @purchases, remote: true %>
-  <%= page_entries_info @purchases %>
-</div>
+<div id="purchases-table" class="container px-0 mb-5 margin-override">
+  <div class="page_entries_info px-1">
+    <%= paginate @purchases, remote: true %>
+    <%= page_entries_info @purchases %>
+  </div>
 
-<table class="table table-secondary table-striped caption-top">
-  <% if logged_in_as?('superadmin') %>
-    <caption><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
-  <% end %>
-  <tbody>
-    <tr class="extra_small">
-      <th scope="col">Client</th>
-      <th scope="col">Purchase Date</th>
-      <th scope="col" class="nomobile">Start to Expiry</th>
-      <th scope="col" class="nomobile"></th>
-      <th scope="col" class="nomobile"></th>
-    </tr>
-    <% @purchases.each do |purchase| %>
-      <tr class="extra_small">
-        <th scope="row" class="extra_small">
-          <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
-            <%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %>
-          <% else %>
-            <%= purchase.client.name %>
-          <% end %>
-        </th>
-        <td class="extra_small"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></td>
-        <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
-        <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase) %></td>
-        <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
-          <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase can deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></td>
-        <% else %>
-          <td class="nomobile"></td>
-        <% end %>           
-      </tr>
+  <table class="table table-secondary table-striped caption-top">
+    <% if logged_in_as?('superadmin') %>
+      <caption class="px-1"><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
     <% end %>
-  </tbody>
-</table>
+    <tbody>
+      <tr class="extra_small">
+        <th scope="col">Client</th>
+        <th scope="col">Purchase Date</th>
+        <th scope="col" class="nomobile">Start to Expiry</th>
+        <th scope="col" class="nomobile"></th>
+        <th scope="col" class="nomobile"></th>
+      </tr>
+      <% @purchases.each do |purchase| %>
+        <tr class="extra_small">
+          <th scope="row" class="extra_small">
+            <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
+              <%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %>
+            <% else %>
+              <%= purchase.client.name %>
+            <% end %>
+          </th>
+          <td class="extra_small"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></td>
+          <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
+          <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase) %></td>
+          <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
+            <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase can deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></td>
+          <% else %>
+            <td class="nomobile"></td>
+          <% end %>           
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>  

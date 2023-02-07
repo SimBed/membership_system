@@ -1,33 +1,35 @@
-<table class="table table-secondary table-striped caption-top">
-  <tbody>
-    <tr>
-      <th scope="col">Product</th>
-      <% if logged_in_as?('admin', 'superadmin') %>
-        <th scope="col">Ongoing Count</th>
-      <% end %>
-      <th scope="col">Base (Rs)</th>
-      <th scope="col">Early Renew (Rs)</th>
-      <th scope="col">Pre Trial Expiry (Rs)</th>
-      <th scope="col">Post Trial Expiry (Rs)</th>
-      <% if logged_in_as?('admin') %>
-        <th scope="col"></th>
-      <% end %>
-    </tr>
-    <% @products.each do |product| %>
+<div id="products-table" class="container px-0 mb-5 margin-override">
+  <table class="table table-secondary table-striped caption-top">
+    <tbody>
       <tr>
-        <th scope="row" class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
+        <th scope="col">Product</th>
         <% if logged_in_as?('admin', 'superadmin') %>
-          <td><%= @product_count[product.name.to_sym] %></td>
+          <th scope="col">Ongoing Count</th>
         <% end %>
-        <td><%= number_with_delimiter(product.renewal_price("base")&.discounted_price) %></td>
-        <td><%= number_with_delimiter(product.renewal_price("renewal_pre_expiry")&.discounted_price) %></td>
-        <td><%= number_with_delimiter(product.renewal_price("renewal_pretrial_expiry")&.discounted_price) %></td>
-        <td><%= number_with_delimiter(product.renewal_price("renewal_posttrial_expiry")&.discounted_price) %></td>
-        <%# if logged_in_as?('superadmin') %>
-          <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
-        <%# end %>
-        <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }%></td-->
+        <th scope="col">Base (Rs)</th>
+        <th scope="col">Early Renew (Rs)</th>
+        <th scope="col">Pre Trial Expiry (Rs)</th>
+        <th scope="col">Post Trial Expiry (Rs)</th>
+        <% if logged_in_as?('admin') %>
+          <th scope="col"></th>
+        <% end %>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      <% @products.each do |product| %>
+        <tr>
+          <th scope="row" class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
+          <% if logged_in_as?('admin', 'superadmin') %>
+            <td><%= @product_count[product.name.to_sym] %></td>
+          <% end %>
+          <td><%= number_with_delimiter(product.renewal_price("base")&.discounted_price) %></td>
+          <td><%= number_with_delimiter(product.renewal_price("renewal_pre_expiry")&.discounted_price) %></td>
+          <td><%= number_with_delimiter(product.renewal_price("renewal_pretrial_expiry")&.discounted_price) %></td>
+          <td><%= number_with_delimiter(product.renewal_price("renewal_posttrial_expiry")&.discounted_price) %></td>
+          <%# if logged_in_as?('superadmin') %>
+            <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
+          <%# end %>
+          <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }%></td-->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,17 +1,11 @@
 <div class="container px-1 margin-override">
   <h4> Purchases <%= link_to image_tag('add.png'), new_admin_purchase_path %></h4>
 </div>
-<div id="purchases-filter" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'filter_form' %>
-</div>
+<%= render partial: 'filter_form' %>
 <% if logged_in_as?('superadmin') %>
-<div class="container px-1 margin-override">  
   <%= render partial: 'download' %>
-</div>
 <% end %>
-<div id="purchases-table" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'purchases_table' %>
-</div>
+<%= render partial: 'purchases_table' %>
 <% if logged_in_as?('superadmin') %>
   <%= line_chart @purchase_count_for_chart, ytitle: "Count" %>
   <%= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>

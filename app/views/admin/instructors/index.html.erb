@@ -1,4 +1,6 @@
-<h4>Instructors <%= link_to image_tag('add.png'), new_admin_instructor_path %></h4>
-<div id="instructors_table" class="container px-1 mb-5 margin-override">
+<div class="container px-1 margin-override mb-1">
+  <h4>Instructors <%= link_to image_tag('add.png'), new_admin_instructor_path %></h4>
+</div>  
+<div id="instructors_table" class="container px-0 mb-5 margin-override">
   <%= render partial: 'instructors_table' %>
 </div>
