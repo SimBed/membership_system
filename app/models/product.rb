@@ -21,6 +21,19 @@ class Product < ApplicationRecord
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Space Group'") }
 
+  def self.order_by_wg_classes_days
+    # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id    
+    Product.find_by_sql("SELECT products.*, CASE
+                                    WHEN validity_unit = 'M' THEN validity_length * 30
+                                    WHEN validity_unit = 'W' THEN validity_length * 7
+                                    ELSE validity_length * 1 END 
+                                    AS days
+                        FROM products
+                        INNER JOIN workout_groups w ON products.workout_group_id = w.id
+                        WHERE max_classes > 1
+                        ORDER BY name, max_classes, days;")
+  end
+
   def css_class
     max_classes < 1000 ? 'fixed' : 'unlimited' 
   end
