@@ -21,7 +21,7 @@ class Product < ApplicationRecord
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Space Group'") }
 
-  def self.order_by_wg_classes_days
+  def self.online_order_by_wg_classes_days
     # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id    
     Product.find_by_sql("SELECT products.*, CASE
                                     WHEN validity_unit = 'M' THEN validity_length * 30
@@ -30,7 +30,7 @@ class Product < ApplicationRecord
                                     AS days
                         FROM products
                         INNER JOIN workout_groups w ON products.workout_group_id = w.id
-                        WHERE max_classes > 1
+                        WHERE max_classes > 1 AND sellonline = true
                         ORDER BY name, max_classes, days;")
   end
 

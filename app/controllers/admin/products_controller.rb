@@ -94,6 +94,9 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def product_params
-    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :workout_group_id)
+    # the update method (and therefore the product_params method) is used through a form but also clicking on a link on the products page    
+    return {sellonline: params[:sellonline] } if params[:sellonline].present?
+
+    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :workout_group_id, :sellonline)
   end
 end
