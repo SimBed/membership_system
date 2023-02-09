@@ -52,7 +52,7 @@ class Product < ApplicationRecord
   end
 
   def shop_name_classes
-      "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'}"
+      "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited'}"
   end  
 
   def shop_name_duration

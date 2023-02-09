@@ -164,6 +164,34 @@ img.table_icon {
   vertical-align: baseline;
 }
 
+#shop .name {
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}  
+#shop .classes {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}  
+#shop .duration {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}  
+#shop .base-price {
+  text-decoration: line-through;  
+  font-size: 0.8rem;
+  font-weight: 500;
+}  
+#shop .discount-price {
+  font-size: 0.8rem;
+  font-weight: 500;
+}  
+
 @media (min-width: 900px) {
   body, p, ol, ul, td {
     font-size: 1.1rem; }
@@ -190,6 +218,33 @@ img.table_icon {
     padding-right: 2rem;
     padding-top: 2rem;
     padding-bottom: 2rem;   
+  }
 
+  #shop .name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .classes {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .duration {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .base-price {
+    text-decoration: line-through;  
+    font-size: 0.9rem;
+    font-weight: 500;
+  }  
+  #shop .discount-price {
+    font-size: 0.9rem;
+    font-weight: 500;
   }    
 }

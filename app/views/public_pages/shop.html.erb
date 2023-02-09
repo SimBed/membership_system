@@ -9,43 +9,51 @@
               <button id="Patio_btn" class="btn_product_type btn btn-filter rounded-pill" onclick="showProduct(event, 'fixed')">Fixed</button>
           </div>
         </div>
-      <div class="container card bg-opaque-white" data-aos="fade-right">
+      <div class="container px-0 ps-sm-10 card bg-opaque-white" data-aos="fade-right">
         <div class="card-body bg-white px-md-2">
           <div class="accordion" id="accordion-1">
             <% @products.each_with_index do |product, index| %>
               <div class="accordion-item product <%=product.css_class%>">
                 <div class="accordion-header" id=<%="heading-1-#{index}"%>>
-                  <div class="accordion-button collapsed" role="button" data-bs-toggle="collapse"
+                  <div class="accordion-button collapsed justify-content-around py-2 py-md-3" role="button" data-bs-toggle="collapse"
                     data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>
-                    <div class="row g-1 g-xl-5 align-items-center">
-                      <div class="col-6 col-md-3"><%= product.workout_group.name %></div>
-                      <div class="col-6 col-md-3 text-secondary"><%= product.shop_name_classes%></div>
-                      <div class="col-6 col-md-3 text-secondary"><%= pluralize(product.validity_length, product.formal_unit)%></div>
-                      <div class="col-6 col-md-3">
-                        <form action=<%= superadmin_orders_path %> method="POST">
-                          <script
-                              src="https://checkout.razorpay.com/v1/checkout.js"
-                              data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-                              data-amount="<%= "#{product.base_price.price * 100}" %>"
-                              data-name="<%= "The Space" %>"
-                              data-description="<%= "#{product.formal_name}" %>"
-                              data-image="<%= asset_path 'favicon.ico' %>"
-                              data-prefill.email="<%= "#{current_account&.email}" %>"
-                              data-theme.color="#1a2b3c"
-                          >
-                          </script>
-                          <input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
-                          <input type="hidden" value="<%= "#{product.base_price&.id}" %>" name="price_id">                            
-                          <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
-                        </form>
+                    <div class="d-flex g-1 g-xl-5 align-items-center pe-3">
+                      <div class="d-flex flex-column align-items-start pe-3" style="height: 3.5rem;">
+                        <div class="mb-auto pe-md-5 name"><%= product.workout_group.name %></div>
+                        <div class="pe-md-5 classes"><%= product.shop_name_classes%></div>
+                        <div class="pe-md-5 duration"><%= pluralize(product.validity_length, product.formal_unit)%></div>
                       </div>
+                      <div class="d-flex flex-column"">
+                        <% unless product.trial? %>
+                          <div class="pe2 base-price"><%= rupees(product.base_price.price) %></div>
+                        <% end %>
+                        <div class="pe2 discount-price"><%= rupees(product.renewal_price('renewal_pre_expiry').price) %></div>
+                      </div>
+                        <div class="ps-3">
+                          <form action=<%= superadmin_orders_path %> method="POST">
+                            <script
+                                src="https://checkout.razorpay.com/v1/checkout.js"
+                                data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
+                                data-amount="<%= "#{product.base_price.price * 100}" %>"
+                                data-name="<%= "The Space" %>"
+                                data-description="<%= "#{product.formal_name}" %>"
+                                data-image="<%= asset_path 'favicon.ico' %>"
+                                data-prefill.email="<%= "#{current_account&.email}" %>"
+                                data-theme.color="#1a2b3c"
+                            >
+                            </script>
+                            <input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
+                            <input type="hidden" value="<%= "#{product.base_price&.id}" %>" name="price_id">                            
+                            <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
+                          </form>
+                        </div>
                     </div>
                   </div>
                 </div>
                 <div id=<%="collapse-1-#{index}"%> class="accordion-collapse collapse" aria-labelledby=<%="heading-1-#{index}"%>
                   data-bs-parent="#accordion-1">
                   <div class="accordion-body">
-                    <p class="text-secondary"><%= product.workout_group.name %></p>
+                    <p class="text-secondary"><%= link_to 'Terms & Conditions', '/terms&conditions' %> apply. Unlimited Class Packages allow attendance at a maximum of 1 class attendance per day.</p>
                   </div>
                 </div>
               </div>
