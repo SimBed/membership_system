@@ -1,5 +1,6 @@
 class PublicPagesController < ApplicationController
   before_action :set_timetable, only: [:welcome, :space_home]
+  before_action :account_limit, only: [:create_account]  
   layout 'public'
   
   def welcome
@@ -25,11 +26,12 @@ class PublicPagesController < ApplicationController
 
   def signup
     @account = Account.new
+    @client = Account.new
     render layout: 'login'
   end 
 
   def create_account
-    'check maximum daily accounts not exceeded'
+    # 'check maximum daily accounts not exceeded'
     @client = Client.new(client_params)
     if @client.save
       @password = Account.password_wizard(6)
@@ -43,10 +45,12 @@ class PublicPagesController < ApplicationController
         # flash_message :success, t('.success', name: @client.name)
       else
         flash.now[:danger] = 'Unable to create account for client, please contact The Space'
+        render 'signup', layout: 'login'
       end
     else
       flash.now[:danger] = 'Unable to create account, please contact The Space'
-      # render 'signup'
+      @account = Account.new
+      render 'signup', layout: 'login'
     end
 
   end
@@ -79,6 +83,17 @@ class PublicPagesController < ApplicationController
     @days = @timetable.table_days.order_by_day    
   end
 
+  def account_limit
+    daily_accounts_count = Account.where("DATE(created_at)='#{Date.today.to_date}'").size
+    # Setting/I18n
+    if daily_accounts_count > 10
+      # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
+      Whatsapp.new(receiver:'me', message_type:'new_purchase', variable_contents: { first_name: 'Dan', me: true }).manage_messaging
+      redirect_to signup_path
+      flash[:warning] = 'Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.'
+    end
+  end
+
   def associate_account_holder_to_account
     @client.update(account_id: @account.id)
   end
@@ -92,5 +107,11 @@ class PublicPagesController < ApplicationController
     activation_params = { activated: true, ac_type: 'client' }
     params.require(:account).permit(:email).merge(activation_params).merge(password_params)
   end
+
+  # def whatsapp_params(message_type)
+  #   { receiver: @account_holder,
+  #     message_type: message_type,
+  #      }      
+  # end  
 
 end

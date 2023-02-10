@@ -3,7 +3,7 @@ class Whatsapp
     @receiver = attributes[:receiver]
     @message_type = attributes[:message_type]
     @variable_contents = attributes[:variable_contents]
-    @to_number = @receiver.whatsapp_messaging_number
+    @to_number = @receiver.is_a?(Client) ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
   end
 
   def manage_messaging
@@ -18,6 +18,8 @@ class Whatsapp
     # return [:warning, "Personal Training purchase. Send details to client manually."] if @receiver.pt? && @message_type == 'new_purchase'
 
     send_whatsapp
+    return [nil] if @variable_contents[:me] == true
+
     return [:warning, "Thank you for your renewal. You should receive a whatsapp message shortly to confirm"] if @message_type == 'renew'
 
     [:warning, "#{@message_type} message sent to #{@to_number}"]
