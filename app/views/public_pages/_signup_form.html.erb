@@ -1,4 +1,4 @@
-<%= form_with(scope: :account, url: signup_path ) do |form| %>
+<%= form_with(scope: :client, url: signup_path ) do |form| %>
   <% if account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(account.errors.count, "error") %> prohibited this account from being created:</h2>
@@ -21,32 +21,36 @@
   <% end %>  
 
   <div class="field">
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name, class: 'form-control' %>
+    <%= form.label :first_name, class: "form-mandatory" %>
+    <%= form.text_field :first_name, class: 'form-control',placeholder: "mandatory" %>
   </div>
 
   <div class="field">
-    <%= form.label :last_name %>
+    <%= form.label :last_name, class: "form-mandatory" %>
     <%= form.text_field :last_name, class: 'form-control' %>
   </div>
 
   <div class="field">
-    <%= form.label :email %>
+    <%= form.label :email, class: "form-mandatory" %>
     <%= form.text_field :email, class: 'form-control' %>
   </div>
 
   <div class="field">
+    <%= form.label :whatsapp, class: "form-mandatory" %>
+    <span class="sub-label">(you will be sent your account password on this number. Only used for important updates on your account, never spam)</span>    
+    <%= form.text_field :whatsapp, class: 'form-control' %>
+
+  </div>
+
+  <div class="field">
     <%= form.label :phone %>
+    <span class="sub-label">helpful if you have a different number for calls than for whatsapp</span>
     <%= form.text_field :phone, class: 'form-control' %>
   </div>
 
-  <div class="field">
-    <%= form.label :whatsapp %>
-    <%= form.text_field :whatsapp, class: 'form-control' %>
-  </div>
-
-  <div class="field">
+  <div class="field mb-3">
     <%= form.label :instagram %>
+    <span class="sub-label">if you are ok with the occasional #hashtag</span>    
     <%= form.text_field :instagram, class: 'form-control' %>
   </div>
 

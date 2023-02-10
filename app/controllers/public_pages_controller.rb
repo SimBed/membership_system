@@ -99,13 +99,13 @@ class PublicPagesController < ApplicationController
   end
   
   def client_params
-    params.require(:account).permit(:first_name, :last_name, :email, :phone, :whatsapp, :instagram)
+    params.require(:client).permit(:first_name, :last_name, :email, :phone, :whatsapp, :instagram).merge(modifier_is_admin: false)
   end
   
   def account_params
     password_params = { password: @password, password_confirmation: @password }
     activation_params = { activated: true, ac_type: 'client' }
-    params.require(:account).permit(:email).merge(activation_params).merge(password_params)
+    params.require(:client).permit(:email).merge(activation_params).merge(password_params)
   end
 
   # def whatsapp_params(message_type)

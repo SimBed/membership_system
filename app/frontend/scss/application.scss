@@ -190,7 +190,19 @@ img.table_icon {
 #shop .discount-price {
   font-size: 0.8rem;
   font-weight: 500;
-}  
+}
+
+.form-mandatory::after {
+  content: "  (mandatory)";
+  font-size: 0.7rem;
+  color: blue
+}
+
+span.sub-label {
+  font-size: 0.7rem;
+  color: blue
+}
+
 
 @media (min-width: 900px) {
   body, p, ol, ul, td {

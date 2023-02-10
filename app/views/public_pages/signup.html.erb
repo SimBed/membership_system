@@ -1,8 +1,11 @@
 <% provide(:title, "Signup") %>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <h2>Sign up</h2>
+  <div class="col-md-6 pe-0">
+    <div class="mb-3">
+      <h2 class="mb-0">Sign up</h2>
+      <span class="sub-label">(Once signed up, you can complete your purchase)</span>
+    </div>
     <%= render 'signup_form', account: @account %>
   </div>
 </div>

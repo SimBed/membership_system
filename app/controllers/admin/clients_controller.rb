@@ -93,7 +93,9 @@ class Admin::ClientsController < Admin::BaseController
     return {waiver: params[:waiver] } if params[:waiver].present?
     return {instawaiver: params[:instawaiver] } if params[:instawaiver].present?
 
-    params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note)
+    # necessary so validation of Client model vary from admin to client (relevant in new account signup form)
+    # editor_params = { modifier_is_admin: logged_in_as?('junioradmin', 'admin', 'superadmin') }
+    params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note).merge(modifier_is_admin: true)
   end
 
   def initialize_sort

@@ -9,6 +9,10 @@ class Client < ApplicationRecord
   # validates :first_name, uniqueness: {scope: :last_name}
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
+  # admin can create clients with less onerous validation than when clients create clients through the signup form
+  with_options unless: :modifier_is_admin do
+    validates :email, presence: true
+  end
   validate :full_name_must_be_unique
   unless Rails.env.development?
     # helpful to use my phone number for mutiple clients in development
@@ -59,6 +63,9 @@ class Client < ApplicationRecord
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
 
   paginates_per 50
+
+  # see client_params in ClientsController
+  attr_accessor :modifier_is_admin
 
   # would like to use #or method eg Client.recently_attended.or(Client.packagee) but couldn't resolve error:
   # Relation passed to #or must be structurally compatible. Incompatible values: [:joins, :distinct]
