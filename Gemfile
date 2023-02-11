@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.0.1'
 gem 'bcrypt'
 gem "chartkick", "~> 4.2"
+gem 'country_select', '~> 8.0'  
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem "groupdate", "~> 6.1"

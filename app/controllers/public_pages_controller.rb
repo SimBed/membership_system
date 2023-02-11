@@ -41,7 +41,7 @@ class PublicPagesController < ApplicationController
         flash_message :success, t('.success')
         # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
         redirect_to login_path
-        flash[:success] = 'Account created. Please login to make a purchase.'
+        flash[:success] = "Welcome to The Space #{@client.first_name}. Your account has been created. Please login to make a purchase."
         # flash_message :success, t('.success', name: @client.name)
       else
         flash.now[:danger] = 'Unable to create account for client, please contact The Space'
@@ -99,7 +99,7 @@ class PublicPagesController < ApplicationController
   end
   
   def client_params
-    params.require(:client).permit(:first_name, :last_name, :email, :phone, :whatsapp, :instagram).merge(modifier_is_admin: false)
+    params.require(:client).permit(:first_name, :last_name, :email, :phone, :whatsapp, :whatsapp_country_code, :instagram).merge(modifier_is_admin: false)
   end
   
   def account_params

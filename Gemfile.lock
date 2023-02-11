@@ -81,6 +81,10 @@ GEM
     chartkick (4.2.1)
     childprocess (4.1.0)
     concurrent-ruby (1.1.10)
+    countries (5.3.1)
+      unaccent (~> 0.3)
+    country_select (8.0.1)
+      countries (~> 5.0)
     crass (1.0.6)
     daemons (1.4.1)
     delayed_job (4.1.11)
@@ -251,6 +255,7 @@ GEM
       nokogiri (>= 1.6, < 2.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    unaccent (0.4.0)
     unicode-display_width (2.3.0)
     web-console (4.2.0)
       actionview (>= 6.0.0)
@@ -283,6 +288,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   chartkick (~> 4.2)
+  country_select (~> 8.0)
   daemons
   delayed_job_active_record
   groupdate (~> 6.1)

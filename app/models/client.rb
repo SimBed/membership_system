@@ -6,6 +6,9 @@ class Client < ApplicationRecord
   belongs_to :account, optional: true
   before_save :downcase_email
   before_save :uppercase_names
+  # https://stackoverflow.com/questions/6249475/ruby-on-rails-callback-what-is-difference-between-before-save-and-before-crea
+  # dont want the method called on updates, otherwaie end up with multiple +91s added to the number
+  before_validation :apply_country_code, on: :create  
   # validates :first_name, uniqueness: {scope: :last_name}
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
@@ -65,7 +68,7 @@ class Client < ApplicationRecord
   paginates_per 50
 
   # see client_params in ClientsController
-  attr_accessor :modifier_is_admin
+  attr_accessor :modifier_is_admin, :whatsapp_country_code
 
   # would like to use #or method eg Client.recently_attended.or(Client.packagee) but couldn't resolve error:
   # Relation passed to #or must be structurally compatible. Incompatible values: [:joins, :distinct]
@@ -222,6 +225,10 @@ class Client < ApplicationRecord
     # self.first_name = first_name.split.map(&:capitalize)
     self.first_name = first_name.titleize
     self.last_name = last_name.titleize
+  end
+
+  def apply_country_code
+    self.whatsapp = [whatsapp_country_code, whatsapp].compact.join if self.whatsapp_country_code.present?
   end
 
   def full_name_must_be_unique
