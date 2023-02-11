@@ -11,6 +11,15 @@ class Client::ClientsController < ApplicationController
     
   end
 
+  def shop
+    # @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt? || p.base_price.nil?}
+    @products = Product.online_order_by_wg_classes_days.reject {|p| p.base_price.nil?}
+    # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
+    # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
+    ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
+    render template: 'public_pages/shop.html' #, layout: 'white_canvas'
+  end
+
   def book
     @wkclasses_visible = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
     @wkclasses_window_closed = @wkclasses_visible.select { |w| w.booking_window.end < Time.zone.now }
