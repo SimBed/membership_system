@@ -352,6 +352,9 @@ class Purchase < ApplicationRecord
   end
 
   def fitternity_payment
+    # if something weird happens and price is nil this will get picked up by the required validation asscociated with belongs_to, but not beofre the sytem crashes with price.name (or 'in? nil' if changed to price&.name)
+    return if price.nil?
+
     if ('Fitternity'.in? price.name) && (payment_mode != 'Fitternity')
       errors.add(:base, 'A Fitternity price must have a Fitternity payment mode')
     end
