@@ -20,7 +20,9 @@ class Whatsapp
     send_whatsapp
     return [nil] if @variable_contents[:me] == true
 
-    return [:warning, "Thank you for your renewal. You should receive a whatsapp message shortly to confirm"] if @message_type == 'renew'
+    return [:success, "Thank you for your renewal. You should receive a whatsapp message shortly to confirm"] if @message_type == 'renew'
+
+    return [:success, "Welcome to The Space #{@receiver.first_name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."] if @message_type == 'new_signup'
 
     [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
@@ -71,6 +73,15 @@ class Whatsapp
     "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
     "\n \nLogin to your account to renew or contact us to discuss more options." +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
+  end
+
+  def body_new_signup
+    "Welcome to The Space #{@receiver.first_name}!" +
+      "\n\nYou should already be logged in to your new account." +
+      "\nYou will need these details to login in future:" +
+      "\nEmail: the email you registered with us" +
+      "\nPassword: #{@variable_contents[:password]}" +
+      "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
   def body_new_account

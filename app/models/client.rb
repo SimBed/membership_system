@@ -134,6 +134,10 @@ class Client < ApplicationRecord
     Client.enquiry.exists?(id: id)
   end
 
+  def has_purchased?
+    !purchases.size.zero?
+  end
+
   def deletable?
     return true if purchases.empty? & account.nil?
 

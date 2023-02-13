@@ -31,20 +31,20 @@ class PublicPagesController < ApplicationController
   end 
 
   def create_account
-    # 'check maximum daily accounts not exceeded'
     @client = Client.new(client_params)
     if @client.save
       @password = Account.password_wizard(6)
       @account = Account.new(account_params)
       if @account.save
         associate_account_holder_to_account
-        flash_message :success, t('.success')
+        # flash_message :success, t('.success')
         # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
         # redirect_to login_path
         # flash[:success] = "Welcome to The Space #{@client.first_name}. Your account has been created. Please login to make a purchase."
         log_in @account
         redirect_to client_shop_path @client
-        flash[:success] = "Welcome to The Space #{@client.first_name}. Your account has been created. You will receive a whatsapp with your password to login in future. Please contact The Space if you need any help to complete your purchase."        
+        flash_message(*Whatsapp.new(whatsapp_params('new_signup')).manage_messaging)
+        # flash[:success] = "Welcome to The Space #{@client.first_name}. Your account has been created. You will receive a whatsapp with your password to login in future. Please contact The Space if you need any help to complete your purchase."        
         # flash_message :success, t('.success', name: @client.name)
       else
         flash.now[:danger] = 'Unable to create account for client, please contact The Space'
@@ -111,10 +111,10 @@ class PublicPagesController < ApplicationController
     params.require(:client).permit(:email).merge(activation_params).merge(password_params)
   end
 
-  # def whatsapp_params(message_type)
-  #   { receiver: @account_holder,
-  #     message_type: message_type,
-  #      }      
-  # end  
+  def whatsapp_params(message_type)
+    { receiver: @client,
+      message_type: message_type,
+      variable_contents: { password: @password } }      
+  end
 
 end
