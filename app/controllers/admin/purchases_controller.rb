@@ -61,7 +61,6 @@ class Admin::PurchasesController < Admin::BaseController
       # equivalent to redirect_to admin_purchase_path @purchase
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
-      # flash[:success] = t('.success')
       post_purchase_processing
     else
       prepare_items_for_dropdowns

@@ -91,7 +91,7 @@ class PublicPagesController < ApplicationController
     # Setting/I18n
     if daily_accounts_count > 10
       # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
-      Whatsapp.new(receiver:'me', message_type:'new_purchase', variable_contents: { first_name: 'Dan', me: true }).manage_messaging
+      Whatsapp.new(receiver:'me', message_type:'new_purchase', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging
       redirect_to signup_path
       flash[:warning] = 'Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.'
     end
@@ -114,6 +114,7 @@ class PublicPagesController < ApplicationController
   def whatsapp_params(message_type)
     { receiver: @client,
       message_type: message_type,
+      admin_triggered: false,
       variable_contents: { password: @password } }      
   end
 

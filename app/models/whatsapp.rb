@@ -2,6 +2,7 @@ class Whatsapp
   def initialize(attributes = {})
     @receiver = attributes[:receiver]
     @message_type = attributes[:message_type]
+    @admin_triggered = attributes[:admin_triggered] || true
     @variable_contents = attributes[:variable_contents]
     @to_number = @receiver.is_a?(Client) ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
   end
@@ -12,19 +13,14 @@ class Whatsapp
     return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
-    return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? unless @message_type == 'renew'
+    return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @admin_triggered
+    # return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? unless @message_type == 'renew'
 
     # return [nil] unless white_list_whatsapp_receivers
     # return [:warning, "Personal Training purchase. Send details to client manually."] if @receiver.pt? && @message_type == 'new_purchase'
 
     send_whatsapp
-    return [nil] if @variable_contents[:me] == true
-
-    return [:success, "Thank you for your renewal. You should receive a whatsapp message shortly to confirm"] if @message_type == 'renew'
-
-    return [:success, "Welcome to The Space #{@receiver.first_name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."] if @message_type == 'new_signup'
-
-    [:warning, "#{@message_type} message sent to #{@to_number}"]
+    post_send_whatsapp_flash
   end
 
   def send_whatsapp
@@ -44,6 +40,17 @@ class Whatsapp
     @account_sid = Rails.configuration.twilio[:account_sid]
     @auth_token = Rails.configuration.twilio[:auth_token]
     @from_number = Rails.configuration.twilio[:whatsapp_number]
+  end
+
+  def post_send_whatsapp_flash
+    return [nil] if @variable_contents[:me?]
+
+    return [:success, I18n.t(:renew)] if @message_type == 'renew'
+
+    return [:success, I18n.t(:signup, name: @receiver.first_name)] if @message_type == 'signup'
+    
+    [:warning, I18n.t(:message_sent, message_type: @message_type, to_number: @to_number )]
+    # [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
   def white_list_whatsapp_receivers

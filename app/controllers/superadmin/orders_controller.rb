@@ -43,6 +43,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
       message_type: message_type,
+      admin_triggered: false,      
       variable_contents: { name:  @purchase.client.first_name } }
   end
 
