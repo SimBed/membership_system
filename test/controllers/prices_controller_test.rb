@@ -8,7 +8,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
     @product = products(:unlimited3m)
-    @price = prices(:price11)
+    @price = prices(:Uc3mbase)
   end
 
   # no index method for prices controller

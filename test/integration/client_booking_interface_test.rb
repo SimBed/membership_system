@@ -19,10 +19,11 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'client/clients/book'
     # assert_select 'a[href=?]', admin_attendances_path, count: 2
+    # i dont know where this syntax is documented, but it selects anchor elements with an href that matches the given regexs
     assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
     # the path is to the create method (i.e. for a new booking, not an amendmdent to an existing booking)
     # no bookings made yet
-    assert_equal 0, booking_count('booked')
+    assert_equal 0, booking_count('booked') #test_helper.rb
     log_in_as(@admin)
     # follow_redirect!
     # add an extra wkclass within the visibility and booking window

@@ -18,7 +18,7 @@ class Client::ClientsController < ApplicationController
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
-    render template: 'public_pages/shop.html' #, layout: 'white_canvas'
+    render template: 'public_pages/shop' #, layout: 'white_canvas'
   end
 
   def book

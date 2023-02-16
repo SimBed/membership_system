@@ -94,7 +94,8 @@ class Client < ApplicationRecord
     ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
     if ongoing_groupex_package_purchases.empty?
       last_groupex_package_purchase = groupex_package_purchases.first
-      if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a discounted 3m unlimited
+      # if last_groupex_package_purchase.name == 'Space Group UC:1W' # offer trials a discounted 3m unlimited
+      if last_groupex_package_purchase.trial? # offer trials a discounted 3m unlimited
         renewal_price = unlimited3m.renewal_price("renewal_posttrial_expiry")
         base_price = unlimited3m.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?
@@ -107,7 +108,8 @@ class Client < ApplicationRecord
       end
     else
       ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
-      if ongoing_groupex_package_purchase.name == 'Space Group UC:1W'
+      # if ongoing_groupex_package_purchase.name == 'Space Group UC:1W'
+      if ongoing_groupex_package_purchase.trial?
         renewal_price = unlimited3m.renewal_price("renewal_pretrial_expiry")
         base_price = unlimited3m.renewal_price("base")
         valid = !renewal_price.nil? && !base_price.nil?

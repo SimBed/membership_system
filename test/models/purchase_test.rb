@@ -79,14 +79,14 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'delegated name method' do
-    assert_equal 'Space Group UC:3M', @purchase_package.name
-    assert_equal 'Space Group 1C:1D', @purchase_dropin.name
+    assert_equal 'Group UC:3M', @purchase_package.name
+    assert_equal 'Group 1C:1D', @purchase_dropin.name
     assert_equal 'Pilates 8C:5W', @purchase_fixed.name
   end
 
   test 'delegated formal_name method' do
-    assert_equal 'Space Group - Unlimited Classes 3 Months', @purchase_package.formal_name
-    assert_equal 'Space Group - 1 Class 1 Day', @purchase_dropin.formal_name
+    assert_equal 'Group - Unlimited Classes 3 Months', @purchase_package.formal_name
+    assert_equal 'Group - 1 Class 1 Day', @purchase_dropin.formal_name
     assert_equal 'Pilates - 8 Classes 5 Weeks', @purchase_fixed.formal_name
   end
 
@@ -169,8 +169,8 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'name_with_dop method' do
-    assert_equal 'Space Group UC:3M - 24 Jan 22', @purchase_package.name_with_dop
-    assert_equal 'Space Group 1C:1D - 26 Feb 22', @purchase_dropin.name_with_dop
+    assert_equal 'Group UC:3M - 24 Jan 22', @purchase_package.name_with_dop
+    assert_equal 'Group 1C:1D - 26 Feb 22', @purchase_dropin.name_with_dop
     assert_equal 'Pilates 8C:5W - 15 Feb 22', @purchase_fixed.name_with_dop
   end
 

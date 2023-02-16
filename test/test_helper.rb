@@ -36,4 +36,5 @@ class ActiveSupport::TestCase
     (css_select 'td').each { |td| booked_count += 1 if td.text == booking_type }
     booked_count
   end
+
 end
