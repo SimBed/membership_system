@@ -1,4 +1,7 @@
 <div id="packages-table" class="container px-0 margin-override">
+  <h6 class="fw-bolder fst-italic mb-0 ps-1">
+    Package Status
+  </h6>
   <% @purchases.each do |purchase| %>
     <% @purchase = purchase %>
     <%= render partial: 'purchase_summary' %>

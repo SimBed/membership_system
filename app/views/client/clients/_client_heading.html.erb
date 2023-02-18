@@ -1,17 +1,6 @@
 <div class="text-center mb-3">
-  <h2 class="fw-bolder">
-    <%= yield(:greeting) %>
-  </h2>
   <h6 class="fw-bolder fst-italic mb-0">
-    <%= yield(:heading) %>
+    <%= yield(:classes_heading) %>
   </h6>
-  <% if selection %>
-    <h2>
-      <form action=<%= "/client/clients/#{params[:id]}/history" %> method="GET" >
-        <select name="purchaseid" onchange="this.form.submit()" class= "sort">
-          <%= options_for_select @products_purchased, session[:purchaseid] %>
-        </select>
-      </form>
-    </h2>
-  <% end %>
+
 </div>  

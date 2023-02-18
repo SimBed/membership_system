@@ -1,44 +1,27 @@
 <% provide(:greeting, "Hi #{@client.first_name}!") %>
-<% provide(:heading, ('Classes coming up' if @renewal[:ongoing]) ) %>
-<% provide(:expiry_statement, (@renewal[:trial] ? 'Your Trial has expired' : 'Your Package has expired') ) %>
-<% provide(:renewal_statement, renewal_statement(@renewal[:ongoing], @renewal[:trial])) %>
+<%# provide(:expiry_statement, (@renewal[:trial] ? 'Your Trial has expired' : 'Your Package has expired') ) %>
+<% provide(:renewal_statement, renewal_statement(@renewal[:ongoing], @renewal[:trial], @renewal[:valid], @client)) %>
+<% provide(:visit_shop_statement, "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'} now".html_safe ) %>
 <% provide(:renewal_product, @renewal[:product].formal_name ) %>
 <% provide(:renewal_price, @renewal[:price]&.discounted_price.to_s ) %>
 <% provide(:base_price, @renewal[:base_price]&.price.to_s ) %>
+<% provide(:classes_heading, ('Classes coming up' if @renewal[:ongoing]) ) %>
 
-<%= render partial: 'client_heading', locals: {selection: false} %>
-
-<div class="text-center mb-3">
-  <% if @wkclasses_visible.empty? %>
-    <div id="bookings-table" class="container px-1 mb-3">
-      <% unless @renewal[:ongoing] %>
-        <%= render partial: 'expired_package' %>
-      <% else %>
-        <p class="fw-bolder fst-italic mb-0">There are no classes currently in the booking window.</p>
-      <% end %>
-    </div>
-  <% else %>
-    <%= render partial: 'client_bookings_table' %>
-  <% end %>
-</div>
-
-<div id="consistency" class="container px-1 mb-5">
-  <%= render partial: 'consistency' %>
-</div>
-
+<%= render partial: 'client_greeting' %>
+<% if Setting.renew_online && @renewal[:offer_online_renewal?] %>
+  <%= render partial: 'renewal' %>
+<% end %>
+<%#= render partial: 'client_heading', locals: {selection: false} %>
+<%= render partial: 'client_no_classes' if  @renewal[:ongoing ]&& @wkclasses_visible.empty? %>
+<%= render partial: 'client_bookings_table' if @renewal[:ongoing] && !@wkclasses_visible.empty? %>
+<!--div id="consistency" class="container px-1 mb-5">
+  <%#= render partial: 'consistency' %>
+</div-->
 <% unless @purchases.empty? %>
-  <div id="packages-table" class="container px-0">
-    <h6 class="fw-bolder fst-italic mb-0 ps-1">
-      Package Status
-    </h6>
-    <%= render partial: 'client_packages_table', locals: {detailed: false} %>
-  </div>
+  <%= render partial: 'client_packages_table', locals: {detailed: false} %>
 <% end %>
 
-<div id="heart_renew_quote" class="container px-1">
+<div id="heart_quote" class="container px-1">
   <%= render partial: 'client_heart' %>
-  <% if @renewal[:offer_early_renewal_discount?] %>
-    <%= render partial: 'renew' %>
-  <% end %>
-  <%= render partial: 'quotation' %>
+  <%#= render partial: 'quotation' %>
 </div>

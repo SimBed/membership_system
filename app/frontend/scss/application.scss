@@ -203,6 +203,9 @@ span.sub-label {
   color: blue
 }
 
+#renewal span.renewal-price {
+  font-size: 0.9rem;
+}
 
 @media (min-width: 900px) {
   body, p, ol, ul, td {
@@ -259,4 +262,8 @@ span.sub-label {
     font-size: 0.9rem;
     font-weight: 500;
   }    
+
+  #renewal span.renewal-price {
+    font-size: 1.2rem;
+  }  
 }

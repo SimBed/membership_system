@@ -1,6 +1,7 @@
 <% provide(:heading, "Package History") %>
 <% provide(:greeting, @client.name) %>
 
-<%= render partial: 'client_heading', locals: {selection: true} %>
+<%= render partial: 'client_greeting' %>
+<%= render partial: 'history_heading' %>
 <%= render partial: 'client_packages_table', locals: {detailed: true} %>
 
