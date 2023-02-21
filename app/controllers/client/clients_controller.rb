@@ -18,6 +18,7 @@ class Client::ClientsController < ApplicationController
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
+    @renewal = @client.renewal || { :offer_online_discount? => true, renewal_offer: "renewal_pre_expiry" } # renewal is nil if no purchases yet made
     render template: 'public_pages/shop' #, layout: 'white_canvas'
   end
 

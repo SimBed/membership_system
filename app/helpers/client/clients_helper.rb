@@ -80,12 +80,20 @@ module Client::ClientsHelper
 
       "Your Package has expired. Renew your Package now!"
     else
-      return "Buy your first Package from our before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
+      return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
       return "Buy your next Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
       return "Your Trial has expired. Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if !ongoing && trial
 
       "Your Package has expired. Renew your Package now!"
     end
+  end
+
+  def shop_discount_statement(ongoing, trial)
+    return "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if ongoing.nil?
+    return "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
+    return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
+    
+    "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" # if !ongoing && trial
   end
 
 end

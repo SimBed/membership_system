@@ -5,7 +5,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @client = clients(:aparna)
     @client2 = clients(:bhavik)
     @product = products(:unlimited3m)
-    @price = prices(:base_new_unlimited3m)
+    @price = prices(:Uc3mbase)
     @price_fitternity = prices(:price2)
     @purchase =
       Purchase.new(client_id: @client.id,

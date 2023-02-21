@@ -3,7 +3,10 @@
     <div class="col">
         <div class="row justify-content-center mb5">
           <div class="col-lg-10 col-xl-8 text-center">
-            <h2 class="display-2 fw-light">Shop</h2>
+            <h2 class="display-2 fw-light mb-1">Shop</h2>
+            <% if offer_online_discount?(@renewal[:renewal_offer]) %>
+              <h3 class="display-2 fw-light discount-statement mb-3"><%= shop_discount_statement(@renewal[:ongoing], @renewal[:trial]) %></h3>
+            <% end %>
               <button id="Window_btn" class="btn_product_type btn btn-filter rounded-pill current" onclick="showProduct(event, 'all')" >All</button>
               <button id="Cellar_btn" class="btn_product_type btn btn-filter rounded-pill" onclick="showProduct(event, 'unlimited')">Unlimited</button>
               <button id="Patio_btn" class="btn_product_type btn btn-filter rounded-pill" onclick="showProduct(event, 'fixed')">Fixed</button>
@@ -24,17 +27,17 @@
                         <div class="pe-md-5 duration"><%= pluralize(product.validity_length, product.formal_unit)%></div>
                       </div>
                       <div class="d-flex flex-column"">
-                        <% unless product.trial? %>
+                        <% if !product.trial? || offer_online_discount?(@renewal[:renewal_offer]) %>
                           <div class="pe2 base-price"><%= rupees(product.base_price.price) %></div>
                         <% end %>
-                        <div class="pe2 discount-price"><%= rupees(product.renewal_price('renewal_pre_expiry').price) %></div>
+                        <div class="pe2 discount-price"><%= rupees(product.renewal_price(@renewal[:renewal_offer]).price) %></div>
                       </div>
                         <div class="ps-3">
                           <form action=<%= superadmin_orders_path %> method="POST">
                             <script
                                 src="https://checkout.razorpay.com/v1/checkout.js"
                                 data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-                                data-amount="<%= "#{product.base_price.price * 100}" %>"
+                                data-amount="<%= "#{product.renewal_price(@renewal[:renewal_offer]).price * 100}" %>"
                                 data-name="<%= "The Space" %>"
                                 data-description="<%= "#{product.formal_name}" %>"
                                 data-image="<%= asset_path 'favicon.ico' %>"

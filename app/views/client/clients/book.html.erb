@@ -8,7 +8,7 @@
 <% provide(:classes_heading, ('Classes coming up' if @renewal[:ongoing]) ) %>
 
 <%= render partial: 'client_greeting' %>
-<% if Setting.renew_online && @renewal[:offer_online_renewal?] %>
+<% if Setting.renew_online && @renewal[:alert_to_discount?] %>
   <%= render partial: 'renewal' %>
 <% end %>
 <%#= render partial: 'client_heading', locals: {selection: false} %>

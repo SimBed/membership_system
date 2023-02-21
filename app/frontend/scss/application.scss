@@ -207,6 +207,13 @@ span.sub-label {
   font-size: 0.9rem;
 }
 
+h3.discount-statement {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 @media (min-width: 900px) {
   body, p, ol, ul, td {
     font-size: 1.1rem; }
@@ -265,5 +272,9 @@ span.sub-label {
 
   #renewal span.renewal-price {
     font-size: 1.2rem;
+  }
+
+  h3.discount-statement {
+    font-size: 0.8rem;
   }  
 }
