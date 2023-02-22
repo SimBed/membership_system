@@ -215,7 +215,7 @@ class Admin::PurchasesController < Admin::BaseController
 
     client = @purchase.client
     # setup account which returns some flashes as an array of type/message arrays
-    Account.setup_for(client).each { |item| flash_message(*item) } if client.account.nil? && client.groupex?
+    Account.setup_for(client).each { |item| flash_message(*item) } if client.account.nil? && client.just_bought_groupex?
     # use splat to turn array returned into separate arguments
 
     flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)

@@ -46,8 +46,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_expired_trial)
     follow_redirect!
     assert_template 'client/clients/book'
-    byebug
-    puts @response.parsed_body
+    # puts @response.parsed_body
     regexs = /data-amount="2025000"/
     search_result = response.body.scan(regexs)
     # byebug

@@ -166,8 +166,10 @@ class Client < ApplicationRecord
     last_purchase.pt?
   end
 
-  def groupex?
-    !last_purchase.pt?
+  def just_bought_groupex?
+    return false if last_purchase.nil?
+    
+    last_purchase.workout_group.renewable?
   end
 
   def lifetime_classes

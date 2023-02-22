@@ -103,6 +103,11 @@ class ClientTest < ActiveSupport::TestCase
     refute @client.deletable?  
   end
 
+  test 'just_bought_groupex? method' do
+    refute @client.just_bought_groupex?
+    assert @client2.just_bought_groupex?
+  end
+
   test 'associated account (if there is one) should exist' do
     @client.account_id = 4000
     refute_predicate @client, :valid?
