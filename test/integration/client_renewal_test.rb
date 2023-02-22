@@ -65,7 +65,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_expired_trial)
     follow_redirect!
     assert_template 'client/clients/book'
-    puts @response.parsed_body
     assert_select "p", text: "Your Trial has expired. Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" 
     assert_select "p", text: "Group - Unlimited Classes 3 Months"  
     assert_select "s", text: "Rs. 25,500"
@@ -81,7 +80,10 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     get client_shop_path(@client_for_unlimited)
     assert_template 'public_pages/shop'
     # puts @response.parsed_body    
-    assert_select "h3", text: "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" 
+    assert_select "h3", text: "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!"
+    assert_select "div.base-price", text: "Rs. 1,500", count: 0
+    assert_select "div.discount-price", text: "Rs. 1,500", count: 0
+    assert_select "div", text: "TRIAL", count: 0        
     assert_select "div.base-price", text: "Rs. 9,500"  
     assert_select "div.discount-price", text: "Rs. 8,550"
     refute_empty response.body.scan(/data-amount="855000"/)
@@ -94,7 +96,10 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_ongoing_trial)
     get client_shop_path(@client_for_ongoing_trial)
     assert_template 'public_pages/shop'
-    assert_select "h3", text: "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" 
+    assert_select "h3", text: "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!"
+    assert_select "div.base-price", text: "Rs. 1,500", count: 0
+    assert_select "div.discount-price", text: "Rs. 1,500", count: 0
+    assert_select "div", text: "TRIAL", count: 0            
     assert_select "div.base-price", text: "Rs. 9,500"  
     assert_select "div.discount-price", text: "Rs. 7,600"
     refute_empty response.body.scan(/data-amount="760000"/)
@@ -107,7 +112,10 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_expired_trial)
     get client_shop_path(@client_for_expired_trial)
     assert_template 'public_pages/shop'
-    assert_select "h3", text: "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" 
+    assert_select "h3", text: "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!"
+    assert_select "div.base-price", text: "Rs. 1,500", count: 0
+    assert_select "div.discount-price", text: "Rs. 1,500", count: 0
+    assert_select "div", text: "TRIAL", count: 0        
     assert_select "div.base-price", text: "Rs. 9,500"  
     assert_select "div.discount-price", text: "Rs. 8,080"
     refute_empty response.body.scan(/data-amount="808000"/)
@@ -122,6 +130,10 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_template 'public_pages/shop'
     # puts @response.parsed_body    
     assert_select "h3", text: "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" 
+    assert_select "div.base-price", text: "Rs. 1,500", count: 0 # base-price class has a strikethrough, dont want that
+    assert_select "div.discount-price", text: "Rs. 1,500"
+    assert_select "div", text: "trial"
+    refute_empty response.body.scan(/data-amount="150000"/)
     assert_select "div.base-price", text: "Rs. 9,500"  
     assert_select "div.discount-price", text: "Rs. 8,550"
     refute_empty response.body.scan(/data-amount="855000"/)
