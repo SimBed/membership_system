@@ -5,7 +5,8 @@ class ClientTest < ActiveSupport::TestCase
     @client = Client.new(first_name: 'Amala',
                          last_name: 'Paw',
                          email: 'amala@thespace.in',
-                         phone: '914567890',
+                         phone_raw: '9145678900',
+                         whatsapp_raw: '9145678901',
                          instagram: '#paw',
                          note: 'our top client')
     @client2 = clients(:bhavik)
@@ -14,6 +15,29 @@ class ClientTest < ActiveSupport::TestCase
 
   test 'should be valid' do
     assert_predicate @client, :valid?
+  end
+
+  test 'phone number should be plausible' do
+    @client.phone_raw = '914567890'
+    refute_predicate @client, :valid?
+  end
+
+  test 'whatsapp number should be plausible' do
+    @client.whatsapp_raw = '914567890'
+    refute_predicate @client, :valid?
+  end
+
+  test 'phone number is not mandatory' do
+    @client.phone_raw = ''
+    assert_predicate @client, :valid?
+  end  
+
+  test 'whatsapp number mandatory presence on signup only' do
+    @client.whatsapp_raw = ''
+    refute_predicate @client, :valid?
+    # admin is allowed to add a client with blank whatsapp
+    @client.modifier_is_admin = true
+    assert_predicate @client, :valid?    
   end
 
   test 'first name should be present' do

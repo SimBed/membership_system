@@ -5,6 +5,7 @@ class Admin::ClientsController < Admin::BaseController
   before_action :initialize_sort, only: :index
   # before_action :layout_set, only: [:show]
   before_action :set_client, only: [:show, :edit, :update, :destroy]
+  before_action :set_raw_numbers, only: :edit  
 
   def index
     @clients = Client.includes(:account)
@@ -87,6 +88,12 @@ class Admin::ClientsController < Admin::BaseController
     @client = Client.find(params[:id])
   end
 
+
+  def set_raw_numbers
+    @client.phone_raw = @client.phone
+    @client.whatsapp_raw = @client.whatsapp
+  end  
+
   def client_params
     # the update method (and therefore the client_params method) is used through a form but also clicking on a link on the clients page
     return {fitternity: params[:fitternity] } if params[:fitternity].present?
@@ -95,7 +102,7 @@ class Admin::ClientsController < Admin::BaseController
 
     # necessary so validation of Client model vary from admin to client (relevant in new account signup form)
     # editor_params = { modifier_is_admin: logged_in_as?('junioradmin', 'admin', 'superadmin') }
-    params.require(:client).permit(:first_name, :last_name, :email, :phone, :instagram, :whatsapp, :hotlead, :note).merge(modifier_is_admin: true)
+    params.require(:client).permit(:first_name, :last_name, :email, :phone_raw, :instagram, :whatsapp_raw, :hotlead, :note).merge(modifier_is_admin: true)
   end
 
   def initialize_sort
