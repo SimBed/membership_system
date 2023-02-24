@@ -46,6 +46,23 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     refute_empty search_result
   end
 
+  test 'renewal details correct for client with expired package' do
+    log_in_as(@account_client)
+    # retire package
+    purchase = @client_for_unlimited.purchases.last    
+    travel_to(purchase.expiry_date.advance(days:1))
+    purchase.update(status: purchase.status_calc)
+    get client_book_path(@client_for_unlimited)
+    # puts @response.parsed_body    
+    assert_select "p", text: "Your Package has expired. Renew your Package now!" 
+    assert_select "p", text: "Group - Unlimited Classes 3 Months"  
+    assert_select "s", false
+    assert_select "span", text: "Rs. 25,500"  
+    regexs = /data-amount="2550000"/
+    search_result = response.body.scan(regexs)
+    refute_empty search_result
+  end
+
   test 'renewal details correct for client with ongoing trial' do
     log_in_as(@account_client_for_ongoing_trial)
     follow_redirect!
