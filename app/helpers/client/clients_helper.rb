@@ -72,12 +72,28 @@ module Client::ClientsHelper
     )
   end
 
-  def renewal_statement(ongoing, trial)
-    return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% discount!" if ongoing && trial
-    return "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% discount!" if ongoing
-    return "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% discount!" if trial
+  def renewal_statement(ongoing, trial, valid, client)
+    if valid
+      return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
+      return "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
+      return "Your Trial has expired. Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if !ongoing && trial
 
-    "Renew your Package now!"
+      "Your Package has expired. Renew your Package now!"
+    else
+      return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
+      return "Buy your next Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
+      return "Your Trial has expired. Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if !ongoing && trial
+
+      "Your Package has expired. Renew your Package now!"
+    end
+  end
+
+  def shop_discount_statement(ongoing, trial)
+    return "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if ongoing.nil?
+    return "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
+    return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
+    
+    "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" # if !ongoing && trial
   end
 
 end

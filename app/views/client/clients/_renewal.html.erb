@@ -1,0 +1,16 @@
+<div id="renewal" class="container px-1 fw-bolder fst-italic mb-5 text-center">
+  <p class="mb-1"><%= yield(:renewal_statement) %></p>
+  <% if @renewal[:valid] %>
+    <p class="mb-1"><%= yield(:renewal_product) %></p>
+    <p class="">
+      <% unless @renewal[:renewal_offer] == 'base' %>   
+        <s class="me-1"><%= rupees(yield(:base_price))%></s>
+      <% end %>    
+      <span class = "renewal-price"><%= "#{rupees(yield(:renewal_price))}" %></span>
+    </p>
+    <%= render partial: 'razor_form' %>
+    <p class="mt-1"><%= "or visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'}".html_safe %></p>    
+  <% else %>
+    <p class="bolditalics mb-0"><%= yield(:visit_shop_statement) %></p>
+  <% end %>
+</div>
