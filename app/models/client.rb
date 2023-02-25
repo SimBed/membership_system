@@ -7,14 +7,22 @@ class Client < ApplicationRecord
   before_save :downcase_email
   before_save :uppercase_names
   # https://stackoverflow.com/questions/6249475/ruby-on-rails-callback-what-is-difference-between-before-save-and-before-crea
-  # dont want the method called on updates, otherwaie end up with multiple +91s added to the number
+  # dont want the method called on updates, otherwise end up with multiple +91s added to the number
+  # (currently this is only relevant to signups)
   before_validation :apply_country_code, on: :create  
+  # https://github.com/joost/phony_rails  
+  # Normalizes :phone_raw attribute before validation and saves into :phone attribute
+  phony_normalize :phone_raw, as: :phone, default_country_code: 'IN'
+  phony_normalize :whatsapp_raw, as: :whatsapp, default_country_code: 'IN'
+  validates :phone, phony_plausible: true
+  validates :whatsapp, phony_plausible: true
   # validates :first_name, uniqueness: {scope: :last_name}
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
   # admin can create clients with less onerous validation than when clients create clients through the signup form
   with_options unless: :modifier_is_admin do
     validates :email, presence: true
+    validates :whatsapp, presence: true # admin can add a client without a whatsapp number but a client cannot signup themselves without a whatsapp number
   end
   validate :full_name_must_be_unique
   unless Rails.env.development?
@@ -68,7 +76,7 @@ class Client < ApplicationRecord
   paginates_per 50
 
   # see client_params in ClientsController
-  attr_accessor :modifier_is_admin, :whatsapp_country_code
+  attr_accessor :modifier_is_admin, :whatsapp_country_code, :phone_raw, :whatsapp_raw
 
   # would like to use #or method eg Client.recently_attended.or(Client.packagee) but couldn't resolve error:
   # Relation passed to #or must be structurally compatible. Incompatible values: [:joins, :distinct]
