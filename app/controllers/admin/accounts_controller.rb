@@ -65,7 +65,9 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def associate_account_holder_to_account
-    @account_holder.update(account_id: @account.id)
+    # return to #update when sorted out whatsapp validation. New account failure if whatsapp nil (alternatively set modifier_is_admin to true)
+    # @account_holder.update(account_id: @account.id)
+    @account_holder.update_column(:account_id, @account.id)
   end
 
   def account_params
