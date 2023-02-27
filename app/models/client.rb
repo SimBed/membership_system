@@ -12,8 +12,15 @@ class Client < ApplicationRecord
   before_validation :apply_country_code, on: :create  
   # https://github.com/joost/phony_rails  
   # Normalizes :phone_raw attribute before validation and saves into :phone attribute
-  phony_normalize :phone_raw, as: :phone, default_country_code: 'IN'
-  phony_normalize :whatsapp_raw, as: :whatsapp, default_country_code: 'IN'
+  # phony_normalize... is Fine without with_options complication, except when updating through the console. Eg c.update(whatsapp: '123') would cause both phone and whatsapp attributes to become nil
+  # (as phone_raw and whatsapp_raw are nil and would be normalized and saved into phone/whatsapp attribute before validation).
+  # c.update(phone_raw: '123', whatsapp: '123') for example would avoid the need for the with_optionsa approach as would using update_column method instead, but too much risk of wiping data if missed
+  with_options if: :phone_raw do
+    phony_normalize :phone_raw, as: :phone, default_country_code: 'IN'
+  end
+  with_options if: :whatsapp_raw do  
+    phony_normalize :whatsapp_raw, as: :whatsapp, default_country_code: 'IN'
+  end
   validates :phone, phony_plausible: true
   validates :whatsapp, phony_plausible: true
   # validates :first_name, uniqueness: {scope: :last_name}
