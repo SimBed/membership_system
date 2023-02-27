@@ -82,9 +82,9 @@ class Account < ApplicationRecord
         activated: true, ac_type: 'client', email: client.email }
     )
     return [[:warning, I18n.t('admin.accounts.create.warning')]] unless @account.save
-    # return to #update when sorted out whatsapp validation. New account failure if whatsapp nil (alternatively set modifier_is_admin to true)
-    # @account_holder.update(account_id: @account.id)
-    client.update_column(:account_id, @account.id)
+    # return to #update when sorted out whatsapp validation. New account failure if whatsapp nil (alternatively set modifier_is_client to false)
+    client.update(account_id: @account.id)
+    # client.update_column(:account_id, @account.id)
     flash_for_account = :success, I18n.t('admin.accounts.create.success')
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
     flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',

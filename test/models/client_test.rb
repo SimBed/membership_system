@@ -34,10 +34,10 @@ class ClientTest < ActiveSupport::TestCase
 
   test 'whatsapp number mandatory presence on signup only' do
     @client.whatsapp_raw = ''
-    refute_predicate @client, :valid?
+    assert_predicate @client, :valid?
     # admin is allowed to add a client with blank whatsapp
-    @client.modifier_is_admin = true
-    assert_predicate @client, :valid?    
+    @client.modifier_is_client = true
+    refute_predicate @client, :valid?    
   end
 
   test 'first name should be present' do

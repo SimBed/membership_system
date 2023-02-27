@@ -8,6 +8,7 @@ class AccountTest < ActiveSupport::TestCase
                            password: 'foobar',
                            password_confirmation: 'foobar',
                            ac_type: 'client')
+    @client_no_account = clients(:bhavik)                           
   end
 
   test 'should be valid' do
@@ -44,4 +45,13 @@ class AccountTest < ActiveSupport::TestCase
   test 'authenticated? should return false for an account with nil remember_digest' do
     refute @account.authenticated?(:remember, '')
   end
+  
+  test 'Account#setup_for client' do
+    assert_nil @client_no_account.account_id
+    assert_difference 'Account.count' do 
+      Account.setup_for(@client_no_account)
+    end
+    assert_not_nil @client_no_account.account_id
+  end
+
 end

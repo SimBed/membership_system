@@ -20,7 +20,7 @@ class Client < ApplicationRecord
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
   # admin can create clients with less onerous validation than when clients create clients through the signup form
-  with_options unless: :modifier_is_admin do
+  with_options if: :modifier_is_client do
     validates :email, presence: true
     validates :whatsapp, presence: true # admin can add a client without a whatsapp number but a client cannot signup themselves without a whatsapp number
   end
@@ -76,7 +76,7 @@ class Client < ApplicationRecord
   paginates_per 50
 
   # see client_params in ClientsController
-  attr_accessor :modifier_is_admin, :whatsapp_country_code, :phone_raw, :whatsapp_raw
+  attr_accessor :modifier_is_client, :whatsapp_country_code, :phone_raw, :whatsapp_raw
 
   # would like to use #or method eg Client.recently_attended.or(Client.packagee) but couldn't resolve error:
   # Relation passed to #or must be structurally compatible. Incompatible values: [:joins, :distinct]

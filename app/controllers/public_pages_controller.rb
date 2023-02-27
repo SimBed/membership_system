@@ -99,11 +99,12 @@ class PublicPagesController < ApplicationController
   end
 
   def associate_account_holder_to_account
+    @client.modifier_is_client = true #should be irrelevant as the enhanced validations this causes have already happened and won't have been disturbed
     @client.update(account_id: @account.id)
   end
   
   def client_params
-    params.require(:client).permit(:first_name, :last_name, :email, :phone, :whatsapp, :whatsapp_country_code, :instagram).merge(modifier_is_admin: false)
+    params.require(:client).permit(:first_name, :last_name, :email, :phone, :whatsapp, :whatsapp_country_code, :instagram).merge(modifier_is_client: true)
   end
   
   def account_params

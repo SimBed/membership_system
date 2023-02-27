@@ -4,14 +4,16 @@
       <th scope="row">Email</th>
       <td><%= @client.email %></td>
     </tr>
-    <tr>
-      <th scope="row">Phone</th>
-      <td><%= @client.phone %></td>
-    </tr>
+    <% unless @client.phone.blank? %>    
+      <tr>
+        <th scope="row">Phone</th>
+        <td><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></td>
+      </tr>
+    <% end %>    
     <% unless @client.whatsapp.blank? %>
       <tr>
         <th scope="row">Whatsapp</th>
-        <td><%= @client.whatsapp %></td>
+        <td><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></td>
       </tr>
     <% end %>
     <% unless @client.instagram.blank? %>
