@@ -49,6 +49,10 @@ class Admin::PurchasesController < Admin::BaseController
   def new
     @purchase = Purchase.new
     prepare_items_for_dropdowns
+    respond_to do |format|
+      format.html
+      format.js { render 'new.js.erb' }
+    end    
   end
 
   def edit
@@ -83,6 +87,12 @@ class Admin::PurchasesController < Admin::BaseController
     @purchase.destroy
     redirect_to admin_purchases_path
     flash_message :success, t('.success', name: @purchase.client.name)
+  end
+
+  def new_purchase_client_filter
+    clear_session(:select_client_name)
+    session[:select_client_name] = params[:select_client_name] || session[:select_client_name]
+    redirect_to new_admin_purchase_path
   end
 
   def clear_filters
@@ -195,6 +205,7 @@ class Admin::PurchasesController < Admin::BaseController
     # mapping now done by form.collection_select in view
     # @clients = Client.order_by_first_name.map { |c| [c.name, c.id] }
     @clients = Client.order_by_first_name
+    @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) + 1)
     @products = Product.order_by_name_max_classes
     @payment_methods = Rails.application.config_for(:constants)['payment_methods']
   end

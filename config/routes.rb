@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get '/purchases/filter', to: 'admin/purchases#filter', as: 'purchase_filter'
   get '/wkclasses/filter', to: 'admin/wkclasses#filter', as: 'wkclass_filter'
   get '/clients/filter', to: 'admin/clients#filter', as: 'client_filter'
+  get '/purchases/client_filter', to: 'admin/purchases#new_purchase_client_filter', as: 'new_purchase_client_filter'
   get '/superadmin/expenses/filter', to: 'superadmin/expenses#filter'
   get '/products/payment', to: 'admin/products#payment'
   get    '/login',   to: 'auth/sessions#new'
