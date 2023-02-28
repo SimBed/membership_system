@@ -257,9 +257,8 @@ class Client < ApplicationRecord
   end
 
   def uppercase_names
-    # self.first_name = first_name.split.map(&:capitalize)
-    self.first_name = first_name.titleize
-    self.last_name = last_name.titleize
+    self.first_name = first_name.strip.titleize
+    self.last_name = last_name.strip.titleize
   end
 
   def apply_country_code

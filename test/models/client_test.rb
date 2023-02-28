@@ -66,6 +66,13 @@ class ClientTest < ActiveSupport::TestCase
     refute_predicate duplicate_named_client, :valid?
   end
 
+  test 'uppercase_names which also strips whitespace' do
+    roughly_named_client = @client.dup
+    roughly_named_client.update(first_name: '  amalu ', last_name: '   meowaw   ')
+    assert_equal roughly_named_client.first_name, 'Amalu'
+    assert_equal roughly_named_client.last_name, 'Meowaw'
+  end
+
   test 'email should not be too long' do
     @client.email = "#{'a' * 244}@example.com"
     refute_predicate @client, :valid?
