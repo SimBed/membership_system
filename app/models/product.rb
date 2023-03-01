@@ -13,11 +13,14 @@ class Product < ApplicationRecord
   # validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
   validate :product_combo_must_be_unique
   # Client.packagee.active gives 'PG ambiguous column max classes' error unless 'products.max_classes' rather than just 'max_classes'.
+  # scope :package, -> { where('products.max_classes > 1') }
   scope :package, -> { where('products.max_classes > 1') }
   scope :unlimited, -> { where(max_classes: 1000) }
   scope :dropin, -> { where(max_classes: 1) }
   scope :fixed, -> { where('max_classes between ? and ?', 2, 999) }
   scope :trial, -> { where(validity_length: 1, validity_unit: 'W') }
+  scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W') }
+  scope :package_not_trial, -> { package.not_trial }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Space Group'") }
 
