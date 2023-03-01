@@ -9,6 +9,8 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :modifiable_status, only: [:update]
   # https://stackoverflow.com/questions/49414318/how-to-use-rails-before-action-conditional-for-only-some-actions
   before_action :already_committed, only: [:create, :update], unless: -> { fitternity? }
+  # quick successive double-tapping could cause double-booking of class
+  before_action :already_booked_for_class, only: [:create]
   before_action :in_booking_window, only: [:create]
   before_action :reached_max_capacity, only: [:create, :update]
   before_action :reached_max_amendments, only: [:update]
@@ -388,6 +390,19 @@ class Admin::AttendancesController < Admin::BaseController
     if logged_in_as?('client')
       redirect_to client_book_path(@client)
     else # must be admin
+      redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+    end
+  end
+
+  def already_booked_for_class
+    set_wkclass_and_booking_type
+    return unless @purchase.already_booked_for?(@wkclass)
+
+    flash_hash = booking_flash_hash.dig(@booking_type, :already_booked)
+    flash_message flash_hash[:colour], (send flash_hash[:message])
+    if logged_in_as?('client')
+      redirect_to client_book_path(@client)
+    else # must be admin (not conceviable through UI)
       redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     end
   end

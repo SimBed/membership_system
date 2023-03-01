@@ -12,6 +12,10 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @account_other_client = accounts(:client1)
     @other_client = @account_other_client.clients.first
     @other_client_purchase = @other_client.purchases.last
+    @account3 = accounts(:client_for_ongoing_trial)
+    @purchase3 = @account3.clients.first.purchases.last
+    @account4 = accounts(:client_for_fixed)
+    @purchase4 = @account4.clients.first.purchases.last
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
   end
 
@@ -75,6 +79,18 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     refute_predicate flash, :empty?
   end
 
+  test 'book same class in quick succession (double-click)' do
+    log_in_as(@account_client)
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                         purchase_id: @purchase.id } }
+    assert_difference 'Attendance.count', 0 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                           purchase_id: @purchase.id } }
+    end
+    assert_redirected_to client_book_path(@client.id)
+    refute_predicate flash, :empty?
+  end
+
   test 'rebook same day after cancel early' do
     log_in_as(@account_client)
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
@@ -135,14 +151,20 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
   end
 
   test 'book class after reached maximum capacity' do
-    wkclass_max_capacity = 4
+    wkclass_max_capacity = 3
     @tomorrows_class_early.update(max_capacity: wkclass_max_capacity)
     log_in_as(@admin)
     # admin books to max capacity
-    wkclass_max_capacity.times do
-      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    # wkclass_max_capacity.times do
+    #   post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    #                                                        purchase_id: @other_client_purchase.id } }
+    # end
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @other_client_purchase.id } }
-    end
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                           purchase_id: @purchase3.id } }
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                           purchase_id: @purchase4.id } }
     assert_equal @tomorrows_class_early.attendances.no_amnesty.count, wkclass_max_capacity
     # client attempts to book
     log_in_as(@account_client)

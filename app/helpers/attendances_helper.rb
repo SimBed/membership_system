@@ -15,7 +15,10 @@ module AttendancesHelper
           message: :too_late },
         unsuccessful:
         { colour: :secondary,
-          message: :unsuccessful } },
+          message: :unsuccessful },
+        already_booked:
+        { colour: :secondary,
+          message: :already_booked } },
       update:
       { successful:
         { colour: :success,
@@ -59,6 +62,10 @@ module AttendancesHelper
 
   def daily_limit_met
     'Booking not possible. Daily limit met'
+  end
+
+  def already_booked
+    'Booking not possible. You have already booked this class'
   end
 
   def too_late(update = false, wkclass = '')

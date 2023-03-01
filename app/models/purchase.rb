@@ -155,6 +155,12 @@ class Purchase < ApplicationRecord
     false
   end
 
+  def already_booked_for?(wkclass)
+    return true if attendances.committed.where(wkclass_id: wkclass.id).any?
+
+    false
+  end
+
   def purchased_after?(adate)
     # (adate..Float::INFINITY).cover? dop
     dop > adate
