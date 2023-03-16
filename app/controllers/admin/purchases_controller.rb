@@ -4,6 +4,7 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: [:show, :edit, :update, :destroy]
   before_action :sanitize_params, only: [:create, :update]
+  before_action :already_had_trial?, only: [:create, :update]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
   # this approach is no good as the callback should be after a successful create not a failed create
@@ -31,7 +32,7 @@ class Admin::PurchasesController < Admin::BaseController
     # ActiveRecord::StatementInvalid Exception: PG::SyntaxError: ERROR:  subquery has too many columns
     # so reverted to previous less efficent 2 query approach
     # @purchases_all_pages_sum = Purchase.where("id IN (#{@purchases.select(:id).to_sql})").sum(:payment) if logged_in_as?('superadmin')
-    @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('superadmin')
+    @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('admin', 'superadmin')
     handle_sort
     prepare_items_for_filters
     handle_export
@@ -113,6 +114,15 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   private
+
+  def already_had_trial?
+    @client = Client.find(purchase_params[:client_id])
+    @product = Product.find(purchase_params[:product_id])
+    return unless @product.trial? && @client.has_had_trial?
+
+    flash[:warning] = "Purchase not created. #{@client.name} has already had a Trial"
+    redirect_to new_admin_purchase_path
+  end  
 
   def set_purchase
     @purchase = Purchase.find(params[:id])
@@ -205,7 +215,7 @@ class Admin::PurchasesController < Admin::BaseController
     # mapping now done by form.collection_select in view
     # @clients = Client.order_by_first_name.map { |c| [c.name, c.id] }
     @clients = Client.order_by_first_name
-    @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) + 1)
+    @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     @products = Product.order_by_name_max_classes
     @payment_methods = Rails.application.config_for(:constants)['payment_methods']
   end
@@ -222,7 +232,8 @@ class Admin::PurchasesController < Admin::BaseController
 
   def post_purchase_processing
     update_purchase_status([@purchase])
-    return if @purchase.dropin? || @purchase.pt?
+    # return if @purchase.dropin? || @purchase.pt? 
+    return if @purchase.dropin? || !@purchase.workout_group.renewable? 
 
     client = @purchase.client
     # setup account which returns some flashes as an array of type/message arrays

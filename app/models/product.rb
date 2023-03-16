@@ -22,7 +22,7 @@ class Product < ApplicationRecord
   scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W') }
   scope :package_not_trial, -> { package.not_trial }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
-  scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Space Group'") }
+  scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
 
   def self.online_order_by_wg_classes_days
     # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id    

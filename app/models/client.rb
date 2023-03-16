@@ -168,6 +168,10 @@ class Client < ApplicationRecord
     !purchases.size.zero?
   end
 
+  def has_had_trial?
+    purchases.map { |p| p.trial? }.any?
+  end
+
   def deletable?
     return true if purchases.empty? & account.nil?
 

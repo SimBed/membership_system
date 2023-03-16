@@ -10,6 +10,8 @@ class ClientTest < ActiveSupport::TestCase
                          instagram: '#paw',
                          note: 'our top client')
     @client2 = clients(:bhavik)
+    @client_trial1 = clients(:client_trial_expired)
+    @client_trial2 = clients(:client_trial_ongoing)
     @booked_class = wkclasses(:wkclass_2)
   end
 
@@ -137,6 +139,13 @@ class ClientTest < ActiveSupport::TestCase
   test 'just_bought_groupex? method' do
     refute @client.just_bought_groupex?
     assert @client2.just_bought_groupex?
+  end
+
+  test '#has_had_trial?' do
+    refute @client.has_had_trial?
+    refute @client2.has_had_trial?
+    assert @client_trial1.has_had_trial?
+    assert @client_trial2.has_had_trial?
   end
 
   test 'associated account (if there is one) should exist' do

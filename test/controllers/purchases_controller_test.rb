@@ -8,6 +8,8 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
     @purchase1 = purchases(:AparnaUC1Mong)
+    @client_trial_expired = clients(:client_trial_expired)
+    @product_trial = products(:trial)  
   end
 
   test 'should redirect new when not logged in as junioradmin or more senior' do
@@ -83,4 +85,18 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test 'should redirect create when client has already had a trial and a trial is purchased' do
+      log_in_as(@admin)
+      assert_no_difference 'Purchase.count' do
+        post admin_purchases_path, params:
+         { purchase:
+            { client_id: @client_trial_expired.id,
+              product_id: @product_trial.id,
+              payment: 1500,
+              dop: '2022-02-15',
+              payment_mode: 'Cash',
+              price_id: @product_trial.prices.first.id } }
+      end
+  end  
 end

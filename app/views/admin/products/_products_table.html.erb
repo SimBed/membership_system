@@ -3,7 +3,7 @@
     <tbody>
       <tr>
         <th scope="col">Product</th>
-        <th scope="col">Sell Online</th>        
+        <th class="nomobile" scope="col">Sell Online</th>        
         <% if logged_in_as?('admin', 'superadmin') %>
           <th scope="col">Ongoing Count</th>
         <% end %>
@@ -11,9 +11,6 @@
         <th scope="col">Early Renew (Rs)</th>
         <th scope="col">Pre Trial Expiry (Rs)</th>
         <th scope="col">Post Trial Expiry (Rs)</th>
-        <% if logged_in_as?('admin') %>
-          <th scope="col"></th>
-        <% end %>
       </tr>
       <% @products.each do |product| %>
         <tr>

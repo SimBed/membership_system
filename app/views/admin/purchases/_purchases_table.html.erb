@@ -5,7 +5,7 @@
   </div>
 
   <table class="table table-secondary table-striped caption-top">
-    <% if logged_in_as?('superadmin') %>
+    <% if logged_in_as?('admin', 'superadmin') %>
       <caption class="px-1"><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
     <% end %>
     <tbody>
