@@ -5,25 +5,21 @@
         <th scope="col">Product</th>
         <th class="nomobile" scope="col">Sell Online</th>        
         <% if logged_in_as?('admin', 'superadmin') %>
+          <th scope="col">Total Count</th>
           <th scope="col">Ongoing Count</th>
         <% end %>
         <th scope="col">Base (Rs)</th>
-        <th scope="col">Early Renew (Rs)</th>
-        <th scope="col">Pre Trial Expiry (Rs)</th>
-        <th scope="col">Post Trial Expiry (Rs)</th>
       </tr>
       <% @products.each do |product| %>
         <tr>
-          <th scope="row" class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
+          <th class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
           <td class="nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %></td>
           <!--image_tag('insta.png', class: ["table_icon",("instawaiver" unless product.sellonline?)].compact.join(' '))-->
           <% if logged_in_as?('admin', 'superadmin') %>
-            <td><%= @product_count[product.name.to_sym] %></td>
+            <td><%= @product_total_count[product.name.to_sym] %></td>
+            <td><%= @product_ongoing_count[product.name.to_sym] %></td>
           <% end %>
           <td><%= number_with_delimiter(product.renewal_price("base")&.discounted_price) %></td>
-          <td><%= number_with_delimiter(product.renewal_price("renewal_pre_expiry")&.discounted_price) %></td>
-          <td><%= number_with_delimiter(product.renewal_price("renewal_pretrial_expiry")&.discounted_price) %></td>
-          <td><%= number_with_delimiter(product.renewal_price("renewal_posttrial_expiry")&.discounted_price) %></td>
           <%# if logged_in_as?('superadmin') %>
             <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
           <%# end %>

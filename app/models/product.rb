@@ -23,6 +23,10 @@ class Product < ApplicationRecord
   scope :package_not_trial, -> { package.not_trial }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
+  # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
+  scope :order_by_total_count, -> { left_joins(:purchases, :workout_group).group(:id).order('COUNT(purchases.id) DESC, max(workout_groups.id)') }
+  # ongoing account removes products with zero purchases
+  scope :order_by_ongoing_count, -> { left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id).order('COUNT(purchases.id) DESC, max(workout_groups.id)') }
 
   def self.online_order_by_wg_classes_days
     # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id    

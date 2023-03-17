@@ -1,17 +1,22 @@
 class Admin::ProductsController < Admin::BaseController
   skip_before_action :admin_account, only: [:payment, :index]
   before_action :junioradmin_account, only: [:payment, :index]
+  before_action :initialize_sort, only: :index
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   # don't do as callback because only on successful update not failed update
   # after_action -> { update_purchase_status(@purchases) }, only: [:update]
 
   def index
-    @products = Product.order_by_name_max_classes
+    handle_sort
     @products = @products.space_group if logged_in_as?('junioradmin')
     ongoing_purchases = Purchase.not_fully_expired
-    @product_count = {}
+    @product_ongoing_count = {}
+    @product_total_count = {}
     @products.each do |product|
-      @product_count[product.name.to_sym] = ongoing_purchases.where(product_id: product.id).size
+      @product_ongoing_count[product.name.to_sym] = ongoing_purchases.where(product_id: product.id).size
+    end
+    @products.each do |product|
+      @product_total_count[product.name.to_sym] = Purchase.where(product_id: product.id).size
     end
     respond_to do |format|
       format.html
@@ -78,6 +83,38 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   private
+
+  def initialize_sort
+    session[:product_sort_option] = params[:product_sort_option] || session[:product_sort_option] || 'product_name'
+  end  
+
+  def handle_sort
+    # reformat
+    case session[:product_sort_option]
+    when 'product_name'
+      @products = Product.order_by_name_max_classes
+    when 'total_count'
+      @products = Product.order_by_total_count
+    when 'ongoing_count'
+      @products = Product.order_by_ongoing_count
+    else
+      # just for now
+      @products = Product.order_by_name_max_classes
+    end
+  end
+
+  def sort_on_object
+    @purchases = @purchases.package_started_not_expired.select(&:fixed_package?).to_a.sort_by do |p|
+      p.attendances_remain(provisional: true, unlimited_text: false)
+    end
+    # restore to ActiveRecord and recover order.
+    ids = @purchases.map(&:id)
+    @purchases_all_pages = Purchase.recover_order(ids)
+    @purchases = @purchases_all_pages.page params[:page]
+    # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
+    # 'where' method does not retain the order of the items searched for, hence the more complicated approach
+    # Detailed explanation in comments under 'recover_order' scope
+  end  
 
   def set_product
     @product = Product.find(params[:id])

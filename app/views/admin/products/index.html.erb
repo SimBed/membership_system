@@ -4,6 +4,9 @@
       <%= link_to image_tag('add.png', class: "button_icon"), new_admin_product_path, class: "icon-container" %>
     <% end %>
   </h4>
+</div>
+<div id="products-filter" class="container px-1 mb-5 margin-override">
+  <%= render partial: 'filter_form' %>
 </div>  
 <% if logged_in_as?('superadmin') %>
   <%= render partial: 'download' %>
