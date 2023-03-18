@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
 
   def handle_token_issues
     flash[:warning] = 'Session expired. If this continues, please try clearing your cache.'
-    redirect_to(login_path)
+    redirect_to login_path
   end
 end

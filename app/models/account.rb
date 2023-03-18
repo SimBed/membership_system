@@ -9,7 +9,7 @@ class Account < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :password, presence: true, length: { minimum: 6 } #, allow_nil: true
   validates :ac_type, presence: true
   has_secure_password
 
@@ -37,7 +37,8 @@ class Account < ApplicationRecord
 
   def remember
     self.remember_token = Account.new_token
-    update(remember_digest: Account.digest(remember_token))
+    # update(remember_digest: Account.digest(remember_token))
+    update_column(:remember_digest, Account.digest(remember_token))
   end
 
   def authenticated?(attribute, token)

@@ -2,14 +2,49 @@
 <% provide(:greeting, @client.name) %>
 
 <div class="text-center mb-3">
-  <%= render partial: 'client_heading', locals: {selection: false} %>
+  <%= render partial: 'client/clients/client_heading', locals: {selection: false} %>
 </div>
 
 <div id="client-data" class="">
-  <%= render partial: 'client_data' %>
+  <%= render partial: 'client/clients/client_data' %>
+  <%= render partial: 'client/clients/client_summary' %>
 </div>
 
-<div id="client-summary" class="">
-  <%= render partial: 'client_summary' %>
-  <%= render partial: 'client_heart' %>
+<div id="client-password-reset" class="ps-1">
+  <h6 class="fw-bolder fst-italic mb-1">
+    Password Reset
+  </h6>
+  <%= form_with(model: [:admin, @account]) do |form| %>
+    <% if @account.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@account.errors.count, "error") %> prohibited this password from being updated:</h2>
+        <ul>
+          <% @account.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field mb-1">
+      <%= form.label :new_password, style:"width:12em;" %>
+      <%= form.text_field :new_password %>
+    </div>
+
+    <div class="field mb-1">
+      <%= form.label :new_password_confirmation, style:"width:12em;" %>
+      <%= form.text_field :new_password_confirmation %>
+    </div>
+
+    <div><%= form.hidden_field :requested_by, value: 'client' %></div>
+
+    <div class="actions">
+      <%= form.submit 'Update Password' %>
+    </div>
+  <% end %>
+
+</div>
+
+<div id="client-heart" class="">
+  <%= render partial: 'client/clients/client_heart' %>
 </div>

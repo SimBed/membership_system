@@ -1,10 +1,11 @@
 class Admin::AccountsController < Admin::BaseController
   before_action :correct_credentials, only: [:create]
   before_action :set_account_holder, only: [:create]
-  before_action :set_account, only: [:update]
+  before_action :set_account, only: [:update, :show]
   # junioradmin can now do password reset
-  skip_before_action :admin_account,  only: [:update]
-  before_action :junioradmin_account, only: [:update]
+  skip_before_action :admin_account,  only: [:update, :show]
+  # before_action :junioradmin_account, only: [:update]
+  before_action :correct_account_or_junioradmin, only: [:update, :show]
   # accounts can't be updated/destroyed through the app
   # admin accounts cant be created through the app
 
@@ -21,14 +22,54 @@ class Admin::AccountsController < Admin::BaseController
     redirect_back fallback_location: admin_clients_path
   end
 
+  def show
+    redirect_to client_client_path @account.clients.first
+  end
+
   def update
+    if params[:account].nil? # means request came from admin link
+      password_reset_admin
+    else
+      password_reset_client
+    end
+  end
+  
+  private
+  
+  def password_reset_admin
     @password = Account.password_wizard(6)
     @account.update(password: @password, password_confirmation: @password)
     flash_message(*Whatsapp.new(whatsapp_params('password_reset')).manage_messaging)
     redirect_back fallback_location: admin_clients_path
   end
+  
+  def password_reset_client
+    passwords_the_same = (password_update_params[:new_password] == password_update_params[:new_password_confirmation])
+    @account.errors.add(:base, "passwords not the same") unless passwords_the_same
+    if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password]) 
+      flash_message :success, t('.success')
+      redirect_back fallback_location: login_path
+    else
+      # reformat - this code is reused in show method of clients controller
+      @client = @account.clients.first
+      @client_hash = {
+        attendances: @client.attendances.attended.size,
+        last_class: @client.last_class,
+        date_created: @client.created_at,
+        date_last_purchase_expiry: @client.last_purchase&.expiry_date
+      }
+      render 'client/clients/show', layout: 'client'
+     end  
+  end
 
-  private
+
+  def correct_account_or_junioradmin
+    return if current_account?(@account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
+
+    flash_message :warning, t('.warning')
+    # flash[:warning] = t('.warning')
+    redirect_to login_path
+  end
 
   def correct_credentials
     only_client_or_partner_accounts_can_be_made_here
@@ -75,6 +116,10 @@ class Admin::AccountsController < Admin::BaseController
     activation_params = { activated: true, ac_type: params[:ac_type] }
     params.permit(:email, :ac_type).merge(password_params).merge(activation_params)
   end
+
+  def password_update_params
+    params.require(:account).permit(:new_password, :new_password_confirmation, :requested_by)
+  end  
 
   def whatsapp_params(message_type)
     { receiver: @account_holder,

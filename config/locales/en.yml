@@ -19,6 +19,10 @@ en:
         warning: Account was not created
       correct_credentials:
         warning: Forbidden
+      update:
+        success: Your password has been changed
+      show:
+        warning: Forbidden        
     adjustments:
       create:
         success: Adjustment was successfully added

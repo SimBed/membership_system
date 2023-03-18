@@ -52,9 +52,11 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def update
+    # if the client email is updated, the account email must be too
     update_account_email = true unless @client.email == client_params[:email] || @client.account.nil?
     if @client.update(client_params)
-      @client.account.update(email: @client.email) if update_account_email
+      # @client.account.update(email: @client.email) if update_account_email
+      @client.account.update_column(:email, @client.email) if update_account_email
       redirect_to admin_clients_path
       flash_message :success, t('.success', name: @client.name)
       # flash[:success] = t('.success', name: @client.name)

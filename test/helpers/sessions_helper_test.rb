@@ -11,7 +11,7 @@ class SessionsHelperTest < ActionView::TestCase
   end
 
   test 'current_user returns nil when remember digest is wrong' do
-    @account.update(remember_digest: Account.digest(Account.new_token))
+    @account.update_column(:remember_digest, Account.digest(Account.new_token))
     assert_nil current_account
   end
 end

@@ -71,6 +71,7 @@ class Client::ClientsController < ApplicationController
   end
 
   def prepare_data_for_view
+    @account = @client.account
     @client_hash = {
       attendances: @client.attendances.attended.size,
       last_class: @client.last_class,
