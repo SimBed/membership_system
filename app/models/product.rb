@@ -104,6 +104,7 @@ class Product < ApplicationRecord
     :group
   end
 
+  #seems to be named misleadingly. Rename to duration? and test
   def duration_days
     validity_unit_hash = { 'D' => :days, 'W' => :weeks, 'M' => :months }
     validity_length.send(validity_unit_hash[validity_unit])

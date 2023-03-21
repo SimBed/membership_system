@@ -8,6 +8,7 @@ class Purchase < ApplicationRecord
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
   has_many :penalties, dependent: :destroy
+  before_save :set_sunset_date  
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
@@ -22,7 +23,8 @@ class Purchase < ApplicationRecord
   end
   validates :fitternity, presence: true, if: :fitternity_id
   validate :fitternity_payment
-  validate :fitternity_ongoing_package
+  # Fitternity redundant now and this validation prevented bulk setting of sunset_dates
+  # validate :fitternity_ongoing_package
   scope :not_expired, lambda {
                         where.not(status: ['expired', 'provisionally expired'])
                       }
@@ -313,6 +315,11 @@ class Purchase < ApplicationRecord
     attendances.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
   end
 
+  def sunset_date_calc
+    product_duration = product.duration_days
+    sunset_key = product_duration <= 7.days ? :week_or_less : :month_or_more
+    dop + product_duration + Setting.sunset_limit_days[sunset_key].days
+  end
   # rubocop advises Lint/IneffectiveAccessModifier: private does not make singleton methods private
   # https://stackoverflow.com/questions/4952980/how-to-create-a-private-class-method
 
@@ -326,6 +333,10 @@ class Purchase < ApplicationRecord
   end
 
   private
+
+  def set_sunset_date
+    self.sunset_date = sunset_date_calc
+  end
 
   def max_class_expiry_date
     attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max

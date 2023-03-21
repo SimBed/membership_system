@@ -62,6 +62,7 @@ class Admin::ProductsController < Admin::BaseController
       redirect_to admin_products_path
       flash[:success] = t('.success')
       update_purchase_status(@purchases)
+      update_sunset_date(@purchases)      
     else
       prepare_items_for_dropdowns
       render :edit, status: :unprocessable_entity

@@ -20,6 +20,12 @@ class Admin::BaseController < ApplicationController
     #     start_date: p.start_date_calc })
   end
 
+  def update_sunset_date(purchases)
+    purchases.each do |p|
+      p.update(sunset_date: p.sunset_date_calc)
+    end
+  end
+
   private
     def determine_layout
       'admin' # unless logged_in_as?('partner')

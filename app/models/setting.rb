@@ -26,6 +26,13 @@ class Setting < RailsSettings::Base
     field :attendances_remain, type: :integer, default: 4
   end
 
+  # https://github.com/huacnlee/rails-settings-cached/issues/231
+  scope :purchase do
+    field :sunset_limit_days, type: :hash, default: {
+      "week_or_less"=> 30,
+      "month_or_more"=> 180 }
+  end
+
   scope :booking do
     field :quotation, default: "Exercise is King. Nutrition is Queen. Put them together & you've got a Kingdom.",
                      validates: { presence: true, length: { in: 2..200 } }

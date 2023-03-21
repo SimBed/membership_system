@@ -115,13 +115,29 @@ class Admin::PurchasesController < Admin::BaseController
 
   private
 
+  def new_purchase?
+    return true if request.post?
+
+    false
+  end  
+
   def already_had_trial?
     @client = Client.find(purchase_params[:client_id])
     @product = Product.find(purchase_params[:product_id])
-    return unless @product.trial? && @client.has_had_trial?
+    if new_purchase?
+      return unless @product.trial? && @client.has_had_trial?
 
-    flash[:warning] = "Purchase not created. #{@client.name} has already had a Trial"
-    redirect_to new_admin_purchase_path
+      flash[:warning] = "Purchase not created. #{@client.name} has already had a Trial"
+      # redirect_to new_admin_purchase_path
+      @purchase = Purchase.new(purchase_params)
+      prepare_items_for_dropdowns
+      render 'new'
+    else
+      return unless @product.trial? && @client.has_had_trial? && !@purchase.trial?
+
+      flash[:warning] = "Purchase not updated. #{@client.name} has already had a Trial"
+      redirect_to edit_admin_purchase_path(@purchase)      
+    end
   end  
 
   def set_purchase

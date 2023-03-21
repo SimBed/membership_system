@@ -96,9 +96,9 @@ class Whatsapp
       "\n\nTo see details of your membership, please login:" +
       "\nEmail: the email you registered with us" +
       "\nPassword: #{@variable_contents[:password]}" +
+      "\n\nYou can change your password to something more memorable on your Profile page." +
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
-  # "\n\nYou can change your password to something more memorable on your Profile page." +
 
   def body_no_shows_penalty
     "Sorry you missed your class for #{@variable_contents[:name]} on #{@variable_contents[:day]}." +

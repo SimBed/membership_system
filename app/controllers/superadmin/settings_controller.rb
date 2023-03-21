@@ -3,6 +3,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
   def show
     @errors = []
     @amnesties = YAML.dump(Setting.amnesty_limit).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess','')
+    @sunsets = YAML.dump(Setting.sunset_limit_days).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess','')
   end
 
   def create
@@ -29,7 +30,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
 
   private
     def setting_params
-      params.require(:setting).permit(:whitelist, :renew_online, :timetable, :goals, :levels, :studios, :classmaker_advance, :package_expiry_message_days, :trial_expiry_message_days, :quotation, :amnesty_limit,
+      params.require(:setting).permit(:whitelist, :renew_online, :timetable, :goals, :levels, :studios, :classmaker_advance, :sunset_limit_days, :package_expiry_message_days, :trial_expiry_message_days, :quotation, :amnesty_limit,
                                       :pre_expiry_package_renewal, :post_expiry_trial_renewal, :pre_expiry_trial_renewal, :attendances_remain, :days_remain)
     end
 

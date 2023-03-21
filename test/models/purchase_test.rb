@@ -276,4 +276,12 @@ class PurchaseTest < ActiveSupport::TestCase
     refute @purchase_with_freeze.deletable?
     refute @purchase_package.deletable?
   end  
+
+  test '#sunset_date_calc' do
+    assert_equal Date.parse('21 Oct 2022'), @purchase_package.sunset_date_calc # dop 2022-01-24, 3M
+    assert_equal Date.parse('30 Mar 2022'), @purchase_dropin.sunset_date_calc # dop 2022-02-26, 1D
+    assert_equal Date.parse('18 Sep 2022'), @purchase_fixed.sunset_date_calc # dop 2022-02-15, 5W
+    assert_equal Date.parse('4 April 2022'), @purchase_trial.sunset_date_calc # dop 2022-02-25, 1W
+    assert_equal Date.parse('8 Aug 2022'), @purchase_with_freeze.sunset_date_calc # dop 2021-11-09, 3M (freeze 2022-01-10 - 2022-03-28)
+  end  
 end

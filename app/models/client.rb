@@ -14,7 +14,7 @@ class Client < ApplicationRecord
   # Normalizes :phone_raw attribute before validation and saves into :phone attribute
   # phony_normalize... is Fine without with_options complication, except when updating through the console. Eg c.update(whatsapp: '123') would cause both phone and whatsapp attributes to become nil
   # (as phone_raw and whatsapp_raw are nil and would be normalized and saved into phone/whatsapp attribute before validation).
-  # c.update(phone_raw: '123', whatsapp: '123') for example would avoid the need for the with_optionsa approach as would using update_column method instead, but too much risk of wiping data if missed
+  # c.update(phone_raw: '123', whatsapp: '123') for example would avoid the need for the with_options approach as would using update_column method instead, but too much risk of wiping data if missed
   with_options if: :phone_raw do
     phony_normalize :phone_raw, as: :phone, default_country_code: 'IN'
   end

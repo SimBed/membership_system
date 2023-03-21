@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_08_165244) do
+ActiveRecord::Schema.define(version: 2023_03_21_063400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 2023_02_08_165244) do
     t.integer "early_cancels", default: 0
     t.integer "late_cancels", default: 0
     t.integer "no_shows", default: 0
+    t.date "sunset_date"
     t.index ["client_id"], name: "index_purchases_on_client_id"
     t.index ["dop"], name: "index_purchases_on_dop"
     t.index ["price_id"], name: "index_purchases_on_price_id"
