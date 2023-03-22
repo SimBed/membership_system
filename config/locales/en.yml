@@ -86,6 +86,9 @@ en:
         success: Purchase was successfully updated
       destroy:
         success: "%{name}'s purchase was successfully deleted"
+      expire:
+        success: "%{name}'s purchase was successfully expired"
+        unexpired: "%{name}'s purchase has been brought back to life"
     wkclasses:
       create:
         success: Class was successfully added

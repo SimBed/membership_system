@@ -1,8 +1,8 @@
 class Admin::PurchasesController < Admin::BaseController
-  skip_before_action :admin_account, except: [:destroy]
-  before_action :junioradmin_account, except: [:destroy]
+  skip_before_action :admin_account, except: [:destroy, :expire]
+  before_action :junioradmin_account, except: [:destroy, :expire]
   before_action :initialize_sort, only: :index
-  before_action :set_purchase, only: [:show, :edit, :update, :destroy]
+  before_action :set_purchase, only: [:show, :edit, :update, :destroy, :expire]
   before_action :sanitize_params, only: [:create, :update]
   before_action :already_had_trial?, only: [:create, :update]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
@@ -45,6 +45,7 @@ class Admin::PurchasesController < Admin::BaseController
     @attendances_no_amnesty = @purchase.attendances.no_amnesty.merge(Attendance.order_by_date)
     @attendances_amnesty = @purchase.attendances.amnesty.merge(Attendance.order_by_date)
     @frozen_now = @purchase.freezed?(Time.zone.now)
+    sunset_hash
   end
 
   def new
@@ -113,7 +114,30 @@ class Admin::PurchasesController < Admin::BaseController
     redirect_to admin_purchases_path
   end
 
+  def expire
+    if @purchase.expired?
+      @purchase.update(status: @purchase.status_calc, expiry_date: @purchase.expiry_date_calc)
+      flash_message :success, t('.unexpired', name: @purchase.client.name)
+    else
+      @purchase.update(status: 'expired', expiry_date: @purchase.sunset_date)
+      flash_message :success, t('.success', name: @purchase.client.name)
+    end
+    redirect_to [:admin, @purchase]
+  end
+
   private
+
+  def sunset_hash
+    @sunset_hash = {}
+    @sunset_hash[:action] = @purchase.sunset_action
+    if @sunset_hash[:action] == :sunset
+      @sunset_hash[:image] = "bi-sunset"
+      @sunset_hash[:confirm] = "This purchase will be expired. Are you sure?"
+    else
+      @sunset_hash[:image] = "bi-sunrise"
+      @sunset_hash[:confirm] = "This purchase will be recovered from expiry. Are you sure?"
+    end
+  end
 
   def new_purchase?
     return true if request.post?
@@ -151,7 +175,7 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def sanitize_params
-    nillify_when_blank(params[:purchase], :invoice, :note)
+    nillify_when_blank(params[:purchase], :invoice, :note) 
     params[:purchase].tap do |params|
       params[:fitternity_id] = Fitternity.ongoing.first&.id if params[:payment_mode] == 'Fitternity'
       # prevent ar_date becoming not nil after an update

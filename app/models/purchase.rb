@@ -231,6 +231,7 @@ class Purchase < ApplicationRecord
     return unless expired?
     return 'adjust & restart' if adjust_restart
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
+    return 'sunset' if start_date.nil?
 
     'max time period'
   end
@@ -251,6 +252,7 @@ class Purchase < ApplicationRecord
 
   def expiry_date_calc
     return ar_date if adjust_restart?
+    # return sunset_date if expired? && start_date.nil?
     return if attendances.no_amnesty.size.zero?
 
     # end_date formulae above overstate by 1 day so deduct 1
@@ -319,6 +321,17 @@ class Purchase < ApplicationRecord
     product_duration = product.duration_days
     sunset_key = product_duration <= 7.days ? :week_or_less : :month_or_more
     dop + product_duration + Setting.sunset_limit_days[sunset_key].days
+  end
+
+  def sun_has_set?
+    Date.today > sunset_date
+  end
+
+  def sunset_action
+    return :sunrise if expiry_cause == 'sunset'
+    return :sunset if sun_has_set?
+
+    nil
   end
   # rubocop advises Lint/IneffectiveAccessModifier: private does not make singleton methods private
   # https://stackoverflow.com/questions/4952980/how-to-create-a-private-class-method
