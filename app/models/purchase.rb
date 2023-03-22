@@ -42,6 +42,8 @@ class Purchase < ApplicationRecord
   scope :dropin, -> { joins(:product).merge(Product.dropin) }
   scope :fixed, -> { joins(:product).merge(Product.fixed) }
   scope :trial, -> { joins(:product).merge(Product.trial) }
+  # scope :sunset_passed, -> { where(sunset_date: (Date.today..Date.Infinity.new)) }
+  scope :sunset_passed, -> { not_fully_expired.where('sunset_date < ?', Date.today).order(:sunset_date) }
   scope :package_started_not_expired, -> { package.started.not_expired }
   scope :package_started_not_fully_expired, -> { package.started.not_fully_expired }
   scope :renewable, -> { joins(product: [:workout_group]).where(workout_groups: { renewable: true }) }
@@ -252,7 +254,6 @@ class Purchase < ApplicationRecord
 
   def expiry_date_calc
     return ar_date if adjust_restart?
-    # return sunset_date if expired? && start_date.nil?
     return if attendances.no_amnesty.size.zero?
 
     # end_date formulae above overstate by 1 day so deduct 1

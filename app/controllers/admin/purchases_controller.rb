@@ -200,7 +200,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def handle_filter
     # arity doesn't work with scopes so struggled to reformat this further. eg Purchase.method(:classpass).arity returns -1 not zero.
-    %w[uninvoiced package_not_trial close_to_expiry unpaid classpass trial fixed].each do |key|
+    %w[uninvoiced package_not_trial close_to_expiry unpaid classpass trial fixed sunset_passed].each do |key|
       @purchases = @purchases.send(key) if session["filter_#{key}"].present?
       # some scopes will return an array (not an ActiveRecord) eg close_to_expiry so
       # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
@@ -221,7 +221,7 @@ class Admin::PurchasesController < Admin::BaseController
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
-    @other_attributes = %w[classpass close_to_expiry fixed package_not_trial trial uninvoiced unpaid]
+    @other_attributes = %w[classpass close_to_expiry fixed package_not_trial trial uninvoiced unpaid sunset_passed]
     @months = months_logged + ['All']
   end
 
@@ -262,7 +262,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def params_filter_list
     [:workout_group, :statuses, :uninvoiced, :package_not_trial, :close_to_expiry,
-     :unpaid, :classpass, :trial, :fixed, :search_name, :purchases_period]
+     :unpaid, :classpass, :trial, :fixed, :search_name, :purchases_period, :sunset_passed]
   end
 
   # ['workout_group_filter',...'invoice_filter',...:search_name]
