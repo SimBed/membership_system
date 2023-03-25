@@ -20,7 +20,7 @@
           <% client = current_account.clients.first %>
             <%# if current_account.without_purchase? %>        
               <li class="nav-item">
-                <%= link_to "Shop", client_shop_path(client), class: "nav-link"%>
+                <%= link_to "Shop", client_shop_path(client), class: "nav-link", 'data-turbolinks': false%>
               </li>
             <%# end %>
             <li class="nav-item">

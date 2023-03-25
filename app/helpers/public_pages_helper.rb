@@ -1,7 +1,7 @@
 module PublicPagesHelper
-	def offer_online_discount?(renewal_offer)
-		return false if renewal_offer == "base"
+	# def offer_online_discount?(renewal_offer)
+	# 	return false if renewal_offer == "base"
 
-		true
-	end
+	# 	true
+	# end
 end

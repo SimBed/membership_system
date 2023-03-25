@@ -113,7 +113,7 @@ class Client < ApplicationRecord
   def renewal # reformat/dry
     # groupex_package_purchases = purchases.package.order_by_dop.reject(&:pt?)
     groupex_package_purchases = purchases.package.order_by_dop.renewable
-    return nil if groupex_package_purchases.empty? #new client
+    return { offer_trial?: true, renewal_offer: "renewal_posttrial_expiry" } if groupex_package_purchases.empty? #new client
 
     unlimited3m = Product.where(max_classes: 1000, validity_length: 3, validity_unit: 'M').first
     ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)

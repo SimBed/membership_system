@@ -1,9 +1,9 @@
 <div id="renewal" class="container px-1 fw-bolder fst-italic mb-5 text-center">
   <p class="mb-1"><%= yield(:renewal_statement) %></p>
-  <% if @renewal[:valid] %>
+  <% if @renewal.valid? %>
     <p class="mb-1"><%= yield(:renewal_product) %></p>
     <p class="">
-      <% unless @renewal[:renewal_offer] == 'base' %>   
+      <% unless @renewal.renewal_offer == 'base' %>   
         <s class="me-1"><%= rupees(yield(:base_price))%></s>
       <% end %>    
       <span class = "renewal-price"><%= "#{rupees(yield(:renewal_price))}" %></span>

@@ -29,7 +29,7 @@
           <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
           <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase) %></td>
           <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
-            <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase can deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></td>
+            <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase can be deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></td>
           <% else %>
             <td class="nomobile"></td>
           <% end %>           

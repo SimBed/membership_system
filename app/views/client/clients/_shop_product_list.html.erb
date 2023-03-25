@@ -1,0 +1,38 @@
+<% @products.each_with_index do |product, index| %>
+  <div class="accordion-item product <%=product.css_class%>">
+    <div class="accordion-header" id=<%="heading-1-#{index}"%>>
+      <div class="accordion-button collapsed justify-content-around py-2 py-md-3" role="button" data-bs-toggle="collapse"
+        data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>
+        <div class="d-flex g-1 g-xl-5 align-items-center pe-3">
+          <div class="d-flex flex-column align-items-start pe-3" style="height: 3.5rem;">
+            <div class="mb-auto pe-md-5 name"><%= product.workout_group.name %></div>
+            <div class="pe-md-5 classes"><%= product.shop_name_classes%></div>
+            <div class="pe-md-5 duration"><%= pluralize(product.validity_length, product.formal_unit) %></div>
+            <%# if product.trial? %>
+              <%# <div class="pe-md-5 duration">trial</div> %>
+            <%# end %>
+          </div>
+          <div class="d-flex flex-column justify-content-center">
+            <% if @renewal.offer_online_discount? %>
+              <div class="pe2 base-price"><%= rupees(product.base_price.price) %></div>
+            <% end %>
+            <div class="pe2 discount-price"><%= rupees(product.renewal_price(@renewal.renewal_offer).price) %></div>
+          </div>
+          <div class="ps-3">
+            <%= render partial: 'razor_form_shop', locals: {product: product} %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id=<%="collapse-1-#{index}"%> class="accordion-collapse collapse" aria-labelledby=<%="heading-1-#{index}"%>
+      data-bs-parent="#accordion-1">
+      <div class="accordion-body">
+        <ul class="text-secondary">
+          <li>Save <%= rupees(product.base_price.price - product.renewal_price(@renewal.renewal_offer).price) %></li>
+          <li>Unlimited Packages allow attendance at a maximum of 1 class per day.</li>
+          <li>Freeze anytime. Freeze charges shown <%= link_to 'here', '/charges&deductions', class: "fw-bolder text-decoration-underline" %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>

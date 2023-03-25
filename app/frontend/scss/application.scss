@@ -148,6 +148,9 @@ img.table_icon {
 #shop .btn {
   padding: 0.5rem 1rem;
 }
+#shop #Flex_btn {
+  padding: 0.5rem 2.3rem;
+}
 
 // more or less properties of classes badge bg-primary rounded-pill
 .razorpay-payment-button {
@@ -163,6 +166,11 @@ img.table_icon {
   white-space: nowrap;
   vertical-align: baseline;
 }
+#trial-btn input.razorpay-payment-button {
+  background-color: white;
+  color: black;
+
+}
 
 #shop .name {
   font-size: 0.6rem;
@@ -170,12 +178,25 @@ img.table_icon {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }  
-#shop .classes {
+#shop .classes, #shop .trial-name {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+}
+
+#shop .trial-tagline {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }  
+
+#shop .value-statement {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
 #shop .duration {
   font-size: 0.75rem;
   font-weight: 700;
@@ -205,6 +226,11 @@ span.sub-label {
 
 #renewal span.renewal-price {
   font-size: 0.9rem;
+}
+
+.margin-override {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 h3.discount-statement {

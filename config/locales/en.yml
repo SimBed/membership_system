@@ -147,5 +147,5 @@ en:
   forbidden: Forbidden
   renew: Thank you for your renewal. You should receive a whatsapp message shortly to confirm
   signup: "Welcome to The Space %{name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."
-  message_sent: "%{message_type} message sent to %{to_number}"
+  message_sent: "%{message_type} message sent by Whatsapp to %{to_number}"
 
