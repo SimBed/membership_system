@@ -57,9 +57,13 @@ class Admin::ClientsController < Admin::BaseController
     if @client.update(client_params)
       # @client.account.update(email: @client.email) if update_account_email
       @client.account.update_column(:email, @client.email) if update_account_email
-      redirect_to admin_clients_path
+      if client_params[:email].nil? # means not the update form, but a link  to update waiver or instagram
+        redirect_back fallback_location: admin_clients_path
+      else
+        redirect_to admin_client_path(@client)
+        # redirect_to admin_clients_path
+      end
       flash_message :success, t('.success', name: @client.name)
-      # flash[:success] = t('.success', name: @client.name)
     else
       render :edit, status: :unprocessable_entity
     end

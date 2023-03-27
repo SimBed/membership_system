@@ -166,6 +166,13 @@ class Whatsapp
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
+  def body_memorable_password_march27
+    'MEMBERSHIP SYSTEM UPDATE' +
+    "\nStruggling to remember your password? You can now set it to something more memorable." +
+    "\nHead over to your Profile page to change it." +
+    "\n\nThis is an automated message. Please do not reply here. Contact The Space's main number if you have any questions."
+  end
+
   def body_temp_email_confirm
     "The email for the last message is: #{@variable_contents[:email]}"
   end

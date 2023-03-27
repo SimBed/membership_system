@@ -1,9 +1,11 @@
 <h4>
   <%= @client.name %>
   <%= image_tag(status_icon(@client)) unless status_icon(@client).nil? %>
-  <%= image_tag('insta.png', class: ["table_icon",("instawaiver" unless @client.instawaiver?)].compact.join(' ')) %>
-  <%= image_tag('waiver.png', class: ["table_icon",("waiver" unless @client.waiver?)].compact.join(' ')) %>
+  <%= link_to image_tag('insta.png', class: ["table_icon",("instawaiver" unless @client.instawaiver?)].compact.join(' ')), admin_client_path(@client, instawaiver: !@client.instawaiver?), method: :patch %>
+  <%#= image_tag('waiver.png', class: ["table_icon",("waiver" unless @client.waiver?)].compact.join(' ')) %>
+  <%= link_to image_tag('waiver.png', class: ["table_icon",("waiver" unless @client.waiver?)].compact.join(' ')), admin_client_path(@client, waiver: !@client.waiver?), method: :patch %>  
   <%= image_tag('eff.png', class: ["table_icon",("fitternity" unless @client.fitternity?)].compact.join(' ')) %>
+  <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(@client) %>
   <!--form action=<%#= "/admin/clients/#{params[:id]}" %> method="GET" >
     <select name="purchaseid" onchange="this.form.submit()" class= "sort">
       <%#= options_for_select @products_purchased, session[:purchaseid] %>
