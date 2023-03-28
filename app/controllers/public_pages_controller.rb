@@ -54,7 +54,7 @@ class PublicPagesController < ApplicationController
     else
       flash.now[:danger] = 'Unable to create account, please contact The Space'
       @account = Account.new
-      render 'signup', layout: 'login'
+       render 'signup', layout: 'login'
     end
 
   end
@@ -105,7 +105,7 @@ class PublicPagesController < ApplicationController
   end
   
   def client_params
-    params.require(:client).permit(:first_name, :last_name, :email, :phone, :whatsapp, :whatsapp_country_code, :instagram).merge(modifier_is_client: true)
+    params.require(:client).permit(:first_name, :last_name, :email, :phone_raw, :whatsapp_raw, :whatsapp_country_code, :instagram).merge(modifier_is_client: true)
   end
   
   def account_params
