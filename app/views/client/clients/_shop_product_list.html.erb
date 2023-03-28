@@ -27,10 +27,10 @@
     <div id=<%="collapse-1-#{index}"%> class="accordion-collapse collapse" aria-labelledby=<%="heading-1-#{index}"%>
       data-bs-parent="#accordion-1">
       <div class="accordion-body">
-        <ul class="text-secondary">
+        <ul class="text-secondary product-notes">
           <li>Save <%= rupees(product.base_price.price - product.renewal_price(@renewal.renewal_offer).price) %></li>
           <li>Unlimited Packages allow attendance at a maximum of 1 class per day.</li>
-          <li>Freeze anytime. Freeze charges shown <%= link_to 'here', '/charges&deductions', class: "fw-bolder text-decoration-underline" %></li>
+          <li>Freeze anytime. Freeze charges <%= link_to 'here', '/charges&deductions', class: "fw-bolder text-decoration-underline" %>. Freeze terms under 'Modifications' <%= link_to 'here', '/terms&conditions', class: "fw-bolder text-decoration-underline" %></li>
         </ul>
       </div>
     </div>

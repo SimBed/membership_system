@@ -88,7 +88,8 @@ class Whatsapp
       "\nYou will need these details to login in future:" +
       "\nEmail: the email you registered with us" +
       "\nPassword: #{@variable_contents[:password]}" +
-      "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
+      "\n\nYou can change your password to something more memorable on your Profile page."
+      "\n\nPlease do not reply to this message. Contact The Space's main number if you have any questions."
   end
 
   def body_new_account

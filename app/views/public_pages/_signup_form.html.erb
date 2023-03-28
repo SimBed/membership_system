@@ -37,7 +37,7 @@
 
 
   <div class="field">
-    <%= form.label :whatsapp_raw, class: "form-mandatory" %>
+    <%= form.label :whatsapp_raw, 'Whatsapp', class: "form-mandatory" %>
     <span class="sub-label">(you will be sent your account password on this number. Only used for important updates on your account, never spam)</span>  
     <div class="d-flex field">
       <%= form.country_select(:whatsapp_country_code, {priority_countries: ["IN", "US", "GB"], sort_provided: false, format: :with_data_attrs}, {class: ' me-2'} ) %>
@@ -46,7 +46,7 @@
   </div>
 
   <div class="field">
-    <%= form.label :phone_raw %>
+    <%= form.label :phone_raw, 'Phone' %>
     <span class="sub-label">helpful if you have a different number for calls than for whatsapp</span>
     <%= form.text_field :phone_raw, class: 'form-control' %>
   </div>

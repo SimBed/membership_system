@@ -213,6 +213,17 @@ img.table_icon {
   font-weight: 500;
 }
 
+#shop ul.product-notes {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+#shop .accordion-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .form-mandatory::after {
   content: "  (mandatory)";
   font-size: 0.7rem;

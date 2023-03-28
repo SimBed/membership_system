@@ -34,8 +34,8 @@ class Wkclass < ApplicationRecord
   scope :past, -> { where('start_time < ?', Time.zone.now) }
   scope :future, -> { where('start_time > ?', Time.zone.now) }
   scope :instructorless, -> { past.where(instructor_id: nil) }
-  # scope :incomplete, -> { past.joins(:attendances).where("attendances.status= 'booked'") }
-  scope :incomplete, -> { past.joins(:attendances).where(attendances: {status: 'booked'}).distinct }
+  # unscope order to avoid PG::InvalidColumnReference: ERROR https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
+  scope :incomplete, -> { past.joins(:attendances).where(attendances: {status: 'booked'}).unscope(:order).distinct }
   # visibility_window = 2.hours
   # advance_days = 3
   # scope :in_booking_visibility_window, lambda {
