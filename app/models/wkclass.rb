@@ -33,6 +33,9 @@ class Wkclass < ApplicationRecord
   scope :on_date, ->(date) { where(start_time: date.all_day) }
   scope :past, -> { where('start_time < ?', Time.zone.now) }
   scope :future, -> { where('start_time > ?', Time.zone.now) }
+  scope :instructorless, -> { past.where(instructor_id: nil) }
+  # scope :incomplete, -> { past.joins(:attendances).where("attendances.status= 'booked'") }
+  scope :incomplete, -> { past.joins(:attendances).where(attendances: {status: 'booked'}) }
   # visibility_window = 2.hours
   # advance_days = 3
   # scope :in_booking_visibility_window, lambda {

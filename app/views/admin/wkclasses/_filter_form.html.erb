@@ -20,8 +20,8 @@
             <legend>ATTRIBUTE</legend>
             <%= label_tag nil, class: "chbox-lbl-filters" do %>
               <%#= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
-              <%= check_box_tag 'in_workout_group', 'Space Group', session[:filter_in_workout_group].present? ? true : false, class: "checkbox-class", id: "chbox_in_workout_group", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Space group' %>
+              <%= check_box_tag 'in_workout_group', 'Group', session[:filter_in_workout_group].present? ? true : false, class: "checkbox-class", id: "chbox_in_workout_group", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Group' %>
             <% end %>
             <%= label_tag nil, class: "chbox-lbl-filters" do %>
               <%= check_box_tag 'todays_class', 'todays_class', session[:filter_todays_class].present? ? true : false, class: "checkbox-class", id: "chbox_todays_class",onchange: 'Rails.fire(this.form, "submit")'  %>
@@ -42,6 +42,14 @@
             <%= label_tag nil, class: "chbox-lbl-filters" do %>
               <%= check_box_tag 'future', 'future', session[:filter_future].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
               <%= 'Future' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'instructorless', 'instructorless', session[:filter_instructorless].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'No Instructor' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'incomplete', 'incomplete', session[:filter_incomplete].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Attendance not complete' %>
             <% end %>
           </fieldset>
         </div>
