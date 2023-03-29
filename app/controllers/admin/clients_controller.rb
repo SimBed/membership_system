@@ -94,7 +94,6 @@ class Admin::ClientsController < Admin::BaseController
     @client = Client.find(params[:id])
   end
 
-
   def set_raw_numbers
     @client.phone_raw = @client.phone
     @client.whatsapp_raw = @client.whatsapp

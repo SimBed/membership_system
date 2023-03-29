@@ -1,4 +1,4 @@
-<%= form_with(scope: :client, url: signup_path ) do |form| %>
+<%= form_with(scope: :client, url: signup_path, class: "px-1" ) do |form| %>
   <% if account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(account.errors.count, "error") %> prohibited this account from being created:</h2>
@@ -47,14 +47,27 @@
 
   <div class="field">
     <%= form.label :phone_raw, 'Phone' %>
-    <span class="sub-label">helpful if you have a different number for calls than for whatsapp</span>
-    <%= form.text_field :phone_raw, class: 'form-control' %>
+    <span class="sub-label">helpful if you have a different number for calls than for whatsapp (Indian only)</span>
+    <div class="d-flex field">    
+      <%= form.country_select(:whatsapp_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
+      <%= form.text_field :phone_raw, class: 'form-control' %>
+    </div>    
   </div>
 
-  <div class="field mb-3">
+  <div class="field">
     <%= form.label :instagram %>
     <span class="sub-label">if you are ok with the occasional #hashtag</span>    
     <%= form.text_field :instagram, class: 'form-control' %>
+  </div>
+
+  <div class="field my-2">
+      <%= form.label :terms_of_service do %>
+    <%= form.check_box :terms_of_service %>
+    <%= "I agree to the Space's #{link_to 'Terms & Conditions', '/terms&conditions', class: "fw-bolder text-decoration-underline"} &
+                                                    #{link_to 'Payment Policy', '/payment_policy', class: "fw-bolder text-decoration-underline"} &
+                                                    #{link_to 'Privacy Policy', '/privacy_policy', class: "fw-bolder text-decoration-underline"}".html_safe%>
+    <% end %>
+
   </div>
 
   <div class="actions">

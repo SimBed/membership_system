@@ -9,7 +9,7 @@ class Client < ApplicationRecord
   # https://stackoverflow.com/questions/6249475/ruby-on-rails-callback-what-is-difference-between-before-save-and-before-crea
   # dont want the method called on updates, otherwise end up with multiple +91s added to the number
   # (currently this is only relevant to signups)
-  before_validation :apply_country_code, on: :create  
+  # before_validation :apply_country_code, on: :create  
   # https://github.com/joost/phony_rails  
   # Normalizes :phone_raw attribute before validation and saves into :phone attribute
   # phony_normalize... is Fine without with_options complication, except when updating through the console. Eg c.update(whatsapp: '123') would cause both phone and whatsapp attributes to become nil
@@ -18,8 +18,8 @@ class Client < ApplicationRecord
   with_options if: :phone_raw do
     phony_normalize :phone_raw, as: :phone, default_country_code: 'IN'
   end
-  with_options if: :whatsapp_raw do  
-    phony_normalize :whatsapp_raw, as: :whatsapp, default_country_code: 'IN'
+  with_options if: :whatsapp_raw do
+    phony_normalize :whatsapp_raw, as: :whatsapp, default_country_code: :whatsapp_country_code
   end
   validates :phone, phony_plausible: true
   validates :whatsapp, phony_plausible: true
@@ -45,6 +45,8 @@ class Client < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   validates :account, presence: true, if: :account_id
+  # note default accept options are ['1', true] https://guides.rubyonrails.org/active_record_validations.html#acceptance
+  validates :terms_of_service, acceptance: true
   scope :order_by_first_name, -> { order(:first_name, :last_name) }
   scope :order_by_last_name, -> { order(:last_name, :first_name) }
   scope :order_by_created_at, -> { order(created_at: :desc) }
@@ -84,7 +86,7 @@ class Client < ApplicationRecord
   paginates_per 50
 
   # see client_params in ClientsController
-  attr_accessor :modifier_is_client, :whatsapp_country_code, :phone_raw, :whatsapp_raw
+  attr_accessor :modifier_is_client, :phone_country_code, :whatsapp_country_code, :phone_raw, :whatsapp_raw, :terms_of_service
 
   # would like to use #or method eg Client.recently_attended.or(Client.packagee) but couldn't resolve error:
   # Relation passed to #or must be structurally compatible. Incompatible values: [:joins, :distinct]
@@ -267,7 +269,7 @@ class Client < ApplicationRecord
   end
 
   def apply_country_code
-    self.whatsapp = [whatsapp_country_code, whatsapp].compact.join if self.whatsapp_country_code.present?
+    self.whatsapp = [whatsapp_country_code, whatsapp_raw].compact.join if self.whatsapp_country_code.present?
   end
 
   def full_name_must_be_unique

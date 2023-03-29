@@ -7,6 +7,7 @@ class ClientTest < ActiveSupport::TestCase
                          email: 'amala@thespace.in',
                          phone_raw: '9145678900',
                          whatsapp_raw: '9145678901',
+                         whatsapp_country_code: 'IN',
                          instagram: '#paw',
                          note: 'our top client')
     @client2 = clients(:bhavik)
