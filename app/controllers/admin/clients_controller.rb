@@ -95,8 +95,10 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def set_raw_numbers
-    @client.phone_raw = @client.phone
-    @client.whatsapp_raw = @client.whatsapp
+    @client.phone_country_code = @client.country_code
+    @client.whatsapp_country_code = @client.country(:whatsapp)
+    @client.phone_raw = @client.number_raw
+    @client.whatsapp_raw = @client.number_raw(:whatsapp) 
   end  
 
   def client_params
@@ -105,8 +107,10 @@ class Admin::ClientsController < Admin::BaseController
     return {waiver: params[:waiver] } if params[:waiver].present?
     return {instawaiver: params[:instawaiver] } if params[:instawaiver].present?
 
-    # necessary so validation of Client model vary from admin to client (relevant in new account signup form)
-    params.require(:client).permit(:first_name, :last_name, :email, :phone_raw, :instagram, :whatsapp_raw, :hotlead, :note).merge(modifier_is_client: false)
+    # modifier_is_client is necessary so validation of Client model can vary from admin to client (ie new signups through the web must provide more robust data)
+    params.require(:client).permit(:first_name, :last_name, :email, :phone_raw, :whatsapp_raw, :whatsapp_country_code, :instagram, :hotlead, :note)
+                           .merge(phone_country_code: 'IN')
+                           .merge(modifier_is_client: false)
   end
 
   def initialize_sort

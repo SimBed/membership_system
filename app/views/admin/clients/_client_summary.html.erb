@@ -5,18 +5,18 @@
       <th scope="row">Email</th>
       <td><%= @client.email %></td>
     </tr>
-    <% unless @client.phone.blank? %>
-      <tr>
-        <th scope="row">Phone</th>
-        <td><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></td>
-      </tr>
-    <% end %>    
     <% unless @client.whatsapp.blank? %>
       <tr>
         <th scope="row">Whatsapp</th>
         <td><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></td>
       </tr>
     <% end %>
+    <% unless @client.phone.blank? %>
+      <tr>
+        <th scope="row">Phone</th>
+        <td><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></td>
+      </tr>
+    <% end %>      
     <% unless @client.instagram.blank? %>
       <tr>
         <th scope="row">Instagram</th>

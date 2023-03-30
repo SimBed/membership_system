@@ -112,48 +112,7 @@ class Client < ApplicationRecord
 
   # end
 
-  def renewal # reformat/dry
-    # groupex_package_purchases = purchases.package.order_by_dop.reject(&:pt?)
-    groupex_package_purchases = purchases.package.order_by_dop.renewable
-    return { offer_trial?: true, renewal_offer: "renewal_posttrial_expiry" } if groupex_package_purchases.empty? #new client
 
-    unlimited3m = Product.where(max_classes: 1000, validity_length: 3, validity_unit: 'M').first
-    ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
-    if ongoing_groupex_package_purchases.empty?
-      last_groupex_package_purchase = groupex_package_purchases.first
-      if last_groupex_package_purchase.trial? # offer trials a discounted 3m unlimited
-      # expired trial        
-        renewal_price = unlimited3m.renewal_price("renewal_posttrial_expiry")
-        base_price = unlimited3m.renewal_price("base")
-        valid = !renewal_price.nil? && !base_price.nil?
-        { ongoing: false, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: true, renewal_offer: "renewal_posttrial_expiry" }
-      else
-      # expired package
-        product = last_groupex_package_purchase.product
-        renewal_price = product.renewal_price("base")
-        valid = !renewal_price.nil?
-        { ongoing: false, trial: false, product: product, price: renewal_price, valid: valid, alert_to_renew?: true, renewal_offer: "base" }
-      end
-    else
-      ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
-      # if ongoing_groupex_package_purchase.name == 'Space Group UC:1W'
-      if ongoing_groupex_package_purchase.trial?
-        # ongoing trial
-        renewal_price = unlimited3m.renewal_price("renewal_pretrial_expiry")
-        base_price = unlimited3m.renewal_price("base")
-        valid = !renewal_price.nil? && !base_price.nil?
-        { ongoing: true, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: true, renewal_offer: "renewal_pretrial_expiry" }
-      else
-        # ongoing package
-        product = ongoing_groupex_package_purchase.product
-        # { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
-        renewal_price = product.renewal_price("renewal_pre_expiry")
-        base_price = product.renewal_price("base")
-        valid = !renewal_price.nil? && !base_price.nil?
-        { ongoing: true, trial: false, product: product, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: alert_to_renew?, renewal_offer: "renewal_pre_expiry" }
-      end
-    end
-  end
 
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
@@ -227,26 +186,6 @@ class Client < ApplicationRecord
     purchases.not_fully_expired.reject { |p| p.pt? }.size > 1
   end
 
-  # not used
-  # def recently_purchased?
-  #   ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
-  #   return false if ongoing_group_packages.empty?
-
-  #   return true if ongoing_group_packages.max_by {|h| h.dop}.dop > 7.days.ago
-
-  #   false
-  # end
-
-  # not used
-  # def renewal_time?
-  #   ongoing_group_packages = purchases.not_fully_expired.reject { |p| p.pt? || p.trial? }
-  #   return false if ongoing_group_packages.empty?
-
-  #   return true if ongoing_group_packages.select { |p| p.close_to_expiry? }.include?(true)
-
-  #   false
-  # end
-
   def alert_to_renew?
     ongoing_group_packages = purchases.not_fully_expired.renewable
     # return false if ongoing_group_packages.empty?
@@ -255,6 +194,31 @@ class Client < ApplicationRecord
 
     true
   end
+
+  def country_code(number = :phone)
+    return '+91' unless Phony.plausible?(self.send(number))
+
+    "+#{PhonyRails.country_code_from_number(self.send(number))}"
+  end
+
+  def country(number = :phone)
+    stored_number = self.send(number)
+    return 'IN' unless Phony.plausible?(stored_number)
+
+    # A bunch of countries use +1 like AG, VI etc...
+    return 'US' if self.send(:country_code, number) == '+1'
+
+    PhonyRails.country_from_number(stored_number)
+  end
+
+  def number_raw(number = :phone)
+    stored_number = self.send(number)
+    return stored_number unless Phony.plausible?(stored_number)
+
+    stored_number.gsub(self.send(:country_code, number),'')
+  end
+
+
 
 
   private
@@ -287,3 +251,46 @@ class Client < ApplicationRecord
     errors.add(:base, "Client named #{first_name} #{last_name} already exists") unless id == client.id
   end
 end
+
+# def renewal # reformat/dry
+#   # groupex_package_purchases = purchases.package.order_by_dop.reject(&:pt?)
+#   groupex_package_purchases = purchases.package.order_by_dop.renewable
+#   return { offer_trial?: true, renewal_offer: "renewal_posttrial_expiry" } if groupex_package_purchases.empty? #new client
+
+#   unlimited3m = Product.where(max_classes: 1000, validity_length: 3, validity_unit: 'M').first
+#   ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
+#   if ongoing_groupex_package_purchases.empty?
+#     last_groupex_package_purchase = groupex_package_purchases.first
+#     if last_groupex_package_purchase.trial? # offer trials a discounted 3m unlimited
+#     # expired trial        
+#       renewal_price = unlimited3m.renewal_price("renewal_posttrial_expiry")
+#       base_price = unlimited3m.renewal_price("base")
+#       valid = !renewal_price.nil? && !base_price.nil?
+#       { ongoing: false, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: true, renewal_offer: "renewal_posttrial_expiry" }
+#     else
+#     # expired package
+#       product = last_groupex_package_purchase.product
+#       renewal_price = product.renewal_price("base")
+#       valid = !renewal_price.nil?
+#       { ongoing: false, trial: false, product: product, price: renewal_price, valid: valid, alert_to_renew?: true, renewal_offer: "base" }
+#     end
+#   else
+#     ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
+#     # if ongoing_groupex_package_purchase.name == 'Space Group UC:1W'
+#     if ongoing_groupex_package_purchase.trial?
+#       # ongoing trial
+#       renewal_price = unlimited3m.renewal_price("renewal_pretrial_expiry")
+#       base_price = unlimited3m.renewal_price("base")
+#       valid = !renewal_price.nil? && !base_price.nil?
+#       { ongoing: true, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: true, renewal_offer: "renewal_pretrial_expiry" }
+#     else
+#       # ongoing package
+#       product = ongoing_groupex_package_purchase.product
+#       # { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
+#       renewal_price = product.renewal_price("renewal_pre_expiry")
+#       base_price = product.renewal_price("base")
+#       valid = !renewal_price.nil? && !base_price.nil?
+#       { ongoing: true, trial: false, product: product, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: alert_to_renew?, renewal_offer: "renewal_pre_expiry" }
+#     end
+#   end
+# end

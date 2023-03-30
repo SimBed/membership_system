@@ -11,20 +11,21 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name %>
+    <%= form.label :first_name, class: "form-mandatory" %>
+    <%= form.text_field :first_name, class: 'form-control' %>
   </div>
 
   <div class="field">
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name %>
+    <%= form.label :last_name, class: "form-mandatory" %>
+    <%= form.text_field :last_name, class: 'form-control' %>
   </div>
 
   <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
+    <%= form.label :email, class: "form-mandatory" %>
+    <%= form.text_field :email, class: 'form-control' %>
   </div>
 
+<% if false %>
   <div class="field">
     <%= form.label :phone_raw, 'Phone' %>
     <%= form.text_field :phone_raw %>
@@ -34,10 +35,30 @@
     <%= form.label :whatsapp_raw, 'Whatsapp' %>
     <%= form.text_field :whatsapp_raw %>
   </div>
+<% end %>
+
+
+  <div class="field">
+    <%= form.label :whatsapp_raw, 'Whatsapp', class: "form-mandatory" %>
+    <div class="d-flex field">
+      <%= form.country_select(:whatsapp_country_code, {priority_countries: ["IN", "US", "GB"], sort_provided: false, format: :with_data_attrs}, {class: ' me-2'} ) %>
+      <%= form.text_field :whatsapp_raw, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :phone_raw, 'Phone' %>
+    <span class="sub-label">useful if client has a different number for calls than for whatsapp (Indian only)</span>
+    <div class="d-flex field">    
+      <%= form.country_select(:whatsapp_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
+      <%= form.text_field :phone_raw, class: 'form-control' %>
+    </div>    
+  </div>
+
 
   <div class="field">
     <%= form.label :instagram %>
-    <%= form.text_field :instagram %>
+    <%= form.text_field :instagram, class: 'form-control' %>
   </div>
 
   <div class="field">
@@ -47,7 +68,7 @@
 
   <div class="field">
     <%= form.label :note %>
-    <%= form.text_area :note, cols: 40, rows: 5 %>
+    <%= form.text_area :note, cols: 40, rows: 5, class: 'form-control' %>
   </div>
 
   <div class="actions">
