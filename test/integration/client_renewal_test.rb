@@ -109,7 +109,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     get client_shop_path(@client_for_unlimited)
     assert_template 'client/clients/shop'
-    puts @response.parsed_body    
+    # puts @response.parsed_body    
     assert_select "h3", text: "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!"
     assert_select "div.base-price", text: "Rs. 1,500", count: 0
     assert_select "div.discount-price", text: "Rs. 1,500", count: 0
