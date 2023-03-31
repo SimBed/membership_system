@@ -16,7 +16,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
       # redirect_to :action => "show", :id => @order.id
       # if @order.cpatured maybe create account, create purchase and send twillio
       if @order.status == 'captured'
-        if logged_in_as?('client')
+        if logged_in_as?('client') # cant create an order without being logged in as client
           #renewed_purchase = Purchase.find(order_params[:purchase_id])
           purchase_params = { client_id: current_account.clients.first.id, product_id: @order.product_id, price_id: order_params[:price_id],
                               payment: @order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
@@ -30,7 +30,9 @@ class Superadmin::OrdersController < Superadmin::BaseController
             redirect_to root_path
           end
         else
-          redirect_to thankyou_path
+          # redirect_to thankyou_path
+          flash[:alert] = "Something strange just happened."
+          redirect_to login_path
         end
       end
 

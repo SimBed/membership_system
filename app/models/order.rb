@@ -22,7 +22,7 @@ class Order < ApplicationRecord
         params.merge!({ status: razorpay_pmnt_obj.status,
                         price: price_rupees })
         # don't want price_id from params
-        # Only use paise for Razor. Use rupess in the Order and Purchase tables.
+        # Only use paise for Razor. Use rupees in the Order and Purchase tables.
         Order.create(params.permit(:product_id, :price, :status, :payment_id, :account_id))
       else
         raise StandardError, "Unable to capture payment"
