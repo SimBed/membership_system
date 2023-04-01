@@ -15,8 +15,8 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     @product_unlimited1m = products(:unlimited1m)
     @product_unlimited3m = products(:unlimited3m)
     @product_trial = products(:trial)
-    @price_Uc1mpreexpiry = prices(:Uc1mpreexpiry)
-    @price_Uc3mpreexpiry = prices(:Uc3mpreexpiry)
+    @price_Uc1mbase = prices(:Uc1mbase)
+    @price_Uc3mbase = prices(:Uc3mbase)
     @price_Uc1mpreexpiry = prices(:Uc1mpreexpiry)
     @price_Uc3mpreexpiry = prices(:Uc3mpreexpiry)
     @price_Uc1mpretrialexpiry = prices(:Uc1mpretrialexpiry)
@@ -128,6 +128,33 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "form input[type=hidden][name=account_id][value='#{@account_client.id}']", count: 2
     assert_select "form input[type=hidden][name=product_id][value='#{@product_unlimited3m.id}']", count: 1         
     assert_select "form input[type=hidden][name=price_id][value='#{@price_Uc3mpreexpiry.id}']", count: 1
+  end  
+
+  test 'test shop items correct for client with expired package' do
+    log_in_as(@account_client)
+    # retire package
+    purchase = @client_for_unlimited.purchases.last    
+    travel_to(purchase.expiry_date.advance(days:1))
+    purchase.update(status: purchase.status_calc)
+    get client_shop_path(@client_for_unlimited)
+    assert_template 'client/clients/shop'
+    # puts @response.parsed_body  
+    assert_empty response.body.scan(/Renew your Package/)  
+    assert_select "div.base-price", text: "Rs. 1,500", count: 0
+    assert_select "div.discount-price", text: "Rs. 1,500", count: 0
+    assert_select "div", text: "TRIAL", count: 0        
+    assert_select "div.base-price", count: 0 
+    assert_select "div.discount-price", text: "Rs. 9,500"
+    refute_empty response.body.scan(/data-amount="950000"/)
+    assert_empty response.body.scan(/Save Rs./) 
+    assert_select "div.discount-price", text: "Rs. 25,500"
+    refute_empty response.body.scan(/data-amount="2550000"/)
+    # items in the razorpay form
+    assert_select "form input[type=hidden][name=product_id][value='#{@product_unlimited1m.id}']", count: 1         
+    assert_select "form input[type=hidden][name=price_id][value='#{@price_Uc1mbase.id}']", count: 1   
+    assert_select "form input[type=hidden][name=account_id][value='#{@account_client.id}']", count: 2
+    assert_select "form input[type=hidden][name=product_id][value='#{@product_unlimited3m.id}']", count: 1         
+    assert_select "form input[type=hidden][name=price_id][value='#{@price_Uc3mbase.id}']", count: 1
   end  
 
   test 'test shop items correct for client with ongoing trial' do

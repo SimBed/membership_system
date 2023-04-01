@@ -96,4 +96,7 @@ module Client::ClientsHelper
     "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" # if !ongoing && trial
   end
 
+  def renewal_saving(product, offer)
+    product.base_price.price - product.renewal_price(offer).price
+  end
 end
