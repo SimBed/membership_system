@@ -32,11 +32,6 @@ class Admin::BaseController < ApplicationController
     end
 
     def set_public_timetable
-      # if Rails.env.test?
-      #   @timetable = Timetable.first
-      # else
-      #   @timetable = Timetable.find(Setting.timetable)
-      # end
-      @timetable = Timetable.find(Setting.timetable)      
+      @current_timetable = Timetable.find(Setting.timetable)      
     end
 end

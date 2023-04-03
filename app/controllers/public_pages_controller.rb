@@ -19,9 +19,6 @@ class PublicPagesController < ApplicationController
   end
   
   def space_home
-    # @morning_times = @timetable.table_times.during('morning').order_by_time
-    # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
-    # @evening_times = @timetable.table_times.during('evening').order_by_time
   end
 
   def signup
@@ -79,11 +76,6 @@ class PublicPagesController < ApplicationController
   private
 
   def set_timetable
-    # if Rails.env.test?
-    #   @timetable = Timetable.first
-    # else
-    #   @timetable = Timetable.find(Setting.timetable)
-    # end
     @timetable = Timetable.find(Setting.timetable)
     @days = @timetable.table_days.order_by_day    
   end
