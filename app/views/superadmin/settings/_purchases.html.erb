@@ -8,6 +8,11 @@
         <%= f.text_area :payment_methods, value: Setting.payment_methods.join("\n"), class: "form-control", style: "height: 20rem;" %>
       </div>
 
+      <div class="form-group">
+        <label class="control-label">Minimum duration of a freeze</label>
+        <%= f.number_field :freeze_min_duration, value: Setting.freeze_min_duration, class: "form-control", style: "width: 5rem;" %>
+      </div>      
+
     </div>
   </div>
 </section>

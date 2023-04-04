@@ -23,9 +23,14 @@
         <%= f.number_field :booking_window_days_before, value: Setting.booking_window_days_before, class: "form-control", style: "width: 5rem;" %>
       </div>
 
-      <div class="form-group">
+      <div class="form-group mb-2">
         <label class="control-label">Stop allowing booking of class this number of minutes before class starts</label>
         <%= f.number_field :booking_window_minutes_before, value: Setting.booking_window_minutes_before, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Hours before class from which a cancellaion is treated as late</label>
+        <%= f.number_field :cancellation_window, value: Setting.cancellation_window, class: "form-control", style: "width: 5rem;" %>
       </div>
       
     </div>

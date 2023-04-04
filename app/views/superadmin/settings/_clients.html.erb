@@ -1,0 +1,18 @@
+<section class="mb-5">   
+  <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Client</h5>
+  <div class="card bg-opaque-white">
+    <div class="card-body bg-light">               
+      
+      <div class="form-group mb-2">
+        <label class="control-label">If a client hasn't attended for more than this many months, they are considered cold</label>
+        <%= f.number_field :cold, value: Setting.cold, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group mb-2">
+        <label class="control-label">If a client has attended in the last this many months, they are considered to have recently attended</label>
+        <%= f.number_field :recently_attended, value: Setting.recently_attended, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -11,11 +11,13 @@
         <% end %>
         <h5 class="mb-3 ms-1"><%= f.submit 'Update Settings' %></h5>  
         <%= render partial: 'timetable', locals: { f: f } %>
-        <%= render partial: 'payment_methods', locals: { f: f } %>
+        <%= render partial: 'purchases', locals: { f: f } %>
+        <%= render partial: 'clients', locals: { f: f } %>
         <%= render partial: 'renewal_discounts', locals: { f: f } %>
         <%= render partial: 'messaging_timing', locals: { f: f } %>
         <%= render partial: 'attendances', locals: { f: f } %>
         <%= render partial: 'miscellaneous', locals: { f: f } %>
+        <%= render partial: 'pagination', locals: { f: f } %>
         <%= render partial: 'limits', locals: { f: f } %>
     <% end %>        
   </div>

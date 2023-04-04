@@ -64,7 +64,7 @@ class Client < ApplicationRecord
                    .select("#{Client.table_name}.*", 'max(start_time) as max')
                    .joins(purchases: [attendances: [:wkclass]])
                    .group('clients.id')
-                   .having('max(start_time) < ?', 3.months.ago)
+                   .having('max(start_time) < ?', Setting.cold.months.ago)
                }
                
   scope :one_time_trial, lambda {
@@ -78,12 +78,12 @@ class Client < ApplicationRecord
                    .select("#{Client.table_name}.*", 'max(start_time)')
                    .joins(purchases: [attendances: [:wkclass]])
                    .group('clients.id')
-                   .having('max(start_time) >= ?', 3.months.ago)
+                   .having('max(start_time) >= ?', Setting.recently_attended.months.ago)
                }
 
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
 
-  paginates_per 50
+  paginates_per Setting.clients_pagination
 
   # see client_params in ClientsController
   attr_accessor :modifier_is_client, :phone_country_code, :whatsapp_country_code, :phone_raw, :whatsapp_raw, :terms_of_service
@@ -103,22 +103,11 @@ class Client < ApplicationRecord
                  .manage_messaging
   end
 
-
-
-  # def groupex_package_status
-  #   groupex_package_purchases = purchases.package.order_by_dop.renewable
-  #   return nil if groupex_package_purchases.empty? #new client
-  #   ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
-
-  # end
-
-
-
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?
 
-    date_of_last_class < 3.months.ago
+    date_of_last_class < Setting.cold.months.ago
   end
 
   def enquiry?
@@ -181,11 +170,6 @@ class Client < ApplicationRecord
     return false
   end
 
-  # not used
-  def has_renewed?
-    purchases.not_fully_expired.reject { |p| p.pt? }.size > 1
-  end
-
   def alert_to_renew?
     ongoing_group_packages = purchases.not_fully_expired.renewable
     # return false if ongoing_group_packages.empty?
@@ -218,9 +202,6 @@ class Client < ApplicationRecord
     stored_number.gsub(self.send(:country_code, number),'')
   end
 
-
-
-
   private
 
   def downcase_email
@@ -251,46 +232,3 @@ class Client < ApplicationRecord
     errors.add(:base, "Client named #{first_name} #{last_name} already exists") unless id == client.id
   end
 end
-
-# def renewal # reformat/dry
-#   # groupex_package_purchases = purchases.package.order_by_dop.reject(&:pt?)
-#   groupex_package_purchases = purchases.package.order_by_dop.renewable
-#   return { offer_trial?: true, renewal_offer: "renewal_posttrial_expiry" } if groupex_package_purchases.empty? #new client
-
-#   unlimited3m = Product.where(max_classes: 1000, validity_length: 3, validity_unit: 'M').first
-#   ongoing_groupex_package_purchases = groupex_package_purchases.reject(&:expired?)
-#   if ongoing_groupex_package_purchases.empty?
-#     last_groupex_package_purchase = groupex_package_purchases.first
-#     if last_groupex_package_purchase.trial? # offer trials a discounted 3m unlimited
-#     # expired trial        
-#       renewal_price = unlimited3m.renewal_price("renewal_posttrial_expiry")
-#       base_price = unlimited3m.renewal_price("base")
-#       valid = !renewal_price.nil? && !base_price.nil?
-#       { ongoing: false, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: true, renewal_offer: "renewal_posttrial_expiry" }
-#     else
-#     # expired package
-#       product = last_groupex_package_purchase.product
-#       renewal_price = product.renewal_price("base")
-#       valid = !renewal_price.nil?
-#       { ongoing: false, trial: false, product: product, price: renewal_price, valid: valid, alert_to_renew?: true, renewal_offer: "base" }
-#     end
-#   else
-#     ongoing_groupex_package_purchase = ongoing_groupex_package_purchases.first
-#     # if ongoing_groupex_package_purchase.name == 'Space Group UC:1W'
-#     if ongoing_groupex_package_purchase.trial?
-#       # ongoing trial
-#       renewal_price = unlimited3m.renewal_price("renewal_pretrial_expiry")
-#       base_price = unlimited3m.renewal_price("base")
-#       valid = !renewal_price.nil? && !base_price.nil?
-#       { ongoing: true, trial: true, product: unlimited3m, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: true, renewal_offer: "renewal_pretrial_expiry" }
-#     else
-#       # ongoing package
-#       product = ongoing_groupex_package_purchase.product
-#       # { ongoing: true, trial: false, product: product, price: product.renewal_price("10% pre-expiry Discount"), base_price: product.renewal_price("Base") }
-#       renewal_price = product.renewal_price("renewal_pre_expiry")
-#       base_price = product.renewal_price("base")
-#       valid = !renewal_price.nil? && !base_price.nil?
-#       { ongoing: true, trial: false, product: product, price: renewal_price, base_price: base_price, valid: valid, alert_to_renew?: alert_to_renew?, renewal_offer: "renewal_pre_expiry" }
-#     end
-#   end
-# end

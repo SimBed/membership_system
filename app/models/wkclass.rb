@@ -44,10 +44,10 @@ class Wkclass < ApplicationRecord
   #                                        where({ start_time: (window_start..window_end) })
   #                                      }
   scope :in_booking_visibility_window, -> { where({ start_time: visibility_window }) }
-  cancellation_window = 2.hours
+  cancellation_window = Setting.cancellation_window.hours
   scope :in_cancellation_window, -> { where('start_time > ?', Time.zone.now + cancellation_window) }
   scope :future_and_recent, -> { where('start_time > ?', Time.zone.now - cancellation_window) }
-  paginates_per 100
+  paginates_per Setting.wkclasses_pagination
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}

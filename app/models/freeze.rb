@@ -19,7 +19,7 @@ class Freeze < ApplicationRecord
   private
 
   def duration_length
-    errors.add(:base, 'must be 3 days or more') if duration < 3
+    errors.add(:base, 'must be 3 days or more') if duration < Setting.freeze_min_duration
   end
 
   def no_attendance_during

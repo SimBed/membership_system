@@ -16,11 +16,6 @@ class Setting < RailsSettings::Base
     field :goals, type: :array, default: ['Hypertrophy', 'Foundations', 'HIIT & Core']  
   end
 
-  scope :purchase do
-    field :payment_methods, type: :array, default: %w[A&R\ conversion Card-Credit Card-Debit Cash Cheque ClassPass Fitternity Google\ Pay
-                                                      Instamojo NEFT Not\ applicable Not\ paid Paid\ to\ instructor PayTM Razorpay]
-  end
-
   scope :wkclassmaker do
     field :classmaker_advance, type: :integer, default: 4
   end
@@ -33,16 +28,34 @@ class Setting < RailsSettings::Base
     field :attendances_remain, type: :integer, default: 4
   end
 
+  scope :client do
+    field :cold, type: :integer, default: 3
+    field :recently_attended, type: :integer, default: 3
+    field :pre_expiry_trial_renewal, type: :integer, default: 0
+    field :days_remain, type: :integer, default: 14
+    field :attendances_remain, type: :integer, default: 4
+  end
+
+  scope :pagination do
+    field :clients_pagination, type: :integer, default: 50
+    field :purchases_pagination, type: :integer, default: 20
+    field :wkclasses_pagination, type: :integer, default: 100
+  end
+
   scope :attendance do
     field :amendment_count, type: :integer, default: 3
     field :visibility_window_hours_before, type: :integer, default: 2
     field :visibility_window_days_ahead, type: :integer, default: 6
     field :booking_window_days_before, type: :integer, default: 2
     field :booking_window_minutes_before, type: :integer, default: -5
+    field :cancellation_window, type: :integer, default: 2    
   end
 
   # https://github.com/huacnlee/rails-settings-cached/issues/231
   scope :purchase do
+    field :payment_methods, type: :array, default: %w[A&R\ conversion Card-Credit Card-Debit Cash Cheque ClassPass Fitternity Google\ Pay
+                                                      Instamojo NEFT Not\ applicable Not\ paid Paid\ to\ instructor PayTM Razorpay]
+    field :freeze_min_duration, type: :integer, default: 3                                                      
     field :sunset_limit_days, type: :hash, default: {
       "week_or_less"=> 30,
       "month_or_more"=> 180 }

@@ -78,7 +78,7 @@ class Purchase < ApplicationRecord
   # 'id:: text' is equivalent to 'CAST (id AS TEXT)' see https://www.postgresqltutorial.com/postgresql-cast/
   # position is a Postgresql string function, see https://www.postgresqltutorial.com/postgresql-position/
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
-  paginates_per 20
+  paginates_per Setting.purchases_pagination
 
   # reformat? pt? can just be a method of Product.
   def pt?
