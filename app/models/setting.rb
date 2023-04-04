@@ -3,7 +3,7 @@ class Setting < RailsSettings::Base
   cache_prefix { "v1" }
 
   scope :application do
-    field :whitelist, type: :array, default: %w[nishaap trivedi james@t riyajha]
+    # field :whitelist, type: :array, default: %w[nishaap trivedi james@t riyajha]
     field :renew_online, type: :boolean, default: false
   end
 

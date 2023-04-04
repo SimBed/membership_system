@@ -53,10 +53,10 @@ class Whatsapp
     # [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
-  def white_list_whatsapp_receivers
-    whatsapp_receivers = Setting.whitelist
-    whatsapp_receivers.include?(@receiver.email.slice(0,7))
-  end
+  # def white_list_whatsapp_receivers
+  #   whatsapp_receivers = Setting.whitelist
+  #   whatsapp_receivers.include?(@receiver.email.slice(0,7))
+  # end
 
   # space between '\n' and '\nPlease' is required for conformity to nuance of template. Fails to deliver without.
   def body_new_purchase
