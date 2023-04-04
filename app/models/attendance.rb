@@ -43,8 +43,12 @@ class Attendance < ApplicationRecord
     purchase.product.workout_group
   end
 
+  # def maxed_out_amendments?
+  #   amendment_count >= Rails.application.config_for(:constants)['settings'][:amendment_count]
+  # end
+
   def maxed_out_amendments?
-    amendment_count >= Rails.application.config_for(:constants)['settings'][:amendment_count]
+    amendment_count >= Setting.amendment_count
   end
 
   def self.by_status(wkclass, status)

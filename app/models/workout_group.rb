@@ -75,7 +75,8 @@ class WorkoutGroup < ApplicationRecord
   def gst_rate
     return 0 unless gst_applies
 
-    Rails.application.config_for(:constants)['gst_rate'].first.to_f / 100
+    # Rails.application.config_for(:constants)['gst_rate'].first.to_f / 100
+    Setting.gst_rate.to_f / 100
   end
 
   # def attendances_in(revenue_date)

@@ -1,5 +1,3 @@
-
-
   <div class="col-lg-6">
       <%= form_for(Setting.new, url: superadmin_settings_path) do |f| %>
         <% if @errors.any? %>
@@ -12,133 +10,17 @@
           </div>
         <% end %>
         <h5 class="mb-3 ms-1"><%= f.submit 'Update Settings' %></h5>  
-        <section class="mb-5">   
-          <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Timetable</h5>
-          <div class="card bg-opaque-white">
-            <div class="card-body bg-light">               
-              <div class="form-group mb-2">
-                <label class="control-label">Goals</label>
-                <%= f.text_area :goals, value: Setting.goals.join("\n"), class: "form-control", style: "height: 10rem;" %>
-              </div>
-              <div class="form-group mb-2">
-                <label class="control-label">Levels</label>
-                <%= f.text_area :levels, value: Setting.levels.join("\n"), class: "form-control", style: "height: 10rem;" %>
-              </div>    
-              <div class="form-group">
-                <label class="control-label">Studios</label>
-                <%= f.text_area :studios, value: Setting.studios.join("\n"), class: "form-control", style: "height: 10rem;" %>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        <section class="mb-5">   
-          <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Group Class Renewal Discounts</h5>
-          <div class="card bg-opaque-white">
-            <div class="card-body bg-light">               
-
-              <div class="form-group mb-2">
-                <label class="control-label">Discount (%) for renewal of Package before expiry</label>
-                <%= f.number_field :pre_expiry_package_renewal, value: Setting.pre_expiry_package_renewal, class: "form-control", style: "width: 5rem;" %>
-              </div>
-
-              <div class="form-group mb-2">
-                <label class="control-label">Discount (%) for renewal of Trial after expiry</label>
-                <%= f.number_field :post_expiry_trial_renewal, value: Setting.post_expiry_trial_renewal, class: "form-control", style: "width: 5rem;" %>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label">Discount (%) for renewal of Trial before expiry</label>
-                <%= f.number_field :pre_expiry_trial_renewal, value: Setting.pre_expiry_trial_renewal, class: "form-control", style: "width: 5rem;" %>
-              </div>
-
-            </div>
-          </div>
-        </section>            
-        <section class="mb-5">   
-          <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Group Class Messaging Timing</h5>
-          <div class="card bg-opaque-white">
-            <div class="card-body bg-light">               
-              <div class="form-group mb-2">
-                <label class="control-label">Renew Online?</label>
-                <%= f.check_box :renew_online %>
-              </div>
-
-              <div class="form-group mb-2">
-                <label class="control-label">Offer client renewal message when this number of days left</label>
-                <%= f.number_field :days_remain, value: Setting.days_remain, class: "form-control", style: "width: 5rem;" %>
-              </div>
-
-              <div class="form-group mb-2">
-                <label class="control-label">Offer client renewal message when this number of attendances left</label>
-                <%= f.number_field :attendances_remain, value: Setting.attendances_remain, class: "form-control", style: "width: 5rem;" %>
-              </div>
-
-              <div class="form-group mb-2">
-                <label class="control-label">Send expiry message for Package this number of days before expiry</label>
-                <%= f.number_field :package_expiry_message_days, value: Setting.package_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label">Send expiry message for Trial this number of days before expiry</label>
-                <%= f.number_field :trial_expiry_message_days, value: Setting.trial_expiry_message_days, class: "form-control", style: "width: 5rem;" %>
-              </div>
-            </div>
-          </div>
-        </section>            
-        <section class="mb-5">   
-          <h4 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Miscellaneous</h4>
-          <div class="card bg-opaque-white">
-            <div class="card-body bg-light">               
-              <div class="form-group mb-2">
-                <label class="control-label">Create group classes this number of days ahead</label>
-                <%= f.number_field :classmaker_advance, value: Setting.classmaker_advance, class: "form-control", style: "width: 5rem;" %>
-              </div>
-              <div class="form-group">
-                <label class="control-label">Quotation</label>
-                <%= f.text_area :quotation, value: Setting.quotation, class: "form-control", style: "height: 10rem;" %>
-              </div>
-            </div>
-          </div>
-        </section>            
-        <section class="mb-5">   
-          <h4 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Group Class Limits (Amnsety & Sunset)</h4>
-          <div class="form-text alert alert-primary mb-0">
-            Be careful. Don't change layout or App will break.
-          </div>          
-          <div class="card bg-opaque-white">
-            <div class="card-body bg-light">               
-              <div class="form-group mb-2">
-                <label class="control-label">Sunset Limits</label>
-                <%= f.text_area :sunset_limit_days, value: @sunsets, class: "form-control", style: "height: 10rem;"  %>
-                <div class="form-text">
-                  Be careful. Don't change layout or App will break.
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label">Amnesty Options</label>
-                <%= f.text_area :amnesty_limit, value: @amnesties, class: "form-control", style: "height: 40rem;"  %>
-
-              </div>
-            </div>
-          </div>
-        </section>            
-      </div>
-
-
-
-
-
-
-
-
-
+        <%= render partial: 'timetable', locals: { f: f } %>
+        <%= render partial: 'payment_methods', locals: { f: f } %>
+        <%= render partial: 'renewal_discounts', locals: { f: f } %>
+        <%= render partial: 'messaging_timing', locals: { f: f } %>
+        <%= render partial: 'attendances', locals: { f: f } %>
+        <%= render partial: 'miscellaneous', locals: { f: f } %>
+        <%= render partial: 'limits', locals: { f: f } %>
+    <% end %>        
+  </div>
 
     <!-- <div class="form-group">
     <label class="control-label">Whitelist</label>
     <%#= f.text_area :whitelist, value: Setting.whitelist.join("\n"), class: "form-control", style: "height: 10rem; width: 20rem;" %>
   </div> -->
-
-
-<% end %>

@@ -1,0 +1,23 @@
+<section class="mb-5">   
+  <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Group Class Renewal Discounts</h5>
+  <div class="card bg-opaque-white">
+    <div class="card-body bg-light">               
+
+      <div class="form-group mb-2">
+        <label class="control-label">Discount (%) for renewal of Package before expiry</label>
+        <%= f.number_field :pre_expiry_package_renewal, value: Setting.pre_expiry_package_renewal, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group mb-2">
+        <label class="control-label">Discount (%) for renewal of Trial after expiry</label>
+        <%= f.number_field :post_expiry_trial_renewal, value: Setting.post_expiry_trial_renewal, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Discount (%) for renewal of Trial before expiry</label>
+        <%= f.number_field :pre_expiry_trial_renewal, value: Setting.pre_expiry_trial_renewal, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+    </div>
+  </div>
+</section>  

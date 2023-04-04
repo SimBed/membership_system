@@ -32,11 +32,11 @@ class Client < ApplicationRecord
     validates :whatsapp, presence: true # admin can add a client without a whatsapp number but a client cannot signup themselves without a whatsapp number
   end
   validate :full_name_must_be_unique
+  validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
   unless Rails.env.development?
-    # helpful to use my phone number for mutiple clients in development
-    validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
+    # helpful to use my whatsapp for mutiple clients in development
+    validates :whatsapp, uniqueness: { case_sensitive: false }, allow_blank: true
   end
-  validates :whatsapp, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :instagram, uniqueness: { case_sensitive: false }, allow_blank: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   # NOTE: allow_blank will skip the validations on blank fields so multiple clients

@@ -1,38 +1,11 @@
 default: &default
 
- payment_methods:
-  - A&R conversion
-  - Card-Credit
-  - Card-Debit
-  - Cash
-  - Cheque
-  - ClassPass
-  - Fitternity
-  - Google Pay
-  - Instamojo
-  - NEFT
-  - Not applicable
-  - Not paid
-  - Paid to instructor
-  - PayTM
-  - Razorpay
-
- gst_rate:
-  - 18
-
  attendance_statuses:
   - booked
   - attended
   - cancelled early
   - cancelled late
   - no show
-
- settings:
-   amendment_count: 3
-   visibility_window_hours_before: 2
-   visibility_window_days_ahead: 6
-   booking_window_days_before: 2
-   booking_window_minutes_before: -5
 
 development:
   <<: *default
@@ -42,3 +15,30 @@ test:
 
 production:
   <<: *default
+
+  #  payment_methods:
+#   - A&R conversion
+#   - Card-Credit
+#   - Card-Debit
+#   - Cash
+#   - Cheque
+#   - ClassPass
+#   - Fitternity
+#   - Google Pay
+#   - Instamojo
+#   - NEFT
+#   - Not applicable
+#   - Not paid
+#   - Paid to instructor
+#   - PayTM
+#   - Razorpay
+
+#  gst_rate:
+#   - 18
+
+#  settings:
+#    amendment_count: 3
+#    visibility_window_hours_before: 2
+#    visibility_window_days_ahead: 6
+#    booking_window_days_before: 2
+#    booking_window_minutes_before: -5

@@ -257,7 +257,8 @@ class Admin::PurchasesController < Admin::BaseController
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     @products = Product.order_by_name_max_classes
-    @payment_methods = Rails.application.config_for(:constants)['payment_methods']
+    # @payment_methods = Rails.application.config_for(:constants)['payment_methods']
+    @payment_methods = Setting.payment_methods
   end
 
   def params_filter_list

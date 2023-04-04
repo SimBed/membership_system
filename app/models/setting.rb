@@ -5,6 +5,8 @@ class Setting < RailsSettings::Base
   scope :application do
     # field :whitelist, type: :array, default: %w[nishaap trivedi james@t riyajha]
     field :renew_online, type: :boolean, default: false
+    field :password_length, type: :integer, default: 6    
+    field :gst_rate, type: :integer, default: 18   
   end
 
   scope :timetable do
@@ -12,6 +14,11 @@ class Setting < RailsSettings::Base
     field :studios, type: :array, default: %w[Cellar Window Den]
     field :levels, type: :array, default: ['Beginner Friendly', 'All Levels', 'Intermediate']  
     field :goals, type: :array, default: ['Hypertrophy', 'Foundations', 'HIIT & Core']  
+  end
+
+  scope :purchase do
+    field :payment_methods, type: :array, default: %w[A&R\ conversion Card-Credit Card-Debit Cash Cheque ClassPass Fitternity Google\ Pay
+                                                      Instamojo NEFT Not\ applicable Not\ paid Paid\ to\ instructor PayTM Razorpay]
   end
 
   scope :wkclassmaker do
@@ -24,6 +31,14 @@ class Setting < RailsSettings::Base
     field :pre_expiry_trial_renewal, type: :integer, default: 0
     field :days_remain, type: :integer, default: 14
     field :attendances_remain, type: :integer, default: 4
+  end
+
+  scope :attendance do
+    field :amendment_count, type: :integer, default: 3
+    field :visibility_window_hours_before, type: :integer, default: 2
+    field :visibility_window_days_ahead, type: :integer, default: 6
+    field :booking_window_days_before, type: :integer, default: 2
+    field :booking_window_minutes_before, type: :integer, default: -5
   end
 
   # https://github.com/huacnlee/rails-settings-cached/issues/231

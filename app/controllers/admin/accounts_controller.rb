@@ -10,7 +10,7 @@ class Admin::AccountsController < Admin::BaseController
   # admin accounts cant be created through the app
 
   def create
-    @password = Account.password_wizard(6)
+    @password = Account.password_wizard(Setting.password_length)
     @account = Account.new(account_params)
     if @account.save
       associate_account_holder_to_account
@@ -37,7 +37,7 @@ class Admin::AccountsController < Admin::BaseController
   private
   
   def password_reset_admin
-    @password = Account.password_wizard(6)
+    @password = Account.password_wizard(Setting.password_length)
     @account.update(password: @password, password_confirmation: @password)
     flash_message(*Whatsapp.new(whatsapp_params('password_reset')).manage_messaging)
     redirect_back fallback_location: admin_clients_path
@@ -67,7 +67,6 @@ class Admin::AccountsController < Admin::BaseController
     return if current_account?(@account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
 
     flash_message :warning, t('.warning')
-    # flash[:warning] = t('.warning')
     redirect_to login_path
   end
 

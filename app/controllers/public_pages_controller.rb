@@ -30,7 +30,7 @@ class PublicPagesController < ApplicationController
   def create_account
     @client = Client.new(client_params)
     if @client.save
-      @password = Account.password_wizard(6)
+      @password = Account.password_wizard(Setting.password_length)
       @account = Account.new(account_params)
       if @account.save
         associate_account_holder_to_account

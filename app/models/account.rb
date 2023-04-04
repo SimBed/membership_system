@@ -64,20 +64,8 @@ class Account < ApplicationRecord
               .concat((1..9).to_a).sample(n).join
   end
 
-  # def number_formatted(contact_type)
-  #   number = send(contact_type)&.gsub(/[^0-9+]/, '')
-  #   return "+91#{number}" unless number&.first == '+' || number.blank?
-  #
-  #   number
-  # end
-  #
-  # def whatsapp_messaging_number
-  #   # #find returns first element meeting block condition
-  #   [number_formatted('whatsapp'), number_formatted('phone')].find(&:present?)
-  # end
-
   def self.setup_for(client)
-    password = Account.password_wizard(6)
+    password = Account.password_wizard(Setting.password_length)
     @account = Account.new(
       { password: password, password_confirmation: password,
         activated: true, ac_type: 'client', email: client.email }

@@ -1,0 +1,33 @@
+<section class="mb-5">   
+  <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Attendances</h5>
+  <div class="card bg-opaque-white">
+    <div class="card-body bg-light">               
+
+      <div class="form-group mb-2">
+        <label class="control-label">Maximum number of times a client can amend an attendance</label>
+        <%= f.number_field :amendment_count, value: Setting.amendment_count, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group mb-2">
+        <label class="control-label">Continue to show class in booking page for this many hours after class has started</label>
+        <%= f.number_field :visibility_window_hours_before, value: Setting.visibility_window_hours_before, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group mb-2">
+        <label class="control-label">Start showing class in booking page this number of days before date of class</label>
+        <%= f.number_field :visibility_window_days_ahead, value: Setting.visibility_window_days_ahead, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group mb-2">
+        <label class="control-label">Allow booking of class this number of days before date of class</label>
+        <%= f.number_field :booking_window_days_before, value: Setting.booking_window_days_before, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">Stop allowing booking of class this number of minutes before class starts</label>
+        <%= f.number_field :booking_window_minutes_before, value: Setting.booking_window_minutes_before, class: "form-control", style: "width: 5rem;" %>
+      </div>
+      
+    </div>
+  </div>
+</section>
