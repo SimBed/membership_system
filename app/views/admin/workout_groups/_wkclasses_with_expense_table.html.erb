@@ -1,3 +1,4 @@
+<%= render partial: 'instructor_expense_filter_form' %>
 <table class="table table-secondary table-striped caption-top">
   <caption>* Classes with Instructor Expense</caption>
   <tbody>
@@ -9,13 +10,14 @@
         <% else %>
           <td><%= wkclass.summary %></td>
         <% end %>
+        <td><%= wkclass.attendances.first.client.name %></td>
         <td><%= wkclass.instructor_name %></td>
         <td><%= number_with_delimiter(wkclass.instructor_cost) %></td>
       </tr>
     <% end %>
     <tr>
       <th scope="row">Total</th>
-      <td><%= rupees(@summary[:variable_expense]) %></td>
+      <td><%= rupees(@summary[:variable_expense_filtered]) %></td>
     </tr>
   </tbody>
 </table>

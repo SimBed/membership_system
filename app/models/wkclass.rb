@@ -24,6 +24,8 @@ class Wkclass < ApplicationRecord
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
   scope :has_instructor_cost, -> { where.not(instructor_cost: nil) }
+  # wg is an array of instructor ids
+  scope :with_instructor, ->(i) { joins(:instructor).where(instructor: { id: i }) }
   scope :group_by_instructor_cost, -> { joins(:instructor).group("first_name || ' ' || last_name").sum(:instructor_cost) }
   scope :during, ->(period) { where({ start_time: period }).order(:start_time) }
   scope :not_during, ->(period) { where.not({ start_time: period }) }

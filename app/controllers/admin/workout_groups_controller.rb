@@ -18,6 +18,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     set_period
     @wkclasses = @workout_group.wkclasses_during(@period)
     @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost.includes(:workout, :instructor)
+    @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.send(:with_instructor, session[:filter_instructor]) if session[:filter_instructor].present?
     # unscope :order from wkclasses_during method otherwise get an ActiveRecord::StatementInvalid Exception: PG::GroupingError: ERROR
     # @instructor_cost_subtotals = @wkclasses_with_instructor_expense.unscope(:order).group_by_instructor_cost.delete_if { |k, v| v.zero? }
     # @instructor_cost_counts = @wkclasses_with_instructor_expense.unscope(:order).joins(:instructor).group("first_name || ' ' || last_name").count(:instructor_cost).delete_if { |k, v| v.zero? }
@@ -30,6 +31,10 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     @summary = {}
     set_revenue_summary
     set_expense_summary
+    respond_to do |format|
+      format.html
+      format.js { render 'show.js.erb' }
+    end    
   end
 
   def new
@@ -73,6 +78,12 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     flash[:success] = t('.success')
   end
 
+  def instructor_expense_filter
+    clear_session(:filter_instructor)
+    session[:filter_instructor] = params[:instructor]
+    redirect_to "/admin/workout_groups/#{params[:id]}"
+  end  
+
   private
 
   def set_period
@@ -99,6 +110,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     expense_params = {
       fixed_expense: @workout_group.fixed_expense(@period),
       variable_expense: @workout_group.variable_expense(@period),
+      variable_expense_filtered: @wkclasses_with_instructor_expense.sum(:instructor_cost),
       total_expense: @workout_group.total_expense(@period),
       profit: @workout_group.profit(@period),
       partner_share: @workout_group.partner_share_amount(@period)

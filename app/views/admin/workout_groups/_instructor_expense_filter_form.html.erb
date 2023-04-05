@@ -1,0 +1,30 @@
+<div id="instructor-expense-filter" class="container px-1 mb-5 margin-override">
+  <div class="container search">
+    <hr class = "search mb-3"></hr>
+    <!--form action=<%#= "/admin/workout_groups/#{params[:id]}" %> method="GET", remote: true-->
+    <%#= form_with(url: "/admin/workout_groups/#{params[:id]}", method: "get", local: false, class: "form-class") do %>
+    <%= form_with(url: "/workout_group/#{params[:id]}/instructor_expense_filter", method: "get", local: false, class: "form-class") do %>
+      <div class="container mb-1">
+        <div class="row">
+          <div class="col-4 px-0">
+            <fieldset>
+              <legend>INSTRUCTOR</legend>
+              <% Instructor.all.each do |i| %>
+                <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                  <%= check_box_tag 'instructor[]', i.id, session[:filter_instructor].present? ? session[:filter_instructor].include?(i.id.to_s) : false, id: "chbox#{i.id}", onchange: 'Rails.fire(this.form, "submit")' %>
+                  <%= i.name %>
+                <% end %>
+              <% end %>
+            </fieldset>
+          </div>
+
+          <div class="container d-flex">
+            <%#= link_to image_tag('clear_filter.png', class: "filter_icon"), clear_instructors_filters_path, {remote: true, class: "search searchdelete icon-container"} %>
+          </div>
+
+        </div>
+      </div>
+    <%  end %>
+    <hr class = "search mb-3"></hr>
+  </div>
+</div>  
