@@ -24,6 +24,12 @@
         <td><%= @purchase.status %></td>
       </tr>
     <% end %>
+    <% unless @purchase.not_started? %>
+      <tr>
+        <th scope="row">Classes Attended</th>
+        <td><%= @purchase.attendances.attended.size %></td>
+      </tr>
+    <% end %>
     <% unless @purchase.not_started? || @purchase.expired? %>
       <tr>
         <th scope="row">Expiry date</th>

@@ -220,6 +220,10 @@ class Purchase < ApplicationRecord
     status == 'not started'
   end
 
+  def ongoing?
+    status == 'ongoing'
+  end
+
   def provisionally_expired?
     ['provisionally expired'].include?(status)
   end

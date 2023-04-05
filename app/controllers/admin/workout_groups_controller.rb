@@ -31,6 +31,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     @summary = {}
     set_revenue_summary
     set_expense_summary
+    @instructor_filter_options = Instructor.current.has_rate.order_by_name
     respond_to do |format|
       format.html
       format.js { render 'show.js.erb' }
