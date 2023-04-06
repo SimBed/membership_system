@@ -10,13 +10,17 @@ class Admin::ProductsController < Admin::BaseController
     handle_sort
     @products = @products.space_group if logged_in_as?('junioradmin')
     ongoing_purchases = Purchase.not_fully_expired
+    @products_data = {}
     @product_ongoing_count = {}
     @product_total_count = {}
+    @product_base_price = {}
     @products.each do |product|
-      @product_ongoing_count[product.name.to_sym] = ongoing_purchases.where(product_id: product.id).size
-    end
-    @products.each do |product|
-      @product_total_count[product.name.to_sym] = Purchase.where(product_id: product.id).size
+    @products_data[product.name.to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
+                                    total_count: Purchase.where(product_id: product.id).size,
+                                    base_price: product.renewal_price("base")&.price}
+    # @product_ongoing_count[product.name.to_sym] = ongoing_purchases.where(product_id: product.id).size
+    # @product_total_count[product.name.to_sym] = Purchase.where(product_id: product.id).size
+    # @product_base_price[product.name.to_sym] = product.renewal_price("base")&.price
     end
     respond_to do |format|
       format.html
@@ -98,6 +102,10 @@ class Admin::ProductsController < Admin::BaseController
       @products = Product.order_by_total_count
     when 'ongoing_count'
       @products = Product.order_by_ongoing_count
+    when 'sell_online'
+      @products = Product.online_order_by_wg_classes_days
+    when 'price'
+      @products = Product.order_by_base_price
     else
       # just for now
       @products = Product.order_by_name_max_classes

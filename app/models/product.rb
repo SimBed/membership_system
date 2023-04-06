@@ -41,6 +41,15 @@ class Product < ApplicationRecord
                         ORDER BY name, max_classes, days;")
   end
 
+  def self.order_by_base_price
+    # max of any price past or present rather than strctly base price but good enough for purpose
+    Product.find_by_sql("SELECT products.*, MAX(price) as max_price
+                        FROM products
+                        INNER JOIN prices ON prices.product_id = products.id
+                        GROUP BY products.id
+                        ORDER BY max_price DESC;")
+  end
+
   def css_class
     max_classes < 1000 ? 'fixed' : 'unlimited' 
   end

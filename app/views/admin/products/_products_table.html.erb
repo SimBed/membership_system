@@ -15,11 +15,12 @@
           <th class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
           <td class="nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %></td>
           <!--image_tag('insta.png', class: ["table_icon",("instawaiver" unless product.sellonline?)].compact.join(' '))-->
+          <% product_data = @products_data[product.name.to_sym] %>
           <% if logged_in_as?('admin', 'superadmin') %>
-            <td><%= @product_total_count[product.name.to_sym] %></td>
-            <td><%= @product_ongoing_count[product.name.to_sym] %></td>
+            <td><%= product_data[:total_count] %></td>
+            <td><%= product_data[:ongoing_count] %></td>
           <% end %>
-          <td><%= number_with_delimiter(product.renewal_price("base")&.discounted_price) %></td>
+          <td><%= number_with_delimiter(product_data[:base_price]) %></td>
           <%# if logged_in_as?('superadmin') %>
             <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
           <%# end %>
