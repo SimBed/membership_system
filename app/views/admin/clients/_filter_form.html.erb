@@ -21,6 +21,10 @@
   <%= text_field_tag :search_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_client_name], onchange: 'Rails.fire(this.form, "submit")' %>
   </div>
 
+  <div class="field">
+  <%= text_field_tag :search_client_number, nil, class: "form-control-sm mb-2 search", placeholder: "Number search…", value: session[:search_client_number], onchange: 'Rails.fire(this.form, "submit")' %>
+  </div>
+
   <div class="container mb-1">
   <div class="row">
 

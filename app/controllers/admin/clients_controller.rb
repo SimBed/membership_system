@@ -77,13 +77,14 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def clear_filters
-    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_active, :filter_one_time_trial, :search_client_name)
+    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_active, :filter_one_time_trial, :search_client_name, :search_client_number)
     redirect_to admin_clients_path
   end
 
   def filter
-    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_active, :filter_one_time_trial, :search_client_name)
+    clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_active, :filter_one_time_trial, :search_client_name, :search_client_number)
     session[:search_client_name] = params[:search_client_name] || session[:search_client_name]
+    session[:search_client_number] = params[:search_client_number] || session[:search_client_number]
     set_session(:cold, :enquiry, :packagee, :active, :one_time_trial)
     redirect_to admin_clients_path
   end
@@ -115,12 +116,24 @@ class Admin::ClientsController < Admin::BaseController
 
   def initialize_sort
     session[:client_sort_option] = params[:client_sort_option] || session[:client_sort_option] || 'first_name'
+    session[:client_sort_option] = params[:client_sort_option] || session[:client_sort_option] || 'first_name'
   end
 
   def handle_search
+    handle_name_search
+    handle_number_search
+  end
+
+  def handle_name_search
     return if session[:search_client_name].blank?
 
     @clients = @clients.name_like(session[:search_client_name])
+  end
+
+  def handle_number_search
+    return if session[:search_client_number].blank?
+
+    @clients = @clients.number_like(session[:search_client_number])
   end
 
   def handle_filter
