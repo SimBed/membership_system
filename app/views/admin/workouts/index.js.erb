@@ -1,0 +1,5 @@
+var workouts_filter = document.getElementById('workouts-filter')
+workouts_filter.innerHTML = "<%= j(render partial: 'filter_form') %>";
+
+var workouts_table = document.getElementById('workouts-table')
+workouts_table.innerHTML = "<%= j(render partial: 'workouts_table') %>";

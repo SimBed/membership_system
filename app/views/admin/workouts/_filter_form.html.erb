@@ -1,0 +1,8 @@
+<%= form_with(url: workout_filter_path, method: "get", local: false, class: "form-class") do |f| %>
+  <fieldset>
+    <%= label_tag nil, class: "chbox-lbl-filters" do %>
+      <%= check_box_tag 'active', 'active', session[:filter_workout_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
+      <%= 'active only' %>
+    <% end %>
+  </fieldset>
+<% end %>

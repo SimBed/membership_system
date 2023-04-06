@@ -1,4 +1,9 @@
-<h4>Workouts <%= link_to image_tag('add.png'), new_admin_workout_path %></h4>
-<div id="workouts-table" class="container px-1 mb-5 margin-override">
+<div class="container px-1 margin-override">
+  <h4>Workouts <%= link_to image_tag('add.png'), new_admin_workout_path %></h4>
+</div>
+<div id="workouts-filter" class="container ps-2 mt-1 margin-override">
+  <%= render partial: 'filter_form' %>
+</div>
+<div id="workouts-table" class="container px-0 mb-5 margin-override">
   <%= render partial: 'workouts_table' %>
 </div>

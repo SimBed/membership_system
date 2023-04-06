@@ -7,10 +7,10 @@
         <div class="col-4 px-0">
           <fieldset>
             <legend>WORKOUT</legend>
-            <% @workout.each do |wk| %>
+            <% @workouts.each do |wk| %>
               <%= label_tag nil, class: "chbox-lbl-filters" do %>
-                <%= check_box_tag 'any_workout_of[]', wk, session[:filter_any_workout_of].present? ? session[:filter_any_workout_of].include?(wk) : false, id: "chbox#{wk}", onchange: 'Rails.fire(this.form, "submit")' %>
-                <%= wk %>
+                <%= check_box_tag 'any_workout_of[]', wk.name, session[:filter_any_workout_of].present? ? session[:filter_any_workout_of].include?(wk.name) : false, id: "chbox#{wk.id}", onchange: 'Rails.fire(this.form, "submit")' %>
+                <%= wk.name %>
               <% end %>
             <% end %>
           </fieldset>

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get '/purchases/filter', to: 'admin/purchases#filter', as: 'purchase_filter'
   get '/wkclasses/filter', to: 'admin/wkclasses#filter', as: 'wkclass_filter'
   get '/clients/filter', to: 'admin/clients#filter', as: 'client_filter'
+  get '/workouts/filter', to: 'admin/workouts#filter', as: 'workout_filter'
   get '/workout_group/:id/instructor_expense_filter', to: 'admin/workout_groups#instructor_expense_filter'
   get '/purchases/client_filter', to: 'admin/purchases#new_purchase_client_filter', as: 'new_purchase_client_filter'
   patch '/purchases/:id/expire', to: 'admin/purchases#expire', as: 'expire_purchase'

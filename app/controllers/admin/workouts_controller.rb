@@ -3,6 +3,11 @@ class Admin::WorkoutsController < Admin::BaseController
 
   def index
     @workouts = Workout.order_by_current
+    @workouts = @workouts.current if session[:filter_workout_active].present?
+    respond_to do |format|
+      format.html
+      format.js { render 'index.js.erb' }
+    end    
   end
 
   def show; end
@@ -37,6 +42,12 @@ class Admin::WorkoutsController < Admin::BaseController
     @workout.destroy
     redirect_to admin_workouts_path
     flash[:success] = t('.success')
+  end
+
+  def filter
+    clear_session(:filter_workout_active)
+    session[:filter_workout_active] = params[:active]
+    redirect_to admin_workouts_path
   end
 
   private

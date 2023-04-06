@@ -1,15 +1,17 @@
 <table class="table table-secondary table-striped caption-top">
-  <caption>Workout List <small><%="(#{@workouts.size})"%></small></caption>
+  <caption class="ps-1">Workout List <small><%="(#{@workouts.size})"%></small></caption>
   <tbody>
     <tr>
       <th scope="col" class="fst-italic">Workout</th>
       <th scope="col" class="fst-italic">Workout Group</th>
+      <th scope="col" class="fst-italic">Active</th>
       <th scope="col"></th>
     </tr>
     <% @workouts.each do |workout| %>
       <tr>
         <%= content_tag(:td, workout.name, class: ("fw-bolder" if workout.current?)) %>
         <td><%= workout.workout_groups.pluck(:name).join(', ') %></td>
+        <td> <%= image_tag(workout.current? ? 'attendances.png' : 'expired.png', class: "table_icon")%> </td>
         <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_workout_path(workout) %></td>
         <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_workout_path(workout), method: :delete, data: { confirm: 'Workout and any classes of this type will be deleted. Are you sure?' }%></td-->
       </tr>

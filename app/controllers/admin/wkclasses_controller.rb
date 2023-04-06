@@ -12,7 +12,8 @@ class Admin::WkclassesController < Admin::BaseController
     handle_filter
     handle_period
     @wkclasses = @wkclasses.page params[:page]
-    @workout = Workout.distinct.pluck(:name).sort!
+    # @workouts = Workout.distinct.pluck(:name).sort!
+    @workouts = Workout.order_by_name.current
     @months = ['All'] + months_logged
     handle_export
     handle_index_response
