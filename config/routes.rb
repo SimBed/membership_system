@@ -42,7 +42,7 @@ Rails.application.routes.draw do
     resources :table_times, only: [:new, :edit, :create, :update, :destroy]
     resources :table_days, only: [:new, :edit, :create, :update, :destroy]
     resources :timetables
-    resources :accounts, only: [:create, :update, :show]
+    resources :accounts, only: [:index, :create, :update]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
     resources :attendances, only: [:index, :new, :create, :update, :destroy]
     resources :clients

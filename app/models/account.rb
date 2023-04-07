@@ -12,6 +12,7 @@ class Account < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 } #, allow_nil: true
   validates :ac_type, presence: true
   has_secure_password
+  scope :order_by_ac_type, -> { order(:ac_type, :email) }
 
   def without_purchase?
     clients.first.purchases.empty?

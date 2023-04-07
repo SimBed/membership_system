@@ -25,7 +25,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', admin_products_path
     assert_select 'a[href=?]', admin_workouts_path
     assert_select 'a[href=?]', admin_workout_groups_path
+    assert_select 'a[href=?]', admin_accounts_path
     assert_select 'a[href=?]', superadmin_expenses_path
+    assert_select 'a[href=?]', superadmin_regular_expenses_path
     assert_select 'a[href=?]', superadmin_instructor_rates_path
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
@@ -54,7 +56,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', admin_products_path
     assert_select 'a[href=?]', admin_workouts_path
     assert_select 'a[href=?]', admin_workout_groups_path
+    assert_select 'a[href=?]', admin_accounts_path, count: 0
     assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
@@ -83,7 +87,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', admin_products_path
     assert_select 'a[href=?]', admin_workouts_path, count: 0
     assert_select 'a[href=?]', admin_workout_groups_path, count: 0
+    assert_select 'a[href=?]', admin_accounts_path, count: 0
     assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
@@ -119,7 +125,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', admin_products_path, count: 0
     assert_select 'a[href=?]', admin_workouts_path, count: 0
     assert_select 'a[href=?]', admin_workout_groups_path, count: 0
+    assert_select 'a[href=?]', admin_accounts_path, count: 0
     assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
@@ -153,7 +161,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', admin_partners_path, count: 0
     assert_select 'a[href=?]', admin_products_path, count: 0
     assert_select 'a[href=?]', admin_workouts_path, count: 0
+    assert_select 'a[href=?]', admin_accounts_path, count: 0
     assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
     assert_select 'a[href=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0

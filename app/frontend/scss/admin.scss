@@ -193,6 +193,11 @@ div.page_entries_info {
     line-height: 1.5rem;
   }
 
+  div.admin-password-reset-table-wrapper {
+    display: block;
+    overflow-x: auto;
+    }  
+
 @media (min-width: 900px) {
 
   body {
@@ -251,3 +256,4 @@ div.page_entries_info {
   padding: 0.4em, 0 ,0.4em, 0;
  }
 }  
+

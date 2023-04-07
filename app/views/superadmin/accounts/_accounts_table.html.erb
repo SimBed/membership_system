@@ -1,0 +1,45 @@
+<%# https://stackoverflow.com/questions/5533636/add-a-horizontal-scrollbar-to-an-html-table %>
+<div class="admin-password-reset-table-wrapper">
+  <table class="table table-secondary table-striped caption-top">
+    <caption></caption>
+    <tbody>
+      <% @accounts.each do |account| %>
+        <tr>
+          <th scope="row"><%= account.email %></th>
+          <td class=""><%= account.ac_type %></td>
+          <td>  
+            <%= form_with(model: [:admin, account]) do |form| %>
+              <% if account.errors.any? %>
+                <div id="error_explanation">
+                  <h2><%= pluralize(@account.errors.count, "error") %> prohibited this password from being updated:</h2>
+                  <ul>
+                    <% @account.errors.each do |error| %>
+                      <li><%= error.full_message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+              <div class="field mb-1 password">
+                <%= form.label :new_password %>
+                <%= form.text_field :new_password %>
+              </div>
+
+              <div class="field mb-1 password">
+                <%= form.label :new_password_confirmation, 'New password confirm' %>
+                <%= form.text_field :new_password_confirmation %>
+              </div>
+
+              <div><%= form.hidden_field :requested_by, value: 'superadmin_of_admin' %></div>
+
+              <div class="actions">
+                <%= form.submit 'Update Password' %>
+              </div>
+            <% end %>
+            </td>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
