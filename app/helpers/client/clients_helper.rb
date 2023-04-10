@@ -1,4 +1,13 @@
 module Client::ClientsHelper
+
+  def number(whatsapp, phone)
+    return nil if whatsapp.blank? && phone.blank?
+
+    return phone.phony_formatted(format: :international, spaces: '-') unless phone.blank?
+
+    whatsapp.phony_formatted(format: :international, spaces: '-')
+  end
+
   def booking_link_and_class_for(wkclass, client)
     attendance = Attendance.applicable_to(wkclass, client)
     if attendance.nil?
