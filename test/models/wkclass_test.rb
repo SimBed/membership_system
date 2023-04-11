@@ -5,10 +5,12 @@ class WkclassTest < ActiveSupport::TestCase
     @workout = workouts(:hiit)
     @workout_pt = workouts(:pt_apoorv)
     @instructor = instructors(:amit)
+    @instructor_rate = instructor_rates(:amit_base)
     @instructor_pt = instructors(:amit_pt)
     @wkclass = Wkclass.new(workout_id: @workout.id,
                            start_time: '2022-02-01 10:30:00',
                            instructor_id: @instructor.id,
+                           instructor_rate: @instructor_rate,
                            instructor_cost: 500)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     @wkclass_many_attendances = wkclasses(:wkclass_many_attendances)

@@ -1,5 +1,4 @@
 // max-capacity field based on workout selected
-
 document.getElementById('wkclass_workout_id').onchange =  function () {
   var sel = document.getElementById('wkclass_workout_id');
   var text = sel.options[sel.selectedIndex].text
@@ -22,3 +21,31 @@ document.getElementById('wkclass_workout_id').onchange =  function () {
   // alert (text.substring(0, 3));
   document.getElementById('wkclass_max_capacity').value = max_capacity;
 }
+
+// populate instructor_rate dropdown based on instructor selected
+document.getElementById('wkclass_instructor_id').onchange =  function () {
+  selection_instructor = document.getElementById("wkclass_instructor_id");
+  selection_workout = document.getElementById("wkclass_workout_id");
+  // selection_text = selection.options[selection.selectedIndex].text;
+    $.ajax({
+        url:  '/wkclasses/instructor',
+        type: 'get',
+        data: { selected_instructor_id: selection_instructor.value,
+                selected_workout_id: selection_workout.value }
+    });
+}
+
+document.getElementById('wkclass_workout_id').onchange =  function () {
+  selection_instructor = document.getElementById("wkclass_instructor_id");
+  selection_workout = document.getElementById("wkclass_workout_id");
+  // selection_text = selection.options[selection.selectedIndex].text;
+    $.ajax({
+        url:  '/wkclasses/instructor',
+        type: 'get',
+        data: { selected_instructor_id: selection_instructor.value,
+                selected_workout_id: selection_workout.value }
+    });
+}
+
+
+

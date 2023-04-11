@@ -11,6 +11,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     @time = @tomorrows_class_early.start_time.advance(days: 2)
     @workout = workouts(:hiit)
     @instructor = instructors(:amit)
+    @instructor_rate = instructor_rates(:amit_base)    
     travel_to(@tomorrows_class_early.start_time.beginning_of_day) # 22/4
   end
 
@@ -31,7 +32,9 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
      { wkclass:
         { workout_id: @workout.id,
           start_time: @time,
-          instructor_id: @instructor.id } } # 24/4
+          instructor_id: @instructor.id,
+          instructor_rate_id: @instructor_rate.id,
+          max_capacity: 12 } } # 24/4
     follow_redirect!
     log_in_as(@account_client)
     follow_redirect!
@@ -40,7 +43,8 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     @wkclass = Wkclass.last
     # push the date outside of the booking window (no test yet for whether it is visible (which it should be) just not bookable)
-    patch admin_wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.day } } # 25/4 (booking starts on 23/4)
+    # wkclass_params expects to find a params[:wkclass][:instructor_rate_id] to set cost, hence the inclusion of instructor_rate_id in the patch)
+    patch admin_wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.day, instructor_rate_id: @wkclass.instructor_rate_id } } # 25/4 (booking starts on 23/4)
     log_in_as(@account_client)
     follow_redirect!
     # no booking link for the later dated wkclass

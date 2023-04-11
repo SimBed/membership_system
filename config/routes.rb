@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   patch '/purchases/:id/expire', to: 'admin/purchases#expire', as: 'expire_purchase'
   get '/superadmin/expenses/filter', to: 'superadmin/expenses#filter'
   get '/products/payment', to: 'admin/products#payment'
+  get '/wkclasses/instructor', to: 'admin/wkclasses#instructor'
   get    '/login',   to: 'auth/sessions#new'
   post   '/login',   to: 'auth/sessions#create'
   delete '/logout',  to: 'auth/sessions#destroy'

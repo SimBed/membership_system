@@ -8,6 +8,8 @@ class Instructor < ApplicationRecord
   scope :order_by_current, -> { order(current: :desc) }
   scope :current, -> { where(current: true) }
   scope :has_rate, -> { joins(:instructor_rates).distinct }
+  # scope :group_rates, -> { joins(:instructor_rates).where(instructor_rates: { group: true }) }
+  # scope :pt_rates, -> { joins(:instructor_rates).where(instructor_rates: { group: false }) }
 
   def name
     "#{first_name} #{last_name}"
@@ -15,6 +17,14 @@ class Instructor < ApplicationRecord
 
   def current_rate
     instructor_rates.current.order_recent_first.first&.rate
+  end
+
+  def group_rates
+    instructor_rates.where(group: true)
+  end
+
+  def pt_rates
+    instructor_rates.where(group: false)
   end
 
   def initials
