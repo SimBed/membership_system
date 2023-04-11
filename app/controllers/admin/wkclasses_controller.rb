@@ -40,14 +40,14 @@ class Admin::WkclassesController < Admin::BaseController
 
   def new
     @wkclass = Wkclass.new
-    # for select in new wkclass form
     prepare_items_for_dropdowns
   end
 
   def edit
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
-    @instructor = @wkclass.instructor&.id
+    @instructor_id = @wkclass.instructor&.id
+    @instructor_rate = @wkclass.instructor_rate&.id
   end
 
   def create
@@ -73,7 +73,8 @@ class Admin::WkclassesController < Admin::BaseController
     else
       prepare_items_for_dropdowns
       @workout = @wkclass.workout
-      @instructor = @wkclass.instructor&.id
+      @instructor_id = @wkclass.instructor&.id
+      @instructor_rate = @wkclass.instructor_rate&.id      
       render :edit, status: :unprocessable_entity
     end
   end
@@ -95,6 +96,14 @@ class Admin::WkclassesController < Admin::BaseController
     redirect_to admin_wkclasses_path
   end
 
+  def instructor
+    # @instructor_rates = Instructor&.find(params[:selected_instructor_id])&.instructor_rates
+    workout = Workout.where(id: params[:selected_workout_id])&.first
+    @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates || []
+    (@instructor_rates = @instructor_rates.select { |i| i.group?}) if workout&.group_workout?
+    render 'instructor.js.erb'
+  end
+
   private
 
   def set_wkclass
@@ -102,13 +111,14 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def wkclass_params
-    if Instructor.exists?(params[:wkclass][:instructor_id])
-      cost = Instructor.find(params[:wkclass][:instructor_id]).current_rate
-    end
-    # cost is nil in client_booking_interface_test when admin just updates wkclass time, hence the nil protecting '&'
-    cost = nil if cost&.zero?
-    params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id,
-                                    :max_capacity, :level).merge({ instructor_cost: cost })
+    # if Instructor.exists?(params[:wkclass][:instructor_id])
+    #   cost = Instructor.find(params[:wkclass][:instructor_id]).current_rate
+    # end
+    # # cost is nil in client_booking_interface_test when admin just updates wkclass time, hence the nil protecting '&'
+    # cost = nil if cost&.zero?
+    cost = InstructorRate.find(params[:wkclass][:instructor_rate_id]).rate
+    params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id, :instructor_rate_id, :max_capacity, :level)
+                            .merge({ instructor_cost: cost })
   end
 
   def params_filter_list
@@ -124,6 +134,7 @@ class Admin::WkclassesController < Admin::BaseController
     # @workouts = Workout.all.map { |w| [w.name, w.id] }
     @workouts = Workout.current.order_by_name
     @instructors = Instructor.current.has_rate.order_by_name
+    @instructor_rates = @wkclass&.instructor&.instructor_rates || []
     @capacities = (0..30).to_a + [500]
     @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
   end

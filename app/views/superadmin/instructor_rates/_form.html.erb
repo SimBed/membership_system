@@ -12,18 +12,30 @@
   <% end %>
 
   <div class="field">
+    <%= form.label :instructor_id %>
+    <%= form.select :instructor_id, options_for_select(@instructors, @instructor), include_blank: true %>
+  </div>
+     
+  <div class="field">
     <%= form.label :rate %>
     <%= form.number_field :rate %>
+  </div>
+
+  <div class="field mb-2">
+    <%= form.label :group do %>
+      <%= form.check_box :group, { checked: @instructor_rate.new_record? || form.object.group? } %>
+      Group Class Rate?
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
   </div>
 
   <div class="field">
     <%= form.label :date_from %>
     <%= form.date_select :date_from %>
-  </div>
-
-  <div class="field">
-    <%= form.label :instructor_id %>
-    <%= form.select :instructor_id, options_for_select(@instructors, @instructor), include_blank: true %>
   </div>
 
   <div class="field mb-3">

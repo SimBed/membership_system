@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_21_063400) do
+ActiveRecord::Schema.define(version: 2023_04_10_104521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,7 +135,11 @@ ActiveRecord::Schema.define(version: 2023_03_21_063400) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "current", default: true
+    t.boolean "group"
+    t.string "name"
+    t.index ["group"], name: "index_instructor_rates_on_group"
     t.index ["instructor_id"], name: "index_instructor_rates_on_instructor_id"
+    t.index ["name"], name: "index_instructor_rates_on_name"
   end
 
   create_table "instructors", force: :cascade do |t|
@@ -302,6 +306,7 @@ ActiveRecord::Schema.define(version: 2023_03_21_063400) do
     t.integer "instructor_cost"
     t.integer "max_capacity"
     t.string "level", default: "All Levels"
+    t.integer "instructor_rate_id"
     t.index ["instructor_id"], name: "index_wkclasses_on_instructor_id"
     t.index ["start_time"], name: "index_wkclasses_on_start_time"
     t.index ["workout_id"], name: "index_wkclasses_on_workout_id"

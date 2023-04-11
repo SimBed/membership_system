@@ -48,6 +48,6 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   end
 
   def instructor_rate_params
-    params.require(:instructor_rate).permit(:rate, :date_from, :instructor_id, :current)
+    params.require(:instructor_rate).permit(:rate, :date_from, :instructor_id, :current, :group, :name)
   end
 end

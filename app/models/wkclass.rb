@@ -15,6 +15,7 @@ class Wkclass < ApplicationRecord
   has_many :clients, through: :purchases
   belongs_to :instructor
   belongs_to :workout
+  belongs_to :instructor_rate
   validate :instructor_rate_exists
   validate :unique_workout_time_instructor_combo
   validate :pt_instructor
@@ -56,6 +57,33 @@ class Wkclass < ApplicationRecord
 
   # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
   # need a client_bookable attribute in workout_group
+
+# temporary method
+def which_instructor_rate
+  InstructorRate.where(instructor_id: instructor_id).where(rate: instructor_cost || 0).where(group: workout.group_workout?)
+end
+
+# temporary method
+def self.instructor_rate_id_set(number=1)
+  wkclasses = self.where(instructor_rate_id:nil).take(number)
+  all_wk_ids = wkclasses.map {|w| w.id }
+  updated_wks = []
+  wkclasses.each do |wkclass|
+    matching_rates = wkclass.which_instructor_rate
+    if matching_rates.size == 1
+      wkclass.update_column('instructor_rate_id', matching_rates.first.id)
+      updated_wks << wkclass.id
+    end
+  end
+  puts updated_wks
+  all_wk_ids - updated_wks 
+end
+
+# temporary method
+def self.show_unresolved_updates(array)
+  Wkclass.find(array).map { |wk| [wk.workout&.name, wk.instructor&.name, wk.instructor_cost] }.uniq
+end
+
   def self.show_in_bookings_for(client)
     # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate
     Wkclass.in_booking_visibility_window
