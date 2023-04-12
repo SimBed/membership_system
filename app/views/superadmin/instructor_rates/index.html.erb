@@ -1,4 +1,6 @@
-<h4>Instructor Rates <%= link_to image_tag('add.png'), new_superadmin_instructor_rate_path %></h4>
-<div id="rates_table" class="container px-1 mb-5 margin-override">
+<div id="rates_table" class="container px-1 margin-override">
+  <h4>Instructor Rates <%= link_to image_tag('add.png'), new_superadmin_instructor_rate_path %></h4>
+</div>
+<div class="container px-0 margin-override">
   <%= render partial: 'rates_table' %>
 </div>
