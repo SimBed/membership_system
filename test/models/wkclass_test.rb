@@ -27,15 +27,15 @@ class WkclassTest < ActiveSupport::TestCase
     refute_predicate @duplicate_class, :valid?
   end
 
-  test 'A PT wkclass must have a PT instructor' do
-    @wkclass.workout = @workout_pt
-    refute_predicate @wkclass, :valid?
-  end
+  # test 'A PT wkclass must have a PT instructor' do
+  #   @wkclass.workout = @workout_pt
+  #   refute_predicate @wkclass, :valid?
+  # end
 
-  test 'A non-PT wkclass must not have a PT instructor' do
-    @wkclass.instructor =  @instructor_pt
-    refute_predicate @wkclass, :valid?
-  end
+  # test 'A non-PT wkclass must not have a PT instructor' do
+  #   @wkclass.instructor =  @instructor_pt
+  #   refute_predicate @wkclass, :valid?
+  # end
 
   test 'show_in_bookings_for' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)

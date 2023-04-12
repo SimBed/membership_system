@@ -134,7 +134,8 @@ class Admin::WkclassesController < Admin::BaseController
     # @workouts = Workout.all.map { |w| [w.name, w.id] }
     @workouts = Workout.current.order_by_name
     @instructors = Instructor.current.has_rate.order_by_name
-    @instructor_rates = @wkclass&.instructor&.instructor_rates || []
+    @instructor_rates = @wkclass&.instructor&.instructor_rates&.current&.order_for_index || []
+    (@instructor_rates = @instructor_rates.select { |i| i.group?}) if @wkclass&.workout&.group_workout?    
     @capacities = (0..30).to_a + [500]
     @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
   end
