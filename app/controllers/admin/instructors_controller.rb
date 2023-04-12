@@ -46,6 +46,9 @@ class Admin::InstructorsController < Admin::BaseController
   end
 
   def instructor_params
+    # the update method (and therefore the instructor_params method) is used through a form but also clicking on a link on the instructors page
+    return {current: params[:current] } if params[:current].present?    
+
     params.require(:instructor).permit(:first_name, :last_name, :current)
   end
 end
