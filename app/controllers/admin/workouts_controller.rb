@@ -57,6 +57,9 @@ class Admin::WorkoutsController < Admin::BaseController
   end
 
   def workout_params
+    # the update method (and therefore the workout_params method) is used through a form but also clicking on a link on the clients page
+    return {current: params[:current] } if params[:current].present?
+
     params.require(:workout).permit(:name, :current, :instructor_initials)
   end
 end
