@@ -6,4 +6,11 @@ class InstructorRate < ApplicationRecord
   scope :order_by_current, -> { order(current: :desc) }
   scope :order_for_index, -> { joins(:instructor).order({current: :desc, group: :desc, first_name: :asc, rate: :asc}) }  
   scope :current, -> { where(current: true) }
+
+  def long_name
+    "#{group ? 'Group' : 'PT'} #{name}"
+  end
+
 end
+
+

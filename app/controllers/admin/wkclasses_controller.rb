@@ -99,7 +99,7 @@ class Admin::WkclassesController < Admin::BaseController
   def instructor
     # @instructor_rates = Instructor&.find(params[:selected_instructor_id])&.instructor_rates
     workout = Workout.where(id: params[:selected_workout_id])&.first
-    @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates || []
+    @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_for_index || []
     (@instructor_rates = @instructor_rates.select { |i| i.group?}) if workout&.group_workout?
     render 'instructor.js.erb'
   end

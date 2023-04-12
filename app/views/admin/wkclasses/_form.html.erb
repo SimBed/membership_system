@@ -27,7 +27,7 @@
 
   <div class="field">
     <%= form.label :instructor_rate_id %>
-    <%= form.collection_select :instructor_rate_id, @instructor_rates, :id, :name, selected: @instructor_rate, include_blank: true %>
+    <%= form.collection_select :instructor_rate_id, @instructor_rates, :id, :long_name, selected: @instructor_rate, include_blank: true %>
   </div>
 
   <div class="field">

@@ -1,2 +1,2 @@
 var p = document.getElementById('wkclass_instructor_rate_id')
-p.innerHTML = "<%= j(collection_select(:wkclass, :instructor_rate_id, @instructor_rates, :id, :name, include_blank: false)) %>";
+p.innerHTML = "<%= j(collection_select(:wkclass, :instructor_rate_id, @instructor_rates, :id, :long_name, include_blank: false)) %>";
