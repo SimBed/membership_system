@@ -25,19 +25,6 @@
     <%= form.text_field :email, class: 'form-control' %>
   </div>
 
-<% if false %>
-  <div class="field">
-    <%= form.label :phone_raw, 'Phone' %>
-    <%= form.text_field :phone_raw %>
-  </div>
-
-  <div class="field">
-    <%= form.label :whatsapp_raw, 'Whatsapp' %>
-    <%= form.text_field :whatsapp_raw %>
-  </div>
-<% end %>
-
-
   <div class="field">
     <%= form.label :whatsapp_raw, 'Whatsapp', class: "form-mandatory" %>
     <div class="d-flex field">
@@ -50,11 +37,10 @@
     <%= form.label :phone_raw, 'Phone' %>
     <span class="sub-label">useful if client has a different number for calls than for whatsapp (Indian only)</span>
     <div class="d-flex field">    
-      <%= form.country_select(:whatsapp_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
+      <%= form.country_select(:phone_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
       <%= form.text_field :phone_raw, class: 'form-control' %>
     </div>    
   </div>
-
 
   <div class="field">
     <%= form.label :instagram %>

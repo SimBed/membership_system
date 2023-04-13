@@ -186,6 +186,7 @@ class Client < ApplicationRecord
     "+#{PhonyRails.country_code_from_number(self.send(number))}"
   end
 
+  # make dry also used in instructor method
   def country(number = :phone)
     stored_number = self.send(number)
     return 'IN' unless Phony.plausible?(stored_number)

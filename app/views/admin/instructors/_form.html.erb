@@ -20,6 +20,19 @@
     <%= form.text_field :last_name %>
   </div>
 
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :whatsapp_raw, 'Whatsapp' %>
+    <div class="d-flex field">
+      <%= form.country_select(:whatsapp_country_code, {priority_countries: ["IN", "US", "GB"], sort_provided: false, format: :with_data_attrs}, {class: ' me-2'} ) %>
+      <%= form.text_field :whatsapp_raw, class: 'form-control' %>
+    </div>
+  </div>  
+
   <div class="field mb-3">
     <%= form.label :current do %>
       <%= form.check_box :current, { checked: @instructor.new_record? || form.object.current? } %>

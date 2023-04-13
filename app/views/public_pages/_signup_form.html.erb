@@ -48,7 +48,7 @@
     <%= form.label :phone_raw, 'Phone' %>
     <span class="sub-label">helpful if you have a different number for calls than for whatsapp (Indian only)</span>
     <div class="d-flex field">    
-      <%= form.country_select(:whatsapp_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
+      <%= form.country_select(:phone_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
       <%= form.text_field :phone_raw, class: 'form-control' %>
     </div>    
   </div>

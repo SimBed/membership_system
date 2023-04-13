@@ -41,11 +41,11 @@ class Admin::ClientsController < Admin::BaseController
   def edit; end
 
   def create
+    byebug
     @client = Client.new(client_params)
     if @client.save
       redirect_to admin_clients_path
       flash_message :success, t('.success', name: @client.name)
-      # flash[:success] = t('.success', name: @client.name)
     else
       render :new, status: :unprocessable_entity
     end
@@ -109,7 +109,7 @@ class Admin::ClientsController < Admin::BaseController
     return {instawaiver: params[:instawaiver] } if params[:instawaiver].present?
 
     # modifier_is_client is necessary so validation of Client model can vary from admin to client (ie new signups through the web must provide more robust data)
-    params.require(:client).permit(:first_name, :last_name, :email, :phone_raw, :whatsapp_raw, :whatsapp_country_code, :instagram, :hotlead, :note)
+    params.require(:client).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :phone_raw, :instagram, :hotlead, :note)
                            .merge(phone_country_code: 'IN')
                            .merge(modifier_is_client: false)
   end

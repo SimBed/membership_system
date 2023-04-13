@@ -2,6 +2,7 @@ class Account < ApplicationRecord
   has_many :clients
   has_many :partners
   has_many :orders
+  has_one :instructor
   attr_accessor :remember_token, :reset_token
 
   before_save :downcase_email

@@ -1,6 +1,7 @@
 class Instructor < ApplicationRecord
   has_many :wkclasses
   has_many :instructor_rates, dependent: :destroy
+  belongs_to :account, optional: true
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :first_name, uniqueness: { scope: :last_name, message: 'Already an instructor with this name' }
@@ -10,6 +11,13 @@ class Instructor < ApplicationRecord
   scope :has_rate, -> { joins(:instructor_rates).distinct }
   # scope :group_rates, -> { joins(:instructor_rates).where(instructor_rates: { group: true }) }
   # scope :pt_rates, -> { joins(:instructor_rates).where(instructor_rates: { group: false }) }
+  with_options if: :whatsapp_raw do
+    phony_normalize :whatsapp_raw, as: :whatsapp, default_country_code: :whatsapp_country_code
+  end
+
+  validates :whatsapp, phony_plausible: true
+
+  attr_accessor :whatsapp_country_code, :whatsapp_raw
 
   def name
     "#{first_name} #{last_name}"
@@ -30,4 +38,28 @@ class Instructor < ApplicationRecord
   def initials
     name.split().map(&:first).join
   end
+
+  # make dry same code used in client method
+  def country_code(number = :whatsapp)
+    return '+91' unless Phony.plausible?(self.send(number))
+
+    "+#{PhonyRails.country_code_from_number(self.send(number))}"
+  end
+
+  def country(number = :phone)
+    stored_number = self.send(number)
+    return 'IN' unless Phony.plausible?(stored_number)
+
+    # A bunch of countries use +1 like AG, VI etc...
+    return 'US' if self.send(:country_code, number) == '+1'
+
+    PhonyRails.country_from_number(stored_number)
+  end
+
+  def number_raw(number = :phone)
+    stored_number = self.send(number)
+    return stored_number unless Phony.plausible?(stored_number)
+
+    stored_number.gsub(self.send(:country_code, number),'')
+  end  
 end

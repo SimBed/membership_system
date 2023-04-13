@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_10_104521) do
+ActiveRecord::Schema.define(version: 2023_04_13_062818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,6 +148,10 @@ ActiveRecord::Schema.define(version: 2023_04_10_104521) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "current", default: true
+    t.string "email"
+    t.string "whatsapp"
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_instructors_on_account_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -336,6 +340,7 @@ ActiveRecord::Schema.define(version: 2023_04_10_104521) do
   add_foreign_key "entries", "workouts"
   add_foreign_key "expenses", "workout_groups"
   add_foreign_key "instructor_rates", "instructors"
+  add_foreign_key "instructors", "accounts"
   add_foreign_key "penalties", "attendances"
   add_foreign_key "penalties", "purchases"
   add_foreign_key "regular_expenses", "workout_groups"
