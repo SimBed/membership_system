@@ -49,7 +49,7 @@ Rails.application.routes.draw do
     resources :clients
     resources :fitternities
     resources :freezes, only: [:new, :edit, :create, :update, :destroy]
-    resources :instructors, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :instructors
     resources :partners
     resources :prices, only: [:new, :edit, :create, :update, :destroy]
     resources :products

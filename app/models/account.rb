@@ -20,7 +20,14 @@ class Account < ApplicationRecord
   end
 
   def clean_up
-    clients.first.update(account_id: nil)
+    case :ac_type
+    when 'client'
+      clients.first.update(account_id: nil)
+    when 'instructor'
+      instructor.update(account_id: nil)
+    when 'partner'
+      partners.first.update(account_id: nil)
+    end
     destroy
   end
 

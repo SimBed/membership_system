@@ -35,6 +35,7 @@ class Auth::SessionsController < Auth::BaseController
     params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
     deal_with_admin && return
     deal_with_client && return
+    deal_with_instructor && return
     deal_with_partner
   end
 
@@ -48,6 +49,10 @@ class Auth::SessionsController < Auth::BaseController
 
     redirect_to client_book_path(client) if logged_in_as?('client')
   end
+
+  def deal_with_instructor
+    redirect_to admin_instructor_path(@account.instructor) if logged_in_as?('instructor')
+  end  
 
   def deal_with_partner
     redirect_to admin_partner_path(@account.partners.first) if logged_in_as?('partner')

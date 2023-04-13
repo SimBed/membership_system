@@ -84,13 +84,13 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def correct_credentials
-    only_client_or_partner_accounts_can_be_made_here
+    only_certain_account_types_can_be_made_here
     only_superadmin_makes_partner_accounts
   end
 
-  def only_client_or_partner_accounts_can_be_made_here
+  def only_certain_account_types_can_be_made_here
     # administrator accounts cannot be created through the app
-    return if %w[client partner].include?(params[:ac_type])
+    return if %w[client instructor partner].include?(params[:ac_type])
 
     flash[:warning] = t('.warning')
     redirect_to(login_path) && return
@@ -107,7 +107,9 @@ class Admin::AccountsController < Admin::BaseController
   def set_account_holder
     # don't create account if for some reason there is no associated account holder
     # used 'where' rather than 'find' as find returns an error (rather than nil or empty object) when record not found
+    # reformat
     @account_holder = Client.where(id: params[:client_id]).first if params[:ac_type] == 'client'
+    @account_holder = Instructor.where(id: params[:instructor_id]).first if params[:ac_type] == 'instructor'
     @account_holder = Partner.where(id: params[:partner_id]).first if params[:ac_type] == 'partner'
     (redirect_to(login_path) && return) if @account_holder.nil?
   end
