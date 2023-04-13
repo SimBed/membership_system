@@ -1,6 +1,6 @@
 class Admin::WkclassesController < Admin::BaseController
-  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :filter]
-  before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update]
+  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :filter, :instructor]
+  before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update, :instructor]
   before_action :set_wkclass, only: [:show, :edit, :update, :destroy]
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
