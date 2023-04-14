@@ -69,8 +69,8 @@ class Admin::InstructorsController < Admin::BaseController
 
   def sort_on_object
     @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.to_a.sort_by do |w|
-      # this seems to be the way to use sort_by with a secondary order
-      [w.attendances.first&.client&.name, -w.start_time.to_i]
+      # this seems to be the way to use sort_by with a secondary order (but fails when attendance is nil for some reason "|| 'Z'" mitigates this)
+      [w.attendances&.first&.client&.name || 'Z', -w.start_time.to_i]
     end
     # restore to ActiveRecord and recover order.
     # ids = @wkclasses_with_instructor_expense.map(&:id)

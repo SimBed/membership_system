@@ -321,6 +321,7 @@ class Admin::PurchasesController < Admin::BaseController
       # Railscasts #362 Exporting Csv And Excel
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @purchases.to_csv }
+      format.xls
     end
   end
 end
