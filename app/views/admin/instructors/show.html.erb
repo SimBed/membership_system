@@ -1,31 +1,38 @@
-<div class="col-md-6">
-  <h4><%="show #{@instructor.name}" %></h4>
-  <%= link_to 'back to instructors', admin_instructors_path %>
+<div class="container px-1 margin-override col-md-6">
+  <h4><%="Instructor #{@instructor.name}" %></h4>
+      <form action=<%= "/admin/instructors/#{params[:id]}" %> method="GET">
+      <select name="revenue_month" onchange="this.form.submit()" class= "sort">
+        <%= options_for_select @months, session[:revenue_month] %>
+      </select>
+    </form>
+</div>
 
-<form action=<%= "/admin/instructors/#{params[:id]}" %> method="GET">
-  <select name="revenue_month" onchange="this.form.submit()" class= "sort">
-    <%= options_for_select @months, session[:revenue_month] %>
-  </select>
-</form>
-
-<table class="table table-secondary table-striped caption-top">
-  <caption>* Classes with Instructor Expense</caption>
-  <tbody>
-    <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
+<div class="containe col-md-6">
+  <table class="table table-secondary table-striped caption-top">
+    <caption class="ps-1">Class Payments
+        <form action=<%= "/admin/instructors/#{params[:id]}" %> method="GET" data-remote="true" class="d-inline-block">
+      <div class="ms-3">
+        <i class="fas fa-sort-alpha-down"></i>
+        <select class="form-control-sm sort" name="instructor_expense_sort_option" onchange="this.form.submit()">
+          <option disabled="disabled" selected="selected" value="">Sort by</option>
+          <option value="wkclass_date" <%="selected" if session[:instructor_expense_sort_option] == "wkclass_date"%> >class date</option>
+          <option value="client_name" <%="selected" if session[:instructor_expense_sort_option] == "client_name"%> >client</option>
+        </select>
+      </div>
+    </form></caption>
+    <tbody>
+      <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
+        <tr>
+          <th scope="row"><%= index + 1 %></th>
+          <td><%= wkclass.summary %></td>
+          <td><%= wkclass.attendances.first.client.name %></td>
+          <td><%= number_with_delimiter(wkclass.instructor_cost) %></td>
+        </tr>
+      <% end %>
       <tr>
-        <th scope="row"><%= index + 1 %></th>
-        <td><%= wkclass.summary %></td>
-        <td><%= wkclass.attendances.first.client.name %></td>
-        <td><%= wkclass.instructor_name %></td>
-        <td><%= number_with_delimiter(wkclass.instructor_cost) %></td>
+        <th scope="row">Total</th>
+        <td><%= rupees(@total_instructor_cost_for_period) %></td>
       </tr>
-    <% end %>
-    <tr>
-      <th scope="row">Total</th>
-      <td><%= rupees(100    ) %></td>
-    </tr>
-  </tbody>
-</table>
-
-
+    </tbody>
+  </table>
 </div>

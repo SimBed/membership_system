@@ -1,8 +1,9 @@
 class Admin::InstructorsController < Admin::BaseController
-  skip_before_action :admin_account, only: [:show]
+  skip_before_action :admin_account, only: :show
   before_action :set_instructor, only: [:show, :edit, :update, :destroy]
-  before_action :correct_instructor, only: [:show]
-  before_action :set_raw_numbers, only: :edit  
+  before_action :correct_instructor, only: :show
+  before_action :initialize_sort, only: :show
+  before_action :set_raw_numbers, only: :edit
 
   def index
     @instructors = Instructor.order_by_current.order_by_name
@@ -11,7 +12,9 @@ class Admin::InstructorsController < Admin::BaseController
   def show
     set_period
     @wkclasses = Wkclass.during(@period).with_instructor(@instructor.id)
-    @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost.includes(:workout, :instructor)
+    @wkclasses_with_instructor_expense = @wkclasses.unscope(:order).has_instructor_cost.includes(:workout, :attendances, instructor: [:instructor_rates])
+    @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.sum(:rate)    
+    handle_sort    
     @months = months_logged       
   end
 
@@ -48,6 +51,29 @@ class Admin::InstructorsController < Admin::BaseController
   end
 
   private
+
+  def initialize_sort
+    session[:instructor_expense_sort_option] = params[:instructor_expense_sort_option] || session[:instructor_expense_sort_option] || 'wkclass_date'
+  end
+
+  def handle_sort
+    case session[:instructor_expense_sort_option]
+    when 'wkclass_date'
+      @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.order_by_date
+    when 'client_name'
+      sort_on_object
+    end
+  end
+
+  def sort_on_object
+    @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.to_a.sort_by do |w|
+      # this seems to be the way to use sort_by with a secondary order
+      [w.attendances.first&.client&.name, -w.start_time.to_i]
+    end
+    # restore to ActiveRecord and recover order.
+    # ids = @wkclasses_with_instructor_expense.map(&:id)
+    # @wkclasses_with_instructor_expense = Wkclass.recover_order(ids)
+  end  
 
   def set_period
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
