@@ -7,9 +7,11 @@
           <option disabled="disabled" selected="selected" value="">Sort by</option>
           <option value="product_name" <%="selected" if session[:product_sort_option] == "product_name"%> >name</option>
           <option value="sell_online" <%="selected" if session[:product_sort_option] == "sell_online"%> >sell online</option>
-          <option value="total_count" <%="selected" if session[:product_sort_option] == "total_count"%> >total count</option>
-          <option value="ongoing_count" <%="selected" if session[:product_sort_option] == "ongoing_count"%> >ongoing count</option>
-          <option value="price" <%="selected" if session[:product_sort_option] == "price"%> >price</option>
+          <% if logged_in_as?('admin', 'superadmin')%>
+            <option value="total_count" <%="selected" if session[:product_sort_option] == "total_count"%> >total count</option>
+            <option value="ongoing_count" <%="selected" if session[:product_sort_option] == "ongoing_count"%> >ongoing count</option>
+            <option value="price" <%="selected" if session[:product_sort_option] == "price"%> >price</option>
+          <%end%>
         </select>
     </div>
     </form>

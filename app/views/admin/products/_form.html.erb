@@ -30,6 +30,13 @@
     <%= form.collection_select :workout_group_id, @workout_groups, :id, :name, selected: @product.workout_group&.id || @workout_groups.first%>
   </div>
 
+  <div class="field mb-3">
+    <%= form.label :current do %>
+      <%= form.check_box :current, { checked: @product.new_record? || form.object.current? } %>
+      Product is Active
+    <% end %>
+  </div>  
+
   <div class="actions">
     <%= form.submit %>
   </div>

@@ -4,6 +4,7 @@
       <tr>
         <th scope="col">Product</th>
         <th class="nomobile" scope="col">Sell Online</th>        
+        <th class="nomobile" scope="col">Active</th>        
         <% if logged_in_as?('admin', 'superadmin') %>
           <th scope="col">Total Count</th>
           <th scope="col">Ongoing Count</th>
@@ -13,7 +14,16 @@
       <% @products.each do |product| %>
         <tr>
           <th class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
-          <td class="nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %></td>
+          <% if logged_in_as?('superadmin') %>          
+            <td class="nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %></td>
+          <% else %>
+            <td class="nomobile"><%= tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)] %></td>
+          <% end %>
+          <% if logged_in_as?('admin', 'superadmin') %>
+            <td class="nomobile"><%= link_to image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')), admin_product_path(product, current: !product.current?), method: :patch %></td>        
+          <% else %>
+            <td class="nomobile"><%= image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')) %></td>        
+          <% end %>
           <!--image_tag('insta.png', class: ["table_icon",("instawaiver" unless product.sellonline?)].compact.join(' '))-->
           <% product_data = @products_data[product.name.to_sym] %>
           <% if logged_in_as?('admin', 'superadmin') %>

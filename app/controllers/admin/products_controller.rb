@@ -8,7 +8,8 @@ class Admin::ProductsController < Admin::BaseController
 
   def index
     handle_sort
-    @products = @products.space_group if logged_in_as?('junioradmin')
+    # reinstate this once sorted out the sorting (sorting by price returns an array)
+    # @products = @products.space_group if logged_in_as?('junioradmin')
     ongoing_purchases = Purchase.not_fully_expired
     @products_data = {}
     @product_ongoing_count = {}
@@ -142,7 +143,8 @@ class Admin::ProductsController < Admin::BaseController
   def product_params
     # the update method (and therefore the product_params method) is used through a form but also clicking on a link on the products page    
     return {sellonline: params[:sellonline] } if params[:sellonline].present?
+    return {current: params[:current] } if params[:current].present?
 
-    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :workout_group_id, :sellonline)
+    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :workout_group_id, :sellonline, :current)
   end
 end

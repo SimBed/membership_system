@@ -1,6 +1,7 @@
 <div class="text-center mb-3">
   <h6 class="bolditalics mb-0">
     <%= @product.formal_name %>
+    <%= image_tag('attendances.png', class: ["table_icon",("active-product" unless @product.current?)].compact.join(' ')) %>
   </h6>
   <h6>
     <form action=<%= "/admin/products/#{params[:id]}" %> method="GET" data-remote="true" class="ms-3 align-with-header">

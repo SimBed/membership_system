@@ -21,12 +21,13 @@ class Product < ApplicationRecord
   scope :trial, -> { where(validity_length: 1, validity_unit: 'W') }
   scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W') }
   scope :package_not_trial, -> { package.not_trial }
-  scope :order_by_name_max_classes, -> { joins(:workout_group).order(:name, :max_classes) }
+  scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', :name, :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
-  scope :order_by_total_count, -> { left_joins(:purchases, :workout_group).group(:id).order('COUNT(purchases.id) DESC, max(workout_groups.id)') }
+  scope :order_by_total_count, -> { left_joins(:purchases, :workout_group).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)') }
   # ongoing account removes products with zero purchases
-  scope :order_by_ongoing_count, -> { left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id).order('COUNT(purchases.id) DESC, max(workout_groups.id)') }
+  scope :order_by_ongoing_count, -> { left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)') }
+  scope :current, -> { where(current: true) }
 
   def self.online_order_by_wg_classes_days
     # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id    
@@ -38,7 +39,7 @@ class Product < ApplicationRecord
                         FROM products
                         INNER JOIN workout_groups w ON products.workout_group_id = w.id
                         WHERE max_classes > 1 AND sellonline = true
-                        ORDER BY name, max_classes, days;")
+                        ORDER BY current desc, name, max_classes, days;")
   end
 
   def self.order_by_base_price
@@ -47,7 +48,7 @@ class Product < ApplicationRecord
                         FROM products
                         INNER JOIN prices ON prices.product_id = products.id
                         GROUP BY products.id
-                        ORDER BY max_price DESC;")
+                        ORDER BY current desc, max_price DESC;")
   end
 
   def css_class

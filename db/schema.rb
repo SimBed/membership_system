@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_13_062818) do
+ActiveRecord::Schema.define(version: 2023_04_14_071157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -216,6 +216,8 @@ ActiveRecord::Schema.define(version: 2023_04_13_062818) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "sellonline", default: false
+    t.boolean "current", default: true
+    t.index ["current"], name: "index_products_on_current"
     t.index ["max_classes"], name: "index_products_on_max_classes"
   end
 

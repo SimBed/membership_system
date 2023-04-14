@@ -21,6 +21,7 @@ class Wkclass < ApplicationRecord
   # validate :pt_instructor
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
+  delegate :rate, to: :instructor_rate
   scope :any_workout_of, ->(workout_filter) { joins(:workout).where(workout: { name: workout_filter }) }
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
