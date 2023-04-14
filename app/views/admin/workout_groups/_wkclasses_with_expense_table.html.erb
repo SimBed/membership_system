@@ -10,9 +10,9 @@
         <% else %>
           <td><%= wkclass.summary %></td>
         <% end %>
-        <td><%= wkclass.attendances.first.client.name %></td>
+        <td><%= wkclass.attendances&.first&.client&.name %></td>
         <td><%= wkclass.instructor_name %></td>
-        <td><%= number_with_delimiter(wkclass.instructor_cost) %></td>
+        <td><%= number_with_delimiter(wkclass.rate) %></td>
       </tr>
     <% end %>
     <tr>
