@@ -10,6 +10,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     @time = '2022-02-13 10:30:00'
     @workout = workouts(:hiit)
     @instructor = instructors(:amit)
+    @instructor_rate = instructor_rates(:amit_base)
     @wkclass = wkclasses(:wkclass_mat)
   end
 
@@ -79,5 +80,22 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
         delete admin_wkclass_path(@wkclass)
       end
     end
+  end
+
+  test 'create repeat classes' do
+      log_in_as(@junioradmin)
+      assert_difference 'Wkclass.count', 4 do
+        post admin_wkclasses_path, params:
+         { wkclass:
+            { workout_id: @workout.id,
+              "start_time(1i)": '2022',
+              "start_time(2i)": '02',
+              "start_time(3i)": '13',
+              "start_time(4i)": '10',
+              "start_time(5i)": '30',
+              instructor_id: @instructor.id,
+              instructor_rate_id: @instructor_rate.id,
+              repeats: 3 } }
+      end
   end
 end

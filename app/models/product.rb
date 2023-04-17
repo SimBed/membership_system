@@ -24,7 +24,9 @@ class Product < ApplicationRecord
   scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', :name, :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
+  # scope :order_by_total_count, -> { left_joins(:purchases).group(:id).order('COUNT(purchases.id) DESC') }
   scope :order_by_total_count, -> { left_joins(:purchases, :workout_group).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)') }
+  # scope :order_by_total_count, -> { left_joins(:purchases, :workout_group).group(:id, :current, 'workout_groups.id').order('products.current desc, workout_groups.id, COUNT(purchases.id) DESC') }
   # ongoing account removes products with zero purchases
   scope :order_by_ongoing_count, -> { left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)') }
   scope :current, -> { where(current: true) }

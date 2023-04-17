@@ -2,6 +2,7 @@ class Admin::WkclassesController < Admin::BaseController
   skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :filter, :instructor]
   before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update, :instructor]
   before_action :set_wkclass, only: [:show, :edit, :update, :destroy]
+  before_action :set_repeats, only: :create
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
@@ -51,19 +52,44 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def create
-    @wkclass = Wkclass.new(wkclass_params)
-    if @wkclass.save
-      # @attendances = @wkclass.attendances.no_amnesty.order_by_status
-      # @amnesties = @wkclass.attendances.amnesty.order_by_status
-      redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
-      flash[:success] = t('.success')
-      # @wkclass.delay.send_reminder
-      # Wkclass.delay.send_reminder(@wkclass.id)
-      # Wkclass.send_reminder(@wkclass.id)
+    if @repeats
+      # activerecord takes the constiruent bits of a date from the params and builds the date before saving. To advance the adate when there are repeats we have to go through the rigmaroll of building the date, advancing and deconstructiong
+      start_date = construct_date(wkclass_params)
+      @wkclasses = (0..@weeks_to_repeat).map { |weeks| Wkclass.create(wkclass_params.merge(deconstruct_date(start_date, weeks))) }                                                          
+      if @wkclasses.all? { |wk| wk.persisted? }
+        redirect_to admin_wkclasses_path
+        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat + 1} classes were") 
+      else
+        @wkclass = @wkclasses.select(&:invalid?).first 
+        prepare_items_for_dropdowns
+        render :new, status: :unprocessable_entity
+      end
     else
-      prepare_items_for_dropdowns
-      render :new, status: :unprocessable_entity
+      @wkclass = Wkclass.new(wkclass_params)
+      if @wkclass.save
+        redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+        flash[:success] = t('.success', repeats: "1 class was")
+      else
+        prepare_items_for_dropdowns
+        render :new, status: :unprocessable_entity
+      end
     end
+
+
+
+    # @wkclass = Wkclass.new(wkclass_params)
+    # if @wkclass.save
+    #   # @attendances = @wkclass.attendances.no_amnesty.order_by_status
+    #   # @amnesties = @wkclass.attendances.amnesty.order_by_status
+    #   redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+    #   flash[:success] = t('.success')
+    #   # @wkclass.delay.send_reminder
+    #   # Wkclass.delay.send_reminder(@wkclass.id)
+    #   # Wkclass.send_reminder(@wkclass.id)
+    # else
+    #   prepare_items_for_dropdowns
+    #   render :new, status: :unprocessable_entity
+    # end
   end
 
   def update
@@ -106,6 +132,30 @@ class Admin::WkclassesController < Admin::BaseController
 
   private
 
+  def set_repeats
+    repeats = params[:wkclass][:repeats]
+    if repeats && !repeats.to_i.zero?
+      @repeats = true 
+      # guard against somehow getting a huge number of repeats and blowing the system
+      @weeks_to_repeat = [11, params[:wkclass][:repeats].to_i].min
+    else
+      @repeats = false
+    end
+  end
+
+  def construct_date(hash)
+    DateTime.new(hash["start_time(1i)"].to_i, 
+    hash["start_time(2i)"].to_i,
+    hash["start_time(3i)"].to_i)
+  end
+
+  def deconstruct_date(date, n)
+    advanced_date = date.advance(weeks: n)
+    {'start_time(1i)': advanced_date.year.to_s,
+     'start_time(2i)': advanced_date.month.to_s,
+     'start_time(3i)': advanced_date.day.to_s,}
+  end  
+
   def set_wkclass
     @wkclass = Wkclass.find(params[:id])
   end
@@ -137,8 +187,12 @@ class Admin::WkclassesController < Admin::BaseController
     @instructor_rates = @wkclass&.instructor&.instructor_rates&.current&.order_for_index || []
     (@instructor_rates = @instructor_rates.select { |i| i.group?}) if @wkclass&.workout&.group_workout?    
     @capacities = (0..30).to_a + [500]
+    @repeats = (0..11).to_a if @wkclass.new_record?
     @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
-  end
+    @instructor_id = @wkclass.instructor&.id
+    @instructor_rate = @wkclass.instructor_rate&.id
+
+  end 
 
   def handle_filter
     %w[any_workout_of in_workout_group].each do |key|

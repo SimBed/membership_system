@@ -91,7 +91,7 @@ en:
         unexpired: "%{name}'s purchase has been brought back to life"
     wkclasses:
       create:
-        success: Class was successfully added
+        success: "%{repeats} successfully added"
       update:
         success: Class was successfully updated
       destroy:

@@ -40,6 +40,13 @@
     <%= form.select :level, options_for_select(@levels, @wkclass.level) %>
   </div>
 
+  <% unless @repeats.nil? %>
+    <div class="field">
+      <%= form.label :repeats, 'Repeat for a further this many weeks' %>
+      <%= form.select :repeats, options_for_select(@repeats, 0) %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= form.submit wkclass.new_record? ? 'create class' : 'update class' %>
   </div>
