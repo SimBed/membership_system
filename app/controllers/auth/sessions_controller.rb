@@ -55,7 +55,7 @@ class Auth::SessionsController < Auth::BaseController
   end  
 
   def deal_with_partner
-    redirect_to admin_partner_path(@account.partners.first) if logged_in_as?('partner')
+    redirect_to admin_partner_path(@account.partner) if logged_in_as?('partner')
   end
 
   def action_when_not_activated

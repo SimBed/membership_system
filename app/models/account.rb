@@ -1,6 +1,6 @@
 class Account < ApplicationRecord
   has_one :client
-  has_many :partners
+  has_one :partner
   has_many :orders
   has_one :instructor
   attr_accessor :remember_token, :reset_token
@@ -26,7 +26,7 @@ class Account < ApplicationRecord
     when 'instructor'
       instructor.update(account_id: nil)
     when 'partner'
-      partners.first.update(account_id: nil)
+      partner.update(account_id: nil)
     end
     destroy
   end

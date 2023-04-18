@@ -8,7 +8,7 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     @account_client = accounts(:client_for_unlimited)
     @client = @account_client.client
     @account_partner = accounts(:partner1)
-    @partner = @account_partner.partners.first
+    @partner = @account_partner.partner
   end
 
   test 'should get login page if not logged in' do

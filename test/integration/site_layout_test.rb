@@ -6,7 +6,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @account_partner = accounts(:partner1)
-    @partner = @account_partner.partners.first
+    @partner = @account_partner.partner
     @account_client = accounts(:client1)
     @client = @account_client.client
   end

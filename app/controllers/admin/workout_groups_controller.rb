@@ -6,7 +6,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 
   def index
     if logged_in_as?('partner')
-      partner_id = current_account.partners.first.id
+      partner_id = current_account.partner.id
       # reformat to scope
       @workout_groups = WorkoutGroup.where(partner_id: partner_id).order_by_name
     else

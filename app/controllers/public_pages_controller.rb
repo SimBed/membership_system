@@ -10,7 +10,7 @@ class PublicPagesController < ApplicationController
     elsif logged_in_as?('client')
       redirect_to client_client_path(current_account.client) and return
     elsif logged_in_as?('partner')
-      redirect_to admin_partner_path(current_account.partners.first) and return
+      redirect_to admin_partner_path(current_account.partner) and return
     elsif logged_in_as?('instructor')
       redirect_to admin_workout_groups_path and return
     end

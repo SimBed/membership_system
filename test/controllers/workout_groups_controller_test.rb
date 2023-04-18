@@ -52,7 +52,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
         post admin_workout_groups_path, params:
          { workout_group:
             { name: 'PT',
-              partner_id: @account_partner1.partners.first.id,
+              partner_id: @account_partner1.partner.id,
               partner_share: 50,
               workout_ids: [@workout.id] } }
       end
