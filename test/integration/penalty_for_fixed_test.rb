@@ -3,7 +3,7 @@ require 'test_helper'
 class PenaltyForFixedTest < ActionDispatch::IntegrationTest
   def setup
     @account_client = accounts(:client_for_fixed)
-    @client = @account_client.clients.first
+    @client = @account_client.client
     @purchase = @client.purchases.last
     @purchase_pt = purchases(:purchase_12C5WPT)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)

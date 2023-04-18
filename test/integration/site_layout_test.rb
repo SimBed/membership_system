@@ -8,7 +8,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     @account_partner = accounts(:partner1)
     @partner = @account_partner.partners.first
     @account_client = accounts(:client1)
-    @client = @account_client.clients.first
+    @client = @account_client.client
   end
 
   test 'layout links when logged-in as superadmin' do

@@ -7,7 +7,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
   setup do
     @admin = accounts(:admin)
     @account_client = accounts(:client_for_pilates)
-    @client = @account_client.clients.first
+    @client = @account_client.client
     # purchase is 8c5w, 6 classes attended, expiry_date 25/3/2022
     @purchase = purchases(:tina8c5wong)
     @instructor = instructors(:raki)

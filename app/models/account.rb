@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  has_many :clients
+  has_one :client
   has_many :partners
   has_many :orders
   has_one :instructor
@@ -16,13 +16,13 @@ class Account < ApplicationRecord
   scope :order_by_ac_type, -> { order(:ac_type, :email) }
 
   def without_purchase?
-    clients.first.purchases.empty?
+    client.purchases.empty?
   end
 
   def clean_up
     case :ac_type
     when 'client'
-      clients.first.update(account_id: nil)
+      client.update(account_id: nil)
     when 'instructor'
       instructor.update(account_id: nil)
     when 'partner'

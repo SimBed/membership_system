@@ -50,7 +50,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Purchase.count' do
         post admin_purchases_path, params:
          { purchase:
-            { client_id: @account_client1.clients.first.id,
+            { client_id: @account_client1.client.id,
               product_id: @purchase1.product_id,
               payment: 1000,
               dop: '2022-02-15',

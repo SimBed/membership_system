@@ -18,13 +18,13 @@ class Superadmin::OrdersController < Superadmin::BaseController
       if @order.status == 'captured'
         if logged_in_as?('client') # cant create an order without being logged in as client
           #renewed_purchase = Purchase.find(order_params[:purchase_id])
-          purchase_params = { client_id: current_account.clients.first.id, product_id: @order.product_id, price_id: order_params[:price_id],
+          purchase_params = { client_id: current_account.client.id, product_id: @order.product_id, price_id: order_params[:price_id],
                               payment: @order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
           @purchase = Purchase.new(purchase_params)
           if @purchase.save
             flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
-            redirect_to client_history_path current_account.clients.first
-            # redirect_to client_book_path current_account.clients.first
+            redirect_to client_history_path current_account.client
+            # redirect_to client_book_path current_account.client
           else
             flash[:alert] = "Unable to process payment."
             redirect_to root_path

@@ -3,7 +3,7 @@ require "test_helper"
 class UpdateEmailAddressTest < ActionDispatch::IntegrationTest
   def setup
     @account_client = accounts(:client_for_unlimited)
-    @client = @account_client.clients.first
+    @client = @account_client.client
     @admin = accounts(:admin)
   end
 

@@ -6,7 +6,7 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
     @account_client = accounts(:client_for_unlimited)
-    @client = @account_client.clients.first
+    @client = @account_client.client
     @account_partner = accounts(:partner1)
     @partner = @account_partner.partners.first
   end

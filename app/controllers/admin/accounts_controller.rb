@@ -64,7 +64,7 @@ class Admin::AccountsController < Admin::BaseController
       redirect_back fallback_location: login_path
     else
       # reformat - this code is reused in show method of clients controller
-      @client = @account.clients.first
+      @client = @account.client
       @client_hash = {
         attendances: @client.attendances.attended.size,
         last_class: @client.last_class,
@@ -116,7 +116,7 @@ class Admin::AccountsController < Admin::BaseController
 
   def set_account
     @account = Account.find(params[:id])
-    @account_holder = @account.clients.first
+    @account_holder = @account.client
   end
 
   def associate_account_holder_to_account

@@ -4,18 +4,18 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
   def setup
     # travel_to Date.parse('20 April 2022')
     @account_client = accounts(:client_for_unlimited)
-    @client = @account_client.clients.first
+    @client = @account_client.client
     @purchase = @client.purchases.last
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     @tomorrows_class_late = wkclasses(:wkclass_for_booking_late)
     @admin = accounts(:admin)
     @account_other_client = accounts(:client1)
-    @other_client = @account_other_client.clients.first
+    @other_client = @account_other_client.client
     @other_client_purchase = @other_client.purchases.last
     @account3 = accounts(:client_for_ongoing_trial)
-    @purchase3 = @account3.clients.first.purchases.last
+    @purchase3 = @account3.client.purchases.last
     @account4 = accounts(:client_for_fixed)
-    @purchase4 = @account4.clients.first.purchases.last
+    @purchase4 = @account4.client.purchases.last
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
   end
 

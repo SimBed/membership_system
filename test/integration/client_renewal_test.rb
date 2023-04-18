@@ -6,10 +6,10 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     @account_client_for_ongoing_trial = accounts(:client_for_ongoing_trial)
     @account_client_for_expired_trial = accounts(:client_for_expired_trial)
     @account_new_client = accounts(:client_no_purchases)
-    @client_for_unlimited = @account_client.clients.first
-    @client_for_ongoing_trial = @account_client_for_ongoing_trial.clients.first
-    @client_for_expired_trial = @account_client_for_expired_trial.clients.first
-    @client_no_purchases = @account_new_client.clients.first
+    @client_for_unlimited = @account_client.client
+    @client_for_ongoing_trial = @account_client_for_ongoing_trial.client
+    @client_for_expired_trial = @account_client_for_expired_trial.client
+    @client_no_purchases = @account_new_client.client
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     travel_to(@tomorrows_class_early.start_time.beginning_of_day) # 22/4
     @product_unlimited1m = products(:unlimited1m)

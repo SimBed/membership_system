@@ -3,7 +3,7 @@ require "test_helper"
 class PasswordResetTest < ActionDispatch::IntegrationTest
   def setup
     @account = accounts(:client_for_unlimited)
-    @client = @account.clients.first
+    @client = @account.client
     @admin = accounts(:admin)
   end
 

@@ -17,7 +17,7 @@
 
         <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
           <ul class="navbar-nav">
-          <% client = current_account.clients.first %>
+          <% client = current_account.client %>
             <%# if current_account.without_purchase? %>        
               <li class="nav-item">
                 <%= link_to "Shop", client_shop_path(client), class: "nav-link", 'data-turbolinks': false%>

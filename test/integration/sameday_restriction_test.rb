@@ -3,7 +3,7 @@ require 'test_helper'
 class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   def setup
     @account_client = accounts(:client_for_unlimited)
-    @client = @account_client.clients.first
+    @client = @account_client.client
     # @purchase = @client.purchases.last
     @purchase = purchases(:test_ekta_unlimited)
     @purchase2 = purchases(:ekta_nutrition)
