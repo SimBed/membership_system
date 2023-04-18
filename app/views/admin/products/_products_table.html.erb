@@ -13,7 +13,11 @@
       </tr>
       <% @products.each do |product| %>
         <tr>
-          <th class="fw-light"><%=link_to product.name, admin_product_path(product), class: 'like_button' %></th>
+          <% if logged_in_as?('admin', 'superadmin') %>        
+            <th class="fw-light"><%= link_to product.name, admin_product_path(product), class: 'like_button' %></th>
+          <% else %>
+            <th class="fw-light"><%= product.name %></th>
+          <% end %>
           <% if logged_in_as?('superadmin') %>          
             <td class="nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %></td>
           <% else %>

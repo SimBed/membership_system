@@ -1,5 +1,6 @@
 class Admin::TimetablesController < Admin::BaseController
-  skip_before_action :admin_account, only: :show_public  
+  skip_before_action :admin_account, only: [:show_public, :show] 
+  before_action :junioradmin_account, only: :show
   before_action :set_timetable, only: %i[ show edit update destroy ]
 
   def index

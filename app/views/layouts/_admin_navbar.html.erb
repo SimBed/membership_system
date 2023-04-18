@@ -5,7 +5,6 @@
         <%= link_to root_path, class: "navbar-brand" do %>
           <%= image_tag('SpaceLogo_white.png', alt: "logo") %>
         <% end %>
-        <!-- <a href="./index.html" class="navbar-brand"><img src="./assets/images/logo/logo-light.svg" alt="Logo"></a> -->
 
         <!-- secondary -->
         <ul class="navbar-nav navbar-nav-secondary order-lg-3">
@@ -35,35 +34,11 @@
                 <i class="fa fa-dumbbell"></i>
               <% end %>
             </li>
-
-            <% if logged_in_as?('superadmin') %>
-              <li class="nav-item dropdown dropdown-hover">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-4" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false" data-bs-auto-close="outside">
-                  Shop
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown-4">
-                  <li>
-                    <%= link_to 'Timetable', admin_timetable_path(@current_timetable), class: 'dropdown-item' %>
-                  </li>
-                  <li class="dropend dropend-hover">
-                    <a class="dropdown-item dropdown-toggle  "
-                      href="#" id="navbarDropend-1" data-bs-toggle="dropdown" aria-expanded="false"
-                      data-bs-auto-close="outside">Listing</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropend-1">
-                      <li><a class="dropdown-item "
-                          href="./shop-listing.html">Full width</a></li>
-                      <li><a class="dropdown-item "
-                          href="./shop-listing-sidebar.html">Sidebar</a></li>
-                    </ul>
-                  </li>
-                  <li><a class="dropdown-item "
-                      href="./shop-cart.html">Cart</a></li>
-                  <li><a class="dropdown-item "
-                      href="./shop-checkout.html">Checkout</a></li>
-                </ul>
-              </li>
+            <li class="nav-item">
+              <%= link_to public_timetable_path, class: "nav-link" do %>
+                <i class="fa fa-calendar"></i>
               <% end %>
+            </li>
           </ul>
 
           <ul class="navbar-nav">
@@ -80,7 +55,7 @@
                       <% unless logged_in_as?('junioradmin') %>    
                         <span class="dropdown-label">JUNIORADMIN</span>
                       <% end %>  
-                        <%= link_to 'Fitternity', admin_fitternities_path, class: "dropdown-item" %>
+                        <%#= link_to 'Fitternity', admin_fitternities_path, class: "dropdown-item" %>
                         <%= link_to 'Products', admin_products_path, class: "dropdown-item" %>
                       <% unless logged_in_as?('junioradmin') %>                     
                         <span class="dropdown-label">ADMIN</span>
@@ -99,14 +74,6 @@
                           <%= link_to 'Razorpay Orders', superadmin_orders_path, class: "dropdown-item" %>
                           <%= link_to 'Settings', superadmin_settings_path, class: "dropdown-item" %>
                         <% end %>                                                                      
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="p-4">
-                        <% if logged_in_as?('superadmin') %>                   
-                          <span class="dropdown-label">UNDER DEVELOPMENT</span>
-                          <%= link_to 'shop', '/shop/index', class: "dropdown-item" %>
-                        <% end %>  
                     </div>
                   </div>
                 </div>

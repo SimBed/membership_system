@@ -65,7 +65,7 @@ class PublicPagesController < ApplicationController
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
     @renewal = { :offer_online_discount? => true, renewal_offer: "renewal_pre_expiry" }  
-    render layout: 'white_canvas'
+    render 'wedontsupport', layout: 'white_canvas'
   end
 
   def thankyou

@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   get    'client/clients/:id/shop',   to: 'client/clients#shop', as: 'client_shop'
   get '/client/timetable', to: 'client/clients#timetable', as: 'client_timetable' 
   get '/footfall', to: 'admin/attendances#footfall'
-  get '/timetable', to: 'admin/timetables#show_public'
+  get '/timetable', to: 'admin/timetables#show_public', as: 'public_timetable'
   get '/superadmin/regular_expenses/add'
 
   namespace :admin do

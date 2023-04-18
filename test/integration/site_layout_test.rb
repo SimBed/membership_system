@@ -18,8 +18,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', admin_clients_path
     assert_select 'a[href=?]', admin_wkclasses_path
+    assert_select 'a[href=?]', public_timetable_path
     assert_select 'a[href=?]', admin_purchases_path
-    assert_select 'a[href=?]', admin_fitternities_path
+    assert_select 'a[href=?]', admin_fitternities_path, count: 0
     assert_select 'a[href=?]', admin_instructors_path
     assert_select 'a[href=?]', admin_partners_path
     assert_select 'a[href=?]', admin_products_path
@@ -50,7 +51,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', admin_clients_path
     assert_select 'a[href=?]', admin_wkclasses_path
     assert_select 'a[href=?]', admin_purchases_path
-    assert_select 'a[href=?]', admin_fitternities_path
+    assert_select 'a[href=?]', public_timetable_path
+    assert_select 'a[href=?]', admin_fitternities_path, count: 0
     assert_select 'a[href=?]', admin_instructors_path
     assert_select 'a[href=?]', admin_partners_path
     assert_select 'a[href=?]', admin_products_path
@@ -81,7 +83,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', admin_clients_path
     assert_select 'a[href=?]', admin_wkclasses_path
     assert_select 'a[href=?]', admin_purchases_path
-    assert_select 'a[href=?]', admin_fitternities_path
+    assert_select 'a[href=?]', public_timetable_path
+    assert_select 'a[href=?]', admin_fitternities_path, count: 0
     assert_select 'a[href=?]', admin_instructors_path, count: 0
     assert_select 'a[href=?]', admin_partners_path, count: 0
     assert_select 'a[href=?]', admin_products_path
