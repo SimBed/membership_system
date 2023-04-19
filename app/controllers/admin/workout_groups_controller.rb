@@ -1,7 +1,7 @@
 class Admin::WorkoutGroupsController < Admin::BaseController
-  skip_before_action :admin_account, only: [:show, :index]
+  skip_before_action :admin_account, only: [:show, :index, :instructor_expense_filter]
   before_action :partner_or_admin_account, only: [:index]
-  before_action :correct_account_or_superadmin, only: [:show]
+  before_action :correct_account_or_superadmin, only: [:show, :instructor_expense_filter]
   before_action :set_workout_group, only: [:show, :edit, :update, :destroy]
 
   def index
