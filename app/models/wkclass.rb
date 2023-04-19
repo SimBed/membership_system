@@ -25,9 +25,9 @@ class Wkclass < ApplicationRecord
   scope :any_workout_of, ->(workout_filter) { joins(:workout).where(workout: { name: workout_filter }) }
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
-  scope :has_instructor_cost, -> { where.not(instructor_cost: [nil,0]) }
+  # scope :has_instructor_cost, -> { where.not(instructor_cost: [nil,0]) }
   # deprecate instructor_cost as an attribute of wkclass in due course and reference instructor_rate.rate instead (as below)
-  # scope :has_instructor_cost, -> { joins(:instructor_rate).where.not(instructor_rate: {rate: 0}) }
+  scope :has_instructor_cost, -> { joins(:instructor_rate).where.not(instructor_rate: {rate: 0}) }
   # wg is an array of instructor ids
   scope :with_instructor, ->(i) { joins(:instructor).where(instructor: { id: i }) }
   scope :group_by_instructor_cost, -> { joins(:instructor).group("first_name || ' ' || last_name").sum(:instructor_cost) }
@@ -42,6 +42,17 @@ class Wkclass < ApplicationRecord
   scope :instructorless, -> { past.where(instructor_id: nil) }
   # unscope order to avoid PG::InvalidColumnReference: ERROR https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
   scope :incomplete, -> { past.joins(:attendances).where(attendances: {status: 'booked'}).unscope(:order).distinct }
+  scope :empty_class, -> { past.left_joins(:attendances).where(attendances: {id: nil}) }
+  # unfortunately the clean way results in structurally incomaptible error. Workaround to this either by a) work on ruby objects (as for Client#active or 
+  # b) by putting all the joins/distincts at the end of the query as nar8789 answer https://stackoverflow.com/questions/40742078/relation-passed-to-or-must-be-structurally-compatible-incompatible-values-r
+  # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
+  # unfortunately this doesn't work either due to both .joins(:attendances) and .left_joins(:attendances) confusing the issue (removing the joins corrects the empty class undercount but increases the incomplete count)
+  # scope :problematic, -> { instructorless # and past
+  #                         .or(where(attendances: {status: 'booked'}).unscope(:order)) # incomplete
+  #                         .or(where(attendances: {id: nil})) # empty class
+  #                         .or(where.not(instructor_rate: {rate: 0})).joins(:instructor_rate) # has instructor cost
+  #                         .joins(:attendances).left_joins(:attendances).distinct} # dump all the joins/distinct at end of query
+
   # visibility_window = 2.hours
   # advance_days = 3
   # scope :in_booking_visibility_window, lambda {
@@ -60,34 +71,18 @@ class Wkclass < ApplicationRecord
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
 
+  # would like to use #or method but see difficulties above re structrurally compatible
+  def self.problematic
+      # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
+    instructorless_wkclasses = instructorless.map(&:id)
+    incomplete_wkclasses = incomplete.map(&:id)
+    empty_with_cost_wkclasses = empty_class.has_instructor_cost.map(&:id)
+    Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq))
+  end
+
+
   # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
   # need a client_bookable attribute in workout_group
-
-# temporary method
-def which_instructor_rate
-  InstructorRate.where(instructor_id: instructor_id).where(rate: instructor_cost || 0).where(group: workout.group_workout?)
-end
-
-# temporary method
-def self.instructor_rate_id_set(number=1)
-  wkclasses = self.where(instructor_rate_id:nil).take(number)
-  all_wk_ids = wkclasses.map {|w| w.id }
-  updated_wks = []
-  wkclasses.each do |wkclass|
-    matching_rates = wkclass.which_instructor_rate
-    if matching_rates.size == 1
-      wkclass.update_column('instructor_rate_id', matching_rates.first.id)
-      updated_wks << wkclass.id
-    end
-  end
-  puts updated_wks
-  all_wk_ids - updated_wks 
-end
-
-# temporary method
-def self.show_unresolved_updates(array)
-  Wkclass.find(array).map { |wk| [wk.workout&.name, wk.instructor&.name, wk.instructor_cost] }.uniq
-end
 
   def self.show_in_bookings_for(client)
     # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate

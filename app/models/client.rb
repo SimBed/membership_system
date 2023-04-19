@@ -55,7 +55,7 @@ class Client < ApplicationRecord
   scope :number_like, ->(number) { where('phone ILIKE ? OR whatsapp ILIKE ?', "%#{number}%", "%#{number}%") }
   # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
   # the original 'enquiry' now has a wider meaning as clients who set up accounts but have not yet made a purchase are also represented.
-  scope :enquiry, -> { left_outer_joins(:purchases).where(purchases: { id: nil }) }
+  scope :enquiry, -> { left_joins(:purchases).where(purchases: { id: nil }) }
   scope :hot, -> { where(hotlead: true) }
   # cold failed as a class method (didn't mix well with Client.includes(:account) in the controller. Don't understand why.)
   # https://stackoverflow.com/questions/18750196/rails-active-record-add-extra-select-column-to-findall

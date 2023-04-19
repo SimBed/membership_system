@@ -172,8 +172,7 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def params_filter_list
-    [:any_workout_of, :in_workout_group, :todays_class, :yesterdays_class, :tomorrows_class, :past, :future, :instructorless, :incomplete,
-     :classes_period]
+    [:any_workout_of, :in_workout_group, :todays_class, :yesterdays_class, :tomorrows_class, :past, :future, :problematic, :classes_period]
   end
 
   def session_filter_list
@@ -198,7 +197,7 @@ class Admin::WkclassesController < Admin::BaseController
     %w[any_workout_of in_workout_group].each do |key|
       @wkclasses = @wkclasses.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
     end
-    %w[todays_class yesterdays_class tomorrows_class past future instructorless incomplete].each do |key|
+    %w[todays_class yesterdays_class tomorrows_class past future problematic].each do |key|
       @wkclasses = @wkclasses.send(key) if session["filter_#{key}"].present?
     end
   end

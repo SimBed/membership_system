@@ -44,12 +44,8 @@
               <%= 'Future' %>
             <% end %>
             <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'instructorless', 'instructorless', session[:filter_instructorless].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'No Instructor' %>
-            <% end %>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'incomplete', 'incomplete', session[:filter_incomplete].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Attendance not complete' %>
+              <%= check_box_tag 'problematic', 'problematic', session[:filter_problematic].present? ? true : false, class: "checkbox-class", id: "chbox_problematic", onchange: 'Rails.fire(this.form, "submit")'  %>
+              <%= 'Problematic' %>
             <% end %>
           </fieldset>
         </div>

@@ -41,7 +41,6 @@ class Admin::ClientsController < Admin::BaseController
   def edit; end
 
   def create
-    byebug
     @client = Client.new(client_params)
     if @client.save
       redirect_to admin_clients_path
