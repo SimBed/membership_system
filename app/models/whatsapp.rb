@@ -4,6 +4,7 @@ class Whatsapp
     @message_type = attributes[:message_type]
     @admin_triggered = attributes[:admin_triggered] || true
     @variable_contents = attributes[:variable_contents]
+    # @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)]  ? @receiver.whatsapp : Rails.configuration.twilio[:me]
     @to_number = @receiver.is_a?(Client) ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
   end
 
@@ -99,6 +100,14 @@ class Whatsapp
       "\nPassword: #{@variable_contents[:password]}" +
       "\n\nYou can change your password to something more memorable on your Profile page." +
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
+  end
+
+  def body_new_instructor_account
+    "Welcome to The Space #{@receiver.first_name}!" +
+      "\n\nTo see details of your class payments, please login:" +
+      "\nEmail: #{@variable_contents[:email]}" +
+      "\nPassword: #{@variable_contents[:password]}" +
+      "\n\nPlease do not reply to this message. Contact Gigi directly if you have any questions."
   end
 
   def body_no_shows_penalty

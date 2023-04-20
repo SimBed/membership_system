@@ -12,7 +12,7 @@ class PublicPagesController < ApplicationController
     elsif logged_in_as?('partner')
       redirect_to admin_partner_path(current_account.partner) and return
     elsif logged_in_as?('instructor')
-      redirect_to admin_workout_groups_path and return
+      redirect_to admin_instructor_path(current_account.instructor) and return
     end
     # render template: 'auth/sessions/new'
   end

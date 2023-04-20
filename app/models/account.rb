@@ -20,7 +20,7 @@ class Account < ApplicationRecord
   end
 
   def clean_up
-    case :ac_type
+    case ac_type
     when 'client'
       client.update(account_id: nil)
     when 'instructor'
