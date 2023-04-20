@@ -67,7 +67,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
   end
 
   def order_params
-    p = params.permit(:product_id, :account_id, :price_id, :razorpay_payment_id, :payment_id)
+    p = params.permit(:product_id, :account_id, :price_id, :razorpay_payment_id, :payment_id, :client_ui)
     p.merge!({payment_id: p.delete(:razorpay_payment_id) || p[:payment_id]})
     p
   end

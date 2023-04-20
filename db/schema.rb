@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_14_071157) do
+ActiveRecord::Schema.define(version: 2023_04_20_121618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,8 @@ ActiveRecord::Schema.define(version: 2023_04_14_071157) do
     t.integer "account_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "client_ui"
+    t.index ["client_ui"], name: "index_orders_on_client_ui"
   end
 
   create_table "partners", force: :cascade do |t|

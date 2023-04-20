@@ -23,7 +23,7 @@ class Order < ApplicationRecord
                         price: price_rupees })
         # don't want price_id from params
         # Only use paise for Razor. Use rupees in the Order and Purchase tables.
-        Order.create(params.permit(:product_id, :price, :status, :payment_id, :account_id))
+        Order.create(params.permit(:product_id, :price, :status, :payment_id, :account_id, :client_ui))
       else
         raise StandardError, "Unable to capture payment"
       end

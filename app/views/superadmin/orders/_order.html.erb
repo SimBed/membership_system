@@ -5,6 +5,9 @@
   <td>
     <%= link_to order.payment_id, superadmin_order_path(order) %>
   </td>
+  <td>
+    <%= order.client_ui if order.client_ui %>
+  </td>
   <%if params[:status]== "captured" %>
     <td>
       <%= link_to "refund",action: "refund",id: order %>
