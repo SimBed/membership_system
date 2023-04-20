@@ -4,8 +4,8 @@ class Whatsapp
     @message_type = attributes[:message_type]
     @admin_triggered = attributes[:admin_triggered] || true
     @variable_contents = attributes[:variable_contents]
-    # @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)]  ? @receiver.whatsapp : Rails.configuration.twilio[:me]
-    @to_number = @receiver.is_a?(Client) ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
+    # @to_number = @receiver.is_a?(Client) ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
+    @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)] ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
   end
 
   def manage_messaging
