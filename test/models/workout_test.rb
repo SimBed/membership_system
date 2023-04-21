@@ -2,7 +2,7 @@ require 'test_helper'
 
 class WorkoutTest < ActiveSupport::TestCase
   def setup
-    @workout = Workout.new(name: 'running')
+    @workout = Workout.new(name: ' my running class ')
   end
 
   test 'should be valid' do
@@ -12,5 +12,10 @@ class WorkoutTest < ActiveSupport::TestCase
   test 'name should be present' do
     @workout.name = '      '
     refute_predicate @workout, :valid?
+  end
+
+  test 'name should get prettified on save' do
+    @workout.save
+    assert_equal @workout.name, 'My Running Class' 
   end
 end

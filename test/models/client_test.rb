@@ -2,8 +2,8 @@ require 'test_helper'
 
 class ClientTest < ActiveSupport::TestCase
   def setup
-    @client = Client.new(first_name: 'Amala',
-                         last_name: 'Paw',
+    @client = Client.new(first_name: ' amala ',
+                         last_name: ' paw ',
                          email: 'amala@thespace.in',
                          phone_raw: '9145678900',
                          whatsapp_raw: '9145678901',
@@ -114,6 +114,7 @@ class ClientTest < ActiveSupport::TestCase
   end
 
   test 'name method' do
+    @client.save
     assert_equal 'Amala Paw', @client.name
   end
 
