@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_20_121618) do
+ActiveRecord::Schema.define(version: 2023_04_21_061625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,15 @@ ActiveRecord::Schema.define(version: 2023_04_20_121618) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["purchase_id"], name: "index_adjustments_on_purchase_id"
+  end
+
+  create_table "assignments", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_assignments_on_account_id"
+    t.index ["role_id"], name: "index_assignments_on_role_id"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -271,6 +280,13 @@ ActiveRecord::Schema.define(version: 2023_04_20_121618) do
     t.index ["workout_id"], name: "index_rel_workout_group_workouts_on_workout_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.integer "view_priority"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "settings", force: :cascade do |t|
     t.string "var", null: false
     t.text "value"
@@ -341,6 +357,8 @@ ActiveRecord::Schema.define(version: 2023_04_20_121618) do
     t.index ["name"], name: "index_workouts_on_name"
   end
 
+  add_foreign_key "assignments", "accounts"
+  add_foreign_key "assignments", "roles"
   add_foreign_key "entries", "workouts"
   add_foreign_key "expenses", "workout_groups"
   add_foreign_key "instructor_rates", "instructors"

@@ -50,32 +50,39 @@
               </a>
               <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">
                 <div class="row g-0">
-                  <div class="col-6">
-                    <div class="p-4">
-                      <% unless logged_in_as?('junioradmin') %>    
-                        <span class="dropdown-label">JUNIORADMIN</span>
-                      <% end %>  
-                        <%#= link_to 'Fitternity', admin_fitternities_path, class: "dropdown-item" %>
-                        <%= link_to 'Products', admin_products_path, class: "dropdown-item" %>
-                      <% unless logged_in_as?('junioradmin') %>                     
-                        <span class="dropdown-label">ADMIN</span>
-                        <%= link_to 'Instructors', admin_instructors_path, class: "dropdown-item" %>
-                        <%= link_to 'Partners', admin_partners_path, class: "dropdown-item" %>
-                        <%= link_to 'Timetables', admin_timetables_path, class: "dropdown-item" %>                           
-                        <%= link_to 'Workouts', admin_workouts_path, class: "dropdown-item" %>
-                        <%= link_to 'Workout Groups', admin_workout_groups_path, class: "dropdown-item" %>
-                      <% end %>  
-                        <% if logged_in_as?('superadmin') %>                   
-                          <span class="dropdown-label">SUPERADMIN</span>
-                          <%= link_to 'Accounts', admin_accounts_path, class: "dropdown-item" %>
-                          <%= link_to 'Expenses', superadmin_expenses_path, class: "dropdown-item" %>
-                          <%= link_to 'Regular Expenses', superadmin_regular_expenses_path, class: "dropdown-item" %>
-                          <%= link_to 'Instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %>
-                          <%= link_to 'Razorpay Orders', superadmin_orders_path, class: "dropdown-item" %>
-                          <%= link_to 'Settings', superadmin_settings_path, class: "dropdown-item" %>
-                        <% end %>                                                                      
-                    </div>
+                  <div class="col-6 p-4">
+                    <% unless logged_in_as?('junioradmin') %>    
+                      <span class="dropdown-label">JUNIORADMIN</span>
+                    <% end %>  
+                      <%#= link_to 'Fitternity', admin_fitternities_path, class: "dropdown-item" %>
+                      <%= link_to 'Products', admin_products_path, class: "dropdown-item" %>
+                    <% unless logged_in_as?('junioradmin') %>                     
+                      <span class="dropdown-label">ADMIN</span>
+                      <%= link_to 'Instructors', admin_instructors_path, class: "dropdown-item" %>
+                      <%= link_to 'Partners', admin_partners_path, class: "dropdown-item" %>
+                      <%= link_to 'Timetables', admin_timetables_path, class: "dropdown-item" %>                           
+                      <%= link_to 'Workouts', admin_workouts_path, class: "dropdown-item" %>
+                      <%= link_to 'Workout Groups', admin_workout_groups_path, class: "dropdown-item" %>
+                    <% end %>  
+                      <% if logged_in_as?('superadmin') %>                   
+                        <span class="dropdown-label">SUPERADMIN</span>
+                        <%= link_to 'Accounts', admin_accounts_path, class: "dropdown-item" %>
+                        <%= link_to 'Expenses', superadmin_expenses_path, class: "dropdown-item" %>
+                        <%= link_to 'Regular Expenses', superadmin_regular_expenses_path, class: "dropdown-item" %>
+                        <%= link_to 'Instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %>
+                        <%= link_to 'Razorpay Orders', superadmin_orders_path, class: "dropdown-item" %>
+                        <%= link_to 'Settings', superadmin_settings_path, class: "dropdown-item" %>
+                      <% end %>                                                                      
                   </div>
+                  <% if multiple_roles? %>                  
+                    <div class="col-6 p-4">
+                      <span class="dropdown-label">ROLE</span>
+                      <%= content_tag :div, "*#{current_role}", class: "dropdown-item text-uppercase" %>                
+                      <% navbar_roles.each do |role| %>
+                        <%= link_to role.name, "/switch_account_role?role=#{role.name}", class: "dropdown-item" %>
+                      <% end %>
+                    </div>  
+                  <% end %>                
                 </div>
               </div>
             </li>

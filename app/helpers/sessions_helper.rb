@@ -1,6 +1,7 @@
 module SessionsHelper
   def log_in(account)
     session[:account_id] = account.id
+    session[:role_name] = account.roles.first.name    
   end
 
   def remember(account)
@@ -24,7 +25,31 @@ module SessionsHelper
       end
     end
   end
+  
+  def switch_role(role)
+    session[:role_name] = role
+  end
 
+  def account_role_names
+    current_account.roles.map { |r| r.name }    
+  end
+  
+  def current_role
+    return unless logged_in? && account_role_names.any?(session[:role_name])
+
+    session[:role_name]
+  end
+
+  def navbar_roles
+    # current_role is a string
+    current_account.roles - Role.where(name: current_role)  
+  end
+
+  def multiple_roles?
+    # current_role is a string
+    navbar_roles.count > 0 
+  end
+  
   def logged_in?
     !current_account.nil?
   end
@@ -38,6 +63,7 @@ module SessionsHelper
   def log_out
     forget(current_account)
     session.delete(:account_id)
+    session.delete(:role_name)
     @current_account = nil
   end
 
@@ -94,8 +120,9 @@ module SessionsHelper
   end
 
   def logged_in_as?(*ac_types)
-    #refactor with any?
-    logged_in? && ac_types.any? { |ac_type| current_account.ac_type == ac_type }
+    # logged_in? && ac_types.any? { |ac_type| current_account.ac_type == ac_type }
     # logged_in? && ac_types.map { |ac_type| current_account.ac_type == ac_type }.include?(true)
+
+    logged_in? && ac_types.any? { |ac_type| current_role == ac_type }
   end
 end

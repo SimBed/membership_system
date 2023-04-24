@@ -3,7 +3,9 @@ class Account < ApplicationRecord
   has_one :partner
   has_many :orders
   has_one :instructor
-  attr_accessor :remember_token, :reset_token
+  has_many :assignments, dependent: :destroy
+  has_many :roles, through: :assignments  
+  attr_accessor :remember_token, :reset_token, :current_role
 
   before_save :downcase_email
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

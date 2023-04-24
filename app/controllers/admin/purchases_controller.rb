@@ -4,6 +4,7 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: [:show, :edit, :update, :destroy, :expire]
   before_action :sanitize_params, only: [:create, :update]
+  # this should be a callback on Purchase model not a filter
   before_action :already_had_trial?, only: [:create, :update]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating

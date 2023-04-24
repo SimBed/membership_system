@@ -24,6 +24,15 @@ class ActiveSupport::TestCase
                                           remember_me: remember_me } }
   end
 
+  def log_out
+    delete '/logout'
+  end
+
+  def switch_role_to(role)
+    # get '/switch_account_role', params: { role: role }    
+    get switch_account_role_path(role: role)    
+  end
+
   def month_period(date)
     date = Date.parse(date) unless date.is_a? Date
     beginning_of_period = date.beginning_of_month

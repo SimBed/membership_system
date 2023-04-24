@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get    '/login',   to: 'auth/sessions#new'
   post   '/login',   to: 'auth/sessions#create'
   delete '/logout',  to: 'auth/sessions#destroy'
+  get '/switch_account_role',  to: 'auth/sessions#switch_account_role'
   get    'client/clients/:id/book',   to: 'client/clients#book', as: 'client_book'
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
   get    'client/clients/:id/buy',   to: 'client/clients#buy', as: 'client_buy'

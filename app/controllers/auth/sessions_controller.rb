@@ -1,5 +1,6 @@
 class Auth::SessionsController < Auth::BaseController
   layout 'login'
+  before_action :has_role?, only: :switch_account_role  
 
   def new; end
 
@@ -23,7 +24,23 @@ class Auth::SessionsController < Auth::BaseController
     redirect_to root_path
   end
 
+  def switch_account_role
+    @account = current_account
+    switch_role(params[:role])
+    deal_with_admin && return
+    deal_with_client && return
+    deal_with_instructor && return
+    deal_with_partner
+  end
+
   private
+
+  def has_role?
+    unless logged_in? && account_role_names.any?(params[:role])
+      flash[:warning] = 'unauthorised role'
+      redirect_back fallback_location: login_path    
+    end
+  end
 
   def password_ok?
     @account&.authenticate(params.dig(:session, :password)) ||
@@ -33,6 +50,8 @@ class Auth::SessionsController < Auth::BaseController
   def action_when_activated
     log_in @account
     params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
+    switch_role(@account.roles.first.name)
+    # set_role @account
     deal_with_admin && return
     deal_with_client && return
     deal_with_instructor && return

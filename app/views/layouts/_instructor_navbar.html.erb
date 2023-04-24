@@ -25,6 +25,26 @@
           </ul>  
 
           <ul class="navbar-nav">
+            <% if multiple_roles? %>
+            <li class="nav-item dropdown dropdown-hover">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa fa-list"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">
+                <div class="row g-0">
+                  <div class="col-6 p-4">
+                    <span class="dropdown-label">ROLE</span>
+                    <%= content_tag :div, "*#{current_role}", class: "dropdown-item text-uppercase" %>             
+                    <% navbar_roles.each do |role| %>
+                      <%= link_to role.name, "/switch_account_role?role=#{role.name}", class: "dropdown-item" %>
+                    <% end %>
+                  </div>                 
+                </div>
+              </div>
+            </li>
+            <% end %>
+
             <li class="nav-item">
               <% if current_account %>
                 <%= link_to logout_path, method: :delete, class: "nav-link active" do %>

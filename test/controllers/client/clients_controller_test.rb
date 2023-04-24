@@ -10,8 +10,6 @@ class Client::ClientsControllerTest < ActionDispatch::IntegrationTest
     @junioradmin = accounts(:junioradmin)
   end
 
-  # only show method for client_client controller
-
   test 'should redirect show when not logged in as account of the client' do
     [nil, @account_client2, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)

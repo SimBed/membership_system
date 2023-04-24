@@ -35,6 +35,7 @@ class PublicPagesController < ApplicationController
       @password = Account.password_wizard(Setting.password_length)
       @account = Account.new(account_params)
       if @account.save
+        Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
         associate_account_holder_to_account
         # flash_message :success, t('.success')
         # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
