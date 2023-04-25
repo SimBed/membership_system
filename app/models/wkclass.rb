@@ -158,9 +158,11 @@ class Wkclass < ApplicationRecord
   end
 
   def deletable?
+    # Bullet.enable = false if Rails.env == 'development'
     return true if attendances.empty?
 
     false
+    # Bullet.enable = true if Rails.env == 'development'
   end
   
   def revenue

@@ -8,6 +8,7 @@ gem 'country_select', '~> 8.0'
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem "groupdate", "~> 6.1"
+gem "honeybadger", "~> 5.2"
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'pg', '~> 1.1'
@@ -41,6 +42,7 @@ group :development do
   # gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   gem 'spring'
+  # gem 'bullet'
 end
 
 group :test do
@@ -51,4 +53,4 @@ end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "honeybadger", "~> 5.2"
+

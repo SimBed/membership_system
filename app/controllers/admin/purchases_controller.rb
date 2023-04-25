@@ -14,15 +14,17 @@ class Admin::PurchasesController < Admin::BaseController
   def index
     # @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
     # associations referrred to in view - attendances, product in start_to_expiry method, client directly in purchase.client.name
-    @purchases = Purchase.includes(:attendances, :product, :client)
+    @purchases = Purchase.includes(:attendances, :freezes, :adjustments,:penalties, :client, product: [:workout_group])
     handle_search
     handle_filter
     handle_period
     # hack for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
     Purchase.default_timezone = :utc
     # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
-    @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
-    @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
+    # Bullet.enable = false if Rails.env == 'development'
+      @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
+      @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
+    # Bullet.enable = true if Rails.env == 'development'    
     Purchase.default_timezone = :local
     # Purchase.includes(:attendances, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
     # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
@@ -257,8 +259,7 @@ class Admin::PurchasesController < Admin::BaseController
     # @clients = Client.order_by_first_name.map { |c| [c.name, c.id] }
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
-    @products = Product.order_by_name_max_classes
-    # @payment_methods = Rails.application.config_for(:constants)['payment_methods']
+    @products = Product.order_by_name_max_classes.includes(:workout_group, :current_price_objects)
     @payment_methods = Setting.payment_methods
   end
 

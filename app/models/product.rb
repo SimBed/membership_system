@@ -21,7 +21,7 @@ class Product < ApplicationRecord
   scope :trial, -> { where(validity_length: 1, validity_unit: 'W') }
   scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W') }
   scope :package_not_trial, -> { package.not_trial }
-  scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', :name, :max_classes) }
+  scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', 'workout_groups.name', :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
   # scope :order_by_total_count, -> { left_joins(:purchases).group(:id).order('COUNT(purchases.id) DESC') }

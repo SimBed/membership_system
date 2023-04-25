@@ -8,7 +8,7 @@ class Admin::ClientsController < Admin::BaseController
   before_action :set_raw_numbers, only: :edit  
 
   def index
-    @clients = Client.includes(:account)
+    @clients = Client.includes(:account, :purchases)
     handle_search
     handle_filter
     handle_sort

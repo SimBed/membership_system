@@ -2,7 +2,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
   before_action :set_regular_expense, only: [ :edit, :update, :destroy ]
 
   def index
-    @regular_expenses = RegularExpense.all
+    @regular_expenses = RegularExpense.all.includes(:workout_group)
     @last_month = Time.zone.now.last_month.strftime('%b %Y')
     @this_month = Time.zone.now.strftime('%b %Y')
     @next_month = Time.zone.now.next_month.strftime('%b %Y')

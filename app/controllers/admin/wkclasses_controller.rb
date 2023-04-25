@@ -8,12 +8,13 @@ class Admin::WkclassesController < Admin::BaseController
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
 
   def index
-    @wkclasses = Wkclass.includes([:physical_attendances, :workout]).order_by_date
-    # @wkclasses = Wkclass.includes([:confirmed_attendances, :provisional_attendances, :workout]).order_by_date
+    # Bullet would prefer us to counter_cache than load physical attendances as all we need is the size of the association, however counter_cache doesn't work for scoped associations
+    # and i'm not minded to roll this myself given it isn't causing any major performance issue
+    # https://stackoverflow.com/questions/37029847/counter-cache-in-rails-on-a-scoped-association
+    @wkclasses = Wkclass.includes([:physical_attendances, :workout, :attendances, :instructor]).order_by_date
     handle_filter
     handle_period
     @wkclasses = @wkclasses.page params[:page]
-    # @workouts = Workout.distinct.pluck(:name).sort!
     @workouts = Workout.order_by_name.current
     @months = ['All'] + months_logged
     handle_export

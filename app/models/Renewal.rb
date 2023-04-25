@@ -1,7 +1,7 @@
 class Renewal
   def initialize(client)
     @client = client
-    @groupex_package_purchases = client.purchases.package.order_by_dop.renewable
+    @groupex_package_purchases = client.purchases.package.order_by_dop.renewable.includes(:product)
     @ongoing_groupex_package_purchases = @groupex_package_purchases.reject(&:expired?)
     @last_groupex_package_purchase = @groupex_package_purchases.first # @groupex_package_purchases is sorted by dop descending ie most recently purchased is first
     @default_package = Product.where(max_classes: 1000, validity_length: 3, validity_unit: 'M').first
