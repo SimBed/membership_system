@@ -37,22 +37,14 @@ class PublicPagesController < ApplicationController
       if @account.save
         Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
         associate_account_holder_to_account
-        # flash_message :success, t('.success')
-        # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
-        # redirect_to login_path
-        # flash[:success] = "Welcome to The Space #{@client.first_name}. Your account has been created. Please login to make a purchase."
         log_in @account
         @renewal = Renewal.new(@client)
         redirect_to client_shop_path @client
         flash_message(*Whatsapp.new(whatsapp_params('new_signup')).manage_messaging)
-        # flash[:success] = "Welcome to The Space #{@client.first_name}. Your account has been created. You will receive a whatsapp with your password to login in future. Please contact The Space if you need any help to complete your purchase."        
-        # flash_message :success, t('.success', name: @client.name)
       else
-        # flash.now[:danger] = 'Unable to create account for client, please contact The Space'
         render 'signup', layout: 'login'
       end
     else
-      # flash.now[:danger] = 'Unable to create account, please contact The Space'
       @account = Account.new
       render 'signup', layout: 'login'
     end
