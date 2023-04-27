@@ -16,6 +16,8 @@
         <Cell><Data ss:Type="String">Price</Data></Cell>
         <Cell><Data ss:Type="String">Discount %</Data></Cell>
         <Cell><Data ss:Type="String">Note</Data></Cell>
+        <Cell><Data ss:Type="String">Adjust & Restart Payment</Data></Cell>
+        <Cell><Data ss:Type="String">A&R date</Data></Cell>
       </Row>
     <% @purchases.each do |purchase| %>
       <Row>
@@ -27,6 +29,10 @@
         <Cell><Data ss:Type="String"><%= purchase.price.price %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.price.discount %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.note %></Data></Cell>
+        <% if purchase.adjust_restart? %>
+          <Cell><Data ss:Type="String"><%= purchase.ar_payment %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= purchase.ar_date %></Data></Cell>
+        <% end%>
       </Row>
     <% end %>
     </Table>
