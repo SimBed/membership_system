@@ -17,6 +17,7 @@ class Admin::AccountsController < Admin::BaseController
     @password = Account.password_wizard(Setting.password_length)
     @account = Account.new(account_params)
     if @account.save
+      byebug
       Assignment.create(account_id: @account.id, role_id: Role.find_by(name: params[:ac_type]).id)
       associate_account_holder_to_account
       flash_message :success, t('.success')
