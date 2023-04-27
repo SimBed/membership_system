@@ -187,8 +187,11 @@ class Whatsapp
     "The email for the last message is: #{@variable_contents[:email]}"
   end
 
-  def body_test
-    "Thanks for all the templates. We would be delighted to resubmit all the templates.\nReply directly\nhttps://api.whatsapp.com/send/?phone=919619348427&text&type=phone_number&app_absent=0"
+  def body_blast
+    'CLASS UPDATE' +
+    "\n1) The Space will be closed on 1st May 2023 for Labour Day. Sessions will resume on schedule from 2nd May." +
+    "\n2) No Pilates on 9th May as Karina is travelling." +    
+    "\n \nPlease plan your workouts accordingly.\n"    
   end
 
   def body_package_expiry_retired

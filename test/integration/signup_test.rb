@@ -71,6 +71,34 @@ class SignupTest < ActionDispatch::IntegrationTest
     assert_select 'form input[type=text][value="123456789"]'
   end
 
+  test 'invalid duplicate name' do
+    assert_difference ->{ Account.count } => 1, ->{ Client.count } => 1, -> {Assignment.count } => 1 do
+    post '/signup', params:
+      { client:
+       { first_name: "Dani",
+         last_name: "Boi",
+         email:"daniboi@gmail.com",
+         whatsapp_country_code: "GB",
+         whatsapp_raw:"1234567891",
+         phone_raw:"",
+         instagram:"",
+         terms_of_service: "1" } }   
+    end
+    assert_difference ->{ Account.count } => 0, ->{ Client.count } => 0, -> {Assignment.count } => 0 do
+    post '/signup', params:
+      { client:
+       { first_name: "Dani",
+         last_name: "Boi",
+         email:"daniboiboi@gmail.com",
+         whatsapp_country_code: "GB",
+         whatsapp_raw:"1114567891",
+         phone_raw:"",
+         instagram:"",
+         terms_of_service: "1" } }   
+    end
+
+  end
+
   test 'valid signup (Indian whatsapp)' do
     get signup_path
     assert_template 'public_pages/signup'
