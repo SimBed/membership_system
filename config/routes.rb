@@ -65,7 +65,7 @@ Rails.application.routes.draw do
     resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]
     resource :settings
     resources :orders
-    get "refund/:id", to: "orders#refund" 
+    get "refund/:id", to: "orders#refund", as: 'order_refund' 
   end
   # get 'client/clients/:id', to: 'client/clients#show', as: 'client_show'
   namespace :client do

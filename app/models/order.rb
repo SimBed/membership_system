@@ -2,6 +2,7 @@ class Order < ApplicationRecord
   include OrderConcerns::Razorpay
   belongs_to :product
   belongs_to :account, optional: true
+  scope :order_by_date, -> { order(created_at: :desc) }
 
   [:authorized, :captured, :refunded, :error].each do |scoped_key|
     scope scoped_key, -> { where('LOWER(status) = ?', scoped_key.to_s.downcase) }
@@ -18,7 +19,7 @@ class Order < ApplicationRecord
       if razorpay_pmnt_obj.status == "authorized"
         razorpay_pmnt_obj.capture({ amount: price_paise })
         params.merge!({ status: fetch_payment(params[:payment_id]).status,
-                        price: price_rupees }).except(:price_id, :razorpay_payment_id, :payment_id)
+                        price: price_rupees }).except(:price_id, :razorpay_payment_id)
       else
         raise StandardError, "Unable to capture payment"
       end

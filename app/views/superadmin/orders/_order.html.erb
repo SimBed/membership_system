@@ -1,16 +1,13 @@
 <tr>
-  <td>
-    <%= order.id %>
-  </td>
-  <td>
-    <%= link_to order.payment_id, superadmin_order_path(order) %>
-  </td>
-  <td>
-    <%= order.client_ui if order.client_ui %>
-  </td>
+  <td> <%= order.id %> </td>
+  <td> <%= link_to order.payment_id, superadmin_order_path(order) %> </td>
+  <td> <%= order.created_at.strftime('%d %b %y') %> </td>
+  <td> <%= link_to order.account.client.name, admin_client_path(order.account.client) %> </td>
+  <td> <%= order.product.name %> </td>
+  <td> <%= order.price %> </td>
+  <td> <%= order.client_ui if order.client_ui %> </td>
   <%if params[:status]== "captured" %>
-    <td>
-      <%= link_to "refund",action: "refund",id: order %>
-    </td>
+    <td> <%= link_to "refund", superadmin_order_refund_path(order) %> </td>
+        <%#= link_to "refund", action: "refund", id: order %>
   <%end%>
 </tr>

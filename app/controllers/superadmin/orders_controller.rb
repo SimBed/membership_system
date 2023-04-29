@@ -5,7 +5,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
   before_action :set_order, only: [:show, :refund]
 
   def index
-    @orders = Order.filter(filter_params).includes(:account).page(params[:page]).per(20)
+    @orders = Order.filter(filter_params).includes(:account).order_by_date.page(params[:page]).per(20)
   end
 
   def show

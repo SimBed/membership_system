@@ -1,37 +1,31 @@
 <div class="container">
     <ul class="nav" id="tabs_space">
       <input type="hidden" id="target_search" value="<%= params[:status] unless params[:status].nil? %>">
-      <li class="nav-item"   id="authorized">
-        <%= link_to "Authorized", superadmin_orders_path({status: "authorized"}), class:"nav-link" %>
-      </li>
-      <li id="captured">
-        <%= link_to "Captured", superadmin_orders_path({status: "captured"}), class:"nav-link" %>
-      </li>
-      <li id="refunded">
-        <%= link_to "Refunded", superadmin_orders_path({status: "refunded"}), class:"nav-link" %>
-      </li>
-      <li id="error">
-        <%= link_to "Failed", superadmin_orders_path({status: "error"}), class:"nav-link" %>
-      </li>
+       <% %w[authorized captured refunded error].each do |item| %>
+        <li class="nav-item" id="item">
+          <%= link_to item.capitalize, superadmin_orders_path({status: item}), class:"nav-link" %>
+        </li>
+      <% end %>
     </ul>
 
-    <div class="tab-content">
-      <div class="">
-        <br>
-        <table class="table table-striped table-bordered table-hover" >
-          <tr>
-            <th>No</th>
-            <th>Payment Id</th>
-            <th>Client UI</th>
-            <%if params[:status] == "captured"%>
-              <th>Refund Payment</th>
-            <%end%>
-          </tr>
-          <%= render @orders %>
-        </table>
-        <%= paginate @orders %>
-      </div>
-    </div>
+    <%= paginate @orders %>
+    <table class="table table-secondary table-striped caption-top table-hover">
+      <tbody>
+        <tr>
+          <th>No</th>
+          <th>Payment Id</th>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Client UI</th>
+          <% if params[:status] == "captured" %>
+            <th>Refund Payment</th>
+          <% end %>
+        </tr>
+        <%= render @orders %>
+      </tbody>
+    </table>
 </div>
 
 <script type="text/javascript">
