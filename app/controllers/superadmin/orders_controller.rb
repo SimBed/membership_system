@@ -1,6 +1,7 @@
 class Superadmin::OrdersController < Superadmin::BaseController
   skip_before_action :verify_authenticity_token
   skip_before_action :superadmin_account, only: [:create]
+  before_action :client_account, only: [:create]
   before_action :set_order, only: [:show, :refund]
 
   def index
@@ -12,27 +13,21 @@ class Superadmin::OrdersController < Superadmin::BaseController
 
   def create
     begin
-      @order = Order.process_razorpayment(order_params)
-      # redirect_to :action => "show", :id => @order.id
-      # if @order.cpatured maybe create account, create purchase and send twillio
-      if @order.status == 'captured'
-        if logged_in_as?('client') # cant create an order without being logged in as client
-          #renewed_purchase = Purchase.find(order_params[:purchase_id])
-          purchase_params = { client_id: current_account.client.id, product_id: @order.product_id, price_id: order_params[:price_id],
-                              payment: @order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
-          @purchase = Purchase.new(purchase_params)
-          if @purchase.save
-            flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
-            redirect_to client_history_path current_account.client
-            # redirect_to client_book_path current_account.client
-          else
-            flash[:alert] = "Unable to process payment."
-            redirect_to root_path
-          end
+      # don't want price_id from params
+      # Order's #process_razorpayment captures the payment and returns a slightly altered hash to the one we send it (without the price_id we no longer need,
+      # with a an actual price amount (in rupees) and the Razorpay object's status ('captured')
+      order = Order.create(Order.process_razorpayment(order_params))
+      if order.status == 'captured'
+        account = Account.find(order_params[:account_id])
+        purchase_params = { client_id: account.client.id, product_id: order.product_id, price_id: order_params[:price_id],
+                            payment: order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
+        @purchase = Purchase.new(purchase_params)
+        if @purchase.save
+          flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
+          redirect_to client_history_path account.client if logged_in? 
         else
-          # redirect_to thankyou_path
-          flash[:alert] = "Something strange just happened."
-          redirect_to login_path
+          flash[:alert] = "Unable to process payment."
+          redirect_to root_path
         end
       end
 

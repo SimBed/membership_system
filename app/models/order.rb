@@ -9,21 +9,16 @@ class Order < ApplicationRecord
 
   class << self
     def process_razorpayment(params)
-      # razor deals in paise
+      # Razorpay deals in paise. Everywhere else (Order and Purchase tables) we use rupees.
       price = Price.find(params[:price_id])
       price_rupees = price.discounted_price
       price_paise = price_rupees * 100
       Razorpay.setup(Rails.configuration.razorpay[:key_id], Rails.configuration.razorpay[:key_secret])
       razorpay_pmnt_obj = fetch_payment(params[:payment_id])
-      status = fetch_payment(params[:payment_id]).status
-      if status == "authorized"
+      if razorpay_pmnt_obj.status == "authorized"
         razorpay_pmnt_obj.capture({ amount: price_paise })
-        razorpay_pmnt_obj = fetch_payment(params[:payment_id])
-        params.merge!({ status: razorpay_pmnt_obj.status,
-                        price: price_rupees })
-        # don't want price_id from params
-        # Only use paise for Razor. Use rupees in the Order and Purchase tables.
-        Order.create(params.permit(:product_id, :price, :status, :payment_id, :account_id, :client_ui))
+        params.merge!({ status: fetch_payment(params[:payment_id]).status,
+                        price: price_rupees }).except(:price_id, :razorpay_payment_id, :payment_id)
       else
         raise StandardError, "Unable to capture payment"
       end

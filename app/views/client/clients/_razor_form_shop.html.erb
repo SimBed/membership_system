@@ -12,6 +12,6 @@
   </script>
   <input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
   <input type="hidden" value="<%= "#{product.renewal_price(@renewal.renewal_offer)&.id}" %>" name="price_id">                            
-  <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
+  <input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
 	<input type="hidden" value="shop page" name="client_ui">  
 </form>

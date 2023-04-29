@@ -97,6 +97,13 @@ module SessionsHelper
     end
   end
 
+  def client_account
+    unless logged_in_as?('client')
+      flash[:warning] = 'Only logged-in clients can buy from the shop'
+      redirect_to login_path
+    end
+  end
+
   def logged_in_account
     return if logged_in?
 
