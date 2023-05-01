@@ -106,6 +106,7 @@ class Admin::ClientsController < Admin::BaseController
     return {fitternity: params[:fitternity] } if params[:fitternity].present?
     return {waiver: params[:waiver] } if params[:waiver].present?
     return {instawaiver: params[:instawaiver] } if params[:instawaiver].present?
+    return {whatsapp_group: params[:whatsapp_group] } if params[:whatsapp_group].present?
 
     # modifier_is_client is necessary so validation of Client model can vary from admin to client (ie new signups through the web must provide more robust data)
     params.require(:client).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :phone_raw, :instagram, :hotlead, :note)

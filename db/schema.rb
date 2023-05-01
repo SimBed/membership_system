@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_21_061625) do
+ActiveRecord::Schema.define(version: 2023_05_01_044402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2023_04_21_061625) do
     t.boolean "fitternity", default: false
     t.boolean "waiver", default: false
     t.boolean "instawaiver", default: false
+    t.boolean "whatsapp_group", default: false
     t.index ["account_id"], name: "index_clients_on_account_id"
     t.index ["first_name", "last_name"], name: "index_clients_on_first_name_and_last_name"
   end
