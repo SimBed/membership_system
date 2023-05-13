@@ -53,7 +53,7 @@ class PublicPagesController < ApplicationController
 
   def shop
     # @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt? || p.base_price.nil?}
-    @products = Product.online_order_by_wg_classes_days.reject {|p| p.base_price.nil?}
+    @products = Product.online_order_by_wg_classes_days.reject {|p| p.base_price_at(Time.zone.now).nil?}
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)

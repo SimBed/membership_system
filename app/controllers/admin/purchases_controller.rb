@@ -67,7 +67,7 @@ include ApplyDiscount
   def create
     @purchase = Purchase.new(purchase_params)
     if @purchase.save
-      [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
+      [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
         DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
       end
       # equivalent to redirect_to admin_purchase_path @purchase
@@ -135,14 +135,16 @@ include ApplyDiscount
     @renewal_discount = Discount.find_by(id: params[:selected_renewal_discount_id].to_i)
     @status_discount = Discount.find_by(id: params[:selected_status_discount_id].to_i)
     @oneoff_discount = Discount.find_by(id: params[:selected_oneoff_discount_id].to_i)
-    @base_price = Price.current.base.where(product_id: params[:selected_product_id].to_i).first
+    @commercial_discount = Discount.find_by(id: params[:selected_commercial_discount_id].to_i)
+    @discretion_discount = Discount.find_by(id: params[:selected_discretion_discount_id].to_i)
+    @base_price = Price.base_at(Time.zone.now).where(product_id: params[:selected_product_id].to_i).first
     # note variety of ways of adding things together while avoiding error of using add method on nil eg. 1 + nil.to_i = 1
     # https://stackoverflow.com/questions/20205535/add-if-not-nil
     # discount_percent = [@renewal_discount&.percent, @status_discount&.percent, @oneoff_discount&.percent].compact.inject(:+)
     # discount_fixed = [@renewal_discount&.fixed, @status_discount&.fixed, @oneoff_discount&.fixed].compact.inject(:+)
     # @payment_after_discount = [0, (@base_price.price * (1 - discount_percent.to_f / 100) - discount_fixed).round(0)].max
     # apply_discount defined in ApplyDiscount concern
-    @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount)
+    @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount, @discretion_discount, @commercial_discount)
     render 'payment_after_discount.js'
   end
 
@@ -215,12 +217,13 @@ include ApplyDiscount
     params.require(:purchase)
           .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
                   :invoice, :note, :adjust_restart, :ar_payment, :ar_date,
-                  :renewal_discount_id, :status_discount_id, :oneoff_discount_id, :base_price)
+                  :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
+                  :commercial_discount_id, :discretion_discount_id, :base_price)
   end
 
   def sanitize_params
     nillify_when_blank(params[:purchase], :invoice, :note)
-    [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
+    [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
       params[:purchase][discount] = nil if params[:purchase][discount].nil? || Discount.find(params[:purchase][discount]).discount_reason.rationale == "Base"
     end
     params[:purchase].tap do |params|
@@ -311,6 +314,8 @@ include ApplyDiscount
     @renewal_discounts = [@discount_none] + Discount.with_rationale_at("Renewal", @purchase.dop || Time.zone.now)
     @status_discounts = [@discount_none] + Discount.with_rationale_at("Status", @purchase.dop || Time.zone.now)
     @oneoff_discounts = [@discount_none] + Discount.with_rationale_at("Oneoff", @purchase.dop || Time.zone.now)
+    @commercial_discounts = [@discount_none] + Discount.with_rationale_at("Commercial", @purchase.dop || Time.zone.now)
+    @discretion_discounts = [@discount_none] + Discount.with_rationale_at("Discretion", @purchase.dop || Time.zone.now)
   end
 
   def params_filter_list

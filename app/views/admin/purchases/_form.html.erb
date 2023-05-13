@@ -41,6 +41,14 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
     <%= form.collection_select :status_discount_id, @status_discounts, :id, :name, selected: @purchase.status_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Status'})&.first&.id || @discount_none.id %>
   </div>
   <div class="field">
+    <%= form.label :commercial_discount_id, 'Commercial Discount' %>
+    <%= form.collection_select :commercial_discount_id, @commercial_discounts, :id, :name, selected: @purchase.commercial_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Commercial'})&.first&.id || @discount_none.id %>
+  </div>
+  <div class="field">
+    <%= form.label :discretion_discount_id, 'Discretionary Discount' %>
+    <%= form.collection_select :discretion_discount_id, @discretion_discounts, :id, :name, selected: @purchase.discretion_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Discretion'})&.first&.id || @discount_none.id %>
+  </div>
+  <div class="field">
     <%= form.label :oneoff_discount_id, 'Oneoff Discount' %>
     <%= form.collection_select :oneoff_discount_id, @oneoff_discounts, :id, :name, selected: @purchase.oneoff_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Oneoff'})&.first&.id || @discount_none.id %>
   </div>

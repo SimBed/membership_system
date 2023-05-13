@@ -83,7 +83,7 @@ class Purchase < ApplicationRecord
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per Setting.purchases_pagination
 
-  attr_accessor :renewal_discount_id, :status_discount_id, :oneoff_discount_id, :base_price
+  attr_accessor :renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id, :base_price
 
   def discount(base_price, *discounts)
     discounts.each do |discount|
