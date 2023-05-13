@@ -2,16 +2,20 @@
 	<script
 		src="https://checkout.razorpay.com/v1/checkout.js"
 		data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-		data-amount="<%= "#{@renewal.price.discounted_price * 100}" %>"
+		data-amount="<%= "#{@renewal.price(@renewal.product) * 100}" %>"
 		data-name="<%= "The Space" %>"
 		data-description="<%= "#{@renewal.product.formal_name}" %>"
-		data-image="<%= asset_path 'SpaceLogo.png' %>"
+		data-image="<%= asset_path 'favicon.ico' %>"
 		data-prefill.email="<%= "#{current_account.email}" %>"
 		data-theme.color="#1a2b3c"
 	>
 	</script>
-	<input type="hidden" value="<%= "#{@renewal.product.id}" %>" name="product_id">
-	<input type="hidden" value="<%= "#{@renewal.price.id}" %>" name="price_id">
+	<input type="hidden" value="<%= "#{@renewal.product.id}" %>"name="product_id">
+	<input type="hidden" value="<%= "#{@renewal.product.base_price_at(Time.zone.now).id}" %>"name="price_id">
+  <input type="hidden" value="<%= "#{@renewal.price(@renewal.product)}" %>" name="price">  
+  <input type="hidden" value="<%= "#{@renewal.discount_hash[:renewal]&.id}" %>" name="renewal_discount_id">                            
+  <input type="hidden" value="<%= "#{@renewal.discount_hash[:status]&.id}" %>" name="status_discount_id">                            
+  <input type="hidden" value="<%= "#{@renewal.discount_hash[:oneoff]&.id}" %>" name="oneoff_discount_id">   
 	<input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
 	<input type="hidden" value="booking page" name="client_ui">
 </form>

@@ -53,12 +53,12 @@ class RenewalTest < ActiveSupport::TestCase
     assert @renewal_trial_ongoing.ongoing_trial?
   end
   test '#discount' do
-    assert_equal 2550, @renewal_package_ongoing_unlimited.discount
-    assert_nil @renewal_package_expired_unlimited.discount
-    assert_equal 1200, @renewal_package_ongoing_fixed.discount
-    assert_nil @renewal_new_client.discount
-    assert_equal 3800, @renewal_trial_expired.discount
-    assert_equal 5100, @renewal_trial_ongoing.discount
+    assert_equal 1250, @renewal_package_ongoing_unlimited.discount(@renewal_package_ongoing_unlimited.product)
+    assert_nil @renewal_package_expired_unlimited.discount(@renewal_package_expired_unlimited.product)
+    assert_equal 600, @renewal_package_ongoing_fixed.discount(@renewal_package_ongoing_fixed.product)
+    assert_nil @renewal_new_client.discount(@renewal_new_client.product)
+    assert_equal 3800, @renewal_trial_expired.discount(@renewal_trial_expired.product)
+    assert_equal 5100, @renewal_trial_ongoing.discount(@renewal_trial_ongoing.product)
   end
   test '#alert_to_renew?' do
   assert @renewal_package_ongoing_unlimited.alert_to_renew?
@@ -79,33 +79,33 @@ class RenewalTest < ActiveSupport::TestCase
     assert_nil @renewal_new_client.valid?
     assert @renewal_trial_expired.valid?
     assert @renewal_trial_ongoing.valid?
-    # destroy base price of client's ongoing product so renewal no longer valid 
-    @client_package_ongoing_unlimited.purchases.last.product.prices.where(base:true).first.destroy
+    # destroy base price of client's ongoing product so renewal no longer valid
+    @client_package_ongoing_unlimited.purchases.last.product.base_price_at(Time.zone.now).destroy
     refute @renewal_package_ongoing_unlimited.valid?
   end
   test '#base_price' do
-    assert_equal prices(:Uc3mbase), @renewal_package_ongoing_unlimited.base_price
-    assert_equal prices(:Uc1mbase), @renewal_package_expired_unlimited.base_price
-    assert_equal prices(:fixed_base), @renewal_package_ongoing_fixed.base_price
-    assert_nil @renewal_new_client.base_price
-    assert_equal prices(:Uc3mbase), @renewal_trial_expired.base_price
-    assert_equal prices(:Uc3mbase), @renewal_trial_ongoing.base_price
+    assert_equal prices(:Uc3mbase), @renewal_package_ongoing_unlimited.base_price(@renewal_package_ongoing_unlimited.product)
+    assert_equal prices(:Uc1mbase), @renewal_package_expired_unlimited.base_price(@renewal_package_expired_unlimited.product)
+    assert_equal prices(:fixed_base), @renewal_package_ongoing_fixed.base_price(@renewal_package_ongoing_fixed.product)
+    assert_equal prices(:trial), @renewal_new_client.base_price(@renewal_new_client.product)
+    assert_equal prices(:Uc3mbase), @renewal_trial_expired.base_price(@renewal_trial_expired.product)
+    assert_equal prices(:Uc3mbase), @renewal_trial_ongoing.base_price(@renewal_trial_ongoing.product)
   end  
   test '#price' do
-    assert_equal prices(:Uc3mpreexpiry), @renewal_package_ongoing_unlimited.price
-    assert_equal prices(:Uc1mbase), @renewal_package_expired_unlimited.price
-    assert_equal prices(:fixed_renewal_pre_expiry), @renewal_package_ongoing_fixed.price
-    assert_nil @renewal_new_client.price
-    assert_equal prices(:Uc3mposttrialexpiry), @renewal_trial_expired.price
-    assert_equal prices(:Uc3mpretrialexpiry), @renewal_trial_ongoing.price
+    assert_equal 24250, @renewal_package_ongoing_unlimited.price(@renewal_package_ongoing_unlimited.product)
+    assert_equal 9500, @renewal_package_expired_unlimited.price(@renewal_package_expired_unlimited.product)
+    assert_equal 11750, @renewal_package_ongoing_fixed.price(@renewal_package_ongoing_fixed.product)
+    assert_equal 1500, @renewal_new_client.price(@renewal_new_client.product)
+    assert_equal 21700, @renewal_trial_expired.price(@renewal_trial_expired.product)
+    assert_equal 20400, @renewal_trial_ongoing.price(@renewal_trial_ongoing.product)
   end  
   test '#renewal_offer' do
-    assert_equal "renewal_pre_expiry", @renewal_package_ongoing_unlimited.renewal_offer
-    assert_equal "base", @renewal_package_expired_unlimited.renewal_offer
-    assert_equal "renewal_pre_expiry", @renewal_package_ongoing_fixed.renewal_offer
-    assert_equal "renewal_posttrial_expiry", @renewal_new_client.renewal_offer
-    assert_equal "renewal_posttrial_expiry", @renewal_trial_expired.renewal_offer
-    assert_equal "renewal_pretrial_expiry", @renewal_trial_ongoing.renewal_offer
+    assert_equal "renewal_pre_package_expiry", @renewal_package_ongoing_unlimited.renewal_offer
+    assert_equal "renewal_post_package_expiry", @renewal_package_expired_unlimited.renewal_offer
+    assert_equal "renewal_pre_package_expiry", @renewal_package_ongoing_fixed.renewal_offer
+    assert_equal "first_package", @renewal_new_client.renewal_offer
+    assert_equal "renewal_post_trial_expiry", @renewal_trial_expired.renewal_offer
+    assert_equal "renewal_pre_trial_expiry", @renewal_trial_ongoing.renewal_offer
   end  
   test '#offer_online_discount?' do
     assert @renewal_package_ongoing_unlimited.offer_online_discount?

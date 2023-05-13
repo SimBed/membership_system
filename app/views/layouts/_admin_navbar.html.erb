@@ -67,6 +67,7 @@
                       <% if logged_in_as?('superadmin') %>                   
                         <span class="dropdown-label">SUPERADMIN</span>
                         <%= link_to 'Accounts', admin_accounts_path, class: "dropdown-item" %>
+                        <%= link_to 'Discounts', superadmin_discounts_path, class: "dropdown-item" %>
                         <%= link_to 'Expenses', superadmin_expenses_path, class: "dropdown-item" %>
                         <%= link_to 'Regular Expenses', superadmin_regular_expenses_path, class: "dropdown-item" %>
                         <%= link_to 'Instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %>

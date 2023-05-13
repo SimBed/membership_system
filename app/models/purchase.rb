@@ -8,6 +8,8 @@ class Purchase < ApplicationRecord
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
   has_many :penalties, dependent: :destroy
+  has_many :discount_assignments, dependent: :destroy
+  has_many :discounts, through: :discount_assignments
   before_save :set_sunset_date  
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
@@ -21,8 +23,9 @@ class Purchase < ApplicationRecord
     validates :ar_payment, presence: true
     validates :ar_date, presence: true
   end
-  validates :fitternity, presence: true, if: :fitternity_id
-  validate :fitternity_payment
+  # Fitternity redundant now
+  # validates :fitternity, presence: true, if: :fitternity_id
+  # validate :fitternity_payment
   # Fitternity redundant now and this validation prevented bulk setting of sunset_dates
   # validate :fitternity_ongoing_package
   scope :not_expired, lambda {
@@ -79,6 +82,14 @@ class Purchase < ApplicationRecord
   # position is a Postgresql string function, see https://www.postgresqltutorial.com/postgresql-position/
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   paginates_per Setting.purchases_pagination
+
+  attr_accessor :renewal_discount_id, :status_discount_id, :oneoff_discount_id, :base_price
+
+  def discount(base_price, *discounts)
+    discounts.each do |discount|
+      base_price = base_price * (1 - discount.percent.to_f / 100) - discount.fixed
+    end
+  end
 
   # reformat? pt? can just be a method of Product.
   def pt?
@@ -388,22 +399,22 @@ class Purchase < ApplicationRecord
       validity: validity(attendance_count_provisional, expiry_date_calc) }
   end
 
-  def fitternity_payment
-    # if something weird happens and price is nil this will get picked up by the required validation asscociated with belongs_to, but not beofre the sytem crashes with price.name (or 'in? nil' if changed to price&.name)
-    return if price.nil?
+  # def fitternity_payment
+  #   # if something weird happens and price is nil this will get picked up by the required validation asscociated with belongs_to, but not beofre the sytem crashes with price.name (or 'in? nil' if changed to price&.name)
+  #   return if price.nil?
 
-    if ('Fitternity'.in? price.name) && (payment_mode != 'Fitternity')
-      errors.add(:base, 'A Fitternity price must have a Fitternity payment mode')
-    end
+  #   if ('Fitternity'.in? price.name) && (payment_mode != 'Fitternity')
+  #     errors.add(:base, 'A Fitternity price must have a Fitternity payment mode')
+  #   end
 
-    if !('Fitternity'.in? price.name) && (payment_mode == 'Fitternity')
-      errors.add(:base, 'A price that is not Fitternity can not have a Fitternity payment mode')
-    end
-  end
+  #   if !('Fitternity'.in? price.name) && (payment_mode == 'Fitternity')
+  #     errors.add(:base, 'A price that is not Fitternity can not have a Fitternity payment mode')
+  #   end
+  # end
 
-  def fitternity_ongoing_package
-    return unless payment_mode == 'Fitternity'
+  # def fitternity_ongoing_package
+  #   return unless payment_mode == 'Fitternity'
 
-    errors.add(:base, 'No ongoing Fitternity package') if Fitternity.ongoing.size.zero?
-  end
+  #   errors.add(:base, 'No ongoing Fitternity package') if Fitternity.ongoing.size.zero?
+  # end
 end

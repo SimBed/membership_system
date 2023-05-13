@@ -1,0 +1,74 @@
+<%= form_with(model: [:superadmin, discount]) do |form| %>
+  <% if discount.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(discount.errors.count, "error") %> prohibited this discount from being saved:</h2>
+
+      <ul>
+        <% discount.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :discount_reason_id, 'Name' %>
+    <%= form.collection_select :discount_reason_id, @discount_names, :id, :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :percent %>
+    <%= form.number_field :percent, within: (0..100), step: 0.1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fixed, 'Fixed (Rs.)' %>
+    <%= form.number_field :fixed, within: (0..10000), step: 1 %>
+  </div>
+
+  <p>
+    Applies to?:
+  </p>
+
+  <div class="field">
+    <%= form.label :group do %>
+    Group
+    <%= form.check_box :group %>
+    <%end%>
+  </div>
+
+  <div class="field">
+    <%= form.label :pt do %>
+    PT
+    <%= form.check_box :pt %>
+    <%end%>
+  </div>
+
+  <div class="field">
+    <%= form.label :online do %>
+    Online
+    <%= form.check_box :online %>
+    <%end%>
+  </div>
+
+  <div class="field">
+    <%= form.label :aggregatable do %>
+    Aggregate with other discounts?
+    <%= form.check_box :aggregatable %>
+    <%end%>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.date_select :start_date %>
+  </div>
+
+    <div class="field">
+      <%= form.label :end_date %>
+      <%= form.date_select :end_date, start_year: Date.today.year - 2, default: 100.years.from_now %>
+    </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

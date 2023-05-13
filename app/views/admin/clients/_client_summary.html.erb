@@ -23,6 +23,18 @@
         <td><%= @client.instagram %></td>
       </tr>
     <% end %>
+    <% if @client.student? %>
+      <tr>
+        <th scope="row">Student</th>
+        <td><%= raw("&check;") %></td>
+      </tr>
+    <% end %>
+    <% if @client.friends_and_family? %>
+      <tr>
+        <th scope="row">Friend & Family</th>
+        <td><%= raw("&check;") %></td>
+      </tr>
+    <% end %>
     <% unless @client.note.blank? %>
       <tr>
         <th scope="row">Note</th>

@@ -4,8 +4,8 @@
 <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?, @client)) %>
 <% provide(:visit_shop_statement, "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'} now".html_safe ) %>
 <% provide(:renewal_product, @renewal.product&.formal_name ) %>
-<% provide(:renewal_price, @renewal.price&.discounted_price.to_s ) %>
-<% provide(:base_price, @renewal.base_price&.price.to_s ) %>
+<% provide(:renewal_price, @renewal.price(@renewal.product).to_s ) %>
+<% provide(:base_price, @renewal.base_price(@renewal.product).price.to_s ) %>
 <% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?) ) %>
 
 <%= render partial: 'client_greeting' %>

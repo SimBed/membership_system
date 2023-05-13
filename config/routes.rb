@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get '/workout_group/:id/instructor_expense_filter', to: 'admin/workout_groups#instructor_expense_filter'
   get '/purchases/client_filter', to: 'admin/purchases#new_purchase_client_filter', as: 'new_purchase_client_filter'
   patch '/purchases/:id/expire', to: 'admin/purchases#expire', as: 'expire_purchase'
+  get '/purchases/discount', to: 'admin/purchases#discount'
+  get '/purchases/dop_change', to: 'admin/purchases#dop_change'
   get '/superadmin/expenses/filter', to: 'superadmin/expenses#filter'
   get '/products/payment', to: 'admin/products#payment'
   get '/wkclasses/instructor', to: 'admin/wkclasses#instructor'
@@ -60,6 +62,8 @@ Rails.application.routes.draw do
     resources :workout_groups
   end
   namespace :superadmin do
+    resources :discounts
+    resources :discount_reasons
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :regular_expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]

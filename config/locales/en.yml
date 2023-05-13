@@ -111,6 +111,20 @@ en:
       destroy:
         success: Workout was successfully deleted
   superadmin:
+    discounts:
+      create:
+        success: Discount was successfully added
+      update:
+        success: Discount was successfully updated
+      destroy:
+        success: Discount was successfully deleted  
+    discount_reasons:
+      create:
+        success: Discount Reason was successfully added
+      update:
+        success: Discount Reason was successfully updated
+      destroy:
+        success: Discount Reason was successfully deleted  
     instructor_rates:
       create:
         success: Instructor rate was successfully added

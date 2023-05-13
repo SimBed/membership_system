@@ -3,7 +3,7 @@
   <% if @renewal.valid? %>
     <p class="mb-1"><%= yield(:renewal_product) %></p>
     <p class="">
-      <% unless @renewal.renewal_offer == 'base' %>   
+      <% if @renewal.offer_online_discount? %>   
         <s class="me-1"><%= rupees(yield(:base_price))%></s>
       <% end %>    
       <span class = "renewal-price"><%= "#{rupees(yield(:renewal_price))}" %></span>

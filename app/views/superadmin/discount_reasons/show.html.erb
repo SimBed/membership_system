@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+      t.string :name
+      t.string :rationale
+      t.boolean :student
+      t.boolean :friends_and_family
+      t.boolean :first_package
+      t.boolean :renewal_pre_package_expiry
+      t.boolean :renewal_post_package_expiry
+      t.boolean :renewal_pre_trial_expiry
+      t.boolean :renewal_post_trial_expiry
+
+<p>
+  <strong>Name:</strong>
+  <%= @discount_reason.name %>
+</p>
+
+<p>
+  <strong>Percent:</strong>
+  <%= @discount_reason.rationale %>
+</p>
+
+<p>
+  <strong>Fixed:</strong>
+  <%= @discount_reason.student %>
+</p>
+
+<p>
+  <strong>Reason:</strong>
+  <%= @discount_reason.friends_and_family %>
+</p>
+
+<p>
+  <strong>Pt:</strong>
+  <%= @discount_reason.first_package %>
+</p>
+
+<p>
+  <strong>Group:</strong>
+  <%= @discount_reason.renewal_pre_package_expiry %>
+</p>
+
+<p>
+  <strong>Online:</strong>
+  <%= @discount_reason.renewal_post_package_expiry %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @discount_reason.renewal_pre_trial_expiry %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @discount_reason.renewal_post_trial_expiry %>
+</p>
+
+<%= link_to 'Edit', edit_superadmin_discount_reason_path(@discount_reason) %> |
+<%= link_to 'Back', superadmin_discount_reasons_path %>

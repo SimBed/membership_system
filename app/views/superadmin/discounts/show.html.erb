@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @discount.name %>
+</p>
+
+<p>
+  <strong>Percent:</strong>
+  <%= @discount.percent %>
+</p>
+
+<p>
+  <strong>Fixed:</strong>
+  <%= @discount.fixed %>
+</p>
+
+<p>
+  <strong>Reason:</strong>
+  <%= @discount.reason %>
+</p>
+
+<p>
+  <strong>Pt:</strong>
+  <%= @discount.pt %>
+</p>
+
+<p>
+  <strong>Group:</strong>
+  <%= @discount.group %>
+</p>
+
+<p>
+  <strong>Online:</strong>
+  <%= @discount.online %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @discount.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @discount.end_date %>
+</p>
+
+<%= link_to 'Edit', edit_superadmin_discount_path(@discount) %> |
+<%= link_to 'Back', superadmin_discounts_path %>

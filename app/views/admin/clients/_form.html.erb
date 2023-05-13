@@ -47,9 +47,25 @@
     <%= form.text_field :instagram, class: 'form-control' %>
   </div>
 
+  <div class="field mt-2">
+    <%= form.label :student do %>
+      Student
+    <%= form.check_box :student %>
+    <%end%>
+  </div>
+
   <div class="field">
-    <%= form.label :hotlead, 'hot lead?' %>
-    <%= form.check_box :hotlead %>
+    <%= form.label :friendfamily do %>
+      Friend & Family
+    <%= form.check_box :friendfamily %>
+    <%end%>
+  </div>
+
+  <div class="field  mb-2">
+    <%= form.label :hotlead do %>
+      Hot Lead
+      <%= form.check_box :hotlead %>
+    <%end%>
   </div>
 
   <div class="field">

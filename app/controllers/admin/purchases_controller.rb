@@ -1,4 +1,5 @@
 class Admin::PurchasesController < Admin::BaseController
+include ApplyDiscount
   skip_before_action :admin_account, except: [:destroy, :expire]
   before_action :junioradmin_account, except: [:destroy, :expire]
   before_action :initialize_sort, only: :index
@@ -43,8 +44,7 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def show
-    # @attendances = @purchase.attendances.sort_by { |a| -a.start_time.to_i }
-    # @attendances = Attendance.joins(:purchase, :wkclass).where(purchase: @purchase).order(start_time: :desc)
+    @discounts = @purchase.discounts
     @attendances_no_amnesty = @purchase.attendances.no_amnesty.merge(Attendance.order_by_date)
     @attendances_amnesty = @purchase.attendances.amnesty.merge(Attendance.order_by_date)
     @frozen_now = @purchase.freezed?(Time.zone.now)
@@ -67,6 +67,9 @@ class Admin::PurchasesController < Admin::BaseController
   def create
     @purchase = Purchase.new(purchase_params)
     if @purchase.save
+      [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
+        DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
+      end
       # equivalent to redirect_to admin_purchase_path @purchase
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
@@ -128,7 +131,44 @@ class Admin::PurchasesController < Admin::BaseController
     redirect_to [:admin, @purchase]
   end
 
+  def discount
+    @renewal_discount = Discount.find_by(id: params[:selected_renewal_discount_id].to_i)
+    @status_discount = Discount.find_by(id: params[:selected_status_discount_id].to_i)
+    @oneoff_discount = Discount.find_by(id: params[:selected_oneoff_discount_id].to_i)
+    @base_price = Price.current.base.where(product_id: params[:selected_product_id].to_i).first
+    # note variety of ways of adding things together while avoiding error of using add method on nil eg. 1 + nil.to_i = 1
+    # https://stackoverflow.com/questions/20205535/add-if-not-nil
+    # discount_percent = [@renewal_discount&.percent, @status_discount&.percent, @oneoff_discount&.percent].compact.inject(:+)
+    # discount_fixed = [@renewal_discount&.fixed, @status_discount&.fixed, @oneoff_discount&.fixed].compact.inject(:+)
+    # @payment_after_discount = [0, (@base_price.price * (1 - discount_percent.to_f / 100) - discount_fixed).round(0)].max
+    # apply_discount defined in ApplyDiscount concern
+    @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount)
+    render 'payment_after_discount.js'
+  end
+
+  def dop_change
+    @purchase_renewal_discount_id = params[:selected_renewal_discount_id]
+    @purchase_status_discount_id = params[:selected_status_discount_id]
+    @purchase_oneoff_discount_id = params[:selected_oneoff_discount_id]
+    dop = DateTime.new(params[:selected_dop_1i].to_i, 
+                        params[:selected_dop_2i].to_i,
+                        params[:selected_dop_3i].to_i)
+    @discount_none = Discount.joins(:discount_reason).where(discount_reasons: {rationale: "Base"}).first
+    @renewal_discounts = [@discount_none] + Discount.with_rationale_at("Renewal", dop)
+    @status_discounts = [@discount_none] + Discount.with_rationale_at("Status", dop)
+    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at("Oneoff", dop)  
+
+    render 'discounts_after_dop_change.js'
+  end
+
   private
+
+  # similar used in wkclass controller, move to a helper
+  def construct_date(hash)
+    DateTime.new(hash["start_time(1i)"].to_i, 
+    hash["start_time(2i)"].to_i,
+    hash["start_time(3i)"].to_i)
+  end
 
   def sunset_hash
     @sunset_hash = {}
@@ -174,13 +214,18 @@ class Admin::PurchasesController < Admin::BaseController
   def purchase_params
     params.require(:purchase)
           .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
-                  :invoice, :note, :adjust_restart, :ar_payment, :ar_date, :fitternity_id)
+                  :invoice, :note, :adjust_restart, :ar_payment, :ar_date,
+                  :renewal_discount_id, :status_discount_id, :oneoff_discount_id, :base_price)
   end
 
   def sanitize_params
-    nillify_when_blank(params[:purchase], :invoice, :note) 
+    nillify_when_blank(params[:purchase], :invoice, :note)
+    [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
+      params[:purchase][discount] = nil if params[:purchase][discount].nil? || Discount.find(params[:purchase][discount]).discount_reason.rationale == "Base"
+    end
     params[:purchase].tap do |params|
-      params[:fitternity_id] = Fitternity.ongoing.first&.id if params[:payment_mode] == 'Fitternity'
+      # Fitternity is redundant
+      # params[:fitternity_id] = Fitternity.ongoing.first&.id if params[:payment_mode] == 'Fitternity'
       # prevent ar_date becoming not nil after an update
       # checkbox values in form are strings
       if params[:adjust_restart] == '0'
@@ -261,6 +306,11 @@ class Admin::PurchasesController < Admin::BaseController
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     @products = Product.order_by_name_max_classes.includes(:workout_group, :current_price_objects)
     @payment_methods = Setting.payment_methods
+    # @renewal_discounts = Discount.with_rationale_at('renewal, @purchase.dop || Time.zone.now)
+    @discount_none = Discount.joins(:discount_reason).where(discount_reasons: {rationale: "Base"}).first
+    @renewal_discounts = [@discount_none] + Discount.with_rationale_at("Renewal", @purchase.dop || Time.zone.now)
+    @status_discounts = [@discount_none] + Discount.with_rationale_at("Status", @purchase.dop || Time.zone.now)
+    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at("Oneoff", @purchase.dop || Time.zone.now)
   end
 
   def params_filter_list

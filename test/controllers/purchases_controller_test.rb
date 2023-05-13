@@ -9,7 +9,9 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     @junioradmin = accounts(:junioradmin)
     @purchase1 = purchases(:AparnaUC1Mong)
     @client_trial_expired = clients(:client_trial_expired)
-    @product_trial = products(:trial)  
+    @product_trial = products(:trial)
+    @trial_price = prices(:trial)
+    @discount = discounts(:none)
   end
 
   test 'should redirect new when not logged in as junioradmin or more senior' do
@@ -55,7 +57,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
               payment: 1000,
               dop: '2022-02-15',
               payment_mode: 'Cash',
-              price_id: @purchase1.price.id } }
+              price: @trial_price } }
       end
     end
   end
@@ -71,7 +73,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
             payment: @purchase1.payment + 500,
             dop: @purchase1.dop,
             payment_mode: @purchase1.payment_mode,
-            price_id: @purchase1.price_id } }
+            price: @trial_price } }
       assert_equal original_payment, @purchase1.reload.payment
       assert_redirected_to login_path
     end
@@ -96,7 +98,10 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
               payment: 1500,
               dop: '2022-02-15',
               payment_mode: 'Cash',
-              price_id: @product_trial.prices.first.id } }
+              price: prices(:trial),
+              renewal_discount_id: @discount.id,
+              status_discount_id: @discount.id,
+              oneoff_discount_id: @discount.id } }
       end
   end  
 end

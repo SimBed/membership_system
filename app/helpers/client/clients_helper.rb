@@ -83,29 +83,34 @@ module Client::ClientsHelper
 
   def renewal_statement(ongoing, trial, valid, client)
     if valid
-      return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
-      return "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
-      return "Your Trial has expired. Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if !ongoing && trial
+      return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
+      return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
+      return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
 
       "Your Package has expired. Renew your Package now!"
     else
-      return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
-      return "Buy your next Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
-      return "Your Trial has expired. Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if !ongoing && trial
+      return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
+      return "Buy your next Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
+      return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
 
       "Your Package has expired. Renew your Package now!"
     end
   end
 
   def shop_discount_statement(ongoing, trial)
-    return "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" if ongoing.nil?
-    return "Renew your Package before expiry with a #{Setting.pre_expiry_package_renewal}% online discount!" if ongoing && !trial
-    return "Buy your first Package before your trial expires with a #{Setting.pre_expiry_trial_renewal}% online discount!" if ongoing && trial
+    return "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if ongoing.nil?
+    return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
+    return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
     
-    "Buy your first Package with a #{Setting.post_expiry_trial_renewal}% online discount!" # if !ongoing && trial
+    "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" # if !ongoing && trial
   end
 
-  def renewal_saving(product, offer)
-    product.base_price.price - product.renewal_price(offer).price
+  def renewal_saving(product, renewal)
+    renewal.base_price(product).price - renewal.price(product)
   end
+
+  private
+    def format_rate(renewal_type)
+      number_with_precision(Discount.rate(Time.zone.now.to_date)[renewal_type][:percent], strip_insignificant_zeros: true)
+    end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_01_044402) do
+ActiveRecord::Schema.define(version: 2023_05_12_101707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,8 +76,12 @@ ActiveRecord::Schema.define(version: 2023_05_01_044402) do
     t.boolean "waiver", default: false
     t.boolean "instawaiver", default: false
     t.boolean "whatsapp_group", default: false
+    t.boolean "student", default: false
+    t.boolean "friends_and_family", default: false
     t.index ["account_id"], name: "index_clients_on_account_id"
     t.index ["first_name", "last_name"], name: "index_clients_on_first_name_and_last_name"
+    t.index ["friends_and_family"], name: "index_clients_on_friends_and_family"
+    t.index ["student"], name: "index_clients_on_student"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -93,6 +97,58 @@ ActiveRecord::Schema.define(version: 2023_05_01_044402) do
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "discount_assignments", force: :cascade do |t|
+    t.bigint "discount_id", null: false
+    t.bigint "purchase_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discount_id"], name: "index_discount_assignments_on_discount_id"
+    t.index ["purchase_id"], name: "index_discount_assignments_on_purchase_id"
+  end
+
+  create_table "discount_reasons", force: :cascade do |t|
+    t.string "name"
+    t.string "rationale"
+    t.boolean "student", default: false
+    t.boolean "friends_and_family", default: false
+    t.boolean "first_package", default: false
+    t.boolean "renewal_pre_package_expiry", default: false
+    t.boolean "renewal_post_package_expiry", default: false
+    t.boolean "renewal_pre_trial_expiry", default: false
+    t.boolean "renewal_post_trial_expiry", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["first_package"], name: "index_discount_reasons_on_first_package"
+    t.index ["friends_and_family"], name: "index_discount_reasons_on_friends_and_family"
+    t.index ["name"], name: "index_discount_reasons_on_name"
+    t.index ["rationale"], name: "index_discount_reasons_on_rationale"
+    t.index ["renewal_post_package_expiry"], name: "index_discount_reasons_on_renewal_post_package_expiry"
+    t.index ["renewal_post_trial_expiry"], name: "index_discount_reasons_on_renewal_post_trial_expiry"
+    t.index ["renewal_pre_package_expiry"], name: "index_discount_reasons_on_renewal_pre_package_expiry"
+    t.index ["renewal_pre_trial_expiry"], name: "index_discount_reasons_on_renewal_pre_trial_expiry"
+    t.index ["student"], name: "index_discount_reasons_on_student"
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.bigint "discount_reason_id", null: false
+    t.float "percent"
+    t.integer "fixed"
+    t.boolean "group", default: true
+    t.boolean "pt", default: false
+    t.boolean "online", default: false
+    t.boolean "aggregatable", default: false
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discount_reason_id"], name: "index_discounts_on_discount_reason_id"
+    t.index ["end_date"], name: "index_discounts_on_end_date"
+    t.index ["group"], name: "index_discounts_on_group"
+    t.index ["online"], name: "index_discounts_on_online"
+    t.index ["pt"], name: "index_discounts_on_pt"
+    t.index ["start_date"], name: "index_discounts_on_start_date"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -213,7 +269,10 @@ ActiveRecord::Schema.define(version: 2023_05_01_044402) do
     t.boolean "renewal_pre_expiry", default: false
     t.boolean "renewal_pretrial_expiry", default: false
     t.boolean "renewal_posttrial_expiry", default: false
+    t.date "date_until"
     t.index ["base"], name: "index_prices_on_base"
+    t.index ["date_from"], name: "index_prices_on_date_from"
+    t.index ["date_until"], name: "index_prices_on_date_until"
     t.index ["product_id"], name: "index_prices_on_product_id"
     t.index ["renewal_posttrial_expiry"], name: "index_prices_on_renewal_posttrial_expiry"
     t.index ["renewal_pre_expiry"], name: "index_prices_on_renewal_pre_expiry"
@@ -360,6 +419,9 @@ ActiveRecord::Schema.define(version: 2023_05_01_044402) do
 
   add_foreign_key "assignments", "accounts"
   add_foreign_key "assignments", "roles"
+  add_foreign_key "discount_assignments", "discounts"
+  add_foreign_key "discount_assignments", "purchases"
+  add_foreign_key "discounts", "discount_reasons"
   add_foreign_key "entries", "workouts"
   add_foreign_key "expenses", "workout_groups"
   add_foreign_key "instructor_rates", "instructors"

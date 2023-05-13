@@ -17,8 +17,9 @@ class Admin::ProductsController < Admin::BaseController
     @product_base_price = {}
     @products.each do |product|
     @products_data[product.name.to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
-                                    total_count: Purchase.where(product_id: product.id).size,
-                                    base_price: product.renewal_price("base")&.price}
+                                            total_count: Purchase.where(product_id: product.id).size,
+                                            base_price: product.base_price_at(Time.zone.now)&.price}
+                                    # base_price: product.renewal_price("base")&.price}
     # @product_ongoing_count[product.name.to_sym] = ongoing_purchases.where(product_id: product.id).size
     # @product_total_count[product.name.to_sym] = Purchase.where(product_id: product.id).size
     # @product_base_price[product.name.to_sym] = product.renewal_price("base")&.price
@@ -34,7 +35,8 @@ class Admin::ProductsController < Admin::BaseController
     @purchases = Purchase.by_product_date(@product.id, session[:product_period])
     @months = months_logged
     # messy because of the Price default sope which is useful for the grouped_collection_select in the purchase form (prices dropdown)
-    @prices = @product.prices.unscope(:order).order_by_current_discount
+    # @prices = @product.prices.unscope(:order).order_by_current_discount
+    @prices = @product.prices
     respond_to do |format|
       format.html
       format.js { render 'show.js.erb' }
@@ -80,13 +82,13 @@ class Admin::ProductsController < Admin::BaseController
     flash[:success] = t('.success')
   end
 
-  def payment
-    @payment_for_price = Price.find(params[:selected_price]).discounted_price
-    # @base_payment = Price.find(params[:selected_price]).price
-    # https://stackoverflow.com/questions/36228873/ruby-how-to-convert-a-string-to-boolean
-    # @fitternity = ActiveModel::Type::Boolean.new.cast(params[:fitternity])
-    render 'payment.js.erb'
-  end
+  # def payment
+  #   @payment_for_price = Price.find(params[:selected_price]).discounted_price
+  #   # @base_payment = Price.find(params[:selected_price]).price
+  #   # https://stackoverflow.com/questions/36228873/ruby-how-to-convert-a-string-to-boolean
+  #   # @fitternity = ActiveModel::Type::Boolean.new.cast(params[:fitternity])
+  #   render 'payment.js.erb'
+  # end
 
   private
 

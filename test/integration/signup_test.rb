@@ -133,13 +133,13 @@ class SignupTest < ActionDispatch::IntegrationTest
     assert_select "div", {count: 0, text: "trial"}
     refute_empty response.body.scan(/data-amount="150000"/)
     assert_select "div.base-price", text: "Rs. 9,500"  
-    assert_select "div.discount-price", text: "Rs. 8,100"
-    refute_empty response.body.scan(/data-amount="810000"/)
-    assert_select "li", text: "Save Rs. 1,400"  
+    assert_select "div.discount-price", text: "Rs. 8,550"
+    refute_empty response.body.scan(/data-amount="855000"/)
+    assert_select "li", text: "Save Rs. 950"  
     assert_select "div.base-price", text: "Rs. 25,500"  
-    assert_select "div.discount-price", text: "Rs. 21,700"
-    refute_empty response.body.scan(/data-amount="2170000"/)
-    assert_select "li", text: "Save Rs. 3,800"         
+    assert_select "div.discount-price", text: "Rs. 22,950"
+    refute_empty response.body.scan(/data-amount="2295000"/)
+    assert_select "li", text: "Save Rs. 2,550"         
   end
 
   test 'valid signup (GB whatsapp)' do

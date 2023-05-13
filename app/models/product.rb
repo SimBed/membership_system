@@ -151,6 +151,14 @@ class Product < ApplicationRecord
   # end
 
   # must make workout_group.name == 'Group' flexible
+  # def renewal_price(purpose)
+  #   return nil unless purpose == 'base' || workout_group.name == 'Group'
+    
+  #   renewal_price = prices.where(purpose => true).where(current: true).first
+  #   base_price = prices.where(base: true).where(current: true).first
+  #   renewal_price || base_price
+  # end
+
   def renewal_price(purpose)
     return nil unless purpose == 'base' || workout_group.name == 'Group'
     
@@ -159,8 +167,12 @@ class Product < ApplicationRecord
     renewal_price || base_price
   end
 
-  def base_price
-    prices.current.base.first
+  # def base_price
+  #   prices.current.base.first
+  # end
+
+  def base_price_at(date)
+    prices.base_at(date).first
   end
 
   def ongoing_count # not directly used

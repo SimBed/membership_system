@@ -1,0 +1,42 @@
+<%= form_with(model: [:superadmin, discount_reason]) do |form| %>
+  <% if discount_reason.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(discount_reason.errors.count, "error") %> prohibited this discount reason from being saved:</h2>
+
+      <ul>
+        <% discount_reason.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.select :name, @discount_reason_names %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rationale %>
+    <%= form.select :rationale, @discount_reason_rationales %>
+  </div>  
+
+  <div class="field">
+    <%= form.label :applies_to, 'Application' %>
+    <%= form.select :applies_to, @discount_reason_applications %>
+  </div>
+
+  <!--div class="field">
+    <%#= form.collection_radio_buttons :student, [:student, :ff, :fp], :itself, :itself do |b| %>
+      <div>
+        <%#= b.radio_button class:"d-inline" %>  <%#= b.label class:"d-inline"%>
+      </div>
+    <%#end%>
+  </div-->
+
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

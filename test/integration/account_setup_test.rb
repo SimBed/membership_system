@@ -8,7 +8,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
                          last_name: 'Paw',
                          email: 'amala@thespace.in')
     @product = products(:unlimited3m)
-    @price = prices(:Uc3mpreexpiry)
+    @price = prices(:Uc3mbase)
   end
 
   test 'account created with client role when client makes first groupex package purchase' do

@@ -70,7 +70,7 @@ class Whatsapp
   def body_package_expiry
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew today & save #{Setting.pre_expiry_package_renewal}% on your next Package!. After expiry, full price rates will apply." +
+    "\nRenew today & save #{@variable_contents[:discount]}% on your next Package!. After expiry, full price rates will apply." +
     "\n \nLogin to your account to renew or contact us to discuss more options." +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
@@ -78,7 +78,7 @@ class Whatsapp
   def body_trial_expiry
     "Hi #{@variable_contents[:first_name]}" +
     "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
+    "\nRenew before expiry & save #{@variable_contents[:discount]}% on your first Package!" +
     "\n \nLogin to your account to renew or contact us to discuss more options." +
     "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
@@ -194,17 +194,17 @@ class Whatsapp
     "\n \nPlease plan your workouts accordingly.\n"    
   end
 
-  def body_package_expiry_retired
-    "Hi #{@variable_contents[:first_name]}" +
-    "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
-    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
-  end
+  # def body_package_expiry_retired
+  #   "Hi #{@variable_contents[:first_name]}" +
+  #   "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
+  #   "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
+  #   "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
+  # end
 
-  def body_trial_expiry_retired
-    "Hi #{@variable_contents[:first_name]}" +
-    "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
-    "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
-  end  
+  # def body_trial_expiry_retired
+  #   "Hi #{@variable_contents[:first_name]}" +
+  #   "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
+  #   "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
+  #   "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
+  # end  
 end

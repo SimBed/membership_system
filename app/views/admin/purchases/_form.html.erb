@@ -33,8 +33,28 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
   </div>
 
   <div class="field">
-    <%= form.label :price_id, 'Price' %>
-    <%= form.grouped_collection_select :price_id, @products, :current_price_objects, :name, :id, :name, include_blank: true %>
+    <%= form.label :renewal_discount_id, 'Renewal Discount' %>
+    <%= form.collection_select :renewal_discount_id, @renewal_discounts, :id, :name, selected: @purchase.renewal_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Renewal'})&.first&.id || @discount_none.id %>
+  </div>
+  <div class="field">
+    <%= form.label :status_discount_id, 'Status Discount' %>
+    <%= form.collection_select :status_discount_id, @status_discounts, :id, :name, selected: @purchase.status_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Status'})&.first&.id || @discount_none.id %>
+  </div>
+  <div class="field">
+    <%= form.label :oneoff_discount_id, 'Oneoff Discount' %>
+    <%= form.collection_select :oneoff_discount_id, @oneoff_discounts, :id, :name, selected: @purchase.oneoff_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Oneoff'})&.first&.id || @discount_none.id %>
+  </div>
+
+  <!--div class="field">
+    <%#= form.label :price_id, 'Price' %>
+    <%#= form.grouped_collection_select :price_id, @products, :current_price_objects, :name, :id, :name, include_blank: true %>
+  </div-->
+
+  <div><%= form.hidden_field :price_id, value: @purchase.price&.id %></div>
+
+  <div class="field">
+    <%= form.label :base_price %>
+    <%= form.number_field :base_price, value: @purchase.price&.price, readonly: true %>
   </div>
 
   <div class="field">
@@ -90,7 +110,8 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
   </div>
 <% end %>
 
-<%= javascript_pack_tag 'purchase/payment_method' %>
+<%#= javascript_pack_tag 'purchase/payment_method' %>
+<%= javascript_pack_tag 'purchase/discount' %>
 
 <script>
   function toggleHide() {

@@ -1,16 +1,30 @@
 class Price < ApplicationRecord
   belongs_to :product
   validates :date_from, presence: true, allow_blank: false
-  validates :name, presence: true
-  # validates :price, presence: true, numericality: { only_integer: true }
-  validate :current_base_check
+  validates :date_until, presence: true, allow_blank: false
+  # validates :name, presence: true
+  validates :price, presence: true, numericality: { only_integer: true }
+  # validate :current_base_check
   # redundant
   # scope :order_by_current_price, -> { order(current: :desc, price: :desc) }
-  scope :order_by_current_discount, -> { order(current: :desc, discount: :asc) }
+  # scope :order_by_current_discount, -> { order(current: :desc, discount: :asc) }
   scope :current, -> { where(current: true).order(price: :desc) }
-  scope :base, -> { where(base: true) }
+  # scope :base, -> { where(base: true) }
   # default_scope { order('prices.discount ASC') }
-  default_scope -> { order(discount: :asc) }
+  # default_scope -> { order(:discount) }
+  # in case an old price is not retired, there may be multiple prices retireved, in which case we should use the one with the most recent date_from
+  # revert to this ordering for :base_at after susccessful deploy, once old style prices deleted
+  # scope :base_at, ->(date) { where('DATE(?) BETWEEN date_from AND date_until', date).order(date_from: :desc) }
+  #temporary ordering
+  scope :base_at, ->(date) { where('DATE(?) BETWEEN date_from AND date_until', date).order(price: :desc) }
+
+  def current?
+    # temporary - remove once rearchitecture complete
+    return true if current == true && date_until == nil
+    return false if current == false && date_until == nil
+
+    Time.zone.now.between?(date_from, date_until)
+  end
 
   # courtesy engineersmnky https://stackoverflow.com/questions/51274453/ruby-round-integer-to-nearest-multiple-of-5
   # not used done on the browser in JS in the end
@@ -20,17 +34,17 @@ class Price < ApplicationRecord
     rounded > n ? rounded : rounded + 50
   end
 
-  def base_price
-    product.prices.current.base.first&.price
-  end
+  # def base_price
+  #   product.prices.current.base.first&.price
+  # end
 
-  def discounted_price
-    return price if base? || pre_oct22_price?
-    return 0 if base_price.nil?
+  # def discounted_price
+  #   return price if base? || pre_oct22_price?
+  #   return 0 if base_price.nil?
 
-    raw_price = base_price * (1 - (discount.to_f / 100))
-    Price.up_to_nearest_50(raw_price).to_i
-  end
+  #   raw_price = base_price * (1 - (discount.to_f / 100))
+  #   Price.up_to_nearest_50(raw_price).to_i
+  # end
 
   def pre_oct22_price?
     # nuances of old Price model:
@@ -56,13 +70,13 @@ class Price < ApplicationRecord
   # end
 
   private
-  def current_base_check
-    return unless base?
+  # def current_base_check
+  #   return unless base?
 
-    current_base = product.prices.where(current: true, base: true).first
-    return if current_base.blank?
+  #   current_base = product.prices.where(current: true, base: true).first
+  #   return if current_base.blank?
 
-    errors.add :base, 'there is already a curent, base price. Edit the existing curent, base price before adding a new curent, base price.' unless id == current_base.id
-  end
+  #   errors.add :base, 'there is already a curent, base price. Edit the existing curent, base price before adding a new curent, base price.' unless id == current_base.id
+  # end
 
 end
