@@ -16,6 +16,11 @@ class Setting < RailsSettings::Base
     field :goals, type: :array, default: ['Hypertrophy', 'Foundations', 'HIIT & Core']  
   end
 
+  scope :discount do
+    field :discount_names, type: :array, default: ['Buddy', 'Class Pass', 'Complimentary', 'Fitternity', 'Friends & Family', 'Student', 'First Package',
+                                                   'Renewal of Package Before Expiry', 'Renewal of Package After Expiry', 'Renewal of Trial Before Expiry', 'Renewal of Trial After Expiry' ]  
+  end
+
   scope :wkclassmaker do
     field :classmaker_advance, type: :integer, default: 4
   end

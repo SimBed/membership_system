@@ -43,7 +43,8 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
 
   private
     def prepare_items_for_dropdowns
-      @discount_reason_names = Rails.application.config_for(:constants)['discount_names']
+      # @discount_reason_names = Rails.application.config_for(:constants)['discount_names']
+      @discount_reason_names = Setting.discount_names
       @discount_reason_rationales = Rails.application.config_for(:constants)['discount_rationales']
       @discount_reason_applications = Rails.application.config_for(:constants)['discount_applications']
     end

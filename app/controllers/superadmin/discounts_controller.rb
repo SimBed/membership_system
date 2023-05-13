@@ -3,6 +3,7 @@ class Superadmin::DiscountsController < Superadmin::BaseController
 
   def index
     @discount_type_hash = { base: Discount.by_rationale('Base'),
+                            commercial: Discount.by_rationale('Commercial'),
                             discretion: Discount.by_rationale('Discretion'),
                             oneoff: Discount.by_rationale('Oneoff'),
                             status: Discount.by_rationale('Status'),

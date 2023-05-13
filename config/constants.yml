@@ -7,18 +7,18 @@ default: &default
   - cancelled late
   - no show
 
- discount_names:
-  - None 
-  - Buddy
-  - Complimentary
-  - Friends & Family
-  - New Year 2024
-  - Student
-  - First Package
-  - Renewal of Package Before Expiry
-  - Renewal of Package After Expiry
-  - Renewal of Trial Before Expiry
-  - Renewal of Trial After Expiry
+#  discount_names:
+#   - None 
+#   - Buddy
+#   - Complimentary
+#   - Friends & Family
+#   - New Year 2024
+#   - Student
+#   - First Package
+#   - Renewal of Package Before Expiry
+#   - Renewal of Package After Expiry
+#   - Renewal of Trial Before Expiry
+#   - Renewal of Trial After Expiry
 
  discount_applications:
   - as applicable
@@ -32,6 +32,7 @@ default: &default
 
  discount_rationales:
   - Base
+  - Commercial
   - Discretion
   - Oneoff
   - Status
