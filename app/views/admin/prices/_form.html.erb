@@ -25,7 +25,7 @@
   
   <div class="field mb-3">
     <%= form.label :date_until, 'ending on' %>
-    <%= form.date_field :date_until, value: (form.object.new_record? ? 100.years.from_now.to_date : form.object.date_from) %>
+    <%= form.date_field :date_until, value: (form.object.new_record? ? 100.years.from_now.to_date : form.object.date_until) %>
   </div>
 
   <% if @pre_oct22_price %>

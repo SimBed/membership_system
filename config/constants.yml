@@ -7,12 +7,21 @@ default: &default
   - cancelled late
   - no show
  
+#  product_colors:
+#   - none
+#   - coach
+#   - senior coach
+#   - head coach
+#   - elite
+
  product_colors:
   - none
-  - coach
+  - coach tier1
+  - coach tier2
+  - coach tier3
   - senior coach
   - head coach
-  - elite
+  - founder
 
  discount_applications:
   - as applicable
