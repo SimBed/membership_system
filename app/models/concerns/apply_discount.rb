@@ -8,7 +8,10 @@ module ApplyDiscount
         discount[:percent] = discounts.map { |d| d&.percent }.compact.inject(:+)
         discount[:fixed] = discounts.map { |d| d&.fixed }.compact.inject(:+)
       end
-      up_to_nearest_50([0, (base_price.price * (1 - discount[:percent].to_f / 100) - discount[:fixed]).round(0)].max)
+      unrounded =  (base_price.price * (1 - discount[:percent].to_f / 100) - discount[:fixed])
+      return base_price.price if unrounded.round(0) == base_price.price.round(0)
+
+      up_to_nearest_50([0, unrounded.round(0)].max)
     end
   end
 
