@@ -1,6 +1,7 @@
 <div class="text-center mb-3">
   <h6 class="bolditalics mb-0">
-    <%= @product.formal_name %>
+  <% color_add = @product.color.nil? ? '' : ' ('.concat(@product.color,')') %>
+    <%= @product.formal_name.concat(color_add) %>
     <%= image_tag('attendances.png', class: ["table_icon",("active-product" unless @product.current?)].compact.join(' ')) %>
   </h6>
   <h6>

@@ -5,6 +5,7 @@ class ProductTest < ActiveSupport::TestCase
     @product = Product.new(max_classes: 10,
                            validity_length: 3,
                            validity_unit: 'M',
+                           color: 'none',
                            workout_group_id: workout_groups(:space).id)
   end
 

@@ -58,7 +58,7 @@ class Product < ApplicationRecord
   end
     
   def name
-    "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}"
+    "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}#{' ('.concat(color,')') unless color.nil?}"
   end
 
   # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
@@ -184,8 +184,8 @@ class Product < ApplicationRecord
 
   # see comment on full_name_must_be_unique in Client model
   def product_combo_must_be_unique
-    product = Product.where(['max_classes = ? and validity_length = ? and validity_unit = ? and workout_group_id = ?',
-                             max_classes, validity_length, validity_unit, workout_group_id]).first
+    product = Product.where(['max_classes = ? and validity_length = ? and validity_unit = ? and color = ? and workout_group_id = ?',
+                             max_classes, validity_length, validity_unit, color, workout_group_id]).first
     return if product.blank?
 
     # relevant for updates, new products won't have an id before save

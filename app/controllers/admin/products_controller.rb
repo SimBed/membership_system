@@ -140,6 +140,7 @@ class Admin::ProductsController < Admin::BaseController
   def prepare_items_for_dropdowns
     @workout_groups = WorkoutGroup.all
     @validity_units = [['days', 'D'], ['weeks', 'W'], ['months', 'M']]
+    @colors = Rails.application.config_for(:constants)['product_colors']
   end
 
   def product_params
@@ -147,6 +148,6 @@ class Admin::ProductsController < Admin::BaseController
     return {sellonline: params[:sellonline] } if params[:sellonline].present?
     return {current: params[:current] } if params[:current].present?
 
-    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :workout_group_id, :sellonline, :current)
+    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current).reject{|_, v| v == 'none'}
   end
 end

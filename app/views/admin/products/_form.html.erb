@@ -26,6 +26,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :color %>
+    <%= form.select :color, options_for_select(@colors, @product.color) %>
+  </div>
+
+  <div class="field">
     <%= form.label :workout_group_id, 'Workout Group' %>
     <%= form.collection_select :workout_group_id, @workout_groups, :id, :name, selected: @product.workout_group&.id || @workout_groups.first%>
   </div>
