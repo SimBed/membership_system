@@ -1,6 +1,6 @@
 class Admin::WkclassesController < Admin::BaseController
-  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :filter, :instructor]
-  before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update, :instructor]
+  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :filter, :instructor]
+  before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :instructor]
   before_action :set_wkclass, only: [:show, :edit, :update, :destroy]
   before_action :set_repeats, only: :create
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
