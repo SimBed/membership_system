@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>ID</th>
         <th>Percent</th>
         <th>Fixed</th>
         <th>Group</th>
@@ -17,10 +18,11 @@
     </thead>
       <tbody>
       <% @discount_type_hash.each_key do |rationale| %>
-        <td colspan="12" class="fw-bolder text-uppercase text-light bg-secondary"><%= rationale %></td>
+        <td colspan="13" class="fw-bolder text-uppercase text-light bg-secondary"><%= rationale %></td>
         <% @discount_type_hash[rationale].each do |discount| %>
           <tr>
             <td><%= discount.discount_reason.name %></td>
+            <td><%= discount.id %></td>
             <td><%= number_with_precision(discount.percent&.round(2), precision: 2,  strip_insignificant_zeros: true) %></td>
             <td><%= number_with_delimiter(discount.fixed) %></td>
             <td><%= discount.group? ? raw("&check;") : "-" %></td>

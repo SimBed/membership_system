@@ -21,6 +21,10 @@ class Setting < RailsSettings::Base
                                                    'Renewal of Package Before Expiry', 'Renewal of Package After Expiry', 'Renewal of Trial Before Expiry', 'Renewal of Trial After Expiry' ]  
   end
 
+  scope :product do
+    field :product_colors, type: :array, default: ['none', 'coach tier1', 'coach tier2', 'coach tier3', 'senior coach', 'head coach', 'founder']  
+  end
+
   scope :wkclassmaker do
     field :classmaker_advance, type: :integer, default: 4
   end

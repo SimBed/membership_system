@@ -1,0 +1,13 @@
+<section class="mb-5">   
+  <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Product Colors</h5>
+  <div class="card bg-opaque-white">
+    <div class="card-body bg-light">               
+
+      <div class="form-group mb-2">
+        <label class="control-label">Levels</label>
+        <%= f.text_area :product_colors, value: Setting.product_colors.join("\n"), class: "form-control", style: "height: 15rem;" %>
+      </div>         
+
+    </div>
+  </div>
+</section>  

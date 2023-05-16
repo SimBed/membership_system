@@ -19,10 +19,6 @@ class Admin::ProductsController < Admin::BaseController
     @products_data[product.name.to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
                                             total_count: Purchase.where(product_id: product.id).size,
                                             base_price: product.base_price_at(Time.zone.now)&.price}
-                                    # base_price: product.renewal_price("base")&.price}
-    # @product_ongoing_count[product.name.to_sym] = ongoing_purchases.where(product_id: product.id).size
-    # @product_total_count[product.name.to_sym] = Purchase.where(product_id: product.id).size
-    # @product_base_price[product.name.to_sym] = product.renewal_price("base")&.price
     end
     respond_to do |format|
       format.html
@@ -140,7 +136,7 @@ class Admin::ProductsController < Admin::BaseController
   def prepare_items_for_dropdowns
     @workout_groups = WorkoutGroup.all
     @validity_units = [['days', 'D'], ['weeks', 'W'], ['months', 'M']]
-    @colors = Rails.application.config_for(:constants)['product_colors']
+    @colors = Setting.product_colors
   end
 
   def product_params
