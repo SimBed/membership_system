@@ -3,6 +3,8 @@
   <tbody>
     <tr>
       <th scope="col">Name</th>
+      <th scope="col">ID</th>
+      <th scope="col">COUNT</th>
       <th scope="col">Discount</th>
       <th scope="col">Base Price</th>
       <th scope="col">From</th>
@@ -14,6 +16,8 @@
 <% @prices.each do |price| %>
       <tr>
         <th scope="row" class="fw-light" style="color: <%='red' if price.pre_oct22_price?%>"><%= price.name %></th>
+        <td><%= price.id %></td>
+        <td><%= Purchase.where(price_id:price).size %></td>
         <td><%= discount_format(price.discount) %></td>
         <td><%= number_with_delimiter(price.price) %></td>
         <td><%= price.date_from.strftime('%d %b %y') %></td>
