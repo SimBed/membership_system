@@ -9,7 +9,11 @@ module ApplyDiscount
         discount[:fixed] = discounts.map { |d| d&.fixed }.compact.inject(:+)
       end
       unrounded =  (base_price.price * (1 - discount[:percent].to_f / 100) - discount[:fixed])
+      # dont want a 0% discount to result in a different price to the base price
       return base_price.price if unrounded.round(0) == base_price.price.round(0)
+
+      # dont want the artificial 'Price Change Transition' discounts to result in a different price to the one paid
+      return unrounded.round(0) if discounts.map{|d| d.name[0..22]}.include? 'Price Change Transition'
 
       up_to_nearest_50([0, unrounded.round(0)].max)
     end

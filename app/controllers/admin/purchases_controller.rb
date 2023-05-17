@@ -67,6 +67,7 @@ include ApplyDiscount
   def create
     @purchase = Purchase.new(purchase_params)
     if @purchase.save
+      # make dry - repeated in update method
       [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
         DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
       end
@@ -82,6 +83,15 @@ include ApplyDiscount
 
   def update
     if @purchase.update(purchase_params)
+      # if the edit does not change the discounts, then no further action, otherwise delete all the purchases existing DiscountAssignments and create new ones
+      existing_discounts = DiscountAssignment.where(purchase_id:@purchase.id,).pluck(:discount_id).sort
+      updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map {|d| params[:purchase][d]}.compact.sort
+        unless existing_discounts == updated_discounts
+          DiscountAssignment.where(purchase_id:@purchase.id).destroy_all
+          [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
+            DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
+          end
+        end    
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
       update_purchase_status([@purchase])
