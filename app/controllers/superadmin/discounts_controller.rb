@@ -2,12 +2,21 @@ class Superadmin::DiscountsController < Superadmin::BaseController
   before_action :set_discount, only: %i[ show edit update destroy ]
 
   def index
-    @discount_type_hash = { base: Discount.by_rationale('Base'),
-                            commercial: Discount.by_rationale('Commercial'),
-                            discretion: Discount.by_rationale('Discretion'),
-                            oneoff: Discount.by_rationale('Oneoff'),
-                            status: Discount.by_rationale('Status'),
-                            renewal: Discount.by_rationale('Renewal') }
+    @discount_type_hash = { current: {
+                              base: Discount.current(Time.zone.now.to_date).by_rationale('Base'),
+                              commercial: Discount.current(Time.zone.now.to_date).by_rationale('Commercial'),
+                              discretion: Discount.current(Time.zone.now.to_date).by_rationale('Discretion'),
+                              oneoff: Discount.current(Time.zone.now.to_date).by_rationale('Oneoff'),
+                              status: Discount.current(Time.zone.now.to_date).by_rationale('Status'),
+                              renewal: Discount.current(Time.zone.now.to_date).by_rationale('Renewal')},
+                            not_current: {
+                              base: Discount.not_current(Time.zone.now.to_date).by_rationale('Base'),
+                              commercial: Discount.not_current(Time.zone.now.to_date).by_rationale('Commercial'),
+                              discretion: Discount.not_current(Time.zone.now.to_date).by_rationale('Discretion'),
+                              oneoff: Discount.not_current(Time.zone.now.to_date).by_rationale('Oneoff'),
+                              status: Discount.not_current(Time.zone.now.to_date).by_rationale('Status'),
+                              renewal: Discount.not_current(Time.zone.now.to_date).by_rationale('Renewal')}
+                          }
   end
 
   def new

@@ -10,6 +10,8 @@ class Discount < ApplicationRecord
   scope :with_renewal_rationale_at, ->(renewal_rationale, date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: {renewal_rationale => true})}
   scope :student_at, ->(date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: {student: true})}
   scope :friends_and_family_at, ->(date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: {friends_and_family: true})}
+  scope :current, ->(date) { where('DATE(?) BETWEEN start_date AND end_date', date)}
+  scope :not_current, ->(date) { where('DATE(?) NOT BETWEEN start_date AND end_date', date)}
 
   def current?
     Time.zone.now.between?(start_date, end_date)
@@ -27,7 +29,11 @@ class Discount < ApplicationRecord
     {percent: percent, fixed: fixed }
   end
 
-  def no_discount
+  def no_discount?
     percent.zero? && fixed.zero?
+  end
+
+  def used?
+    !DiscountAssignment.where(discount_id: id).empty?
   end
 end
