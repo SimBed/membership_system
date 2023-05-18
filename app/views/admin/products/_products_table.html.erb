@@ -3,7 +3,6 @@
     <tbody>
       <tr>
         <th scope="col">Product</th>
-        <th scope="col">ID</th>
         <th class="nomobile" scope="col">Sell Online</th>        
         <th class="nomobile" scope="col">Active</th>        
         <% if logged_in_as?('admin', 'superadmin') %>
@@ -16,7 +15,6 @@
         <tr>
           <% if logged_in_as?('admin', 'superadmin') %>        
             <th class="fw-light"><%= link_to product.name, admin_product_path(product), class: 'like_button' %></th>
-            <th class="fw-light"><%= product.id %></th>
           <% else %>
             <th class="fw-light"><%= product.name %></th>
           <% end %>

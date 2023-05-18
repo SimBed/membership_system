@@ -9,9 +9,30 @@
       <td><%= rupees(@purchase.payment) %></td>
     </tr>
     <tr>
-      <th scope="row">Price</th>
-      <td><%= full_name(@purchase.price) %></td>
+      <th scope="row">Base Price</th>
+      <td><%= rupees(@purchase.price.price) %></td>
     </tr>
+    <tr>
+    <% unless @purchase.discounts.empty? %>
+      <% discount = @purchase.discounts.first %>
+      <tr>
+        <th scope="row">Discount Name</th>
+        <td><%= discount.name %></td>
+      </tr>
+      <tr>
+      <% if discount.percent.zero? %>
+        <th scope="row">Fixed Discount</th>
+        <td><%= rupees(discount.fixed) %></td>
+      <% else %>
+        <th scope="row">Discount Percent</th>
+        <td><%= "#{number_with_precision(discount.percent, strip_insignificant_zeros: true)}%" %></td>    
+      <% end %>
+      </tr>
+      <tr>
+        <th scope="row">Discount Amount</th>
+        <td><%= rupees(@purchase.price.price - @purchase.payment) %></td>
+      </tr>      
+    <% end %>
     <tr>
       <th scope="row">Paid on</th>
       <td><%= @purchase.dop.strftime('%d %b %y') %></td>
