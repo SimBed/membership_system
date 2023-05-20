@@ -18,6 +18,7 @@
     </thead>
       <tbody>
       <% @discount_reasons.each do |d| %>
+        <% unused = @unused_ids.include? d.id %>
         <tr>
           <td><%= d.name %></td>
           <td><%= d.rationale %></td>
@@ -28,8 +29,8 @@
           <td><%= d.renewal_post_package_expiry? ? raw("&check;") : "-" %></td>
           <td><%= d.renewal_pre_trial_expiry? ? raw("&check;") : "-" %></td>
           <td><%= d.renewal_post_trial_expiry? ? raw("&check;") : "-" %></td>
-          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_discount_reason_path(d) %></td>
-          <td><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_discount_reason_path(d), method: :delete, data: { confirm: 'Discount Reason will be deleted. Are you sure?' } %></td>
+          <td><%= (link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_discount_reason_path(d)) if unused %></td>
+          <td><%= (link_to image_tag('delete.png', class: "table_icon"), superadmin_discount_reason_path(d), method: :delete, data: { confirm: 'Discount Reason will be deleted. Are you sure?' }) if unused %></td>
         </tr>
       <% end %>
     </tbody>

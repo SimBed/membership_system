@@ -6,7 +6,6 @@
           <%= image_tag('SpaceLogo_white.png', alt: "logo") %>
         <% end %>
 
-        <!-- secondary -->
         <ul class="navbar-nav navbar-nav-secondary order-lg-3">
           <li class="nav-item d-lg-none">
             <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#navbar"
@@ -16,8 +15,8 @@
           </li>
         </ul>
 
-        <!-- primary -->
         <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
+                 
           <ul class="navbar-nav">
             <li class="nav-item">
               <%= link_to admin_clients_path, class: "nav-link" do %>
@@ -41,14 +40,13 @@
             </li>
           </ul>
 
-          <ul class="navbar-nav">
-
-            <li class="nav-item dropdown dropdown-hover">
+          <ul class="navbar-nav" >
+            <li id="" class="nav-item dropdown dropdown-hover">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 <i class="fa fa-list"></i>
               </a>
-              <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">
+              <div class="highnavbar dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">
                 <div class="row g-0">
                   <div class="col-6 p-4">
                     <% unless logged_in_as?('junioradmin') %>    
@@ -68,6 +66,7 @@
                         <span class="dropdown-label">SUPERADMIN</span>
                         <%= link_to 'Accounts', admin_accounts_path, class: "dropdown-item" %>
                         <%= link_to 'Discounts', superadmin_discounts_path, class: "dropdown-item" %>
+                        <%= link_to 'Discount Reasons', superadmin_discount_reasons_path, class: "dropdown-item" %>
                         <%= link_to 'Expenses', superadmin_expenses_path, class: "dropdown-item" %>
                         <%= link_to 'Regular Expenses', superadmin_regular_expenses_path, class: "dropdown-item" %>
                         <%= link_to 'Instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %>
@@ -100,7 +99,6 @@
                 <% end %>
               <% end %>
             </li>
-
           </ul>
         </div>
       </div>

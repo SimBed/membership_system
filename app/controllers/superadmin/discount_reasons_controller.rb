@@ -2,7 +2,8 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
   before_action :set_discount_reason, only: %i[ show edit update destroy ]
 
   def index
-    @discount_reasons = DiscountReason.all
+    @discount_reasons = DiscountReason.order_by_rationale
+    @unused_ids =  DiscountReason.unused.map(&:id)
   end
 
   def new
