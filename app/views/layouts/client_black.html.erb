@@ -27,7 +27,7 @@
  
     <%= javascript_pack_tag 'aos', 'data-turbolinks-track': 'reload' %>
 
-    <%= render 'layouts/home_navbar' unless logged_in? %>
+    <%= render 'layouts/public_navbar_black' unless logged_in? %>
     <%= render 'layouts/admin_navbar' if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
     <%= render 'layouts/client_navbar' if logged_in_as?('client') %>
     <%= render 'layouts/partner_navbar' if logged_in_as?('partner') %>

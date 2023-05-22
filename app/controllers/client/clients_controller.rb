@@ -51,7 +51,7 @@ class Client::ClientsController < ApplicationController
     # end
     @timetable = Timetable.find(Setting.timetable)  
     @days = @timetable.table_days.order_by_day
-    render "timetable", layout: 'client_black'    
+    render "timetable", layout: 'client_black'
   end
 
   def history
