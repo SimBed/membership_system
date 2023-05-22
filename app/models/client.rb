@@ -104,6 +104,10 @@ class Client < ApplicationRecord
                  .manage_messaging
   end
 
+  def payment_outstanding?
+    !purchases.where(payment_mode: 'Not paid').empty?
+  end
+
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?

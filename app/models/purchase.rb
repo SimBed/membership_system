@@ -125,10 +125,11 @@ class Purchase < ApplicationRecord
   # used in attendances controller to populate dropdown for new booking
   def self.qualifying_purchases(wkclass)
     qualifying_for(wkclass).map do |p|
-      close_to_expiry = 'close_to_expiry' if p.close_to_expiry? && !p.dropin?
+      close_to_expiry = 'text-warning' if p.close_to_expiry? && !p.dropin?
+      payment_outstanding = 'text-danger' if p.client.payment_outstanding?
       date_if_multiple_purchases = p.dop.strftime('%b %d') if p.client.purchases.not_expired.size > 1
       ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id,
-       { class: close_to_expiry }]
+       { class: [close_to_expiry, payment_outstanding].join(' ').strip }]
     end
   end
 

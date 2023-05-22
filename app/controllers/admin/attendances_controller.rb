@@ -163,8 +163,9 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def set_new_attendance_dropdown_options
-    fitternity_options = Client.select {|c| c.fitternity}.reject {|c| c.booked?(@wkclass)}.map {|c| ["#{c.name} (Fitternity)", "Fitternity #{c.id}"] }
-    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass) + fitternity_options
+    # fitternity now redundant
+    # fitternity_options = Client.select {|c| c.fitternity}.reject {|c| c.booked?(@wkclass)}.map {|c| ["#{c.name} (Fitternity)", "Fitternity #{c.id}"] }
+    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass) #+ fitternity_options
   end
 
   def handle_freeze
