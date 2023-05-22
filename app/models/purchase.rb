@@ -70,6 +70,7 @@ class Purchase < ApplicationRecord
                      }
   scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
+  scope :written_off, -> { where(payment_mode: 'Write Off') }
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
   scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
   scope :during, ->(period) { where({ dop: period }) }
