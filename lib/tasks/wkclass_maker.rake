@@ -10,7 +10,8 @@ task wkclass_daily_create: :environment do
       workout_id: entry.workout_id,
       start_time: wkclass_date.change({ hour: start.hour, min: start.min }),
       max_capacity: max_capacity,
-      level: entry.level
+      level: entry.level,
+      instructor_id: (Instructor.where(no_instructor: true)&.first.id if entry.workout.no_instructor?)
       )
     wkclass.save(validate: false)
   end

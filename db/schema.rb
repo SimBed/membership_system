@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_15_111704) do
+ActiveRecord::Schema.define(version: 2023_05_22_060955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,7 +217,9 @@ ActiveRecord::Schema.define(version: 2023_05_15_111704) do
     t.string "email"
     t.string "whatsapp"
     t.bigint "account_id"
+    t.boolean "no_instructor", default: false
     t.index ["account_id"], name: "index_instructors_on_account_id"
+    t.index ["no_instructor"], name: "index_instructors_on_no_instructor"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -416,6 +418,7 @@ ActiveRecord::Schema.define(version: 2023_05_15_111704) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "current", default: true
     t.boolean "instructor_initials", default: false
+    t.boolean "no_instructor", default: false
     t.index ["name"], name: "index_workouts_on_name"
   end
 

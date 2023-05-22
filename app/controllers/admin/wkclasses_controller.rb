@@ -48,8 +48,8 @@ class Admin::WkclassesController < Admin::BaseController
   def edit
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
-    @instructor_id = @wkclass.instructor&.id
-    @instructor_rate = @wkclass.instructor_rate&.id
+    # @instructor_id = @wkclass.instructor&.id
+    # @instructor_rate = @wkclass.instructor_rate&.id
   end
 
   def create
@@ -185,14 +185,13 @@ class Admin::WkclassesController < Admin::BaseController
     @workouts = Workout.current.order_by_name
     @instructors = Instructor.current.has_rate.order_by_name
     @instructor_rates = @wkclass&.instructor&.instructor_rates&.current&.order_for_index || []
-    (@instructor_rates = @instructor_rates.select { |i| i.group?}) if @wkclass&.workout&.group_workout?    
+    (@instructor_rates = @instructor_rates.select { |i| i.group?}) if @wkclass&.workout&.group_workout?
     @capacities = (0..30).to_a + [500]
     @repeats = (0..11).to_a if @wkclass.new_record?
     @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
     @instructor_id = @wkclass.instructor&.id
     @instructor_rate = @wkclass.instructor_rate&.id
-
-  end 
+  end
 
   def handle_filter
     %w[any_workout_of in_workout_group].each do |key|
