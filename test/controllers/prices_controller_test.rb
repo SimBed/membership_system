@@ -36,10 +36,9 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Price.count' do
         post admin_prices_path, params:
          { price:
-            { name: 'newbase',
-              price: 5000,
+            { price: 5000,
               date_from: '2022-01-01',
-              current: true,
+              date_until: '2122-01-01',
               product_id: @price.product.id } }
       end
     end
@@ -51,10 +50,9 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
       log_in_as(account_holder)
       patch admin_price_path(@price), params:
        { price:
-          { name: @price.name,
-            price: @price.price + 100,
+          { price: @price.price + 100,
             date_from: @price.date_from,
-            current: @price.current,
+            date_until: @price.date_until,
             product_id: @price.product_id } }
       assert_equal original_price, @price.reload.price
       assert_redirected_to login_path

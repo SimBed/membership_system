@@ -5,7 +5,9 @@ class Auth::SessionsController < Auth::BaseController
   def new; end
 
   def create
-    @account = Account.find_by(email: params.dig(:session, :email).downcase)
+    # unexplained honeybug error 23/5/2023 - params {"session[email]" => "ValrieSchmitt199@aol.com"}
+    # NoMethodError: undefined method `downcase' for nil:NilClass. So added the ampersand before downcase to mitigate which shouldnt theoretically be needed
+    @account = Account.find_by(email: params.dig(:session, :email)&.downcase)
     if password_ok?
       if @account.activated?
         action_when_activated

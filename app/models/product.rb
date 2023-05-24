@@ -4,7 +4,9 @@ class Product < ApplicationRecord
   has_many :prices, dependent: :destroy
   # see usage of current_price_objects in form.grouped_collection_select :price_id in view/.../purchases/_form
   # previously all prices (current and old) were available to select for a given product
-  has_many :current_price_objects, lambda { where(current: true) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
+  # has_many :current_price_objects, lambda { where(current: true) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
+  # the price is no longer explicitly selected following rearchitecture so current_price_objects is now redundant
+  # has_many :current_price_objects, lambda { where('DATE(?) BETWEEN date_from AND date_until', Time.zone.now) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
   has_many :orders
   belongs_to :workout_group
   validates :max_classes, presence: true
