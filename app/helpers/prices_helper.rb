@@ -8,13 +8,13 @@ module PricesHelper
       nil
   end
 
-  def full_name(price)
-    discount = price.discount.zero? ? '' : " #{number_with_precision(price.discount, precision: 2, strip_insignificant_zeros: true)}%"
-    "#{price.name}#{discount}"
-  end
+  # def full_name(price)
+    # discount = price.discount.zero? ? '' : " #{number_with_precision(price.discount, precision: 2, strip_insignificant_zeros: true)}%"
+    # "#{price.name}#{discount}"
+  # end
 
-  def discount_format(discount)
-    "#{number_with_precision(discount, precision: 2, strip_insignificant_zeros: true)}%"
-  end
+  # def discount_format(discount)
+  #   "#{number_with_precision(discount, precision: 2, strip_insignificant_zeros: true)}%"
+  # end
 
 end

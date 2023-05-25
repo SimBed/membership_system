@@ -10,10 +10,12 @@
         <td><%= rupees(@purchase.payment) %></td>
       </tr>
     <% end %>
+    <% unless @purchase.discounts.empty? %>
     <tr>
-      <th scope="row">Price</th>
-      <td><%= full_name(@purchase.price) %></td>
+      <th scope="row">Discount</th>
+      <td><%=  @purchase.discounts.first.name %></td>
     </tr>
+    <% end %>    
     <% unless @purchase.dropin? %>
       <tr>
         <th scope="row">Paid on</th>
