@@ -303,7 +303,7 @@ class Purchase < ApplicationRecord
     return 0 unless expired?
     # individual fitternity packages are dummy packages for efficiency
     # either is ok, just extra failsafe to guard against admin error
-    return 0 if payment_mode == 'Fitternity' || price.name == 'Fitternity'
+    return 0 if payment_mode == 'Fitternity' # || price.name == 'Fitternity'
 
     attendance_revenue = attendances.includes(purchase: [:product]).confirmed.no_amnesty.map(&:revenue).inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
