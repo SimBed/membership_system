@@ -15,6 +15,24 @@ class WorkoutGroup < ApplicationRecord
   after_update :update_rel_workout_group_workout
   scope :order_by_name, -> { order(:name) }
 
+  def pt?
+    return true if service == 'pt'
+
+    false
+  end
+
+  def groupex?
+    return true if service == 'group'
+
+    false
+  end
+
+  def online?
+    return true if service == 'online'
+
+    false
+  end
+
   def attendances_during(period)
     Attendance.includes(purchase: [:product]).confirmed.no_amnesty.by_workout_group(name, period)
   end

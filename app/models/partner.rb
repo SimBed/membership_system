@@ -10,6 +10,7 @@ class Partner < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   validates :account, presence: true, if: :account_id
+  scope :order_by_name, -> { order(:first_name, :last_name) }
 
   def name
     "#{first_name} #{last_name}"

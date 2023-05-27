@@ -10,7 +10,8 @@ class PurchaseTest < ActiveSupport::TestCase
     Purchase.new(client_id: @client.id,
     product_id: @product.id,
     payment: 10_000, dop: '2022-02-15', payment_mode: 'Cash',
-    price_id: @price.id)
+    price_id: @price.id,
+    purchase_id: nil)
     @purchase_package = purchases(:AnushkaUC3Mong)
     @purchase_dropin = purchases(:priya1c1d)
     @purchase_dropin2 = purchases(:kiran1c1d_notstarted)

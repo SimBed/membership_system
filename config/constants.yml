@@ -7,14 +7,10 @@ default: &default
   - cancelled late
   - no show
  
-#  product_colors:
-#   - none
-#   - coach tier1
-#   - coach tier2
-#   - coach tier3
-#   - senior coach
-#   - head coach
-#   - founder
+ workout_group_services:
+  - group
+  - online
+  - pt
 
  discount_applications:
   - as applicable

@@ -7,6 +7,9 @@ include ApplyDiscount
   before_action :sanitize_params, only: [:create, :update]
   # this should be a callback on Purchase model not a filter
   before_action :already_had_trial?, only: [:create, :update]
+  before_action :changing_main_purchase_product?, only: :update
+  before_action :changing_main_purchase_name?, only: :update
+  before_action :changing_rider?, only: :update
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
   # this approach is no good as the callback should be after a successful create not a failed create
@@ -75,6 +78,7 @@ include ApplyDiscount
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
       post_purchase_processing
+      create_rider if @purchase.product.has_rider?
     else
       prepare_items_for_dropdowns
       render :new, status: :unprocessable_entity
@@ -175,6 +179,23 @@ include ApplyDiscount
 
   private
 
+  def create_rider
+    rider_product = Product.where(rider: true).first
+    rider_product_price = rider_product.base_price_at(Time.zone.now)
+    @rider_purchase = @purchase.dup
+    if @rider_purchase.update( { product_id: rider_product.id,
+                                 payment: 0,
+                                 payment_mode: 'Not applicable',
+                                 invoice: nil,
+                                 note: nil,
+                                 price_id: rider_product_price.id,
+                                 purchase_id: @purchase.id } )
+      flash_message :success, t('.rider_success')
+    else
+      flash_message :warning, t('.rider_fail')
+    end
+  end
+
   # similar used in wkclass controller, move to a helper
   def construct_date(hash)
     DateTime.new(hash["start_time(1i)"].to_i, 
@@ -217,6 +238,33 @@ include ApplyDiscount
       flash[:warning] = "Purchase not updated. #{@client.name} has already had a Trial"
       redirect_to edit_admin_purchase_path(@purchase)      
     end
+  end
+
+  def changing_main_purchase_product?
+    original_purchase_has_rider = @purchase.rider_purchase.present?
+    new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
+    return if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
+
+    flash[:warning] = "Purchase not updated. Can't change a purchase without a rider to one with a rider." if !original_purchase_has_rider && new_product_has_rider
+    flash[:warning] = "Purchase not updated. Can't change a purchase with a rider to one without a rider." if original_purchase_has_rider && !new_product_has_rider
+    redirect_to edit_admin_purchase_path(@purchase)
+  end  
+
+  def changing_main_purchase_name?
+    original_purchase_has_rider = @purchase.rider_purchase.present?
+    client_changed = @purchase.client_id != params[:purchase][:client_id]
+    
+    return unless client_changed && original_purchase_has_rider
+
+    flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
+    redirect_to edit_admin_purchase_path(@purchase)
+  end  
+  
+  def changing_rider?
+    return if @purchase.main_purchase.nil?
+
+    flash[:warning] = "Purchase not updated. Can't change details of a purchase that is a rider"
+    redirect_to admin_purchase_path(@purchase)
   end  
 
   def set_purchase
@@ -346,6 +394,7 @@ include ApplyDiscount
 
     client = @purchase.client
     # setup account which returns some flashes as an array of type/message arrays
+    # just_bought_groupex is unnecessary as we have already passed the !@purchase.workout_group.renewable? check
     Account.setup_for(client).each { |item| flash_message(*item) } if client.account.nil? && client.just_bought_groupex?
     # use splat to turn array returned into separate arguments
 

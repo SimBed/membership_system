@@ -68,7 +68,8 @@ class Auth::SessionsController < Auth::BaseController
     client = @account.client
     (redirect_to client_shop_path(client) if logged_in_as?('client') && @account.without_purchase?) and return
 
-    redirect_to client_book_path(client) if logged_in_as?('client')
+    # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
+    redirect_to client_book_path(client) if logged_in_as?('client') #groupex only
   end
 
   def deal_with_instructor

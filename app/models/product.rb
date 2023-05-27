@@ -14,6 +14,7 @@ class Product < ApplicationRecord
   validates :validity_unit, presence: true
   # validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
   validate :product_combo_must_be_unique
+  delegate :pt?, :groupex?, :online?, to: :workout_group
   # Client.packagee.active gives 'PG ambiguous column max classes' error unless 'products.max_classes' rather than just 'max_classes'.
   # scope :package, -> { where('products.max_classes > 1') }
   scope :package, -> { where('products.max_classes > 1') }
@@ -101,9 +102,9 @@ class Product < ApplicationRecord
     max_classes == 1
   end
 
-  def pt?
-    'PT'.in? workout_group.name
-  end
+  # def pt?
+  #   'PT'.in? workout_group.name
+  # end
 
   def product_type
     return :unlimited_package if unlimited_package?

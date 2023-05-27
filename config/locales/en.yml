@@ -82,6 +82,8 @@ en:
     purchases:
       create:
         success: Purchase was successfully added
+        rider_success: Rider was successfully added
+        rider_fail: Rider was not successfully added
       update:
         success: Purchase was successfully updated
       destroy:

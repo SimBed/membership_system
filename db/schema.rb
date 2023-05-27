@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_24_124540) do
+ActiveRecord::Schema.define(version: 2023_05_26_051420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,9 +280,12 @@ ActiveRecord::Schema.define(version: 2023_05_24_124540) do
     t.boolean "sellonline", default: false
     t.boolean "current", default: true
     t.string "color"
+    t.boolean "rider", default: false
+    t.boolean "has_rider", default: false
     t.index ["color"], name: "index_products_on_color"
     t.index ["current"], name: "index_products_on_current"
     t.index ["max_classes"], name: "index_products_on_max_classes"
+    t.index ["rider"], name: "index_products_on_rider"
   end
 
   create_table "purchases", force: :cascade do |t|
@@ -308,10 +311,12 @@ ActiveRecord::Schema.define(version: 2023_05_24_124540) do
     t.integer "late_cancels", default: 0
     t.integer "no_shows", default: 0
     t.date "sunset_date"
+    t.bigint "purchase_id"
     t.index ["client_id"], name: "index_purchases_on_client_id"
     t.index ["dop"], name: "index_purchases_on_dop"
     t.index ["price_id"], name: "index_purchases_on_price_id"
     t.index ["product_id"], name: "index_purchases_on_product_id"
+    t.index ["purchase_id"], name: "index_purchases_on_purchase_id"
     t.index ["status"], name: "purchases_status_index"
   end
 
@@ -398,7 +403,10 @@ ActiveRecord::Schema.define(version: 2023_05_24_124540) do
     t.boolean "gst_applies", default: true
     t.boolean "requires_invoice", default: true
     t.boolean "renewable", default: false
+    t.boolean "requires_account", default: false
+    t.string "service"
     t.index ["name"], name: "index_workout_groups_on_name"
+    t.index ["service"], name: "index_workout_groups_on_service"
   end
 
   create_table "workouts", force: :cascade do |t|
@@ -422,5 +430,6 @@ ActiveRecord::Schema.define(version: 2023_05_24_124540) do
   add_foreign_key "instructors", "accounts"
   add_foreign_key "penalties", "attendances"
   add_foreign_key "penalties", "purchases"
+  add_foreign_key "purchases", "purchases"
   add_foreign_key "regular_expenses", "workout_groups"
 end

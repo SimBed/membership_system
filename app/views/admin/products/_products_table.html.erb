@@ -5,6 +5,8 @@
         <th scope="col">Product</th>
         <th class="nomobile" scope="col">Sell Online</th>        
         <th class="nomobile" scope="col">Active</th>        
+        <th class="nomobile" scope="col">Rider</th>        
+        <th class="nomobile" scope="col">Has Rider</th>
         <% if logged_in_as?('admin', 'superadmin') %>
           <th scope="col">Total Count</th>
           <th scope="col">Ongoing Count</th>
@@ -28,6 +30,8 @@
           <% else %>
             <td class="nomobile"><%= image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')) %></td>        
           <% end %>
+          <td><%= product.rider? ? raw("&check;") : "-" %></td>
+          <td><%= product.has_rider? ? raw("&check;") : "-" %></td>
           <!--image_tag('insta.png', class: ["table_icon",("instawaiver" unless product.sellonline?)].compact.join(' '))-->
           <% product_data = @products_data[product.name.to_sym] %>
           <% if logged_in_as?('admin', 'superadmin') %>

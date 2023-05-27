@@ -38,7 +38,21 @@
   <div class="field mb-3">
     <%= form.label :current do %>
       <%= form.check_box :current, { checked: @product.new_record? || form.object.current? } %>
-      Product is Active
+      Active
+    <% end %>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :rider do %>
+      <%= form.check_box :rider, { checked: @product.new_record? || form.object.rider? } %>
+      Rider
+    <% end %>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :has_rider do %>
+      <%= form.check_box :has_rider, { checked: @product.new_record? || form.object.has_rider? } %>
+      Has a rider
     <% end %>
   </div>  
 

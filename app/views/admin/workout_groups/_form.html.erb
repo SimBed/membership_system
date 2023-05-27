@@ -16,6 +16,11 @@
   </div>
 
   <div class="field">
+    <%= form.label :service %>
+    <%= form.select :service, options_for_select(@services, @workout_group.service) %>
+  </div>
+
+  <div class="field">
     <%= form.label :partner_id %>
     <%= form.collection_select :partner_id, @partners, :id, :first_name, selected: @partner&.id, include_blank: (true unless @partner&.id)  %>
   </div>
@@ -25,14 +30,11 @@
     <%= form.number_field :partner_share %>
   </div>
 
-  <div class="field">
-    <%= form.label :gst_applies %>
-    <%= form.select :gst_applies, [true, false] %>
-  </div>
-
-  <div class="field">
-    <%= form.label :requires_invoice, 'The Space invoices the client' %>
-    <%= form.select :requires_invoice, [true, false] %>
+  <div class="field mb-3">
+    <%= form.label :requires_account do %>
+      <%= form.check_box :requires_account, { checked: @workout_group.new_record? || form.object.requires_account? } %>
+      Requires account
+    <% end %>
   </div>
 
   <div class="field">
@@ -47,6 +49,16 @@
         <% end %>
       </div>
     <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :gst_applies %>
+    <%= form.select :gst_applies, [true, false] %>
+  </div>
+
+  <div class="field">
+    <%= form.label :requires_invoice, 'The Space invoices the client' %>
+    <%= form.select :requires_invoice, [true, false] %>
   </div>
 
   <div class="actions">

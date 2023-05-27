@@ -150,7 +150,16 @@ class Client < ApplicationRecord
   end
 
   def pt?
-    last_purchase.pt?
+    # last_purchase.pt?
+    purchases.map(&:pt?).any?
+  end
+
+  def groupex?
+    purchases.map(&:groupex?).any?
+  end
+  
+  def online?
+    purchases.map(&:online?).any?
   end
 
   def just_bought_groupex?

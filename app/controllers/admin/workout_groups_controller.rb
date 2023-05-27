@@ -40,13 +40,11 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 
   def new
     @workout_group = WorkoutGroup.new
-    @workouts = Workout.all
-    @partners = Partner.all
+    prepare_items_for_dropdowns
   end
 
   def edit
-    @workouts = Workout.all
-    @partners = Partner.all
+    prepare_items_for_dropdowns
     @partner = @workout_group.partner
   end
 
@@ -57,8 +55,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       redirect_to admin_workout_groups_path
       flash[:success] = t('.success')
     else
-      @workouts = Workout.all
-      @partners = Partner.all
+      prepare_items_for_dropdowns
       render :new, status: :unprocessable_entity
     end
   end
@@ -68,7 +65,8 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       redirect_to admin_workout_groups_path
       flash[:success] = t('.success')
     else
-      @workouts = Workout.all
+      prepare_items_for_dropdowns
+      @partner = @workout_group.partner  
       render :edit, status: :unprocessable_entity
     end
   end
@@ -86,6 +84,12 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   end  
 
   private
+
+  def prepare_items_for_dropdowns
+    @workouts = Workout.order_by_current
+    @partners = Partner.order_by_name
+    @services = Rails.application.config_for(:constants)['workout_group_services']
+  end
 
   def set_period
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
@@ -124,7 +128,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   end
 
   def workout_group_params
-    params.require(:workout_group).permit(:name, :partner_id, :partner_share, :gst_applies, :requires_invoice,
+    params.require(:workout_group).permit(:name, :service, :partner_id, :partner_share, :requires_account, :gst_applies, :requires_invoice,
                                           workout_ids: [])
   end
 

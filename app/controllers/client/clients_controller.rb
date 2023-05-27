@@ -36,6 +36,10 @@ class Client::ClientsController < ApplicationController
     @quotation = Setting.quotation
   end
 
+  def pt
+    @unexpired_purchases = @client.purchases.not_fully_expired.service_type('pt').order_by_dop.includes(:attendances)
+  end
+
   def timetable
     # update to base on Setting
     # @timetable = Timetable.first 

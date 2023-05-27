@@ -10,11 +10,14 @@ class Purchase < ApplicationRecord
   has_many :penalties, dependent: :destroy
   has_many :discount_assignments, dependent: :destroy
   has_many :discounts, through: :discount_assignments
+  # some pts are given a rider benfeit of group classes
+  has_one :rider_purchase, class_name: "Purchase", dependent: :destroy #, foreign_key: "purchase_id"
+  belongs_to :main_purchase, class_name: "Purchase", foreign_key: "purchase_id", optional: true
   before_save :set_sunset_date  
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
-           :product_style, :max_classes, :attendance_estimate, to: :product
+           :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 }
@@ -68,6 +71,8 @@ class Purchase < ApplicationRecord
                        package.where(invoice: nil).joins(product: [:workout_group])
                               .where(workout_groups: { requires_invoice: true })
                      }
+  scope :service_type, ->(service) { joins(product: [:workout_group]).where(workout_groups: { service: service })
+                     }
   scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :written_off, -> { where(payment_mode: 'Write Off') }
@@ -92,10 +97,9 @@ class Purchase < ApplicationRecord
     end
   end
 
-  # reformat? pt? can just be a method of Product.
-  def pt?
-    product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
-  end
+  # def pt?
+  #   product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
+  # end
 
   def deletable?
     return true if attendances.empty? && freezes.empty? && adjustments.empty?

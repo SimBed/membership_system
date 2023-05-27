@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
   get    'client/clients/:id/buy',   to: 'client/clients#buy', as: 'client_buy'
   get    'client/clients/:id/shop',   to: 'client/clients#shop', as: 'client_shop'
+  get    'client/clients/:id/pt',   to: 'client/clients#pt', as: 'client_pt'
   get '/client/timetable', to: 'client/clients#timetable', as: 'client_timetable' 
   get '/footfall', to: 'admin/attendances#footfall'
   get '/timetable', to: 'admin/timetables#show_public', as: 'public_timetable'
