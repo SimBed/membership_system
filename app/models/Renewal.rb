@@ -64,13 +64,7 @@ class Renewal
     # "renewal_pre_expiry"  # ongoing package
     "renewal_pre_package_expiry"  # ongoing package
   end
-  
-  # def offer_online_discount?
-	# 	return false if expired_package?
-
-	# 	true
-	# end
-
+ 
   def offer_online_discount?
     return false if discount_hash.values.map(&:nil?).all?
 
@@ -84,24 +78,9 @@ class Renewal
     apply_discount(product.base_price_at(Time.zone.now), *discount_hash.values.compact)
   end
 
-  # def price
-  #   return nil if new_client?
-
-  #   product.renewal_price(renewal_offer)
-  # end
-
   def base_price(product)
-    # return nil if new_client?
-    # return @default_package.base_price_at(Time.zone.now) if from_trial?
-
     product.base_price_at(Time.zone.now)
   end
-  # def base_price
-  #   return nil if new_client?
-  #   return @default_package.renewal_price("base") if from_trial?
-
-  #   product.renewal_price("base")
-  # end
 
   # unused I think  / renewal_saving used in view (from clients_helper). make consistent and delete unused one
   def discount(product)

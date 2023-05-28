@@ -1,6 +1,8 @@
 <div id="renewal" class="container px-1 fw-bolder fst-italic mb-5 text-center">
-  <p class="mb-1"><%= yield(:renewal_statement) %></p>
-  <% if @renewal.valid? %>
+  <% unless @renewal.product.rider? %>
+    <p class="mb-1"><%= yield(:renewal_statement) %></p>
+  <% end %>
+  <% if @renewal.valid? && !@renewal.product.rider? %>
     <p class="mb-1"><%= yield(:renewal_product) %></p>
     <p class="">
       <% if @renewal.offer_online_discount? %>   

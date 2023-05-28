@@ -87,13 +87,13 @@ module Client::ClientsHelper
       return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
       return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
 
-      "Your Package has expired. Renew your Package now!"
+      "Your Group Package has expired. Renew your Package now!"
     else
       return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
       return "Buy your next Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
       return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
 
-      "Your Package has expired. Renew your Package now!"
+      "Your Group Package has expired. Renew your Package now!"
     end
   end
 
@@ -103,6 +103,12 @@ module Client::ClientsHelper
     return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
     
     "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" # if !ongoing && trial
+  end
+
+  def visit_shop_statement(rider)
+    return "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'} now".html_safe if !rider
+
+    "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'} to renew".html_safe
   end
 
   def renewal_saving(product, renewal)
