@@ -70,7 +70,7 @@ class Product < ApplicationRecord
     formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
     "#{workout_group.name} - " \
       "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} " \
-      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
+      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}#{' ('.concat(color,')') unless color.nil?}"
   end
 
   def shop_name_classes

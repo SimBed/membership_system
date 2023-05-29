@@ -252,7 +252,7 @@ include ApplyDiscount
 
   def changing_main_purchase_name?
     original_purchase_has_rider = @purchase.rider_purchase.present?
-    client_changed = @purchase.client_id != params[:purchase][:client_id]
+    client_changed = @purchase.client_id != params[:purchase][:client_id].to_i
     
     return unless client_changed && original_purchase_has_rider
 
