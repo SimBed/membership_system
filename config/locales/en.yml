@@ -98,6 +98,8 @@ en:
         success: Class was successfully updated
       destroy:
         success: Class was successfully deleted
+      repeat:
+        success: "%{repeats} successfully added"        
     workout_groups:
       create:
         success: Workout Group was successfully added

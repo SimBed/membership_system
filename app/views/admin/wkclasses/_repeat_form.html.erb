@@ -1,0 +1,12 @@
+<%= form_with(url: wkclass_repeat_path, scope: 'wkclass') do |form| %>
+  <div class="field">
+    <%= form.label :repeats do %>
+    Repeat for a further this many weeks
+    <%= form.select :repeats, options_for_select((1..12)) %>
+    <%end%>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'create future classes' %>
+  </div>
+<% end %>

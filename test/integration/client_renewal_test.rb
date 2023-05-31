@@ -70,7 +70,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     purchase.update_column(:status, 'expired')
     get client_book_path(@account_client.client)
     # puts @response.parsed_body    
-    assert_select "p", text: "Your Package has expired. Renew your Package now!" 
+    assert_select "p", text: "Your Group Package has expired. Renew your Package now!" 
     assert_select "p", text: "Group - Unlimited Classes 3 Months"  
     assert_select "s", false
     assert_select "span", text: "Rs. 25,500"

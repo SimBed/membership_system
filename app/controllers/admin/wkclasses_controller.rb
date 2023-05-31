@@ -1,8 +1,10 @@
 class Admin::WkclassesController < Admin::BaseController
-  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :filter, :instructor]
-  before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :instructor]
-  before_action :set_wkclass, only: [:show, :edit, :update, :destroy]
-  before_action :set_repeats, only: :create
+  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :repeat, :filter, :instructor]
+  before_action :junioradmin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :repeat, :instructor]
+  before_action :set_wkclass, only: [:show, :edit, :update, :destroy, :repeat]
+  before_action :set_repeats, only: [:create, :repeat]
+  before_action :attendance_check, only: :repeat
+  before_action :attendance_remain_check, only: :repeat
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
@@ -75,22 +77,6 @@ class Admin::WkclassesController < Admin::BaseController
         render :new, status: :unprocessable_entity
       end
     end
-
-
-
-    # @wkclass = Wkclass.new(wkclass_params)
-    # if @wkclass.save
-    #   # @attendances = @wkclass.attendances.no_amnesty.order_by_status
-    #   # @amnesties = @wkclass.attendances.amnesty.order_by_status
-    #   redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
-    #   flash[:success] = t('.success')
-    #   # @wkclass.delay.send_reminder
-    #   # Wkclass.delay.send_reminder(@wkclass.id)
-    #   # Wkclass.send_reminder(@wkclass.id)
-    # else
-    #   prepare_items_for_dropdowns
-    #   render :new, status: :unprocessable_entity
-    # end
   end
 
   def update
@@ -114,6 +100,29 @@ class Admin::WkclassesController < Admin::BaseController
     flash[:success] = t('.success')
   end
 
+  def repeat
+    wkclasses = []
+    if @repeats
+      @wkclasses = (1..@weeks_to_repeat).map do |weeks|
+        wkclass = @wkclass.dup
+        attendance = @attendances.first.dup
+        wkclass.update(start_time: wkclass.start_time.advance(weeks: weeks))
+        wkclasses << wkclass
+        attendance.dup.update(wkclass_id: wkclass.id, status: 'booked') if wkclass.persisted?
+      end
+      redirect_to admin_wkclasses_path
+      # note the all? method returns true when called on an empty array.
+      if wkclasses.all? { |wk| wk.persisted? }
+        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were") 
+      else
+        wkclass = wkclasses.select(&:invalid?).first 
+        flash[:warning] = "Not all classes created. Error occured first at #{wkclass.start_time.to_date} class (perhaps it already exists)" #t('.not_one_booking')
+      end
+    else
+      flash[:warning] = "Classes not created. An error occurred before any classes were created."
+    end    
+  end
+
   def filter
     clear_session(*session_filter_list)
     session[:classes_period] = params[:classes_period]
@@ -132,6 +141,21 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   private
+
+  def attendance_check
+    @attendances = @wkclass.attendances
+    return if @attendances.size == 1
+    
+    flash[:warning] = "No classes created. There must be 1 and only 1 booking for this class." #t('.not_one_booking')
+    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+  end
+
+  def attendance_remain_check
+    return if @attendances.first.purchase.attendances_remain >= @weeks_to_repeat
+
+    flash[:warning] = "No classes created. Number of repeats exceeds the number of bookings that remain on the Package"  #t('.repeats_too_high')
+    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+  end
 
   def set_repeats
     repeats = params[:wkclass][:repeats]
