@@ -42,6 +42,12 @@ body, p, ol, ul, td {
 a {
     color: #000; }
 
+a.forgot-password {
+color: blue; }
+
+a.forgot-password:hover {
+  color: black; }
+
 // override components/_navbar.scss
 .navbar-brand img {
     max-height: 3rem; }

@@ -11,6 +11,11 @@ Rails.application.configure do
   # end
 
   # Settings specified here will take precedence over those in config/application.rb.
+  # DPS MH 11.22
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :test
+
+  config.action_mailer.default_url_options = {host: 'localhost', port: 3000, protocol: 'http'}
 
   # DPS change - the default UTC doesn't have summertime so London is 1 hour out in Summertime
   # without this change Time.now (or Time.zone.now) is 1 hour earlier than my computer clock time

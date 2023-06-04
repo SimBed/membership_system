@@ -11,6 +11,9 @@ class ActiveSupport::TestCase
   fixtures :all
   # fixtures :instructors, :workouts, :accounts, :clients, :partners, :wkclasses
 
+  def is_logged_in?
+    !session[:account_id].nil?
+  end
   # def log_in_as(account)
   #   session[:account_id] = account.id
   # end

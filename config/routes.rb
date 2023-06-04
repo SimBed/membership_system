@@ -76,6 +76,7 @@ Rails.application.routes.draw do
   # get 'client/clients/:id', to: 'client/clients#show', as: 'client_show'
   namespace :client do
     resources :clients, only: [:show]
+    resources :password_resets, only: [:new, :create, :edit, :update]
   end
 
   # get 'shop/index'

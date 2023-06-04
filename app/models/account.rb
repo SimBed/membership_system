@@ -93,6 +93,21 @@ class Account < ApplicationRecord
     [flash_for_account, flash_for_whatsapp] # an array of arrays
   end
 
+  # Sets the password reset attributes.
+  def create_reset_digest
+    self.reset_token = Account.new_token
+    update_columns(reset_digest: Account.digest(reset_token), reset_sent_at: Time.zone.now)
+    # update_column(:reset_sent_at, Time.zone.now)
+  end
+
+  def send_password_reset_email
+    AccountMailer.password_reset(self).deliver_now
+  end
+
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
+  end
+
   private
 
   def downcase_email

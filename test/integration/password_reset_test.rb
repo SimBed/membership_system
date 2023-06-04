@@ -6,7 +6,10 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     @client = @account.client
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
+    ActionMailer::Base.deliveries.clear
   end
+
+  # first batch of tests are when already logged on as admin or client. Final test is when the client has forgotten the password  
 
   test 'admin resets password' do
     assert @account.authenticate('password')
@@ -54,4 +57,75 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_accounts_path    
   end
 
+# previous tests are when already logged on as admin or client. These tests are when the client has forgotten the password
+# MH 12.3.3
+
+  test "password reset when password is forgotten" do
+    get new_client_password_reset_path
+    assert_template 'password_resets/new'
+    # Invalid email
+    post client_password_resets_path, params: { password_reset: { email: "" } }
+    assert_not flash.empty?
+    assert_template 'password_resets/new'
+    # Valid email
+    post client_password_resets_path,
+         params: { password_reset: { email: @account.email } }
+    assert_not_equal @account.reset_digest, @account.reload.reset_digest
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_not flash.empty?
+    assert_redirected_to login_path
+    # Password reset form
+    account = assigns(:account)
+    # Wrong email
+    get edit_client_password_reset_path(account.reset_token, email: "")
+    assert_redirected_to root_url
+    # Inactive user
+    account.toggle!(:activated)
+    get edit_client_password_reset_path(account.reset_token, email: account.email)
+    assert_redirected_to root_url
+    account.toggle!(:activated)
+    # Right email, wrong token
+    get edit_client_password_reset_path('wrong token', email: account.email)
+    assert_redirected_to root_url
+    # Right email, right token
+    get edit_client_password_reset_path(account.reset_token, email: account.email)
+    assert_template 'password_resets/edit'
+    assert_select "input[name=email][type=hidden][value=?]", account.email
+    # Invalid password & confirmation
+    patch client_password_reset_path(account.reset_token),
+          params: { email: account.email,
+                    account: { password:              "foobaz",
+                            password_confirmation: "barquux" } }
+    assert_select 'div#error_explanation'
+    # Empty password
+    patch client_password_reset_path(account.reset_token),
+          params: { email: account.email,
+                    account: { password:              "",
+                            password_confirmation: "" } }
+    assert_select 'div#error_explanation'
+    # Valid password & confirmation
+    patch client_password_reset_path(account.reset_token),
+          params: { email: account.email,
+                    account: { password:              "foobaz",
+                            password_confirmation: "foobaz" } }
+    assert is_logged_in?
+    assert_not flash.empty?
+    assert_redirected_to client_book_path(account.client)
+    assert_nil account.reload.reset_digest
+  end
+
+  test "expired token" do
+    get new_client_password_reset_path
+    post client_password_resets_path,
+         params: { password_reset: { email: @account.email } }
+    @account = assigns(:account)
+    @account.update_column(:reset_sent_at, 3.hours.ago)
+    patch client_password_reset_path(@account.reset_token),
+          params: { email: @account.email,
+                    account: { password:              "foobar",
+                               password_confirmation: "foobar" } }
+    assert_response :redirect
+    follow_redirect!
+    assert_match /expired/i, response.body
+  end
 end
