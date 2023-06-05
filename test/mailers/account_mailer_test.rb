@@ -7,7 +7,7 @@ class AccountMailerTest < ActionMailer::TestCase
     mail = AccountMailer.password_reset(account)
     assert_equal 'Password reset', mail.subject
     assert_equal [account.email], mail.to
-    assert_equal ['dan@thespacejuhu.in'], mail.from
+    assert_equal ['members@thespacejuhu.in'], mail.from
     assert_match account.reset_token, mail.body.encoded
     assert_match CGI.escape(account.email), mail.body.encoded
   end

@@ -33,11 +33,7 @@ class Client::PasswordResetsController < ApplicationController
       # guard against public computer situation where pressing the back button on the browser gives access to the same password reset form (containing the reset_token ) 
       @account.update_column(:reset_digest, nil)
       flash[:success] = "Password has been reset."
-      client = @account.client
-      (redirect_to client_shop_path(client) if logged_in_as?('client') && @account.without_purchase?) and return
-  
-      # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
-      redirect_to client_book_path(client) if logged_in_as?('client') #groupex only
+      send_to_correct_page_for_ac_type
     else
       render 'edit'
     end

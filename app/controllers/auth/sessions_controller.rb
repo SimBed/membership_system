@@ -53,31 +53,7 @@ class Auth::SessionsController < Auth::BaseController
     log_in @account
     params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
     switch_role(@account.roles.first.name)
-    # set_role @account
-    deal_with_admin && return
-    deal_with_client && return
-    deal_with_instructor && return
-    deal_with_partner
-  end
-
-  def deal_with_admin
-    redirect_back_or admin_clients_path if logged_in_as?('junioradmin', 'admin', 'superadmin')
-  end
-
-  def deal_with_client
-    client = @account.client
-    (redirect_to client_shop_path(client) if logged_in_as?('client') && @account.without_purchase?) and return
-
-    # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
-    redirect_to client_book_path(client) if logged_in_as?('client') #groupex only
-  end
-
-  def deal_with_instructor
-    redirect_to admin_instructor_path(@account.instructor) if logged_in_as?('instructor')
-  end  
-
-  def deal_with_partner
-    redirect_to admin_partner_path(@account.partner) if logged_in_as?('partner')
+    send_to_correct_page_for_ac_type
   end
 
   def action_when_not_activated
