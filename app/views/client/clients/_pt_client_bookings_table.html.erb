@@ -1,0 +1,15 @@
+<% attendances = purchase.attendances.order_by_date %>
+<table class="table table-secondary table-striped caption-top ">
+  <caption class="ps-1">Bookings</caption>    
+  <tbody>
+    <% attendances.each_with_index do |attendance, index| %>
+      <tr class ="">
+        <th scope="row"><%= attendances.size - index %></th>
+        <th scope="row"><%= attendance.wkclass.date %></th>
+        <td><%= attendance.wkclass.time %></td>
+        <td><%= "Coach #{attendance.wkclass.instructor&.first_name}" %></td>
+        <td><%= attendance.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

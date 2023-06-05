@@ -1,0 +1,44 @@
+ <table class="table table-secondary table-striped caption-top">
+    <caption class="ps-1"><%= purchase.formal_name %> <%=image_tag('cold.png') if (!purchase.expired? && purchase.freezed?(Time.zone.now))%></caption>
+    <tbody>
+   <tr>
+      <th scope="row" >Payment</th>
+      <td><%= rupees(purchase.payment) %></td>
+    </tr>
+    <tr>
+      <th scope="row">Paid on</th>
+      <td><%= purchase.dop.strftime('%d %b %y') %></td>
+    </tr>
+    <tr>
+      <th scope="row">Status</th>
+      <td><%= purchase.status %></td>
+    </tr>
+    <% unless purchase.not_started? %>
+      <tr>
+        <th scope="row">Expiry date</th>
+        <td><%= purchase.expiry_date.strftime('%d %b %y') %></td>
+      </tr>
+    <% end %>
+    <% unless purchase.not_started? || purchase.expired? %>
+        <th scope="row">Sessions left</th>
+        <td><%= purchase.attendances_remain(provisional: false) %></td>
+      </tr>
+    <% end %>
+    <% if purchase.expired? %>
+      <tr>
+        <th scope="row">Expiry cause</th>
+        <td><%= purchase.expiry_cause %></td>
+      </tr>
+      <tr>
+        <th scope="row">Expired on</th>
+        <td><%= purchase.expired_on %></td>
+      </tr>
+    <% end %>
+    <% if purchase.provisionally_expired? %>
+      <tr>
+        <th scope="row">Will expire on</th>
+        <td><%= purchase.will_expire_on %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>

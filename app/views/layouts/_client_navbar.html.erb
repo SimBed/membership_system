@@ -31,7 +31,7 @@
                 <%= link_to "Book", client_book_path(client), class: "nav-link"%>
               </li>
             <% end %>
-            <% if false #current_account.client.pt? %>
+            <% if current_account.client.pt? %>
               <li class="nav-item">
                 <%= link_to "PT", client_pt_path(client), class: "nav-link"%>
               </li>

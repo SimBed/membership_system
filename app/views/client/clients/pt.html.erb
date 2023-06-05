@@ -1,66 +1,10 @@
-<h1>PT</h1>
+<div class="text-center mb-3">
+  <h2 class="fw-bolder">Personal Training</h2>
+</div>
 <% @unexpired_purchases.each do |purchase| %>
-<div id="pt-bookings-table" class="container px-0 mb-5">  
-  <table class="table table-secondary table-striped caption-top">
-    <caption class="ps-1"><%= purchase.formal_name %> <%=image_tag('cold.png') if (!purchase.expired? && purchase.freezed?(Time.zone.now))%></caption>
-    <tbody>
-   <tr>
-      <th scope="row" >Payment</th>
-      <td><%= rupees(purchase.payment) %></td>
-    </tr>
-    <tr>
-      <th scope="row">Paid on</th>
-      <td><%= purchase.dop.strftime('%d %b %y') %></td>
-    </tr>
-    <tr>
-      <th scope="row">Status</th>
-      <td><%= purchase.status %></td>
-    </tr>
-    <% unless purchase.not_started? %>
-      <tr>
-        <th scope="row">Expiry date</th>
-        <td><%= purchase.expiry_date.strftime('%d %b %y') %></td>
-      </tr>
-    <% end %>
-    <% unless purchase.not_started? || purchase.expired? %>
-        <th scope="row">Sessions left</th>
-        <td><%= purchase.attendances_remain(provisional: false) %></td>
-      </tr>
-    <% end %>
-    <% if purchase.expired? %>
-      <tr>
-        <th scope="row">Expiry cause</th>
-        <td><%= purchase.expiry_cause %></td>
-      </tr>
-      <tr>
-        <th scope="row">Expired on</th>
-        <td><%= purchase.expired_on %></td>
-      </tr>
-    <% end %>
-    <% if purchase.provisionally_expired? %>
-      <tr>
-        <th scope="row">Will expire on</th>
-        <td><%= purchase.will_expire_on %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-  <% attendances = purchase.attendances.order_by_date %>
-  <table class="table table-secondary table-striped caption-top ">
-    <caption class="ps-1">Bookings</caption>    
-    <tbody>
-      <% attendances.each_with_index do |attendance, index| %>
-        <tr class ="">
-          <th scope="row"><%= attendances.size - index %></th>
-          <th scope="row"><%= attendance.wkclass.date %></th>
-          <td><%= attendance.wkclass.time %></td>
-          <td><%= "Coach #{attendance.wkclass.instructor&.first_name}" %></td>
-          <td><%= attendance.status %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-      <hr>
-</div>  
+  <div id="pt-bookings-table" class="container px-0 mb-5">
+    <%= render partial: 'pt_client_bookings_table',locals: {purchase: purchase} %>
+    <hr>
+    <%= render partial: 'pt_client_packages_table',locals: {purchase: purchase} %>
+  </div>  
 <% end %>

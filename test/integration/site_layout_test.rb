@@ -8,7 +8,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     @account_partner = accounts(:partner1)
     @partner = @account_partner.partner
     @account_client = accounts(:client1)
+    @account_client_pt = accounts(:client_pt)
     @client = @account_client.client
+    @client_pt = @account_client_pt.client
   end
 
   test 'layout links when logged-in as superadmin' do
@@ -140,7 +142,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
   end
 
-  test 'layout links when logged-in as client' do
+  test 'layout links when logged-in as non-pt client' do
     log_in_as(@account_client)
     follow_redirect!
     assert_template 'client/clients/book'
@@ -148,6 +150,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', client_shop_path(@client)
     assert_select 'a[href=?]', client_history_path(@client)
     assert_select 'a[href=?]', client_book_path(@client)
+    assert_select 'a[href=?]', client_pt_path(@client), count: 0
     assert_select 'a[href=?]', client_timetable_path
     assert_select 'a[href=?]', client_client_path(@client)
     assert_select 'a[href=?]', admin_clients_path, count: 0
@@ -179,6 +182,19 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', 'https://www.instagram.com/thespace.juhu/'
     assert_select 'a[href=?]', 'https://www.facebook.com/TheSpace.Mumbai/timeline'
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
+  end
+
+  test 'layout links when logged-in as pt client' do
+    log_in_as(@account_client_pt)
+    follow_redirect!
+    assert_template 'client/clients/book'
+    assert_select 'a[href=?]', root_path
+    assert_select 'a[href=?]', client_shop_path(@client_pt)
+    assert_select 'a[href=?]', client_history_path(@client_pt)
+    assert_select 'a[href=?]', client_book_path(@client_pt)
+    assert_select 'a[href=?]', client_pt_path(@client_pt), count: 1
+    assert_select 'a[href=?]', client_timetable_path
+    assert_select 'a[href=?]', client_client_path(@client_pt)
   end
 
   test 'layout links when logged-in as partner' do
