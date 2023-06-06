@@ -16,7 +16,7 @@ AllCops:
 Layout/EndOfLine:
   Enabled: false
 Layout/LineLength:
-  Max: 120
+  Max: 150
   AllowedPatterns: ['(\A|\s)#']
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -46,3 +46,8 @@ Style/StringConcatenation:
 Layout/LineLength:
   Exclude:
     - 'app/models/whatsapp.rb'
+Minitest/AssertPredicate:
+  Enabled: false
+Minitest/RefutePredicate:
+  Enabled: false
+

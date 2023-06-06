@@ -12,10 +12,10 @@ class Client::PasswordResetsController < ApplicationController
     if @account
       @account.create_reset_digest
       @account.send_password_reset_email
-      flash[:info] = "Email sent with password reset instructions"
+      flash[:info] = 'Email sent with password reset instructions'
       redirect_to login_path
     else
-      flash.now[:danger] = "Email address not found"
+      flash.now[:danger] = 'Email address not found'
       render 'new'
     end
   end
@@ -30,9 +30,9 @@ class Client::PasswordResetsController < ApplicationController
     elsif @account.update(account_params)
       log_in @account
       # MH 12.22
-      # guard against public computer situation where pressing the back button on the browser gives access to the same password reset form (containing the reset_token ) 
+      # guard against public computer situation where pressing the back button on the browser gives access to the same password reset form (containing the reset_token )
       @account.update_column(:reset_digest, nil)
-      flash[:success] = "Password has been reset."
+      flash[:success] = 'Password has been reset.'
       send_to_correct_page_for_ac_type
     else
       render 'edit'
@@ -41,26 +41,25 @@ class Client::PasswordResetsController < ApplicationController
 
   private
 
-    def account_params
-      params.require(:account).permit(:password, :password_confirmation)
-    end
+  def account_params
+    params.require(:account).permit(:password, :password_confirmation)
+  end
 
-    def set_account
-      @account = Account.find_by(email: params[:email])
-    end
+  def set_account
+    @account = Account.find_by(email: params[:email])
+  end
 
-    def valid_account
-      unless (@account && @account.activated? &&
-              @account.authenticated?(:reset, params[:id]))
-        redirect_to root_url
-      end
+  def valid_account
+    unless (@account && @account.activated? &&
+            @account.authenticated?(:reset, params[:id]))
+      redirect_to root_url
     end
+  end
 
-    def check_expiration
-      if @account.password_reset_expired?
-        flash[:danger] = "Password reset has expired."
-        redirect_to new_client_password_reset_url
-      end
+  def check_expiration
+    if @account.password_reset_expired?
+      flash[:danger] = 'Password reset has expired.'
+      redirect_to new_client_password_reset_url
     end
-    
+  end
 end

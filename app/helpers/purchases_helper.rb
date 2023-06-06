@@ -4,5 +4,5 @@ module PurchasesHelper
       base_price = base_price * (1 - discount.percent.to_f / 100) - (discount.fixed || 0)
     end
     base_price
-  end  
+  end
 end

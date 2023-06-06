@@ -15,7 +15,7 @@ class Price < ApplicationRecord
   # in case an old price is not retired, there may be multiple prices retireved, in which case we should use the one with the most recent date_from
   # revert to this ordering for :base_at after susccessful deploy, once old style prices deleted
   scope :base_at, ->(date) { where('DATE(?) BETWEEN date_from AND date_until', date).order(date_from: :desc) }
-  #temporary ordering
+  # temporary ordering
   # scope :base_at, ->(date) { where('DATE(?) BETWEEN date_from AND date_until', date).order(price: :desc) }
 
   def current?
@@ -26,6 +26,7 @@ class Price < ApplicationRecord
   # not used done on the browser in JS in the end
   def self.up_to_nearest_50(n)
     return n if n % 50 == 0
+
     rounded = n.round(-2)
     rounded > n ? rounded : rounded + 50
   end
@@ -49,7 +50,7 @@ class Price < ApplicationRecord
     # percentage discounts were crudely calculated and input. The new design of the Price method calculates precisely and rounds up to nearest Rs.50
     return false if created_at.nil?
 
-    return true if created_at < Date.new(2022,10,05)
+    return true if created_at < Date.new(2022, 10, 05)
 
     return false
   end
@@ -66,6 +67,7 @@ class Price < ApplicationRecord
   # end
 
   private
+
   # def current_base_check
   #   return unless base?
 
@@ -74,5 +76,4 @@ class Price < ApplicationRecord
 
   #   errors.add :base, 'there is already a curent, base price. Edit the existing curent, base price before adding a new curent, base price.' unless id == current_base.id
   # end
-
 end

@@ -26,6 +26,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
+
     assert_equal 1, @purchase.reload.late_cancels
     # first late cancel has amnesty
     assert_equal 1, @purchase.reload.attendances.size - @purchase.reload.attendances.no_amnesty.size
@@ -40,6 +41,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
+
     assert_equal 2, @purchase.reload.late_cancels
     # the first late cancellation has amnesty, but not the 2nd
     assert_equal 1, @purchase.reload.attendances.size - @purchase.reload.attendances.no_amnesty.size
@@ -53,6 +55,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     travel_to(@wkclass3.start_time - 10.minutes)
     # cancel 3rd class late
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+
     assert_equal 3, @purchase.reload.late_cancels
     assert_equal 1, @purchase.reload.attendances.size - @purchase.reload.attendances.no_amnesty.size
   end
@@ -68,6 +71,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     end
+
     assert_equal 1, @purchase.reload.no_shows
     # no amnesty for no show
     assert_equal 0, @purchase.reload.attendances.size - @purchase.reload.attendances.no_amnesty.size
@@ -83,6 +87,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     end
+
     assert_equal 2, @purchase.reload.no_shows
     assert_equal 0, @purchase.reload.attendances.size - @purchase.reload.attendances.no_amnesty.size
   end
@@ -97,6 +102,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase_pt.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled late' } }
     end
+
     assert_equal 1, @purchase_pt.reload.late_cancels
     # first late cancel has no amnesty
     assert_equal 0, @purchase_pt.reload.attendances.size - @purchase_pt.reload.attendances.no_amnesty.size

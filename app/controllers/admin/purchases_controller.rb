@@ -1,5 +1,5 @@
 class Admin::PurchasesController < Admin::BaseController
-include ApplyDiscount
+  include ApplyDiscount
   skip_before_action :admin_account, except: [:destroy, :expire]
   before_action :junioradmin_account, except: [:destroy, :expire]
   before_action :initialize_sort, only: :index
@@ -18,17 +18,17 @@ include ApplyDiscount
   def index
     # @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
     # associations referrred to in view - attendances, product in start_to_expiry method, client directly in purchase.client.name
-    @purchases = Purchase.includes(:attendances, :freezes, :adjustments,:penalties, :client, product: [:workout_group])
+    @purchases = Purchase.includes(:attendances, :freezes, :adjustments, :penalties, :client, product: [:workout_group])
     handle_search
     handle_filter
     handle_period
-    # hack for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
     Purchase.default_timezone = :utc
     # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
     # Bullet.enable = false if Rails.env == 'development'
-      @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
-      @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
-    # Bullet.enable = true if Rails.env == 'development'    
+    @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
+    @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
+    # Bullet.enable = true if Rails.env == 'development'
     Purchase.default_timezone = :local
     # Purchase.includes(:attendances, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
     # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
@@ -60,7 +60,7 @@ include ApplyDiscount
     respond_to do |format|
       format.html
       format.js { render 'new.js.erb' }
-    end    
+    end
   end
 
   def edit
@@ -88,14 +88,14 @@ include ApplyDiscount
   def update
     if @purchase.update(purchase_params)
       # if the edit does not change the discounts, then no further action, otherwise delete all the purchases existing DiscountAssignments and create new ones
-      existing_discounts = DiscountAssignment.where(purchase_id:@purchase.id,).pluck(:discount_id).sort
-      updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map {|d| params[:purchase][d]}.compact.sort
-        unless existing_discounts == updated_discounts
-          DiscountAssignment.where(purchase_id:@purchase.id).destroy_all
-          [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
-            DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
-          end
-        end    
+      existing_discounts = DiscountAssignment.where(purchase_id: @purchase.id,).pluck(:discount_id).sort
+      updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map { |d| params[:purchase][d] }.compact.sort
+      unless existing_discounts == updated_discounts
+        DiscountAssignment.where(purchase_id: @purchase.id).destroy_all
+        [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
+          DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
+        end
+      end
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
       update_purchase_status([@purchase])
@@ -152,7 +152,7 @@ include ApplyDiscount
     @commercial_discount = Discount.find_by(id: params[:selected_commercial_discount_id].to_i)
     @discretion_discount = Discount.find_by(id: params[:selected_discretion_discount_id].to_i)
     @base_price = Price.base_at(Time.zone.now).where(product_id: params[:selected_product_id].to_i).first
-    # note variety of ways of adding things together while avoiding error of using add method on nil eg. 1 + nil.to_i = 1
+    # NOTE: variety of ways of adding things together while avoiding error of using add method on nil eg. 1 + nil.to_i = 1
     # https://stackoverflow.com/questions/20205535/add-if-not-nil
     # discount_percent = [@renewal_discount&.percent, @status_discount&.percent, @oneoff_discount&.percent].compact.inject(:+)
     # discount_fixed = [@renewal_discount&.fixed, @status_discount&.fixed, @oneoff_discount&.fixed].compact.inject(:+)
@@ -166,13 +166,13 @@ include ApplyDiscount
     @purchase_renewal_discount_id = params[:selected_renewal_discount_id]
     @purchase_status_discount_id = params[:selected_status_discount_id]
     @purchase_oneoff_discount_id = params[:selected_oneoff_discount_id]
-    dop = DateTime.new(params[:selected_dop_1i].to_i, 
-                        params[:selected_dop_2i].to_i,
-                        params[:selected_dop_3i].to_i)
-    @discount_none = Discount.joins(:discount_reason).where(discount_reasons: {rationale: "Base"}).first
-    @renewal_discounts = [@discount_none] + Discount.with_rationale_at("Renewal", dop)
-    @status_discounts = [@discount_none] + Discount.with_rationale_at("Status", dop)
-    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at("Oneoff", dop)  
+    dop = DateTime.new(params[:selected_dop_1i].to_i,
+                       params[:selected_dop_2i].to_i,
+                       params[:selected_dop_3i].to_i)
+    @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
+    @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', dop)
+    @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', dop)
+    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', dop)
 
     render 'discounts_after_dop_change.js'
   end
@@ -198,20 +198,20 @@ include ApplyDiscount
 
   # similar used in wkclass controller, move to a helper
   def construct_date(hash)
-    DateTime.new(hash["start_time(1i)"].to_i, 
-    hash["start_time(2i)"].to_i,
-    hash["start_time(3i)"].to_i)
+    DateTime.new(hash['start_time(1i)'].to_i,
+                 hash['start_time(2i)'].to_i,
+                 hash['start_time(3i)'].to_i)
   end
 
   def sunset_hash
     @sunset_hash = {}
     @sunset_hash[:action] = @purchase.sunset_action
     if @sunset_hash[:action] == :sunset
-      @sunset_hash[:image] = "bi-sunset"
-      @sunset_hash[:confirm] = "This purchase will be expired. Are you sure?"
+      @sunset_hash[:image] = 'bi-sunset'
+      @sunset_hash[:confirm] = 'This purchase will be expired. Are you sure?'
     else
-      @sunset_hash[:image] = "bi-sunrise"
-      @sunset_hash[:confirm] = "This purchase will be recovered from expiry. Are you sure?"
+      @sunset_hash[:image] = 'bi-sunrise'
+      @sunset_hash[:confirm] = 'This purchase will be recovered from expiry. Are you sure?'
     end
   end
 
@@ -219,7 +219,7 @@ include ApplyDiscount
     return true if request.post?
 
     false
-  end  
+  end
 
   def already_had_trial?
     @client = Client.find(purchase_params[:client_id])
@@ -236,7 +236,7 @@ include ApplyDiscount
       return unless @product.trial? && @client.has_had_trial? && !@purchase.trial?
 
       flash[:warning] = "Purchase not updated. #{@client.name} has already had a Trial"
-      redirect_to edit_admin_purchase_path(@purchase)      
+      redirect_to edit_admin_purchase_path(@purchase)
     end
   end
 
@@ -248,24 +248,24 @@ include ApplyDiscount
     flash[:warning] = "Purchase not updated. Can't change a purchase without a rider to one with a rider." if !original_purchase_has_rider && new_product_has_rider
     flash[:warning] = "Purchase not updated. Can't change a purchase with a rider to one without a rider." if original_purchase_has_rider && !new_product_has_rider
     redirect_to edit_admin_purchase_path(@purchase)
-  end  
+  end
 
   def changing_main_purchase_name?
     original_purchase_has_rider = @purchase.rider_purchase.present?
     client_changed = @purchase.client_id != params[:purchase][:client_id].to_i
-    
+
     return unless client_changed && original_purchase_has_rider
 
     flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
     redirect_to edit_admin_purchase_path(@purchase)
-  end  
-  
+  end
+
   def changing_rider?
     return if @purchase.main_purchase.nil?
 
     flash[:warning] = "Purchase not updated. Can't change details of a purchase that is a rider"
     redirect_to admin_purchase_path(@purchase)
-  end  
+  end
 
   def set_purchase
     @purchase = Purchase.find(params[:id])
@@ -282,7 +282,7 @@ include ApplyDiscount
   def sanitize_params
     nillify_when_blank(params[:purchase], :invoice, :note)
     [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
-      params[:purchase][discount] = nil if params[:purchase][discount].nil? || Discount.find(params[:purchase][discount]).discount_reason.rationale == "Base"
+      params[:purchase][discount] = nil if params[:purchase][discount].nil? || Discount.find(params[:purchase][discount]).discount_reason.rationale == 'Base'
     end
     params[:purchase].tap do |params|
       # Fitternity is redundant
@@ -369,12 +369,12 @@ include ApplyDiscount
     @products = Product.order_by_name_max_classes
     @payment_methods = Setting.payment_methods
     # @renewal_discounts = Discount.with_rationale_at('renewal, @purchase.dop || Time.zone.now)
-    @discount_none = Discount.joins(:discount_reason).where(discount_reasons: {rationale: "Base"}).first
-    @renewal_discounts = [@discount_none] + Discount.with_rationale_at("Renewal", @purchase.dop || Time.zone.now)
-    @status_discounts = [@discount_none] + Discount.with_rationale_at("Status", @purchase.dop || Time.zone.now)
-    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at("Oneoff", @purchase.dop || Time.zone.now)
-    @commercial_discounts = [@discount_none] + Discount.with_rationale_at("Commercial", @purchase.dop || Time.zone.now)
-    @discretion_discounts = [@discount_none] + Discount.with_rationale_at("Discretion", @purchase.dop || Time.zone.now)
+    @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
+    @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', @purchase.dop || Time.zone.now)
+    @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', @purchase.dop || Time.zone.now)
+    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', @purchase.dop || Time.zone.now)
+    @commercial_discounts = [@discount_none] + Discount.with_rationale_at('Commercial', @purchase.dop || Time.zone.now)
+    @discretion_discounts = [@discount_none] + Discount.with_rationale_at('Discretion', @purchase.dop || Time.zone.now)
   end
 
   def params_filter_list
@@ -389,8 +389,8 @@ include ApplyDiscount
 
   def post_purchase_processing
     update_purchase_status([@purchase])
-    # return if @purchase.dropin? || @purchase.pt? 
-    return if @purchase.dropin? || !@purchase.workout_group.renewable? 
+    # return if @purchase.dropin? || @purchase.pt?
+    return if @purchase.dropin? || !@purchase.workout_group.renewable?
 
     client = @purchase.client
     # setup account which returns some flashes as an array of type/message arrays
@@ -425,7 +425,7 @@ include ApplyDiscount
   def handle_export
     # when exporting data, want it all not just the page of pagination
     @purchases = if params[:export_all]
-                   @purchases.page(params[:page]).per(100000)
+                   @purchases.page(params[:page]).per(100_000)
                  else
                    @purchases.page params[:page]
                  end

@@ -1,4 +1,4 @@
-require "razorpay"
+require 'razorpay'
 
 class Razorpay
   def initialize(attributes = {})
@@ -17,5 +17,4 @@ class Razorpay
     @key_id = Rails.configuration.razor[:key_id]
     @key_secret = Rails.configuration.razor[:key_secret]
   end
-
 end

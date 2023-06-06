@@ -29,6 +29,7 @@ class UnexpirePackageTest < ActionDispatch::IntegrationTest
     # will expire again
     travel_to(Date.parse('May 11 2022').beginning_of_day)
     @purchase.update(status: @purchase.status_calc)
+
     assert_equal 'expired', @purchase.reload.status
   end
 end

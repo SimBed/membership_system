@@ -61,6 +61,6 @@ class Instructor < ApplicationRecord
     stored_number = self.send(number)
     return stored_number unless Phony.plausible?(stored_number)
 
-    stored_number.gsub(self.send(:country_code, number),'')
-  end  
+    stored_number.gsub(self.send(:country_code, number), '')
+  end
 end

@@ -13,6 +13,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_product_path
+
       assert_redirected_to login_path
     end
   end
@@ -21,6 +22,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_products_path
+
       assert_redirected_to login_path
     end
   end
@@ -29,6 +31,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get admin_product_path(@product)
+
       assert_redirected_to login_path
     end
   end
@@ -37,6 +40,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_product_path(@product)
+
       assert_redirected_to login_path
     end
   end
@@ -65,6 +69,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
             validity_length: @product.validity_length - 1,
             validity_unit: @product.validity_unit,
             workout_group_id: @product.workout_group_id } }
+
       assert_equal original_validity_length, @product.reload.validity_length
       assert_redirected_to login_path
     end

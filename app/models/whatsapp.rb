@@ -15,6 +15,7 @@ class Whatsapp
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @admin_triggered
+
     # return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? unless @message_type == 'renew'
 
     # return [nil] unless white_list_whatsapp_receivers
@@ -49,8 +50,9 @@ class Whatsapp
     return [:success, I18n.t(:renew)] if @message_type == 'renew'
 
     return [:success, I18n.t(:signup, name: @receiver.first_name)] if @message_type == 'signup'
-    # gsub so the flash says 'password reset message sent' not 'password_reset message sent'    
-    [:warning, I18n.t(:message_sent, message_type: @message_type.gsub('_',' '), to_number: @to_number )]
+
+    # gsub so the flash says 'password reset message sent' not 'password_reset message sent'
+    [:warning, I18n.t(:message_sent, message_type: @message_type.gsub('_', ' '), to_number: @to_number )]
     # [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
@@ -169,7 +171,7 @@ class Whatsapp
       "\n\nDear #{@variable_contents[:first_name]}" +
       "\n\nYou may receive a message from us in the coming weeks from this number +18168375076." +
       "\nThis is our automated number for communicating information about your Package at The Space. Please save this number in your contacts" +
-      " so you do not miss out on important information." +
+      ' so you do not miss out on important information.' +
       "\n\nThank You" +
       "\nThe Space" +
 
@@ -190,8 +192,8 @@ class Whatsapp
   def body_blast
     'CLASS UPDATE' +
     "\n1) The Space will be closed on 1st May 2023 for Labour Day. Sessions will resume on schedule from 2nd May." +
-    "\n2) No Pilates on 9th May as Karina is travelling." +    
-    "\n \nPlease plan your workouts accordingly.\n"    
+    "\n2) No Pilates on 9th May as Karina is travelling." +
+    "\n \nPlease plan your workouts accordingly.\n"
   end
 
   # def body_package_expiry_retired
@@ -206,5 +208,5 @@ class Whatsapp
   #   "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
   #   "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
   #   "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
-  # end  
+  # end
 end

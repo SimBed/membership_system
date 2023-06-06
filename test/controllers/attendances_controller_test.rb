@@ -20,6 +20,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_attendance_path
+
       assert_redirected_to login_path
     end
   end
@@ -28,6 +29,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_attendances_path
+
       assert_redirected_to login_path
     end
   end
@@ -53,6 +55,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
        { attendance:
           { id: @attendance.id,
             status: 'attended' } }
+
       assert_equal original_status, @attendance.reload.status
       assert_redirected_to login_path
     end

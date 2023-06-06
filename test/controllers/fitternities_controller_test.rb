@@ -14,6 +14,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_fitternity_path
+
       assert_redirected_to login_path
     end
   end
@@ -22,6 +23,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_fitternities_path
+
       assert_redirected_to login_path
     end
   end
@@ -30,6 +32,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_fitternity_path(@fitternity)
+
       assert_redirected_to login_path
     end
   end
@@ -38,6 +41,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_fitternity_path(@fitternity)
+
       assert_redirected_to login_path
     end
   end
@@ -62,6 +66,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
        { fitternity:
           { max_classes: @fitternity.max_classes + 100,
             expiry_date: @fitternity.expiry_date } }
+
       assert_equal original_max_classes, @fitternity.reload.max_classes
       assert_redirected_to login_path
     end

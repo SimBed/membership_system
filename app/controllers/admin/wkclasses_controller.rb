@@ -58,12 +58,12 @@ class Admin::WkclassesController < Admin::BaseController
     if @repeats
       # activerecord takes the constiruent bits of a date from the params and builds the date before saving. To advance the adate when there are repeats we have to go through the rigmaroll of building the date, advancing and deconstructiong
       start_date = construct_date(wkclass_params)
-      @wkclasses = (0..@weeks_to_repeat).map { |weeks| Wkclass.create(wkclass_params.merge(deconstruct_date(start_date, weeks))) }                                                          
+      @wkclasses = (0..@weeks_to_repeat).map { |weeks| Wkclass.create(wkclass_params.merge(deconstruct_date(start_date, weeks))) }
       if @wkclasses.all? { |wk| wk.persisted? }
         redirect_to admin_wkclasses_path
-        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat + 1} classes were") 
+        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat + 1} classes were")
       else
-        @wkclass = @wkclasses.select(&:invalid?).first 
+        @wkclass = @wkclasses.select(&:invalid?).first
         prepare_items_for_dropdowns
         render :new, status: :unprocessable_entity
       end
@@ -71,7 +71,7 @@ class Admin::WkclassesController < Admin::BaseController
       @wkclass = Wkclass.new(wkclass_params)
       if @wkclass.save
         redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
-        flash[:success] = t('.success', repeats: "1 class was")
+        flash[:success] = t('.success', repeats: '1 class was')
       else
         prepare_items_for_dropdowns
         render :new, status: :unprocessable_entity
@@ -87,7 +87,7 @@ class Admin::WkclassesController < Admin::BaseController
       prepare_items_for_dropdowns
       @workout = @wkclass.workout
       @instructor_id = @wkclass.instructor&.id
-      @instructor_rate = @wkclass.instructor_rate&.id      
+      @instructor_rate = @wkclass.instructor_rate&.id
       render :edit, status: :unprocessable_entity
     end
   end
@@ -111,16 +111,16 @@ class Admin::WkclassesController < Admin::BaseController
         attendance.dup.update(wkclass_id: wkclass.id, status: 'booked') if wkclass.persisted?
       end
       redirect_to admin_wkclasses_path
-      # note the all? method returns true when called on an empty array.
+      # NOTE: the all? method returns true when called on an empty array.
       if wkclasses.all? { |wk| wk.persisted? }
-        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were") 
+        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were")
       else
-        wkclass = wkclasses.select(&:invalid?).first 
-        flash[:warning] = "Not all classes created. Error occured first at #{wkclass.start_time.to_date} class (perhaps it already exists)" #t('.not_one_booking')
+        wkclass = wkclasses.select(&:invalid?).first
+        flash[:warning] = "Not all classes created. Error occured first at #{wkclass.start_time.to_date} class (perhaps it already exists)" # t('.not_one_booking')
       end
     else
-      flash[:warning] = "Classes not created. An error occurred before any classes were created."
-    end    
+      flash[:warning] = 'Classes not created. An error occurred before any classes were created.'
+    end
   end
 
   def filter
@@ -136,7 +136,7 @@ class Admin::WkclassesController < Admin::BaseController
     # @instructor_rates = Instructor&.find(params[:selected_instructor_id])&.instructor_rates
     workout = Workout.where(id: params[:selected_workout_id])&.first
     @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_for_index || []
-    (@instructor_rates = @instructor_rates.select { |i| i.group?}) if workout&.group_workout?
+    (@instructor_rates = @instructor_rates.select { |i| i.group? }) if workout&.group_workout?
     render 'instructor.js.erb'
   end
 
@@ -145,22 +145,22 @@ class Admin::WkclassesController < Admin::BaseController
   def attendance_check
     @attendances = @wkclass.attendances
     return if @attendances.size == 1
-    
-    flash[:warning] = "No classes created. There must be 1 and only 1 booking for this class." #t('.not_one_booking')
+
+    flash[:warning] = 'No classes created. There must be 1 and only 1 booking for this class.' # t('.not_one_booking')
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
   end
 
   def attendance_remain_check
     return if @attendances.first.purchase.attendances_remain >= @weeks_to_repeat
 
-    flash[:warning] = "No classes created. Number of repeats exceeds the number of bookings that remain on the Package"  #t('.repeats_too_high')
+    flash[:warning] = 'No classes created. Number of repeats exceeds the number of bookings that remain on the Package' # t('.repeats_too_high')
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
   end
 
   def set_repeats
     repeats = params[:wkclass][:repeats]
     if repeats && !repeats.to_i.zero?
-      @repeats = true 
+      @repeats = true
       # guard against somehow getting a huge number of repeats and blowing the system
       @weeks_to_repeat = [11, params[:wkclass][:repeats].to_i].min
     else
@@ -169,17 +169,17 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def construct_date(hash)
-    DateTime.new(hash["start_time(1i)"].to_i, 
-    hash["start_time(2i)"].to_i,
-    hash["start_time(3i)"].to_i)
+    DateTime.new(hash['start_time(1i)'].to_i,
+                 hash['start_time(2i)'].to_i,
+                 hash['start_time(3i)'].to_i)
   end
 
   def deconstruct_date(date, n)
     advanced_date = date.advance(weeks: n)
-    {'start_time(1i)': advanced_date.year.to_s,
-     'start_time(2i)': advanced_date.month.to_s,
-     'start_time(3i)': advanced_date.day.to_s,}
-  end  
+    { 'start_time(1i)': advanced_date.year.to_s,
+      'start_time(2i)': advanced_date.month.to_s,
+      'start_time(3i)': advanced_date.day.to_s, }
+  end
 
   def set_wkclass
     @wkclass = Wkclass.find(params[:id])
@@ -193,7 +193,7 @@ class Admin::WkclassesController < Admin::BaseController
     # cost = nil if cost&.zero?
     cost = InstructorRate.find(params[:wkclass][:instructor_rate_id]).rate
     params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id, :instructor_rate_id, :max_capacity, :level)
-                            .merge({ instructor_cost: cost })
+          .merge({ instructor_cost: cost })
   end
 
   def params_filter_list
@@ -209,7 +209,7 @@ class Admin::WkclassesController < Admin::BaseController
     @workouts = Workout.current.order_by_name
     @instructors = Instructor.current.has_rate.order_by_name
     @instructor_rates = @wkclass&.instructor&.instructor_rates&.current&.order_for_index || []
-    (@instructor_rates = @instructor_rates.select { |i| i.group?}) if @wkclass&.workout&.group_workout?
+    (@instructor_rates = @instructor_rates.select { |i| i.group? }) if @wkclass&.workout&.group_workout?
     @capacities = (0..30).to_a + [500]
     @repeats = (0..11).to_a if @wkclass.new_record?
     @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
@@ -235,7 +235,7 @@ class Admin::WkclassesController < Admin::BaseController
   def handle_export
     # when exporting data, want it all not just the page of pagination
     @wkclasses = if params[:export_all]
-                 @wkclasses.page(params[:page]).per(100000)
+                   @wkclasses.page(params[:page]).per(100_000)
                else
                  @wkclasses.page params[:page]
                end

@@ -11,9 +11,9 @@ class Purchase < ApplicationRecord
   has_many :discount_assignments, dependent: :destroy
   has_many :discounts, through: :discount_assignments
   # some pts are given a rider benfeit of group classes
-  has_one :rider_purchase, class_name: "Purchase", dependent: :destroy #, foreign_key: "purchase_id"
-  belongs_to :main_purchase, class_name: "Purchase", foreign_key: "purchase_id", optional: true
-  before_save :set_sunset_date  
+  has_one :rider_purchase, class_name: 'Purchase', dependent: :destroy # , foreign_key: "purchase_id"
+  belongs_to :main_purchase, class_name: 'Purchase', foreign_key: 'purchase_id', optional: true
+  before_save :set_sunset_date
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,

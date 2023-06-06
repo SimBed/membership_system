@@ -8,7 +8,7 @@ class AccountTest < ActiveSupport::TestCase
                            password: 'foobar',
                            password_confirmation: 'foobar',
                            ac_type: 'client')
-    @client_no_account = clients(:bhavik)                           
+    @client_no_account = clients(:bhavik)
   end
 
   test 'should be valid' do
@@ -17,11 +17,13 @@ class AccountTest < ActiveSupport::TestCase
 
   test 'email should be present' do
     @account.email = '     '
+
     refute_predicate @account, :valid?
   end
 
   test 'ac_type should be present' do
     @account.ac_type = '     '
+
     refute_predicate @account, :valid?
   end
 
@@ -29,29 +31,32 @@ class AccountTest < ActiveSupport::TestCase
     duplicate_account = @account.dup
     duplicate_account.email = @account.email.upcase
     @account.save
+
     refute_predicate duplicate_account, :valid?
   end
 
   test 'password should be present (nonblank)' do
     @account.password = @account.password_confirmation = ' ' * 6
+
     refute_predicate @account, :valid?
   end
 
   test 'password should have a minimum length' do
     @account.password = @account.password_confirmation = 'a' * 5
+
     refute_predicate @account, :valid?
   end
 
   test 'authenticated? should return false for an account with nil remember_digest' do
     refute @account.authenticated?(:remember, '')
   end
-  
+
   test 'Account#setup_for client' do
     assert_nil @client_no_account.account_id
-    assert_difference 'Account.count' do 
+    assert_difference 'Account.count' do
       Account.setup_for(@client_no_account)
     end
-    assert_not_nil @client_no_account.account_id
-  end
 
+    refute_nil @client_no_account.account_id
+  end
 end

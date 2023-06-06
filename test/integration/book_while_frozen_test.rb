@@ -15,6 +15,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
 
   test 'new booking book while frozen terminates freeze early' do
     log_in_as(@admin)
+
     assert_equal Date.parse('20 Jun 2022'), @purchase.expiry_date_calc
     # freeze
     assert_difference 'Freeze.count', 1 do
@@ -25,6 +26,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
             end_date: @freeze_end_date } }
     end
     follow_redirect!
+
     assert_equal Date.parse('30 Jun 2022'), @purchase.reload.expiry_date_calc
     assert_equal 10, @purchase.freezes.last.duration
 
@@ -34,6 +36,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
         { wkclass_id: @tomorrows_class_early.id,
           purchase_id: @purchase.id,
           status: 'booked' } }
+
     assert_equal Date.parse('23 Jun 2022'), @purchase.reload.expiry_date_calc
     assert_equal 3, @purchase.freezes.last.duration
   end

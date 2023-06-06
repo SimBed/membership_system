@@ -11,20 +11,21 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     @time = @tomorrows_class_early.start_time.advance(days: 2)
     @workout = workouts(:hiit)
     @instructor = instructors(:amit)
-    @instructor_rate = instructor_rates(:amit_base)    
+    @instructor_rate = instructor_rates(:amit_base)
     travel_to(@tomorrows_class_early.start_time.beginning_of_day) # 22/4
   end
 
   test 'class booking links appear correctly for client before and after admin adds and edits new class' do
     log_in_as(@account_client)
     follow_redirect!
+
     assert_template 'client/clients/book'
     # assert_select 'a[href=?]', admin_attendances_path, count: 2
     # i dont know where this syntax is documented, but it selects anchor elements with an href that matches the given regexs
     assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
     # the path is to the create method (i.e. for a new booking, not an amendmdent to an existing booking)
     # no bookings made yet
-    assert_equal 0, booking_count('booked') #test_helper.rb
+    assert_equal 0, booking_count('booked') # test_helper.rb
     log_in_as(@admin)
     # follow_redirect!
     # add an extra wkclass within the visibility and booking window
@@ -57,11 +58,13 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     follow_redirect!
+
     assert_template 'client/clients/book'
     assert_equal 1, booking_count('booked')
     # type of link changes from post to patch so one less (new) booking link after the booking
     assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 2
     attendance = Attendance.where(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id).first
+
     assert_select 'a[href=?]', admin_attendance_path(attendance), count: 1
   end
 end

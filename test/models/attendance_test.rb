@@ -12,20 +12,23 @@ class AttendanceTest < ActiveSupport::TestCase
 
   test 'associated wkclass must be valid' do
     @attendance.wkclass_id = 4000
+
     refute_predicate @attendance, :valid?
   end
 
   test 'associated purchase must be valid' do
     @attendance.purchase_id = 4000
+
     refute_predicate @attendance, :valid?
   end
 
   test 'status must be valid' do
     @attendance.status = 'half-booked'
+
     refute_predicate @attendance, :valid?
   end
 
   test 'delegated client_name method' do
-    assert_equal @attendance.client_name, 'Chintan Suchak'
+    assert_equal('Chintan Suchak', @attendance.client_name)
   end
 end

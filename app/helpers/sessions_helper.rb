@@ -1,7 +1,7 @@
 module SessionsHelper
   def log_in(account)
     session[:account_id] = account.id
-    session[:role_name] = account.roles.first.name    
+    session[:role_name] = account.roles.first.name
   end
 
   def remember(account)
@@ -25,15 +25,15 @@ module SessionsHelper
       end
     end
   end
-  
+
   def switch_role(role)
     session[:role_name] = role
   end
 
   def account_role_names
-    current_account.roles.map { |r| r.name }    
+    current_account.roles.map { |r| r.name }
   end
-  
+
   def current_role
     return unless logged_in? && account_role_names.any?(session[:role_name])
 
@@ -42,14 +42,14 @@ module SessionsHelper
 
   def navbar_roles
     # current_role is a string
-    current_account.roles - Role.where(name: current_role)  
+    current_account.roles - Role.where(name: current_role)
   end
 
   def multiple_roles?
     # current_role is a string
-    navbar_roles.count > 0 
+    navbar_roles.count > 0
   end
-  
+
   def logged_in?
     !current_account.nil?
   end

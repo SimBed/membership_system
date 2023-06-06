@@ -3,5 +3,5 @@
 
 <%= render partial: 'client_greeting' %>
 <%= render partial: 'history_heading' %>
-<%= render partial: 'client_packages_table', locals: {detailed: true} %>
+<%= render partial: 'client_packages_table', locals: {detailed: true}  unless @purchases.empty? %>
 

@@ -1,20 +1,20 @@
 class Client::ClientsController < ApplicationController
   layout 'client'
   before_action :correct_account, except: [:timetable]
-  before_action :set_timetable, only: [:welcome, :space_home]  
+  before_action :set_timetable, only: [:welcome, :space_home]
 
   def show
     prepare_data_for_view
   end
 
   def buy
-    
+
   end
 
   def shop
     # @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt? || p.base_price.nil?}
-    @products = Product.online_order_by_wg_classes_days.reject {|p| p.base_price_at(Time.zone.now).nil?}.reject {|p| p.trial?}
-    # @products = @products.reject {|p| p.trial?} if logged_in? && current_account.client.has_purchased?    
+    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject { |p| p.trial? }
+    # @products = @products.reject {|p| p.trial?} if logged_in? && current_account.client.has_purchased?
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
@@ -42,7 +42,7 @@ class Client::ClientsController < ApplicationController
 
   def timetable
     # update to base on Setting
-    # @timetable = Timetable.first 
+    # @timetable = Timetable.first
     # @days = @timetable.table_days.order_by_day
     # @morning_times = @timetable.table_times.during('morning').order_by_time
     # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
@@ -53,9 +53,9 @@ class Client::ClientsController < ApplicationController
     # else
     #   @timetable = Timetable.find(Setting.timetable)
     # end
-    @timetable = Timetable.find(Setting.timetable)  
+    @timetable = Timetable.find(Setting.timetable)
     @days = @timetable.table_days.order_by_day
-    render "timetable", layout: 'client_black'
+    render 'timetable', layout: 'client_black'
   end
 
   def history

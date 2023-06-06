@@ -17,6 +17,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_partner_path
+
       assert_redirected_to login_path
     end
   end
@@ -25,6 +26,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get admin_partners_path
+
       assert_redirected_to login_path
     end
   end
@@ -33,6 +35,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get admin_partner_path(@partner1)
+
       assert_redirected_to login_path
     end
   end
@@ -41,6 +44,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_partner_path(@partner1)
+
       assert_redirected_to login_path
     end
   end
@@ -65,6 +69,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
        { partner:
           { first_name: 'Raymond',
             last_name: @partner1.last_name } }
+
       assert_equal original_first_name, @partner1.reload.first_name
       assert_redirected_to login_path
     end

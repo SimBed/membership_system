@@ -3,7 +3,7 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
 
   def index
     @discount_reasons = DiscountReason.order_by_rationale
-    @unused_ids =  DiscountReason.unused.map(&:id)
+    @unused_ids = DiscountReason.unused.map(&:id)
   end
 
   def new
@@ -43,25 +43,26 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
   end
 
   private
-    def prepare_items_for_dropdowns
-      # @discount_reason_names = Rails.application.config_for(:constants)['discount_names']
-      @discount_reason_names = Setting.discount_names
-      @discount_reason_rationales = Rails.application.config_for(:constants)['discount_rationales']
-      @discount_reason_applications = Rails.application.config_for(:constants)['discount_applications']
-    end
 
-    def set_discount_reason
-      @discount_reason = DiscountReason.find(params[:id])
-    end
+  def prepare_items_for_dropdowns
+    # @discount_reason_names = Rails.application.config_for(:constants)['discount_names']
+    @discount_reason_names = Setting.discount_names
+    @discount_reason_rationales = Rails.application.config_for(:constants)['discount_rationales']
+    @discount_reason_applications = Rails.application.config_for(:constants)['discount_applications']
+  end
 
-    def discount_reason_params
-      [:student, :friends_and_family, :first_package, :renewal_pre_package_expiry, :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry].each do |column|
-        params['discount_reason'][column] = false
-      end
-      (applies_to_param = { params['discount_reason']['applies_to'] => true }) if DiscountReason.column_names.any? params['discount_reason']['applies_to']
-      params.require(:discount_reason)
-      .permit(:name, :rationale, :student, :friends_and_family, :first_package, :renewal_pre_package_expiry,
-              :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry)
-      .merge applies_to_param
+  def set_discount_reason
+    @discount_reason = DiscountReason.find(params[:id])
+  end
+
+  def discount_reason_params
+    [:student, :friends_and_family, :first_package, :renewal_pre_package_expiry, :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry].each do |column|
+      params['discount_reason'][column] = false
     end
+    (applies_to_param = { params['discount_reason']['applies_to'] => true }) if DiscountReason.column_names.any? params['discount_reason']['applies_to']
+    params.require(:discount_reason)
+          .permit(:name, :rationale, :student, :friends_and_family, :first_package, :renewal_pre_package_expiry,
+            :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry)
+          .merge applies_to_param
+  end
 end

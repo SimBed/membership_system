@@ -18,6 +18,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_wkclass_path
+
       assert_redirected_to login_path
     end
   end
@@ -26,6 +27,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_wkclasses_path
+
       assert_redirected_to login_path
     end
   end
@@ -34,6 +36,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_wkclass_path(@wkclass)
+
       assert_redirected_to login_path
     end
   end
@@ -42,6 +45,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_wkclass_path(@wkclass)
+
       assert_redirected_to login_path
     end
   end
@@ -68,6 +72,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
           { workout_id: @wkclass.workout_id,
             start_time: @wkclass.start_time + 1.hour,
             instructor_id: @wkclass.instructor_id } }
+
       assert_equal original_start_time, @wkclass.reload.start_time
       assert_redirected_to login_path
     end
@@ -83,19 +88,19 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'create repeat classes' do
-      log_in_as(@junioradmin)
-      assert_difference 'Wkclass.count', 4 do
-        post admin_wkclasses_path, params:
-         { wkclass:
-            { workout_id: @workout.id,
-              "start_time(1i)": '2022',
-              "start_time(2i)": '02',
-              "start_time(3i)": '13',
-              "start_time(4i)": '10',
-              "start_time(5i)": '30',
-              instructor_id: @instructor.id,
-              instructor_rate_id: @instructor_rate.id,
-              repeats: 3 } }
-      end
+    log_in_as(@junioradmin)
+    assert_difference 'Wkclass.count', 4 do
+      post admin_wkclasses_path, params:
+       { wkclass:
+          { workout_id: @workout.id,
+            "start_time(1i)": '2022',
+            "start_time(2i)": '02',
+            "start_time(3i)": '13',
+            "start_time(4i)": '10',
+            "start_time(5i)": '30',
+            instructor_id: @instructor.id,
+            instructor_rate_id: @instructor_rate.id,
+            repeats: 3 } }
+    end
   end
 end

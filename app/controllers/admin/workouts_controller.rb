@@ -7,7 +7,7 @@ class Admin::WorkoutsController < Admin::BaseController
     respond_to do |format|
       format.html
       format.js { render 'index.js.erb' }
-    end    
+    end
   end
 
   def show; end
@@ -58,7 +58,7 @@ class Admin::WorkoutsController < Admin::BaseController
 
   def workout_params
     # the update method (and therefore the workout_params method) is used through a form but also clicking on a link on the workouts page
-    return {current: params[:current] } if params[:current].present?
+    return { current: params[:current] } if params[:current].present?
 
     params.require(:workout).permit(:name, :current, :instructor_initials)
   end

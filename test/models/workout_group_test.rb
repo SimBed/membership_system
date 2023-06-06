@@ -18,16 +18,19 @@ class WorkoutGroupTest < ActiveSupport::TestCase
 
   test 'name should be present' do
     @workout_group.name = '      '
+
     refute_predicate @workout_group, :valid?
   end
 
   test 'partner_share should be present' do
     @workout_group.partner_share = ''
+
     refute_predicate @workout_group, :valid?
   end
 
   test 'workout_ids should be present' do
     @workout_group.workout_ids = []
+
     refute_predicate @workout_group, :valid?
   end
 end

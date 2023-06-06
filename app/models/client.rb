@@ -9,8 +9,8 @@ class Client < ApplicationRecord
   # https://stackoverflow.com/questions/6249475/ruby-on-rails-callback-what-is-difference-between-before-save-and-before-crea
   # dont want the method called on updates, otherwise end up with multiple +91s added to the number
   # (currently this is only relevant to signups)
-  # before_validation :apply_country_code, on: :create  
-  # https://github.com/joost/phony_rails  
+  # before_validation :apply_country_code, on: :create
+  # https://github.com/joost/phony_rails
   # Normalizes :phone_raw attribute before validation and saves into :phone attribute
   # phony_normalize... is Fine without with_options complication, except when updating through the console. Eg c.update(whatsapp: '123') would cause both phone and whatsapp attributes to become nil
   # (as phone_raw and whatsapp_raw are nil and would be normalized and saved into phone/whatsapp attribute before validation).
@@ -45,7 +45,7 @@ class Client < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   validates :account, presence: true, if: :account_id
-  # note default accept options are ['1', true] https://guides.rubyonrails.org/active_record_validations.html#acceptance
+  # NOTE: default accept options are ['1', true] https://guides.rubyonrails.org/active_record_validations.html#acceptance
   validates :terms_of_service, acceptance: true
   scope :order_by_first_name, -> { order(:first_name, :last_name) }
   scope :order_by_last_name, -> { order(:last_name, :first_name) }
@@ -67,11 +67,11 @@ class Client < ApplicationRecord
                    .group('clients.id')
                    .having('max(start_time) < ?', Setting.cold.months.ago)
                }
-               
+
   scope :one_time_trial, lambda {
-                c_trials= Client.joins(purchases: [:product]).merge(Purchase.trial).map(&:id)
-                c_oneonly =  Client.joins(:purchases).group('clients.id').having('count(client_id) = 1').map(&:id)
-                Client.where(id: c_trials).where(id: c_oneonly)
+                 c_trials = Client.joins(purchases: [:product]).merge(Purchase.trial).map(&:id)
+                 c_oneonly = Client.joins(:purchases).group('clients.id').having('count(client_id) = 1').map(&:id)
+                 Client.where(id: c_trials).where(id: c_oneonly)
                }
 
   scope :recently_attended, lambda {
@@ -100,8 +100,8 @@ class Client < ApplicationRecord
   def message_blast(message)
     Whatsapp.new(:receiver => self,
                  :message_type => message,
-                 :variable_contents => {:first_name => self.first_name})
-                 .manage_messaging
+                 :variable_contents => { :first_name => self.first_name })
+            .manage_messaging
   end
 
   def payment_outstanding?
@@ -157,14 +157,14 @@ class Client < ApplicationRecord
   def groupex?
     purchases.map(&:groupex?).any?
   end
-  
+
   def online?
     purchases.map(&:online?).any?
   end
 
   def just_bought_groupex?
     return false if last_purchase.nil?
-    
+
     last_purchase.workout_group.renewable?
   end
 
@@ -188,7 +188,7 @@ class Client < ApplicationRecord
     ongoing_group_packages = purchases.not_fully_expired.renewable
     # return false if ongoing_group_packages.empty?
 
-    return false unless ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: Setting.days_remain, attendances_remain: Setting.attendances_remain)}.all?
+    return false unless ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: Setting.days_remain, attendances_remain: Setting.attendances_remain) }.all?
 
     true
   end
@@ -214,7 +214,7 @@ class Client < ApplicationRecord
     stored_number = self.send(number)
     return stored_number unless Phony.plausible?(stored_number)
 
-    stored_number.gsub(self.send(:country_code, number),'')
+    stored_number.gsub(self.send(:country_code, number), '')
   end
 
   private

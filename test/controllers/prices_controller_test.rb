@@ -18,6 +18,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_price_path(product_id: @product.id)
+
       assert_redirected_to login_path
     end
   end
@@ -26,6 +27,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_price_path(@price)
+
       assert_redirected_to login_path
     end
   end
@@ -54,6 +56,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
             date_from: @price.date_from,
             date_until: @price.date_until,
             product_id: @price.product_id } }
+
       assert_equal original_price, @price.reload.price
       assert_redirected_to login_path
     end

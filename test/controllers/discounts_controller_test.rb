@@ -1,10 +1,10 @@
-require "test_helper"
+require 'test_helper'
 
 class DiscountsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @discount = discounts(:none)
     @discount_reason = discount_reasons(:firstpackage)
-    @account_client = clients(:client_ekta_unlimited)    
+    @account_client = clients(:client_ekta_unlimited)
     @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
@@ -15,6 +15,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_superadmin_discount_path
+
       assert_redirected_to login_path
     end
   end
@@ -23,6 +24,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_superadmin_discount_path(@discount)
+
       assert_redirected_to login_path
     end
   end
@@ -35,12 +37,12 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
          { discount:
             { discount_reason: @discount_reason,
               percent: 0,
-              fixed: 10000,
+              fixed: 10_000,
               group: true,
               pt: true,
               online: true,
-              start_date: 2023-01-01,
-              end_date: 2123-01-01 } }
+              start_date: 2023 - 01 - 01,
+              end_date: 2123 - 01 - 01 } }
       end
     end
   end
@@ -51,6 +53,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
       log_in_as(account_holder)
       patch superadmin_discount_path(@discount), params:
        { discount: { percent: 50 } }
+
       assert_equal original_discount, @discount.reload.percent
       assert_redirected_to login_path
     end
@@ -64,5 +67,4 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
-  
 end

@@ -22,6 +22,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
                                             client_id: @client_with_no_account.id,
                                             ac_type: 'client' }
       end
+
       assert_redirected_to login_path
     end
   end
@@ -34,6 +35,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
                                             partner_id: @partner_without_account.id,
                                             ac_type: 'partner' }
       end
+
       assert_redirected_to login_path
     end
   end
@@ -46,6 +48,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
                                             client_id: @client_with_no_account.id,
                                             ac_type: 'admin' }
       end
+
       assert_redirected_to login_path
     end
   end
@@ -58,6 +61,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
                                             client_id: @client_with_no_account.id,
                                             ac_type: 'junioradmin' }
       end
+
       assert_redirected_to login_path
     end
   end
@@ -71,6 +75,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
            client_id: @client_with_no_account.id,
            ac_type: 'superadmin' }
       end
+
       assert_redirected_to login_path
     end
   end
@@ -82,6 +87,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
        { email: 'wannabe@example.com',
          ac_type: 'client' }
     end
+
     assert_redirected_to login_path
   end
 end

@@ -15,6 +15,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_client_path
+
       assert_redirected_to login_path
     end
   end
@@ -23,6 +24,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_clients_path
+
       assert_redirected_to login_path
     end
   end
@@ -31,6 +33,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_client_path(@client)
+
       assert_redirected_to login_path
     end
   end
@@ -39,6 +42,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_client_path(@client)
+
       assert_redirected_to login_path
     end
   end
@@ -65,6 +69,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
            { first_name: @client.first_name,
              last_name: @client.last_name,
              email: 'alt@example.com' } }
+
       assert_equal original_email, @client.reload.email
       assert_redirected_to login_path
     end

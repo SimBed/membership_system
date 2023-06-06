@@ -49,8 +49,8 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
 
   def instructor_rate_params
     # the update method (and therefore the instructor_rate_params method) is used through a form but also clicking on a link on the instructor_rates page
-    return {current: params[:current] } if params[:current].present?
-    
+    return { current: params[:current] } if params[:current].present?
+
     params.require(:instructor_rate).permit(:rate, :date_from, :instructor_id, :current, :group, :name)
   end
 end

@@ -26,6 +26,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 'booked', @attendance.status
     assert_redirected_to client_book_path(@client.id)
     # assert_redirected_to "/client/clients/#{@client.id}/book"
@@ -41,6 +42,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 'cancelled early', @attendance.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["HIIT on Friday is 'cancelled early'",
@@ -59,6 +61,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 'cancelled late', @attendance.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["HIIT on Friday is 'cancelled late'",
@@ -74,6 +77,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_redirected_to client_book_path(@client.id)
     # assert_redirected_to "/client/clients/#{@client.id}/book"
     refute_predicate flash, :empty?
@@ -87,6 +91,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_redirected_to client_book_path(@client.id)
     refute_predicate flash, :empty?
   end
@@ -101,6 +106,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_redirected_to client_book_path(@client.id)
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
   end
@@ -116,6 +122,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_redirected_to client_book_path(@client.id)
     refute_predicate flash, :empty?
   end
@@ -127,6 +134,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
     travel_to(@tomorrows_class_early.start_time + 5.minutes)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+
     assert_equal 'booked', @attendance.reload.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["Booking for #{@tomorrows_class_early.name} not changed. Deadline to make changes has passed"]],
@@ -142,9 +150,11 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 'no show', @attendance.status
     log_in_as(@account_client)
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["Booking is 'no show' and can't now be changed.", 'Please contact the Space for help']],
                  flash[:secondary]
@@ -160,11 +170,12 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     #                                                        purchase_id: @other_client_purchase.id } }
     # end
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @other_client_purchase.id } }
+                                                         purchase_id: @other_client_purchase.id } }
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @purchase3.id } }
+                                                         purchase_id: @purchase3.id } }
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @purchase4.id } }
+                                                         purchase_id: @purchase4.id } }
+
     assert_equal @tomorrows_class_early.attendances.no_amnesty.count, wkclass_max_capacity
     # client attempts to book
     log_in_as(@account_client)
@@ -172,6 +183,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_redirected_to client_book_path(@client.id)
     assert_equal [['Booking not possible. Class fully booked']], flash[:secondary]
     # 1 cancellation
@@ -181,6 +193,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       patch admin_attendance_path(@attendance),
             params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
     end
+
     assert_equal @tomorrows_class_early.attendances.no_amnesty.count, wkclass_max_capacity - 1
     # client now books
     log_in_as(@account_client)
@@ -205,6 +218,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     assert_difference 'Attendance.no_amnesty.count', 0 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
+
     assert_equal [['Rebooking not possible. Class fully booked']], flash[:secondary]
   end
 
@@ -214,22 +228,27 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 0, @attendance.amendment_count
     # cancel
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 1, @attendance.amendment_count
     # rebook
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 2, @attendance.amendment_count
     # cancel again
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 3, @attendance.amendment_count
     # re-re-book should fail
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal 3, @attendance.amendment_count
     refute_equal 'booked', @attendance.status
     assert_redirected_to client_book_path(@client.id)

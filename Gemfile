@@ -3,12 +3,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.1'
 gem 'bcrypt'
-gem "chartkick", "~> 4.2"
-gem 'country_select', '~> 8.0'  
+gem 'chartkick', '~> 4.2'
+gem 'country_select', '~> 8.0'
 gem 'daemons'
 gem 'delayed_job_active_record'
-gem "groupdate", "~> 6.1"
-gem "honeybadger", "~> 5.2"
+gem 'groupdate', '~> 6.1'
+gem 'honeybadger', '~> 5.2'
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'pg', '~> 1.1'
@@ -16,7 +16,7 @@ gem 'phony_rails'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'rails-controller-testing'
-gem "rails-settings-cached", "~> 2.8"
+gem 'rails-settings-cached', '~> 2.8'
 gem 'razorpay'
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'

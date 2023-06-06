@@ -24,6 +24,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase.penalties.size' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
+
     assert_equal 1, @purchase.reload.late_cancels
 
     # book a 2nd class
@@ -35,6 +36,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
+
     assert_equal 2, @purchase.reload.late_cancels
 
     # book a 3rd class
@@ -50,6 +52,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_difference '@purchase.penalties.count', 1 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
+
     assert_equal 3, @purchase.reload.late_cancels
 
     # book a 4th class
@@ -65,6 +68,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_difference '@purchase.penalties.count', 1 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
+
     assert_equal 4, @purchase.reload.late_cancels
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["HIIT on Monday is 'cancelled late'", 'A deduction will be made to your Package.',
@@ -81,6 +85,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_no_difference '@purchase.penalties.count' do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     end
+
     assert_equal 1, @purchase.reload.no_shows
 
     # book a 2nd class (can't book same day as no show so book wkclass3)
@@ -93,6 +98,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_difference '@purchase.penalties.count', 1 do
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     end
+
     assert_equal 2, @purchase.reload.no_shows
 
     # assert_redirected_to client_book_path(@client.id)

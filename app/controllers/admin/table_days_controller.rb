@@ -16,7 +16,7 @@ class Admin::TableDaysController < Admin::BaseController
   def create
     @table_day = TableDay.new(table_day_params)
     if @table_day.save
-      flash_message :success, "Timetable's day was successfully added"   
+      flash_message :success, "Timetable's day was successfully added"
       redirect_to admin_timetable_path(@table_day.timetable)
     else
       render :new, status: :unprocessable_entity
@@ -39,6 +39,7 @@ class Admin::TableDaysController < Admin::BaseController
    end
 
   private
+
   def set_table_day
     @table_day = TableDay.find(params[:id])
   end
@@ -46,8 +47,8 @@ class Admin::TableDaysController < Admin::BaseController
   def set_timetable
     @timetable = @table_day.timetable
   end
-  
-    def table_day_params
-      params.require(:table_day).permit(:name, :short_name, :timetable_id)
-    end
+
+  def table_day_params
+    params.require(:table_day).permit(:name, :short_name, :timetable_id)
+  end
 end

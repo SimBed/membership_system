@@ -3,7 +3,7 @@ class Workout < ApplicationRecord
   has_many :workout_groups, through: :rel_workout_group_workouts
   has_many :wkclasses, dependent: :destroy
   has_many :entries, dependent: :destroy
-  # note before validation callback rather than before_save (otherwise the validation will allow for example "HIIT " through when "HIIT" already exists)
+  # NOTE: before validation callback rather than before_save (otherwise the validation will allow for example "HIIT " through when "HIIT" already exists)
   before_validation :prettify_name
   validates :name, presence: true,
                    uniqueness: { case_sensitive: false }
@@ -11,15 +11,14 @@ class Workout < ApplicationRecord
   scope :order_by_current, -> { order(current: :desc, name: :asc) }
   scope :current, -> { where(current: true) }
 
-
   # not quite right but good enough for now. Helps prevent a PT instructor rates wrongly get selected for Space Group classes
   def group_workout?
-    workout_groups.any? { |w| w.renewable?}
+    workout_groups.any? { |w| w.renewable? }
   end
 
   private
-   def prettify_name
-    self.name = name.strip.titleize
-   end
 
+  def prettify_name
+    self.name = name.strip.titleize
+  end
 end

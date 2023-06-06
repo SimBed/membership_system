@@ -35,11 +35,11 @@ class Product < ApplicationRecord
   scope :current, -> { where(current: true) }
 
   def self.online_order_by_wg_classes_days
-    # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id    
+    # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id
     Product.find_by_sql("SELECT products.*, CASE
                                     WHEN validity_unit = 'M' THEN validity_length * 30
                                     WHEN validity_unit = 'W' THEN validity_length * 7
-                                    ELSE validity_length * 1 END 
+                                    ELSE validity_length * 1 END
                                     AS days
                         FROM products
                         INNER JOIN workout_groups w ON products.workout_group_id = w.id
@@ -57,11 +57,11 @@ class Product < ApplicationRecord
   end
 
   def css_class
-    max_classes < 1000 ? 'fixed' : 'unlimited' 
+    max_classes < 1000 ? 'fixed' : 'unlimited'
   end
-    
+
   def name
-    "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}#{' ('.concat(color,')') unless color.nil?}"
+    "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}#{' ('.concat(color, ')') unless color.nil?}"
   end
 
   # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
@@ -70,21 +70,21 @@ class Product < ApplicationRecord
     formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
     "#{workout_group.name} - " \
       "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} " \
-      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}#{' ('.concat(color,')') unless color.nil?}"
+      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}#{' ('.concat(color, ')') unless color.nil?}"
   end
 
   def shop_name_classes
-      "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited'}"
-  end  
+    "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited'}"
+  end
 
   def shop_name_duration
     formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
-      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
+    "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
   end
 
   def formal_unit
     { D: 'Day', W: 'Week', M: 'Month' }[validity_unit.to_sym]
-  end  
+  end
 
   def unlimited_package?
     max_classes == 1000 && !trial?
@@ -119,7 +119,7 @@ class Product < ApplicationRecord
     :group
   end
 
-  #seems to be named misleadingly. Rename to duration? and test
+  # seems to be named misleadingly. Rename to duration? and test
   def duration_days
     validity_unit_hash = { 'D' => :days, 'W' => :weeks, 'M' => :months }
     validity_length.send(validity_unit_hash[validity_unit])
@@ -156,7 +156,7 @@ class Product < ApplicationRecord
   # must make workout_group.name == 'Group' flexible
   # def renewal_price(purpose)
   #   return nil unless purpose == 'base' || workout_group.name == 'Group'
-    
+
   #   renewal_price = prices.where(purpose => true).where(current: true).first
   #   base_price = prices.where(base: true).where(current: true).first
   #   renewal_price || base_price
@@ -164,7 +164,7 @@ class Product < ApplicationRecord
 
   def renewal_price(purpose)
     return nil unless purpose == 'base' || workout_group.name == 'Group'
-    
+
     renewal_price = prices.where(purpose => true).where(current: true).first
     base_price = prices.where(base: true).where(current: true).first
     renewal_price || base_price

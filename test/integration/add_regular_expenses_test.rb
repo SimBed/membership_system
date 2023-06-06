@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class AddRegularExpensesTest < ActionDispatch::IntegrationTest
   def setup
@@ -22,7 +22,6 @@ class AddRegularExpensesTest < ActionDispatch::IntegrationTest
   end
 
   test 'add duplicate expenses' do
-
     get "/superadmin/regular_expenses/add?date='Jan 1 2023'"
     assert_difference 'RegularExpense.all.size', 1 do
       RegularExpense.create(
@@ -36,6 +35,5 @@ class AddRegularExpensesTest < ActionDispatch::IntegrationTest
     assert_difference 'Expense.all.size', 1 do
       get "/superadmin/regular_expenses/add?date='Jan 1 2023'"
     end
-  end  
-
+  end
 end

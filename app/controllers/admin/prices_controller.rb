@@ -59,8 +59,8 @@ class Admin::PricesController < Admin::BaseController
 
   def price_params
     # the update method (and therefore the price_params method) is used through a form but also clicking on a link on the products show page within the prices listing
-    return {date_until: Time.zone.now.to_date.yesterday, product_id: params[:product_id] } if params[:current].present? && params[:current] == 'false'
-    return {date_until: 100.years.from_now, product_id: params[:product_id] } if params[:current].present? && params[:current] == 'true'
+    return { date_until: Time.zone.now.to_date.yesterday, product_id: params[:product_id] } if params[:current].present? && params[:current] == 'false'
+    return { date_until: 100.years.from_now, product_id: params[:product_id] } if params[:current].present? && params[:current] == 'true'
 
     params.require(:price).permit(:price, :date_from, :date_until, :product_id)
   end

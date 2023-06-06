@@ -17,6 +17,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_workout_group_path
+
       assert_redirected_to login_path
     end
   end
@@ -25,6 +26,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get admin_workout_groups_path
+
       assert_redirected_to login_path
     end
   end
@@ -33,6 +35,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get admin_workout_group_path(@workout_group)
+
       assert_redirected_to login_path
     end
   end
@@ -41,6 +44,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_workout_group_path(@workout_group)
+
       assert_redirected_to login_path
     end
   end
@@ -69,6 +73,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
             partner_id: @workout_group.partner_id,
             partner_share: @workout_group.partner_share + 10,
             workout_ids: @workout_group.workouts.pluck(:id) } }
+
       assert_equal original_partner_share, @workout_group.reload.partner_share
       assert_redirected_to login_path
     end

@@ -19,6 +19,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_adjustment_path
+
       assert_redirected_to login_path
     end
   end
@@ -27,6 +28,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_adjustment_path(@adjustment)
+
       assert_redirected_to login_path
     end
   end
@@ -51,6 +53,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
        { adjustment:
           { purchase_id: @purchase1.id,
             adjustment: @adjustment.adjustment + 5 } }
+
       assert_equal original_adjustment, @adjustment.reload.adjustment
       assert_redirected_to login_path
     end

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   private
-  
+
   def send_to_correct_page_for_ac_type
     deal_with_admin && return
     deal_with_client && return
@@ -31,14 +31,14 @@ class ApplicationController < ActionController::Base
     (redirect_to client_shop_path(client) if logged_in_as?('client') && @account.without_purchase?) and return
 
     # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
-    redirect_to client_book_path(client) if logged_in_as?('client') #groupex only
+    redirect_to client_book_path(client) if logged_in_as?('client') # groupex only
   end
 
   def deal_with_instructor
     redirect_to admin_instructor_path(@account.instructor) if logged_in_as?('instructor')
-  end  
+  end
 
   def deal_with_partner
     redirect_to admin_partner_path(@account.partner) if logged_in_as?('partner')
-  end  
+  end
 end

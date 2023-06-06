@@ -52,7 +52,7 @@ class Admin::AttendancesController < Admin::BaseController
                       price_id: 2,
                       payment: 550,
                       dop: Date.today(),
-                      payment_mode: "Fitternity",
+                      payment_mode: 'Fitternity',
                       fitternity_id: Fitternity.ongoing.first&.id }
 
     @purchase = Purchase.new(purchase_hash)
@@ -105,7 +105,7 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass = @attendance.wkclass
     update_by_client if logged_in_as?('client')
     if logged_in_as?('junioradmin', 'admin', 'superadmin')
-      result =  AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update
+      result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update
       flash_message(*result.flash_array)
       update_purchase_status([@purchase]) if result.penalty_change?
       handle_admin_update_response if result.success?
@@ -382,7 +382,7 @@ class Admin::AttendancesController < Admin::BaseController
     set_wkclass_and_booking_type
     # return unless @wkclass.committed_on_same_day?(@client)
     # the old method (above) incorrectly restricted 2 bookings on same day from separate
-    # unlimitied packages eg group package and nutrition package 
+    # unlimitied packages eg group package and nutrition package
     return unless @purchase.restricted_on?(@wkclass)
 
     flash_hash = booking_flash_hash.dig(@booking_type, :daily_limit_met)
@@ -413,7 +413,7 @@ class Admin::AttendancesController < Admin::BaseController
       @booking_type = :booking
       @rebooking = false
       @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
-      @purchase = Purchase.find(params.dig(:attendance, :purchase_id).to_i)      
+      @purchase = Purchase.find(params.dig(:attendance, :purchase_id).to_i)
     else
       @booking_type = :update
       @rebooking = true

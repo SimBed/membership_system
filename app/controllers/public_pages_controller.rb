@@ -1,8 +1,8 @@
 class PublicPagesController < ApplicationController
   before_action :set_timetable, only: [:welcome, :space_home]
-  before_action :account_limit, only: [:create_account]  
+  before_action :account_limit, only: [:create_account]
   layout 'public'
-  
+
   def welcome
     if logged_in_as?('junioradmin', 'admin', 'superadmin')
       # not && return won't work because of precedence of operator over method call
@@ -19,7 +19,7 @@ class PublicPagesController < ApplicationController
 
   def welcome_home
   end
-  
+
   def space_home
   end
 
@@ -27,7 +27,7 @@ class PublicPagesController < ApplicationController
     @account = Account.new
     @client = Client.new
     render layout: 'login'
-  end 
+  end
 
   def create_account
     @client = Client.new(client_params)
@@ -53,11 +53,11 @@ class PublicPagesController < ApplicationController
 
   def shop
     # @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt? || p.base_price.nil?}
-    @products = Product.online_order_by_wg_classes_days.reject {|p| p.base_price_at(Time.zone.now).nil?}
+    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
-    @renewal = { :offer_online_discount? => true, renewal_offer: "renewal_pre_expiry" }  
+    @renewal = { :offer_online_discount? => true, renewal_offer: 'renewal_pre_expiry' }
     render 'wedontsupport', layout: 'white_canvas'
   end
 
@@ -67,12 +67,12 @@ class PublicPagesController < ApplicationController
 
   def sell
   end
-  
+
   private
 
   def set_timetable
     @timetable = Timetable.find(Setting.timetable)
-    @days = @timetable.table_days.order_by_day    
+    @days = @timetable.table_days.order_by_day
   end
 
   def account_limit
@@ -80,7 +80,7 @@ class PublicPagesController < ApplicationController
     # Setting/I18n
     if daily_accounts_count > 100
       # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
-      Whatsapp.new(receiver:'me', message_type:'new_purchase', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging
+      Whatsapp.new(receiver: 'me', message_type: 'new_purchase', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging
       redirect_to signup_path
       flash[:warning] = 'Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.'
     end
@@ -89,21 +89,21 @@ class PublicPagesController < ApplicationController
   # def waiver_agree
   #   unless params[:client][:waiver] == '1'
   #     render 'signup', layout: 'login'
-  #     flash[:warning] = "Please agree to The Space's terms, conditions and policies"    
+  #     flash[:warning] = "Please agree to The Space's terms, conditions and policies"
   #   end
   # end
 
   def associate_account_holder_to_account
-    @client.modifier_is_client = true #should be irrelevant as the enhanced validations this causes have already happened and won't have been disturbed
+    @client.modifier_is_client = true # should be irrelevant as the enhanced validations this causes have already happened and won't have been disturbed
     @client.update(account_id: @account.id)
   end
-  
+
   def client_params
     params.require(:client).permit(:first_name, :last_name, :email, :phone_raw, :whatsapp_raw, :whatsapp_country_code, :instagram, :terms_of_service)
-                           .merge(phone_country_code: 'IN')
-                           .merge(modifier_is_client: true)
+          .merge(phone_country_code: 'IN')
+          .merge(modifier_is_client: true)
   end
-  
+
   def account_params
     password_params = { password: @password, password_confirmation: @password }
     activation_params = { activated: true, ac_type: 'client' }
@@ -114,7 +114,6 @@ class PublicPagesController < ApplicationController
     { receiver: @client,
       message_type: message_type,
       admin_triggered: false,
-      variable_contents: { password: @password } }      
+      variable_contents: { password: @password } }
   end
-
 end

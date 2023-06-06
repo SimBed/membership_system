@@ -15,6 +15,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get new' do
     get login_path
+
     assert_response :success
   end
 
@@ -28,11 +29,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'client invalid login' do
     post login_path, params: { session: { email: @account_client1.email, password: '' } }
+
     refute_predicate flash, :empty?
   end
 
   test 'partner invalid login' do
     post login_path, params: { session: { email: @account_partner1.email, password: '' } }
+
     refute_predicate flash, :empty?
   end
 end

@@ -14,6 +14,7 @@ class Client::ClientsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client2, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
       get client_client_path(@account_client1.client)
+
       assert_redirected_to login_path
     end
   end

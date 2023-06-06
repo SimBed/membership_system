@@ -13,6 +13,7 @@ class InstructorRateTest < ActiveSupport::TestCase
 
   test 'instructor should be valid' do
     @instructor_rate.instructor_id = 4000
+
     refute_predicate @instructor_rate, :valid?
   end
 end

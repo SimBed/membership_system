@@ -22,62 +22,74 @@ class ClientTest < ActiveSupport::TestCase
 
   test 'phone number should be plausible' do
     @client.phone_raw = '914567890'
+
     refute_predicate @client, :valid?
   end
 
   test 'whatsapp number should be plausible' do
     @client.whatsapp_raw = '914567890'
+
     refute_predicate @client, :valid?
   end
 
   test 'phone number is not mandatory' do
     @client.phone_raw = ''
+
     assert_predicate @client, :valid?
-  end  
+  end
 
   test 'whatsapp number mandatory presence on signup only' do
     @client.whatsapp_raw = ''
+
     assert_predicate @client, :valid?
     # admin is allowed to add a client with blank whatsapp
     @client.modifier_is_client = true
-    refute_predicate @client, :valid?    
+
+    refute_predicate @client, :valid?
   end
 
   test 'first name should be present' do
     @client.first_name = '     '
+
     refute_predicate @client, :valid?
   end
 
   test 'last name should be present' do
     @client.last_name = '     '
+
     refute_predicate @client, :valid?
   end
 
   test 'first_name should not be too long' do
     @client.first_name = 'a' * 41
+
     refute_predicate @client, :valid?
   end
 
   test 'last_name should not be too long' do
     @client.last_name = 'a' * 41
+
     refute_predicate @client, :valid?
   end
 
   test 'full name should be unique' do
     duplicate_named_client = Client.new(first_name: @client.first_name, last_name: @client.last_name)
     @client.save
+
     refute_predicate duplicate_named_client, :valid?
   end
 
   test 'uppercase_names which also strips whitespace' do
     roughly_named_client = @client.dup
     roughly_named_client.update(first_name: '  amalu ', last_name: '   meowaw   ')
-    assert_equal roughly_named_client.first_name, 'Amalu'
-    assert_equal roughly_named_client.last_name, 'Meowaw'
+
+    assert_equal('Amalu', roughly_named_client.first_name)
+    assert_equal('Meowaw', roughly_named_client.last_name)
   end
 
   test 'email should not be too long' do
     @client.email = "#{'a' * 244}@example.com"
+
     refute_predicate @client, :valid?
   end
 
@@ -86,6 +98,7 @@ class ClientTest < ActiveSupport::TestCase
                          first.last@foo.jp alice+bob@baz.cn]
     valid_addresses.each do |valid_address|
       @client.email = valid_address
+
       assert_predicate @client, :valid?, "#{valid_address.inspect} should be valid"
     end
   end
@@ -95,6 +108,7 @@ class ClientTest < ActiveSupport::TestCase
                            foo@bar_baz.com foo@bar+baz.com]
     invalid_addresses.each do |invalid_address|
       @client.email = invalid_address
+
       refute_predicate @client, :valid?, "#{invalid_address.inspect} should be invalid"
     end
   end
@@ -103,6 +117,7 @@ class ClientTest < ActiveSupport::TestCase
     duplicate_client = @client.dup
     duplicate_client.email = @client.email.upcase
     @client.save
+
     refute_predicate duplicate_client, :valid?
   end
 
@@ -110,11 +125,13 @@ class ClientTest < ActiveSupport::TestCase
     mixed_case_email = 'Foo@ExAMPle.CoM'
     @client.email = mixed_case_email
     @client.save
+
     assert_equal mixed_case_email.downcase, @client.reload.email
   end
 
   test 'name method' do
     @client.save
+
     assert_equal 'Amala Paw', @client.name
   end
 
@@ -133,9 +150,9 @@ class ClientTest < ActiveSupport::TestCase
                               password: 'foobar',
                               password_confirmation: 'foobar',
                               ac_type: 'client')
-    @client.update(account_id: @account.id) 
+    @client.update(account_id: @account.id)
     # has account but no purchase
-    refute @client.deletable?  
+    refute @client.deletable?
   end
 
   test 'just_bought_groupex? method' do
@@ -152,6 +169,7 @@ class ClientTest < ActiveSupport::TestCase
 
   test 'associated account (if there is one) should exist' do
     @client.account_id = 4000
+
     refute_predicate @client, :valid?
   end
 end

@@ -25,7 +25,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     # ugly way to get aggregate functions together with the grouping itself
     # https://stackoverflow.com/questions/27145994/rails-activerecord-perform-group-sum-and-count-in-one-query
     @instructor_cost_subtotals = @wkclasses_with_instructor_expense.unscope(:order).joins(:instructor).group("first_name || ' ' || last_name").pluck('max(first_name),max(last_name),sum(instructor_cost), count(instructor_cost)')
-    @total_instructor_cost = @instructor_cost_subtotals.map {|i| i[2]}.compact.sum
+    @total_instructor_cost = @instructor_cost_subtotals.map { |i| i[2] }.compact.sum
     @fixed_expenses = Expense.by_workout_group(@workout_group.name, @period)
     @months = months_logged
     @summary = {}
@@ -35,7 +35,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     respond_to do |format|
       format.html
       format.js { render 'show.js.erb' }
-    end    
+    end
   end
 
   def new
@@ -66,7 +66,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       flash[:success] = t('.success')
     else
       prepare_items_for_dropdowns
-      @partner = @workout_group.partner  
+      @partner = @workout_group.partner
       render :edit, status: :unprocessable_entity
     end
   end
@@ -81,7 +81,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     clear_session(:filter_instructor)
     session[:filter_instructor] = params[:instructor]
     redirect_to "/admin/workout_groups/#{params[:id]}"
-  end  
+  end
 
   private
 

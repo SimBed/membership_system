@@ -15,6 +15,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_workout_path
+
       assert_redirected_to login_path
     end
   end
@@ -23,6 +24,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get admin_workouts_path
+
       assert_redirected_to login_path
     end
   end
@@ -31,6 +33,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_workout_path(@workout)
+
       assert_redirected_to login_path
     end
   end
@@ -51,6 +54,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
       log_in_as(account_holder)
       patch admin_workout_path(@workout), params:
        { workout: { name: 'newname' } }
+
       assert_equal original_name, @workout.reload.name
       assert_redirected_to login_path
     end

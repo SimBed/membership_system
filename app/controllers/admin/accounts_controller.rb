@@ -2,12 +2,12 @@ class Admin::AccountsController < Admin::BaseController
   before_action :correct_credentials, only: [:create]
   before_action :set_account_holder, only: [:create]
   before_action :set_account, only: [:update]
-  skip_before_action :admin_account,  only: [:index, :update]
+  skip_before_action :admin_account, only: [:index, :update]
   before_action :correct_account_or_junioradmin, only: [:update]
   before_action :superadmin_account, only: [:index]
   # accounts can't be updated/destroyed through the app
   # admin accounts cant be created through the app
-  
+
   def index
     @accounts = Account.where(ac_type: ['junioradmin', 'admin', 'superadmin']).order_by_ac_type
     render 'superadmin/accounts/index.html'
@@ -22,9 +22,9 @@ class Admin::AccountsController < Admin::BaseController
       flash_message :success, t('.success')
       message_type = case params[:ac_type]
                      when 'instructor'
-                      'new_instructor_account'
+                       'new_instructor_account'
                      else
-                      'new_account'
+                       'new_account'
                      end
       flash_message(*Whatsapp.new(whatsapp_params(message_type)).manage_messaging)
     else
@@ -42,31 +42,31 @@ class Admin::AccountsController < Admin::BaseController
       password_reset_client_of_client
     end
   end
-  
+
   private
-  
+
   def password_reset_admin_of_client
     @password = Account.password_wizard(Setting.password_length)
     @account.update(password: @password, password_confirmation: @password)
     flash_message(*Whatsapp.new(whatsapp_params('password_reset')).manage_messaging)
     redirect_back fallback_location: admin_clients_path
   end
-  
+
   def password_reset_superadmin_of_admin
     passwords_the_same = (password_update_params[:new_password] == password_update_params[:new_password_confirmation])
-    @account.errors.add(:base, "passwords not the same") unless passwords_the_same
-    if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password]) 
+    @account.errors.add(:base, 'passwords not the same') unless passwords_the_same
+    if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
       flash_message :success, t('.success')
     else
       flash[:warning] = "Update failed. Passwords either don't match or too short (min 6 characters)"
      end
-     redirect_to admin_accounts_path
+    redirect_to admin_accounts_path
   end
 
   def password_reset_client_of_client
     passwords_the_same = (password_update_params[:new_password] == password_update_params[:new_password_confirmation])
-    @account.errors.add(:base, "passwords not the same") unless passwords_the_same
-    if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password]) 
+    @account.errors.add(:base, 'passwords not the same') unless passwords_the_same
+    if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
       flash_message :success, t('.success')
       redirect_back fallback_location: login_path
     else
@@ -79,9 +79,8 @@ class Admin::AccountsController < Admin::BaseController
         date_last_purchase_expiry: @client.last_purchase&.expiry_date
       }
       render 'client/clients/show', layout: 'client'
-     end  
+     end
   end
-
 
   def correct_account_or_junioradmin
     return if current_account?(@account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
@@ -140,11 +139,11 @@ class Admin::AccountsController < Admin::BaseController
 
   def password_update_params
     params.require(:account).permit(:new_password, :new_password_confirmation, :requested_by)
-  end  
+  end
 
   def whatsapp_params(message_type)
     { receiver: @account_holder,
       message_type: message_type,
-      variable_contents: { first_name: @account_holder.first_name, email: @account_holder.email, password: @password } }      
+      variable_contents: { first_name: @account_holder.first_name, email: @account_holder.email, password: @password } }
   end
 end

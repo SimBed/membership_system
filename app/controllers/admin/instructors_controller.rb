@@ -14,10 +14,10 @@ class Admin::InstructorsController < Admin::BaseController
     @wkclasses = Wkclass.during(@period).with_instructor(@instructor.id)
     @wkclasses_with_instructor_expense = @wkclasses.unscope(:order).has_instructor_cost.includes(:workout, :attendances, instructor: [:instructor_rates])
     # this double counts and I cant find a way to prevent it (tried with distinct and group) so fallen back on ruby object
-    # @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.sum(:rate)    
-    @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.map {|w| w.rate}.inject(0, :+)    
-    handle_sort    
-    @months = months_logged       
+    # @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.sum(:rate)
+    @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.map { |w| w.rate }.inject(0, :+)
+    handle_sort
+    @months = months_logged
   end
 
   def new
@@ -75,31 +75,31 @@ class Admin::InstructorsController < Admin::BaseController
     # restore to ActiveRecord and recover order.
     # ids = @wkclasses_with_instructor_expense.map(&:id)
     # @wkclasses_with_instructor_expense = Wkclass.recover_order(ids)
-  end  
+  end
 
   def set_period
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
     session[:revenue_month] = params[:revenue_month] || session[:revenue_month] || default_month
     session[:revenue_month] = default_month if session[:revenue_month] == 'All'
     @period = month_period(session[:revenue_month])
-  end  
-  
+  end
+
   def set_instructor
     @instructor = Instructor.find(params[:id])
   end
-  
+
   def correct_instructor
     redirect_to login_path unless current_account?(@instructor.account)
   end
 
   def set_raw_numbers
     @instructor.whatsapp_country_code = @instructor.country(:whatsapp)
-    @instructor.whatsapp_raw = @instructor.number_raw(:whatsapp) 
-  end    
+    @instructor.whatsapp_raw = @instructor.number_raw(:whatsapp)
+  end
 
   def instructor_params
     # the update method (and therefore the instructor_params method) is used through a form but also clicking on a link on the instructors page
-    return {current: params[:current] } if params[:current].present?    
+    return { current: params[:current] } if params[:current].present?
 
     params.require(:instructor).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :current)
   end

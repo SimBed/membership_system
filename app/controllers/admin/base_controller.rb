@@ -1,7 +1,7 @@
 class Admin::BaseController < ApplicationController
   layout :determine_layout
   before_action :admin_account
-  before_action :set_public_timetable # for navigation bar 
+  before_action :set_public_timetable # for navigation bar
 
   def update_purchase_status(purchases)
     # this has to be done as separate requests as each calc is dependent on the previously updated attribute
@@ -25,11 +25,12 @@ class Admin::BaseController < ApplicationController
   end
 
   private
-    def determine_layout
-      'admin'
-    end
 
-    def set_public_timetable
-      @current_timetable = Timetable.find(Setting.timetable)      
-    end
+  def determine_layout
+    'admin'
+  end
+
+  def set_public_timetable
+    @current_timetable = Timetable.find(Setting.timetable)
+  end
 end

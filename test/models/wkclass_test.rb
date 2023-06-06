@@ -24,6 +24,7 @@ class WkclassTest < ActiveSupport::TestCase
   test 'workout/time should be unique when creating new wkclass' do
     @duplicate_class = @wkclass.dup
     @wkclass.save
+
     refute_predicate @duplicate_class, :valid?
   end
 
@@ -39,6 +40,7 @@ class WkclassTest < ActiveSupport::TestCase
 
   test 'show_in_bookings_for' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
+
     assert_equal [548, 568, 569, 570], Wkclass.show_in_bookings_for(@client).pluck(:id)
   end
 
@@ -60,7 +62,8 @@ class WkclassTest < ActiveSupport::TestCase
 
   test 'deletable? method' do
     @wkclass.save
+
     assert @wkclass.deletable?
     refute @wkclass_many_attendances.deletable?
-  end    
+  end
 end

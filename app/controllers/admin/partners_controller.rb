@@ -75,5 +75,4 @@ class Admin::PartnersController < Admin::BaseController
   def superadmin_account
     redirect_to login_path unless logged_in_as?('superadmin')
   end
-
 end

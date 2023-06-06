@@ -16,6 +16,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_instructor_path
+
       assert_redirected_to login_path
     end
   end
@@ -24,6 +25,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get admin_instructors_path
+
       assert_redirected_to login_path
     end
   end
@@ -32,6 +34,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_instructor_path(@instructor)
+
       assert_redirected_to login_path
     end
   end
@@ -56,6 +59,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
        { instructor:
           { first_name: @instructor.first_name,
             last_name: 'Newname' } }
+
       assert_equal original_last_name, @instructor.reload.last_name
       assert_redirected_to login_path
     end

@@ -33,8 +33,8 @@ class ActiveSupport::TestCase
   end
 
   def switch_role_to(role)
-    # get '/switch_account_role', params: { role: role }    
-    get switch_account_role_path(role: role)    
+    # get '/switch_account_role', params: { role: role }
+    get switch_account_role_path(role: role)
   end
 
   def month_period(date)
@@ -49,5 +49,4 @@ class ActiveSupport::TestCase
     (css_select 'td').each { |td| booked_count += 1 if td.text == booking_type }
     booked_count
   end
-
 end

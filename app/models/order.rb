@@ -15,11 +15,11 @@ class Order < ApplicationRecord
       price_paise = price_rupees * 100
       Razorpay.setup(Rails.configuration.razorpay[:key_id], Rails.configuration.razorpay[:key_secret])
       razorpay_pmnt_obj = fetch_payment(params[:payment_id])
-      if razorpay_pmnt_obj.status == "authorized"
-        razorpay_pmnt_obj.capture({amount: price_paise})
-        params.merge!({status: fetch_payment(params[:payment_id]).status}).except(:price_id)                
+      if razorpay_pmnt_obj.status == 'authorized'
+        razorpay_pmnt_obj.capture({ amount: price_paise })
+        params.merge!({ status: fetch_payment(params[:payment_id]).status }).except(:price_id)
       else
-        raise StandardError, "Unable to capture payment"
+        raise StandardError, 'Unable to capture payment'
       end
     end
 

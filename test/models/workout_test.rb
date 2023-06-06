@@ -11,11 +11,13 @@ class WorkoutTest < ActiveSupport::TestCase
 
   test 'name should be present' do
     @workout.name = '      '
+
     refute_predicate @workout, :valid?
   end
 
   test 'name should get prettified on save' do
     @workout.save
-    assert_equal @workout.name, 'My Running Class' 
+
+    assert_equal('My Running Class', @workout.name)
   end
 end

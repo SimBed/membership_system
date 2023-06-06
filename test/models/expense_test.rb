@@ -14,6 +14,7 @@ class ExpenseTest < ActiveSupport::TestCase
 
   test 'workout_group should be valid' do
     @expense.workout_group_id = 4000
+
     refute_predicate @expense, :valid?
   end
 end

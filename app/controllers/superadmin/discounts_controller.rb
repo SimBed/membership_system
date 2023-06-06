@@ -8,15 +8,16 @@ class Superadmin::DiscountsController < Superadmin::BaseController
                               discretion: Discount.current(Time.zone.now.to_date).by_rationale('Discretion'),
                               oneoff: Discount.current(Time.zone.now.to_date).by_rationale('Oneoff'),
                               status: Discount.current(Time.zone.now.to_date).by_rationale('Status'),
-                              renewal: Discount.current(Time.zone.now.to_date).by_rationale('Renewal')},
+                              renewal: Discount.current(Time.zone.now.to_date).by_rationale('Renewal')
+                            },
                             not_current: {
                               base: Discount.not_current(Time.zone.now.to_date).by_rationale('Base'),
                               commercial: Discount.not_current(Time.zone.now.to_date).by_rationale('Commercial'),
                               discretion: Discount.not_current(Time.zone.now.to_date).by_rationale('Discretion'),
                               oneoff: Discount.not_current(Time.zone.now.to_date).by_rationale('Oneoff'),
                               status: Discount.not_current(Time.zone.now.to_date).by_rationale('Status'),
-                              renewal: Discount.not_current(Time.zone.now.to_date).by_rationale('Renewal')}
-                          }
+                              renewal: Discount.not_current(Time.zone.now.to_date).by_rationale('Renewal')
+                            }}
   end
 
   def new
@@ -56,20 +57,21 @@ class Superadmin::DiscountsController < Superadmin::BaseController
   end
 
   private
-    def prepare_items_for_dropdowns
-      @discount_names = DiscountReason.order_by_name
-      @discount_reasons = Rails.application.config_for(:constants)['discount_rationales']
-    end
 
-    def set_discount
-      @discount = Discount.find(params[:id])
-    end
+  def prepare_items_for_dropdowns
+    @discount_names = DiscountReason.order_by_name
+    @discount_reasons = Rails.application.config_for(:constants)['discount_rationales']
+  end
 
-    def discount_params
-      # the update method (and therefore the discount_params method) is used through a form but also clicking on a link on the discounts page
-      return {end_date: Time.zone.now.to_date.yesterday } if params[:current].present? && params[:current] == 'false'
-      return {end_date: 100.years.from_now } if params[:current].present? && params[:current] == 'true'
+  def set_discount
+    @discount = Discount.find(params[:id])
+  end
 
-      params.require(:discount).permit(:discount_reason_id, :percent, :fixed, :pt, :group, :online, :aggregatable, :start_date, :end_date)
-    end
+  def discount_params
+    # the update method (and therefore the discount_params method) is used through a form but also clicking on a link on the discounts page
+    return { end_date: Time.zone.now.to_date.yesterday } if params[:current].present? && params[:current] == 'false'
+    return { end_date: 100.years.from_now } if params[:current].present? && params[:current] == 'true'
+
+    params.require(:discount).permit(:discount_reason_id, :percent, :fixed, :pt, :group, :online, :aggregatable, :start_date, :end_date)
+  end
 end

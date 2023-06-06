@@ -15,22 +15,26 @@ class ProductTest < ActiveSupport::TestCase
 
   test 'max_classes should be present' do
     @product.max_classes = '     '
+
     refute_predicate @product, :valid?
   end
 
   test 'validity_length should be present' do
     @product.validity_length = '     '
+
     refute_predicate @product, :valid?
   end
 
   test 'validity_unit should be present' do
     @product.validity_unit = '     '
+
     refute_predicate @product, :valid?
   end
 
   test 'product should be unique' do
     duplicate_product = @product.dup
     @product.save
+
     refute_predicate duplicate_product, :valid?
   end
 
@@ -38,6 +42,7 @@ class ProductTest < ActiveSupport::TestCase
     similar_product = @product.dup
     similar_product.workout_group_id = workout_groups(:pilates).id
     @product.save
+
     assert_predicate similar_product, :valid?
   end
 end

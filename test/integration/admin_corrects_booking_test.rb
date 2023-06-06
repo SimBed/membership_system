@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
   def setup
@@ -55,6 +55,7 @@ class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
                                                          purchase_id: @purchase.id } }
     follow_redirect!
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+
     assert_equal Date.parse('Mon, 20 June 2022'), @purchase.reload.expiry_date
     # admin (incorrectly) logs attendance as no show
     assert_difference '@purchase.reload.no_shows', 1 do

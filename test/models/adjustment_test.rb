@@ -12,16 +12,19 @@ class AdjustmentTest < ActiveSupport::TestCase
 
   test 'adjustment should be integer' do
     @adjustment.adjustment = 10.5
+
     refute_predicate @adjustment, :valid?
   end
 
   test 'adjustment can be -ve' do
     @adjustment.adjustment = -1
+
     assert_predicate @adjustment, :valid?
   end
 
   test 'associated purchase must be valid' do
     @adjustment.purchase_id = 4000
+
     refute_predicate @adjustment, :valid?
   end
 end

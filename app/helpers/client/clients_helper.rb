@@ -21,7 +21,7 @@ module Client::ClientsHelper
   def handle_new_booking(wkclass, client)
     purchase = Purchase.use_for_booking(wkclass, client)
     if purchase.nil? ||
-      # wkclass.committed_on_same_day?(client) ||      
+       # wkclass.committed_on_same_day?(client) ||
        purchase.restricted_on?(wkclass) ||
        !wkclass.booking_window.cover?(Time.zone.now)
       { css_class: 'table-secondary', link: '' }
@@ -47,13 +47,13 @@ module Client::ClientsHelper
       { css_class: 'table-success',
         link: link_to_update(attendance, amendment: 'cancel') }
     when 'cancelled early'
-        # if wkclass.committed_on_same_day?(client)
-        if attendance.purchase.restricted_on?(wkclass)
+      # if wkclass.committed_on_same_day?(client)
+      if attendance.purchase.restricted_on?(wkclass)
         { css_class: 'table-secondary', link: '' }
-      else
-        { css_class: 'table-secondary',
-          link: link_to_update(attendance, amendment: 'rebook') }
-      end
+    else
+      { css_class: 'table-secondary',
+        link: link_to_update(attendance, amendment: 'rebook') }
+    end
     when 'cancelled late', 'no show'
       { css_class: 'table-danger', link: '' }
     else # 'attended'
@@ -87,13 +87,13 @@ module Client::ClientsHelper
       return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
       return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
 
-      "Your Group Package has expired. Renew your Package now!"
+      'Your Group Package has expired. Renew your Package now!'
     else
       return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
       return "Buy your next Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
       return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
 
-      "Your Group Package has expired. Renew your Package now!"
+      'Your Group Package has expired. Renew your Package now!'
     end
   end
 
@@ -101,7 +101,7 @@ module Client::ClientsHelper
     return "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if ongoing.nil?
     return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
     return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
-    
+
     "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" # if !ongoing && trial
   end
 
@@ -116,7 +116,8 @@ module Client::ClientsHelper
   end
 
   private
-    def format_rate(renewal_type)
-      number_with_precision(Discount.rate(Time.zone.now.to_date)[renewal_type][:percent], strip_insignificant_zeros: true)
-    end
+
+  def format_rate(renewal_type)
+    number_with_precision(Discount.rate(Time.zone.now.to_date)[renewal_type][:percent], strip_insignificant_zeros: true)
+  end
 end

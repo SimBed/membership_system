@@ -14,14 +14,14 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
   end
 
   def edit
-    @workout_groups = WorkoutGroup.all.map { |w| [w.name, w.id] }    
+    @workout_groups = WorkoutGroup.all.map { |w| [w.name, w.id] }
   end
 
   def create
     @regular_expense = RegularExpense.new(regular_expense_params)
     if @regular_expense.save
       redirect_to superadmin_regular_expenses_path
-      flash[:success] = t('.success')      
+      flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,21 +38,21 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
 
   def destroy
     @regular_expense.destroy
-    redirect_to superadmin_regular_expenses_path    
+    redirect_to superadmin_regular_expenses_path
     flash[:success] = t('.success')
   end
 
   def add
-    date = params[:date].to_date #Time.zone.now.beginning_of_month.to_date
+    date = params[:date].to_date # Time.zone.now.beginning_of_month.to_date
     rejected = 0
     total = RegularExpense.all.size
-    RegularExpense.all.each do |r| 
+    RegularExpense.all.each do |r|
       new_expense = Expense.create(
-                      item: r.item,
-                      amount: r.amount,
-                      date:date,
-                      workout_group_id: r.workout_group_id
-                    )
+        item: r.item,
+        amount: r.amount,
+        date: date,
+        workout_group_id: r.workout_group_id
+      )
       rejected += 1 unless new_expense.errors.blank?
     end
     # redirect_to superadmin_regular_expenses_path
@@ -66,12 +66,12 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
   end
 
   private
-    def set_regular_expense
-      @regular_expense = RegularExpense.find(params[:id])
-    end
 
-    def regular_expense_params
-      params.require(:regular_expense).permit(:item, :amount, :workout_group_id)
-    end
+  def set_regular_expense
+    @regular_expense = RegularExpense.find(params[:id])
+  end
 
+  def regular_expense_params
+    params.require(:regular_expense).permit(:item, :amount, :workout_group_id)
+  end
 end

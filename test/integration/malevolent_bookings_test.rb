@@ -36,6 +36,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
     follow_redirect!
+
     assert_equal 'classes all booked', @purchase.reload.status
     # client attempts to book another class
     log_in_as @account_client
@@ -43,6 +44,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_redirected_to client_book_path @client
     assert_equal([['The maximum number of classes has already been booked.',
                    'Renew you Package if you wish to attend this class']], flash[:warning])
@@ -70,10 +72,12 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # cancel last booking
     @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
     patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled early' } }
+
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead
     post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
+
     assert_equal 'classes all booked', @purchase.reload.status
 
     # client attempts to rebook previously cancelled class
@@ -96,7 +100,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post admin_wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00',instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post admin_wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
@@ -110,6 +114,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_equal 'classes all booked', @purchase.reload.status
 
     # admin attempts to book another class
@@ -117,6 +122,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                            purchase_id: @purchase.id } }
     end
+
     assert_redirected_to admin_wkclass_path(Wkclass.last(3)[2], no_scroll: true)
     assert_equal([['The maximum number of classes has already been booked']], flash[:warning])
   end
@@ -145,10 +151,12 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # cancel last booking
     @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
     patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled early' } }
+
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead
     post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
+
     assert_equal 'classes all booked', @purchase.reload.status
 
     # admin corrects class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is amnesty)
@@ -186,16 +194,19 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # last booking cancelled late (but incorrectly set to cancelled early)
     @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
     patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled early' } }
+
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead (wouldn't be allowed if previous cancellation logged correctly)
     post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
+
     assert_equal 'classes all booked', @purchase.reload.status
 
     # admin attempts to correct class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is no amnesty)
     assert_difference '@attendance.reload.amendment_count', 0 do
       patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled late' } }
     end
+
     assert_redirected_to admin_wkclass_path @attendance.wkclass, { no_scroll: true }
     assert_equal [['The purchase has provisionally expired.',
                    'This change may not be possible without first cancelling a booking']], flash[:warning]

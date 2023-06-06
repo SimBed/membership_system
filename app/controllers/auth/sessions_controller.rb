@@ -1,6 +1,6 @@
 class Auth::SessionsController < Auth::BaseController
   layout 'login'
-  before_action :has_role?, only: :switch_account_role  
+  before_action :has_role?, only: :switch_account_role
 
   def new; end
 
@@ -40,7 +40,7 @@ class Auth::SessionsController < Auth::BaseController
   def has_role?
     unless logged_in? && account_role_names.any?(params[:role])
       flash[:warning] = 'unauthorised role'
-      redirect_back fallback_location: login_path    
+      redirect_back fallback_location: login_path
     end
   end
 

@@ -14,17 +14,20 @@ class FreezeTest < ActiveSupport::TestCase
 
   test 'duration should not be too short' do
     @freeze.end_date = @freeze.start_date + 1.day
+
     refute_predicate @freeze, :valid?
   end
 
   test 'period should not overlap an attendance' do
     # attendances on "Tue 22 Feb 22", "Mon 28 Feb 22", "Wed 23 Feb 22", "Wed 23 Feb 22", "Tue 25 Jan 22"
     @freeze.start_date = Date.parse('2022-02-27')
+
     refute_predicate @freeze, :valid?
   end
 
   test 'purchase should be valid' do
     @freeze.purchase_id = 4000
+
     refute_predicate @freeze, :valid?
   end
 

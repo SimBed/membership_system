@@ -16,9 +16,9 @@ class Admin::ProductsController < Admin::BaseController
     @product_total_count = {}
     @product_base_price = {}
     @products.each do |product|
-    @products_data[product.name.to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
-                                            total_count: Purchase.where(product_id: product.id).size,
-                                            base_price: product.base_price_at(Time.zone.now)&.price}
+      @products_data[product.name.to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
+                                              total_count: Purchase.where(product_id: product.id).size,
+                                              base_price: product.base_price_at(Time.zone.now)&.price }
     end
     respond_to do |format|
       format.html
@@ -65,7 +65,7 @@ class Admin::ProductsController < Admin::BaseController
       redirect_to admin_products_path
       flash[:success] = t('.success')
       update_purchase_status(@purchases)
-      update_sunset_date(@purchases)      
+      update_sunset_date(@purchases)
     else
       prepare_items_for_dropdowns
       render :edit, status: :unprocessable_entity
@@ -90,7 +90,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def initialize_sort
     session[:product_sort_option] = params[:product_sort_option] || session[:product_sort_option] || 'product_name'
-  end  
+  end
 
   def handle_sort
     # reformat
@@ -122,7 +122,7 @@ class Admin::ProductsController < Admin::BaseController
     # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
     # 'where' method does not retain the order of the items searched for, hence the more complicated approach
     # Detailed explanation in comments under 'recover_order' scope
-  end  
+  end
 
   def set_product
     @product = Product.find(params[:id])
@@ -140,10 +140,10 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def product_params
-    # the update method (and therefore the product_params method) is used through a form but also clicking on a link on the products page    
-    return {sellonline: params[:sellonline] } if params[:sellonline].present?
-    return {current: params[:current] } if params[:current].present?
+    # the update method (and therefore the product_params method) is used through a form but also clicking on a link on the products page
+    return { sellonline: params[:sellonline] } if params[:sellonline].present?
+    return { current: params[:current] } if params[:current].present?
 
-    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :rider, :has_rider).reject{|_, v| v == 'none'}
+    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :rider, :has_rider).reject { |_, v| v == 'none' }
   end
 end

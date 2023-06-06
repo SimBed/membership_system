@@ -18,6 +18,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_purchase_path
+
       assert_redirected_to login_path
     end
   end
@@ -26,6 +27,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_purchases_path
+
       assert_redirected_to login_path
     end
   end
@@ -34,6 +36,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get admin_purchase_path(@purchase1)
+
       assert_redirected_to login_path
     end
   end
@@ -42,6 +45,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_purchase_path(@purchase1)
+
       assert_redirected_to login_path
     end
   end
@@ -74,6 +78,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
             dop: @purchase1.dop,
             payment_mode: @purchase1.payment_mode,
             price: @trial_price } }
+
       assert_equal original_payment, @purchase1.reload.payment
       assert_redirected_to login_path
     end
@@ -89,19 +94,19 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when client has already had a trial and a trial is purchased' do
-      log_in_as(@admin)
-      assert_no_difference 'Purchase.count' do
-        post admin_purchases_path, params:
-         { purchase:
-            { client_id: @client_trial_expired.id,
-              product_id: @product_trial.id,
-              payment: 1500,
-              dop: '2022-02-15',
-              payment_mode: 'Cash',
-              price: prices(:trial),
-              renewal_discount_id: @discount.id,
-              status_discount_id: @discount.id,
-              oneoff_discount_id: @discount.id } }
-      end
-  end  
+    log_in_as(@admin)
+    assert_no_difference 'Purchase.count' do
+      post admin_purchases_path, params:
+       { purchase:
+          { client_id: @client_trial_expired.id,
+            product_id: @product_trial.id,
+            payment: 1500,
+            dop: '2022-02-15',
+            payment_mode: 'Cash',
+            price: prices(:trial),
+            renewal_discount_id: @discount.id,
+            status_discount_id: @discount.id,
+            oneoff_discount_id: @discount.id } }
+    end
+  end
 end

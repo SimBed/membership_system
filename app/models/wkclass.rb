@@ -27,7 +27,7 @@ class Wkclass < ApplicationRecord
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
   # scope :has_instructor_cost, -> { where.not(instructor_cost: [nil,0]) }
   # deprecate instructor_cost as an attribute of wkclass in due course and reference instructor_rate.rate instead (as below)
-  scope :has_instructor_cost, -> { joins(:instructor_rate).where.not(instructor_rate: {rate: 0}) }
+  scope :has_instructor_cost, -> { joins(:instructor_rate).where.not(instructor_rate: { rate: 0 }) }
   # wg is an array of instructor ids
   scope :with_instructor, ->(i) { joins(:instructor).where(instructor: { id: i }) }
   scope :group_by_instructor_cost, -> { joins(:instructor).group("first_name || ' ' || last_name").sum(:instructor_cost) }
@@ -41,9 +41,9 @@ class Wkclass < ApplicationRecord
   scope :future, -> { where('start_time > ?', Time.zone.now) }
   scope :instructorless, -> { past.where(instructor_id: nil) }
   # unscope order to avoid PG::InvalidColumnReference: ERROR https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
-  scope :incomplete, -> { past.joins(:attendances).where(attendances: {status: 'booked'}).unscope(:order).distinct }
-  scope :empty_class, -> { past.left_joins(:attendances).where(attendances: {id: nil}) }
-  # unfortunately the clean way results in structurally incomaptible error. Workaround to this either by a) work on ruby objects (as for Client#active or 
+  scope :incomplete, -> { past.joins(:attendances).where(attendances: { status: 'booked' }).unscope(:order).distinct }
+  scope :empty_class, -> { past.left_joins(:attendances).where(attendances: { id: nil }) }
+  # unfortunately the clean way results in structurally incomaptible error. Workaround to this either by a) work on ruby objects (as for Client#active or
   # b) by putting all the joins/distincts at the end of the query as nar8789 answer https://stackoverflow.com/questions/40742078/relation-passed-to-or-must-be-structurally-compatible-incompatible-values-r
   # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
   # unfortunately this doesn't work either due to both .joins(:attendances) and .left_joins(:attendances) confusing the issue (removing the joins corrects the empty class undercount but increases the incomplete count)
@@ -73,13 +73,12 @@ class Wkclass < ApplicationRecord
 
   # would like to use #or method but see difficulties above re structrurally compatible
   def self.problematic
-      # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
+    # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
     instructorless_wkclasses = instructorless.map(&:id)
     incomplete_wkclasses = incomplete.map(&:id)
     empty_with_cost_wkclasses = empty_class.has_instructor_cost.map(&:id)
     Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq))
   end
-
 
   # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
   # need a client_bookable attribute in workout_group
@@ -164,7 +163,7 @@ class Wkclass < ApplicationRecord
     false
     # Bullet.enable = true if Rails.env == 'development'
   end
-  
+
   def revenue
     attendances.map(&:revenue).inject(0, :+)
   end
@@ -188,7 +187,7 @@ class Wkclass < ApplicationRecord
   #   window_end = Time.zone.now.advance(days: settings[:visibility_window_days_ahead]).end_of_day
   #   (window_start..window_end)
   # end
-  
+
   def self.visibility_window
     window_start = Time.zone.now - Setting.visibility_window_hours_before.hours
     window_end = Time.zone.now.advance(days: Setting.visibility_window_days_ahead).end_of_day
@@ -258,7 +257,7 @@ class Wkclass < ApplicationRecord
   #   return unless Instructor.exists?(instructor_id)
 
   #   if ('PT'.in? name) && !('PT'.in? instructor.name)
-  #     errors.add(:base, 'Personal Training must have a PT instructor') unless [1,2].include? instructor.id # Apoorv, Gigi 
+  #     errors.add(:base, 'Personal Training must have a PT instructor') unless [1,2].include? instructor.id # Apoorv, Gigi
   #   end
 
   #   if !('PT'.in? name) && ('PT'.in? instructor.name)

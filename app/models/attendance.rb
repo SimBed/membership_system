@@ -1,5 +1,5 @@
 class Attendance < ApplicationRecord
-  include Csv  
+  include Csv
   belongs_to :wkclass
   belongs_to :purchase
   # allowed to be zero

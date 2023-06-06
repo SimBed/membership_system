@@ -4,7 +4,8 @@ class Superadmin::BaseController < ApplicationController
   before_action :set_public_timetable # for navigation bar
 
   private
-    def set_public_timetable
-      @current_timetable = Timetable.find(Setting.timetable)      
-    end
+
+  def set_public_timetable
+    @current_timetable = Timetable.find(Setting.timetable)
+  end
 end

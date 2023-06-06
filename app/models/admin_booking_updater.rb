@@ -1,8 +1,8 @@
 class AdminBookingUpdater
   include AttendancesHelper
 
-# line77 in attendances_controller
-# flash_message AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update if logged_in_as?('junioradmin', 'admin', 'superadmin')
+  # line77 in attendances_controller
+  # flash_message AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update if logged_in_as?('junioradmin', 'admin', 'superadmin')
 
   def initialize(attributes = {})
     @attendance = attributes[:attendance]
@@ -65,11 +65,12 @@ class AdminBookingUpdater
 
   def cancellation_penalty(package_type, cancel_attribute: :early_cancels)
     return unless package_type == :unlimited_package && @attendance.reload.penalty.nil?
-      Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id,
-                       amount: Setting.amnesty_limit[:group][cancel_attribute][:penalty][:amount],
-                       reason: @new_status })
-      @penalty_change = true
-      @flash_array = Whatsapp.new(whatsapp_params("#{cancel_attribute}_penalty")).manage_messaging
+
+    Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id,
+                     amount: Setting.amnesty_limit[:group][cancel_attribute][:penalty][:amount],
+                     reason: @new_status })
+    @penalty_change = true
+    @flash_array = Whatsapp.new(whatsapp_params("#{cancel_attribute}_penalty")).manage_messaging
   end
 
   def handle_freeze
@@ -88,7 +89,7 @@ class AdminBookingUpdater
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
       message_type: message_type,
-      variable_contents: { name:  @wkclass.name, day: @wkclass.day_of_week } }
+      variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }
   end
 
   def self.status_map(status)

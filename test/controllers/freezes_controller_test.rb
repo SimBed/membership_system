@@ -19,6 +19,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get new_admin_freeze_path
+
       assert_redirected_to login_path
     end
   end
@@ -27,6 +28,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       get edit_admin_freeze_path(@freeze)
+
       assert_redirected_to login_path
     end
   end
@@ -53,6 +55,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
           { purchase_id: @freeze.purchase.id,
             start_date: @freeze.start_date,
             end_date: @freeze.end_date + 5.days } }
+
       assert_equal original_end_date, @freeze.reload.end_date
       assert_redirected_to login_path
     end

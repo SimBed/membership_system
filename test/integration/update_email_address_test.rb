@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class UpdateEmailAddressTest < ActionDispatch::IntegrationTest
   def setup
@@ -9,8 +9,9 @@ class UpdateEmailAddressTest < ActionDispatch::IntegrationTest
 
   test 'test account email updates when client email edited' do
     log_in_as(@admin)
-    new_email = @client.email.gsub('@','2@')
+    new_email = @client.email.gsub('@', '2@')
     patch admin_client_path(@client), params: { client: { email: new_email } }
-    assert_equal new_email, @account_client.reload.email 
+
+    assert_equal new_email, @account_client.reload.email
   end
 end

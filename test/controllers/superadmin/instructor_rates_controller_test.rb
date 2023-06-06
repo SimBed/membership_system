@@ -16,6 +16,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get new_superadmin_instructor_rate_path
+
       assert_redirected_to login_path
     end
   end
@@ -24,6 +25,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get superadmin_instructor_rates_path
+
       assert_redirected_to login_path
     end
   end
@@ -32,6 +34,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get edit_superadmin_instructor_rate_path(@instructor_rate)
+
       assert_redirected_to login_path
     end
   end
@@ -58,6 +61,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
           { rate: @instructor_rate.rate + 500,
             date_from: @instructor_rate.date_from,
             instructor_id: @instructor_rate.instructor_id } }
+
       assert_equal original_rate, @instructor_rate.reload.rate
       assert_redirected_to login_path
     end

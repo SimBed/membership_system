@@ -1,10 +1,11 @@
-require "test_helper"
+require 'test_helper'
 
 class AccountMailerTest < ActionMailer::TestCase
-  test "password_reset" do
+  test 'password_reset' do
     account = accounts(:client1)
-    account.reset_token = Account.new_token    
+    account.reset_token = Account.new_token
     mail = AccountMailer.password_reset(account)
+
     assert_equal 'Password reset', mail.subject
     assert_equal [account.email], mail.to
     assert_equal ['members@thespacejuhu.in'], mail.from

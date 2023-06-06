@@ -4,7 +4,7 @@ class Account < ApplicationRecord
   has_many :orders
   has_one :instructor
   has_many :assignments, dependent: :destroy
-  has_many :roles, through: :assignments  
+  has_many :roles, through: :assignments
   attr_accessor :remember_token, :reset_token, :current_role
 
   before_save :downcase_email
@@ -12,7 +12,7 @@ class Account < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  validates :password, presence: true, length: { minimum: 6 } #, allow_nil: true
+  validates :password, presence: true, length: { minimum: 6 } # , allow_nil: true
   validates :ac_type, presence: true
   has_secure_password
   scope :order_by_ac_type, -> { order(:ac_type, :email) }
@@ -82,6 +82,7 @@ class Account < ApplicationRecord
         activated: true, ac_type: 'client', email: client.email }
     )
     return [[:warning, I18n.t('admin.accounts.create.warning')]] unless @account.save
+
     # return to #update when sorted out whatsapp validation. New account failure if whatsapp nil (alternatively set modifier_is_client to false)
     Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
     client.update(account_id: @account.id)

@@ -12,6 +12,7 @@ class ApplicationHelperTest < ActionView::TestCase
     t2 = DateTime.new(2022, 3, 31, 19, 30, 0)
     t3 = DateTime.new(2022, 4, 1, 0, 0, 0)
     t4 = DateTime.new(2022, 2, 28, 23, 59, 59)
+
     assert month_period('March 2022').cover? t1
     assert month_period('March 2022').cover? t2
     refute month_period('March 2022').cover? t3

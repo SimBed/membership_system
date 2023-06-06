@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class SettingsControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -9,10 +9,11 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
     @junioradmin = accounts(:junioradmin)
   end
 
-  test "should redirect show when not logged in as superadmin" do
+  test 'should redirect show when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get superadmin_settings_url
+
       assert_redirected_to login_path
     end
   end
