@@ -7,8 +7,9 @@
             <%= link_to "https://wa.me/919619348427", target: "_blank", class: "position-fixed float" do %>
               <%= image_tag('whatsapp-50.png', alt: "Whatsapp call", class: "") %>
             <% end %>
-            <h1 class="display-2 lh-sm fw-bold">Strength</h1>
-            <h1 class="eyebrow text-secondary">Inside & Out</h1>
+            <h1 class="display-2 lh-sm fw-bold text-uppercase">Strength</h1>
+            <h6 class="mb-0 fw-normal fs-lg">Inside & Out</h6>
+            <!--h1 class="eyebrow text-secondary">Inside & Out</h1-->
             <div class="d-flex flex-column">
               <div> <%= link_to "Join Now!", signup_path, class: "my-2 btn btn-outline-white rounded-pill" %> </div>
               <%# method: :get or 'data-turbolinks': false needed otherwise link to different section same page doesn't happen :/ %>
@@ -17,10 +18,9 @@
           </div>
         </div>
         <div class="row text-center">
-          <div class="col">
-            <small class="text-secondary" style="text-transform: uppercase;">
-              Personal Training | Group Classes | Online Training 
-            </small>
+          <div class="col text-secondary text-uppercase">
+              <%# Personal Training | Group Classes | Online Training  %>
+              Personal | Group | Online
           </div>
         </div>
       </div>
@@ -30,9 +30,9 @@
 
     <%= render 'tagline' %>
     <%= render 'services' %>
-    <%= render 'icons' %>  
-    <%= render 'timetable_slider' %>
+    <%#= render 'icons' %>
     <%= render 'instagram' %>
+    <%= render 'timetable_slider' %>
     <%#= render 'product_carousel_unused' %>
     <%#= render 'faq_unused' %>
     <%#= render 'isotope_unused' %>

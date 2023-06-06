@@ -50,8 +50,12 @@ a.forgot-password:hover {
 
 // override components/_navbar.scss
 .navbar-brand img {
-    max-height: 3rem; }
-  
+    max-height: 3.5rem; }
+
+.navbar {
+  padding: rem(16) 0;
+}
+
 #mainNav .nav-link {
   display: flex;
   align-items: center;
@@ -231,14 +235,12 @@ img.table_icon {
 }
 
 .form-mandatory::after {
-  content: "  (mandatory)";
+  content: "  *";
   font-size: 0.7rem;
-  color: blue
 }
 
 span.sub-label {
   font-size: 0.7rem;
-  color: blue
 }
 
 #renewal span.renewal-price {
