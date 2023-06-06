@@ -485,9 +485,6 @@ class Admin::AttendancesController < Admin::BaseController
     flash_message :warning,
                   ['The purchase has provisionally expired.',
                    'This change may not be possible without first cancelling a booking']
-    # flash[:warning] =
-    #   ['The purchase has provisionally expired.',
-    #    'This change may not be possible without first cancelling a booking']
     redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
   end
 

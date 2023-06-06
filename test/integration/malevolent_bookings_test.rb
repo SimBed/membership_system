@@ -36,7 +36,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
     follow_redirect!
-    assert_equal 'provisionally expired', @purchase.reload.status
+    assert_equal 'classes all booked', @purchase.reload.status
     # client attempts to book another class
     log_in_as @account_client
     assert_difference '@purchase.attendances.count', 0 do
@@ -74,7 +74,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # book another one instead
     post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
-    assert_equal 'provisionally expired', @purchase.reload.status
+    assert_equal 'classes all booked', @purchase.reload.status
 
     # client attempts to rebook previously cancelled class
     log_in_as @account_client
@@ -110,7 +110,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
-    assert_equal 'provisionally expired', @purchase.reload.status
+    assert_equal 'classes all booked', @purchase.reload.status
 
     # admin attempts to book another class
     assert_difference '@purchase.attendances.count', 0 do
@@ -149,7 +149,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # book another one instead
     post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
-    assert_equal 'provisionally expired', @purchase.reload.status
+    assert_equal 'classes all booked', @purchase.reload.status
 
     # admin corrects class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is amnesty)
     assert_difference '@attendance.reload.amendment_count', 1 do
@@ -190,7 +190,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # book another one instead (wouldn't be allowed if previous cancellation logged correctly)
     post admin_attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
-    assert_equal 'provisionally expired', @purchase.reload.status
+    assert_equal 'classes all booked', @purchase.reload.status
 
     # admin attempts to correct class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is no amnesty)
     assert_difference '@attendance.reload.amendment_count', 0 do

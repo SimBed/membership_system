@@ -32,7 +32,7 @@ class Purchase < ApplicationRecord
   # Fitternity redundant now and this validation prevented bulk setting of sunset_dates
   # validate :fitternity_ongoing_package
   scope :not_expired, lambda {
-                        where.not(status: ['expired', 'provisionally expired'])
+                        where.not(status: ['expired', 'classes all booked'])
                       }
   scope :not_fully_expired, -> { where.not(status: 'expired') }
   scope :fully_expired, -> { where(status: 'expired') }
@@ -206,7 +206,7 @@ class Purchase < ApplicationRecord
     return 'not started' if status_hash[:attendance_provisional] == 'not started'
     return 'booked but not started' if status_hash[:attendance_provisional] == 'booked but not started'
     return 'expired' if status_hash[:attendance_confirmed] == 'exhausted' || status_hash[:validity] == 'expired'
-    return 'provisionally expired' if status_hash[:attendance_provisional] == 'exhausted'
+    return 'classes all booked' if status_hash[:attendance_provisional] == 'exhausted'
 
     # return 'booked first class'
 
@@ -242,7 +242,7 @@ class Purchase < ApplicationRecord
   end
 
   def provisionally_expired?
-    ['provisionally expired'].include?(status)
+    ['classes all booked'].include?(status)
   end
 
   def expired_in?(period)
