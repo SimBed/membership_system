@@ -19,7 +19,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase_trial = purchases(:purchase_trial)
     @purchase_with_freeze = purchases(:purchase_with_freeze) # freeze 10/1/22 - 28/3/22
     @wkclass1 = wkclasses(:hiitfeb26)
-    @wkclass_already_attended = wkclasses(:wkclass_362)
+    @wkclass_already_attended = wkclasses(:wkclass362)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     # @price_fitternity = prices(:price2)
     # @fitternity = fitternities(:two_ongoing)

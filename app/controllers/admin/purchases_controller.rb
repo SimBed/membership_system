@@ -72,7 +72,7 @@ class Admin::PurchasesController < Admin::BaseController
     if @purchase.save
       # make dry - repeated in update method
       [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
-        DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
+        DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
       end
       # equivalent to redirect_to admin_purchase_path @purchase
       redirect_to [:admin, @purchase]
@@ -93,7 +93,7 @@ class Admin::PurchasesController < Admin::BaseController
       unless existing_discounts == updated_discounts
         DiscountAssignment.where(purchase_id: @purchase.id).destroy_all
         [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
-          DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i ) if params[:purchase][discount]
+          DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
         end
       end
       redirect_to [:admin, @purchase]
@@ -183,13 +183,13 @@ class Admin::PurchasesController < Admin::BaseController
     rider_product = Product.where(rider: true).first
     rider_product_price = rider_product.base_price_at(Time.zone.now)
     @rider_purchase = @purchase.dup
-    if @rider_purchase.update( { product_id: rider_product.id,
+    if @rider_purchase.update({ product_id: rider_product.id,
                                  payment: 0,
                                  payment_mode: 'Not applicable',
                                  invoice: nil,
                                  note: nil,
                                  price_id: rider_product_price.id,
-                                 purchase_id: @purchase.id } )
+                                 purchase_id: @purchase.id })
       flash_message :success, t('.rider_success')
     else
       flash_message :warning, t('.rider_fail')

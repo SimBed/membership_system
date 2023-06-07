@@ -42,25 +42,25 @@ class Instructor < ApplicationRecord
 
   # make dry same code used in client method
   def country_code(number = :whatsapp)
-    return '+91' unless Phony.plausible?(self.send(number))
+    return '+91' unless Phony.plausible?(send(number))
 
-    "+#{PhonyRails.country_code_from_number(self.send(number))}"
+    "+#{PhonyRails.country_code_from_number(send(number))}"
   end
 
   def country(number = :phone)
-    stored_number = self.send(number)
+    stored_number = send(number)
     return 'IN' unless Phony.plausible?(stored_number)
 
     # A bunch of countries use +1 like AG, VI etc...
-    return 'US' if self.send(:country_code, number) == '+1'
+    return 'US' if send(:country_code, number) == '+1'
 
     PhonyRails.country_from_number(stored_number)
   end
 
   def number_raw(number = :phone)
-    stored_number = self.send(number)
+    stored_number = send(number)
     return stored_number unless Phony.plausible?(stored_number)
 
-    stored_number.gsub(self.send(:country_code, number), '')
+    stored_number.gsub(send(:country_code, number), '')
   end
 end

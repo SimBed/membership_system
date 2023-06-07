@@ -73,7 +73,7 @@ class Renewal
 
   def price(product)
     # return nil if new_client?
-    return self.base_price(product).price if product.trial?
+    return base_price(product).price if product.trial?
 
     apply_discount(product.base_price_at(Time.zone.now), *discount_hash.values.compact)
   end
@@ -91,7 +91,7 @@ class Renewal
 
   def valid?
     return nil if new_client?
-    return false if base_price(self.product).nil?
+    return false if base_price(product).nil?
 
     true
   end

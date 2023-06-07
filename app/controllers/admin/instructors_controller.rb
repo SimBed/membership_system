@@ -15,7 +15,7 @@ class Admin::InstructorsController < Admin::BaseController
     @wkclasses_with_instructor_expense = @wkclasses.unscope(:order).has_instructor_cost.includes(:workout, :attendances, instructor: [:instructor_rates])
     # this double counts and I cant find a way to prevent it (tried with distinct and group) so fallen back on ruby object
     # @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.sum(:rate)
-    @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.map { |w| w.rate }.inject(0, :+)
+    @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.map(&:rate).inject(0, :+)
     handle_sort
     @months = months_logged
   end

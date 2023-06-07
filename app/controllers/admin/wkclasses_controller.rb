@@ -59,7 +59,7 @@ class Admin::WkclassesController < Admin::BaseController
       # activerecord takes the constiruent bits of a date from the params and builds the date before saving. To advance the adate when there are repeats we have to go through the rigmaroll of building the date, advancing and deconstructiong
       start_date = construct_date(wkclass_params)
       @wkclasses = (0..@weeks_to_repeat).map { |weeks| Wkclass.create(wkclass_params.merge(deconstruct_date(start_date, weeks))) }
-      if @wkclasses.all? { |wk| wk.persisted? }
+      if @wkclasses.all?(&:persisted?)
         redirect_to admin_wkclasses_path
         flash[:success] = t('.success', repeats: "#{@weeks_to_repeat + 1} classes were")
       else
@@ -112,7 +112,7 @@ class Admin::WkclassesController < Admin::BaseController
       end
       redirect_to admin_wkclasses_path
       # NOTE: the all? method returns true when called on an empty array.
-      if wkclasses.all? { |wk| wk.persisted? }
+      if wkclasses.all?(&:persisted?)
         flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were")
       else
         wkclass = wkclasses.select(&:invalid?).first
@@ -136,7 +136,7 @@ class Admin::WkclassesController < Admin::BaseController
     # @instructor_rates = Instructor&.find(params[:selected_instructor_id])&.instructor_rates
     workout = Workout.where(id: params[:selected_workout_id])&.first
     @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_for_index || []
-    (@instructor_rates = @instructor_rates.select { |i| i.group? }) if workout&.group_workout?
+    (@instructor_rates = @instructor_rates.select(&:group?)) if workout&.group_workout?
     render 'instructor.js.erb'
   end
 
@@ -209,7 +209,7 @@ class Admin::WkclassesController < Admin::BaseController
     @workouts = Workout.current.order_by_name
     @instructors = Instructor.current.has_rate.order_by_name
     @instructor_rates = @wkclass&.instructor&.instructor_rates&.current&.order_for_index || []
-    (@instructor_rates = @instructor_rates.select { |i| i.group? }) if @wkclass&.workout&.group_workout?
+    (@instructor_rates = @instructor_rates.select(&:group?)) if @wkclass&.workout&.group_workout?
     @capacities = (0..30).to_a + [500]
     @repeats = (0..11).to_a if @wkclass.new_record?
     @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']

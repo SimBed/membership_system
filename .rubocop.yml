@@ -15,9 +15,6 @@ AllCops:
       - !ruby/regexp /z_unused_code\.rb$/
 Layout/EndOfLine:
   Enabled: false
-Layout/LineLength:
-  Max: 150
-  AllowedPatterns: ['(\A|\s)#']
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/Documentation:
@@ -44,6 +41,8 @@ Style/StringConcatenation:
   Exclude:
     - 'app/models/whatsapp.rb'
 Layout/LineLength:
+  Max: 175
+  AllowedPatterns: ['(\A|\s)#']
   Exclude:
     - 'app/models/whatsapp.rb'
 Minitest/AssertPredicate:

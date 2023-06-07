@@ -9,7 +9,7 @@ class Admin::AccountsController < Admin::BaseController
   # admin accounts cant be created through the app
 
   def index
-    @accounts = Account.where(ac_type: ['junioradmin', 'admin', 'superadmin']).order_by_ac_type
+    @accounts = Account.where(ac_type: %w[junioradmin admin superadmin]).order_by_ac_type
     render 'superadmin/accounts/index.html'
   end
 

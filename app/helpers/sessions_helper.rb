@@ -31,7 +31,7 @@ module SessionsHelper
   end
 
   def account_role_names
-    current_account.roles.map { |r| r.name }
+    current_account.roles.map(&:name)
   end
 
   def current_role

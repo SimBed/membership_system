@@ -121,7 +121,7 @@ class Wkclass < ApplicationRecord
     # (originally for Unlimited we only allowed booking another class after LC or no show if it was an amnesty)
     attendances_on_same_day =
       Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
-             .where('clients.id = ?', client.id)
+             .where(clients: { id: client.id })
              .merge(Attendance.committed)
              .merge(Purchase.unlimited.package)
     return false if attendances_on_same_day.empty?

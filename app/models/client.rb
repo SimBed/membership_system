@@ -69,18 +69,18 @@ class Client < ApplicationRecord
                }
 
   scope :one_time_trial, lambda {
-                 c_trials = Client.joins(purchases: [:product]).merge(Purchase.trial).map(&:id)
-                 c_oneonly = Client.joins(:purchases).group('clients.id').having('count(client_id) = 1').map(&:id)
-                 Client.where(id: c_trials).where(id: c_oneonly)
-               }
+                           c_trials = Client.joins(purchases: [:product]).merge(Purchase.trial).map(&:id)
+                           c_oneonly = Client.joins(:purchases).group('clients.id').having('count(client_id) = 1').map(&:id)
+                           Client.where(id: c_trials).where(id: c_oneonly)
+                         }
 
   scope :recently_attended, lambda {
-                 Client
-                   .select("#{Client.table_name}.*", 'max(start_time)')
-                   .joins(purchases: [attendances: [:wkclass]])
-                   .group('clients.id')
-                   .having('max(start_time) >= ?', Setting.recently_attended.months.ago)
-               }
+                              Client
+                                .select("#{Client.table_name}.*", 'max(start_time)')
+                                .joins(purchases: [attendances: [:wkclass]])
+                                .group('clients.id')
+                                .having('max(start_time) >= ?', Setting.recently_attended.months.ago)
+                            }
 
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
 
@@ -100,7 +100,7 @@ class Client < ApplicationRecord
   def message_blast(message)
     Whatsapp.new(:receiver => self,
                  :message_type => message,
-                 :variable_contents => { :first_name => self.first_name })
+                 :variable_contents => { :first_name => first_name })
             .manage_messaging
   end
 
@@ -124,7 +124,7 @@ class Client < ApplicationRecord
   end
 
   def has_had_trial?
-    purchases.map { |p| p.trial? }.any?
+    purchases.map(&:trial?).any?
   end
 
   def deletable?
@@ -194,27 +194,27 @@ class Client < ApplicationRecord
   end
 
   def country_code(number = :phone)
-    return '+91' unless Phony.plausible?(self.send(number))
+    return '+91' unless Phony.plausible?(send(number))
 
-    "+#{PhonyRails.country_code_from_number(self.send(number))}"
+    "+#{PhonyRails.country_code_from_number(send(number))}"
   end
 
   # make dry also used in instructor method
   def country(number = :phone)
-    stored_number = self.send(number)
+    stored_number = send(number)
     return 'IN' unless Phony.plausible?(stored_number)
 
     # A bunch of countries use +1 like AG, VI etc...
-    return 'US' if self.send(:country_code, number) == '+1'
+    return 'US' if send(:country_code, number) == '+1'
 
     PhonyRails.country_from_number(stored_number)
   end
 
   def number_raw(number = :phone)
-    stored_number = self.send(number)
+    stored_number = send(number)
     return stored_number unless Phony.plausible?(stored_number)
 
-    stored_number.gsub(self.send(:country_code, number), '')
+    stored_number.gsub(send(:country_code, number), '')
   end
 
   private
@@ -229,7 +229,7 @@ class Client < ApplicationRecord
   end
 
   def apply_country_code
-    self.whatsapp = [whatsapp_country_code, whatsapp_raw].compact.join if self.whatsapp_country_code.present?
+    self.whatsapp = [whatsapp_country_code, whatsapp_raw].compact.join if whatsapp_country_code.present?
   end
 
   def full_name_must_be_unique

@@ -13,7 +13,7 @@ class Workout < ApplicationRecord
 
   # not quite right but good enough for now. Helps prevent a PT instructor rates wrongly get selected for Space Group classes
   def group_workout?
-    workout_groups.any? { |w| w.renewable? }
+    workout_groups.any?(&:renewable?)
   end
 
   private

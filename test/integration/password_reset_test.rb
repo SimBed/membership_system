@@ -73,7 +73,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     # Invalid email
     post client_password_resets_path, params: { password_reset: { email: '' } }
 
-    refute flash.empty?
+    refute_empty flash
     assert_template 'password_resets/new'
     # Valid email
     post client_password_resets_path,
@@ -81,7 +81,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
     refute_equal @account.reset_digest, @account.reload.reset_digest
     assert_equal 1, ActionMailer::Base.deliveries.size
-    refute flash.empty?
+    refute_empty flash
     assert_redirected_to login_path
     # Password reset form
     account = assigns(:account)
@@ -125,7 +125,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
                                password_confirmation: 'foobaz' } }
 
     assert is_logged_in?
-    refute flash.empty?
+    refute_empty flash
     assert_redirected_to client_book_path(account.client)
     assert_nil account.reload.reset_digest
   end
@@ -144,6 +144,6 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
 
-    assert_match /expired/i, response.body
+    assert_match(/expired/i, response.body)
   end
 end

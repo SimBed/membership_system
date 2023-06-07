@@ -15,12 +15,12 @@ module ApplyDiscount
       # dont want the artificial 'Price Change Transition' discounts to result in a different price to the one paid
       return unrounded.round(0) if discounts.map { |d| d.name[0..22] }.include? 'Price Change Transition'
 
-      up_to_nearest_50([0, unrounded.round(0)].max)
+      up_to_nearest50([0, unrounded.round(0)].max)
     end
   end
 
   # courtesy engineersmnky https://stackoverflow.com/questions/51274453/ruby-round-integer-to-nearest-multiple-of-5
-  def up_to_nearest_50(n)
+  def up_to_nearest50(n)
     return n if n % 50 == 0
 
     rounded = n.round(-2)

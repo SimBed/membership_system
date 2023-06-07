@@ -24,7 +24,9 @@ class Superadmin::RegularExpensesControllerTest < ActionDispatch::IntegrationTes
   test 'should create regular_expense' do
     log_in_as @superadmin
     assert_difference('RegularExpense.count') do
-      post superadmin_regular_expenses_url, params: { regular_expense: { amount: @regular_expense.amount, date: @date, item: @regular_expense.item, workout_group_id: @regular_expense.workout_group_id } }
+      post superadmin_regular_expenses_url, params: { regular_expense: { amount: @regular_expense.amount, date: @date,
+                                                                         item: @regular_expense.item,
+                                                                         workout_group_id: @regular_expense.workout_group_id } }
     end
 
     assert_redirected_to superadmin_regular_expenses_url
@@ -39,7 +41,8 @@ class Superadmin::RegularExpensesControllerTest < ActionDispatch::IntegrationTes
 
   test 'should update regular_expense' do
     log_in_as @superadmin
-    patch superadmin_regular_expense_url(@regular_expense), params: { regular_expense: { amount: @regular_expense.amount + 50, item: @regular_expense.item, workout_group_id: @regular_expense.workout_group_id } }
+    patch superadmin_regular_expense_url(@regular_expense), params: { regular_expense: { amount: @regular_expense.amount + 50, item: @regular_expense.item,
+                                                                                         workout_group_id: @regular_expense.workout_group_id } }
 
     assert_redirected_to superadmin_regular_expenses_url
   end

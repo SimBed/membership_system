@@ -11,5 +11,3 @@ class InstructorRate < ApplicationRecord
     "#{group ? 'Group' : 'PT'} #{name}"
   end
 end
-
-

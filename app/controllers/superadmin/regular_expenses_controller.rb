@@ -1,5 +1,5 @@
 class Superadmin::RegularExpensesController < Superadmin::BaseController
-  before_action :set_regular_expense, only: [ :edit, :update, :destroy ]
+  before_action :set_regular_expense, only: [:edit, :update, :destroy]
 
   def index
     @regular_expenses = RegularExpense.all.includes(:workout_group)

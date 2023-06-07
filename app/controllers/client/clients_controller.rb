@@ -13,7 +13,7 @@ class Client::ClientsController < ApplicationController
 
   def shop
     # @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt? || p.base_price.nil?}
-    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject { |p| p.trial? }
+    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)
     # @products = @products.reject {|p| p.trial?} if logged_in? && current_account.client.has_purchased?
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload

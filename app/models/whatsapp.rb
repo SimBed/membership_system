@@ -5,7 +5,7 @@ class Whatsapp
     @admin_triggered = attributes[:admin_triggered] || true
     @variable_contents = attributes[:variable_contents]
     # @to_number = @receiver.is_a?(Client) ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
-    @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)] ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
+    @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)].any? ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
   end
 
   def manage_messaging
@@ -52,7 +52,7 @@ class Whatsapp
     return [:success, I18n.t(:signup, name: @receiver.first_name)] if @message_type == 'signup'
 
     # gsub so the flash says 'password reset message sent' not 'password_reset message sent'
-    [:warning, I18n.t(:message_sent, message_type: @message_type.gsub('_', ' '), to_number: @to_number )]
+    [:warning, I18n.t(:message_sent, message_type: @message_type.gsub('_', ' '), to_number: @to_number)]
     # [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
@@ -71,18 +71,18 @@ class Whatsapp
 
   def body_package_expiry
     "Hi #{@variable_contents[:first_name]}" +
-    "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew today & save #{@variable_contents[:discount]}% on your next Package!. After expiry, full price rates will apply." +
-    "\n \nLogin to your account to renew or contact us to discuss more options." +
-    "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
+      "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
+      "\nRenew today & save #{@variable_contents[:discount]}% on your next Package!. After expiry, full price rates will apply." +
+      "\n \nLogin to your account to renew or contact us to discuss more options." +
+      "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
 
   def body_trial_expiry
     "Hi #{@variable_contents[:first_name]}" +
-    "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
-    "\nRenew before expiry & save #{@variable_contents[:discount]}% on your first Package!" +
-    "\n \nLogin to your account to renew or contact us to discuss more options." +
-    "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
+      "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
+      "\nRenew before expiry & save #{@variable_contents[:discount]}% on your first Package!" +
+      "\n \nLogin to your account to renew or contact us to discuss more options." +
+      "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
   end
 
   def body_new_signup
@@ -174,15 +174,14 @@ class Whatsapp
       ' so you do not miss out on important information.' +
       "\n\nThank You" +
       "\nThe Space" +
-
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
   def body_memorable_password_march27
     'MEMBERSHIP SYSTEM UPDATE' +
-    "\nStruggling to remember your password? You can now set it to something more memorable." +
-    "\nHead over to your Profile page to change it." +
-    "\n\nThis is an automated message. Please do not reply here. Contact The Space's main number if you have any questions."
+      "\nStruggling to remember your password? You can now set it to something more memorable." +
+      "\nHead over to your Profile page to change it." +
+      "\n\nThis is an automated message. Please do not reply here. Contact The Space's main number if you have any questions."
   end
 
   def body_temp_email_confirm
@@ -191,9 +190,9 @@ class Whatsapp
 
   def body_blast
     'CLASS UPDATE' +
-    "\n1) The Space will be closed on 1st May 2023 for Labour Day. Sessions will resume on schedule from 2nd May." +
-    "\n2) No Pilates on 9th May as Karina is travelling." +
-    "\n \nPlease plan your workouts accordingly.\n"
+      "\n1) The Space will be closed on 1st May 2023 for Labour Day. Sessions will resume on schedule from 2nd May." +
+      "\n2) No Pilates on 9th May as Karina is travelling." +
+      "\n \nPlease plan your workouts accordingly.\n"
   end
 
   # def body_package_expiry_retired

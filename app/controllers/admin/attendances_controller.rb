@@ -105,7 +105,7 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass = @attendance.wkclass
     update_by_client if logged_in_as?('client')
     if logged_in_as?('junioradmin', 'admin', 'superadmin')
-      result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update
+      result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status]).update
       flash_message(*result.flash_array)
       update_purchase_status([@purchase]) if result.penalty_change?
       handle_admin_update_response if result.success?

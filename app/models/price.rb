@@ -24,7 +24,7 @@ class Price < ApplicationRecord
 
   # courtesy engineersmnky https://stackoverflow.com/questions/51274453/ruby-round-integer-to-nearest-multiple-of-5
   # not used done on the browser in JS in the end
-  def self.up_to_nearest_50(n)
+  def self.up_to_nearest50(n)
     return n if n % 50 == 0
 
     rounded = n.round(-2)

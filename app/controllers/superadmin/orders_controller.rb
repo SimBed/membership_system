@@ -20,11 +20,11 @@ class Superadmin::OrdersController < Superadmin::BaseController
       if order.status == 'captured'
         account = Account.find(order_params[:account_id])
         purchase_params = { client_id: account.client.id, product_id: order.product_id, price_id: order_params[:price_id],
-                            payment: order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started',}
+                            payment: order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
         @purchase = Purchase.new(purchase_params)
         if @purchase.save
           [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
-            DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i ) if !params[discount].blank?
+            DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) if !params[discount].blank?
           end
           flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
           redirect_to client_history_path account.client if logged_in?

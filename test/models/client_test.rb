@@ -13,7 +13,7 @@ class ClientTest < ActiveSupport::TestCase
     @client2 = clients(:bhavik)
     @client_trial1 = clients(:client_trial_expired)
     @client_trial2 = clients(:client_trial_ongoing)
-    @booked_class = wkclasses(:wkclass_2)
+    @booked_class = wkclasses(:wkclass2)
   end
 
   test 'should be valid' do

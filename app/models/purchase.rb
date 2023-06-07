@@ -72,7 +72,7 @@ class Purchase < ApplicationRecord
                               .where(workout_groups: { requires_invoice: true })
                      }
   scope :service_type, ->(service) { joins(product: [:workout_group]).where(workout_groups: { service: service })
-                     }
+                       }
   scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :written_off, -> { where(payment_mode: 'Write Off') }
@@ -112,8 +112,8 @@ class Purchase < ApplicationRecord
     available_to(wkclass).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
         p.committed_on?(wkclass.start_time.to_date) ||
-          p.expires_before?(wkclass.start_time.to_date) ||
-            p.already_used_for?(wkclass)
+        p.expires_before?(wkclass.start_time.to_date) ||
+        p.already_used_for?(wkclass)
     end
   end
 
@@ -121,8 +121,8 @@ class Purchase < ApplicationRecord
     available_to(wkclass).where(client_id: client.id).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
         p.committed_on?(wkclass.start_time.to_date)  ||
-          p.expires_before?(wkclass.start_time.to_date) ||
-            p.already_used_for?(wkclass)
+        p.expires_before?(wkclass.start_time.to_date) ||
+        p.already_used_for?(wkclass)
     end
   end
 
@@ -275,7 +275,7 @@ class Purchase < ApplicationRecord
 
   def expiry_date_calc
     return ar_date if adjust_restart?
-    return if attendances.no_amnesty.size.zero?
+    return if attendances.no_amnesty.empty?
 
     # end_date formulae above overstate by 1 day so deduct 1
     # to_date changes ActiveSupport::TimeWithZone object to Date object

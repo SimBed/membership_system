@@ -18,11 +18,11 @@ class Discount < ApplicationRecord
   end
 
   def self.rate(date)
-    { first_package: self.with_renewal_rationale_at(:first_package, date).first.get_percent_and_fixed,
-      renewal_pre_package_expiry: self.with_renewal_rationale_at(:renewal_pre_package_expiry, date)&.first&.get_percent_and_fixed,
-      renewal_post_package_expiry: self.with_renewal_rationale_at(:renewal_post_package_expiry, date)&.first&.get_percent_and_fixed,
-      renewal_pre_trial_expiry: self.with_renewal_rationale_at(:renewal_pre_trial_expiry, date)&.first&.get_percent_and_fixed,
-      renewal_post_trial_expiry: self.with_renewal_rationale_at(:renewal_post_trial_expiry, date)&.first&.get_percent_and_fixed }
+    { first_package: with_renewal_rationale_at(:first_package, date).first.get_percent_and_fixed,
+      renewal_pre_package_expiry: with_renewal_rationale_at(:renewal_pre_package_expiry, date)&.first&.get_percent_and_fixed,
+      renewal_post_package_expiry: with_renewal_rationale_at(:renewal_post_package_expiry, date)&.first&.get_percent_and_fixed,
+      renewal_pre_trial_expiry: with_renewal_rationale_at(:renewal_pre_trial_expiry, date)&.first&.get_percent_and_fixed,
+      renewal_post_trial_expiry: with_renewal_rationale_at(:renewal_post_trial_expiry, date)&.first&.get_percent_and_fixed }
   end
 
   def get_percent_and_fixed

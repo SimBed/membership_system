@@ -6,7 +6,7 @@ class TableTime < ApplicationRecord
 
   def self.period(time_of_day)
     # start_time is stored as type time (as eg 10:00:00 with no date) but ActiveRecord somehow defaults the date to 1 Jan 2000 in the time object when retrieved
-    t0 = Time.parse('1 Jan 2000').beginning_of_day
+    t0 = Time.zone.parse('1 Jan 2000').beginning_of_day
     return t0...t0.midday if time_of_day == 'morning'
     return t0.midday..t0.change(hour: 17, min: 59) if time_of_day == 'afternoon'
 

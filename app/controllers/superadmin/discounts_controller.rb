@@ -17,7 +17,7 @@ class Superadmin::DiscountsController < Superadmin::BaseController
                               oneoff: Discount.not_current(Time.zone.now.to_date).by_rationale('Oneoff'),
                               status: Discount.not_current(Time.zone.now.to_date).by_rationale('Status'),
                               renewal: Discount.not_current(Time.zone.now.to_date).by_rationale('Renewal')
-                            }}
+                            } }
   end
 
   def new

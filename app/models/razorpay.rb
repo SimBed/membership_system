@@ -7,7 +7,7 @@ class Razorpay
 
   def send_whatsapp
     razor_initialise
-    Razorpay.setup( @key_id, @key_secret)
+    Razorpay.setup(@key_id, @key_secret)
     payment = Razorpay::Order.create amount: @amount, currency: 'INR', receipt: 'TEST'
   end
 

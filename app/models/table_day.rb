@@ -7,13 +7,13 @@ class TableDay < ApplicationRecord
   # SORT_ORDER = Date::DAYNAMES.rotate(1).map(&:upcase)
   SORT_ORDER = Date::DAYNAMES.rotate(Date.today.cwday) # .map(&:upcase)
   scope :order_by_day, lambda {
-      order_clause = 'CASE name '
-      SORT_ORDER.each_with_index do |day, index|
-        order_clause << sanitize_sql_array(['WHEN ? THEN ? ', day, index])
-      end
-      order_clause << sanitize_sql_array(['ELSE ? END', SORT_ORDER.length])
-      order(Arel.sql(order_clause))
-    }
+                         order_clause = 'CASE name '
+                         SORT_ORDER.each_with_index do |day, index|
+                           order_clause << sanitize_sql_array(['WHEN ? THEN ? ', day, index])
+                         end
+                         order_clause << sanitize_sql_array(['ELSE ? END', SORT_ORDER.length])
+                         order(Arel.sql(order_clause))
+                       }
 
   private
 
