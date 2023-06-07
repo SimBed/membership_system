@@ -1,7 +1,8 @@
 class Superadmin::OrdersController < Superadmin::BaseController
   skip_before_action :verify_authenticity_token
   skip_before_action :superadmin_account, only: [:create]
-  before_action :client_account, only: [:create]
+  # this before filter created issues on phones where overzealous browsers deleted sessions (so logging the client out) whicle the razorpay button was still active and used
+  # before_action :client_account, only: [:create]
   before_action :set_order, only: [:show, :refund]
 
   def index
@@ -27,7 +28,13 @@ class Superadmin::OrdersController < Superadmin::BaseController
             DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) if !params[discount].blank?
           end
           flash_message(*Whatsapp.new(whatsapp_params('renew')).manage_messaging)
-          redirect_to client_history_path account.client if logged_in?
+           # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
+          if logged_in_as?('client')
+            redirect_to client_history_path account.client
+          else
+            flash[:warning] = 'Your browser may have logged you out of the system. Please login again to see your purchase and book your classes'
+            redirect_to login_path
+          end
         else
           flash[:alert] = 'Unable to process payment.'
           redirect_to root_path

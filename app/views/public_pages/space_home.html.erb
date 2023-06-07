@@ -12,15 +12,16 @@
             <!--h1 class="eyebrow text-secondary">Inside & Out</h1-->
             <div class="d-flex flex-column">
               <div> <%= link_to "Join Now!", signup_path, class: "my-2 btn btn-outline-white rounded-pill" %> </div>
-              <%# method: :get or 'data-turbolinks': false needed otherwise link to different section same page doesn't happen :/ %>
-              <div> <%= link_to "Services", '#services', class: "btn btn-outline-white rounded-pill", 'data-turbolinks': false %> </div>
+
             </div>
           </div>
         </div>
         <div class="row text-center">
           <div class="col text-secondary text-uppercase">
-              <%# Personal Training | Group Classes | Online Training  %>
-              Personal | Group | Online
+              <%# method: :get or 'data-turbolinks': false needed otherwise link to different section same page doesn't happen :/ %>
+              <%= link_to "PT", '#services', class: "btn btn-outline-white rounded-pill px-3 py-1 me-1", 'data-turbolinks': false %> |
+              <%= link_to "Group", '#services', class: "btn btn-outline-white rounded-pill p-1 mx-1", 'data-turbolinks': false %> |
+              <%= link_to "Online", '#services', class: "btn btn-outline-white rounded-pill p-1 ms-1", 'data-turbolinks': false %>
           </div>
         </div>
       </div>
