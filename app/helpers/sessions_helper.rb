@@ -1,13 +1,29 @@
 module SessionsHelper
   def log_in(account)
     session[:account_id] = account.id
-    session[:role_name] = account.roles.first.name
+    if (role_name = cookies.signed[:role_name])
+      if account.roles.include? role_name
+        session[:role_name] = role_name
+      else
+        session[:role_name] = account.roles.first.name
+      end
+    else
+      session[:role_name] = account.roles.first.name
+    end
   end
 
   def remember(account)
     account.remember
     cookies.permanent.signed[:account_id] = account.id
+    cookies.permanent.signed[:role_name] = account.roles.first.name
     cookies.permanent[:remember_token] = account.remember_token
+  end
+
+  def forget(account)
+    account.forget
+    cookies.delete(:account_id)
+    cookies.delete(:role_name)
+    cookies.delete(:remember_token)
   end
 
   def current_account?(account)
@@ -28,17 +44,28 @@ module SessionsHelper
 
   def switch_role(role)
     session[:role_name] = role
+    cookies.permanent.signed[:role_name] = role    
   end
 
   def account_role_names
     current_account.roles.map(&:name)
   end
 
-  def current_role
-    return unless logged_in? && account_role_names.any?(session[:role_name])
+  # def current_role
+  #   return unless logged_in? && account_role_names.any?(session[:role_name])
 
-    session[:role_name]
-  end
+  #   session[:role_name]
+  # end
+
+  def current_role
+    return unless logged_in?
+
+    if (role_name = session[:role_name])
+      @current_role ||= role_name
+    elsif (role_name = cookies.signed[:role_name])
+      @current_role = role_name
+    end
+  end  
 
   def navbar_roles
     # current_role is a string
@@ -54,17 +81,12 @@ module SessionsHelper
     !current_account.nil?
   end
 
-  def forget(account)
-    account.forget
-    cookies.delete(:account_id)
-    cookies.delete(:remember_token)
-  end
-
   def log_out
     forget(current_account)
     session.delete(:account_id)
     session.delete(:role_name)
     @current_account = nil
+    @current_role = nil
   end
 
   def redirect_back_or(default)

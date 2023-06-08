@@ -21,8 +21,8 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
         post admin_accounts_path, params: { email: 'wannabe@example.com',
                                             client_id: @client_with_no_account.id,
                                             ac_type: 'client' }
-      end
 
+      end
       assert_redirected_to login_path
     end
   end

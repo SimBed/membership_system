@@ -30,7 +30,7 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     get root_path
 
-    assert_redirected_to client_client_path(@client)
+    assert_redirected_to client_book_path(@client)
   end
 
   test 'should get partners profile if logged in as partner' do

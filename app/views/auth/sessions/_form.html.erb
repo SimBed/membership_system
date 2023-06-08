@@ -12,13 +12,15 @@
       <%= form.password_field :password, class: 'form-control' %>
     <% end %>
   </div>
-  
+
+  <% if false %>
   <div class="field mb-2">
     <%= form.label :remember_me, class: "checkbox inline mb-2" do %>
       <%= form.check_box :remember_me %>
       <span>Remember me on this computer</span>
     <% end %>
   </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit "Log in", class: "btn btn-primary" %>

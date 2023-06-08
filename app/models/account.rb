@@ -60,7 +60,8 @@ class Account < ApplicationRecord
   end
 
   def forget
-    update(remember_digest: nil)
+    # update(remember_digest: nil)
+    update_column(:remember_digest, nil)
   end
 
   def skeletone(password)

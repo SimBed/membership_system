@@ -4,24 +4,26 @@ class PublicPagesController < ApplicationController
   layout 'public'
 
   def welcome
-    if logged_in_as?('junioradmin', 'admin', 'superadmin')
-      # not && return won't work because of precedence of operator over method call
-      redirect_to admin_clients_path and return
-    elsif logged_in_as?('client')
-      redirect_to client_client_path(current_account.client) and return
-    elsif logged_in_as?('partner')
-      redirect_to admin_partner_path(current_account.partner) and return
-    elsif logged_in_as?('instructor')
-      redirect_to admin_instructor_path(current_account.instructor) and return
+    if logged_in?
+      @account = current_account
+      send_to_correct_page_for_ac_type
     end
+    # if logged_in_as?('junioradmin', 'admin', 'superadmin')
+    #   # NOTE: && return won't work because of precedence of operator over method call
+    #   redirect_to admin_clients_path and return
+    # elsif logged_in_as?('client')
+    #   redirect_to client_client_path(current_account.client) and return
+    # elsif logged_in_as?('partner')
+    #   redirect_to admin_partner_path(current_account.partner) and return
+    # elsif logged_in_as?('instructor')
+    #   redirect_to admin_instructor_path(current_account.instructor) and return
+    # end
     # render template: 'auth/sessions/new'
   end
 
-  def welcome_home
-  end
+  def welcome_home; end
 
-  def space_home
-  end
+  def space_home; end
 
   def signup
     @account = Account.new
@@ -48,7 +50,6 @@ class PublicPagesController < ApplicationController
       @account = Account.new
       render 'signup', layout: 'login'
     end
-
   end
 
   def shop
@@ -65,8 +66,7 @@ class PublicPagesController < ApplicationController
     render layout: 'white_canvas'
   end
 
-  def sell
-  end
+  def sell; end
 
   private
 
@@ -76,14 +76,13 @@ class PublicPagesController < ApplicationController
   end
 
   def account_limit
-    daily_accounts_count = Account.where("DATE(created_at)='#{Date.today.to_date}'").size
+    daily_accounts_count = Account.where("DATE(created_at)='#{Time.zone.today.to_date}'").size
     # Setting/I18n
-    if daily_accounts_count > 100
-      # flash_message(*Whatsapp.new(whatsapp_params('new_account')).manage_messaging)
-      Whatsapp.new(receiver: 'me', message_type: 'new_purchase', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging
-      redirect_to signup_path
-      flash[:warning] = 'Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.'
-    end
+    return unless daily_accounts_count > 100
+
+    Whatsapp.new(receiver: 'me', message_type: 'new_purchase', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging
+    flash[:warning] = 'Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.'
+    redirect_to signup_path
   end
 
   # def waiver_agree

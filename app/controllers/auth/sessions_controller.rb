@@ -51,8 +51,9 @@ class Auth::SessionsController < Auth::BaseController
 
   def action_when_activated
     log_in @account
-    params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
-    switch_role(@account.roles.first.name)
+    # params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
+    remember(@account) if @account.remember_digest.nil?
+    # switch_role(@account.roles.first.name)
     send_to_correct_page_for_ac_type
   end
 
