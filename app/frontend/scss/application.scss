@@ -259,6 +259,13 @@ h3.discount-statement {
   letter-spacing: 0.1em;
 }
 
+img.footerlogo {
+  width: 6rem;
+  display: block;
+  margin: auto;
+}
+
+
 // so bottom items in dropdowns with lost of items dont become inaccesssible on phone
 @media (max-width: 550px) {
 .highnavbar {

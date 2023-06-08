@@ -1,44 +1,20 @@
-  <div class="offcanvas-wrap">
-
-     <section class="cover overflow-hidden inverted bg-black">
-      <div class="d-flex flex-column min-vh-75 container py-10 level-1">
-        <div class="row justify-content-center my-auto">
-          <div class="col-md-8 text-center">
-            <%= link_to "https://wa.me/919619348427", target: "_blank", class: "position-fixed float" do %>
-              <%= image_tag('whatsapp-50.png', alt: "Whatsapp call", class: "") %>
-            <% end %>
-            <h1 class="display-2 lh-sm fw-bold text-uppercase">Strength</h1>
-            <h6 class="mb-0 fw-normal fs-lg">Inside & Out</h6>
-            <!--h1 class="eyebrow text-secondary">Inside & Out</h1-->
-            <div class="d-flex flex-column">
-              <div> <%= link_to "Join Now!", signup_path, class: "my-2 btn btn-outline-white rounded-pill" %> </div>
-
-            </div>
-          </div>
-        </div>
-        <div class="row text-center">
-          <div class="col text-secondary text-uppercase">
-              <%# method: :get or 'data-turbolinks': false needed otherwise link to different section same page doesn't happen :/ %>
-              <%= link_to "PT", '#services', class: "btn btn-outline-white rounded-pill px-3 py-1 me-1", 'data-turbolinks': false %> |
-              <%= link_to "Group", '#services', class: "btn btn-outline-white rounded-pill p-1 mx-1", 'data-turbolinks': false %> |
-              <%= link_to "Online", '#services', class: "btn btn-outline-white rounded-pill p-1 ms-1", 'data-turbolinks': false %>
-          </div>
+<div class="offcanvas-wrap mb-2">
+  <section class="bg-black inverted overflow-hidden">
+    <div class="container py-20 d-flex flex-column min-vh-100 foreground">
+      <div class="row my-auto justify-content-center">
+        <div class="col-6 col-lg-6 text-center" >
+          <%= image_tag('SpaceLogo_white.png', alt: "logo", class: "mw-100") %>
         </div>
       </div>
-      <figure class="background background-overlay" style="background-image: url(<%= asset_path 'home/priyanka_snatch.jpg' %>)"
-      data-top-top="transform: scale(1);" data-top-bottom="transform: scale(1.1);"></figure>
-    </section>
+        <div class="row text-center">
+          <div class="col">
+            <%= link_to "WhatsApp us now!", "https://wa.me/919619348427", target: "_blank", class: "btn btn-outline-white rounded-pill" %>
+          </div>
+        </div>      
+    </div>
+  </section>
 
-    <%= render 'tagline' %>
-    <%= render 'services' %>
-    <%#= render 'icons' %>
-    <%= render 'instagram' %>
-    <%= render 'timetable_slider' %>
-    <%#= render 'product_carousel_unused' %>
-    <%#= render 'faq_unused' %>
-    <%#= render 'isotope_unused' %>
-    <%#= render 'icons' %>
-
-  </div>
-
-
+    <section class="overflow-hidden pt-3 pt-xl-4 bg-black text-white text-center">    
+        <%= render 'timetable_slider' %>
+    </section>  
+</div>
