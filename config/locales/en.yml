@@ -100,6 +100,8 @@ en:
         success: Class was successfully deleted
       repeat:
         success: "%{repeats} successfully added"        
+        partial_success: "Not all classes created. Error occured first at %{date_of_first_error} class (perhaps it already exists)"
+        error: Classes not created. An error occurred before any classes were created
     workout_groups:
       create:
         success: Workout Group was successfully added

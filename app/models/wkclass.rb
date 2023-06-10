@@ -52,7 +52,7 @@ class Wkclass < ApplicationRecord
   #                         .or(where(attendances: {id: nil})) # empty class
   #                         .or(where.not(instructor_rate: {rate: 0})).joins(:instructor_rate) # has instructor cost
   #                         .joins(:attendances).left_joins(:attendances).distinct} # dump all the joins/distinct at end of query
-
+  scope :has_booking_post_purchase_expiry, -> { joins(attendances: [:purchase]).where('purchases.expiry_date + 1 < wkclasses.start_time') }
   # visibility_window = 2.hours
   # advance_days = 3
   # scope :in_booking_visibility_window, lambda {
@@ -77,7 +77,8 @@ class Wkclass < ApplicationRecord
     instructorless_wkclasses = instructorless.map(&:id)
     incomplete_wkclasses = incomplete.map(&:id)
     empty_with_cost_wkclasses = empty_class.has_instructor_cost.map(&:id)
-    Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq))
+    booking_post_purchase_expiry = has_booking_post_purchase_expiry.map(&:id) # can arise due to careless administration when using the repeat funstionality
+    Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq + booking_post_purchase_expiry.uniq ))
   end
 
   # only space group should be client bookable (dont want eg nutrition appearing in client booking table)

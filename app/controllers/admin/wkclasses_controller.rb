@@ -116,10 +116,10 @@ class Admin::WkclassesController < Admin::BaseController
         flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were")
       else
         wkclass = wkclasses.select(&:invalid?).first
-        flash[:warning] = "Not all classes created. Error occured first at #{wkclass.start_time.to_date} class (perhaps it already exists)" # t('.not_one_booking')
+        flash[:warning] = t('.partial_success', date_of_first_error: wkclass.start_time.to_date)
       end
     else
-      flash[:warning] = 'Classes not created. An error occurred before any classes were created.'
+      flash[:warning] = t('.error')
     end
   end
 
