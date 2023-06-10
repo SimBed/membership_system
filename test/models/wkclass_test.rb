@@ -3,15 +3,18 @@ require 'test_helper'
 class WkclassTest < ActiveSupport::TestCase
   def setup
     @workout = workouts(:hiit)
-    @workout_pt = workouts(:pt_apoorv)
+    @workout_pt = workouts(:pt_regular)
     @instructor = instructors(:amit)
     @instructor_rate = instructor_rates(:amit_base)
-    @instructor_pt = instructors(:amit_pt)
+    @instructor_pt_rate = instructor_rates(:amit_pt)    
     @wkclass = Wkclass.new(workout_id: @workout.id,
                            start_time: '2022-02-01 10:30:00',
                            instructor_id: @instructor.id,
-                           instructor_rate: @instructor_rate,
-                           instructor_cost: 500)
+                           instructor_rate: @instructor_rate)
+    @wkclass_pt = Wkclass.new(workout_id: @workout_pt.id,
+                              start_time: '2022-02-01 10:30:00',
+                              instructor_id: @instructor.id,
+                              instructor_rate: @instructor_pt_rate)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     @wkclass_many_attendances = wkclasses(:wkclass_many_attendances)
     @client = clients(:aparna)
@@ -28,15 +31,16 @@ class WkclassTest < ActiveSupport::TestCase
     refute_predicate @duplicate_class, :valid?
   end
 
-  # test 'A PT wkclass must have a PT instructor' do
-  #   @wkclass.workout = @workout_pt
-  #   refute_predicate @wkclass, :valid?
-  # end
+  test 'workout/time need not be unique when rescheduling new pt wkclass after client early cancellation of original class' do
+    @duplicate_class = @wkclass_pt.dup
+    @wkclass_pt.save
+    Attendance.create(wkclass_id: @wkclass_pt.id,
+                     purchase_id: purchases(:purchase_12C5WPT).id,
+                     status: 'cancelled early')
+    @duplicate_class.save
 
-  # test 'A non-PT wkclass must not have a PT instructor' do
-  #   @wkclass.instructor =  @instructor_pt
-  #   refute_predicate @wkclass, :valid?
-  # end
+    assert_predicate @duplicate_class, :valid?
+  end
 
   test 'show_in_bookings_for' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)

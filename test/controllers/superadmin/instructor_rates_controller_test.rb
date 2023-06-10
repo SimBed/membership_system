@@ -7,7 +7,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @instructor_rate = instructor_rates(:instructor_rate1)
+    @instructor_rate = instructor_rates(:amit_pt)
   end
 
   # no show method for instructor_rates controller

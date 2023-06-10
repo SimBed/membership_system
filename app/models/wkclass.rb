@@ -199,6 +199,11 @@ class Wkclass < ApplicationRecord
 
     false
   end
+  
+  def early_cancelled_pt?
+    # where a client cancels a PT session early, the instructor may re-schedule the same class/time combo for a different client
+    !workout.group_workout? && attendances&.first&.status == 'cancelled early'
+  end
 
   # Use a class method with an argument to call send_reminder method rather than call send_reminder directly
   # on an wkclass instance. As Delayed::Job works by saving an object to database (in yml form), this approach considerably
@@ -249,6 +254,8 @@ class Wkclass < ApplicationRecord
     wkclass = Wkclass.where(['workout_id = ? and start_time = ? and instructor_id = ?', workout_id, start_time,
                              instructor_id]).first
     return if wkclass.blank?
+    
+    return if wkclass.early_cancelled_pt?
 
     errors.add(:base, 'A class for this workout, instructor and time already exists') unless id == wkclass.id
   end
