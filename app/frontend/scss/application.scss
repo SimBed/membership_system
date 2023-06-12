@@ -265,6 +265,18 @@ img.footerlogo {
   margin: auto;
 }
 
+.carousel-item .review {
+  width: 75%;
+  margin: auto;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.carousel-item .reviewer {
+  line-height: 1.25;
+  font-weight: 700;
+}
 
 // so bottom items in dropdowns with lost of items dont become inaccesssible on phone
 @media (max-width: 550px) {
