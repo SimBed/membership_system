@@ -21,15 +21,16 @@ class Client < ApplicationRecord
   with_options if: :whatsapp_raw do
     phony_normalize :whatsapp_raw, as: :whatsapp, default_country_code: :whatsapp_country_code
   end
-  validates :phone, phony_plausible: true
-  validates :whatsapp, phony_plausible: true
+  # validates :phone, phony_plausible: true
+  # validates :whatsapp, phony_plausible: true
+  validate :phone_plausible
+  validate :whatsapp_plausible
   # validates :first_name, uniqueness: {scope: :last_name}
   validates :first_name, presence: true, length: { maximum: 40 }
   validates :last_name, presence: true, length: { maximum: 40 }
   # admin can create clients with less onerous validation than when clients create clients through the signup form
   with_options if: :modifier_is_client do
-    validates :email, presence: true
-    validates :whatsapp, presence: true # admin can add a client without a whatsapp number but a client cannot signup themselves without a whatsapp number
+    validates :email, presence: true # admin can add a client without an email but a client cannot signup themselves without an email
   end
   validate :full_name_must_be_unique
   validates :phone, uniqueness: { case_sensitive: false }, allow_blank: true
@@ -245,5 +246,20 @@ class Client < ApplicationRecord
 
     # relevant for updates
     errors.add(:base, "Client named #{first_name} #{last_name} already exists") unless id == client.id
+  end
+
+  def phone_plausible
+    return if phone_raw.blank?
+
+    errors.add(:phone_raw, "Phone is invalid") unless Phony.plausible?(phone)
+  end
+
+  def whatsapp_plausible
+    # admin can add a client without a whatsapp number but a client cannot signup themselves without a whatsapp number
+    return if whatsapp_raw.blank? && !modifier_is_client
+    
+    errors.add(:whatsapp_raw, "Whatsapp can't be blank") and return if whatsapp_raw.blank? && modifier_is_client
+
+    errors.add(:whatsapp_raw, "Whatsapp is invalid") unless Phony.plausible?(whatsapp)
   end
 end

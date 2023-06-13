@@ -42,7 +42,7 @@ class SignupTest < ActionDispatch::IntegrationTest
 
     assert_template 'public_pages/signup'
     assert_select 'h2', text: '1 error prohibited this account from being created:'
-    assert_select 'li', text: 'Whatsapp is an invalid number'
+    assert_select 'li', text: 'Whatsapp is invalid'
     assert_select 'form input[type=text][value="Dani"]'
     assert_select 'form input[type=text][value="Boi"]'
     assert_select 'form input[type=text][value="daniboi@gmail.com"]'
@@ -68,7 +68,7 @@ class SignupTest < ActionDispatch::IntegrationTest
 
     assert_template 'public_pages/signup'
     assert_select 'h2', text: '1 error prohibited this account from being created:'
-    assert_select 'li', text: 'Whatsapp is an invalid number'
+    assert_select 'li', text: 'Whatsapp is invalid'
     assert_select 'form input[type=text][value="Dani"]'
     assert_select 'form input[type=text][value="Boi"]'
     assert_select 'form input[type=text][value="daniboi@gmail.com"]'
