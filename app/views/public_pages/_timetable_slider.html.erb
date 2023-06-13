@@ -4,14 +4,13 @@
   <div class="carousel carousel-visible">
     <div
       data-carousel='{"controls":false, "nav": true,"mouseDrag": true, "gutter": 32, "loop": false, "responsive": {"0": {"items": 1}, "600": {"items": 4}, "1080": {"items": 6}, "1800": {"items": 6}}}'>
-      <% @days.each do |day| %>
+      <% @entries_hash.each_key do |day| %>
       <div class="d-flex flex-column mb-3">
         <div class="d-flex flex-column mb-3">
           <div class="tt-date-title pt-2 pb-1"><%= day.name.upcase %></div>
           <div class="tt-date pb-2"><%= Date.yesterday.next_occurring(day.name.downcase.to_sym).strftime("%b %e") %></div>
         </div>
-        <% @entries = Entry.where(table_day_id: day.id).includes(:table_time, :workout) %>
-        <% @entries.order_by_start.each do |entry| %>
+        <% @entries_hash[day].each do |entry| %>
           <div class="d-flex flex-column mb-3 border-bottom border-grey border-1">
             <div class="tt-class-title pb-1"><%= entry&.workout.name %></div>
 

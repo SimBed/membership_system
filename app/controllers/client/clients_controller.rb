@@ -41,20 +41,12 @@ class Client::ClientsController < ApplicationController
   end
 
   def timetable
-    # update to base on Setting
-    # @timetable = Timetable.first
-    # @days = @timetable.table_days.order_by_day
-    # @morning_times = @timetable.table_times.during('morning').order_by_time
-    # @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
-    # @evening_times = @timetable.table_times.during('evening').order_by_time
-    # render "public_pages/timetable", layout: "timetable"
-    # if Rails.env.test?
-    #   @timetable = Timetable.first
-    # else
-    #   @timetable = Timetable.find(Setting.timetable)
-    # end
     @timetable = Timetable.find(Setting.timetable)
     @days = @timetable.table_days.order_by_day
+    @entries_hash = {}
+    @days.each do |day|
+      @entries_hash[day] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
+    end 
     render 'timetable', layout: 'client_black'
   end
 

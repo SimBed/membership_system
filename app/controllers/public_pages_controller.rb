@@ -73,6 +73,10 @@ class PublicPagesController < ApplicationController
   def set_timetable
     @timetable = Timetable.find(Setting.timetable)
     @days = @timetable.table_days.order_by_day
+    @entries_hash = {}
+    @days.each do |day|
+      @entries_hash[day] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
+    end     
   end
 
   def account_limit
