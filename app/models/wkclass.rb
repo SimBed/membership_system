@@ -90,7 +90,7 @@ class Wkclass < ApplicationRecord
            .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
            .where('clients.id': client.id)
            .where('workout_group.renewable': true)
-           .merge(Purchase.not_fully_expired)
+           .merge(Purchase.not_fully_expired.exclude(Purchase.unexpired_rider_without_ongoing_main))
            .distinct
   end
 

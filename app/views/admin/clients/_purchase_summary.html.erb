@@ -54,6 +54,12 @@
         <td><%= @purchase.will_expire_on %></td>
       </tr>
     <% end %>
+    <% if @purchase.rider? %>
+      <tr>
+        <th scope="row">Status of PT Package</th>
+        <td><%= @purchase.main_purchase.status %></td>
+      </tr>
+    <% end %>
     <% unless @purchase.note.nil? %>
       <tr>
         <th scope="row">Note</th>

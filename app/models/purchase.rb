@@ -17,7 +17,7 @@ class Purchase < ApplicationRecord
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
-           :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, to: :product
+           :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, :rider?, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 }
@@ -79,6 +79,7 @@ class Purchase < ApplicationRecord
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
   scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
   scope :during, ->(period) { where({ dop: period }) }
+  scope :unexpired_rider_without_ongoing_main, -> { not_fully_expired.joins(:main_purchase).where.not(main_purchase: {status: 'ongoing'}) }
   # used in Purchases controller's handle_sort method
   # raw SQL in Active Record functions will give an error to guard against SQL injection
   # in the case where the raw SQl contains user input i.e. a params value

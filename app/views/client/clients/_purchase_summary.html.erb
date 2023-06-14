@@ -1,5 +1,7 @@
 <table class="table table-secondary table-striped caption-top">
-  <caption class="ps-1"><%= @purchase.formal_name %> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%></caption>
+  <caption class="ps-1">
+    <%= @purchase.formal_name %> <%= "(PT rider)" if @purchase.rider?%> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%>
+  </caption>
   <tbody>
     <tr>
       <th scope="row" >Payment</th>
@@ -53,6 +55,12 @@
       <tr>
         <th scope="row">A&R paid on</th>
         <td><%= @purchase.ar_date.strftime('%d %b %y') %></td>
+      </tr>
+    <% end %>
+    <% if @purchase.rider? %>
+      <tr>
+        <th scope="row">Status of PT Package</th>
+        <td><%= @purchase.main_purchase.status %></td>
       </tr>
     <% end %>
   </tbody>
