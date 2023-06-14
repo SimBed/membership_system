@@ -4,7 +4,6 @@ class Whatsapp
     @message_type = attributes[:message_type]
     @admin_triggered = attributes[:admin_triggered] || true
     @variable_contents = attributes[:variable_contents]
-    # @to_number = @receiver.is_a?(Client) ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
     @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)].any? ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
   end
 
@@ -16,10 +15,7 @@ class Whatsapp
 
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @admin_triggered
 
-    # return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? unless @message_type == 'renew'
-
     # return [nil] unless white_list_whatsapp_receivers
-    # return [:warning, "Personal Training purchase. Send details to client manually."] if @receiver.pt? && @message_type == 'new_purchase'
 
     send_whatsapp
     post_send_whatsapp_flash

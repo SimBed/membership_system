@@ -163,11 +163,11 @@ class Client < ApplicationRecord
     purchases.map(&:online?).any?
   end
 
-  def just_bought_groupex?
-    return false if last_purchase.nil?
+  # def just_bought_groupex?
+  #   return false if last_purchase.nil?
 
-    last_purchase.workout_group.renewable?
-  end
+  #   last_purchase.workout_group.renewable?
+  # end
 
   def lifetime_classes
     Client.joins(purchases: [:attendances]).where(id: id).where(attendances: { status: 'attended' }).size

@@ -20,7 +20,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
                                                        payment: 22_950, dop: '2022-02-15', payment_mode: 'Cash' } }
     end
     new_account = Account.last
-    # the new account has been given a random password, so lets rest it so we can login easily
+    # the new account has been given a random password, so lets reset it so we can login easily
     new_account.update(password: 'password', password_confirmation: 'password')
     log_in_as(new_account)
 

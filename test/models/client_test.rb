@@ -155,10 +155,10 @@ class ClientTest < ActiveSupport::TestCase
     refute @client.deletable?
   end
 
-  test 'just_bought_groupex? method' do
-    refute @client.just_bought_groupex?
-    assert @client2.just_bought_groupex?
-  end
+  # test 'just_bought_groupex? method' do
+  #   refute @client.just_bought_groupex?
+  #   assert @client2.just_bought_groupex?
+  # end
 
   test '#has_had_trial?' do
     refute @client.has_had_trial?

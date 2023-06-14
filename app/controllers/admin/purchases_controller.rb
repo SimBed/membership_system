@@ -389,15 +389,13 @@ class Admin::PurchasesController < Admin::BaseController
 
   def post_purchase_processing
     update_purchase_status([@purchase])
-    # return if @purchase.dropin? || @purchase.pt?
-    return if @purchase.dropin? || !@purchase.workout_group.renewable?
+    # return if @purchase.dropin? || !@purchase.workout_group.renewable?
+    return if @purchase.dropin? || !@purchase.workout_group.requires_account?
 
     client = @purchase.client
     # setup account which returns some flashes as an array of type/message arrays
-    # just_bought_groupex is unnecessary as we have already passed the !@purchase.workout_group.renewable? check
-    Account.setup_for(client).each { |item| flash_message(*item) } if client.account.nil? && client.just_bought_groupex?
+    Account.setup_for(client).each { |item| flash_message(*item) } if client.account.nil?
     # use splat to turn array returned into separate arguments
-
     flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
   end
 
@@ -406,13 +404,6 @@ class Admin::PurchasesController < Admin::BaseController
   #   send_new_account_whatsapp(recipient)
   #   send_new_purchase_whatsapp(recipient)
   #   # send_temp_email_confirm_whatsapp(recipient)
-  # end
-
-  # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
-  # def whatsapp_params(message_type)
-  #   { receiver: @purchase.client,
-  #     message_type: message_type,
-  #     variable_contents: { password: (@password if message_type == 'new_account') }.compact }
   # end
 
   # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
