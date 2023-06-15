@@ -9,6 +9,11 @@
       </div>
 
       <div class="form-group mb-2">
+        <label class="control-label">Search only on this many past months for problematic classes</label>
+        <%= f.number_field :problematic_past, value: Setting.problematic_past, class: "form-control", style: "width: 5rem;" %>
+      </div>
+
+      <div class="form-group mb-2">
         <label class="control-label">Client inital password length</label>
         <%= f.number_field :password_length, value: Setting.password_length, class: "form-control", style: "width: 5rem;" %>
       </div>

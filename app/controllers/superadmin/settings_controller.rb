@@ -29,7 +29,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
 
   private
 
-  # dont need strong parameters. Requets can only come from superadmin
+  # dont need strong parameters. Requests can only come from superadmin
   # attempt to tidy up strong parameters with *Setting.all.map { |s| s.var } failed because the Setting with the relevant var only exists after first being set
   # def setting_params
   # params.require(:setting).permit(:whitelist, :renew_online, :password_length, :timetable, :goals, :levels, :studios, :classmaker_advance, :sunset_limit_days, :package_expiry_message_days, :trial_expiry_message_days, :quotation, :amnesty_limit,

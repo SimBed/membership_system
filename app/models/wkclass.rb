@@ -37,12 +37,14 @@ class Wkclass < ApplicationRecord
   scope :yesterdays_class, -> { where(start_time: Date.yesterday.all_day) }
   scope :tomorrows_class, -> { where(start_time: Date.tomorrow.all_day) }
   scope :on_date, ->(date) { where(start_time: date.all_day) }
-  scope :past, -> { where('start_time < ?', Time.zone.now) }
+  # scope :past, -> { where('start_time < ?', Time.zone.now) }
+  # https://stackoverflow.com/questions/10338596/is-it-possible-to-have-a-scope-with-optional-arguments
+  scope :past, ->(months = nil) { months ? where( start_time: (Time.zone.now.advance(months: -months)..Time.zone.now)) : where('start_time < ?', Time.zone.now) }
   scope :future, -> { where('start_time > ?', Time.zone.now) }
-  scope :instructorless, -> { past.where(instructor_id: nil) }
+  scope :instructorless, -> { where(instructor_id: nil) }
   # unscope order to avoid PG::InvalidColumnReference: ERROR https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
-  scope :incomplete, -> { past.joins(:attendances).where(attendances: { status: 'booked' }).unscope(:order).distinct }
-  scope :empty_class, -> { past.left_joins(:attendances).where(attendances: { id: nil }) }
+  scope :incomplete, -> { joins(:attendances).where(attendances: { status: 'booked' }).unscope(:order).distinct }
+  scope :empty_class, -> { left_joins(:attendances).where(attendances: { id: nil }) }
   # unfortunately the clean way results in structurally incomaptible error. Workaround to this either by a) work on ruby objects (as for Client#active or
   # b) by putting all the joins/distincts at the end of the query as nar8789 answer https://stackoverflow.com/questions/40742078/relation-passed-to-or-must-be-structurally-compatible-incompatible-values-r
   # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
@@ -74,10 +76,11 @@ class Wkclass < ApplicationRecord
   # would like to use #or method but see difficulties above re structrurally compatible
   def self.problematic
     # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
-    instructorless_wkclasses = instructorless.map(&:id)
-    incomplete_wkclasses = incomplete.map(&:id)
-    empty_with_cost_wkclasses = empty_class.has_instructor_cost.map(&:id)
-    booking_post_purchase_expiry = has_booking_post_purchase_expiry.map(&:id) # can arise due to careless administration when using the repeat funstionality
+    instructorless_wkclasses = past(Setting.problematic_past).instructorless.map(&:id)
+    incomplete_wkclasses = past(Setting.problematic_past).incomplete.map(&:id)
+    empty_with_cost_wkclasses = past(Setting.problematic_past).empty_class.has_instructor_cost.map(&:id)
+    period = (Time.zone.now.advance(months: -Setting.problematic_past)..Float::INFINITY)
+    booking_post_purchase_expiry = during(period).has_booking_post_purchase_expiry.map(&:id) # can arise due to careless administration when using the repeat funstionality
     Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq + booking_post_purchase_expiry.uniq ))
   end
 
