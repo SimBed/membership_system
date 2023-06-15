@@ -56,7 +56,7 @@ class Admin::WkclassesController < Admin::BaseController
 
   def create
     if @repeats
-      # activerecord takes the constiruent bits of a date from the params and builds the date before saving. To advance the adate when there are repeats we have to go through the rigmaroll of building the date, advancing and deconstructiong
+      # activerecord takes the constituent bits of a date from the params and builds the date before saving. To advance the adate when there are repeats we have to go through the rigmarole of building the date, advancing and deconstructing
       start_date = construct_date(wkclass_params)
       @wkclasses = (0..@weeks_to_repeat).map { |weeks| Wkclass.create(wkclass_params.merge(deconstruct_date(start_date, weeks))) }
       if @wkclasses.all?(&:persisted?)
@@ -186,12 +186,7 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def wkclass_params
-    # if Instructor.exists?(params[:wkclass][:instructor_id])
-    #   cost = Instructor.find(params[:wkclass][:instructor_id]).current_rate
-    # end
-    # # cost is nil in client_booking_interface_test when admin just updates wkclass time, hence the nil protecting '&'
-    # cost = nil if cost&.zero?
-    cost = InstructorRate.find(params[:wkclass][:instructor_rate_id]).rate
+    cost = InstructorRate.find(params[:wkclass][:instructor_rate_id]).rate if params[:wkclass][:instructor_rate_id].present?
     params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id, :instructor_rate_id, :max_capacity, :level)
           .merge({ instructor_cost: cost })
   end
