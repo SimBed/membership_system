@@ -196,7 +196,15 @@ div.page_entries_info {
   div.admin-password-reset-table-wrapper {
     display: block;
     overflow-x: auto;
-    }  
+    }
+
+td.discount-warning {
+  background-color: red;
+  &:after {
+    content: " (warning may affect prices in shop & renewals)";
+    text-transform: lowercase;
+  }
+}
 
 @media (min-width: 900px) {
 

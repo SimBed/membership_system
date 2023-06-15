@@ -20,7 +20,7 @@
       <% @discount_type_hash[:current].each_key do |rationale| %>
         <% unless @discount_type_hash[:current][rationale].blank? %>
           <tr>
-            <td colspan="12" class="fw-bolder text-uppercase text-light bg-secondary"><%= rationale %></td>
+            <%= tag.td rationale, colspan:"12", class: %w(fw-bolder text-uppercase text-light) + [rationale == :oneoff ? 'discount-warning' : 'bg-secondary'] %>
           </tr>
           <% @discount_type_hash[:current][rationale].uniq.each do |discount| %>
             <tr>
