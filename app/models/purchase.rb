@@ -255,6 +255,7 @@ class Purchase < ApplicationRecord
     return unless expired?
     return 'adjust & restart' if adjust_restart
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
+    return 'PT Package expired' if rider?
     return 'sunset' if start_date.nil?
 
     'max time period'
@@ -262,16 +263,25 @@ class Purchase < ApplicationRecord
 
   def expired_on
     return unless expired?
-    return ar_date.strftime('%d %b %y') if adjust_restart
-    return max_class_expiry_date.strftime('%d %b %y') if attendances.no_amnesty.confirmed.size == max_classes
+    return ar_date if adjust_restart
+    return max_class_expiry_date if attendances.no_amnesty.confirmed.size == max_classes
+    return main_purchase.expired_on if rider?
 
-    expiry_date.strftime('%d %b %y')
+    expiry_date
   end
 
   def will_expire_on
     return nil unless provisionally_expired?
 
     attendances.no_amnesty.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
+  end
+
+  def pt_will_expire_on
+    return sunset_date if not_started?
+
+    return expiry_date if attendances.no_amnesty.size < max_classes
+
+    attendances.no_amnesty.joins(:wkclass).map(&:start_time).max
   end
 
   def expiry_date_calc

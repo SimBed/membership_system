@@ -13,13 +13,11 @@
       <th scope="row">Status</th>
       <td><%= purchase.status %></td>
     </tr>
-    <% unless purchase.not_started? %>
+    <% unless purchase.not_started? || purchase.expired? %>
       <tr>
         <th scope="row">Expiry date</th>
         <td><%= purchase.expiry_date.strftime('%d %b %y') %></td>
       </tr>
-    <% end %>
-    <% unless purchase.not_started? || purchase.expired? %>
         <th scope="row">Sessions left</th>
         <td><%= purchase.attendances_remain(provisional: false) %></td>
       </tr>
@@ -31,7 +29,7 @@
       </tr>
       <tr>
         <th scope="row">Expired on</th>
-        <td><%= purchase.expired_on %></td>
+        <td><%= purchase.expired_on&.strftime('%d %b %y') %></td>
       </tr>
     <% end %>
     <% if purchase.provisionally_expired? %>

@@ -45,7 +45,7 @@
     <% if @purchase.expired? %>
       <tr>
         <th scope="row">Expired on</th>
-        <td><%= @purchase.expired_on %></td>
+        <td><%= @purchase.expired_on&.strftime('%d %b %y') %></td>
       </tr>
     <% end %>
     <% if @purchase.provisionally_expired? %>

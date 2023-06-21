@@ -1,0 +1,49 @@
+  <caption class="ps-1">
+    <%= @purchase.formal_name %> <%= "(PT Rider)" if @purchase.rider?%> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%>
+  </caption>
+  <tbody>
+    <tr>
+      <th scope="row">PT Payment Paid on</th>
+      <td><%= @purchase.dop.strftime('%d %b %y') %></td>
+    </tr>
+    <tr>
+      <th scope="row">Status</th>
+      <td><%= @purchase.status %></td>
+    </tr>
+    <tr>
+      <th scope="row">Status of PT Package</th>
+      <td><%= @purchase.main_purchase.status %></td>
+    </tr>
+    <% unless @purchase.main_purchase.not_started? || @purchase.main_purchase.expired? %>
+      <tr>
+        <th scope="row">PT Package set to expire on</th>
+        <td><%= @purchase.main_purchase.pt_will_expire_on&.strftime('%d %b %y') %></td>
+      </tr>
+    <% end %>
+    <% unless @purchase.not_started? || @purchase.expired? %>
+      <tr>
+        <th scope="row">Bookings left</th>
+        <td><%= @purchase.attendances_remain(provisional: true) %></td>
+      </tr>
+      <tr>
+        <th scope="row">Attendances left</th>
+        <td><%= @purchase.attendances_remain(provisional: false) %></td>
+      </tr>
+    <% end %>
+    <% if @purchase.expired? %>
+      <tr>
+        <th scope="row">Expiry cause</th>
+        <td><%= @purchase.expiry_cause %></td>
+      </tr>
+      <tr>
+        <th scope="row">Expired on</th>
+        <td><%= @purchase.expired_on&.strftime('%d %b %y') %></td>
+      </tr>
+    <% end %>
+    <% if @purchase.provisionally_expired? %>
+      <tr>
+        <th scope="row">Last class booked for</th>
+        <td><%= @purchase.will_expire_on %></td>
+      </tr>
+    <% end %>
+  </tbody>

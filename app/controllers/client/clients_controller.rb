@@ -30,7 +30,8 @@ class Client::ClientsController < ApplicationController
     @wkclasses_not_yet_open = @wkclasses_visible.select { |w| w.booking_window.begin > Time.zone.now }
     @wkclasses_in_booking_window = @wkclasses_visible - @wkclasses_window_closed - @wkclasses_not_yet_open
     # @wkclasses_in_booking_window = @wkclasses_visible.select { |w| w.booking_window.cover?(Time.zone.now) }
-    @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop
+    # incluide attendances and wkclass so can find last booked session in PT package without additional query
+    @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])
     # @renewal = @client.renewal
     @renewal = Renewal.new(@client)
     @quotation = Setting.quotation

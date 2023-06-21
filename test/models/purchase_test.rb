@@ -198,7 +198,7 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'expired_on method' do
     assert_nil @purchase_package.expired_on
-    assert_equal '25 Feb 22', @purchase_dropin.expired_on
+    assert_equal '25 Feb 22', @purchase_dropin.expired_on.strftime('%d %b %y')
     assert_nil @purchase_dropin2.expired_on
     assert_nil @purchase_fixed.expired_on
   end
