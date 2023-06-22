@@ -13,6 +13,8 @@ gem 'honeybadger', '~> 5.2'
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'net-smtp', require: false
+gem 'net-imap', require: false
+gem 'net-pop', require: false
 gem 'pg', '~> 1.1'
 gem 'phony_rails'
 gem 'puma', '~> 5.0'
