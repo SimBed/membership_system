@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.1'
+# ruby '3.0.1'
+ruby File.read(".ruby-version").strip
 gem 'bcrypt'
 gem 'chartkick', '~> 4.2'
 gem 'country_select', '~> 8.0'
@@ -11,6 +12,7 @@ gem 'groupdate', '~> 6.1'
 gem 'honeybadger', '~> 5.2'
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
+gem 'net-smtp', require: false
 gem 'pg', '~> 1.1'
 gem 'phony_rails'
 gem 'puma', '~> 5.0'

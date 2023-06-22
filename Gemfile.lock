@@ -92,6 +92,7 @@ GEM
     delayed_job_active_record (4.1.7)
       activerecord (>= 3.0, < 8.0)
       delayed_job (>= 3.0, < 5)
+    digest (3.1.0)
     erubi (1.11.0)
     faraday (2.6.0)
       faraday-net_http (>= 2.0, < 3.1)
@@ -108,6 +109,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    io-wait (0.2.1)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -143,6 +145,13 @@ GEM
     minitest (5.16.3)
     msgpack (1.6.0)
     multi_xml (0.6.0)
+    net-protocol (0.1.2)
+      io-wait
+      timeout
+    net-smtp (0.3.1)
+      digest
+      net-protocol
+      timeout
     nio4r (2.5.8)
     nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
@@ -251,6 +260,7 @@ GEM
       sprockets (>= 3.0.0)
     thor (1.2.1)
     tilt (2.0.11)
+    timeout (0.2.0)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -301,6 +311,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   kaminari
   listen (~> 3.3)
+  net-smtp
   pg (~> 1.1)
   phony_rails
   puma (~> 5.0)
@@ -322,7 +333,7 @@ DEPENDENCIES
   webpacker (~> 5.0)
 
 RUBY VERSION
-   ruby 3.0.1p64
+   ruby 3.1.2p20
 
 BUNDLED WITH
    2.2.20
