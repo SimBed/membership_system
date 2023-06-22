@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   get '/privacy_policy',  to: 'footer#privacy_policy'
   get '/payment_policy',  to: 'footer#payment_policy'
   root 'public_pages#welcome'
-  # temp home page while building
+  # prototype homepage (redundant))
   get '/welcome_home', to: 'public_pages#welcome_home'
+  # previous homepage (redundant)
   get '/space_home', to: 'public_pages#space_home', as: 'wip_home'
   get '/shop', to: 'public_pages#shop'
   get '/sell', to: 'public_pages#sell'

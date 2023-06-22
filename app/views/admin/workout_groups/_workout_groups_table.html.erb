@@ -5,9 +5,9 @@
       <th scope="col">Group</th>
       <th scope="col">Partner</th>
       <th scope="col">Workout</th>
-      <th scope="col">Account</th>
-      <th scope="col">Service</th>
       <% unless logged_in_as?('partner') %>
+        <th scope="col">Account</th>
+        <th scope="col">Service</th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>

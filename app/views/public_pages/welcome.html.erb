@@ -10,9 +10,11 @@
             <h1 class="display-2 lh-sm fw-bold text-uppercase">Strength</h1>
             <h6 class="mb-0 fw-normal fs-lg">Inside & Out</h6>
             <!--h1 class="eyebrow text-secondary">Inside & Out</h1-->
-            <div class="d-flex flex-column">
-              <div> <%= link_to "Join Now!", signup_path, class: "my-2 btn btn-outline-white rounded-pill" %> </div>
-            </div>
+            <% unless logged_in_as?('client')%>
+              <div class="d-flex flex-column">
+                <div> <%= link_to "Join Now!", signup_path, class: "my-2 btn btn-outline-white rounded-pill" %> </div>
+              </div>
+            <% end %>
           </div>
         </div>
         <div class="row text-center">

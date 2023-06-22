@@ -40,7 +40,13 @@
     <%= javascript_pack_tag 'tiny-slider', defer:true %>
     <!-- <script src="../app/frontend/packs/modules/aos"></script> -->
     <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
-      <%= render 'layouts/admin_navbar' %>%
+      <%= render 'layouts/admin_navbar' %>
+    <% elsif logged_in_as?('client') %>
+      <%= render 'layouts/client_navbar' %>
+    <% elsif logged_in_as?('partner') %>
+      <%= render 'layouts/partner_navbar' %>
+    <% elsif logged_in_as?('instructor') %>
+      <%= render 'layouts/instructor_navbar' %>
     <% else %>
       <%= render 'layouts/public_navbar' %>
     <% end %>

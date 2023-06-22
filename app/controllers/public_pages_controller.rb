@@ -4,10 +4,11 @@ class PublicPagesController < ApplicationController
   layout 'public'
 
   def welcome
-    if logged_in?
-      @account = current_account
-      send_to_correct_page_for_ac_type
-    end
+    @home = true
+    # if logged_in?
+    #   @account = current_account
+    #   send_to_correct_page_for_ac_type
+    # end
     # if logged_in_as?('junioradmin', 'admin', 'superadmin')
     #   # NOTE: && return won't work because of precedence of operator over method call
     #   redirect_to admin_clients_path and return

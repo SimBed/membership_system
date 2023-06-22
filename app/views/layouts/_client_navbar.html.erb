@@ -1,83 +1,83 @@
-   <%= javascript_pack_tag 'headroom' %>
-   <nav id="mainNav" class="headroom navbar navbar-expand-lg navbar-sticky navbar-dark bg-black inverted">
+<%= javascript_pack_tag 'headroom' %>
+<nav id="mainNav" class="headroom navbar navbar-expand-lg navbar-sticky navbar-dark <%= 'bg-black' if @home != true %> inverted">
 
-      <div class="container">
-        <%= link_to root_path, class: "navbar-brand" do %>
-          <%= image_tag('SpaceLogo_white.png', alt: "logo") %>
+  <div class="container">
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <%= image_tag('SpaceLogo_white.png', alt: "logo") %>
+    <% end %>
+
+    <ul class="navbar-nav navbar-nav-secondary order-lg-3">
+      <li class="nav-item d-lg-none">
+        <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+          aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="bi bi-list"></span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
+      <ul class="navbar-nav">
+      <% client = current_account.client %>
+        <%# if current_account.without_purchase? %>        
+          <li class="nav-item">
+            <%= link_to "Shop", client_shop_path(client), class: "nav-link", 'data-turbolinks': false%>
+          </li>
+        <%# end %>
+        <li class="nav-item">
+          <%= link_to "History", client_history_path(client), class: "nav-link"%>
+        </li>
+        <% unless current_account.without_purchase? %>
+          <li class="nav-item">
+            <%= link_to "Book", client_book_path(client), class: "nav-link"%>
+          </li>
+        <% end %>
+        <% if current_account.client.pt? %>
+          <li class="nav-item">
+            <%= link_to "PT", client_pt_path(client), class: "nav-link"%>
+          </li>
+        <% end %>
+        <li class="nav-item">
+          <%= link_to "Timetable", client_timetable_path, class: "nav-link", 'data-turbolinks': false%>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Profile", client_client_path(client), class: "nav-link"%>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        <% if multiple_roles? %>
+          <li class="nav-item dropdown dropdown-hover">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="fa fa-list"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">
+              <div class="row g-0">
+                <div class="col-6 p-4">
+                  <span class="dropdown-label">ROLE</span>
+                  <%= content_tag :div, "*#{current_role}", class: "dropdown-item text-uppercase" %>             
+                  <% navbar_roles.each do |role| %>
+                    <%= link_to role.name, "/switch_account_role?role=#{role.name}", class: "dropdown-item" %>
+                  <% end %>
+                </div>                 
+              </div>
+            </div>
+          </li>
         <% end %>
 
-        <ul class="navbar-nav navbar-nav-secondary order-lg-3">
-          <li class="nav-item d-lg-none">
-            <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#navbar"
-              aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="bi bi-list"></span>
-            </a>
-          </li>
-        </ul>
-
-        <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
-          <ul class="navbar-nav">
-          <% client = current_account.client %>
-            <%# if current_account.without_purchase? %>        
-              <li class="nav-item">
-                <%= link_to "Shop", client_shop_path(client), class: "nav-link", 'data-turbolinks': false%>
-              </li>
-            <%# end %>
-            <li class="nav-item">
-              <%= link_to "History", client_history_path(client), class: "nav-link"%>
-            </li>
-            <% unless current_account.without_purchase? %>
-              <li class="nav-item">
-                <%= link_to "Book", client_book_path(client), class: "nav-link"%>
-              </li>
+        <li class="nav-item">
+          <% if current_account %>
+            <%= link_to logout_path, method: :delete, class: "nav-link active" do %>
+              <i class="fa fa-door-open"></i>
             <% end %>
-            <% if current_account.client.pt? %>
-              <li class="nav-item">
-                <%= link_to "PT", client_pt_path(client), class: "nav-link"%>
-              </li>
+          <% else %>
+            <%= link_to login_path, class: "nav-link" do %>
+              <i class="fa fa-sign-in-alt"></i>
+              <span class="link-text">Login</span>
             <% end %>
-            <li class="nav-item">
-              <%= link_to "Timetable", client_timetable_path, class: "nav-link", 'data-turbolinks': false%>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Profile", client_client_path(client), class: "nav-link"%>
-            </li>
-          </ul>
-
-          <ul class="navbar-nav">
-            <% if multiple_roles? %>
-              <li class="nav-item dropdown dropdown-hover">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <i class="fa fa-list"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">
-                  <div class="row g-0">
-                    <div class="col-6 p-4">
-                      <span class="dropdown-label">ROLE</span>
-                      <%= content_tag :div, "*#{current_role}", class: "dropdown-item text-uppercase" %>             
-                      <% navbar_roles.each do |role| %>
-                        <%= link_to role.name, "/switch_account_role?role=#{role.name}", class: "dropdown-item" %>
-                      <% end %>
-                    </div>                 
-                  </div>
-                </div>
-              </li>
-            <% end %>
-
-            <li class="nav-item">
-              <% if current_account %>
-                <%= link_to logout_path, method: :delete, class: "nav-link active" do %>
-                  <i class="fa fa-door-open"></i>
-                <% end %>
-              <% else %>
-                <%= link_to login_path, class: "nav-link" do %>
-                  <i class="fa fa-sign-in-alt"></i>
-                  <span class="link-text">Login</span>
-                <% end %>
-              <% end %>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
