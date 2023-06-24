@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_26_051420) do
+ActiveRecord::Schema.define(version: 2023_06_23_084835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,19 @@ ActiveRecord::Schema.define(version: 2023_05_26_051420) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "ac_type"
     t.index ["email"], name: "index_accounts_on_email", unique: true
+  end
+
+  create_table "achievements", force: :cascade do |t|
+    t.date "date"
+    t.integer "score"
+    t.bigint "challenge_id", null: false
+    t.bigint "client_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["challenge_id"], name: "index_achievements_on_challenge_id"
+    t.index ["client_id"], name: "index_achievements_on_client_id"
+    t.index ["date"], name: "index_achievements_on_date"
+    t.index ["score"], name: "index_achievements_on_score"
   end
 
   create_table "adjustments", force: :cascade do |t|
@@ -58,6 +71,15 @@ ActiveRecord::Schema.define(version: 2023_05_26_051420) do
     t.index ["purchase_id"], name: "index_attendances_on_purchase_id"
     t.index ["status"], name: "index_attendances_on_status"
     t.index ["wkclass_id"], name: "index_attendances_on_wkclass_id"
+  end
+
+  create_table "challenges", force: :cascade do |t|
+    t.string "name"
+    t.string "metric"
+    t.string "metric_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_challenges_on_name"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -419,6 +441,8 @@ ActiveRecord::Schema.define(version: 2023_05_26_051420) do
     t.index ["name"], name: "index_workouts_on_name"
   end
 
+  add_foreign_key "achievements", "challenges"
+  add_foreign_key "achievements", "clients"
   add_foreign_key "assignments", "accounts"
   add_foreign_key "assignments", "roles"
   add_foreign_key "discount_assignments", "discounts"

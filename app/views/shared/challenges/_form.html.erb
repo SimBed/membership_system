@@ -1,0 +1,32 @@
+<%= form_with(model: [:shared, challenge]) do |form| %>
+  <% if challenge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(challenge.errors.count, "error") %> prohibited this challenge from being saved:</h2>
+
+      <ul>
+        <% challenge.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :metric %>
+    <%= form.text_field :metric %>
+  </div>
+
+  <div class="field">
+    <%= form.label :metric_type %>
+    <%= form.text_field :metric_type %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

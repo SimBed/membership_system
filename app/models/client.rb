@@ -3,6 +3,8 @@ class Client < ApplicationRecord
   include Csv
   has_many :purchases, dependent: :destroy
   has_many :attendances, through: :purchases
+  has_many :results, dependent: :destroy
+  has_many :leagues, through: :results
   belongs_to :account, optional: true
   before_save :downcase_email
   before_save :uppercase_names
@@ -84,6 +86,7 @@ class Client < ApplicationRecord
                             }
 
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
+  scope :in_league, ->(league) {joins(results: [:league]).where(results: {league_id: league.id}) }
 
   paginates_per Setting.clients_pagination
 

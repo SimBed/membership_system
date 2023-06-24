@@ -1,0 +1,38 @@
+<div id="challenges-table" class="container px-0 mb-5 margin-override">
+  <h4>Challenge League</h4>
+  <p>
+    <select id="show_challenges">
+      <%= options_for_select(@challenges, params[:id]) %>
+    </select>
+  </p>
+
+  <table class="table table-secondary table-striped caption-top">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th class="pr-3 pr-md-5">Best</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @clients.each_with_index do |client, index| %>
+        <tr>
+          <td ><%= client['first_name'] %></td>
+          <td><%= client['max_score'] %></td>
+          <td><%= index + 1 %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+	var userSelection = document.getElementById("show_challenges");
+
+  userSelection.onchange = function(event){
+    var show_url = event.target.options[event.target.selectedIndex].dataset.showurl;
+    window.location.replace(show_url);
+  };
+
+</script>

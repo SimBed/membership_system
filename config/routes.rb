@@ -80,6 +80,11 @@ Rails.application.routes.draw do
     resources :password_resets, only: [:new, :create, :edit, :update]
   end
 
+  namespace :shared do
+    resources :achievements, except: [:show]
+    resources :challenges
+  end
+
   # get 'shop/index'
   get 'shop/sell'
   get 'shop/wedontsupport'

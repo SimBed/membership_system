@@ -1,0 +1,32 @@
+<div class="container px-1 margin-override">
+  <h4>Challenges <%= link_to image_tag('add.png'), new_shared_challenge_path %></h4>
+</div>
+<div id="challenges-table" class="container px-0 mb-5 margin-override">
+  <table class="table table-secondary table-striped caption-top">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Metric</th>
+        <th>Metric Type</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @challenges.each do |challenge| %>
+        <tr>
+          <td><%= challenge.name %></td>
+          <td><%= challenge.metric %></td>
+          <td><%= challenge.metric_type %></td>
+          <td><%= link_to shared_challenge_path(challenge) do %>
+            <i class="bi bi-arrow-right-circle-fill"></i>
+            <% end %>
+          </td>
+          <td class="pl-3 pl-md-5"><%= link_to image_tag("edit.png", class: "edit_icon"), edit_shared_challenge_path(challenge) %></td>
+          <td class="pl-md-3"><%= link_to image_tag("delete.png", class: "edit_icon"), shared_challenge_path(challenge), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%# link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
