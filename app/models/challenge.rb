@@ -5,6 +5,7 @@ class Challenge < ApplicationRecord
   validates :metric, presence: true, length: {maximum: 10}
   validates :metric_type, presence: true, length: {maximum: 10}
   scope :order_by_date, -> { order(created_at: :desc) }
+  scope :order_by_name, -> { order(:name) }
 
   def positions
     sql = "SELECT clients.id, clients.first_name, max(achievements.score) as max_score

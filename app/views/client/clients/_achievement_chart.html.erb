@@ -1,0 +1,19 @@
+<div id="client-league" class="container px-0">
+  <h6 class="fw-bolder fst-italic mb-0 ps-1">
+    Achievements
+  </h6>
+</div>
+<% if @achievements.keys.size == 1 %>
+  <%= column_chart @achievements, width: "200px", height: "200px"  %>
+<% else %>
+  <%= area_chart @achievements %>
+<% end %>
+<script>
+	var userSelection = document.getElementById("show_challenges");
+
+  userSelection.onchange = function(event){
+    var show_url = event.target.options[event.target.selectedIndex].dataset.showurl;
+    window.location.replace(show_url);
+  };
+
+</script>

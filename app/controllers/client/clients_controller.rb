@@ -7,6 +7,26 @@ class Client::ClientsController < ApplicationController
     prepare_data_for_view
   end
 
+  def challenge
+    clear_session(:challenge_id)
+    session[:challenge_id] ||= params[:challenge_id]
+    @challenge = Challenge.find_by(id: session[:challenge_id])
+    @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
+    @clients = @challenge&.positions
+  end
+
+  def achievement
+    clear_session(:challenge_id)
+    session[:challenge_id] ||= params[:challenge_id]
+    @challenge = Challenge.find_by(id: session[:challenge_id])
+    @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
+    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+    Achievement.default_timezone = :utc
+    # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
+    @achievements = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
+    Achievement.default_timezone = :local       
+  end
+
   def buy
 
   end

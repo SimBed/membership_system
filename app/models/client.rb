@@ -3,8 +3,8 @@ class Client < ApplicationRecord
   include Csv
   has_many :purchases, dependent: :destroy
   has_many :attendances, through: :purchases
-  has_many :results, dependent: :destroy
-  has_many :leagues, through: :results
+  has_many :achievements, dependent: :destroy
+  has_many :challenges, through: :achievements
   belongs_to :account, optional: true
   before_save :downcase_email
   before_save :uppercase_names
