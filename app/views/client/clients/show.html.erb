@@ -11,10 +11,12 @@
 </div>
 
 <% if Setting.show_challenge %>
-  <div id="client-challenge" class="">
-  <%= render partial: 'achievement_heading' %>
-  <%= render partial: 'achievement_chart' %>
-  </div>
+  <% if @achievements.present? %>% 
+    <div id="client-challenge" class="">
+      <%= render partial: 'achievement_heading' %>
+      <%= render partial: 'achievement_chart' %>
+    </div>
+  <% end %>  
 <% end %>
 
 <div id="client-password-reset" class="ps-1">

@@ -3,7 +3,7 @@
     <%= yield(:challenges_heading) %>
   </h6>
     <h2>
-      <form action=<%= "/client/clients/#{params[:id]}/achievement" %> method="GET" >
+      <form action=<%= "/client/clients/#{params[:id]}/achievements" %> method="GET" >
         <select name="challenge_id" onchange="this.form.submit()" class= "sort">
           <%= options_for_select @challenges_entered, session[:challenge_id] %>
         </select>
