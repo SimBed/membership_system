@@ -1,7 +1,12 @@
 <section class="mb-5">   
   <h4 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Miscellaneous</h4>
   <div class="card bg-opaque-white">
-    <div class="card-body bg-light">               
+    <div class="card-body bg-light">
+
+      <div class="form-group mb-2">
+        <label class="control-label">Show challenges on client dashboard?</label>
+        <%= f.check_box :show_challenge %>
+      </div>            
       
       <div class="form-group mb-2">
         <label class="control-label">Create group classes this number of days ahead</label>

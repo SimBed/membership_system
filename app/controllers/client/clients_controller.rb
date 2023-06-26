@@ -5,6 +5,18 @@ class Client::ClientsController < ApplicationController
 
   def show
     prepare_data_for_view
+    clear_session(:challenge_id)
+    session[:challenge_id] ||= params[:challenge_id] || @client.challenges.order_by_name.distinct&.first&.id
+    @challenge = Challenge.find_by(id: session[:challenge_id])
+    @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
+    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+    @achievements = @challenge&.achievements&.where(client_id: params[:id])
+    if @achievements.present?   
+      Achievement.default_timezone = :utc
+      # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
+      @achievements_grouped = @achievements&.group_by_day(:date)&.average(:score).compact
+      Achievement.default_timezone = :local
+    end
   end
 
   def challenge
@@ -16,15 +28,18 @@ class Client::ClientsController < ApplicationController
   end
 
   def achievement
-    clear_session(:challenge_id)
-    session[:challenge_id] ||= params[:challenge_id]
-    @challenge = Challenge.find_by(id: session[:challenge_id])
-    @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
-    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
-    Achievement.default_timezone = :utc
-    # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-    @achievements = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
-    Achievement.default_timezone = :local       
+    achievement_data
+  end
+  
+  def achievements
+    achievement_data
+      if @achievements.present?    
+      # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+      Achievement.default_timezone = :utc
+      # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
+      @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
+      Achievement.default_timezone = :local
+    end          
   end
 
   def buy
@@ -98,5 +113,14 @@ class Client::ClientsController < ApplicationController
       date_created: @client.created_at,
       date_last_purchase_expiry: @client.last_purchase&.expiry_date
     }
+  end
+
+  def achievement_data
+    @challenges = @client.challenges.order_by_name.distinct    
+    clear_session(:challenge_id)
+    session[:challenge_id] ||= params[:challenge_id] || @challenges&.first&.id
+    @challenge = Challenge.find_by(id: session[:challenge_id])
+    @challenges_entered = @challenges.map { |c| [c.name, c.id] }
+    @achievements = @challenge&.achievements&.where(client_id: params[:id])&.order_by_date    
   end
 end

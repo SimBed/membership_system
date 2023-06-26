@@ -4,6 +4,7 @@ class Setting < RailsSettings::Base
 
   scope :application do
     # field :whitelist, type: :array, default: %w[nishaap trivedi james@t riyajha]
+    field :show_challenge, type: :boolean, default: false
     field :renew_online, type: :boolean, default: false
     field :password_length, type: :integer, default: 6
     field :gst_rate, type: :integer, default: 18

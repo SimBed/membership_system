@@ -10,6 +10,13 @@
   <%= render partial: 'client/clients/client_summary' %>
 </div>
 
+<% if Setting.show_challenge %>
+  <div id="client-challenge" class="">
+  <%= render partial: 'achievement_heading' %>
+  <%= render partial: 'achievement_chart' %>
+  </div>
+<% end %>
+
 <div id="client-password-reset" class="ps-1">
   <h6 class="fw-bolder fst-italic mb-1">
     Password Reset
@@ -42,5 +49,7 @@
       <%= form.submit 'Update Password' %>
     </div>
   <% end %>
+
+
 
 </div>

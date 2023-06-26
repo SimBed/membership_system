@@ -1,0 +1,24 @@
+<div id="achievements-table" class="container px-0 mb-5 margin-override">
+  <table class="table table-secondary table-striped caption-top">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th class="pr-2 pr-md-5">Score</th>
+        <th>Challenge</th>
+        <!--th colspan="2"></th-->
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @achievements.each do |achievement| %>
+        <tr>
+          <td><%= achievement.date.strftime('%d/%m/%y') %></td>
+          <td><%= achievement.score %></td>
+          <td><%= link_to achievement.challenge.name, shared_challenge_path(achievement.challenge) %> </td>
+          <!--td class="pl-3 pl-md-5"><%#= link_to image_tag("edit.png", class: "edit_icon"), edit_shared_achievement_path(achievement) %></td-->
+          <!--td class="pl-md-3"><%#= link_to image_tag("delete.png", class: "edit_icon"), shared_achievement_path(achievement), method: :delete, data: { confirm: 'Are you sure?' } %></td-->
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

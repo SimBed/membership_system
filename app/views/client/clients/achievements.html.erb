@@ -1,0 +1,8 @@
+<% if @achievements.present? %>   
+  <%= render partial: 'achievement_heading' %>
+  <%= render partial: 'achievement_chart' %>
+  <%= render partial: 'achievement_table' %>
+<% else %>
+<h4>Speak to The Space to Start a Challenge</h4>
+<% end %>  
+

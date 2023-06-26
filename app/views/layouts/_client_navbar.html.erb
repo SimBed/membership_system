@@ -42,6 +42,11 @@
         <li class="nav-item">
           <%= link_to "Profile", client_client_path(client), class: "nav-link"%>
         </li>
+        <% if Setting.show_challenge %>
+          <li class="nav-item">
+            <%= link_to "Achievements", client_achievements_path(client), class: "nav-link"%>
+          </li>
+        <% end %>
       </ul>
 
       <ul class="navbar-nav">

@@ -1,13 +1,16 @@
-<div id="client-league" class="container px-0">
+<div id="client-league" class="container px-0 mb-5">
   <h6 class="fw-bolder fst-italic mb-0 ps-1">
     Achievements
   </h6>
+  <%= line_chart @achievements_grouped, colors: ["#b00", "#666"] %>
 </div>
-<% if @achievements.keys.size == 1 %>
-  <%= column_chart @achievements, width: "200px", height: "200px"  %>
-<% else %>
-  <%= area_chart @achievements %>
-<% end %>
+
+<%# if @achievements_grouped.keys.size == 1 %>
+  <%#= column_chart @achievements_grouped, width: "200px", height: "200px"  %>
+<%# else %>
+  <%#= area_chart @achievements_grouped %>
+<%# end %>
+
 <script>
 	var userSelection = document.getElementById("show_challenges");
 
