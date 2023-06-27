@@ -11,9 +11,20 @@
 </div>
 
 <% if Setting.show_challenge %>
-  <% if @achievements.present? %>% 
+  <% if @achievements.present? %>
     <div id="client-challenge" class="">
-      <%= render partial: 'achievement_heading' %>
+        <div class="text-center mb-3">
+          <h6 class="fw-bolder fst-italic mb-0">
+            <%= yield(:challenges_heading) %>
+          </h6>
+            <h2>
+              <form action=<%= "/client/clients/#{params[:id]}/#client-challenge" %> method="GET" >
+                <select name="challenge_id" onchange="this.form.submit()" class= "sort">
+                  <%= options_for_select @challenges_entered, session[:challenge_id] %>
+                </select>
+              </form>
+            </h2>
+        </div>  
       <%= render partial: 'achievement_chart' %>
     </div>
   <% end %>  
