@@ -1,12 +1,13 @@
-<% if @achievements.present? %>   
+<% if @achievements.present? || @main_challenge_selected %>   
   <%= render partial: 'achievement_heading' %>
-  <%= render partial: 'achievement_chart' %>
-  <%= render partial: 'achievement_table' %>
+  <% unless @main_challenge_selected %>
+    <%= render partial: 'achievement_chart' %>
+    <%= render partial: 'achievement_table' %>
+  <% end %>
   <%= render partial: 'achievement_league' %>
 <% else %>
-<div class="container">
-  <h6>Not signed up for a challenge yet?</h6>
-  <p>Speak to a coach at The Space to get started</p>
-</div>
-<% end %>  
-
+  <div class="container">
+    <h6>Not signed up for a challenge yet?</h6>
+    <p>Speak to a coach at The Space to get started</p>
+  </div>
+<% end %>

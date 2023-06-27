@@ -19,28 +19,22 @@ class Client::ClientsController < ApplicationController
     end
   end
 
-  def challenge
-    clear_session(:challenge_id)
-    session[:challenge_id] ||= params[:challenge_id]
-    @challenge = Challenge.find_by(id: session[:challenge_id])
-    @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
-    @clients = @challenge&.positions
-  end
-
   def achievement
     achievement_data
   end
   
   def achievements
     achievement_data
-      if @achievements.present?    
-      # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
-      Achievement.default_timezone = :utc
-      # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-      @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
-      Achievement.default_timezone = :local
-      @clients = @challenge&.positions
-    end          
+      if @achievements.present?
+        # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+        Achievement.default_timezone = :utc
+        # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
+        @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
+        Achievement.default_timezone = :local
+      end
+      if @achievements.present? || @main_challenge_selected
+        @clients = @challenge&.positions
+      end         
   end
 
   def buy
@@ -117,11 +111,22 @@ class Client::ClientsController < ApplicationController
   end
 
   def achievement_data
-    @challenges = @client.challenges.order_by_name.distinct    
+    main_challenge_ids = @client.challenges.where.not(challenge_id: nil).pluck(:challenge_id).uniq
+    main_challenges = Challenge.where(id: main_challenge_ids)
+    @challenges = main_challenges + @client.challenges.order_by_name.distinct.to_a
     clear_session(:challenge_id)
-    session[:challenge_id] ||= params[:challenge_id] || @challenges&.first&.id
+    session[:challenge_id] ||= params[:challenge_id] || @challenges&.last&.id
     @challenge = Challenge.find_by(id: session[:challenge_id])
     @challenges_entered = @challenges.map { |c| [c.name, c.id] }
-    @achievements = @challenge&.achievements&.where(client_id: params[:id])&.order_by_date    
+    @achievements = @challenge&.achievements&.where(client_id: params[:id])&.order_by_date
+    @main_challenge_selected = true if main_challenge_ids.include? session[:challenge_id].to_i
   end
 end
+
+  # def challenge
+  #   clear_session(:challenge_id)
+  #   session[:challenge_id] ||= params[:challenge_id]
+  #   @challenge = Challenge.find_by(id: session[:challenge_id])
+  #   @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
+  #   @clients = @challenge&.positions
+  # end

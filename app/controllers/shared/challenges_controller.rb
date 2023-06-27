@@ -2,11 +2,11 @@ class Shared::ChallengesController < Admin::BaseController
   before_action :set_challenge, only: %i[show edit update destroy]
 
   def index
-    @challenges = Challenge.all
+    @challenges = Challenge.order_by_name
   end
 
   def show
-    @challenges = Challenge.all.map { |l| [l.name, l.id, { 'data-showurl' => shared_challenge_url(l.id) }] }
+    @challenges = Challenge.order_by_name.map { |l| [l.name, l.id, { 'data-showurl' => shared_challenge_url(l.id) }] }
     @clients = @challenge.positions
   end
 
