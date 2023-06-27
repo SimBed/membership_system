@@ -4,6 +4,7 @@ class CreateChallenges < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :metric
       t.string :metric_type
+      t.references :challenge, foreign_key: true, index: true
 
       t.timestamps
     end

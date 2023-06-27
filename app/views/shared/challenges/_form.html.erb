@@ -26,6 +26,11 @@
     <%= form.text_field :metric_type %>
   </div>
 
+  <div class="field">
+    <%= form.label :challenge_id %>
+    <%= form.select :challenge_id, @challenges, { include_blank: true } %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

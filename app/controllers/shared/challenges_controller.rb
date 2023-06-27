@@ -12,9 +12,11 @@ class Shared::ChallengesController < Admin::BaseController
 
   def new
     @challenge = Challenge.new
+    @challenges =  Challenge.order_by_name.map { |c| [c.name, c.id] }
   end
 
   def edit
+    @challenges = Challenge.order_by_name.map { |c| [c.name, c.id] }
   end
 
   def create
@@ -49,6 +51,6 @@ class Shared::ChallengesController < Admin::BaseController
   end
 
   def challenge_params
-    params.require(:challenge).permit(:name, :metric, :metric_type)
+    params.require(:challenge).permit(:name, :metric, :metric_type, :challenge_id)
   end
 end

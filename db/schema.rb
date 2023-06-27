@@ -77,8 +77,10 @@ ActiveRecord::Schema.define(version: 2023_06_23_084835) do
     t.string "name"
     t.string "metric"
     t.string "metric_type"
+    t.bigint "challenge_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["challenge_id"], name: "index_challenges_on_challenge_id"
     t.index ["name"], name: "index_challenges_on_name"
   end
 
@@ -445,6 +447,7 @@ ActiveRecord::Schema.define(version: 2023_06_23_084835) do
   add_foreign_key "achievements", "clients"
   add_foreign_key "assignments", "accounts"
   add_foreign_key "assignments", "roles"
+  add_foreign_key "challenges", "challenges"
   add_foreign_key "discount_assignments", "discounts"
   add_foreign_key "discount_assignments", "purchases"
   add_foreign_key "discounts", "discount_reasons"

@@ -102,10 +102,6 @@ class Product < ApplicationRecord
     max_classes == 1
   end
 
-  # def pt?
-  #   'PT'.in? workout_group.name
-  # end
-
   def product_type
     return :unlimited_package if unlimited_package?
     return :fixed_package if fixed_package?
@@ -140,28 +136,6 @@ class Product < ApplicationRecord
     "#{wg_name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit} #{price_name}"
   end
 
-  # no longer used
-  # def current_prices
-  #   prices.current.map(&:price).join(', ')
-  # end
-
-  # def renewal_price(price_name)
-  #   renewal_price = prices.where(name: price_name).where(current: true)&.first
-  #   base_price = prices.where(name: 'Base').where(current: true).first
-  #
-  #   renewal_price || base_price
-  #
-  # end
-
-  # must make workout_group.name == 'Group' flexible
-  # def renewal_price(purpose)
-  #   return nil unless purpose == 'base' || workout_group.name == 'Group'
-
-  #   renewal_price = prices.where(purpose => true).where(current: true).first
-  #   base_price = prices.where(base: true).where(current: true).first
-  #   renewal_price || base_price
-  # end
-
   def renewal_price(purpose)
     return nil unless purpose == 'base' || workout_group.name == 'Group'
 
@@ -169,10 +143,6 @@ class Product < ApplicationRecord
     base_price = prices.where(base: true).where(current: true).first
     renewal_price || base_price
   end
-
-  # def base_price
-  #   prices.current.base.first
-  # end
 
   def base_price_at(date)
     prices.base_at(date).first
