@@ -3,7 +3,7 @@ class Challenge < ApplicationRecord
   has_many :clients, through: :achievements
   has_many :sub_challenges, class_name: 'Challenge'
   belongs_to :main_challenge, class_name: 'Challenge', foreign_key: 'challenge_id', optional: true
-  validates :name, presence: true, length: {maximum: 30}, uniqueness: {case_sensitive: false}
+  validates :name, presence: true, length: {maximum: 40}, uniqueness: {case_sensitive: false}
   validates :metric, presence: true, length: {maximum: 10}
   validates :metric_type, presence: true, length: {maximum: 10}
   scope :order_by_date, -> { order(created_at: :desc) }

@@ -34,6 +34,7 @@ class Shared::ChallengesController < Admin::BaseController
       flash[:success] = "Challenge was successfully updated."
       redirect_to shared_challenges_path
     else
+      @challenges = Challenge.order_by_name.map { |c| [c.name, c.id] }      
       render :edit, status: :unprocessable_entity
     end
   end
