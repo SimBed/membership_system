@@ -165,7 +165,7 @@ en:
             confirm: You will be rebooked for this class. Are you sure?
             confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?
   forbidden: Forbidden
-  new_purchase: Thank you for your purchase. You can see details of your purchase on this page. Go to the Book page to book your classes
+  new_purchase_by_client: Thank you for your purchase. You can see details of your purchase on this page. Go to the Book page to book your classes
   signup: "Welcome to The Space %{name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."
   message_sent: "%{message_type} message sent by Whatsapp to %{to_number}"
 

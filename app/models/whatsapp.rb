@@ -43,7 +43,7 @@ class Whatsapp
   def post_send_whatsapp_flash
     return [nil] if @variable_contents[:me?]
 
-    return [:success, I18n.t(:new_purchase)] if @message_type == 'new_purchase'
+    return [:success, I18n.t(:new_purchase_by_client)] if @message_type == 'new_purchase' && !@admin_triggered
 
     return [:success, I18n.t(:signup, name: @receiver.first_name)] if @message_type == 'signup'
 
