@@ -44,7 +44,7 @@ module SessionsHelper
 
   def switch_role(role)
     session[:role_name] = role
-    cookies.permanent.signed[:role_name] = role    
+    cookies.permanent.signed[:role_name] = role
   end
 
   def account_role_names
@@ -65,7 +65,7 @@ module SessionsHelper
     elsif (role_name = cookies.signed[:role_name])
       @current_role = role_name
     end
-  end  
+  end
 
   def navbar_roles
     # current_role is a string
@@ -74,7 +74,7 @@ module SessionsHelper
 
   def multiple_roles?
     # current_role is a string
-    navbar_roles.count > 0
+    navbar_roles.count.positive?
   end
 
   def logged_in?

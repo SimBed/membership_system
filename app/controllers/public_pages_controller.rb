@@ -59,7 +59,7 @@ class PublicPagesController < ApplicationController
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
-    @renewal = { :offer_online_discount? => true, renewal_offer: 'renewal_pre_expiry' }
+    @renewal = { offer_online_discount?: true, renewal_offer: 'renewal_pre_expiry' }
     render 'wedontsupport', layout: 'white_canvas'
   end
 
@@ -77,7 +77,7 @@ class PublicPagesController < ApplicationController
     @entries_hash = {}
     @days.each do |day|
       @entries_hash[day] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
-    end     
+    end
   end
 
   def account_limit
@@ -116,7 +116,7 @@ class PublicPagesController < ApplicationController
 
   def whatsapp_params(message_type)
     { receiver: @client,
-      message_type: message_type,
+      message_type:,
       admin_triggered: false,
       variable_contents: { password: @password } }
   end

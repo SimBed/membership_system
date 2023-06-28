@@ -22,7 +22,7 @@ class Client::ClientsController < ApplicationController
   def achievement
     achievement_data
   end
-  
+
   def achievements
     achievement_data
       if @achievements.present?
@@ -32,9 +32,7 @@ class Client::ClientsController < ApplicationController
         @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
         Achievement.default_timezone = :local
       end
-      if @achievements.present? || @main_challenge_selected
-        @clients = @challenge&.positions
-      end         
+      @clients = @challenge&.positions if @achievements.present? || @main_challenge_selected
   end
 
   def buy
@@ -77,7 +75,7 @@ class Client::ClientsController < ApplicationController
     @entries_hash = {}
     @days.each do |day|
       @entries_hash[day] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
-    end 
+    end
     render 'timetable', layout: 'client_black'
   end
 

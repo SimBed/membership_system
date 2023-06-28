@@ -28,7 +28,7 @@ class Whatsapp
     client.messages.create(
       from: "whatsapp:#{@from_number}",
       to: "whatsapp:#{@to_number}",
-      body: body
+      body:
     )
   end
 
@@ -64,7 +64,6 @@ class Whatsapp
       "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
       "\nTerms & Conditions: https://www.thespacefitness.in/terms&conditions"
   end
-  
 
   def body_package_expiry
     "Hi #{@variable_contents[:first_name]}" +
@@ -154,7 +153,7 @@ class Whatsapp
   #     "\nYou can cancel this booking up to 3 hours before the class start time without incurring any penalty." +
   #     "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
   # end
-  
+
   # def body_membership_system_upgrade
   #   'THE SPACE' +
   #     "\nMembership System Upgrade" +
@@ -166,7 +165,7 @@ class Whatsapp
   #       "\nThe Space" +
   #       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   # end
-  
+
   # def body_memorable_password_march27
   #   'MEMBERSHIP SYSTEM UPDATE' +
   #     "\nStruggling to remember your password? You can now set it to something more memorable." +
@@ -177,14 +176,14 @@ class Whatsapp
   # def body_temp_email_confirm
   #   "The email for the last message is: #{@variable_contents[:email]}"
   # end
-  
+
   # def body_blast
   #   'CLASS UPDATE' +
   #   "\n1) The Space will be closed on 1st May 2023 for Labour Day. Sessions will resume on schedule from 2nd May." +
   #   "\n2) No Pilates on 9th May as Karina is travelling." +
   #   "\n \nPlease plan your workouts accordingly.\n"
   # end
-  
+
   # def body_renew
   #   "Thank you for your renewal, #{@variable_contents[:name]}." +
   #     "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
@@ -198,7 +197,7 @@ class Whatsapp
   #   "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
   #   "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
   # end
-  
+
   # def body_trial_expiry_retired
   #   "Hi #{@variable_contents[:first_name]}" +
   #   "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +

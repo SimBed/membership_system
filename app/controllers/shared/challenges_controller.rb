@@ -22,7 +22,7 @@ class Shared::ChallengesController < Admin::BaseController
   def create
     @challenge = Challenge.new(challenge_params)
     if @challenge.save
-      flash[:success] = "Challenge was successfully created."
+      flash[:success] = 'Challenge was successfully created.'
       redirect_to shared_challenges_path
     else
       render :new, status: :unprocessable_entity
@@ -31,17 +31,17 @@ class Shared::ChallengesController < Admin::BaseController
 
   def update
     if @challenge.update(challenge_params)
-      flash[:success] = "Challenge was successfully updated."
+      flash[:success] = 'Challenge was successfully updated.'
       redirect_to shared_challenges_path
     else
-      @challenges = Challenge.order_by_name.map { |c| [c.name, c.id] }      
+      @challenges = Challenge.order_by_name.map { |c| [c.name, c.id] }
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @challenge.destroy
-    flash[:success] = "Challenge was successfully destroyed."
+    flash[:success] = 'Challenge was successfully destroyed.'
     redirect_to shared_challenges_path
   end
 

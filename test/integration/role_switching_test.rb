@@ -22,7 +22,8 @@ class RoleSwitchingTest < ActionDispatch::IntegrationTest
     assert_template 'admin/clients/index'
     assert_select 'a[href=?]', superadmin_orders_path, count: 0
     switch_role_to('client')
-    assert_select 'a[href=?]', admin_clients_path, count: 0    
+
+    assert_select 'a[href=?]', admin_clients_path, count: 0
     get admin_clients_path
 
     assert_redirected_to login_path

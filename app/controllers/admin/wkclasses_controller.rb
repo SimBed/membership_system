@@ -106,7 +106,7 @@ class Admin::WkclassesController < Admin::BaseController
       @wkclasses = (1..@weeks_to_repeat).map do |weeks|
         wkclass = @wkclass.dup
         attendance = @attendances.first.dup
-        wkclass.update(start_time: wkclass.start_time.advance(weeks: weeks))
+        wkclass.update(start_time: wkclass.start_time.advance(weeks:))
         wkclasses << wkclass
         attendance.dup.update(wkclass_id: wkclass.id, status: 'booked') if wkclass.persisted?
       end

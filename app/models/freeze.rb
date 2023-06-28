@@ -27,9 +27,7 @@ class Freeze < ApplicationRecord
     return if purchase.nil?
 
     purchase.attendances.each do |a|
-      if (start_date..end_date).cover?(a.wkclass.start_time)
-        errors.add(:base, 'bookings already during freeze period') and break
-      end
+      errors.add(:base, 'bookings already during freeze period') and break if (start_date..end_date).cover?(a.wkclass.start_time)
     end
   end
 end

@@ -39,7 +39,7 @@ class Account < ApplicationRecord
            else
              BCrypt::Engine.cost
            end
-    BCrypt::Password.create(string, cost: cost)
+    BCrypt::Password.create(string, cost:)
   end
 
   def self.new_token
@@ -79,7 +79,7 @@ class Account < ApplicationRecord
   def self.setup_for(client)
     password = Account.password_wizard(Setting.password_length)
     @account = Account.new(
-      { password: password, password_confirmation: password,
+      { password:, password_confirmation: password,
         activated: true, ac_type: 'client', email: client.email }
     )
     return [[:warning, I18n.t('admin.accounts.create.warning')]] unless @account.save
@@ -91,7 +91,7 @@ class Account < ApplicationRecord
     flash_for_account = :success, I18n.t('admin.accounts.create.success')
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
     flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',
-                                      variable_contents: { password: password }).manage_messaging
+                                      variable_contents: { password: }).manage_messaging
     [flash_for_account, flash_for_whatsapp] # an array of arrays
   end
 

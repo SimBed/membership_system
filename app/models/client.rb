@@ -58,7 +58,7 @@ class Client < ApplicationRecord
   scope :number_like, ->(number) { where('phone ILIKE ? OR whatsapp ILIKE ?', "%#{number}%", "%#{number}%") }
   # https://stackoverflow.com/questions/9613717/rails-find-record-with-zero-has-many-records-associated
   # the original 'enquiry' now has a wider meaning as clients who set up accounts but have not yet made a purchase are also represented.
-  scope :enquiry, -> { left_joins(:purchases).where(purchases: { id: nil }) }
+  scope :enquiry, -> { where.missing(:purchases) }
   scope :hot, -> { where(hotlead: true) }
   # cold failed as a class method (didn't mix well with Client.includes(:account) in the controller. Don't understand why.)
   # https://stackoverflow.com/questions/18750196/rails-active-record-add-extra-select-column-to-findall
@@ -86,7 +86,7 @@ class Client < ApplicationRecord
                             }
 
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
-  scope :in_league, ->(league) {joins(results: [:league]).where(results: {league_id: league.id}) }
+  scope :in_league, ->(league) {joins(results: [:league]).where(results: { league_id: league.id }) }
 
   paginates_per Setting.clients_pagination
 
@@ -102,9 +102,9 @@ class Client < ApplicationRecord
   end
 
   def message_blast(message)
-    Whatsapp.new(:receiver => self,
-                 :message_type => message,
-                 :variable_contents => { :first_name => first_name })
+    Whatsapp.new(receiver: self,
+                 message_type: message,
+                 variable_contents: { first_name: })
             .manage_messaging
   end
 
@@ -120,7 +120,7 @@ class Client < ApplicationRecord
   end
 
   def enquiry?
-    Client.enquiry.exists?(id: id)
+    Client.enquiry.exists?(id:)
   end
 
   def has_purchased?
@@ -173,12 +173,12 @@ class Client < ApplicationRecord
   # end
 
   def lifetime_classes
-    Client.joins(purchases: [:attendances]).where(id: id).where(attendances: { status: 'attended' }).size
+    Client.joins(purchases: [:attendances]).where(id:).where(attendances: { status: 'attended' }).size
   end
 
   def classes_last(period = 'month')
     Client.joins(purchases: [attendances: [:wkclass]])
-          .where(id: id).where(attendances: { status: 'attended' })
+          .where(id:).where(attendances: { status: 'attended' })
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
   end
 
@@ -254,15 +254,15 @@ class Client < ApplicationRecord
   def phone_plausible
     return if phone_raw.blank?
 
-    errors.add(:phone_raw, "Phone is invalid") unless Phony.plausible?(phone)
+    errors.add(:phone_raw, 'Phone is invalid') unless Phony.plausible?(phone)
   end
 
   def whatsapp_plausible
     # admin can add a client without a whatsapp number but a client cannot signup themselves without a whatsapp number
     return if whatsapp_raw.blank? && !modifier_is_client
-    
+
     errors.add(:whatsapp_raw, "Whatsapp can't be blank") and return if whatsapp_raw.blank? && modifier_is_client
 
-    errors.add(:whatsapp_raw, "Whatsapp is invalid") unless Phony.plausible?(whatsapp)
+    errors.add(:whatsapp_raw, 'Whatsapp is invalid') unless Phony.plausible?(whatsapp)
   end
 end

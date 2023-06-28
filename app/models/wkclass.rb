@@ -39,12 +39,14 @@ class Wkclass < ApplicationRecord
   scope :on_date, ->(date) { where(start_time: date.all_day) }
   # scope :past, -> { where('start_time < ?', Time.zone.now) }
   # https://stackoverflow.com/questions/10338596/is-it-possible-to-have-a-scope-with-optional-arguments
-  scope :past, ->(months = nil) { months ? where( start_time: (Time.zone.now.advance(months: -months)..Time.zone.now)) : where('start_time < ?', Time.zone.now) }
+  scope :past, ->(months = nil) { months ? where(start_time: (Time.zone.now.advance(months: -months)..Time.zone.now)) : where('start_time < ?', Time.zone.now) }
   scope :future, -> { where('start_time > ?', Time.zone.now) }
   scope :instructorless, -> { where(instructor_id: nil) }
   # unscope order to avoid PG::InvalidColumnReference: ERROR https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
   scope :incomplete, -> { joins(:attendances).where(attendances: { status: 'booked' }).unscope(:order).distinct }
-  scope :empty_class, -> { left_joins(:attendances).where(attendances: { id: nil }) }
+  # scope :empty_class, -> { left_joins(:attendances).where(attendances: { id: nil }) }
+  # Rubocop recommends
+  scope :empty_class, -> { where.missing(:attendances) }
   # unfortunately the clean way results in structurally incomaptible error. Workaround to this either by a) work on ruby objects (as for Client#active or
   # b) by putting all the joins/distincts at the end of the query as nar8789 answer https://stackoverflow.com/questions/40742078/relation-passed-to-or-must-be-structurally-compatible-incompatible-values-r
   # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
@@ -81,7 +83,7 @@ class Wkclass < ApplicationRecord
     empty_with_cost_wkclasses = past(Setting.problematic_past).empty_class.has_instructor_cost.map(&:id)
     period = (Time.zone.now.advance(months: -Setting.problematic_past)..Float::INFINITY)
     booking_post_purchase_expiry = during(period).has_booking_post_purchase_expiry.map(&:id) # can arise due to careless administration when using the repeat funstionality
-    Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq + booking_post_purchase_expiry.uniq ))
+    Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq + booking_post_purchase_expiry.uniq))
   end
 
   # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
@@ -124,7 +126,7 @@ class Wkclass < ApplicationRecord
     # unlimited packages not allowed 2 physical attendances on same day, but allowed to cancel or no show and then book another classes
     # (originally for Unlimited we only allowed booking another class after LC or no show if it was an amnesty)
     attendances_on_same_day =
-      Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
+      Wkclass.where.not(id:).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
              .where(clients: { id: client.id })
              .merge(Attendance.committed)
              .merge(Purchase.unlimited.package)
@@ -203,7 +205,7 @@ class Wkclass < ApplicationRecord
 
     false
   end
-  
+
   def early_cancelled_pt?
     # where a client cancels a PT session early, the instructor may re-schedule the same class/time combo for a different client
     !workout.group_workout? && attendances&.first&.status == 'cancelled early'
@@ -258,7 +260,7 @@ class Wkclass < ApplicationRecord
     wkclass = Wkclass.where(['workout_id = ? and start_time = ? and instructor_id = ?', workout_id, start_time,
                              instructor_id]).first
     return if wkclass.blank?
-    
+
     return if wkclass.early_cancelled_pt?
 
     errors.add(:base, 'A class for this workout, instructor and time already exists') unless id == wkclass.id

@@ -43,7 +43,7 @@ class AdminBookingUpdater
     if @purchase.send(cancel_attribute) > Setting.amnesty_limit[@purchase.product_style][cancel_attribute][@purchase.product_type]
       # typically will already be false eg booked to no show, but could be correction of eg cancellation early (with amnesty) to cancellation late (without amnesty)
       @attendance.update(amnesty: false)
-      cancellation_penalty @purchase.product_type, cancel_attribute: cancel_attribute
+      cancellation_penalty @purchase.product_type, cancel_attribute:
     else
       @attendance.update(amnesty: true)
       @flash_array = Whatsapp.new(whatsapp_params("#{cancel_attribute}_no_penalty")).manage_messaging
@@ -88,7 +88,7 @@ class AdminBookingUpdater
 
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
-      message_type: message_type,
+      message_type:,
       variable_contents: { name: @wkclass.name, day: @wkclass.day_of_week } }
   end
 

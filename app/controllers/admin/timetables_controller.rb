@@ -22,7 +22,7 @@ class Admin::TimetablesController < Admin::BaseController
     @entries_hash = {}
     @days.each do |day|
       @entries_hash[day] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
-    end    
+    end
     render 'public_pages/timetable', layout: 'public'
   end
 

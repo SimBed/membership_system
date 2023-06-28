@@ -68,9 +68,7 @@ module Client::ClientsHelper
     else
       png = 'add.png'
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
-      if attendance.purchase.freezed?(attendance.wkclass.start_time)
-        confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze')
-      end
+      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
     end
     link_to(
       image_tag(png, class: 'table_icon'),

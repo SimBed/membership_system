@@ -55,7 +55,7 @@ class Attendance < ApplicationRecord
     # sort_order = Rails.application.config_for(:constants)["attendance_status"]
     joins(:wkclass, purchase: [:client])
       .where(wkclasses: { id: wkclass.id })
-      .where(status: status)
+      .where(status:)
       .order(:first_name)
     # .select('attendances.status', 'clients.first_name')
     # .to_a.sort_by { |a| [sort_order.index(a.status), a.first_name] }

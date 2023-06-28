@@ -148,7 +148,8 @@ class Product < ApplicationRecord
     prices.base_at(date).first
   end
 
-  def ongoing_count # not directly used
+  # not directly used
+  def ongoing_count
     # Purchase.joins(:product).not_fully_expired.map{|p| p.name}.tally[name]
     Purchase.not_fully_expired.where(product_id: id).size
   end

@@ -6,7 +6,7 @@ class Admin::FreezesController < Admin::BaseController
   def new
     start_date = Time.zone.now
     end_date = start_date.advance(days: (14 - 1))
-    @freeze = Freeze.new(start_date: start_date, end_date: end_date)
+    @freeze = Freeze.new(start_date:, end_date:)
   end
 
   def create

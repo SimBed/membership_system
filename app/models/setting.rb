@@ -29,7 +29,7 @@ class Setting < RailsSettings::Base
   scope :wkclassmaker do
     field :classmaker_advance, type: :integer, default: 4
   end
-  
+
   scope :wkclass do
     field :problematic_past, type: :integer, default: 2
   end

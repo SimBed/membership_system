@@ -498,9 +498,7 @@ class Admin::AttendancesController < Admin::BaseController
       if @purchase.provisionally_expired?
         action_client_rebook_cancellation_when_prov_expired if logged_in_as?('client') && @attendance.status != 'booked'
         # if the change results in an extra class or validity term reduction
-        if logged_in_as?('junioradmin', 'admin', 'superadmin') && extra_benefits_after_change?
-          action_admin_rebook_cancellation_when_prov_expired
-        end
+        action_admin_rebook_cancellation_when_prov_expired if logged_in_as?('junioradmin', 'admin', 'superadmin') && extra_benefits_after_change?
       end
     end
   end
@@ -553,7 +551,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
-      message_type: message_type,
+      message_type:,
       variable_contents: { name: @wkclass_name, day: @wkclass_day } }
   end
 

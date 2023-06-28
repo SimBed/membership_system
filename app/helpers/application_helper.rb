@@ -9,9 +9,7 @@ module ApplicationHelper
   def render_flash
     rendered = []
     flash.each do |message_type, message_array|
-      if message_array.present?
-        rendered << render(partial: 'partials/flash', locals: { message_type: message_type, message_array: message_array })
-      end
+      rendered << render(partial: 'partials/flash', locals: { message_type:, message_array: }) if message_array.present?
     end
     raw(rendered.join('<br/>'))
   end

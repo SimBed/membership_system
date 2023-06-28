@@ -23,9 +23,10 @@ class ActiveSupport::TestCase
   def log_in_as(account, password: 'password', remember_me: '1')
     return if account.nil?
 
+    # Use the Ruby 3.1 hash literal value syntax when your hash key and value are the same.
     post login_path, params: { session: { email: account.email,
-                                          password: password,
-                                          remember_me: remember_me } }
+                                          password:,
+                                          remember_me: } }
   end
 
   def log_out
@@ -34,7 +35,7 @@ class ActiveSupport::TestCase
 
   def switch_role_to(role)
     # get '/switch_account_role', params: { role: role }
-    get switch_account_role_path(role: role)
+    get switch_account_role_path(role:)
   end
 
   def month_period(date)

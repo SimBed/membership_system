@@ -25,23 +25,11 @@ class Price < ApplicationRecord
   # courtesy engineersmnky https://stackoverflow.com/questions/51274453/ruby-round-integer-to-nearest-multiple-of-5
   # not used done on the browser in JS in the end
   def self.up_to_nearest50(n)
-    return n if n % 50 == 0
+    return n if (n % 50).zero?
 
     rounded = n.round(-2)
     rounded > n ? rounded : rounded + 50
   end
-
-  # def base_price
-  #   product.prices.current.base.first&.price
-  # end
-
-  # def discounted_price
-  #   return price if base? || pre_oct22_price?
-  #   return 0 if base_price.nil?
-
-  #   raw_price = base_price * (1 - (discount.to_f / 100))
-  #   Price.up_to_nearest_50(raw_price).to_i
-  # end
 
   def pre_oct22_price?
     # nuances of old Price model:
@@ -64,16 +52,5 @@ class Price < ApplicationRecord
   #   # hack to access helpers in model
   #   # https://www.quora.com/How-do-I-use-helper-methods-in-models-in-rails
   #   ApplicationController.helpers.number_with_precision(price.discount, precision: 2,significant: false, strip_insignificant_zeros: true)
-  # end
-
-  private
-
-  # def current_base_check
-  #   return unless base?
-
-  #   current_base = product.prices.where(current: true, base: true).first
-  #   return if current_base.blank?
-
-  #   errors.add :base, 'there is already a curent, base price. Edit the existing curent, base price before adding a new curent, base price.' unless id == current_base.id
   # end
 end

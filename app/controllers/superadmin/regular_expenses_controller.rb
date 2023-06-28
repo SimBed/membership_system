@@ -50,7 +50,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
       new_expense = Expense.create(
         item: r.item,
         amount: r.amount,
-        date: date,
+        date:,
         workout_group_id: r.workout_group_id
       )
       rejected += 1 unless new_expense.errors.blank?

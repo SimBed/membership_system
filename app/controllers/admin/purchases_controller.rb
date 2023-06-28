@@ -409,7 +409,7 @@ class Admin::PurchasesController < Admin::BaseController
   # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
-      message_type: message_type,
+      message_type:,
       variable_contents: { first_name: @purchase.client.first_name } }
   end
 

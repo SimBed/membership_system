@@ -8,7 +8,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     if logged_in_as?('partner')
       partner_id = current_account.partner.id
       # reformat to scope
-      @workout_groups = WorkoutGroup.where(partner_id: partner_id).order_by_name
+      @workout_groups = WorkoutGroup.where(partner_id:).order_by_name
     else
       @workout_groups = WorkoutGroup.order_by_name
     end

@@ -5,8 +5,8 @@ class Discount < ApplicationRecord
   validates :percent, presence: true, numericality: { only_integer: false, in: (0..100) }
   validates :fixed, presence: true, numericality: { only_integer: true }
   delegate :name, :rationale, to: :discount_reason
-  scope :by_rationale, ->(rationale) { joins(:discount_reason).where(discount_reason: { rationale: rationale }).order(:name) }
-  scope :with_rationale_at, ->(rationale, date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: { rationale: rationale }) }
+  scope :by_rationale, ->(rationale) { joins(:discount_reason).where(discount_reason: { rationale: }).order(:name) }
+  scope :with_rationale_at, ->(rationale, date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: { rationale: }) }
   scope :with_renewal_rationale_at, ->(renewal_rationale, date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: { renewal_rationale => true }) }
   scope :student_at, ->(date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: { student: true }) }
   scope :friends_and_family_at, ->(date) { joins(:discount_reason).where('DATE(?) BETWEEN start_date AND end_date', date).where(discount_reason: { friends_and_family: true }) }
@@ -26,7 +26,7 @@ class Discount < ApplicationRecord
   end
 
   def get_percent_and_fixed
-    { percent: percent, fixed: fixed }
+    { percent:, fixed: }
   end
 
   def no_discount?

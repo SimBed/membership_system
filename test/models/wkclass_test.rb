@@ -6,7 +6,7 @@ class WkclassTest < ActiveSupport::TestCase
     @workout_pt = workouts(:pt_regular)
     @instructor = instructors(:amit)
     @instructor_rate = instructor_rates(:amit_base)
-    @instructor_pt_rate = instructor_rates(:amit_pt)    
+    @instructor_pt_rate = instructor_rates(:amit_pt)
     @wkclass = Wkclass.new(workout_id: @workout.id,
                            start_time: '2022-02-01 10:30:00',
                            instructor_id: @instructor.id,
@@ -35,8 +35,8 @@ class WkclassTest < ActiveSupport::TestCase
     @duplicate_class = @wkclass_pt.dup
     @wkclass_pt.save
     Attendance.create(wkclass_id: @wkclass_pt.id,
-                     purchase_id: purchases(:purchase_12C5WPT).id,
-                     status: 'cancelled early')
+                      purchase_id: purchases(:purchase_12C5WPT).id,
+                      status: 'cancelled early')
     @duplicate_class.save
 
     assert_predicate @duplicate_class, :valid?

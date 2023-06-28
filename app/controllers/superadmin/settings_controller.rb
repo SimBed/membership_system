@@ -12,14 +12,10 @@ class Superadmin::SettingsController < Superadmin::BaseController
 
       setting = Setting.new(var: key)
       setting.value = params[:setting][key].strip
-      unless setting.valid?
-        @errors.merge!(setting.errors)
-      end
+      @errors.merge!(setting.errors) unless setting.valid?
     end
 
-    if @errors.any?
-      render :show
-    end
+    render :show if @errors.any?
     params[:setting].keys.each do |key|
       Setting.send("#{key}=", params[:setting][key].strip) unless params[:setting][key].nil?
     end

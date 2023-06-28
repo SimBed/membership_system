@@ -49,7 +49,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
 
   def whatsapp_params(message_type)
     { receiver: @purchase.client,
-      message_type: message_type,
+      message_type:,
       admin_triggered: false,
       variable_contents: { first_name: @purchase.client.first_name } }
   end
@@ -58,7 +58,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
     begin
       payment_id = Order.find_by_id(params[:id]).payment_id
       @order = Order.process_refund(payment_id)
-      redirect_to :action => 'show', :id => @order.id
+      redirect_to action: 'show', id: @order.id
     rescue Exception
       flash[:alert] = 'Unable to refund payment (probably not enough credit on account).'
       redirect_to superadmin_orders_path

@@ -10,7 +10,7 @@ class Shared::AchievementsController < Admin::BaseController
 
   def new
     @achievement = Achievement.new
-    set_options    
+    set_options
   end
 
   def edit
@@ -20,7 +20,7 @@ class Shared::AchievementsController < Admin::BaseController
   def create
     @achievement = Achievement.new(achievement_params)
     if @achievement.save
-      flash[:success] = "Achievement was successfully created."
+      flash[:success] = 'Achievement was successfully created.'
       redirect_to shared_achievements_path
     else
       set_options
@@ -30,7 +30,7 @@ class Shared::AchievementsController < Admin::BaseController
 
   def update
       if @achievement.update(achievement_params)
-        flash[:success] = "Achievement was successfully updated."
+        flash[:success] = 'Achievement was successfully updated.'
         redirect_to shared_achievements_path
       else
        render :edit, status: :unprocessable_entity
@@ -39,9 +39,9 @@ class Shared::AchievementsController < Admin::BaseController
 
   def destroy
     @achievement.destroy
-    flash[:success] = "Achievement was successfully destroyed."
+    flash[:success] = 'Achievement was successfully destroyed.'
     redirect_to shared_achievements_path
-  end  
+  end
 
   private
     def set_achievement
@@ -51,7 +51,7 @@ class Shared::AchievementsController < Admin::BaseController
     def set_options
       @challenges = Challenge.all
       @clients = Client.order_by_first_name
-    end    
+    end
 
     def achievement_params
       params.require(:achievement).permit(:date, :score, :challenge_id, :client_id)

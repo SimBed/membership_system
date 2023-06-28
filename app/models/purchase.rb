@@ -71,15 +71,14 @@ class Purchase < ApplicationRecord
                        package.where(invoice: nil).joins(product: [:workout_group])
                               .where(workout_groups: { requires_invoice: true })
                      }
-  scope :service_type, ->(service) { joins(product: [:workout_group]).where(workout_groups: { service: service })
-                       }
+  scope :service_type, lambda { |service| joins(product: [:workout_group]).where(workout_groups: { service: }) }
   scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :written_off, -> { where(payment_mode: 'Write Off') }
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
   scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
   scope :during, ->(period) { where({ dop: period }) }
-  scope :unexpired_rider_without_ongoing_main, -> { not_fully_expired.joins(:main_purchase).where.not(main_purchase: {status: ['ongoing', 'classes all booked']}) }
+  scope :unexpired_rider_without_ongoing_main, -> { not_fully_expired.joins(:main_purchase).where.not(main_purchase: { status: ['ongoing', 'classes all booked'] }) }
   # used in Purchases controller's handle_sort method
   # raw SQL in Active Record functions will give an error to guard against SQL injection
   # in the case where the raw SQl contains user input i.e. a params value
@@ -94,7 +93,7 @@ class Purchase < ApplicationRecord
 
   def discount(base_price, *discounts)
     discounts.each do |discount|
-      base_price = base_price * (1 - discount.percent.to_f / 100) - discount.fixed
+      base_price = (base_price * (1 - (discount.percent.to_f / 100))) - discount.fixed
     end
   end
 
