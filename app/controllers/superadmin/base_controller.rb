@@ -6,6 +6,6 @@ class Superadmin::BaseController < ApplicationController
   private
 
   def set_public_timetable
-    @current_timetable = Timetable.find(Setting.timetable)
+    @current_timetable = Timetable.find(Rails.application.config_for(:constants)['timetable_id'])
   end
 end

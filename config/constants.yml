@@ -1,5 +1,7 @@
 default: &default
 
+ timetable_id: 4
+
  attendance_statuses:
   - booked
   - attended
