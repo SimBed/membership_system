@@ -1,4 +1,4 @@
-class Shared::AchievementsController < Admin::BaseController
+class Shared::AchievementsController < Shared::BaseController
   before_action :set_achievement, only: %i[ show edit update destroy ]
 
   def index

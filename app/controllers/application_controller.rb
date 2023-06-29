@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def deal_with_instructor
-    redirect_to admin_instructor_path(@account.instructor) if logged_in_as?('instructor')
+    redirect_to admin_wkclasses_path if logged_in_as?('instructor')
   end
 
   def deal_with_partner

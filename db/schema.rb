@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_23_084835) do
+ActiveRecord::Schema.define(version: 2023_06_29_124215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(version: 2023_06_23_084835) do
     t.string "whatsapp"
     t.bigint "account_id"
     t.boolean "no_instructor", default: false
+    t.boolean "commission", default: false
     t.index ["account_id"], name: "index_instructors_on_account_id"
     t.index ["no_instructor"], name: "index_instructors_on_no_instructor"
   end

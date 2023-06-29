@@ -1,4 +1,4 @@
-class Shared::ChallengesController < Admin::BaseController
+class Shared::ChallengesController < Shared::BaseController
   before_action :set_challenge, only: %i[show edit update destroy]
 
   def index

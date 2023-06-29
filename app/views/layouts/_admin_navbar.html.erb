@@ -56,10 +56,10 @@
                   <%= link_to 'Products', admin_products_path, class: "dropdown-item" %>
                 <% unless logged_in_as?('junioradmin') %>                     
                   <span class="dropdown-label">ADMIN</span>
-                  <%= link_to 'Instructors', admin_instructors_path, class: "dropdown-item" %>
-                  <%= link_to 'Challenges', shared_challenges_path, class: "dropdown-item" %>
-                  <%= link_to 'Partners', admin_partners_path, class: "dropdown-item" %>
                   <%= link_to 'Achievements', shared_achievements_path, class: "dropdown-item" %>
+                  <%= link_to 'Challenges', shared_challenges_path, class: "dropdown-item" %>
+                  <%= link_to 'Instructors', admin_instructors_path, class: "dropdown-item" %>
+                  <%= link_to 'Partners', admin_partners_path, class: "dropdown-item" %>
                   <%= link_to 'Timetables', admin_timetables_path, class: "dropdown-item" %>                           
                   <%= link_to 'Workouts', admin_workouts_path, class: "dropdown-item" %>
                   <%= link_to 'Workout Groups', admin_workout_groups_path, class: "dropdown-item" %>

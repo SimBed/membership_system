@@ -25,9 +25,10 @@
             <i class="bi bi-arrow-right-circle-fill"></i>
             <% end %>
           </td>
-          <td class="pl-3 pl-md-5"><%= link_to image_tag("edit.png", class: "edit_icon"), edit_shared_challenge_path(challenge) %></td>
-          <td class="pl-md-3"><%= link_to image_tag("delete.png", class: "edit_icon"), shared_challenge_path(challenge), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <%# link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %>
+          <% if logged_in_as?('superadmin') %>
+            <td class="pl-3 pl-md-5"><%= link_to image_tag("edit.png", class: "edit_icon"), edit_shared_challenge_path(challenge) %></td>
+            <td class="pl-md-3"><%= link_to image_tag("delete.png", class: "edit_icon"), shared_challenge_path(challenge), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
