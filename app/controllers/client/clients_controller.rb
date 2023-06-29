@@ -25,14 +25,14 @@ class Client::ClientsController < ApplicationController
 
   def achievements
     achievement_data
-      if @achievements.present?
-        # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
-        Achievement.default_timezone = :utc
-        # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-        @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
-        Achievement.default_timezone = :local
-      end
-      @clients = @challenge&.positions if @achievements.present? || @main_challenge_selected
+    if @achievements.present?
+      # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+      Achievement.default_timezone = :utc
+      # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
+      @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
+      Achievement.default_timezone = :local
+    end
+    @client_results = @challenge.results if @achievements.present? || @main_challenge_selected
   end
 
   def buy

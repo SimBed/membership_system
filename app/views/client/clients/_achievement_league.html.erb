@@ -10,7 +10,7 @@
     </thead>
 
     <tbody>
-      <% @clients.each_with_index do |client, index| %>
+      <% @client_results.each_with_index do |client, index| %>
         <tr>
           <td class=<%= [("fw-bolder" if client['id'] == @client.id)].compact.join(' ') %>><%= client['first_name'] %></td>
           <td><%= client['max_score'] %></td>

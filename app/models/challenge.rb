@@ -9,19 +9,23 @@ class Challenge < ApplicationRecord
   scope :order_by_date, -> { order(created_at: :desc) }
   scope :order_by_name, -> { order(:name) }
 
-  def positions
+  def results
     if has_sub_challenges?
-      sub_challenges.map { |c| c.positions}
-                    .map {|r| r.to_a} # array of array of hashes[ [...], [{"id"=>41, "first_name"=>"Anne", "max_score"=>3850}, {"id"=>209, "first_name"=>"Aakash", "max_score"=>2500}],...]
-                    .flatten.group_by {|r| r['id']} # hash (values are array of hashes) {41=>[{"id"=>41, "first_name"=>"Anne", "max_score"=>3901}, {"id"=>41, "first_name"=>"Anne", "max_score"=>3850}], 209=>[...],...}
-                    .map { |key, value| value.reduce { |acc, h| (acc || {}).merge(h) { |key, oldval, newval| key=='max_score' ? (oldval + newval) : oldval } }} # reduce the array of hashes to a single hash
+      sub_challenges.map { |c| c.results } # 1
+                    .map {|r| r.to_a} # 2
+                    .flatten.group_by {|r| r['id']} # 3
+                    .map { |key, value| value.reduce { |acc, h| (acc || {}).merge(h) { |key, oldval, newval| key=='max_score' ? (oldval + newval) : oldval } }} # 4
                     .sort_by {|h| -h['max_score']}
+    # 1 array of ActiveRecord::Results
+    # 2 array of array of hashes [ [...], [{"id"=>41, "first_name"=>"Anne", "max_score"=>3850}, {"id"=>209, "first_name"=>"Aakash", "max_score"=>2500}],...]
+    # 3 hash of clients results {41=>[{"id"=>41, "first_name"=>"Anne", "max_score"=>3901}, {"id"=>41, "first_name"=>"Anne", "max_score"=>3850}], 209=>[...],...}    
+    # 4 reduce each array of hashes to a single hash, showing the aggregated client score
     else
-      positions_sub_challenge
+      sub_challenge_results
     end
   end
 
-  def positions_sub_challenge
+  def sub_challenge_results
     sql = "SELECT clients.id, clients.first_name, max(achievements.score) as max_score
           FROM clients
           INNER JOIN achievements on clients.id = achievements.client_id
@@ -39,14 +43,14 @@ class Challenge < ApplicationRecord
     false
   end
 
-  def positions_for_main
-      sql = "SELECT clients.id, clients.first_name, max(achievements.score) as max_score
-            FROM clients
-            INNER JOIN achievements on clients.id = achievements.client_id
-            INNER JOIN challenges on achievements.challenge_id = challenges.id
-            WHERE challenges.id = #{id}
-            GROUP BY clients.id
-            ORDER BY max_score DESC;"
-      ActiveRecord::Base.connection.exec_query(sql)
-  end
+  # def positions_for_main
+  #     sql = "SELECT clients.id, clients.first_name, max(achievements.score) as max_score
+  #           FROM clients
+  #           INNER JOIN achievements on clients.id = achievements.client_id
+  #           INNER JOIN challenges on achievements.challenge_id = challenges.id
+  #           WHERE challenges.id = #{id}
+  #           GROUP BY clients.id
+  #           ORDER BY max_score DESC;"
+  #     ActiveRecord::Base.connection.exec_query(sql)
+  # end
 end

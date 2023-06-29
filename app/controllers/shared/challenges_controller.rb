@@ -7,7 +7,7 @@ class Shared::ChallengesController < Admin::BaseController
 
   def show
     @challenges = Challenge.order_by_name.map { |l| [l.name, l.id, { 'data-showurl' => shared_challenge_url(l.id) }] }
-    @clients = @challenge.positions
+    @client_results = @challenge.results
   end
 
   def new
