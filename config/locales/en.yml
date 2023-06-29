@@ -4,12 +4,14 @@ en:
     attendances:
       update_by_admin:
         warning: Attendance was not updated
+      create:
+        warning: Forbidden
       destroy:
         success: Attendance was successfully deleted
-      correct_account_or_junioradmin:
         warning: Forbidden
       update:
         success: Attendance was successfully updated
+        warning: Forbidden
       action_new_booking_when_prov_expired:
         admin:
           warning: The maximum number of classes has already been booked
@@ -22,7 +24,7 @@ en:
       update:
         success: Your password has been changed
       show:
-        warning: Forbidden        
+        warning: Forbidden 
     adjustments:
       create:
         success: Adjustment was successfully added

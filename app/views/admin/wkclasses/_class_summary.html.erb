@@ -4,15 +4,15 @@
 </h5>
 <%= link_to '<<', admin_wkclass_path(@wkclasses.next_item(params[:id].to_i)), {class: "paginate_icon"} unless params[:no_scroll] %>
 <div class ="d-inline-block">
-<%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
+  <%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
 </div>
-<% unless logged_in_as?('junioradmin') %>
-<div id="attendances_revenue" class ="d-inline-block">
-<%= rupees(@wkclass.revenue) %> |
-</div>
+<% unless logged_in_as?('junioradmin', 'instructor') %>
+  <div id="attendances_revenue" class ="d-inline-block">
+    <%= rupees(@wkclass.revenue) %> |
+  </div>
 <% end %>
 <%= @wkclass.instructor&.name %>
-<% unless logged_in_as?('junioradmin') %>
+<% unless logged_in_as?('instructor') %>
   <%= link_to image_tag('edit.png', class: "header_icon"), edit_admin_wkclass_path(@wkclass) %>
 <% end %>
 <%# <%= link_to '>>', {id: @wkclasses.next(params[:id]).id} , {class: "pl-2"} %>

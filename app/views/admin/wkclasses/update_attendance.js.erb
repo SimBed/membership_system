@@ -4,8 +4,10 @@ classes_table.innerHTML = "<%= j(render partial: 'admin/wkclasses/class_attendan
 // var attendances_count = document.getElementById('attendances_count')
 // attendances_count.innerHTML = "<%= j(render inline: "#{@wkclass.attendances.confirmed.count} #{image_tag('group.png', class: "header_icon")} |") %>";
 
-var attendances_revenue = document.getElementById('attendances_revenue')
-attendances_revenue.innerHTML = "<%= j(render inline: rupees(@wkclass.revenue)) %>";
+<% if logged_in_as?('admin', 'superadmin') %>
+  var attendances_revenue = document.getElementById('attendances_revenue')
+  attendances_revenue.innerHTML = "<%= j(render inline: rupees(@wkclass.revenue)) %>";
+<% end %>
 
 var flash_messages = document.getElementById('flash_messages')
 flash_messages.innerHTML = "<%= j(render_flash) %>";

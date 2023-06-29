@@ -3,7 +3,9 @@
 </div>
 <div id="classes_table" class="container px-1 mb-3 margin-override">
   <%= render partial: 'class_attendance_table' %>
-  <%= render partial: 'repeat_form' if @wkclass.attendances&.first&.purchase&.pt? %>
+  <% unless logged_in_as?('instructor') %>
+    <%= render partial: 'repeat_form' if @wkclass.attendances&.first&.purchase&.pt? %>
+  <% end %>
 </div>
 
 <%= link_to image_tag('back.png', class: "back_icon"), admin_wkclasses_path, class: "icon-container" %>

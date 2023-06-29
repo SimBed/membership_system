@@ -1,3 +1,4 @@
+  <% view_financials = logged_in_as?('admin', 'superadmin') ? true : false %>
   <table class="table table-secondary table-striped">
     <tbody>
       <tr>
@@ -7,11 +8,13 @@
         <tr class="less-padding">
           <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
           <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
-          <% unless logged_in_as?('junioradmin') %>
+          <% if view_financials %>
             <td class="adj-line-height"><%= number_with_delimiter(attendance.revenue) %></td>
           <% end %>
           <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-          <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+          <% unless logged_in_as?('instructor') %>
+            <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+          <% end %>
         </tr>
       <% end %>
       <% unless @ethereal_attendances_no_amnesty.empty? %>
@@ -22,11 +25,13 @@
           <tr class="less-padding">
             <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
             <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
-            <% unless logged_in_as?('junioradmin') %>
+            <% if view_financials %>
               <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-            <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+            <% unless logged_in_as?('instructor') %>
+              <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+            <% end %>
           </tr>
         <% end %>
       <% end %>
@@ -38,11 +43,13 @@
           <tr class="less-padding">
             <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
             <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
-            <% unless logged_in_as?('junioradmin') %>
+            <% if view_financials %>
               <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-            <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+            <% unless logged_in_as?('instructor') %>
+              <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+            <% end %>
           </tr>
         <% end %>
       <% end %>

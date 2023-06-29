@@ -3,8 +3,9 @@ class Admin::AttendancesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :fitternity?
   before_action :set_attendance, only: [:update, :destroy]
-  before_action :junioradmin_account, only: [:new, :destroy, :index]
-  before_action :correct_account_or_junioradmin, only: [:create, :update, :destroy]
+  before_action :junioradmin_account, only: [:destroy]
+  before_action :junioradmin_or_instructor_account, only: [:new]
+  before_action :correct_account_or_junioradmin_or_instructor_account, only: [:create, :update]
   before_action :provisionally_expired, only: [:create, :update], unless: -> { fitternity? }
   before_action :modifiable_status, only: [:update]
   # https://stackoverflow.com/questions/49414318/how-to-use-rails-before-action-conditional-for-only-some-actions
@@ -104,7 +105,7 @@ class Admin::AttendancesController < Admin::BaseController
     @purchase = @attendance.purchase
     @wkclass = @attendance.wkclass
     update_by_client if logged_in_as?('client')
-    if logged_in_as?('junioradmin', 'admin', 'superadmin')
+    if logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
       result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status]).update
       flash_message(*result.flash_array)
       update_purchase_status([@purchase]) if result.penalty_change?
@@ -135,20 +136,20 @@ class Admin::AttendancesController < Admin::BaseController
     # flash[:success] = t('.success')
   end
 
-  # index of attendances not used - available by explicit url but not by navigation link
-  def index
-    set_period
-    @attendances = Attendance.by_workout_group(session[:workout_group], @period)
-    # @attendances.sort_by { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
-    @revenue = @attendances.map(&:revenue).inject(0, :+)
-    @months = months_logged
-    @workout_groups = ['All'] + WorkoutGroup.all.map { |wg| [wg.name.to_s] }
-    @attendances = Attendance.all if params[:export_all]
-    respond_to do |format|
-      format.html
-      format.csv { send_data @attendances.to_csv }
-    end
-  end
+  # index of attendances not used
+  # def index
+  #   set_period
+  #   @attendances = Attendance.by_workout_group(session[:workout_group], @period)
+  #   # @attendances.sort_by { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
+  #   @revenue = @attendances.map(&:revenue).inject(0, :+)
+  #   @months = months_logged
+  #   @workout_groups = ['All'] + WorkoutGroup.all.map { |wg| [wg.name.to_s] }
+  #   @attendances = Attendance.all if params[:export_all]
+  #   respond_to do |format|
+  #     format.html
+  #     format.csv { send_data @attendances.to_csv }
+  #   end
+  # end
 
   private
 
@@ -218,9 +219,27 @@ class Admin::AttendancesController < Admin::BaseController
               end
 
     return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
+    flash_message :warning, t('.warning')
+    # flash[:warning] = 'Forbidden'
+    redirect_to login_path
+  end
 
-    flash_message flash[:warning], t('.warning')
-    # flash[:warning] = t('.warning')
+  # make dry  
+  def correct_account_or_junioradmin_or_instructor_account
+    @client = if new_booking?
+                if fitternity?
+                  # purchase_id key is now not well named as for fitternity its of the form ['Fitternity <client_id>']
+                  Client.find(params.dig(:attendance, :purchase_id).split.last.to_i)
+                else
+                  Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
+                end
+              else
+                # update or destroy
+                @attendance.client
+              end
+    return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
+    flash_message :warning, t('.warning')
+    # flash[:warning] = 'Forbidden'
     redirect_to login_path
   end
 
@@ -349,7 +368,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def admin_modification?
-    return true if logged_in_as?('junioradmin', 'admin', 'superadmin')
+    return true if logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
 
     false
   end

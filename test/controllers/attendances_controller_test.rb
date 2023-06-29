@@ -25,15 +25,6 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should redirect index when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
-      log_in_as(account_holder)
-      get admin_attendances_path
-
-      assert_redirected_to login_path
-    end
-  end
-
   test 'should redirect create when not logged in as correct client, junior admin or more senior' do
     [nil, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
