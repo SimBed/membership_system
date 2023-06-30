@@ -19,7 +19,7 @@
       <% @client_results.each_with_index do |client, index| %>
         <tr>
           <td ><%= client['first_name'] %></td>
-          <td><%= client['max_score'] %></td>
+          <td><%= client['max_score'] || client['sum_max_score'] %></td>
           <td><%= index + 1 %></td>
         </tr>
       <% end %>
