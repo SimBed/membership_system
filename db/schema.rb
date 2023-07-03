@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_29_124215) do
+ActiveRecord::Schema.define(version: 2023_07_03_014307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -441,6 +441,7 @@ ActiveRecord::Schema.define(version: 2023_06_29_124215) do
     t.boolean "current", default: true
     t.boolean "instructor_initials", default: false
     t.boolean "no_instructor", default: false
+    t.boolean "limited", default: true
     t.index ["name"], name: "index_workouts_on_name"
   end
 

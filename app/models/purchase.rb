@@ -111,7 +111,7 @@ class Purchase < ApplicationRecord
   def self.qualifying_for(wkclass)
     available_to(wkclass).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
-        p.committed_on?(wkclass.start_time.to_date) ||
+        (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
         p.expires_before?(wkclass.start_time.to_date) ||
         p.already_used_for?(wkclass)
     end
@@ -120,7 +120,7 @@ class Purchase < ApplicationRecord
   def self.available_for_booking(wkclass, client)
     available_to(wkclass).where(client_id: client.id).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
-        p.committed_on?(wkclass.start_time.to_date)  ||
+        (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?)  ||
         p.expires_before?(wkclass.start_time.to_date) ||
         p.already_used_for?(wkclass)
     end
@@ -163,13 +163,19 @@ class Purchase < ApplicationRecord
   def committed_on?(adate)
     return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
 
-    attendances.committed.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
+    # attendances.committed.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
+    # committed if attendance on same day (but ignore Open Gym attendances (ie workouts that are not limited ))
+    attendances.committed.includes(:wkclass).map { |a| a.wkclass.workout.limited ? a.start_time.to_date : nil }.include?(adate)
   end
 
   def restricted_on?(wkclass)
+    return false if !wkclass.workout.limited? # open gym can be booked even if another class is booked on same day
+
     return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
 
-    attendances.committed.includes(:wkclass).reject { |a| a.wkclass == wkclass }.map { |a| a.start_time.to_date }.include?(wkclass.start_time.to_date)
+    attendances.committed.includes(:wkclass).reject { |a| a.wkclass == wkclass || !a.wkclass.workout.limited }
+                                            .map { |a| a.start_time.to_date }
+                                            .include?(wkclass.start_time.to_date)
   end
 
   def already_used_for?(wkclass)
