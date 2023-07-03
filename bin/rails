@@ -2,4 +2,14 @@
 load File.expand_path("spring", __dir__)
 APP_PATH = File.expand_path('../config/application', __dir__)
 require_relative "../config/boot"
+
+# DPS: https://gist.github.com/tskogberg/c7cbd42008f8ec8fd920817a2229cf33
+# Make a clean exit on Heroku while running a rails console.
+# Without this we'll get a "SignalException: SIGHUP" error in honeybadger.
+if ENV["DYNO"]
+  if ["c", "console"].include?(ARGV.first)
+    Signal.trap("SIGHUP") { exit 0 }
+  end
+end
+
 require "rails/commands"
