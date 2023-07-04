@@ -17,14 +17,19 @@ module Client::ClientsHelper
     end
   end
 
-  # updated - if already booked for eg nutrition on a separate package would not be able to book a group class on same day
   def handle_new_booking(wkclass, client)
     purchase = Purchase.use_for_booking(wkclass, client)
     if purchase.nil? ||
-       # wkclass.committed_on_same_day?(client) ||
        purchase.restricted_on?(wkclass) ||
        !wkclass.booking_window.cover?(Time.zone.now)
       { css_class: 'table-secondary', link: '' }
+    elsif wkclass.at_capacity?
+      confirmation = t('client.clients.attendance.create.full')
+      { css_class: 'table-secondary',
+        link: (link_to '#',
+                       data: { confirm: confirmation },
+                       class: 'icon-container' do tag.i class: ["bi bi-battery-full"] end)
+        }
     else
       confirmation = t('client.clients.attendance.create.confirm')
       confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
