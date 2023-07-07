@@ -13,7 +13,7 @@
       <% @client_results.each_with_index do |client, index| %>
         <tr>
           <td class=<%= [("fw-bolder" if client['id'] == @client.id)].compact.join(' ') %>><%= client['first_name'] %></td>
-          <td><%= client['max_score'] %></td>
+          <td><%= @main_challenge_selected ? client['sum_max_score'] : client['max_score'] %></td>
           <td><%= index + 1 %></td>
         </tr>
       <% end %>

@@ -351,6 +351,16 @@ class Purchase < ApplicationRecord
     false
   end
 
+  def remind_to_renew?(days_remain: 5, attendances_remain: 2)
+    return true if close_to_expiry?(days_remain, attendances_remain) && !renewed?
+
+    false
+  end
+
+  def renewed?
+    false
+  end  
+
   def start_date_calc
     attendances.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
   end
