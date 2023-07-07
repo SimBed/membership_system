@@ -77,8 +77,11 @@ class Purchase < ApplicationRecord
   scope :written_off, -> { where(payment_mode: 'Write Off') }
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
   scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
+  scope :remind_to_renew, -> { package_started_not_expired.select(&:remind_to_renew?) }
   scope :during, ->(period) { where({ dop: period }) }
   scope :unexpired_rider_without_ongoing_main, -> { not_fully_expired.joins(:main_purchase).where.not(main_purchase: { status: ['ongoing', 'classes all booked'] }) }
+  scope :rider, -> { where.not({ purchase_id: nil }) }
+  scope :main_purchase, -> { where({ purchase_id: nil }) }
   # used in Purchases controller's handle_sort method
   # raw SQL in Active Record functions will give an error to guard against SQL injection
   # in the case where the raw SQl contains user input i.e. a params value
@@ -278,7 +281,7 @@ class Purchase < ApplicationRecord
   def will_expire_on
     return nil unless provisionally_expired?
 
-    attendances.no_amnesty.includes(:wkclass).map(&:start_time).max.strftime('%d %b %y')
+    attendances.no_amnesty.includes(:wkclass).map(&:start_time).max
   end
 
   def pt_will_expire_on
@@ -351,13 +354,20 @@ class Purchase < ApplicationRecord
     false
   end
 
+  # keyword arguments changed in ruby 3
+  # https://juanitofatas.com/ruby-3-keyword-arguments
+  # Prefix argument with ** if you want to pass in keywords:
   def remind_to_renew?(days_remain: 5, attendances_remain: 2)
-    return true if close_to_expiry?(days_remain, attendances_remain) && !renewed?
+    keyword_args = { days_remain: days_remain, attendances_remain: attendances_remain }
+    return true if close_to_expiry?(**keyword_args) && !renewed?
 
     false
   end
 
   def renewed?
+    clients_ongoing_packages = client.purchases.main_purchase.package.not_fully_expired
+    return true if clients_ongoing_packages.size > 1
+
     false
   end  
 
