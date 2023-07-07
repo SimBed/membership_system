@@ -76,13 +76,13 @@
       </tr>
       <tr>
         <th scope="row">Expired on</th>
-        <td><%= @purchase.expired_on %></td>
+        <td><%= @purchase.expired_on&.strftime('%d %b %y') %></td>
       </tr>
     <% end %>
     <% if @purchase.provisionally_expired? %>
       <tr>
         <th scope="row">Will expire on</th>
-        <td><%= @purchase.will_expire_on %></td>
+        <td><%= @purchase.will_expire_on&.strftime('%d %b %y') %></td>
       </tr>
     <% end %>
     <tr>
