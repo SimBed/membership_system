@@ -1,0 +1,35 @@
+  <div class="offcanvas-wrap">
+
+     <section class="cover overflow-hidden inverted bg-black">
+      <div class="d-flex flex-column min-vh-75 container py-10 level-1">
+        <div class="row justify-content-center my-auto">
+          <div class="col-md-8 text-center">
+            <%= link_to "https://wa.me/919619348427", target: "_blank", class: "position-fixed float" do %>
+              <%= image_tag('whatsapp-50.png', alt: "Whatsapp call", class: "") %>
+            <% end %>
+              <h1 class="display-2 lh-sm fw-bold text-uppercase">group classes</h1>
+            <h6 class="mb-0 fw-normal fs-lg ">where strength happens</h6>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col text-secondary text-uppercase">
+              <span class="display-6 lh-sm fw-bold text-uppercase">sweat |</span>
+              <span class="display-6 lh-sm fw-bold text-uppercase">support |</span>
+              <span class="display-6 lh-sm fw-bold text-uppercase">success </span>
+          </div>
+        </div>
+      </div>
+      <figure class="background background-overlay" style="filter: grayscale(100%) opacity(70%); background-image: url(<%= asset_path 'group/group1a.jpg' %>)"></figure>
+    </section>
+
+    <%= render 'public_pages/group_classes/tagline' %>
+    <%= render 'public_pages/group_classes/signature_classes' %>
+    <%= render 'public_pages/group_classes/book_trial' %>
+    <%= render 'public_pages/group_classes/packages' %>
+    <%= render 'public_pages/group_classes/testimonials' %>
+    <%= render 'public_pages/group_classes/more_than_gym' %>
+    <%= render 'timetable_slider' %>
+
+  </div>
+
+

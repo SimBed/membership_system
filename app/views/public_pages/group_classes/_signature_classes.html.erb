@@ -1,0 +1,52 @@
+<section class="pb-2 pb-xl-5 mt-5 text-center">
+  <h5 class="mb-4 text-uppercase fw-bolder">signature classes</h5>  
+  <div id="carouselExampleCaptions" class="carousel slide cover overflow-hidden inverted bg-black" data-bs-ride="false">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="10000">
+        <%# note rails precompiles all the assets and puts them in public/assets accessible as /assets
+        so (unintuitively) rails won't find them if a subfolder (like images) is included in the path
+        [this doesn't explain why subfolder group should stay?]
+        https://stackoverflow.com/questions/15827763/rails-why-images-are-not-showing-in-my-rails-basic-app %>
+        <img src="assets/group/speed_8a.jpg" class="d-block w-100" style="filter: grayscale(100%) opacity(50%); " alt="pt spin">
+        <div class="carousel-caption carousel-caption-signature">
+          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">afterburn</h1>
+          <p class="text-uppercase mb-5">metabolic conditioning</p>
+          <p>do a routine you can't finish and then do it again in less time...something about energy systems</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="10000">
+        <%# note rails precompiles all the assets and puts them in public/assets accessible as /assets
+        so (unintuitively) rails won't find them if a subfolder (like images) is included in the path
+        [this doesn't explain why subfolder group should stay?]
+        https://stackoverflow.com/questions/15827763/rails-why-images-are-not-showing-in-my-rails-basic-app %>
+        <img src="assets/group/speed_8a.jpg" class="d-block w-100" style="filter: grayscale(100%) opacity(50%); " alt="pt spin">
+        <div class="carousel-caption carousel-caption-signature">
+          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">afterburn</h1>
+          <p class="text-uppercase mb-5">metabolic conditioning</p>
+          <p>do a routine you can't finish and then do it again in less time...something about energy systems</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="10000">
+        <img src="assets/group/speed_8a.jpg" class="d-block w-100" style="filter: grayscale(100%) opacity(50%); " alt="pt spin">
+        <div class="carousel-caption carousel-caption-signature">
+          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">afterburn</h1>
+          <p class="text-uppercase mb-5">metabolic conditioning</p>
+          <p>do a routine you can't finish and then do it again in less time...something about energy systems</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>

@@ -1,0 +1,41 @@
+<section class="mt-5 pb-5 pb-xl-10 text-center">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-12">
+        <h3 class="fs-4">We're more than just a gym</h3>
+        <h3 class="fs-6 text-uppercase">why we stand out from the rest</h3>
+      </div>
+    </div>
+  </div>
+
+  <div id="carouselMoreThanGym" class="carousel slide carousel-fade mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item bg-body review active">
+        <p class="reviewer">Highly Trained Coaches</p>
+        <p class="review">Our experienced coaches genuinely care about your progress, bringing a wealth of experience to the table. With a combined experience of 15 years and expertise in weightlifting, injury & pain management, movement flow, sport-specific training, and bodybuilding, they are ready to guide you through your fitness journey with mastery and care.</p>
+      </div>  
+      <div class="carousel-item bg-body review">
+        <p class="reviewer">"Coach-Led Classes</p>
+        <p class="review">In our classes, our dedicated coaches take the lead. They will not only teach you how to master each exercise but also ensure that you can modify them to suit your training level. We prioritise your well-being and safety. Experience personal attention in a group class - Our assistant coaches are there to support you, keeping a watchful eye on your form, so you can focus on your workout with peace of mind.</p>
+      </div>
+ 
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselMoreThanGym" data-bs-slide="prev">
+      <span class="display-4 text-dark" aria-hidden="true"><</span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselMoreThanGym" data-bs-slide="next">
+      <span class="display-4 text-dark" aria-hidden="true">></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-12 d-flex flex-column">
+        <p class="display-6"><%= "Try a week of group classes for #{rupees(@trial_price)}!" %></p>
+      </div>
+    </div>
+  </div>
+  <div> <%= link_to "Join Now!", signup_path, class: "btn btn-outline-black rounded-pill bg-light px-2 py-1" %> </div>
+</section>

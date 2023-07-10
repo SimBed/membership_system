@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/privacy_policy',  to: 'footer#privacy_policy'
   get '/payment_policy',  to: 'footer#payment_policy'
   root 'public_pages#welcome'
+  get '/group_classes', to: 'public_pages#group_classes'
   # prototype homepage (redundant))
   get '/welcome_home', to: 'public_pages#welcome_home'
   # previous homepage (redundant)

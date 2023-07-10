@@ -13,10 +13,8 @@
             <%# end %>
           </div>
           <div class="d-flex flex-column justify-content-center">
-            <% if @renewal.offer_online_discount? %>
-              <div class="pe2 base-price"><%= rupees(@renewal.base_price(product).price) %></div>
-            <% end %>
-            <div class="pe2 discount-price"><%= rupees(@renewal.price(product)) %></div>
+            <div class="pe2 base-price"><%= rupees(@menu.base_price(product)) %></div>
+            <div class="pe2 discount-price"><%= rupees(@menu.price(product)) %></div>
           </div>
           <% if logged_in? %>
             <div class="ps-3">
@@ -30,9 +28,7 @@
       data-bs-parent="#accordion-1">
       <div class="accordion-body">
         <ul class="text-secondary product-notes">
-          <% saving = renewal_saving(product, @renewal) %>
-          <%# saving = renewal_saving(product, @renewal.renewal_offer) %>
-          <%# saving = product.base_price.price - product.renewal_price(@renewal.renewal_offer).price %>
+          <% saving = @menu.discount(product) %>
           <% unless saving == 0 %>
             <li>Save <%= rupees(saving) %></li>
           <% end %>
