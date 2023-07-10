@@ -20,17 +20,18 @@
         <div class="row text-center">
           <div class="col text-secondary text-uppercase">
               <%# method: :get or 'data-turbolinks': false needed otherwise link to different section same page doesn't happen :/ %>
+              <%# target: "_self" also avoids the problem %>
               <%= link_to "PT", '#services', class: "btn btn-outline-white rounded-pill px-3 py-1 me-1", 'data-turbolinks': false %> |
               <%= link_to "Group", '#services', class: "btn btn-outline-white rounded-pill p-1 mx-1", 'data-turbolinks': false %> |
               <%= link_to "Online", '#services', class: "btn btn-outline-white rounded-pill p-1 ms-1", 'data-turbolinks': false %>
           </div>
         </div>
       </div>
-      <figure class="background background-overlay" style="background-image: url(<%= asset_path 'home/priyanka_snatch.jpg' %>)"
+      <figure class="background background-overlay" style="filter: opacity(80%);background-image: url(<%= asset_path 'home/priyanka_snatch.jpg' %>)"
       data-top-top="transform: scale(1);" data-top-bottom="transform: scale(1.1);"></figure>
     </section>
 
-    <%= render 'tagline' %>
+    <%= render 'tagline_home' %>
     <%= render 'services' %>
     <%#= render 'icons' %>
     <%= render 'reviews' %>

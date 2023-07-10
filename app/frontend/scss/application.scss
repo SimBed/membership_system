@@ -278,6 +278,10 @@ img.footerlogo {
   font-weight: 700;
 }
 
+.carousel-item .carousel-caption-signature {
+ top: 25%;
+}
+
 // so bottom items in dropdowns with lost of items dont become inaccesssible on phone
 @media (max-width: 550px) {
 .highnavbar {

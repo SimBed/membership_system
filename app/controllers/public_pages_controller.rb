@@ -1,9 +1,10 @@
 class PublicPagesController < ApplicationController
-  before_action :set_timetable, only: [:welcome, :space_home]
+  before_action :set_timetable, only: [:welcome, :group_classes, :space_home]
   before_action :account_limit, only: [:create_account]
   layout 'public'
 
   def welcome
+    # toggle for a navbar class so photograph is not hidden by an opaque black navbar
     @home = true
     # if logged_in?
     #   @account = current_account
@@ -20,6 +21,13 @@ class PublicPagesController < ApplicationController
     #   redirect_to admin_instructor_path(current_account.instructor) and return
     # end
     # render template: 'auth/sessions/new'
+  end
+
+  def group_classes
+    @home = true
+    @trial_price = Product.trial.first.base_price_at(Time.zone.now).price
+    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)    
+    @menu = PackageMenu.new()
   end
 
   def welcome_home; end

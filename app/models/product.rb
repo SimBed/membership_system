@@ -21,8 +21,9 @@ class Product < ApplicationRecord
   scope :unlimited, -> { where(max_classes: 1000) }
   scope :dropin, -> { where(max_classes: 1) }
   scope :fixed, -> { where('max_classes between ? and ?', 2, 999) }
-  scope :trial, -> { where(validity_length: 1, validity_unit: 'W') }
-  scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W') }
+  # time to add a trial attribute to Product model
+  scope :trial, -> { where(validity_length: 1, validity_unit: 'W', max_classes: 1000) }
+  scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W', max_classes: 1000) }
   scope :package_not_trial, -> { package.not_trial }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', 'workout_groups.name', :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
@@ -95,7 +96,7 @@ class Product < ApplicationRecord
   end
 
   def trial?
-    validity_length == 1 && validity_unit == 'W'
+    validity_length == 1 && validity_unit == 'W' && max_classes == 1000
   end
 
   def dropin?
