@@ -11,9 +11,13 @@ class Workout < ApplicationRecord
   scope :order_by_current, -> { order(current: :desc, name: :asc) }
   scope :current, -> { where(current: true) }
 
-  # not quite right but good enough for now. Helps prevent a PT instructor rates wrongly get selected for Space Group classes
+  # Helps in #instructor method in wkclass controller prevent a PT instructor rate get selected wrongly for a Space Group class (and vice-versa)
   def group_workout?
-    workout_groups.any?(&:renewable?)
+    workout_groups.any?(&:groupex?)
+  end
+  
+  def pt_workout?
+    workout_groups.any?(&:pt?)
   end
 
   private
