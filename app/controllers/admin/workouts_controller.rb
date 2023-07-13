@@ -14,9 +14,12 @@ class Admin::WorkoutsController < Admin::BaseController
 
   def new
     @workout = Workout.new
+    @capacities = (0..30).to_a + [500]
   end
 
-  def edit; end
+  def edit
+    @capacities = (0..30).to_a + [500]
+  end
 
   def create
     @workout = Workout.new(workout_params)
@@ -60,6 +63,6 @@ class Admin::WorkoutsController < Admin::BaseController
     # the update method (and therefore the workout_params method) is used through a form but also clicking on a link on the workouts page
     return { current: params[:current] } if params[:current].present?
 
-    params.require(:workout).permit(:name, :current, :instructor_initials)
+    params.require(:workout).permit(:name, :current, :default_capacity, :instructor_initials)
   end
 end

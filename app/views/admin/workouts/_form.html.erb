@@ -10,12 +10,17 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field mb-2">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
 
-  <div class="field mb-3">
+  <div class="field mb-2">
+    <%= form.label :default_capacity, 'Default maximum capacity' %>
+    <%= form.select :default_capacity, options_for_select(@capacities, workout.default_capacity || 12) %>
+  </div>  
+
+  <div class="field mb-2">
     <%= form.label :current do %>
       <%= form.check_box :current, { checked: @workout.new_record? || form.object.current? } %>
       Workout is Currently Running

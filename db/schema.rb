@@ -442,6 +442,7 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.boolean "instructor_initials", default: false
     t.boolean "no_instructor", default: false
     t.boolean "limited", default: true
+    t.integer "default_capacity", default: 12
     t.index ["name"], name: "index_workouts_on_name"
   end
 
