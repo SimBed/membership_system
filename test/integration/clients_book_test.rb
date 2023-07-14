@@ -69,7 +69,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                    'Avoid deductions by making changes to bookings before the deadlines']], flash[:primary]
   end
 
-  test '2nd booking on same day' do
+  test '2nd booking on same day (both limited ie not Open Gym)' do
     log_in_as(@account_client)
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
@@ -80,6 +80,46 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to client_book_path(@client.id)
     # assert_redirected_to "/client/clients/#{@client.id}/book"
+    refute_predicate flash, :empty?
+  end
+
+  test '2nd booking on same day when 2nd is limited (ie Open Gym) ' do
+    log_in_as(@account_client)
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                         purchase_id: @purchase.id } }
+    opengym = Wkclass.create(
+      workout_id: 8,
+      start_time: '2022-04-22 21:00:00',
+      instructor_id: 4,
+      instructor_rate: instructor_rates(:amit_base),
+      max_capacity: 12
+    )
+    assert_difference '@client.attendances.no_amnesty.size', 1 do
+    post admin_attendances_path, params: { attendance: { wkclass_id: opengym.id,
+                                                          purchase_id: @purchase.id } }
+    end  
+
+    assert_redirected_to client_book_path(@client.id)
+    refute_predicate flash, :empty?
+  end
+  
+  test '2nd booking on same day when 1st is limited (ie Open Gym) ' do
+    log_in_as(@account_client)
+    opengym = Wkclass.create(
+      workout_id: 8,
+      start_time: '2022-04-22 21:00:00',
+      instructor_id: 4,
+      instructor_rate: instructor_rates(:amit_base),
+      max_capacity: 12
+    )                                                          
+    post admin_attendances_path, params: { attendance: { wkclass_id:opengym.id,
+                                                          purchase_id: @purchase.id } }
+    assert_difference '@client.attendances.no_amnesty.size', 1 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+      purchase_id: @purchase.id } }      
+    end  
+
+    assert_redirected_to client_book_path(@client.id)
     refute_predicate flash, :empty?
   end
 

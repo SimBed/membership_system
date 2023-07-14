@@ -67,4 +67,20 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
 
     assert_select 'a[href=?]', admin_attendance_path(attendance), count: 1
   end
+
+  test 'class booking links appear correctly when class gets full' do
+    log_in_as(@account_client)
+    follow_redirect!
+
+    assert_template 'client/clients/book'
+    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
+    # make 1 class full
+    @tomorrows_class_early.update(max_capacity: 0)
+    # debugger
+    get client_book_path(@client)
+    # classes with a booking link reduces by 1
+    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 2 # 22/4, 22/4, 24/4
+    # 1 class shows a full icon
+    assert_select "i.bi-battery-full", 1
+  end
 end
