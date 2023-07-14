@@ -50,6 +50,8 @@ class Client::ClientsController < ApplicationController
     # @renewal = @client.renewal #|| { :offer_online_discount? => true, renewal_offer: "renewal_pre_expiry" } # renewal is nil if no purchases yet made
     @renewal = Renewal.new(@client)
     # render template: 'public_pages/shop' #, layout: 'white_canvas'
+    # to update razorpay button from default 'Pay Now'
+    @trial_price = Product.trial.space_group.first.base_price_at(Time.zone.now).price
   end
 
   def book
