@@ -72,7 +72,6 @@ class Renewal
 	end
 
   def price(product)
-    # return nil if new_client?
     return base_price(product).price if product.trial?
 
     apply_discount(product.base_price_at(Time.zone.now), *discount_hash.values.compact)

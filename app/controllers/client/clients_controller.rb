@@ -40,18 +40,15 @@ class Client::ClientsController < ApplicationController
   end
 
   def shop
-    # @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt? || p.base_price.nil?}
     @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)
     # @products = @products.reject {|p| p.trial?} if logged_in? && current_account.client.has_purchased?
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
-    # :offer_online_discount? seems to be obsolete now
-    # @renewal = @client.renewal #|| { :offer_online_discount? => true, renewal_offer: "renewal_pre_expiry" } # renewal is nil if no purchases yet made
     @renewal = Renewal.new(@client)
-    # render template: 'public_pages/shop' #, layout: 'white_canvas'
     # to update razorpay button from default 'Pay Now'
     @trial_price = Product.trial.space_group.first.base_price_at(Time.zone.now).price
+    @last_product_fixed = @renewal.product.fixed_package?
   end
 
   def book

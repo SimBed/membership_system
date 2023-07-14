@@ -77,7 +77,11 @@
   var trialbtn = document.getElementById("trial-btn")
   if (trialbtn) { document.getElementById("trial-btn").getElementsByClassName("razorpay-payment-button")[0].value= '<%= rupees(@trial_price) %>' }
   // Click on option wanted to be visible as default
-  document.getElementById("Unlimited_btn").click();
+  <% if @last_product_fixed %>
+    document.getElementById("Flex_btn").click();
+  <% else %>
+    document.getElementById("Unlimited_btn").click();
+  <% end %>
 </script>
 
 
