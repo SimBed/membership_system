@@ -56,7 +56,12 @@ class Wkclass < ApplicationRecord
   #                         .or(where(attendances: {id: nil})) # empty class
   #                         .or(where.not(instructor_rate: {rate: 0})).joins(:instructor_rate) # has instructor cost
   #                         .joins(:attendances).left_joins(:attendances).distinct} # dump all the joins/distinct at end of query
-  scope :has_booking_post_purchase_expiry, -> { joins(attendances: [:purchase]).where('purchases.expiry_date + 1 < wkclasses.start_time') }
+  # penalties in last days of Package can cause expiry date to be earlier than final class. Dont want these cases to be considered problematic
+  scope :has_booking_post_purchase_expiry, lambda {
+                                             joins(attendances: [:purchase])
+                                               .where('purchases.expiry_date + 1 < wkclasses.start_time')
+                                               .where("attendances.status NOT IN ('no show', 'cancelled late')")
+                                           }
   # visibility_window = 2.hours
   # advance_days = 3
   # scope :in_booking_visibility_window, lambda {
