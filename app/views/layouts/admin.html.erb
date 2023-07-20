@@ -1,19 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>The Space Membership System</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content= "Stay Strong">  
-	  <meta property="og:title" content="The Space Fitness">
-    <meta property="og:description" content="where strength happens">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content = <%= image_url 'opengraph/spacefitness_square.png' %> >
-    <meta property="og:image:secure_url" content = <%= image_url 'opengraph/spacefitness_square.png' %> >
-    <meta property="og:url" content="https://www.thespacefitness.in" >
-    
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <!--comment-->
+    <title>The Space Fitness</title>
+    <%= render 'layouts/meta' %>
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_pack_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -21,17 +10,13 @@
     <%= favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: "180x180" %>
     <%= favicon_link_tag 'favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: "32x32" %>
     <%= favicon_link_tag 'favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: "16x16" %>  
-
     <script src="https://kit.fontawesome.com/52a30c356b.js" crossorigin="anonymous"></script>
-
   </head>
-
   <body>
     <%= render 'layouts/admin_navbar' if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
     <%= render 'layouts/client_navbar' if logged_in_as?('client') %>
     <%= render 'layouts/partner_navbar' if logged_in_as?('partner') %>
     <%= render 'layouts/instructor_navbar' if logged_in_as?('instructor') %>
-
     <main id="white-canvas">
       <div class="offcanvas-wrap">
         <section class="overflow-hidden">
@@ -45,9 +30,6 @@
         </section>
       </div>
     </main>
-
    <%= render 'layouts/footer' %>   
-      
   </body>
-
 </html>

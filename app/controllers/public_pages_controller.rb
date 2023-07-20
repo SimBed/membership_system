@@ -28,6 +28,7 @@ class PublicPagesController < ApplicationController
     @trial_price = Product.trial.first.base_price_at(Time.zone.now).price
     @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)    
     @menu = PackageMenu.new()
+    @group = true
   end
 
   def welcome_home; end
