@@ -446,3 +446,8 @@ div.group-class .tagline2, section.book-trial p.tagline2 {
     font-size: 0.8rem;
   }  
 }
+
+#carouselTestimonial .carousel-item.active {
+  display: flex;
+  justify-content: center;
+}
