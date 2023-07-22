@@ -78,6 +78,10 @@ class PublicPagesController < ApplicationController
 
   def sell; end
 
+  def hearts
+    render layout: false  
+  end
+
   private
 
   def set_timetable
