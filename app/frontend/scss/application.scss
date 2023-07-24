@@ -71,9 +71,15 @@ a.forgot-password:hover {
 
 #white-canvas {
   .offcanvas-wrap {
-    padding-top: 10rem; }
+    padding-top: 8rem; }
   .btn-primary {
     background-color: black; } }
+
+@media (min-width: 900px) {
+  #white-canvas .offcanvas-wrap {
+      padding-top: 10rem;
+    }
+ }
 
 .table-striped>tbody>tr:nth-child(odd)>th.stripe-override,
 .table-striped>tbody>tr:nth-child(even)>th.stripe-override {
