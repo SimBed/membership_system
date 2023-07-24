@@ -1,11 +1,13 @@
 <section class="pb-xl-5 mt-5 text-center signature">
   <h5 class="mb-3 text-uppercase fw-bolder">signature classes</h5>  
-  <div id="carouselExampleCaptions" class="carousel slide cover overflow-hidden inverted bg-black" data-bs-ride="carousel">
+  <div id="carouselSignature" class="carousel slide cover overflow-hidden inverted bg-black" data-bs-ride="carousel">
     <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="3" aria-label="Slide 4"></button>
+      <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="4" aria-label="Slide 5"></button>
+      <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="5" aria-label="Slide 6"></button>
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active" data-bs-interval="5000">
@@ -13,45 +15,89 @@
         so (unintuitively) rails won't find them if a subfolder (like images) is included in the path
         [this doesn't explain why subfolder group should stay?]
         https://stackoverflow.com/questions/15827763/rails-why-images-are-not-showing-in-my-rails-basic-app %>
-        <img src=<%= asset_path 'group/afterburn.jpg' %> class="d-block w-100" style="filter: grayscale(100%) opacity(50%);" alt="afterburn">
+        <img src=<%= asset_path 'group/afterburn.jpg' %> class="d-block w-100" alt="afterburn">
         <div class="carousel-caption carousel-caption-signature">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">afterburn</h1>
-          <p class="text-uppercase mb-3">metabolic conditioning</p>
-          <p class='description'>do a routine you can't finish and then do it again in less time</p>
+          <p class="text-uppercase mb-3"></p>
+        </div>
+        <div class="carousel-class-desc-caption">
+          <p class='description'>Be prepared to dig deep & push hard! A competitive high intensity full body metabolic conditioning class designed to train all three metabolic pathways, amp up your cardiovascular endurance and target your core. Steady state sequences building up to maximum effort resistance cycles topped off with ab blaster circuits - Maximum Effort to Maximise Fat Burn! Feel energized, revitalized and ready to take on anything.</p>
         </div>
       </div>
       <div class="carousel-item" data-bs-interval="5000">
-        <img src=<%= asset_path 'group/bodypump1.jpg' %> class="d-block w-100" style="filter: grayscale(100%) opacity(50%);" alt="body pump">
-        <div class="carousel-caption carousel-caption-signature">
-          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">bodypump</h1>
-          <p class="text-uppercase mb-3">hypertrophy</p>
-          <p class='description'>flex those biceps</p>
-        </div>
-      </div>
-      <div class="carousel-item" data-bs-interval="5000">
-        <img src=<%= asset_path 'group/bodypump2.jpg' %> class="d-block w-100" style="filter: grayscale(100%) opacity(50%);" alt="cardio sculpt">
+        <img src=<%= asset_path 'group/cardio.jpg' %> class="d-block w-100" alt="cardio sculpt">
         <div class="carousel-caption carousel-caption-signature">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">cardio sculpt</h1>
-          <p class="text-uppercase mb-3">hiit & abs</p>
-          <p class='description'>six pack time</p>
+          <p class="text-uppercase mb-3"></p>
+        </div>
+        <div class="carousel-class-desc-caption">          
+          <p class='description'>A high-energy class that combine Push Pull skill training & a heart-pumping HIIT circuit. Develop calisthenic skills for Handstands, Pull ups and Pistol Squats and build that aerobic engine. Finish with targeted body sculpting finishers that will make your body feel tighter, toned, and more sculpted than ever before - Leave perspired & inspired!</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="5000">
+        <img src=<%= asset_path 'group/bodypump1.jpg' %> class="d-block w-100" alt="body pump">
+        <div class="carousel-caption carousel-caption-signature">
+          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">bodypump</h1>
+          <p class="text-uppercase mb-3"></p>
+        </div>
+        <div class="carousel-class-desc-caption">
+          <p class='description'>On the menu, Toned Limbs, Popping Abs & Defined muscles. Sculpt your body using classic hypertrophy style training to isolate and strengthen even the tiniest muscles - so that you don’t just look strong on the outside but grow strong on the inside too!</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="5000">
+        <img src=<%= asset_path 'group/s&c1.jpg' %> class="d-block w-100" alt="strength & conditioning">
+        <div class="carousel-caption carousel-caption-signature">
+          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">strength & conditioning</h1>
+          <p class="text-uppercase mb-3"></p>
+        </div>
+        <div class="carousel-class-desc-caption">          
+          <p class='description'>Build your Mind & Body in our S&C classes. Progressive workouts incorporating Barbell & Landmine Training, Weighted Flows, Locomotion, Skill, and Power work. Stay continuously challenged, refine technique, enhance strength and lose fat. Discover resilience and an energized mind-body harmony that will keep you “Long Term Strong”</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="5000">
+        <img src=<%= asset_path 'group/foundation.jpg' %> class="d-block w-100" alt="strength & conditioning">
+        <div class="carousel-caption carousel-caption-signature">
+          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">foundation</h1>
+          <p class="text-uppercase mb-3"></p>
+        </div>
+        <div class="carousel-class-desc-caption">          
+          <p class='description'>The perfect class to start your strength journey. We teach you correct technique and build baseline strength for essential exercise movements finishing up each workout with a beginner friendly metcon to get the heart racing</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="5000">
+        <img src=<%= asset_path 'group/pilates.jpg' %> class="d-block w-100" alt="strength & conditioning">
+        <div class="carousel-caption carousel-caption-signature">
+          <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">pilates</h1>
+          <p class="text-uppercase mb-3"></p>
+        </div>
+        <div class="carousel-class-desc-caption">          
+          <p class='description'>If you want to feel strong yet flexible, agile yet controlled, powerful yet mindful Pilates is for you. Take your pick of our two signature Pilates styles:</p> 
+            Pilates Suspension Method:
+            <p class='description'>
+            A 45 minute workout that combines two of the most effective bodyweight disciplines – Pilates & TRX suspension training!</p>
+            Pilates Strong:
+             <p class='description'>
+            Strength meets Stability - experience the power of functional strength entwined with the flow, control and burn of traditional mat Pilates.</p>
         </div>
       </div>
       <div class="carousel-item" data-bs-interval="500000">
-        <img src=<%= asset_path 'group/wod.jpg' %> class="d-block w-100" style="filter: grayscale(100%) opacity(50%);" alt="community wod">
+        <img src=<%= asset_path 'group/wod.jpg' %> class="d-block w-100" alt="community wod">
         <div class="carousel-caption carousel-caption-signature">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">community wod</h1>
           <p class="text-uppercase mb-3">train together with #PeopleofTheSpace</p>
-          <p class='description'>pain is more fun in company</p>
+        </div>
+        <div class="carousel-class-desc-caption">          
+          <p class='description'>#PeopleofTheSpace - connected by our passion for sweat, drive to keep growing and need to excel!  This is where our coaches & members show up, move hard and sweat up a storm. Strong minds, bodies and friendships unite at the end of each week. We work together, Sweat together, Conquer together.</p>
         </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-      <%# <span class="carousel-control-prev-icon" aria-hidden="true"></span> %>
-      <%# <span class="visually-hidden">Previous</span> %>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselSignature" data-bs-slide="prev">
+      <%# <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span> %>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-      <%# <span class="carousel-control-next-icon" aria-hidden="true"></span> %>
-      <%# <span class="visually-hidden">Next</span> %>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselSignature" data-bs-slide="next">
+      <%# <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span> %>
     </button>
   </div>
 </section>

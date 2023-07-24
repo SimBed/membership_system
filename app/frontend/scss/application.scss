@@ -331,11 +331,7 @@ background-color: black;
 }
 
 .carousel-item .carousel-caption-signature {
- top: 5%;
- .description {
-  font-size: 0.9rem;
-  letter-spacing: 0.1em;
- }
+ top: 3rem;
 }
 
 .carousel-caption {
@@ -343,10 +339,32 @@ background-color: black;
   right: 10%;
 }
 
+.carousel-class-desc-caption {
+  position: relative;
+  left: auto;
+  right: auto;
+  padding: 1rem 1rem 3rem 1rem;
+  p {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;  
+  }
+}
+
+#carouselSignature .carousel-item img {
+  filter: grayscale(100%) opacity(50%);
+}
+
 @media (min-width: 900px) {
   .carousel-item .carousel-caption-signature {
-    top: 25%;
+    top: 9rem;
   }
+  .carousel-class-desc-caption {
+    padding: 1rem 10% 3rem 10%;
+    p {
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;  
+    }
+  }  
 }
 
 section.cover-photo figure {
@@ -354,7 +372,7 @@ section.cover-photo figure {
 }
 
 section.cover-photo > div:first-child {
-  min-height: 55vh;
+  min-height: 50vh;
   padding-top: 8rem;
 }
 
