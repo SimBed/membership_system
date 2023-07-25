@@ -167,6 +167,9 @@ en:
           from_cancelled_early:
             confirm: You will be rebooked for this class. Are you sure?
             confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?
+  public_pages:
+    create_account:
+      daily_account_limit: Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.
   forbidden: Forbidden
   new_purchase_by_client: Thank you for your purchase. You can see details of your purchase on this page. Go to the Book page to book your classes
   signup: "Welcome to The Space %{name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."

@@ -148,11 +148,10 @@ class Whatsapp
       "\n\nPlease do not reply to this message. Contact The Space directly if you have any questions."
   end
 
-  # def body_new_booking
-  #   'Thank you for booking for HIIT on Monday.' +
-  #     "\nYou can cancel this booking up to 3 hours before the class start time without incurring any penalty." +
-  #     "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions."
-  # end
+  def body_daily_account_limit
+    'ACCOUNT DAILY LIMIT WARNING' +
+      "\nDan, multiple accounts have been set up today. Please investigate."
+  end
 
   # def body_membership_system_upgrade
   #   'THE SPACE' +
@@ -173,35 +172,10 @@ class Whatsapp
   #     "\n\nThis is an automated message. Please do not reply here. Contact The Space's main number if you have any questions."
   # end
 
-  # def body_temp_email_confirm
-  #   "The email for the last message is: #{@variable_contents[:email]}"
-  # end
-
   # def body_blast
   #   'CLASS UPDATE' +
   #   "\n1) The Space will be closed on 1st May 2023 for Labour Day. Sessions will resume on schedule from 2nd May." +
   #   "\n2) No Pilates on 9th May as Karina is travelling." +
   #   "\n \nPlease plan your workouts accordingly.\n"
-  # end
-
-  # def body_renew
-  #   "Thank you for your renewal, #{@variable_contents[:name]}." +
-  #     "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
-  #     "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
-  #     "\nTerms & Conditions: https://www.thespacejuhu.in/PackagePolicy.html"
-  # end
-
-  # def body_package_expiry_retired
-  #   "Hi #{@variable_contents[:first_name]}" +
-  #   "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
-  #   "\nRenew today & save 10% on your next Package!. After expiry, full price rates will apply." +
-  #   "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
-  # end
-
-  # def body_trial_expiry_retired
-  #   "Hi #{@variable_contents[:first_name]}" +
-  #   "\nYour Trial at The Space expires on #{@variable_contents[:day]}." +
-  #   "\nRenew before expiry & save #{Setting.pre_expiry_trial_renewal}% on your first Package!" +
-  #   "\n \nPlease do not reply to this message. Contact The Space directly for renewal or to discuss more options."
   # end
 end

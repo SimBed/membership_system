@@ -1,6 +1,13 @@
 require 'test_helper'
 
 class SignupTest < ActionDispatch::IntegrationTest
+  include SessionsHelper
+
+  def setup
+    # changing all the Account fixtures just created to have been created a day earlier, so daily account limit not triggered
+    Account.all.update_all(created_at: Time.zone.now.advance(days: -1))
+  end
+
   test 'blank signup form' do
     get signup_path
 
@@ -147,6 +154,15 @@ class SignupTest < ActionDispatch::IntegrationTest
     assert_select 'div.discount-price', text: 'Rs. 22,950'
     refute_empty response.body.scan(/data-amount="2295000"/)
     assert_select 'li', text: 'Save Rs. 2,550'
+
+    log_out
+    new_account = Account.last
+    # the new account has been given a random password, so lets rest it so we can login easily
+    new_account.update(password: 'password', password_confirmation: 'password')
+    log_in_as(new_account)
+
+    assert_equal current_account, Account.last
+    assert_equal('client', current_role)
   end
 
   test 'valid signup (GB whatsapp)' do
@@ -175,4 +191,30 @@ class SignupTest < ActionDispatch::IntegrationTest
 
     assert_template 'client/clients/shop'
   end
+
+  test 'public should not be able to create more than daily limit accounts on any one day' do
+    (Setting.daily_account_limit).times do |n|
+      name = Faker::Name.name
+      joe_public = { first_name: name.split[0],
+                    last_name: name.split[1],
+                    email: name.split.join + "@gmail.com",
+                    whatsapp_country_code: 'IN',
+                    whatsapp_raw: '123456789' + n.to_s,
+                    terms_of_service: '1' }
+      assert_difference -> { Account.count } => 1, -> { Client.count } => 1, -> { Assignment.count } => 1 do
+        post '/signup', params: { client: joe_public }
+      end
+    end
+
+    name = Faker::Name.name
+    joe_public = { first_name: name.split[0],
+                  last_name: name.split[1],
+                  email: name.split.join + "@gmail.com",
+                  whatsapp_country_code: 'IN',
+                  whatsapp_raw: '1234567880',
+                  terms_of_service: '1' }
+    assert_difference -> { Account.count } => 0, -> { Client.count } => 0, -> { Assignment.count } => 0 do
+      post '/signup', params: { client: joe_public }
+    end
+  end   
 end

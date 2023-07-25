@@ -49,6 +49,7 @@ class Client < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validates :account, presence: true, if: :account_id
   # NOTE: default accept options are ['1', true] https://guides.rubyonrails.org/active_record_validations.html#acceptance
+  # This check is performed only if terms_of_service is not nil (so when admin creates a client this validation does not occur)
   validates :terms_of_service, acceptance: true
   scope :order_by_first_name, -> { order(:first_name, :last_name) }
   scope :order_by_last_name, -> { order(:last_name, :first_name) }

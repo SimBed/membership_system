@@ -1,26 +1,11 @@
 class PublicPagesController < ApplicationController
   before_action :set_timetable, only: [:welcome, :group_classes, :space_home]
-  before_action :account_limit, only: [:create_account]
+  before_action :daily_account_limit, only: [:create_account]
   layout 'public'
 
   def welcome
     # toggle for a navbar class so photograph is not hidden by an opaque black navbar
     @home = true
-    # if logged_in?
-    #   @account = current_account
-    #   send_to_correct_page_for_ac_type
-    # end
-    # if logged_in_as?('junioradmin', 'admin', 'superadmin')
-    #   # NOTE: && return won't work because of precedence of operator over method call
-    #   redirect_to admin_clients_path and return
-    # elsif logged_in_as?('client')
-    #   redirect_to client_client_path(current_account.client) and return
-    # elsif logged_in_as?('partner')
-    #   redirect_to admin_partner_path(current_account.partner) and return
-    # elsif logged_in_as?('instructor')
-    #   redirect_to admin_instructor_path(current_account.instructor) and return
-    # end
-    # render template: 'auth/sessions/new'
   end
 
   def group_classes
@@ -93,22 +78,15 @@ class PublicPagesController < ApplicationController
     end
   end
 
-  def account_limit
+  def daily_account_limit
     daily_accounts_count = Account.where("DATE(created_at)='#{Time.zone.today.to_date}'").size
-    # Setting/I18n
-    return unless daily_accounts_count > 100
-
-    Whatsapp.new(receiver: 'me', message_type: 'new_purchase', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging
-    flash[:warning] = 'Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.'
+    return unless daily_accounts_count >= Setting.daily_account_limit
+    
+    Whatsapp.new(receiver: 'me', message_type: 'daily_account_limit', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging if Setting.daily_account_limit_triggered == false
+    Setting.daily_account_limit_triggered = true
+    flash[:warning] = t('.daily_account_limit')
     redirect_to signup_path
   end
-
-  # def waiver_agree
-  #   unless params[:client][:waiver] == '1'
-  #     render 'signup', layout: 'login'
-  #     flash[:warning] = "Please agree to The Space's terms, conditions and policies"
-  #   end
-  # end
 
   def associate_account_holder_to_account
     @client.modifier_is_client = true # should be irrelevant as the enhanced validations this causes have already happened and won't have been disturbed

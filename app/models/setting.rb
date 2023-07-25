@@ -8,6 +8,8 @@ class Setting < RailsSettings::Base
     field :renew_online, type: :boolean, default: false
     field :password_length, type: :integer, default: 6
     field :gst_rate, type: :integer, default: 18
+    field :daily_account_limit, type: :integer, default: 0
+    field :daily_account_limit_triggered, type: :boolean, default: false
   end
 
   scope :timetable do
