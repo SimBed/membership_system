@@ -334,10 +334,11 @@ background-color: black;
   margin-bottom: 1rem;
   font-size: 0.9rem;
   line-height: 1.5;
+  text-align: justify;
 }
 
 .carousel-item .carousel-caption-signature {
- top: 3rem;
+  top: 4rem; 
 }
 
 .carousel-caption {
@@ -352,7 +353,8 @@ background-color: black;
   padding: 1rem 1rem 3rem 1rem;
   p {
     font-size: 0.9rem;
-    letter-spacing: 0.1em;  
+    letter-spacing: 0.1em;
+    text-align: justify;  
   }
 }
 
@@ -360,9 +362,9 @@ background-color: black;
   filter: grayscale(100%) opacity(50%);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1150px) {
   .carousel-item .carousel-caption-signature {
-    top: 9rem;
+    top: 35%;
   }
   .carousel-class-desc-caption {
     padding: 1rem 10% 3rem 10%;
@@ -373,8 +375,21 @@ background-color: black;
   }  
 }
 
+@media (max-width: 900px) {
+  section.cover-photo h1  {
+    font-size: 2.5rem;
+  }
+}
+
 section.cover-photo figure {
   filter: opacity(70%);
+  transform: scale(1.3);
+}
+
+@media (min-width: 900px) {
+  section.cover-photo figure {
+    transform: scale(1.0);
+  }
 }
 
 section.cover-photo > div:first-child {
@@ -389,7 +404,7 @@ section.cover-photo .sweat {
 div.group-class .tagline1, section.book-trial p.tagline  {
   font-size: 1.4rem;
   line-height: 1.8rem;  
-  font-weight: bold;  
+  font-weight: bold;
 }
 
 div.group-class .tagline2, section.book-trial p.tagline2 {
@@ -397,7 +412,6 @@ div.group-class .tagline2, section.book-trial p.tagline2 {
   line-height: 1.2rem;  
   font-weight: bold;
 }
-
 
 // so bottom items in dropdowns with lost of items dont become inaccesssible on phone
 @media (max-width: 550px) {
@@ -474,4 +488,25 @@ div.group-class .tagline2, section.book-trial p.tagline2 {
 #carouselTestimonial .carousel-item.active {
   display: flex;
   justify-content: center;
+}
+
+div.insta-blocker-top {
+  width: 7.5rem;
+  height: 2.5rem;
+  background-color:white;
+  position: absolute;
+  top: 0.5rem;
+  right:0;
+  z-index:2;
+}
+
+div.insta-blocker-bottom {
+  // width: 100%;
+  height: 8rem;
+  background-color:white;
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  right:0;
+  z-index:2;
 }

@@ -1,13 +1,9 @@
-<section class="pb-5 pb-xl-10 text-center" id="shop">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h3 class="fs-5 px-3 fw-bolder">10% off your first Package at The Space</h3>
-       </div>
-    </div>
+<section class="mt-10 pb-5 pb-xl-10 text-center" id="shop">
+  <div class="container bg-black inverted py-3">
+    <h5 class="px-3 fw-bolder">Sign up now and get 10% off your first Package at The Space</h5>
   </div>
 
-  <div class="text-center mt-5">
+  <div class="text-center mt-10">
     <h6 class="mb-4 text-uppercase fw-bolder">packages</h6> 
     <button id="Unlimited_btn" class="btn_product_type btn btn-filter rounded-pill current" onclick="showProduct(event, 'unlimited')">Unlimited</button>
     <button id="Flex_btn" class="btn_product_type btn btn-filter rounded-pill" onclick="showProduct(event, 'fixed')">Flex</button>
@@ -16,7 +12,10 @@
   </div>
   
   <%= render 'public_pages/group_classes/shop_product_list' %>
-
+  <div class="mt-3"> <%= link_to "Buy Now", signup_path, class: "btn btn-outline-black rounded-pill bg-light px-2 py-1 bg-dark text-white" %> </div>
+  <div class="container mt-3">
+    <h5 class="px-3 fw-bolder">Save 10% on your first membership at The Space</h5>
+  </div>
 </section>
 
 <script>
