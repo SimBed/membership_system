@@ -7,7 +7,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @client_with_no_account = clients(:client_no_account)
+    @client_without_account = clients(:client_without_account)
     @partner_without_account = partners(:bibi)
   end
 
@@ -18,8 +18,8 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: 'wannabe@example.com',
-                                            client_id: @client_with_no_account.id,
+        post admin_accounts_path, params: { email: @client_without_account.email,
+                                            client_id: @client_without_account.id,
                                             ac_type: 'client' }
       end
 
@@ -44,8 +44,8 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: 'wannabe@example.com',
-                                            client_id: @client_with_no_account.id,
+        post admin_accounts_path, params: { email: @client_without_account.email,
+                                            client_id: @client_without_account.id,
                                             ac_type: 'admin' }
       end
 
@@ -57,8 +57,8 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: 'wannabe@example.com',
-                                            client_id: @client_with_no_account.id,
+        post admin_accounts_path, params: { email: @client_without_account.email,
+                                            client_id: @client_without_account.id,
                                             ac_type: 'junioradmin' }
       end
 
@@ -70,17 +70,16 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params:
-         { email: 'wannabe@example.com',
-           client_id: @client_with_no_account.id,
-           ac_type: 'superadmin' }
+        post admin_accounts_path, params: { email: @client_without_account.email,
+                                            client_id: @client_without_account.id,
+                                            ac_type: 'superadmin' }
       end
 
       assert_redirected_to login_path
     end
   end
 
-  test 'should redirect create account if no associated client/partner' do
+  test 'should redirect create account if no associated client/partner/instructor' do
     log_in_as(@superadmin)
     assert_no_difference 'Account.count' do
       post admin_accounts_path, params:
@@ -90,5 +89,4 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to login_path
   end
-
 end

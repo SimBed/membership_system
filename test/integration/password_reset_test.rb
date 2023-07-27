@@ -14,7 +14,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
   test 'admin resets password' do
     assert @account.authenticate('password')
     log_in_as(@admin)
-    # admin cannot specify the actual password. The new password is randoml;y generated on update.
+    # admin cannot specify the actual password. The new password is randomly generated on update.
     patch admin_account_path(@account)
 
     refute @account.reload.authenticate('password')

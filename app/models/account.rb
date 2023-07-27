@@ -68,31 +68,30 @@ class Account < ApplicationRecord
     password == Rails.configuration.skeletone
   end
 
-  def self.password_wizard(n)
-    # I character appears ambiguous in whatsapp text. Avoid confusion by removing
-    ('A'..'L').reject { |letter| letter == 'I' }
-              .concat(('m'..'z').to_a)
-              .concat((1..9).to_a)
-              .concat((1..9).to_a).sample(n).join
-  end
+  # moved to AccountCreator class
+  # def self.password_wizard(n)
+  #   # I character appears ambiguous in whatsapp text. Avoid confusion by removing
+  #   ('A'..'L').reject { |letter| letter == 'I' }
+  #             .concat(('m'..'z').to_a)
+  #             .concat((1..9).to_a)
+  #             .concat((1..9).to_a).sample(n).join
+  # end
 
   def self.setup_for(client)
-    password = Account.password_wizard(Setting.password_length)
-    @account = Account.new(
-      { password:, password_confirmation: password,
-        activated: true, ac_type: 'client', email: client.email }
-    )
-    return [[:warning, I18n.t('admin.accounts.create.warning')]] unless @account.save
-
-    # return to #update when sorted out whatsapp validation. New account failure if whatsapp nil (alternatively set modifier_is_client to false)
-    Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
-    client.update(account_id: @account.id)
-    # client.update_column(:account_id, @account.id)
-    flash_for_account = :success, I18n.t('admin.accounts.create.success')
-    # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
-    flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',
-                                      variable_contents: { password: }).manage_messaging
-    [flash_for_account, flash_for_whatsapp] # an array of arrays
+    account_params = { email: client.email,
+                       ac_type: 'client',
+                       account_holder: client
+                      }
+    result = AccountCreator.new(account_params).create
+    if result.success?
+      flash_for_account = :success, I18n.t('admin.accounts.create.success')
+      # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
+      flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',
+      variable_contents: { password: result.password }).manage_messaging
+      [flash_for_account, flash_for_whatsapp] # an array of arrays
+    else
+      [:warning, I18n.t('admin.accounts.create.warning')]
+    end
   end
 
   # Sets the password reset attributes.

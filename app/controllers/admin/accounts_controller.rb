@@ -14,24 +14,70 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def create
-    @password = Account.password_wizard(Setting.password_length)
-    @account = Account.new(account_params)
-    if @account.save
-      Assignment.create(account_id: @account.id, role_id: Role.find_by(name: params[:ac_type]).id)
-      associate_account_holder_to_account
+    result = AccountCreator.new(account_params).create
+    if result.success?
       flash_message :success, t('.success')
-      message_type = case params[:ac_type]
-                     when 'instructor'
-                       'new_instructor_account'
-                     else
-                       'new_account'
-                     end
-      flash_message(*Whatsapp.new(whatsapp_params(message_type)).manage_messaging)
+      message_type = params[:ac_type] == 'instructor' ? 'new_instructor_account' : 'new_account'
+      flash_message(*Whatsapp.new(whatsapp_params(message_type, result.password)).manage_messaging)
     else
       flash_message :warning, t('.warning')
     end
-    redirect_back fallback_location: admin_clients_path
+    redirect_back fallback_location: admin_clients_path    
+    # @password = Account.password_wizard(Setting.password_length)
+    # @account = Account.new(account_params)
+    # if @account.save
+    #   Assignment.create(account_id: @account.id, role_id: Role.find_by(name: params[:ac_type]).id)
+    #   associate_account_holder_to_account
+    #   flash_message :success, t('.success')
+    #   message_type = case params[:ac_type]
+    #                  when 'instructor'
+    #                    'new_instructor_account'
+    #                  else
+    #                    'new_account'
+    #                  end
+    #   flash_message(*Whatsapp.new(whatsapp_params(message_type)).manage_messaging)
+    # else
+    #   flash_message :warning, t('.warning')
+    # end
+    # redirect_back fallback_location: admin_clients_path
   end
+
+  # @client = Client.new(client_params)
+  # if @client.save
+  #   @password = Account.password_wizard(Setting.password_length)
+  #   @account = Account.new(account_params)
+  #   if @account.save
+  #     Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
+  #     associate_account_holder_to_account
+  #     log_in @account
+  #     @renewal = Renewal.new(@client)
+  #     redirect_to client_shop_path @client
+  #     flash_message(*Whatsapp.new(whatsapp_params('new_signup')).manage_messaging)
+  #   else
+  #     render 'signup', layout: 'login'
+  #   end
+  # else
+  #   @account = Account.new
+  #   render 'signup', layout: 'login'
+  # end
+
+
+  # password = Account.password_wizard(Setting.password_length)
+  # @account = Account.new(
+  #   { password:, password_confirmation: password,
+  #     activated: true, ac_type: 'client', email: client.email }
+  # )
+  # return [[:warning, I18n.t('admin.accounts.create.warning')]] unless @account.save
+
+  # # return to #update when sorted out whatsapp validation. New account failure if whatsapp nil (alternatively set modifier_is_client to false)
+  # Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
+  # client.update(account_id: @account.id)
+  # # client.update_column(:account_id, @account.id)
+  # flash_for_account = :success, I18n.t('admin.accounts.create.success')
+  # # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
+  # flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',
+  #                                   variable_contents: { password: }).manage_messaging
+  # [flash_for_account, flash_for_whatsapp] # an array of arrays
 
   def update
     if params[:account].nil? # means request came from admin link
@@ -46,9 +92,9 @@ class Admin::AccountsController < Admin::BaseController
   private
 
   def password_reset_admin_of_client
-    @password = Account.password_wizard(Setting.password_length)
-    @account.update(password: @password, password_confirmation: @password)
-    flash_message(*Whatsapp.new(whatsapp_params('password_reset')).manage_messaging)
+    password = AccountCreator.password_wizard(Setting.password_length)
+    @account.update(password: password, password_confirmation: password)
+    flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging)
     redirect_back fallback_location: admin_clients_path
   end
 
@@ -125,23 +171,17 @@ class Admin::AccountsController < Admin::BaseController
     @account_holder = @account.client
   end
 
-  def associate_account_holder_to_account
-    @account_holder.update(account_id: @account.id)
-  end
-
   def account_params
-    password_params = { password: @password, password_confirmation: @password }
-    activation_params = { activated: true, ac_type: params[:ac_type] }
-    params.permit(:email, :ac_type).merge(password_params).merge(activation_params)
+    params.permit(:email, :ac_type).merge(account_holder: @account_holder)
   end
 
   def password_update_params
     params.require(:account).permit(:new_password, :new_password_confirmation, :requested_by)
   end
 
-  def whatsapp_params(message_type)
+  def whatsapp_params(message_type, password)
     { receiver: @account_holder,
       message_type:,
-      variable_contents: { first_name: @account_holder.first_name, email: @account_holder.email, password: @password } }
+      variable_contents: { first_name: @account_holder.first_name, email: @account_holder.email, password: } }
   end
 end

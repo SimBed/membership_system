@@ -48,6 +48,18 @@ class ClientTest < ActiveSupport::TestCase
     refute_predicate @client, :valid?
   end
 
+  test 'whatsapp number should be unique' do
+    @client.whatsapp_raw = @client2.whatsapp.slice(3, 10) 
+
+    refute_predicate @client, :valid?
+  end
+
+  test 'phone number should be unique' do
+    @client.phone_raw = @client2.phone.slice(3, 10) 
+
+    refute_predicate @client, :valid?
+  end
+
   test 'first name should be present' do
     @client.first_name = '     '
 
@@ -79,7 +91,7 @@ class ClientTest < ActiveSupport::TestCase
     refute_predicate duplicate_named_client, :valid?
   end
 
-  test 'uppercase_names which also strips whitespace' do
+  test 'uppercase_names method also strips whitespace' do
     roughly_named_client = @client.dup
     roughly_named_client.update(first_name: '  amalu ', last_name: '   meowaw   ')
 

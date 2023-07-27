@@ -29,16 +29,19 @@ class PublicPagesController < ApplicationController
   def create_account
     @client = Client.new(client_params)
     if @client.save
-      @password = Account.password_wizard(Setting.password_length)
-      @account = Account.new(account_params)
-      if @account.save
-        Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
-        associate_account_holder_to_account
-        log_in @account
+      result = AccountCreator.new(account_params).create
+      if result.success?
+      # @password = Account.password_wizard(Setting.password_length)
+      # @account = Account.new(account_params)
+      # if @account.save
+      #   Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
+      #   associate_account_holder_to_account
+        log_in result.account
         @renewal = Renewal.new(@client)
         redirect_to client_shop_path @client
-        flash_message(*Whatsapp.new(whatsapp_params('new_signup')).manage_messaging)
+        flash_message(*Whatsapp.new(whatsapp_params('new_signup', result.password)).manage_messaging)
       else
+        @account = result.account # the invalid account object with its error messages is returned by the Struct
         render 'signup', layout: 'login'
       end
     else
@@ -99,16 +102,20 @@ class PublicPagesController < ApplicationController
           .merge(modifier_is_client: true)
   end
 
+  # def account_params
+  #   password_params = { password: @password, password_confirmation: @password }
+  #   activation_params = { activated: true, ac_type: 'client' }
+  #   params.require(:client).permit(:email).merge(activation_params).merge(password_params)
+  # end
+
   def account_params
-    password_params = { password: @password, password_confirmation: @password }
-    activation_params = { activated: true, ac_type: 'client' }
-    params.require(:client).permit(:email).merge(activation_params).merge(password_params)
+    params.require(:client).permit(:email).merge(account_holder: @client, ac_type: 'client')
   end
 
-  def whatsapp_params(message_type)
+  def whatsapp_params(message_type, password)
     { receiver: @client,
       message_type:,
       admin_triggered: false,
-      variable_contents: { password: @password } }
+      variable_contents: { password: } }
   end
 end

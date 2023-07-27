@@ -233,9 +233,9 @@ class Client < ApplicationRecord
     self.last_name = last_name.strip.titleize
   end
 
-  def apply_country_code
-    self.whatsapp = [whatsapp_country_code, whatsapp_raw].compact.join if whatsapp_country_code.present?
-  end
+  # def apply_country_code
+  #   self.whatsapp = [whatsapp_country_code, whatsapp_raw].compact.join if whatsapp_country_code.present?
+  # end
 
   def full_name_must_be_unique
     # could more easily use validates method with scope like for Instructor class instead
