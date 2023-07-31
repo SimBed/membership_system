@@ -6,7 +6,7 @@
     </tr>
     <tr>
       <th scope="row">Last class</th>
-      <td><%= @client_hash[:last_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_class])} ago" %></td>
+      <td><%= @client_hash[:last_counted_class].nil? ? "not yet atended" : "#{time_ago_in_words(@client_hash[:last_counted_class])} ago" %></td>
     </tr>
     <tr>
       <th scope="row">Joined</th>

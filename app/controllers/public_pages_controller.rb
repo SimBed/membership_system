@@ -16,26 +16,18 @@ class PublicPagesController < ApplicationController
     @group = true
   end
 
-  def welcome_home; end
-
-  def space_home; end
-
+  
   def signup
     @account = Account.new
     @client = Client.new
     render layout: 'login'
   end
-
+  
   def create_account
     @client = Client.new(client_params)
     if @client.save
       result = AccountCreator.new(account_params).create
       if result.success?
-      # @password = Account.password_wizard(Setting.password_length)
-      # @account = Account.new(account_params)
-      # if @account.save
-      #   Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
-      #   associate_account_holder_to_account
         log_in result.account
         @renewal = Renewal.new(@client)
         redirect_to client_shop_path @client
@@ -49,9 +41,8 @@ class PublicPagesController < ApplicationController
       render 'signup', layout: 'login'
     end
   end
-
+  
   def shop
-    # @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject {|p| p.pt? || p.base_price.nil?}
     @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
@@ -63,15 +54,18 @@ class PublicPagesController < ApplicationController
   def thankyou
     render layout: 'white_canvas'
   end
-
-  def sell; end
-
   def hearts
     render layout: false  
   end
 
-  private
+  def sell; end
 
+  def welcome_home; end
+
+  def space_home; end
+  
+  private
+  
   def set_timetable
     @timetable = Timetable.find(Rails.application.config_for(:constants)['timetable_id'])
     @days = @timetable.table_days.order_by_day
@@ -80,7 +74,7 @@ class PublicPagesController < ApplicationController
       @entries_hash[day] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
     end
   end
-
+  
   def daily_account_limit
     daily_accounts_count = Account.where("DATE(created_at)='#{Time.zone.today.to_date}'").size
     return unless daily_accounts_count >= Setting.daily_account_limit
@@ -101,12 +95,6 @@ class PublicPagesController < ApplicationController
           .merge(phone_country_code: 'IN')
           .merge(modifier_is_client: true)
   end
-
-  # def account_params
-  #   password_params = { password: @password, password_confirmation: @password }
-  #   activation_params = { activated: true, ac_type: 'client' }
-  #   params.require(:client).permit(:email).merge(activation_params).merge(password_params)
-  # end
 
   def account_params
     params.require(:client).permit(:email).merge(account_holder: @client, ac_type: 'client')

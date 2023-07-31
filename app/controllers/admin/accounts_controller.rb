@@ -120,7 +120,7 @@ class Admin::AccountsController < Admin::BaseController
       @client = @account.client
       @client_hash = {
         attendances: @client.attendances.attended.size,
-        last_class: @client.last_class,
+        last_counted_class: @client.last_counted_class,
         date_created: @client.created_at,
         date_last_purchase_expiry: @client.last_purchase&.expiry_date
       }

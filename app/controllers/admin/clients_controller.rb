@@ -172,7 +172,7 @@ class Admin::ClientsController < Admin::BaseController
       packages: @client.purchases.package.size,
       dropins: @client.purchases.dropin.size,
       spend: @client.total_spend,
-      last_class: @client.last_class,
+      last_counted_class: @client.last_counted_class,
       date_created: @client.created_at,
       date_last_purchase_expiry: @client.last_purchase&.expiry_date
     }

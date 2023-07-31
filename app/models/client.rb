@@ -113,6 +113,7 @@ class Client < ApplicationRecord
     !purchases.where(payment_mode: 'Not paid').empty?
   end
 
+  # could reformat here as last_counted_class method has smilarlyly structured code
   def cold?
     date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?
@@ -142,8 +143,14 @@ class Client < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  # note this includes (probably irrelevantly) early cancelled classes
   def last_class
     attendances.confirmed.includes(:wkclass).map(&:start_time).max
+  end
+
+
+  def last_counted_class
+    attendances.confirmed.no_amnesty.includes(:wkclass).map(&:start_time).max
   end
 
   def total_spend

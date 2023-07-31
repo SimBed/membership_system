@@ -1,47 +1,12 @@
-  <div class="offcanvas-wrap">
-
-     <section class="cover overflow-hidden inverted bg-black">
-      <div class="d-flex flex-column min-vh-75 container py-10 level-1">
-        <div class="row justify-content-center my-auto">
-          <div class="col-md-8 text-center">
-            <%= link_to "https://wa.me/919619348427", target: "_blank", class: "position-fixed float" do %>
-              <%= image_tag('whatsapp-50.png', alt: "Whatsapp call", class: "") %>
-            <% end %>
-            <h1 class="display-2 lh-sm fw-bold text-uppercase">Strength</h1>
-            <h6 class="mb-0 fw-normal fs-lg">Inside & Out</h6>
-            <!--h1 class="eyebrow text-secondary">Inside & Out</h1-->
-            <% unless logged_in_as?('client')%>
-              <div class="d-flex flex-column">
-                <div> <%= link_to "Join Now!", signup_path, class: "my-2 btn btn-outline-white rounded-pill" %> </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-        <div class="row text-center">
-          <div class="col text-secondary text-uppercase">
-              <%# method: :get or 'data-turbolinks': false needed otherwise link to different section same page doesn't happen :/ %>
-              <%# target: "_self" also avoids the problem %>
-              <%= link_to "PT", '#services', class: "btn btn-outline-white rounded-pill px-3 py-1 me-1", 'data-turbolinks': false %> |
-              <%= link_to "Group", '#services', class: "btn btn-outline-white rounded-pill p-1 mx-1", 'data-turbolinks': false %> |
-              <%= link_to "Online", '#services', class: "btn btn-outline-white rounded-pill p-1 ms-1", 'data-turbolinks': false %>
-          </div>
-        </div>
-      </div>
-      <figure class="background background-overlay" style="filter: opacity(80%);background-image: url(<%= asset_path 'home/priyanka_snatch.jpg' %>)"
-      data-top-top="transform: scale(1);" data-top-bottom="transform: scale(1.1);"></figure>
-    </section>
-
-    <%= render 'tagline_home' %>
-    <%= render 'services' %>
-    <%#= render 'icons' %>
-    <%= render 'reviews' %>
-    <%= render 'instagram' %>
-    <%= render 'timetable_slider' %>
-    <%#= render 'product_carousel_unused' %>
-    <%#= render 'faq_unused' %>
-    <%#= render 'isotope_unused' %>
-    <%#= render 'icons' %>
-
-  </div>
+<div class="offcanvas-wrap">
+  <%= render 'cover_picture' %>
+  <%= render 'tagline_home' %>
+  <%= render 'services' %>
+  <%= render 'reviews' %>
+  <%= render 'instagram' %>
+  <%= render 'timetable_slider' %>
+  <%#= render 'public_pages/unused/product_carousel_unused' %>
+  <%#= render 'public_pages/unused/isotope_unused' %>
+</div>
 
 

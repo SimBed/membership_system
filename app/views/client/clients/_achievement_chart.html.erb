@@ -10,13 +10,3 @@
 <%# else %>
   <%#= area_chart @achievements_grouped %>
 <%# end %>
-
-<script>
-	var userSelection = document.getElementById("show_challenges");
-
-  userSelection.onchange = function(event){
-    var show_url = event.target.options[event.target.selectedIndex].dataset.showurl;
-    window.location.replace(show_url);
-  };
-
-</script>

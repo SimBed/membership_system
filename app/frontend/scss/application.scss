@@ -26,7 +26,7 @@ $gray-darkest: #474444;
 $bg-light: #f8f9fa;
 
 body {
-  background-color: #fff;
+  background-color: #ffffff;
   color: #333;
   margin: 0;
   margin-top: 0; }
@@ -95,7 +95,10 @@ a.forgot-password:hover {
 img.table_icon {
   width: 1.0rem;
   height: 1.0rem;
-  opacity: 1.0; }  
+  opacity: 1.0;
+  &:hover {
+    transform: scale(1.1);
+  } }  
 
 .icon-container:hover {
   background-color: $gray-darker; } 
