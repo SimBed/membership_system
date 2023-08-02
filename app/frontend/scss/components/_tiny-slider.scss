@@ -319,12 +319,50 @@
   border-bottom: thin solid grey;
   color: grey;
 }
-.carousel div.tt-class-title {
+.carousel div.tt-title {
   font-size: 1.0rem;
   text-transform: uppercase;
   font-weight: 700;
   color: white;
 }
+.carousel div.tt-goal {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+  padding-bottom: 1.5rem;  
+}
+
+@media(min-width:900px) {
+.carousel div.tt-title-container {
+  height: 5rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+.carousel div.tt-title {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);  
+}
+
+.carousel div.tt-goal-container {
+  height: 4rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+
+.carousel div.tt-goal {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+
+}
+}
+
 .carousel div.tt-time {
   font-size: 0.8rem;
   color: grey;
@@ -340,7 +378,7 @@
   }
 }
 .carousel div.tt-level {
-  font-size: 01.0rem;
+  font-size: 0.8rem;
   color: grey;
 }
 .carousel div.tt-studio {
