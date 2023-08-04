@@ -10,7 +10,6 @@
     <%= stylesheet_pack_tag 'admin', media: 'all' %>  
     <%= javascript_pack_tag 'admin' %>
     <%= javascript_pack_tag 'typed', defer:true %>    
-    <%= javascript_pack_tag 'isotope', defer:true %>
     <%#= favicon_link_tag asset_path('favicon.png') %>
     <%# https://favicon.io/favicon-generator/ %>
     <%= favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: "180x180" %>
@@ -21,9 +20,7 @@
     <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/bb99bbd6d3f491e24955c42fd/b36f0d4904f295fe0a09c07a8.js");</script>        
   </head>
   <body>
-    <%= javascript_pack_tag 'aos' %>
     <%= javascript_pack_tag 'tiny-slider', defer:true %>
-    <!-- <script src="../app/frontend/packs/modules/aos"></script> -->
     <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
       <%= render 'layouts/admin_navbar' %>
     <% elsif logged_in_as?('client') %>

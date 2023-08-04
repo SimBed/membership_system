@@ -24,23 +24,19 @@
   </head>
 
   <body>
- 
-    <%= javascript_pack_tag 'aos', 'data-turbolinks-track': 'reload' %>
-
     <%= render 'layouts/public_navbar_black' unless logged_in? %>
     <%= render 'layouts/admin_navbar' if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
     <%= render 'layouts/client_navbar' if logged_in_as?('client') %>
     <%= render 'layouts/partner_navbar' if logged_in_as?('partner') %>
 
     <main id="black-canvas">
-            <!-- when in head failed after going to history page and then back to buy page-->
-            <%= javascript_pack_tag 'isotope', 'data-turbolinks-track': 'reload', defer:true %>      
-                    <%= javascript_pack_tag 'tiny-slider', 'data-turbolinks-track': 'reload', defer:true %>
-            <%= yield %>
-        <section>            
-            <%= debug(params) if Rails.env.development? %>
-            <%= debug(current_account&.ac_type) if Rails.env.development? %>
-        </section>
+      <!-- when in head failed after going to history page and then back to buy page-->
+      <%= javascript_pack_tag 'tiny-slider', 'data-turbolinks-track': 'reload', defer:true %>
+      <%= yield %>
+      <section>            
+        <%= debug(params) if Rails.env.development? %>
+        <%= debug(current_account&.ac_type) if Rails.env.development? %>
+      </section>
     </main>
 
    <%= render 'layouts/footer' %>   
