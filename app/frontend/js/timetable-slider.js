@@ -53,15 +53,16 @@ smallScreenWindow.addEventListener('change', function(mm) {
 function handleTouchStart(event) {
   const touch = event.touches[0];
   startX = touch.clientX;
+  // console.log(startX);
 }
 
 function handleTouchEnd(event) {
   const touch = event.changedTouches[0];
   const endX = touch.clientX;
-
-  if (endX > startX) {
+  //  60 is a reasonable allowance to avoid swiping up being mistaken for swiping across
+  if (endX > startX + 60) {
     nextDay();
-  } else {
+  } else if (endX < startX - 60) {
     prevDay();
   }
 }
