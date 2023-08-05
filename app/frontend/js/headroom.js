@@ -4,7 +4,6 @@ document.addEventListener('scroll', () => {
   if (window.scrollY > startY) {
     navbarEl.classList.add('disappear');
   } else {
-    console.log('alert')
     navbarEl.classList.remove('disappear');
   }
   startY = window.scrollY;

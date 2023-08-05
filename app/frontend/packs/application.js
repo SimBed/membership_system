@@ -13,6 +13,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import '../js/bootstrap_js_files.js'
 import '../js/headroom.js'
+// import '../js/timetable-slider.js'
 import "jquery"
 import "chartkick/chart.js"
 

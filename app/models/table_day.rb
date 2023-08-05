@@ -4,8 +4,8 @@ class TableDay < ApplicationRecord
   before_save :upcase_names
   # https://www.rubyinrails.com/2021/12/14/fetch-records-in-custom-order-with-rails-activerecord/
   # use ruby to build the sql query order('CASE day WHEN 'Monday' then 0 WHEN 'Tuesday' then 1...END)
-  # SORT_ORDER = Date::DAYNAMES.rotate(1).map(&:upcase)
-  SORT_ORDER = Date::DAYNAMES.rotate(Date.today.cwday) # .map(&:upcase)
+  # NOTE: Rails 7 introduces in_order_of method, which can replace this after upgrade
+  SORT_ORDER = Date::DAYNAMES.rotate(Date.today.cwday)
   scope :order_by_day, lambda {
                          order_clause = 'CASE name '
                          SORT_ORDER.each_with_index do |day, index|

@@ -532,3 +532,132 @@ div.insta-blocker-bottom {
 nav.disappear {
   transform: translateY(-100%);
 }
+
+button.slider_btn {
+  flex-grow: 1;
+  text-transform: uppercase;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: 700;
+  /* flex-basis: 100%; */
+  // width: 40px;
+  // height: 40px;
+  // border-radius: 50%;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.button-container {
+  display: flex;
+}
+
+.button-container button {
+  border: 1px solid grey;
+}
+
+.button-container button.live { 
+  background-color: rgb(105, 105,105);
+}
+
+@media (min-width: 768px) {
+.button-container {
+  display: none
+}
+}
+
+.carousel div.tt-date-title {
+  font-size: 1.25rem;
+  color: white;
+}
+.carousel div.tt-date {
+  font-size: 0.8rem;
+  border-bottom: thin solid grey;
+  color: grey;
+}
+.carousel div.tt-title {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+}
+.carousel div.tt-goal {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+  padding-bottom: 1.5rem;  
+}
+
+@media(min-width:768px) {
+.carousel div.tt-title-container {
+  height: 5rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+.carousel div.tt-title {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);  
+}
+
+.carousel div.tt-goal-container {
+  height: 4rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+
+.carousel div.tt-goal {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+
+}
+}
+
+.carousel div.tt-time {
+  font-size: 0.8rem;
+  color: grey;
+  padding-bottom: 0.25rem;
+}
+.carousel div.tt-goal {
+  font-size: 1.0rem;
+  color: grey;
+}
+@media (min-width: 768px) {
+  .carousel div.tt-goal {
+    font-size: 0.6rem;
+  }
+}
+.carousel div.tt-level {
+  font-size: 0.8rem;
+  color: grey;
+}
+.carousel div.tt-studio {
+  font-size: 0.8rem;
+  color: grey;
+}
+
+.tt-day {
+  display: none;
+  animation: fadeIn 0.7s;
+}
+
+.tt-day.live {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .tt-day {
+    display: block;
+    padding-right: 32px;    
+  }
+}
+
+@keyframes fadeIn {
+  from { margin-left: 100%; }
+}
