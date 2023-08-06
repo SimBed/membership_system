@@ -74,6 +74,7 @@ class PublicPagesController < ApplicationController
       @entries_hash[day.name] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
     end
     # used to establish whether 2nd day in the timetable slider is tomorrow or not
+    @todays_day = Date.today.strftime("%A")
     @tomorrows_day = Date.tomorrow.strftime("%A")
   end
   

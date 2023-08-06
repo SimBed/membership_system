@@ -1,9 +1,9 @@
 module PublicPagesHelper
-  def timetable_day_name(index, day, tomorrow, length)
-    return 'today' if index == 0
+  def timetable_day_name(day, todays_day, tomorrows_day, length)
+    return 'today' if day == todays_day
 
-    return 'tomorrow' if index == 1 && day == tomorrow
+    return 'tomorrow' if day == tomorrows_day
 
-    length == :short ? day.slice(0,2) : day
+    length == :short_name ? day.slice(0,2) : day
   end
 end

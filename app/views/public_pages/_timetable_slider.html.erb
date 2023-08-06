@@ -5,14 +5,14 @@
   <div class="carousel carousel-visible">
     <div class="button-container">
       <% @entries_hash.each_with_index do |(day, _entry), index| %>
-        <button class="slider_btn<%=' live' if index == 0%>" data-day=<%= index %> ><%= timetable_day_name(index, day, @tomorrows_day, :short).capitalize %></button>
+        <button class="slider_btn<%=' live' if index == 0%>" data-day=<%= index %> ><%= timetable_day_name(day, @todays_day, @tomorrows_day, :short_name).capitalize %></button>
       <% end %>
     </div>      
     <div class="d-md-flex justify-content-center">
       <% @entries_hash.each_with_index do |(day, _entry), index| %>
       <div class="mb-3 tt-day<%= ' live' if index == 0 %>" id=<%= index %>>
         <div class="d-flex flex-column mb-3">        
-          <div class="tt-date-title pt-2 pb-1"><%= timetable_day_name(index, day, @tomorrows_day, :long).capitalize.upcase %></div>
+          <div class="tt-date-title pt-2 pb-1"><%= timetable_day_name(day, @todays_day, @tomorrows_day, :long_name).capitalize.upcase %></div>
           <div class="tt-date pb-2"><%= Date.yesterday.next_occurring(day.downcase.to_sym).strftime("%b %e") %></div>
         </div>
         <% @entries_hash[day].each do |entry| %>
