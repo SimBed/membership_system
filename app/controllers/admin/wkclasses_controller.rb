@@ -6,6 +6,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :set_repeats, only: [:create, :repeat]
   before_action :attendance_check, only: :repeat
   before_action :attendance_remain_check, only: :repeat
+  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
@@ -44,6 +45,7 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclasses = Wkclass.order_by_date
     handle_filter
     handle_period
+    check_record_returned
     # @wkindex = @wkclasses.index(@wkclass)
   end
 
@@ -251,4 +253,17 @@ class Admin::WkclassesController < Admin::BaseController
       format.csv { send_data @wkclasses.to_csv }
     end
   end
+
+  def record_not_found
+    flash[:danger] = t('.record_not_found')
+    redirect_to admin_wkclasses_path
+  end
+
+  def check_record_returned
+    return if @wkclasses.pluck(:id).include? params[:id].to_i
+
+    flash[:danger] = t('.record_not_returned')
+    redirect_to admin_wkclasses_path
+  end
+
 end
