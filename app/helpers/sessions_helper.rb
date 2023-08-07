@@ -47,12 +47,12 @@ module SessionsHelper
     cookies.permanent.signed[:role_name] = role
   end
 
-  def account_role_names
+  def current_account_role_names
     current_account.roles.map(&:name)
   end
 
   # def current_role
-  #   return unless logged_in? && account_role_names.any?(session[:role_name])
+  #   return unless logged_in? && current_account_role_names.any?(session[:role_name])
 
   #   session[:role_name]
   # end

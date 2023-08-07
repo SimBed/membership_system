@@ -9,7 +9,13 @@ class Admin::AccountsController < Admin::BaseController
   # admin accounts cant be created through the app
 
   def index
-    @accounts = Account.where(ac_type: %w[junioradmin admin superadmin]).order_by_ac_type
+    # @accounts = Account.where(ac_type: %w[junioradmin admin superadmin]).order_by_ac_type
+    # could perhaps replace ac_type wattribute with priority_role attribute (which gets updated whenever an account's roles change)
+    @accounts = Account.has_role('junioradmin',
+                                 'admin',
+                                 'superadmin',
+                                 'instructor')
+                       .sort_by { |a| [a.priority_role.view_priority, a.email] }
     render 'superadmin/accounts/index.html'
   end
 

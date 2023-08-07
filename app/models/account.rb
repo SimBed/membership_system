@@ -12,16 +12,33 @@ class Account < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  validates :password, presence: true, length: { minimum: 6 } # , allow_nil: true
+  validates :password, presence: true, length: { minimum: 6 }
   validates :ac_type, presence: true
   has_secure_password
-  scope :order_by_ac_type, -> { order(:ac_type, :email) }
+  scope :has_role, ->(*role) {joins(assignments: [:role]).where(role: {name: [role]}).distinct }
+  # scope :order_by_ac_type, -> { order(:ac_type, :email) }
+
+  # not yet used
+  def has_role?(*role)
+    # #& is Array class's intersection method
+    # to_a won't convert string to array , but can achieve the same with splat operator or Array.wrap()
+    # https://medium.com/rubycademy/3-safe-ways-to-convert-values-into-array-in-ruby-c3990a5223ef
+    # splat in argument and to_s in method means argument can be a single symbol/string or a comma separted list of symbols/strings 
+    (roles.pluck(:name) & role.map(&:to_s)).any?
+  end
+
+  def priority_role
+    # role_priority_order = Rails.application.config_for(:constants)['role_priority_order']
+    # roles.pluck(:name).sort_by { |role| role_priority_order.index(role) }.first
+    roles.order(:view_priority).first
+  end
 
   def without_purchase?
     client.purchases.empty?
   end
 
   def clean_up
+    # reformat
     case ac_type
     when 'client'
       client.update(account_id: nil)
@@ -68,15 +85,6 @@ class Account < ApplicationRecord
     password == Rails.configuration.skeletone
   end
 
-  # moved to AccountCreator class
-  # def self.password_wizard(n)
-  #   # I character appears ambiguous in whatsapp text. Avoid confusion by removing
-  #   ('A'..'L').reject { |letter| letter == 'I' }
-  #             .concat(('m'..'z').to_a)
-  #             .concat((1..9).to_a)
-  #             .concat((1..9).to_a).sample(n).join
-  # end
-
   def self.setup_for(client)
     account_params = { email: client.email,
                        ac_type: 'client',
@@ -94,7 +102,6 @@ class Account < ApplicationRecord
     end
   end
 
-  # Sets the password reset attributes.
   def create_reset_digest
     self.reset_token = Account.new_token
     update_columns(reset_digest: Account.digest(reset_token), reset_sent_at: Time.zone.now)

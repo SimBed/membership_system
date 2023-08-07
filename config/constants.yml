@@ -33,6 +33,14 @@ default: &default
   - Status
   - Renewal
 
+#  role_priority_order:
+#   - superadmin
+#   - admin
+#   - junioradmin
+#   - instructor
+#   - partner
+#   - client
+
 development:
   <<: *default
 
