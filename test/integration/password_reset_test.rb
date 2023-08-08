@@ -20,12 +20,16 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     refute @account.reload.authenticate('password')
   end
 
+  # set header in request https://joshfrankel.me/blog/how-to-test-redirect-back-or-to/
   test 'client resets password with valid password' do
     log_in_as(@account)
-    patch admin_account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar' } }
+    get client_client_path @client
+    patch admin_account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar' } },
+                                        headers: { referer: client_client_url(@client) }
 
     refute @account.reload.authenticate('password')
     assert @account.reload.authenticate('foobar')
+    assert_redirected_to client_client_path @client
   end
 
   test 'client resets password with invalid password' do

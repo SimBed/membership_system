@@ -6,7 +6,7 @@
       <% @accounts.each do |account| %>
         <tr>
           <th scope="row"><%= account.email %></th>
-          <td class=""><%= account.ac_type %></td>
+          <td class=""><%= account.priority_role.name %></td>
           <td>  
             <%= form_with(model: [:admin, account]) do |form| %>
               <% if account.errors.any? %>

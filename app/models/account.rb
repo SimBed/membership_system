@@ -28,8 +28,6 @@ class Account < ApplicationRecord
   end
 
   def priority_role
-    # role_priority_order = Rails.application.config_for(:constants)['role_priority_order']
-    # roles.pluck(:name).sort_by { |role| role_priority_order.index(role) }.first
     roles.order(:view_priority).first
   end
 

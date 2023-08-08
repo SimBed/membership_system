@@ -10,7 +10,7 @@ class Admin::AccountsController < Admin::BaseController
 
   def index
     # @accounts = Account.where(ac_type: %w[junioradmin admin superadmin]).order_by_ac_type
-    # could perhaps replace ac_type wattribute with priority_role attribute (which gets updated whenever an account's roles change)
+    # could perhaps replace ac_type attribute with priority_role attribute (which gets updated whenever an account's roles change)
     @accounts = Account.has_role('junioradmin',
                                  'admin',
                                  'superadmin',
@@ -29,61 +29,7 @@ class Admin::AccountsController < Admin::BaseController
       flash_message :warning, t('.warning')
     end
     redirect_back fallback_location: admin_clients_path    
-    # @password = Account.password_wizard(Setting.password_length)
-    # @account = Account.new(account_params)
-    # if @account.save
-    #   Assignment.create(account_id: @account.id, role_id: Role.find_by(name: params[:ac_type]).id)
-    #   associate_account_holder_to_account
-    #   flash_message :success, t('.success')
-    #   message_type = case params[:ac_type]
-    #                  when 'instructor'
-    #                    'new_instructor_account'
-    #                  else
-    #                    'new_account'
-    #                  end
-    #   flash_message(*Whatsapp.new(whatsapp_params(message_type)).manage_messaging)
-    # else
-    #   flash_message :warning, t('.warning')
-    # end
-    # redirect_back fallback_location: admin_clients_path
   end
-
-  # @client = Client.new(client_params)
-  # if @client.save
-  #   @password = Account.password_wizard(Setting.password_length)
-  #   @account = Account.new(account_params)
-  #   if @account.save
-  #     Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
-  #     associate_account_holder_to_account
-  #     log_in @account
-  #     @renewal = Renewal.new(@client)
-  #     redirect_to client_shop_path @client
-  #     flash_message(*Whatsapp.new(whatsapp_params('new_signup')).manage_messaging)
-  #   else
-  #     render 'signup', layout: 'login'
-  #   end
-  # else
-  #   @account = Account.new
-  #   render 'signup', layout: 'login'
-  # end
-
-
-  # password = Account.password_wizard(Setting.password_length)
-  # @account = Account.new(
-  #   { password:, password_confirmation: password,
-  #     activated: true, ac_type: 'client', email: client.email }
-  # )
-  # return [[:warning, I18n.t('admin.accounts.create.warning')]] unless @account.save
-
-  # # return to #update when sorted out whatsapp validation. New account failure if whatsapp nil (alternatively set modifier_is_client to false)
-  # Assignment.create(account_id: @account.id, role_id: Role.find_by(name: 'client').id)
-  # client.update(account_id: @account.id)
-  # # client.update_column(:account_id, @account.id)
-  # flash_for_account = :success, I18n.t('admin.accounts.create.success')
-  # # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
-  # flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',
-  #                                   variable_contents: { password: }).manage_messaging
-  # [flash_for_account, flash_for_whatsapp] # an array of arrays
 
   def update
     if params[:account].nil? # means request came from admin link
