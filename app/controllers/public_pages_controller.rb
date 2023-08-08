@@ -15,7 +15,6 @@ class PublicPagesController < ApplicationController
     @menu = PackageMenu.new()
     @group = true
   end
-
   
   def signup
     @account = Account.new

@@ -34,7 +34,7 @@ class Account < ApplicationRecord
   end
 
   def without_purchase?
-    client.purchases.empty?
+    return client.purchases.empty? if client
   end
 
   def clean_up
