@@ -23,7 +23,7 @@
           </td-->
           <td><% unless Account.find_by(email: partner.email&.downcase)&.activated? %>
                   <%= link_to image_tag('add.png', class: "table_icon"),
-                                        admin_accounts_path(email: partner.email, partner_id: partner.id, ac_type: 'partner'),
+                                        admin_accounts_path(email: partner.email, id: partner.id, ac_type: 'partner'),
                                         method: :post,
                                         data: { confirm: 'An account for this partner will be created. Are you sure?' }%>
                 <% end %>

@@ -109,13 +109,19 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def set_account_holder
-    # don't create account if for some reason there is no associated account holder
-    # used 'where' rather than 'find' as find returns an error (rather than nil or empty object) when record not found
-    # reformat
-    @account_holder = Client.where(id: params[:client_id]).first if params[:ac_type] == 'client'
-    @account_holder = Instructor.where(id: params[:instructor_id]).first if params[:ac_type] == 'instructor'
-    @account_holder = Partner.where(id: params[:partner_id]).first if params[:ac_type] == 'partner'
+    role_classs = account_params[:ac_type].camelcase.constantize
+    @account_holder = role_classs.where(id: account_params[:id]).first
     (redirect_to(login_path) && return) if @account_holder.nil?
+
+    # %w[client instructor partner].each { |role|
+    # role_id = (role + '_id').to_sym
+    # role_classs = role.camelcase.constantize
+    # # used 'where' rather than 'find' as find returns an error (rather than nil or empty object) when record not found
+    # (@account_holder = role_classs.where(id: params[role_id]).first) && break if params[:ac_type] == role
+    # }
+    # @account_holder = Client.where(id: params[:client_id]).first if params[:ac_type] == 'client'
+    # @account_holder = Instructor.where(id: params[:instructor_id]).first if params[:ac_type] == 'instructor'
+    # @account_holder = Partner.where(id: params[:partner_id]).first if params[:ac_type] == 'partner'
   end
 
   def set_account
@@ -124,7 +130,7 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def account_params
-    params.permit(:email, :ac_type).merge(account_holder: @account_holder)
+    params.permit(:email, :id, :ac_type).merge(account_holder: @account_holder)
   end
 
   def password_update_params

@@ -40,7 +40,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
     @client.save
     assert_difference -> { Account.count } => 1, -> { Assignment.count } => 1 do
       post admin_accounts_path, params: { email: @client.email,
-                                          client_id: @client.id,
+                                          id: @client.id,
                                           ac_type: 'client' }
     end
     new_account = Account.last
