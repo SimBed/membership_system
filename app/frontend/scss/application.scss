@@ -96,12 +96,19 @@ img.table_icon {
   width: 1.0rem;
   height: 1.0rem;
   opacity: 1.0;
-  &:hover {
-    transform: scale(1.1);
-  } }  
+  }
 
-.icon-container:hover {
-  background-color: $gray-darker; } 
+a img.table_icon:hover {
+  transform: scale(1.2);
+  opacity: 0.5
+  }  
+
+a img.button_icon:hover {
+transform: scale(1.1);
+}  
+
+// .icon-container:hover {
+//   background-color: $gray-darker; } 
 
 .SocMedFoot {
   display: block;
@@ -184,7 +191,12 @@ img.table_icon {
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
+  &:hover {
+    transform: scale(1.1);
+  }
 }
+
+
 #trial-btn input.razorpay-payment-button {
   background-color: white;
   color: black;
