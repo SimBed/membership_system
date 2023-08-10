@@ -6,14 +6,6 @@ Rails.application.routes.draw do
   get '/payment_policy',  to: 'footer#payment_policy'
   root 'public_pages#welcome'
   get '/group_classes', to: 'public_pages#group_classes'
-  get '/buboo/hearts', to: 'public_pages#hearts'
-  # prototype homepage (redundant))
-  get '/welcome_home', to: 'public_pages#welcome_home'
-  # previous homepage (redundant)
-  get '/space_home', to: 'public_pages#space_home', as: 'wip_home'
-  get '/shop', to: 'public_pages#shop'
-  get '/sell', to: 'public_pages#sell'
-  # get '/thankyou', to: 'public_pages#thankyou'
   get '/signup',  to: 'public_pages#signup'
   post '/signup',  to: 'public_pages#create_account'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
@@ -48,7 +40,13 @@ Rails.application.routes.draw do
   get '/footfall', to: 'admin/attendances#footfall'
   get '/timetable', to: 'admin/timetables#show_public', as: 'public_timetable'
   get '/superadmin/regular_expenses/add'
-
+  get 'public_pages/wedontsupport'
+  # prototype homepage (redundant))
+  get '/welcome_home', to: 'public_pages#welcome_home'
+  # previous homepage (redundant)
+  get '/buboo/hearts', to: 'public_pages#hearts'
+  get '/space_home', to: 'public_pages#space_home', as: 'wip_home'
+  
   namespace :admin do
     resources :entries, only: [:new, :edit, :create, :update, :destroy]
     resources :table_times, only: [:new, :edit, :create, :update, :destroy]
@@ -89,9 +87,5 @@ Rails.application.routes.draw do
     resources :achievements, except: [:show]
     resources :challenges
   end
-
-  # get 'shop/index'
-  get 'shop/sell'
-  get 'shop/wedontsupport'
 
 end

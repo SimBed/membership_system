@@ -41,18 +41,10 @@ class PublicPagesController < ApplicationController
     end
   end
   
-  def shop
-    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }
-    # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
-    # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
-    ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
-    @renewal = { offer_online_discount?: true, renewal_offer: 'renewal_pre_expiry' }
-    render 'wedontsupport', layout: 'white_canvas'
-  end
-
-  def thankyou
+  def wedontsupport
     render layout: 'white_canvas'
   end
+
   def hearts
     render layout: false  
   end
