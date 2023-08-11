@@ -18,10 +18,10 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclasses = Wkclass.includes([:physical_attendances, :workout, :attendances, :instructor]).order_by_date
     handle_filter
     handle_period
-    @wkclasses = @wkclasses.page params[:page]
+    # @wkclasses = @wkclasses.page params[:page]
     @workouts = Workout.order_by_name.current
     @months = ['All'] + months_logged
-    handle_export
+    handle_pagination
     handle_index_response
   end
 
@@ -235,12 +235,14 @@ class Admin::WkclassesController < Admin::BaseController
     @wkclasses = @wkclasses.during(month_period(session[:classes_period]))
   end
 
-  def handle_export
+  def handle_pagination
     # when exporting data, want it all not just the page of pagination
     @wkclasses = if params[:export_all]
-                   @wkclasses.page(params[:page]).per(100_000)
-               else
-                 @wkclasses.page params[:page]
+                  #  @wkclasses.page(params[:page]).per(100_000)
+                   @pagy, @records = pagy(@wkclasses, items: 100_000)
+                  else
+                    # @wkclasses.page params[:page]
+                    @pagy, @records = pagy(@wkclasses)
                end
   end
 

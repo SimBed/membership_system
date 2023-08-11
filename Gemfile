@@ -11,7 +11,8 @@ gem 'delayed_job_active_record'
 gem 'groupdate', '~> 6.1'
 gem 'honeybadger', '~> 5.2'
 gem 'jbuilder', '~> 2.7'
-gem 'kaminari'
+# gem 'kaminari'
+gem 'pagy'
 gem 'net-smtp', require: false
 gem 'net-imap', require: false
 gem 'net-pop', require: false

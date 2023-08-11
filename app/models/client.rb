@@ -89,7 +89,7 @@ class Client < ApplicationRecord
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
   scope :in_league, ->(league) {joins(results: [:league]).where(results: { league_id: league.id }) }
 
-  paginates_per Setting.clients_pagination
+  # paginates_per Setting.clients_pagination
 
   # see client_params in ClientsController
   attr_accessor :modifier_is_client, :phone_country_code, :whatsapp_country_code, :phone_raw, :whatsapp_raw, :terms_of_service

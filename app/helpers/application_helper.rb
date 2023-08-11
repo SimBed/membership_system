@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+  
   def flash_message(type, text = nil)
     return if type.nil?
 

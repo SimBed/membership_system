@@ -1,12 +1,13 @@
 <div class="page_entries_info px-1">
-  <%= paginate @wkclasses, remote: true %>
-  <%= page_entries_info @wkclasses, entry_name: 'classes' %>
+  <%#= paginate @wkclasses, remote: true %>
+  <%#= page_entries_info @wkclasses, entry_name: 'classes' %>
+  <%== pagy_nav @pagy %>
 </div>
 
 <table class="table table-secondary table-striped caption-top">
   <caption></caption>
   <tbody>
-    <% @wkclasses.each do |wkclass| %>
+    <% @records.each do |wkclass| %>
     <% physical_attendances = wkclass.physical_attendances.size %>
       <tr>
         <th scope="row"><%= link_to wkclass.table_name, admin_wkclass_path(wkclass), class: "like_button" %></th>

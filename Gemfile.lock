@@ -118,18 +118,6 @@ GEM
       activesupport (>= 5.0.0)
     json (2.6.2)
     jwt (2.5.0)
-    kaminari (1.2.2)
-      activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.2)
-      kaminari-activerecord (= 1.2.2)
-      kaminari-core (= 1.2.2)
-    kaminari-actionview (1.2.2)
-      actionview
-      kaminari-core (= 1.2.2)
-    kaminari-activerecord (1.2.2)
-      activerecord
-      kaminari-core (= 1.2.2)
-    kaminari-core (1.2.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -166,6 +154,7 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
+    pagy (6.0.4)
     parallel (1.22.1)
     parser (3.1.2.1)
       ast (~> 2.4.1)
@@ -329,11 +318,11 @@ DEPENDENCIES
   groupdate (~> 6.1)
   honeybadger (~> 5.2)
   jbuilder (~> 2.7)
-  kaminari
   listen (~> 3.3)
   net-imap
   net-pop
   net-smtp
+  pagy
   pg (~> 1.1)
   phony_rails
   puma (~> 5.0)

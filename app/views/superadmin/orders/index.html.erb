@@ -8,7 +8,10 @@
       <% end %>
     </ul>
 
-    <%= paginate @orders %>
+    <%#= paginate @orders %>
+    <div class="page_entries_info px-1">
+      <%== pagy_nav @pagy %>
+    </div>
     <table class="table table-secondary table-striped caption-top table-hover">
       <tbody>
         <tr>
@@ -23,7 +26,8 @@
             <th>Refund Payment</th>
           <% end %>
         </tr>
-        <%= render @orders %>
+        <%= render @records %>
+        <%#= render partial: "order", collection: @records %>
       </tbody>
     </table>
 </div>

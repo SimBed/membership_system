@@ -42,7 +42,7 @@ class Admin::PurchasesController < Admin::BaseController
     @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('admin', 'superadmin')
     handle_sort
     prepare_items_for_filters
-    handle_export
+    handle_pagination
     handle_index_response
   end
 
@@ -344,7 +344,8 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def sort_on_database
-    @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
+    # @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
+    @purchases = @purchases.send("order_by_#{session[:sort_option]}")
   end
 
   def sort_on_object
@@ -353,8 +354,9 @@ class Admin::PurchasesController < Admin::BaseController
     end
     # restore to ActiveRecord and recover order.
     ids = @purchases.map(&:id)
-    @purchases_all_pages = Purchase.recover_order(ids)
-    @purchases = @purchases_all_pages.page params[:page]
+    # @purchases_all_pages = Purchase.recover_order(ids)
+    @purchases = Purchase.recover_order(ids)
+    # @purchases = @purchases_all_pages.page params[:page]
     # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
     # 'where' method does not retain the order of the items searched for, hence the more complicated approach
     # Detailed explanation in comments under 'recover_order' scope
@@ -413,12 +415,14 @@ class Admin::PurchasesController < Admin::BaseController
       variable_contents: { first_name: @purchase.client.first_name } }
   end
 
-  def handle_export
+  def handle_pagination
     # when exporting data, want it all not just the page of pagination
     @purchases = if params[:export_all]
-                   @purchases.page(params[:page]).per(100_000)
+                  #  @purchases.page(params[:page]).per(100_000)
+                   @pagy, @records = pagy(@purchases, items: 100_000)
                  else
-                   @purchases.page params[:page]
+                  #  @purchases.page params[:page]
+                  @pagy, @records = pagy(@purchases)
                  end
   end
 

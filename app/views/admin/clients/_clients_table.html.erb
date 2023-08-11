@@ -1,6 +1,7 @@
 <div class="page_entries_info px-1">
-  <%= paginate @clients, remote: true %>
-  <%= page_entries_info @clients %>
+  <%#= paginate @clients, remote: true %>
+  <%#= page_entries_info @clients %>
+  <%== pagy_nav @pagy %>
 </div>
 
 <% admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
@@ -10,7 +11,7 @@
 <table class="table table-secondary table-striped caption-top">
   <caption></caption>
   <tbody>
-    <% @clients.each do |client| %>
+    <% @records.each do |client| %>
       <tr>
         <th scope="row">
           <% if junioradmin_plus %>

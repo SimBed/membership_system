@@ -12,7 +12,7 @@ class Admin::ClientsController < Admin::BaseController
     handle_search
     handle_filter
     handle_sort
-    handle_export
+    handle_pagination
     handle_index_response
   end
 
@@ -143,15 +143,17 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def handle_sort
-    @clients = @clients.send("order_by_#{session[:client_sort_option]}").page params[:page]
+    @clients = @clients.send("order_by_#{session[:client_sort_option]}") #.page params[:page]
   end
 
-  def handle_export
+  def handle_pagination
     # when exporting data, want it all not just the page of pagination
     @clients = if params[:export_all]
-                 @clients.page(params[:page]).per(100_000)
+                #  @clients.page(params[:page]).per(100_000)
+                 @pagy, @records = pagy(@clients, items: 100_000)
                else
-                 @clients.page params[:page]
+                #  @clients.page params[:page]
+                 @pagy, @records = pagy(@clients)
                end
   end
 

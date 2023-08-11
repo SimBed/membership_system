@@ -8,6 +8,5 @@
   <td> <%= order.client_ui if order.client_ui %> </td>
   <%if params[:status]== "captured" %>
     <td> <%= link_to "refund", superadmin_order_refund_path(order) %> </td>
-        <%#= link_to "refund", action: "refund", id: order %>
   <%end%>
 </tr>

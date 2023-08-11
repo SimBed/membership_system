@@ -1,7 +1,8 @@
 <div id="purchases-table" class="container px-0 mb-5 margin-override">
   <div class="page_entries_info px-1">
-    <%= paginate @purchases, remote: true %>
-    <%= page_entries_info @purchases %>
+    <%#= paginate @purchases, remote: true %>
+    <%#= page_entries_info @purchases %>
+    <%== pagy_nav @pagy %>
   </div>
 
   <table class="table table-secondary table-striped caption-top">
@@ -16,7 +17,7 @@
         <th scope="col" class="nomobile"></th>
         <th scope="col" class="nomobile"></th>
       </tr>
-      <% @purchases.each do |purchase| %>
+      <% @records.each do |purchase| %>
         <tr class="extra_small">
           <th scope="row" class="extra_small">
             <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>

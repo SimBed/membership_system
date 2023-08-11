@@ -75,7 +75,7 @@ class Wkclass < ApplicationRecord
   scope :future_and_recent, -> { where('start_time > ?', Time.zone.now - cancellation_window) }
   #  see explantion in Purchase model (not essential right now - could be used in show method of instructors constroller)
   # scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
-  paginates_per Setting.wkclasses_pagination
+  # paginates_per Setting.wkclasses_pagination
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}

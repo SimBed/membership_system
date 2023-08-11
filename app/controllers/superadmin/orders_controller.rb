@@ -6,7 +6,8 @@ class Superadmin::OrdersController < Superadmin::BaseController
   before_action :set_order, only: [:show, :refund]
 
   def index
-    @orders = Order.filter(filter_params).includes(:account).order_by_date.page(params[:page]).per(20)
+    @pagy, @records = pagy(Order.filter(filter_params).includes(:account).order_by_date, link_extra: 'data-remote="false"')
+    # @orders = Order.filter(filter_params).includes(:account).order_by_date
   end
 
   def show
