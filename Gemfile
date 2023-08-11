@@ -19,7 +19,8 @@ gem 'net-pop', require: false
 gem 'pg', '~> 1.1'
 gem 'phony_rails'
 gem 'puma', '~> 5.0'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
+# gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
+gem "rails", "~> 7.0.0"
 gem 'rails-controller-testing'
 gem 'rails-settings-cached', '~> 2.8'
 gem 'razorpay'
