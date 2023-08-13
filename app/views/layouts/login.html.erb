@@ -3,10 +3,13 @@
   <head>
     <title>The Space Fitness</title>
     <%= render 'layouts/meta' %>
-    <%= stylesheet_pack_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'application' %>
-    <%= stylesheet_pack_tag 'admin', media: 'all' %>  
-    <%= javascript_pack_tag 'admin' %> 
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# this loads Sprockets/Rails asset pipeline %>
+    <%= stylesheet_link_tag 'custom', 'data-turbo-track': 'reload' %>
+    <%= javascript_importmap_tags %> <%#  this loads JS from importmaps %>
+    <%#= stylesheet_pack_tag 'application', media: 'all' %>
+    <%#= javascript_pack_tag 'application' %>
+    <%#= stylesheet_pack_tag 'admin', media: 'all' %>  
+    <%#= javascript_pack_tag 'admin' %> 
     <%= favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: "180x180" %>
     <%= favicon_link_tag 'favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: "32x32" %>
     <%= favicon_link_tag 'favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: "16x16" %>    

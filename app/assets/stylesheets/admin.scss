@@ -1,0 +1,267 @@
+/* mixins, variables, etc. */
+$font-stack:  "Quicksand", "Arial";
+$gray-darker:  #808080;
+$gray-darkest: #474444;
+$bg-light: #f8f9fa;
+
+.margin-override {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+div.search {
+	position:relative;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin:0;
+}
+
+div i.fa, i.fas {
+  font-size: 1.1rem;
+}
+
+div i.fa-sort-alpha-down{
+  color: $gray-darker;
+}
+
+%select {
+  color: $gray-darker;
+  border: solid;
+  border-color: $bg-light;
+  border-width: 1px;
+  background-color: $bg-light;
+}
+
+select.sort {
+  @extend %select;
+  padding: 0.5rem 0.5rem;  
+  min-height: calc(1.5em + 0.5rem + 2px);    
+}
+
+select.attendance {
+  @extend %select;
+}
+
+.form-control-sm {
+  min-height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: .875rem;
+  border-radius: 0.2rem;
+}
+
+form fieldset {
+  color: $gray-darkest;
+  font-family: $font-stack;
+  font-size: 0.9em;
+  font-weight: normal;
+  label {
+    margin-right: 0.5rem;
+    margin-bottom: 0.4rem;
+    line-height: 0.7rem;
+  }
+}
+
+legend {
+  width:auto;
+  font-size: 0.9rem;
+  font-weight: normal;
+  padding-right: 0.75rem;
+}
+
+.chbox-lbl-filters {
+  font-size: 0.8rem;
+}
+
+label {
+  display: block;
+  line-height: 1.1rem; }
+
+/*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
+input[type="checkbox"] {
+  vertical-align: middle
+}
+
+.searchdelete {
+  margin-left:auto;
+}
+
+div.page_entries_info {
+  font-size: 0.9em;
+  // override components/_pagination.scss
+  .pagination {
+    display: flex;
+  }
+}
+
+  a.like_button {
+    border-radius: 1rem;
+    line-height: 1.25;
+    padding: 0;
+    box-shadow: 0 1px #999;
+    text-decoration: none;
+    color: black;
+    &:hover {
+      color: $gray-darker;
+    }
+  }
+
+  td.nomobile, th.nomobile {
+    display: none;
+  }
+  div.nomobile {
+    display: none;
+  }
+
+  img.header_icon {
+    width: 1.0rem;
+    height: 1.0rem;
+  }  
+  
+  img.fitternity, img.waiver, img.instawaiver, img.active-workout, img.active-product, i.sellonline, a.whatsapp_group {
+    opacity: 0.1;
+  }
+
+  table.table th, table.table td {
+    padding: 0.5rem;
+  }
+
+  // override /components/_table.scss which for some reason removes padding at beginning and end
+  .table tbody tr {
+    border-top-width: 0;
+
+    > *:first-child {
+      padding-left: 0.5rem;
+    }
+
+    > *:last-child {
+      padding-right: 0.5rem;
+    }
+  }
+
+  .GeneralText {
+    font-size: 0.8rem;
+    color: #707070;
+    font-family: $font-stack;
+  }
+  
+  .SocMedFoot {
+   display: block;
+   background-color: white;
+   list-style: none;
+   margin-top:1em;
+   text-align:center;
+   margin-right:0;
+   margin-left:0;
+   padding-left:0;
+   padding-right:0;
+  }
+  
+  .SocMedFoot li{
+   display: inline-block;
+   padding: 0 0.3em 0.5em 0;
+    }
+  
+  
+  .FooterLinks  {
+   list-style: none;
+   text-align:center;
+  }
+  
+   .FooterLinks li a  {
+    color: #707070;
+    text-decoration: none;
+  }  
+
+  img.back_icon {
+    width: 2.0rem;
+    height: 2.0rem;
+  }
+
+  div.field, div.actions {
+    margin-bottom: 0.4rem;
+  }
+
+  h4 {
+    margin-bottom: 0.5rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+  }
+
+  td.adj-line-height {
+    line-height: 1.5rem;
+  }
+
+  div.admin-password-reset-table-wrapper {
+    display: block;
+    overflow-x: auto;
+    }
+
+td.discount-warning {
+  background-color: red;
+  &:after {
+    content: " (warning may affect prices in shop & renewals)";
+    text-transform: lowercase;
+  }
+}
+
+@media (min-width: 900px) {
+
+  body {
+    margin: 1rem;
+    margin-top: 0; }
+
+    // override components/_dropdowsn.scss which hides the caret
+    .dropdown-hover >
+    .dropdown-toggle:after {
+    display: inline-block;
+  }
+
+   a.like_button {
+    padding: 0.1rem 0.5rem;
+  }
+ 
+  img.header_icon {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+    
+}
+
+@media (min-width: 600px) {
+  td.nomobile, th.nomobile {
+    display: table-cell;
+  }
+
+  div.nomobile {
+    display: block;
+  }
+}
+
+.DeductionTable {
+  background-color: #dddddd;
+  border-spacing: 0;
+  border-top-right-radius: 0.6em;
+  border-top-left-radius: 0.6em;
+  font-size: 0.75em;
+  color: #707070;
+  font-weight:bold;
+  font-family: "Muli", "Arial";
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:2.5em;
+  text-align:center;
+  width:90%;
+ }
+ 
+ .DeductionTable td, .DeductionTable th{
+  padding: 0.2em 0.4em 0.2em 0.4em;
+ }   
+
+@media (max-width: 576px) {
+ .DeductionTable td, .DeductionTable th{
+  padding: 0.4em, 0 ,0.4em, 0;
+ }
+}  
+

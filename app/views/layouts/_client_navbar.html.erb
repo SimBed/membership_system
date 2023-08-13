@@ -71,7 +71,7 @@
 
         <li class="nav-item">
           <% if current_account %>
-            <%= link_to logout_path, method: :delete, class: "nav-link active" do %>
+            <%= button_to logout_path, method: :delete, class: "nav-link active" do %>
               <i class="fa fa-door-open"></i>
             <% end %>
           <% else %>

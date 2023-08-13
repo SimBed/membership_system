@@ -3,12 +3,17 @@
   <head>
     <title>AttendanceSystem</title>
     <%= render 'layouts/meta' %>
-    <%= stylesheet_pack_tag 'application' %>
-    <%= javascript_pack_tag 'application' %>
-    <%= stylesheet_pack_tag 'admin' %>
-    <%= javascript_pack_tag 'admin' %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# this loads Sprockets/Rails asset pipeline %>
+    <%= stylesheet_link_tag 'custom', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_link_tag 'admin', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_link_tag 'timetable_build', 'data-turbo-track': 'reload' %>
+    <%= javascript_importmap_tags %> <%#  this loads JS from importmaps %>
+    <%#= stylesheet_pack_tag 'application' %>
+    <%#= javascript_pack_tag 'application' %>
+    <%#= stylesheet_pack_tag 'admin' %>
+    <%#= javascript_pack_tag 'admin' %>
     <%#= stylesheet_pack_tag 'timetable' %>
-    <%= javascript_pack_tag 'timetable_build' %>    
+    <%#= javascript_pack_tag 'timetable_build' %>    
     <script src="https://kit.fontawesome.com/52a30c356b.js" crossorigin="anonymous"></script>
   </head>
   <body>

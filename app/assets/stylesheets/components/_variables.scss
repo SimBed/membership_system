@@ -446,7 +446,7 @@ $font-size-lg: $font-size-base * 1.125;
 // $font-weight-lighter:         lighter !default;
 $font-weight-light: 300;
 $font-weight-normal: 400;
-$font-weight-bold: 500;
+$font-weight-bold: 500 !important;
 // $font-weight-bolder:          bolder !default;
 
 // $font-weight-base:            $font-weight-normal !default;

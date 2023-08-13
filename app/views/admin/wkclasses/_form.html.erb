@@ -1,3 +1,4 @@
+<%= javascript_import_module_tag "custom/dropdown_populate" %>
 <%= form_with(model: [:admin, wkclass]) do |form| %>
   <% if wkclass.errors.any? %>
     <div id="error_explanation">
@@ -61,4 +62,4 @@
   </div>
 <% end %>
 
-<%= javascript_pack_tag 'wkclass/dropdown_populate' %>
+<%#= javascript_pack_tag 'wkclass/dropdown_populate' %>

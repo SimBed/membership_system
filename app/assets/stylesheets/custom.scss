@@ -1,0 +1,1232 @@
+
+// Import Bootstrap v5
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
+
+// bootstrap & variables
+// @import "~bootstrap/scss/functions";
+// @import "variables";
+// @import "utilities";
+
+
+// @import "bootstrap/scss/bootstrap";
+
+// @import 'components/_index';
+
+// @import "~plyr/dist/plyr";
+// @import "~prismjs/themes/prism";
+// @import "~bootstrap-icons/font/bootstrap-icons";
+// @import "~aos/dist/aos";
+// @import "~nouislider/dist/nouislider";
+
+/* mixins, variables, etc. */
+$font-stack:  "Quicksand", "Arial";
+$gray-darker:  #808080;
+$gray-darkest: #474444;
+$bg-light: #f8f9fa;
+$white: white;
+$black: black;
+$font-weight-bold: 700;
+$primary: blue;
+$border-color-inverted: rgba($white, 0.2);
+
+body {
+  background-color: #ffffff;
+  color: #333;
+  margin: 0;
+  margin-top: 0; }
+
+body, p, ol, ul, td {
+  font-family: $font-stack;
+  font-size: 0.8rem;  
+  line-height: 1.0rem; }
+
+.navbar div {
+  justify-content: space-between; }
+
+a {
+    color: #000; }
+
+a.forgot-password {
+color: blue; }
+
+a.forgot-password:hover {
+  color: black; }
+
+// override components/_navbar.scss
+.navbar-brand img {
+    max-height: 3.5rem; }
+
+.navbar {
+  // padding: rem(16) 0;
+}
+
+#mainNav .nav-link {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  text-decoration: none;
+  // filter: grayscale(100%) opacity(0.7);
+  transition: var(--transition-speed); }
+
+#mainNav .nav-link:hover {
+  filter: grayscale(0%) opacity(1);
+    i.fa {
+    color: green; } }
+
+#white-canvas {
+  .offcanvas-wrap {
+    padding-top: 8rem; }
+  .btn-primary {
+    background-color: black; } }
+
+@media (min-width: 900px) {
+  #white-canvas .offcanvas-wrap {
+      padding-top: 10rem;
+    }
+ }
+
+.table-striped>tbody>tr:nth-child(odd)>th.stripe-override,
+.table-striped>tbody>tr:nth-child(even)>th.stripe-override {
+  background-color: white;
+  background: linear-gradient($gray-darker, #dddddd);
+  box-shadow: none; }
+
+.GeneralText {
+  font-size: 0.8rem;
+  color: #707070;
+  font-family: $font-stack; }
+
+img.table_icon {
+  width: 1.0rem;
+  height: 1.0rem;
+  opacity: 1.0;
+  }
+
+a img.table_icon:hover {
+  transform: scale(1.2);
+  opacity: 0.5
+  }  
+
+a img.button_icon:hover {
+transform: scale(1.1);
+}  
+
+// .icon-container:hover {
+//   background-color: $gray-darker; } 
+
+.SocMedFoot {
+  display: block;
+  background-color: white;
+  list-style: none;
+  margin-top:1em;
+  text-align:center;
+  margin-right:0;
+  margin-left:0;
+  padding-left:0;
+  padding-right:0; }
+   
+.SocMedFoot li {
+  display: inline-block;
+  padding: 0 0.3em 0.5em 0; }
+  
+.FooterLinks {
+  list-style: none;
+  text-align:center; }
+
+.FooterLinks li a {
+  color: #707070;
+  text-decoration: none; }  
+
+  .field_with_errors {
+    padding: 2px;
+    background-color: red;
+    display: table; }
+  
+  #error_explanation {
+    width: 450px;
+    border: 2px solid red;
+    padding: 7px 7px 0;
+    margin-bottom: 20px;
+    background-color: #f0f0f0; }
+  
+  #error_explanation h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px -7px 0;
+    background-color: #c00;
+    color: #fff; }
+  
+  #error_explanation ul li {
+    font-size: 12px;
+    list-style: square; }
+
+.float {
+  position:fixed;
+	bottom: 15%;
+	right: 5%;
+}
+
+#shop .card-body {
+  padding-left: 0rem;
+  padding-right: 0rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;  
+}
+
+#shop .btn {
+  padding: 0.5rem 1rem;
+}
+#shop #Flex_btn {
+  padding: 0.5rem 2.3rem;
+}
+
+// more or less properties of classes badge bg-primary rounded-pill
+.razorpay-payment-button {
+  background-color: #000000;
+  border-radius: 50rem;
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #ffffff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+
+#trial-btn input.razorpay-payment-button {
+  background-color: white;
+  color: black;
+
+}
+
+#shop .name {
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}  
+#shop .classes, #shop .trial-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+#shop .trial-tagline {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}  
+
+#shop .value-statement {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+#shop .duration {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}  
+#shop .base-price {
+  text-decoration: line-through;  
+  font-size: 0.8rem;
+  font-weight: 500;
+}  
+#shop .discount-price {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+#shop ul.product-notes {
+  font-size: 0.8rem;
+  font-weight: 500;
+  list-style: none;
+  padding-left: 0;
+  text-align: left;  
+}
+
+#shop .accordion-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#shop .accordion-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1em;
+}
+
+#shop .accordion-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1em;
+}
+
+@media (min-width: 600px) {
+  #shop .accordion-item {
+    padding: 0 20%;
+    border-left-width: 0;
+    border-right-width: 0;
+  }
+}
+
+@media (min-width: 1400px) {
+  #shop .accordion-item {
+    padding: 0 30%;
+  }
+}
+
+.form-mandatory::after {
+  content: "  *";
+  font-size: 0.7rem;
+}
+
+span.sub-label {
+  font-size: 0.7rem;
+}
+
+#renewal span.renewal-price {
+  font-size: 0.9rem;
+}
+
+.margin-override {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+h3.discount-statement {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+img.footerlogo {
+  width: 6rem;
+  display: block;
+  margin: auto;
+}
+
+.carousel-item .review {
+  width: 75%;
+  margin: auto;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.carousel-item .reviewer {
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+#carouselMoreThanGym .carousel-item {
+color: white;
+background-color: black;
+} 
+
+.carousel-item .more-than-gym-head {
+  font-size: 1.1rem;
+  line-height: 1.25;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.carousel-item .more-than-gym-desc {
+  width: 75%;
+  margin: auto;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+.carousel-item .carousel-caption-signature {
+  top: 4rem; 
+}
+
+.carousel-caption {
+  left: 10%;
+  right: 10%;
+}
+
+.carousel-class-desc-caption {
+  position: relative;
+  left: auto;
+  right: auto;
+  padding: 1rem 1rem 3rem 1rem;
+  p {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-align: justify;  
+  }
+}
+
+#carouselSignature .carousel-item img {
+  filter: grayscale(100%) opacity(50%);
+}
+
+@media (min-width: 1150px) {
+  .carousel-item .carousel-caption-signature {
+    top: 35%;
+  }
+  .carousel-class-desc-caption {
+    padding: 1rem 10% 3rem 10%;
+    p {
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;  
+    }
+  }  
+}
+
+@media (max-width: 900px) {
+  section.cover-photo h1  {
+    font-size: 2.5rem;
+  }
+}
+
+section.cover-photo figure {
+  filter: opacity(70%);
+  transform: scale(1.3);
+}
+
+@media (min-width: 900px) {
+  section.cover-photo figure {
+    transform: scale(1.0);
+  }
+}
+
+section.cover-photo > div:first-child {
+  min-height: 50vh;
+  padding-top: 8rem;
+}
+
+section.cover-photo .sweat {
+  font-size: 0.8rem;
+}
+
+div.group-class .tagline1, section.book-trial p.tagline  {
+  font-size: 1.4rem;
+  line-height: 1.8rem;  
+  font-weight: bold;
+}
+
+div.group-class .tagline2, section.book-trial p.tagline2 {
+  font-size: 1.0rem;
+  line-height: 1.2rem;  
+  font-weight: bold;
+}
+
+// so bottom items in dropdowns with lost of items dont become inaccesssible on phone
+@media (max-width: 550px) {
+.highnavbar {
+  margin-top: -12rem !important;
+}}
+
+
+@media (min-width: 900px) {
+  body, p, ol, ul, td {
+    font-size: 1.1rem; }
+
+  // override components/_navbar.scss
+  .navbar-brand img {
+    max-height: 4.5rem; }
+  
+  main {
+    margin: 1rem;
+    margin-top: 0; }
+    
+  img.table_icon {
+    width: 1.3rem;
+    height: 1.3rem; }
+
+ // override components/_dropdowsn.scss which hides the caret
+  .dropdown-hover >
+  .dropdown-toggle:after {
+    display: inline-block; }  
+
+  #shop .card-body {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;   
+  }
+
+  #shop .name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .classes {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .duration {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .base-price {
+    text-decoration: line-through;  
+    font-size: 0.9rem;
+    font-weight: 500;
+  }  
+  #shop .discount-price {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }    
+
+  #renewal span.renewal-price {
+    font-size: 1.2rem;
+  }
+
+  h3.discount-statement {
+    font-size: 0.8rem;
+  }  
+}
+
+#carouselTestimonial .carousel-item.active {
+  display: flex;
+  justify-content: center;
+}
+
+div.insta-blocker-top {
+  width: 7.5rem;
+  height: 2.5rem;
+  background-color:white;
+  position: absolute;
+  top: 0.5rem;
+  right:0;
+  z-index:2;
+}
+
+div.insta-blocker-bottom {
+  // width: 100%;
+  height: 8rem;
+  background-color:white;
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  right:0;
+  z-index:2;
+}
+
+.navbar-sticky {
+  transform: translateY(0);
+  transition: all .4s ease-in-out;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  opacity: 1;
+  z-index: 1040
+}
+
+.navbar-headroom {
+  margin-top: 7rem;
+}
+
+nav.disappear {
+  transform: translateY(-100%);
+}
+
+button.slider_btn {
+  flex-grow: 1;
+  text-transform: uppercase;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: 700;
+  /* flex-basis: 100%; */
+  // width: 40px;
+  // height: 40px;
+  // border-radius: 50%;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.button-container {
+  display: flex;
+}
+
+.button-container button {
+  border: 1px solid grey;
+}
+
+.button-container button.live { 
+  background-color: rgb(105, 105,105);
+}
+
+@media (min-width: 768px) {
+.button-container {
+  display: none
+}
+}
+
+.carousel div.tt-date-title {
+  font-size: 1.25rem;
+  color: white;
+}
+.carousel div.tt-date {
+  font-size: 0.8rem;
+  border-bottom: thin solid grey;
+  color: grey;
+}
+.carousel div.tt-title {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+}
+.carousel div.tt-goal {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+  padding-bottom: 1.5rem;  
+}
+
+@media(min-width:768px) {
+.carousel div.tt-title-container {
+  height: 5rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+.carousel div.tt-title {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);  
+}
+
+.carousel div.tt-goal-container {
+  height: 4rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+
+.carousel div.tt-goal {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+
+}
+}
+
+.carousel div.tt-time {
+  font-size: 0.8rem;
+  color: grey;
+  padding-bottom: 0.25rem;
+}
+.carousel div.tt-goal {
+  font-size: 1.0rem;
+  color: grey;
+}
+@media (min-width: 768px) {
+  .carousel div.tt-goal {
+    font-size: 0.6rem;
+  }
+}
+.carousel div.tt-level {
+  font-size: 0.8rem;
+  color: grey;
+}
+.carousel div.tt-studio {
+  font-size: 0.8rem;
+  color: grey;
+}
+
+.tt-day {
+  display: none;
+  animation: fadeIn 0.7s;
+}
+
+.tt-day.live {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .tt-day {
+    display: block;
+    padding-right: 32px;    
+  }
+}
+
+@keyframes fadeIn {
+  from { margin-left: 100%; }
+}
+///////////
+//
+// sidebar
+//
+
+// .offcanvas-end {
+//   width: 100%;
+//   padding: rem(40);
+//   border: 0;
+
+
+
+//   .offcanvas-body {
+//     padding: 0;
+//   }
+// }
+
+// .offcanvas-wrap {
+//   transition: transform 0.4s ease-in-out;
+// }
+
+// .offcanvas-push {
+//   .offcanvas-wrap {
+//     transform: translateX(rem(-100));
+//   }
+// }
+
+// .background,figure {
+//   margin: 0;
+//   background-size: cover;
+//   background-position: 50%
+// }
+
+// .background {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   overflow: hidden
+// }
+
+// //
+// // navbar
+// //
+
+// .navbar {
+//   padding: rem(32) 0;
+// }
+
+// .navbar-sticky {
+//   transform: translateY(0%);
+//   transition: all 0.4s ease-in-out;
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   bottom: auto;
+//   left: 0;
+//   opacity: 1;
+//   z-index: 1040;
+// }
+
+// // header interaction
+// .headroom--unpinned,
+// .offcanvas-push {
+//   .navbar-sticky {
+//     transform: translateY(-100%);
+//     opacity: 0;
+//   }
+// }
+
+// .headroom--not-top {
+//   .navbar-sticky {
+//     padding: rem(16) 0;
+
+//     &.navbar-dark {
+//       background: black;
+//     }
+
+//     &.navbar-light {
+//       background: white;
+//     }
+//   }
+// }
+
+// // dark
+// .navbar-dark {
+//   .navbar-nav {
+//     .nav-link {
+//       color: white;
+//       text-shadow: 0 0 32px rgba(0, 0, 0, 0.5);
+//     }
+//   }
+// }
+
+// // light
+// .navbar-light {
+//   .navbar-nav {
+//     .nav-link {
+//       color: black;
+//     }
+//   }
+// }
+
+// // uncolapsed on small screen
+// .navbar-active {
+//   .navbar-dark {
+//     background: black;
+//   }
+
+//   .navbar-light {
+//     background: white;
+//   }
+// }
+
+// // navbar navigation
+// .navbar-nav {
+//   margin-top: rem(16);
+
+
+
+
+//   .nav-icon {
+//     display: flex;
+//     width: rem(48);
+//     height: rem(48);
+//     padding: 0;
+//     align-items: center;
+//     justify-content: center;
+//     font-size: rem(20);
+
+//     .bi-list {
+//       font-size: rem(22);
+//       margin-top: 2px;
+//     }
+//   }
+// }
+
+// .navbar-nav-secondary {
+//   margin-top: 0;
+//   flex-direction: row;
+//   align-items: center;
+
+
+// }
+
+// .account-collapse {
+//   flex-basis: 100%;
+//   flex-grow: 1;
+// }
+
+// // brand
+// .navbar-brand {
+//   img {
+//     width: auto;
+//     max-height: rem(40);
+//   }
+
+
+// }
+
+// // button
+// .navbar-dark {
+//   .btn-outline-white {
+//     border-color: rgba(white, 0.25);
+//   }
+// }
+
+// .navbar-light {
+//   .navbar-menu {
+//     .nav-link {
+//       color: black;
+
+
+//       &:hover,
+//       &[aria-expanded="true"] {
+
+//         border-color: transparent;
+//       }
+//     }
+//   }
+// }
+
+// .navbar-active {
+//   overflow: hidden;
+
+//   .navbar {
+//     max-height: 100vh;
+//     overflow-y: scroll;
+//   }
+
+//   &.headroom--unpinned {
+//     .navbar-sticky {
+//       padding: rem(32) 0;
+//       transform: translateY(0);
+//       opacity: 1;
+//     }
+//   }
+// }
+
+// //
+// // nav
+// //
+
+// .nav {
+//   .nav-link {
+//     position: relative;
+//     color: inherit;
+//   }
+// }
+
+// // tabs
+// .nav-tabs {
+//   position: relative;
+//   border: 0;
+
+//   .nav-item {
+//     margin: 0 rem(16) rem(8) 0;
+//   }
+
+//   .nav-link {
+//     transition: all 0.3s ease-in-out;
+//     display: inline-block;
+//     padding: rem(8) 0;
+//     border-radius: 0;
+//     border-color: transparent;
+//     text-align: left;
+//     background: transparent;
+//     color: gray;
+
+//     &:hover {
+//       color: black;
+//       border-color: transparent;
+//     }
+
+//     &.active {
+//       color: black;
+//       border-color: black;
+//       background: transparent;
+//     }
+//   }
+// }
+
+// .nav-item {
+//   .nav-label {
+//     display: flex;
+//     color: black;
+//   }
+
+//   &:not(:first-child) {
+//     .nav-label {
+//       margin-top: rem(12);
+//     }
+//   }
+// }
+
+// // pills
+// .nav-pills {
+//   display: inline-flex;
+
+//   .nav-link {
+//     padding: rem(12) rem(24);
+//     color: gray;
+//     background: transparent;
+//   }
+
+//   .nav-link.active {
+//     color: black;
+//   }
+// }
+
+// // minimal
+// .nav-minimal {
+//   display: flex;
+//   flex-direction: column;
+
+//   .nav-item:not(:first-child) {
+//     margin-top: rem(16);
+//   }
+
+//   .nav-link {
+//     display: inline-block;
+//     position: relative;
+//     padding: 0 rem(32) 0 0;
+
+//     &[aria-expanded]::before {
+//       transition: transform 0.2s;
+//       position: absolute;
+//       top: 50%;
+//       right: 0;
+//       content: "\f282";
+//       width: rem(24);
+//       margin-top: rem(-12);
+//       text-align: center;
+//       line-height: rem(24);
+//       font-family: bootstrap-icons !important;
+//       font-size: rem(18);
+//       color: gray;
+//     }
+
+//     &[aria-expanded="true"]::before {
+//       transform: rotate(180deg);
+//     }
+
+
+//   }
+
+//   // nested
+//   .nav-minimal {
+//     margin-top: rem(8);
+//     margin-bottom: rem(8);
+
+//     .nav-item {
+//       margin-top: rem(8);
+//     }
+
+//     .nav-link {
+
+//     }
+//   }
+// }
+
+
+
+// // dark mode
+// //
+// // add .inverted class to any section to switch color scheme to dark mode
+
+
+
+// .inverted {
+//   color: $white !important;
+
+//   // all .border-top, .border-right ... classes
+//   [class*="border"],
+//   &[class*="border"] {
+//     border-color: $border-color-inverted !important;
+//   }
+
+//   // text colors
+//   .text-muted {
+//     color: rgba($white, 0.5) !important;
+//   }
+
+//   .text-secondary {
+//     color: rgba($white, 0.75) !important;
+//   }
+
+//   .highlighted {
+//     &::before {
+//       background: rgba($white, 0.1);
+//     }
+//   }
+
+//   // links
+//   a:not(.btn):not(.dropdown-item) {
+//     color: $white;
+
+//     &:hover {
+//       color: rgba($white, 0.75);
+//     }
+//   }
+
+//   // buttons
+//   .btn-outline-white {
+//     border-color: $border-color-inverted;
+//   }
+
+//   // list groups
+//   .list-group .list-group-item {
+//     border-color: $border-color-inverted;
+//   }
+
+//   .list-group-link:hover {
+//     background: rgba($white, 0.05);
+//   }
+
+//   // accordions
+//   .accordion {
+//     .accordion-item:not(:first-child) {
+//       border-color: $border-color-inverted;
+//     }
+//   }
+
+//   // browser
+//   .browser {
+//     > span {
+//       background: $white;
+
+//       &::before {
+//         background: rgba($white, 0.75);
+//       }
+
+//       &::after {
+//         background: rgba($white, 0.5);
+//       }
+//     }
+//   }
+
+//   // code
+//   pre[class*="language-"],
+//   code[class*="language-"] {
+//     color: lighten($primary, 10%);
+//   }
+
+//   .token {
+//     color: rgba($white, 0.5);
+
+//     &.selector,
+//     &.punctuation {
+//       color: $white;
+//     }
+//   }
+
+//   // grouped inputs
+//   .grouped-inputs {
+//     &.focused {
+//       border-color: rgba($white, 1) !important;
+//     }
+
+//     .form-control,
+//     .form-select {
+//       color: $white;
+
+//       &::placeholder {
+//         color: rgba($white, 0.5);
+//       }
+//     }
+//   }
+
+//   // progress bar
+//   .progress {
+//     background-color: rgba($black, 0.2);
+
+//     .progress-bar {
+//       background: $white;
+//       color: $primary;
+//       font-weight: $font-weight-bold;
+//     }
+//   }
+
+//   // floating labels
+//   .form-floating {
+//     .form-control,
+//     .form-select {
+//       background-color: rgba($white, 0.1);
+//       border-color: transparent;
+//       color: $white;
+
+//       &:focus {
+//         background-color: rgba($white, 0.15);
+//       }
+//     }
+//   }
+// }
+
+// .min-vh-75 {
+//   min-height: 75vh!important;
+// }
+
+// .py-10 {
+//   padding-top: 5rem!important;
+//   padding-bottom: 5rem!important;
+// }
+
+// .bg-black,.bg-black-hover:hover {
+//   background-color: #000!important
+// }
+
+// .level-1 {
+//   position: relative;
+//   z-index: 32!important;
+// }
+
+// .row {
+//   --bs-gutter-x: 40px;
+//   --bs-gutter-y: 0;
+//   display: flex;
+//   flex-wrap: wrap;
+//   margin-top: calc(var(--bs-gutter-y)*-1);
+//   margin-right: calc(var(--bs-gutter-x)*-0.5);
+//   margin-left: calc(var(--bs-gutter-x)*-0.5)
+// }
+
+// .container,.container-fluid,.container-lg,.container-md,.container-sm,.container-xl,.container-xxl {
+//   width: 100%;
+//   padding-right: 20px;
+//   padding-right: var(--bs-gutter-x,20px);
+//   padding-left: 20px;
+//   padding-left: var(--bs-gutter-x,20px);
+//   margin-right: auto;
+//   margin-left: auto}
+
+//   .background[class*=-overlay]:after {
+//     transition: opacity .2s;
+//     position: absolute;
+//     opacity: .4;
+//     top: 0;
+//     right: 0;
+//     bottom: 0;
+//     left: 0;
+//     content: "";
+//     background: #000;
+// }
+
+// section {
+//   position: relative
+// }
+
+// .min-vh-75 {
+//   min-height: 75vh!important;
+// }
+
+
+// .fs-4 {
+//     font-size: calc(1.325rem + .9vw)!important;
+//   }
+  
+//   .display-2 {
+//       font-size: calc(1.485rem + 2.82vw);
+//     }
+    
+    // .navbar-brand {
+      //   padding-top: .40625rem;
+      //   padding-bottom: .40625rem;
+      //   margin-right: 4rem;
+      //   font-size: 1.125rem;
+      //   white-space: nowrap
+      // }
+
+// .navbar {
+//   padding: 1rem 0
+// }
+    //   .py-10 {
+    //     padding-top: 5rem!important;
+    //     padding-bottom: 5rem!important;
+    //   }
+
+    //   .mb-10 {
+    //     margin-bottom: 5rem!important;
+    // }
+
+  //   .row {
+  //     --bs-gutter-x: 40px;
+  //     --bs-gutter-y: 0;
+  //     display: flex;
+  //     flex-wrap: wrap;
+  //     margin-top: calc(var(--bs-gutter-y)*-1);
+  //     margin-right: calc(var(--bs-gutter-x)*-0.5);
+  //     margin-left: calc(var(--bs-gutter-x)*-0.5);
+  // }
+

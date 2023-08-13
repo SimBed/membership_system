@@ -4,12 +4,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # ruby '3.0.1'
 ruby File.read(".ruby-version").strip
 gem 'bcrypt'
+gem 'bootstrap', '~> 5.3.0.alpha3'
 gem 'chartkick', '~> 4.2'
 gem 'country_select', '~> 8.0'
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'groupdate', '~> 6.1'
 gem 'honeybadger', '~> 5.2'
+gem "importmap-rails"
 gem 'jbuilder', '~> 2.7'
 # gem 'kaminari'
 gem 'pagy'
@@ -24,10 +26,11 @@ gem "rails", "~> 7.0.0"
 gem 'rails-controller-testing'
 gem 'rails-settings-cached', '~> 2.8'
 gem 'razorpay'
-gem 'sass-rails', '>= 6'
+# gem 'sass-rails', '>= 6'
+gem 'sassc-rails'
 gem 'turbolinks', '~> 5'
 gem 'twilio-ruby'
-gem 'webpacker', '~> 5.0'
+# gem 'webpacker', '~> 5.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
