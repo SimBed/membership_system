@@ -1,3 +1,4 @@
+// redundant now - can delete
 // populate instructor_rate dropdown based on workout/instructor combo selected (when instructor changes)
 document.getElementById('wkclass_instructor_id').onchange =  function () {
   populate_instructor_rates_dropdown();

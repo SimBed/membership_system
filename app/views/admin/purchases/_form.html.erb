@@ -29,7 +29,8 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
 
   <div class="field">
     <%= form.label :product_id, 'Product' %>
-    <%= form.collection_select :product_id, @products, :id, :name, include_blank: true %>
+    <%= form.collection_select :product_id, @products, :id, :name, {include_blank: true}, {data_controller:"content-loader", data_content_loader_url_value:"/stimulator"} %>
+    <%= form.select :product_id, options_for_select(@products.map {|p| [p.name, p.id, {data_controller:"content-loader", data_content_loader_url_value:"/stimulator"}]}), include_blank: true %>
   </div>
 
   <div class="field">
@@ -141,12 +142,3 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
       }
     }
 </script>
-
-  <!--div class="field">
-    <%#= form.label :product_id %>
-    <%#= form.select :product_id, @products, { include_blank: true },{ data: {
-    remote: true,
-    url: '/products/payment',
-    method: 'get'
-  }} %>
-  </div-->

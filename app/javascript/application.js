@@ -21,3 +21,4 @@ import "custom/headroom"
 // ActiveStorage.start()
 import "chartkick"
 import "Chart.bundle"
+import "controllers"

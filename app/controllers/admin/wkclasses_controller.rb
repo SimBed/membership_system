@@ -139,13 +139,17 @@ class Admin::WkclassesController < Admin::BaseController
     redirect_to admin_wkclasses_path
   end
 
-  def instructor
-    # @instructor_rates = Instructor&.find(params[:selected_instructor_id])&.instructor_rates
+  def stimulator
+    render layout: false
+  end
+
+  def instructor_select
     workout = Workout.where(id: params[:selected_workout_id])&.first
     @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_by_current_group_instructor_rate || []
     (@instructor_rates = @instructor_rates.select(&:group?)) if workout&.group_workout?
     (@instructor_rates = @instructor_rates.reject(&:group?)) if workout&.pt_workout?
-    render 'instructor.js.erb'
+    # render 'instructor.js.erb'
+    render layout:false
   end
 
   private
