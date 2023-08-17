@@ -20,7 +20,7 @@
         <Cell><Data ss:Type="String">Adjust & Restart Payment</Data></Cell>
         <Cell><Data ss:Type="String">A&R date</Data></Cell>
       </Row>
-    <% @purchases.each do |purchase| %>
+    <% @records.each do |purchase| %>
       <Row>
         <Cell><Data ss:Type="String"><%= purchase.client.first_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.client.last_name %></Data></Cell>
