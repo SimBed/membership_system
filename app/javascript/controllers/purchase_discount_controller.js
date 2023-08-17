@@ -1,8 +1,22 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { url: String, dateurl: String }
+  static values = { url: String, dateurl: String, clientfilterurl: String }
 
+
+  clientsearch() {
+    let search_client_name = document.getElementById("search_client_name").value;    
+    let client_select = document.getElementById('purchase_client_id')
+
+    let queryHash = { select_client_name: search_client_name }    
+    fetch(this.clientfilterurlValue + '?' + new URLSearchParams(queryHash))
+    .then(function(response) {
+      response.text().then((s) => {console.log(s);
+        client_select.selectedIndex = JSON.parse(s).clientindex;
+      })
+    });    
+
+  }
   change() {
     this.load()
   }

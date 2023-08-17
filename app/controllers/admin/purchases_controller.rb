@@ -114,7 +114,10 @@ class Admin::PurchasesController < Admin::BaseController
   def new_purchase_client_filter
     clear_session(:select_client_name)
     session[:select_client_name] = params[:select_client_name] || session[:select_client_name]
-    redirect_to new_admin_purchase_path
+    @clients = Client.order_by_first_name
+    @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
+    render json: { clientindex: @selected_client_index}
+    # redirect_to new_admin_purchase_path
   end
 
   def clear_filters
