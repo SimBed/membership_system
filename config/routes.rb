@@ -23,7 +23,6 @@ Rails.application.routes.draw do
   get '/superadmin/expenses/filter', to: 'superadmin/expenses#filter'
   get '/products/payment', to: 'admin/products#payment'
   get '/wkclasses/instructor_select', to: 'admin/wkclasses#instructor_select'
-  get '/stimulator', to: 'admin/wkclasses#stimulator'
   post '/wkclasses/:id/repeat', to: 'admin/wkclasses#repeat', as: 'wkclass_repeat'
   get    '/login',   to: 'auth/sessions#new'
   post   '/login',   to: 'auth/sessions#create'

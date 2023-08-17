@@ -159,7 +159,10 @@ class Admin::PurchasesController < Admin::BaseController
     # @payment_after_discount = [0, (@base_price.price * (1 - discount_percent.to_f / 100) - discount_fixed).round(0)].max
     # apply_discount defined in ApplyDiscount concern
     @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount, @discretion_discount, @commercial_discount)
-    render 'payment_after_discount.js'
+     # render 'payment_after_discount.js'
+     render json: { base_price_price: @base_price.price,
+                   payment_after_discount: @payment_after_discount,
+                   base_price_id: @base_price.id }
   end
 
   def dop_change
@@ -173,8 +176,10 @@ class Admin::PurchasesController < Admin::BaseController
     @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', dop)
     @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', dop)
     @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', dop)
-
-    render 'discounts_after_dop_change.js'
+    render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, @renewal_discounts, :id, :name, selected: @purchase_renewal_discount_id || @discount_none.id ),
+    status: helpers.collection_select(:purchase, :status_discount_id, @status_discounts, :id, :name, selected: @purchase_status_discount_id || @discount_none.id ),
+    oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, @oneoff_discounts, :id, :name, selected: @purchase_oneoff_discount_id ||  @discount_none.id ) }
+    # render 'discounts_after_dop_change.js'
   end
 
   private

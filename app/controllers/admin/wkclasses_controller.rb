@@ -139,10 +139,6 @@ class Admin::WkclassesController < Admin::BaseController
     redirect_to admin_wkclasses_path
   end
 
-  def stimulator
-    render layout: false
-  end
-
   def instructor_select
     workout = Workout.where(id: params[:selected_workout_id])&.first
     @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_by_current_group_instructor_rate || []
