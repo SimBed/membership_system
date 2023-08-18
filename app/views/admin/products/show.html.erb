@@ -5,7 +5,7 @@
   </h6>
   <h6>
     <form action=<%= "/admin/products/#{params[:id]}" %> method="GET" data-remote="true" class="ms-3 align-with-header">
-        <select name="product_period" onchange="Rails.fire(this.form, 'submit')" class="sort">
+        <select name="product_period" class="sort" onchange="this.form.requestSubmit()">
           <%= options_for_select @months, session[:product_period] %>
         </select>
     </form>

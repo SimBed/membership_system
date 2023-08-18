@@ -13,7 +13,7 @@
           <% end %>
           <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
           <% unless logged_in_as?('instructor') %>
-            <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+            <td><%= button_to 'X', admin_attendance_path(attendance), class: "button-image-sub", method: :delete, form: {data: { turbo_confirm: 'Attendance will be deleted. Are you sure?' }} %></td> 
           <% end %>
         </tr>
       <% end %>
@@ -30,7 +30,7 @@
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
             <% unless logged_in_as?('instructor') %>
-              <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+              <td><%= button_to 'X', admin_attendance_path(attendance), class: "button-image-sub", method: :delete, form: {data: { turbo_confirm: 'Attendance will be deleted. Are you sure?' }} %></td> 
             <% end %>
           </tr>
         <% end %>
@@ -48,7 +48,7 @@
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
             <% unless logged_in_as?('instructor') %>
-              <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance), method: :delete, data: { confirm: 'Attendance will be deleted. Are you sure?' } %></td>
+              <td><%= button_to 'X', admin_attendance_path(attendance), class: "button-image-sub", method: :delete, form: {data: { turbo_confirm: 'Attendance will be deleted. Are you sure?' }} %></td> 
             <% end %>
           </tr>
         <% end %>

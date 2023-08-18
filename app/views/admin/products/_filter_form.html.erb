@@ -3,7 +3,7 @@
     <form action="/admin/products" method="GET">
       <div class="mt-0">
         <i class="fas fa-sort-alpha-down"></i>
-        <select class="form-control-sm mb-2 sort" name="product_sort_option" onchange="this.form.submit()">
+        <select class="form-control-sm mb-2 sort" name="product_sort_option" onchange="this.form.requestSubmit()">
           <option disabled="disabled" selected="selected" value="">Sort by</option>
           <option value="product_name" <%="selected" if session[:product_sort_option] == "product_name"%> >name</option>
           <option value="sell_online" <%="selected" if session[:product_sort_option] == "sell_online"%> >sell online</option>
@@ -16,53 +16,4 @@
     </div>
     </form>
   </div>
-  <% if false %>
-
-  <hr class = "search mb-3"></hr>
-
-  <%= form_with(url: client_filter_path, method: "get", local: false, class: "form-class") do %>
-
-  <div class="field">
-  <%= text_field_tag :search_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_client_name], onchange: 'Rails.fire(this.form, "submit")' %>
-  </div>
-
-  <div class="container mb-1">
-  <div class="row">
-
-  <div class="col-6 px-0">
-    <fieldset>
-      <legend>ATTRIBUTE</legend>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'cold', 'cold', session[:filter_cold].present? ? true : false, class: "checkbox-class", id: "chbox_cold", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'cold' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'enquiry', 'enquiry', session[:filter_enquiry].present? ? true : false, class: "checkbox-class", id: "chbox_enquiry", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'enquiry' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'packagee', 'packagee', session[:filter_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'has package' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'active', 'active', session[:filter_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'active' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'one_time_trial', 'one_time_trial', session[:filter_one_time_trial].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'one time trial' %>
-      <% end %>
-    </fieldset>
-  </div>
-
-  <div class="container d-flex">
-    <%= link_to image_tag('clear_filter.png', class: "filter_icon"), clear_client_filters_path, {remote: true, class: "search searchdelete icon-container"} %>
-  </div>
-  <% end %>
-
-  </div>
-  </div>
-
-  <hr class = "search mb-3"></hr>
-  <%end%>
 </div>

@@ -5,10 +5,12 @@
     <% end %>
   </h4>
 </div>
-<div id="products-filter" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'filter_form' %>
-</div>  
-<% if logged_in_as?('superadmin') %>
-  <%= render partial: 'download' %>
-<% end %>
-<%= render partial: 'products_table' %>
+<turbo-frame id="product-frame">
+  <div id="products-filter" class="container px-1 mb-5 margin-override">
+    <%= render partial: 'filter_form' %>
+  </div>  
+  <% if logged_in_as?('superadmin') %>
+    <%= render partial: 'download' %>
+  <% end %>
+  <%= render partial: 'products_table' %>
+</turbo-frame>

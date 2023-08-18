@@ -691,6 +691,17 @@ button.slider_btn {
 @keyframes fadeIn {
   from { margin-left: 100%; }
 }
+
+input.button-image-sub {
+  border:none;
+  background-color: inherit;
+  font-weight: 900;
+  &:hover {
+    transform: scale(1.2);
+    opacity: 0.5}
+}
+
+
 ///////////
 //
 // sidebar
