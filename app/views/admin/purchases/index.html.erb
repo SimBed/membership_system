@@ -1,12 +1,14 @@
 <div class="container px-1 margin-override">
   <h4> Purchases <%= link_to image_tag('add.png', class: "button_icon"), new_admin_purchase_path %></h4>
 </div>
-<%= render partial: 'filter_form' %>
-<% if logged_in_as?('superadmin') %>
-  <%= render partial: 'download' %>
-<% end %>
-<%= render partial: 'purchases_table' %>
-<% if logged_in_as?('superadmin') %>
-  <%= line_chart @purchase_count_for_chart, ytitle: "Count" %>
-  <%= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>
-<% end %>
+<turbo-frame id="purchase-frame">
+  <%= render partial: 'filter_form' %>
+  <% if logged_in_as?('superadmin') %>
+    <%= render partial: 'download' %>
+  <% end %>
+    <%= render partial: 'purchases_table' %>
+    <% if logged_in_as?('superadmin') %>
+      <%= line_chart @purchase_count_for_chart, ytitle: "Count" %>
+      <%= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>
+    <% end %>
+</turbo-frame>

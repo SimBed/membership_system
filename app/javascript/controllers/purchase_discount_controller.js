@@ -17,14 +17,16 @@ export default class extends Controller {
     });    
 
   }
+
+  // when the date changes we need the date_change action to complete in its entirety (which finishes with populating the discount dropdowns)
+  // before starting the next action so set a short timeout. Improve this as there must be a better way.
   change() {
-    this.load()
+    setTimeout(() => this.load(), 100)
   }
   
   date_change() {
-    this.date_change_load()
+    this.date_change_load();
   }
-
 
   date_change_load(){
     let selected_renewal_discount_id = document.getElementById("purchase_renewal_discount_id").value || 0;
@@ -50,9 +52,10 @@ export default class extends Controller {
       selected_dop_2i: selected_dop_2i,
       selected_dop_3i: selected_dop_3i  
     }
+    console.log(this.dateurlValue)
     fetch(this.dateurlValue + '?' + new URLSearchParams(queryHash))
     .then(function(response) {
-      response.text().then((s) => {console.log(s);
+      response.text().then((s) => {
         renewal_discount_select.innerHTML = JSON.parse(s).renewal;
         status_discount_select.innerHTML = JSON.parse(s).status;
         oneoff_discount_select.innerHTML = JSON.parse(s).oneoff;
@@ -62,6 +65,7 @@ export default class extends Controller {
   }
 
   load() {
+    console.log('ready')
     let selected_renewal_discount_id = document.getElementById("purchase_renewal_discount_id").value || 0;
     let selected_status_discount_id =  document.getElementById("purchase_status_discount_id").value || 0;
     let selected_oneoff_discount_id = document.getElementById("purchase_oneoff_discount_id").value || 0;
@@ -80,6 +84,7 @@ export default class extends Controller {
       selected_discretion_discount_id: selected_discretion_discount_id,
       selected_product_id: selected_product_id
     }
+    console.log(this.urlValue)
     fetch(this.urlValue + '?' + new URLSearchParams(queryHash))
     .then(function(response) {
       response.text().then((s) => {console.log(s);

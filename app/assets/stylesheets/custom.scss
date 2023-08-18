@@ -531,15 +531,28 @@ div.insta-blocker-bottom {
 }
 
 .navbar-sticky {
-  transform: translateY(0);
-  transition: all .4s ease-in-out;
+  // transform: translateY(0);
+  // transition: all .4s ease-in-out;
   position: fixed;
   top: 0;
   right: 0;
   bottom: auto;
   left: 0;
   opacity: 1;
-  z-index: 1040
+  z-index: 1040;
+  animation: animate 0.5s linear;
+}
+
+// the navbar flickers on screen refresh, this makes it less unpleasant
+@keyframes animate {
+  0% {
+    opacity: 0;
+    // top: -50px;
+  }
+  100% {
+    opacity: 1;
+    // top: 0;
+  }
 }
 
 .navbar-headroom {

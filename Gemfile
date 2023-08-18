@@ -29,7 +29,8 @@ gem 'razorpay'
 # gem 'sass-rails', '>= 6'
 gem 'sassc-rails'
 gem 'stimulus-rails'
-gem 'turbolinks', '~> 5'
+# gem 'turbolinks', '~> 5'
+gem 'turbo-rails'
 gem 'twilio-ruby'
 # gem 'webpacker', '~> 5.0'
 # Reduces boot times through caching; required in config/boot.rb
@@ -64,3 +65,6 @@ group :test do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"

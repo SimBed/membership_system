@@ -1,20 +1,18 @@
-
-
-  <div-- class="field" data-controller = "purchase-discount" data-purchase-discount-clientfilterurl-value = <%= new_purchase_client_filter_path %>> 
+<div class="field" data-controller = "purchase-discount" data-purchase-discount-clientfilterurl-value = <%= new_purchase_client_filter_path %>> 
   <%= text_field_tag :search_client_name, nil, {class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name], "data-action": "purchase-discount#clientsearch"} %>
-  </div>
+</div>
 
-  <%#= form_with(url: new_purchase_client_filter_path, method: "get", local: false, class: "form-class") do %>
-  <!--div class="field">
-  <%#= text_field_tag :select_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name], onchange: 'Rails.fire(this.form, "submit")' %>
-  </div-->
-  <%# end %>
+<%#= form_with(url: new_purchase_client_filter_path, method: "get", local: false, class: "form-class") do %>
+<!--div class="field">
+<%#= text_field_tag :select_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name], onchange: 'Rails.fire(this.form, "submit")' %>
+</div-->
+<%# end %>
 
 <%#= https://stackoverflow.com/questions/48197245/form-for-vs-form-with-in-rails-5-with-namespace
 prior to introduction of the admin folder structure/namespace the named route for the url "/purchases" was purchases_path
 With the admin namespace, the required url is "/admin/purchase" with named route admin_purchases_path.
 I don't see it in the documentation for form_with but the array syntax [:admin, purchase] as the model argument achieves this %>
-<%= form_with(model: [:admin, purchase], data: { controller: "purchase-discount", "purchase-discount-url-value": purchases_discount_path, "purchase-discount-dateurl-value": purchases_dop_change_path }) do |form| %>
+<%= form_with(model: [:admin, purchase],  data: { controller: "purchase-discount", "purchase-discount-url-value": purchases_discount_path, "purchase-discount-dateurl-value": purchases_dop_change_path }) do |form| %>
   <% if purchase.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(purchase.errors.count, "error") %> prohibited this purchase from being saved:</h2>
@@ -76,7 +74,7 @@ I don't see it in the documentation for form_with but the array syntax [:admin, 
 
   <div class="field">
     <%= form.label :dop, 'Date of purchase' %>
-    <%= form.date_select :dop, {}, {"data-action": "purchase-discount#date_change"} %>
+    <%= form.date_select :dop, {}, {"data-action": "purchase-discount#date_change purchase-discount#change"} %>
   </div>
 
   <div class="field">

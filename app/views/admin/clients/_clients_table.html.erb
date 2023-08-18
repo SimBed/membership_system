@@ -1,6 +1,7 @@
 <div class="page_entries_info px-1">
   <%#= paginate @clients, remote: true %>
   <%#= page_entries_info @clients %>
+  <%#= "#{@records&.count} of #{@pagy&.count}" %>
   <%== pagy_nav @pagy %>
 </div>
 

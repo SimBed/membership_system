@@ -2,15 +2,17 @@
   <h4>Clients <%= link_to image_tag('add.png', class: "button_icon"), new_admin_client_path %></h4>
   <!--h3 style="">Clients <%#= link_to tag.i(class: %w( bi bi-plus-circle )), new_admadmin_client_path, class: "icon-container"%></h3-->
 </div>
-<div id="clients-filter" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'filter_form' %>
-</div>
-<% if logged_in_as?('superadmin') %>
-  <div class="container px-1 mb-2 margin-override">  
-    <%= render partial: 'download' %>
+<turbo-frame id="client-frame">
+  <div id="clients-filter" class="container px-1 mb-5 margin-override">
+    <%= render partial: 'filter_form' %>
   </div>
-<% end %>
-<div id="clients-table" class="container px-0 mb-5 margin-override">
-  <%= render partial: 'clients_table' %>
-</div>
+  <% if logged_in_as?('superadmin') %>
+    <div class="container px-1 mb-2 margin-override">  
+      <%= render partial: 'download' %>
+    </div>
+  <% end %>
+  <div id="clients-table" class="container px-0 mb-5 margin-override">
+    <%= render partial: 'clients_table' %>
+  </div>
+</turbo-frame>
 

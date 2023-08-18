@@ -1,19 +1,16 @@
-<!--div data-controller="content-loader" data-content-loader-url-value="/stimulator"></div-->
-<div data-controller="hello">
-  <input data-hello-target="name" type="text">
-  <button data-action="click->hello#greet">Greet</button>
-</div>  
 <div class="container px-1 margin-override">
   <h4>Classes <%= link_to image_tag('add.png', class: "button_icon"), new_admin_wkclass_path, class: "icon-container" %></h4>
 </div>
-<div id="wkclasses-filter" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'filter_form' %>
-</div>
-<% if logged_in_as?('superadmin') %>
-  <div class="container px-1 margin-override">  
-    <%= render partial: 'download' %>
-  </div> 
-<% end %>
-<div id="wkclasses-table" class="container px-0 mb-5 margin-override">
-  <%= render partial: 'classes_table' %>
-</div>
+<turbo-frame id="wkclass-frame">
+  <div id="wkclasses-filter" class="container px-1 mb-5 margin-override">
+    <%= render partial: 'filter_form' %>
+  </div>
+  <% if logged_in_as?('superadmin') %>
+    <div class="container px-1 margin-override">  
+      <%= render partial: 'download' %>
+    </div> 
+  <% end %>
+  <div id="wkclasses-table" class="container px-0 mb-5 margin-override">
+    <%= render partial: 'classes_table' %>
+  </div>
+</turbo-frame>

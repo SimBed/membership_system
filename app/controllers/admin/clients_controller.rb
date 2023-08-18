@@ -8,9 +8,11 @@ class Admin::ClientsController < Admin::BaseController
   before_action :set_raw_numbers, only: :edit
 
   def index
+    # this must be inefficient, loading all clients and their associations into memory
     @clients = Client.includes(:account, :purchases)
-    handle_search
     handle_filter
+    # switched order cos of bug with chaining scope with group by in it (previously handle search before handle filter)
+    handle_search
     handle_sort
     handle_pagination
     handle_index_response
