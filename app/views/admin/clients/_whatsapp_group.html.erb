@@ -1,0 +1,7 @@
+<turbo-frame id="whatsapp-group-<%= client.id  %>">
+  <%= button_to admin_client_path(client, whatsapp_group: !client.whatsapp_group?),
+                method: :patch,
+                data: { "turbo-method": :patch, turbo_frame: "_top" } do %>
+    <%= image_tag('whatsapp.png', class: ["table_icon",("waiver" unless client.whatsapp_group?)].compact.join(' ')) %>
+  <% end %>
+</turbo-frame>

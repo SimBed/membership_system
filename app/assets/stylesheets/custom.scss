@@ -701,6 +701,13 @@ input.button-image-sub {
     opacity: 0.5}
 }
 
+button {
+  border: none;
+  background-color: inherit;
+  &:hover {
+    transform: scale(1.5);
+    opacity: 0.5}
+}
 
 ///////////
 //

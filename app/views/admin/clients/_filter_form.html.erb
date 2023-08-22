@@ -1,6 +1,6 @@
 <div class="container search">
   <div class="d-flex">
-    <form action="/admin/clients" method="GET">
+    <form action="/admin/clients" method="GET" data-turbo-frame='clients'>
       <div class="mt-0">
         <i class="fas fa-sort-alpha-down"></i>
         <select class="form-control-sm mb-2 sort" name="client_sort_option" onchange="this.form.requestSubmit()">
@@ -15,12 +15,12 @@
 
   <hr class = "search mb-3"></hr>
 
-  <%= form_with(url: client_filter_path, method: "get", class: "form-class") do %>
+  <%= form_with(url: client_filter_path, method: "get", class: "form-class", data: {turbo_frame: "clients"}) do %>
     <div class="field">
-      <%= text_field_tag :search_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_client_name], onchange: "this.form.requestSubmit()" %>
+      <%= text_field_tag :search_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_client_name], oninput: "this.form.requestSubmit()" %>
     </div>
     <div class="field">
-      <%= text_field_tag :search_client_number, nil, class: "form-control-sm mb-2 search", placeholder: "Number search…", value: session[:search_client_number], onchange: "this.form.requestSubmit()" %>
+      <%= text_field_tag :search_client_number, nil, class: "form-control-sm mb-2 search", placeholder: "Number search…", value: session[:search_client_number], oninput: "this.form.requestSubmit()" %>
     </div>
 
     <div class="container mb-1">
@@ -53,7 +53,7 @@
     </div>
 
     <div class="container d-flex">
-      <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_client_filters_path, {class: "search searchdelete icon-container"} %>
+      <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_client_filters_path, {class: "search searchdelete icon-container", data: {turbo_frame: "clients-and-filter"}} %>
     </div>
   <% end %>
 

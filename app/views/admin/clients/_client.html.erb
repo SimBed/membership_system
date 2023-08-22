@@ -1,0 +1,47 @@
+<%# https://discuss.hotwired.dev/t/how-to-wrap-a-table-row-with-a-turbo-frame/1717/8 %>
+<%= content_tag :tr, id: dom_id(client) do %>
+        <th scope="row">
+          <% if @junioradmin_plus %>
+            <%= link_to client.name, admin_client_path(client), class: "like_button", data: { turbo: false } %>
+          <% else %>
+            <%= client.name %>
+          <% end %>
+        </th>
+        <td class="nomobile"><%= client.email %></td>
+        <td><%= number(client.whatsapp, client.phone) %></td>
+        <td class="nomobile">
+          <%= render partial: 'insta', locals: {client: client} %>
+        </td>
+        <td class="nomobile">
+          <%= render partial: 'waiver', locals: {client: client} %>
+        </td>
+        <td class="nomobile">
+          <%= render partial: 'whatsapp_group', locals: {client: client} %>
+        </td>
+        <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(client), data: { turbo: false } %></td>
+        <% if @admin_plus && client.deletable? %> 
+          <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_client_path(client), method: :delete, data: { confirm: 'Client has no purchases so can be deleted. But are you sure?' }  %></td>
+            <% else %>
+          <td class="nomobile"></td>
+        <% end %>       
+        <% if @admin_plus %>
+          <td>
+            <% if client.account.nil? %>
+              <%= link_to image_tag('add.png', class: "table_icon"), admin_accounts_path(email: client.email, id: client.id, ac_type: 'client'), method: :post, data: { "turbo-method": :post, confirm: 'An account for this client will be created. Are you sure?' }  %>
+            <% else %>
+              <%= link_to image_tag('forgot-password.png', class: "table_icon"), admin_account_path(client.account, requested_by: 'admin'), method: :patch, data: { confirm: "This client's password will be reset. Are you sure?", turbo: false } %>
+            <% end %>
+          </td>
+        <% end %>
+        <% if @junioradmin %>
+          <td>
+            <% if !client.account.nil? %>
+              <%= button_to admin_account_path(client.account),
+                            method: :patch,
+                            data: { confirm: "This client's password will be reset. Are you sure?", turbo: false } do %>
+                <%= image_tag('forgot-password.png', class: "table_icon") %>
+              <% end %>            
+            <% end %>
+          </td>
+        <% end %>
+<% end %>

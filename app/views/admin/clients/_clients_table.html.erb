@@ -5,51 +5,13 @@
   <%== pagy_nav @pagy %>
 </div>
 
-<% admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
-<% junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
-<% junioradmin = logged_in_as?('junioradmin') ? true : false %>
+<%# admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
+<%# junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
+<%# junioradmin = logged_in_as?('junioradmin') ? true : false %>
 
 <table class="table table-secondary table-striped caption-top">
   <caption></caption>
-  <tbody>
-    <% @records.each do |client| %>
-      <tr>
-        <th scope="row">
-          <% if junioradmin_plus %>
-            <%= link_to client.name, admin_client_path(client), class: "like_button" %>
-          <% else %>
-            <%= client.name %>
-          <% end %>
-        </th>
-        <td class="nomobile"><%= client.email %></td>
-        <td><%= number(client.whatsapp, client.phone) %></td>
-        <!--td class="nomobile"><%= client.instagram %></td-->
-        <td class="nomobile"><%= link_to image_tag('insta.png', class: ["table_icon",("instawaiver" unless client.instawaiver?)].compact.join(' ')), admin_client_path(client, instawaiver: !client.instawaiver?), method: :patch %></td>
-        <td class="nomobile"><%= link_to image_tag('waiver.png', class: ["table_icon",("waiver" unless client.waiver?)].compact.join(' ')), admin_client_path(client, waiver: !client.waiver?), method: :patch %></td>
-        <td class="nomobile"><%= link_to image_tag('whatsapp.png', class: ["table_icon",("waiver" unless client.whatsapp?)].compact.join(' ')), admin_client_path(client, whatsapp: !client.whatsapp?), method: :patch %></td>
-        <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(client) %></td>
-        <% if admin_plus && client.deletable? %> 
-          <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_client_path(client), method: :delete, data: { confirm: 'Client has no purchases so can be deleted. But are you sure?' }  %></td>
-            <% else %>
-          <td class="nomobile"></td>
-        <% end %>       
-        <% if admin_plus %>
-          <td>
-            <% if client.account.nil? %>
-              <%= link_to image_tag('add.png', class: "table_icon"), admin_accounts_path(email: client.email, id: client.id, ac_type: 'client'), method: :post, data: { confirm: 'An account for this client will be created. Are you sure?' }  %>
-            <% else %>
-              <%= link_to image_tag('forgot-password.png', class: "table_icon"), admin_account_path(client.account, requested_by: 'admin'), method: :patch, data: { confirm: "This client's password will be reset. Are you sure?" } %>
-            <% end %>
-          </td>
-        <% end %>
-        <% if junioradmin %>
-          <td>
-            <% if !client.account.nil? %>
-              <%= link_to image_tag('forgot-password.png', class: "table_icon"), admin_account_path(client.account), method: :patch, data: { confirm: "This client's password will be reset. Are you sure?" } %>
-            <% end %>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
+  <tbody id="records">
+      <%= render @records %>
   </tbody>
 </table>
