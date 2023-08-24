@@ -11,7 +11,7 @@
         <Cell><Data ss:Type="String">Name</Data></Cell>
         <Cell><Data ss:Type="String">Phone</Data></Cell>
       </Row>
-    <% @clients.each do |client| %>
+    <% @records.each do |client| %>
       <Row>
         <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= client.phone %></Data></Cell>

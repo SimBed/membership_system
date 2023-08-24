@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, client]) do |form| %>
+<%= form_with(model: [:admin, client], data: {turbo: false}) do |form| %>
   <% if client.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>
@@ -55,9 +55,9 @@
   </div>
 
   <div class="field">
-    <%= form.label :friendfamily do %>
-      Friend & Family
-    <%= form.check_box :friendfamily %>
+    <%= form.label :friends_and_family do %>
+      Friends & Family
+    <%= form.check_box :friends_and_family %>
     <%end%>
   </div>
 

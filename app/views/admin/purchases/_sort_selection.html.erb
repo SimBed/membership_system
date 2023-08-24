@@ -1,5 +1,5 @@
-<form action="/admin/purchases" method="GET">
-  <div class="mt-2">
+<form action="/admin/purchases" method="GET" data-turbo-frame='purchases'>
+  <div class="mt-0">
     <i class="fas fa-sort-alpha-down"></i>
     <select class="form-control-sm mb-2 sort pr-3" name="sort_option" onchange="this.form.requestSubmit()">
       <option disabled="disabled" selected="selected" value="">Sort by</option>

@@ -339,7 +339,7 @@ class Admin::PurchasesController < Admin::BaseController
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
     @other_attributes = %w[classpass close_to_expiry fixed package_not_trial trial uninvoiced unpaid remind_to_renew sunset_passed written_off]
-    @months = months_logged + ['All']
+    @months = ['All'] + months_logged
   end
 
   def handle_sort
@@ -442,6 +442,7 @@ class Admin::PurchasesController < Admin::BaseController
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @purchases.to_csv }
       format.xls
+      format.turbo_stream
     end
   end
 end

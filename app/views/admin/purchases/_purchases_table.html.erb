@@ -9,7 +9,7 @@
     <% if logged_in_as?('admin', 'superadmin') %>
       <caption class="px-1"><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
     <% end %>
-    <tbody>
+    <tbody id="records">
       <tr class="extra_small">
         <th scope="col">Client</th>
         <th scope="col">Purchase Date</th>
@@ -17,25 +17,7 @@
         <th scope="col" class="nomobile"></th>
         <th scope="col" class="nomobile"></th>
       </tr>
-      <% @records.each do |purchase| %>
-        <tr class="extra_small">
-          <th scope="row" class="extra_small">
-            <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
-              <%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button" %>
-            <% else %>
-              <%= purchase.client.name %>
-            <% end %>
-          </th>
-          <td class="extra_small"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button" %></td>
-          <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
-          <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase) %></td>
-          <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
-            <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), method: :delete, data: { confirm: 'Purchase can be deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></td>
-          <% else %>
-            <td class="nomobile"></td>
-          <% end %>           
-        </tr>
-      <% end %>
+        <%= render @records %>
     </tbody>
   </table>
 </div>  

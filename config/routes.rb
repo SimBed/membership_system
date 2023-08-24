@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   get '/group_classes', to: 'public_pages#group_classes'
   get '/signup',  to: 'public_pages#signup'
   post '/signup',  to: 'public_pages#create_account'
-  get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
+  get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
+  get '/wkclasses/clear_filters', to: 'admin/wkclasses#clear_filters', as: 'clear_wkclass_filters'
   # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
   get '/purchases/filter', to: 'admin/purchases#filter', as: 'purchase_filter'
   get '/wkclasses/filter', to: 'admin/wkclasses#filter', as: 'wkclass_filter'

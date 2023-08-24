@@ -1,0 +1,12 @@
+<form action="/admin/clients" method="GET" data-turbo-frame='clients'>
+  <div class="mt-0">
+    <i class="fas fa-sort-alpha-down"></i>
+    <select class="form-control-sm mb-2 sort" name="client_sort_option" onchange="this.form.requestSubmit()">
+      <option disabled="disabled" selected="selected" value="">Sort by</option>
+      <option value="first_name" <%="selected" if session[:client_sort_option] == "first_name"%> >first name</option>
+      <option value="last_name" <%="selected" if session[:client_sort_option] == "last_name"%> >last name</option>
+      <option value="created_at" <%="selected" if session[:client_sort_option] == "created_at"%> >date added</option>
+    </select>
+  </div>
+</form>
+

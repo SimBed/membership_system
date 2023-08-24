@@ -130,6 +130,13 @@ class Admin::WkclassesController < Admin::BaseController
     end
   end
 
+  def clear_filters
+    # *splat operator is used to turn array into an argument list
+    # https://ruby-doc.org/core-2.0.0/doc/syntax/calling_methods_rdoc.html#label-Array+to+Arguments+Conversion
+    clear_session(*session_filter_list)
+    redirect_to admin_wkclasses_path
+  end
+
   def filter
     clear_session(*session_filter_list)
     session[:classes_period] = params[:classes_period]
@@ -253,6 +260,7 @@ class Admin::WkclassesController < Admin::BaseController
       # Railscasts #362 Exporting Csv And Excel
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @wkclasses.to_csv }
+      format.turbo_stream      
     end
   end
 

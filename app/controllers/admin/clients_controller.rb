@@ -61,7 +61,6 @@ class Admin::ClientsController < Admin::BaseController
       # @client.account.update(email: @client.email) if update_account_email
       @client.account.update_column(:email, @client.email) if update_account_email
       if client_params[:email].nil? # means not the update form, but a link to update waiver or instagram
-        # byebug
         respond_to do |format|
           format.html { redirect_back fallback_location: admin_clients_path, success: t('.success', name: @client.name) }
           format.turbo_stream { flash_message :success, t('.success', name: @client.name), true }
@@ -69,8 +68,8 @@ class Admin::ClientsController < Admin::BaseController
       else
         redirect_to admin_client_path(@client)
         # redirect_to admin_clients_path
+        flash_message :success, t('.success', name: @client.name)
       end
-      # flash_message :success, t('.success', name: @client.name)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -80,7 +79,6 @@ class Admin::ClientsController < Admin::BaseController
     @client.destroy
     redirect_to admin_clients_path
     flash_message :success, t('.success', name: @client.name)
-    # flash[:success] = t('.success', name: @client.name)
   end
 
   def clear_filters
@@ -173,8 +171,7 @@ class Admin::ClientsController < Admin::BaseController
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @clients.to_csv }
       format.xls
-      # format.turbo_stream { flash_message :success, t('.success', name: @client.name) }
-      # format.turbo_stream
+      format.turbo_stream
     end
   end
 

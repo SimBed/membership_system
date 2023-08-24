@@ -1,17 +1,19 @@
-<div class="page_entries_info px-1">
-  <%#= paginate @clients, remote: true %>
-  <%#= page_entries_info @clients %>
-  <%#= "#{@records&.count} of #{@pagy&.count}" %>
-  <%== pagy_nav @pagy %>
+<div id="clients-table" class="container px-0 mb-5 margin-override">
+  <div class="page_entries_info px-1">
+    <%#= paginate @clients, remote: true %>
+    <%#= page_entries_info @clients %>
+    <%#= "#{@records&.count} of #{@pagy&.count}" %>
+    <%== pagy_nav @pagy %>
+  </div>
+
+  <%# admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
+  <%# junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
+  <%# junioradmin = logged_in_as?('junioradmin') ? true : false %>
+
+  <table class="table table-secondary table-striped caption-top">
+    <caption></caption>
+    <tbody id="records">
+        <%= render @records %>
+    </tbody>
+  </table>
 </div>
-
-<%# admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
-<%# junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
-<%# junioradmin = logged_in_as?('junioradmin') ? true : false %>
-
-<table class="table table-secondary table-striped caption-top">
-  <caption></caption>
-  <tbody id="records">
-      <%= render @records %>
-  </tbody>
-</table>
