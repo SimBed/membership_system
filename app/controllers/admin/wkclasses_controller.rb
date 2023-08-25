@@ -244,14 +244,22 @@ class Admin::WkclassesController < Admin::BaseController
 
   def handle_pagination
     # when exporting data, want it all not just the page of pagination
-    @wkclasses = if params[:export_all]
-                  #  @wkclasses.page(params[:page]).per(100_000)
-                   @pagy, @records = pagy(@wkclasses, items: 100_000)
-                  else
-                    # @wkclasses.page params[:page]
-                    @pagy, @records = pagy(@wkclasses)
-               end
+    if params[:export_all]
+      @pagy, @wkclasses = pagy(@wkclasses, items: 100_000)
+    else
+      @pagy, @wkclasses = pagy(@wkclasses)
+    end
   end
+  # def handle_pagination
+  #   # when exporting data, want it all not just the page of pagination
+  #   @wkclasses = if params[:export_all]
+  #                 #  @wkclasses.page(params[:page]).per(100_000)
+  #                  @pagy, @records = pagy(@wkclasses, items: 100_000)
+  #                 else
+  #                   # @wkclasses.page params[:page]
+  #                   @pagy, @records = pagy(@wkclasses)
+  #              end
+  # end
 
   def handle_index_response
     respond_to do |format|

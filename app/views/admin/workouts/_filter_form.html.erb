@@ -1,8 +1,11 @@
-<%= form_with(url: workout_filter_path, method: "get", local: false, class: "form-class") do |f| %>
-  <fieldset>
-    <%= label_tag nil, class: "chbox-lbl-filters" do %>
-      <%= check_box_tag 'active', 'active', session[:filter_workout_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: "this.form.requestSubmit()" %>
-      <%= 'active only' %>
-    <% end %>
-  </fieldset>
-<% end %>
+<div id="workouts-filter" class="container ps-2 mt-1 margin-override">
+  <%= form_with(url: workout_filter_path, method: "get", class: "form-class", data: {turbo_frame: "workouts"}) do |f| %>
+    <fieldset>
+      <%= label_tag nil, class: "chbox-lbl-filters" do %>
+        <%= check_box_tag 'active', 'active', session[:filter_workout_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: "this.form.requestSubmit()" %>
+        <%= 'active only' %>
+      <% end %>
+    </fieldset>
+  <% end %>
+</div>
+

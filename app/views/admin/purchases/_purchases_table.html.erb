@@ -9,7 +9,7 @@
     <% if logged_in_as?('admin', 'superadmin') %>
       <caption class="px-1"><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
     <% end %>
-    <tbody id="records">
+    <thead>
       <tr class="extra_small">
         <th scope="col">Client</th>
         <th scope="col">Purchase Date</th>
@@ -17,7 +17,9 @@
         <th scope="col" class="nomobile"></th>
         <th scope="col" class="nomobile"></th>
       </tr>
-        <%= render @records %>
+    </thead>
+    <tbody id="records">
+      <%= render @records %>
     </tbody>
   </table>
 </div>  

@@ -39,7 +39,7 @@ class Admin::TimetablesController < Admin::BaseController
   def create
     @timetable = Timetable.new(timetable_params)
     if @timetable.save
-      flash_message :success, 'Timetable was successfully created.'
+      flash[:success] = t('.success')
       redirect_to admin_timetable_path(@timetable)
     else
       render :new, status: :unprocessable_entity
@@ -48,7 +48,8 @@ class Admin::TimetablesController < Admin::BaseController
 
   def update
     if @timetable.update(timetable_params)
-      redirect_to admin_timetable_path(@timetable), notice: 'Timetable was successfully updated.'
+      flash[:success] = t('.success')
+      redirect_to admin_timetable_path(@timetable)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -56,7 +57,8 @@ class Admin::TimetablesController < Admin::BaseController
 
   def destroy
     @timetable.destroy
-    redirect_to admin_timetables_path, notice: 'Timetable was successfully deleted.'
+    flash[:success] = t('.success')
+    redirect_to admin_timetables_path
   end
 
   private

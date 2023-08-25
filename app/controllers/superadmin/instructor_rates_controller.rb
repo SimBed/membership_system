@@ -3,6 +3,10 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
 
   def index
     @instructor_rates = InstructorRate.order_by_current_group_instructor_rate
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def new

@@ -709,6 +709,12 @@ button {
     opacity: 0.5}
 }
 
+i.link {
+  &:hover {
+    transform: scale(1.3);
+    opacity: 0.5;
+  }
+}
 ///////////
 //
 // sidebar

@@ -2,7 +2,7 @@
   <div class="container search">
     <hr class = "search mb-3"></hr>
 
-    <%= form_with(url: wkclass_filter_path, method: "get", class: "form-class") do %>
+    <%= form_with(url: wkclass_filter_path, method: "get", class: "form-class", data: {turbo_frame: "wkclasses"}) do %>
       <div class="container mb-1 px-1">
         <div class="row">
           <div class="col-4 px-0">

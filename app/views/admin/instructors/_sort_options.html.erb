@@ -1,0 +1,10 @@
+<form action=<%= "/admin/instructors/#{params[:id]}" %> method="GET" data-remote="true" class="d-inline-block">
+  <div class="ms-3">
+    <i class="fas fa-sort-alpha-down"></i>
+    <select class="form-control-sm sort" name="instructor_expense_sort_option" onchange="this.form.requestSubmit()">
+      <option disabled="disabled" selected="selected" value="">Sort by</option>
+      <option value="wkclass_date" <%="selected" if session[:instructor_expense_sort_option] == "wkclass_date"%> >class date</option>
+      <option value="client_name" <%="selected" if session[:instructor_expense_sort_option] == "client_name"%> >client</option>
+    </select>
+  </div>
+</form>

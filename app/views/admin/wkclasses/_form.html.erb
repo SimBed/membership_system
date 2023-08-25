@@ -1,5 +1,5 @@
 <%#= javascript_import_module_tag "custom/dropdown_populate" %>
-<%= form_with(model: [:admin, wkclass]) do |form| %>
+<%= form_with(model: [:admin, wkclass], data: {turbo: false}) do |form| %>
   <% if wkclass.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>

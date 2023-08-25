@@ -43,7 +43,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
   end
 
   def add
-    date = params[:date].to_date # Time.zone.now.beginning_of_month.to_date
+    date = params[:date].to_date
     rejected = 0
     total = RegularExpense.all.size
     RegularExpense.all.each do |r|
@@ -55,7 +55,6 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
       )
       rejected += 1 unless new_expense.errors.blank?
     end
-    # redirect_to superadmin_regular_expenses_path
     session[:revenue_month] = date.strftime('%b %Y')
     redirect_to superadmin_expenses_path
     if rejected.zero?

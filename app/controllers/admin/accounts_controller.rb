@@ -16,7 +16,7 @@ class Admin::AccountsController < Admin::BaseController
                                  'superadmin',
                                  'instructor')
                        .sort_by { |a| [a.priority_role.view_priority, a.email] }
-    render 'superadmin/accounts/index.html'
+    render 'superadmin/accounts/index'
   end
 
   def create
@@ -56,7 +56,7 @@ class Admin::AccountsController < Admin::BaseController
     if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
       flash_message :success, t('.success')
     else
-      flash[:warning] = "Update failed. Passwords either don't match or too short (min 6 characters)"
+      flash_message :warning, t('.fail')
      end
     redirect_to admin_accounts_path
   end
