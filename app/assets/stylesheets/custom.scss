@@ -617,6 +617,7 @@ button.slider_btn {
   font-weight: 700;
   color: white;
   padding-bottom: 1.5rem;  
+  line-height: 1em;
 }
 
 @media(min-width:768px) {
@@ -692,19 +693,19 @@ button.slider_btn {
   from { margin-left: 100%; }
 }
 
-input.button-image-sub {
-  border:none;
-  background-color: inherit;
-  font-weight: 900;
-  &:hover {
-    transform: scale(1.2);
-    opacity: 0.5}
-}
+// input.button-image-sub {
+//   border:none;
+//   background-color: inherit;
+//   font-weight: 900;
+//   &:hover {
+//     transform: scale(1.2);
+//     opacity: 0.5}
+// }
 
-button {
-  border: none;
-  background-color: inherit;
-}
+// button {
+//   border: none;
+//   background-color: inherit;
+// }
 
 i.link {
   &:hover {
