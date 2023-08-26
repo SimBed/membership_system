@@ -68,6 +68,10 @@ class Client::ClientsController < ApplicationController
     # @renewal = @client.renewal
     @renewal = Renewal.new(@client)
     @quotation = Setting.quotation
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def pt

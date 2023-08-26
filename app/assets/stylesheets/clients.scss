@@ -68,6 +68,12 @@ $bg-light: #f8f9fa;
     }
   }  
 
+button.btn_product_type {
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8}
+  }
+
 @media (min-width: 900px) {
 
   body {
@@ -102,4 +108,4 @@ $bg-light: #f8f9fa;
   //   max-width: 100%;
   //   margin: auto;
   //   }   
-}  
+}

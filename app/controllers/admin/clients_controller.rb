@@ -154,13 +154,13 @@ class Admin::ClientsController < Admin::BaseController
 
   def handle_pagination
     # when exporting data, want it all not just the page of pagination
-    @clients = if params[:export_all]
-                #  @clients.page(params[:page]).per(100_000)
-                 @pagy, @records = pagy(@clients, items: 100_000)
-               else
-                #  @clients.page params[:page]
-                 @pagy, @records = pagy(@clients)
-               end
+    if params[:export_all]
+    #  @clients.page(params[:page]).per(100_000)
+      @pagy, @clients = pagy(@clients, items: 100_000)
+    else
+    #  @clients.page params[:page]
+      @pagy, @clients = pagy(@clients)
+    end
   end
 
   def handle_index_response

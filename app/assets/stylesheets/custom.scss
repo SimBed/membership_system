@@ -704,9 +704,6 @@ input.button-image-sub {
 button {
   border: none;
   background-color: inherit;
-  &:hover {
-    transform: scale(1.5);
-    opacity: 0.5}
 }
 
 i.link {

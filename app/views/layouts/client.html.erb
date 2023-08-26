@@ -5,6 +5,7 @@
     <%= render 'layouts/meta' %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# this loads Sprockets/Rails asset pipeline %>
     <%= stylesheet_link_tag 'custom', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_link_tag 'clients', 'data-turbo-track': 'reload' %>
     <%= javascript_importmap_tags %> <%#  this loads JS from importmaps %>
     <%#= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -24,7 +25,7 @@
         <!--section class="overflow-hidden"-->
         <section>
             <% # https://stackoverflow.com/questions/2448789/rails-easy-way-to-add-more-than-one-flashnotice-at-a-time %>
-            <div id="flash_messages">
+          <div id="flash" class="flash">  
               <%= render_flash %>
             </div>
         </section>
