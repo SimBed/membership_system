@@ -1,10 +1,10 @@
 <div class="text-center mb-3">
   <h6 class="fw-bolder fst-italic mb-0">
-    <%= yield(:classes_heading) %>
+  <%= yield(:classes_heading) %>
   </h6>
     <h2>
       <form action=<%= "/client/clients/#{params[:id]}/history" %> method="GET" >
-        <select name="purchaseid" onchange="this.form.submit()" class= "sort">
+        <select name="purchaseid" onchange="this.form.requestSubmit()" class= "sort">
           <%= options_for_select @products_purchased, session[:purchaseid] %>
         </select>
       </form>

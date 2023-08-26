@@ -1,0 +1,6 @@
+<tr>
+  <%= content_tag(:td, workout.name, class: ("fw-bolder" if workout.current?)) %>
+  <td><%= workout.workout_groups.pluck(:name).join(', ') %></td>
+  <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless workout.current?)].compact.join(' ')), admin_workout_path(workout, current: !workout.current?), data: {turbo_method: :patch} %></td>        
+  <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_workout_path(workout),data: {turbo: false} %></td>
+</tr>

@@ -1,4 +1,5 @@
-<%= form_with(model: [:admin, wkclass]) do |form| %>
+<%#= javascript_import_module_tag "custom/dropdown_populate" %>
+<%= form_with(model: [:admin, wkclass], data: {turbo: false}) do |form| %>
   <% if wkclass.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>
@@ -10,17 +11,15 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%# the wkclass must not be edited after an attendance has been added, otherwise careless administration may cause clients to attend a class for which they do not have an applicable product %>
-    <%#= form.collection_select :workout_id, @workouts, :id, :name, { selected: (@wkclass.workout&.id || @workouts.first) }, { disabled: (true unless @wkclass.attendances.size.zero?) } %>
-  </div>
+  <%#= form.collection_select :workout_id, @workouts, :id, :name, { selected: (@wkclass.workout&.id || @workouts.first) }, { disabled: (true unless @wkclass.attendances.size.zero?) } %>
 
-  <div class="field">
+  <div class="field" data-controller = "content-loader" data-content-loader-url-value = <%= wkclasses_instructor_select_path %> data-content-loader-capacity-value = 'yes'>
     <%# the wkclass must not be edited after an attendance has been added, otherwise careless administration may cause clients to attend a class for which they do not have an applicable product %>
     <% workout_options = @workouts.map { |w| [w.name, w.id, {'data-capacity' => w.default_capacity}] } %>
     <%= form.select :workout_id, options_for_select( workout_options,
                     { selected: (@wkclass.workout&.id || @workouts.first.id),
-                      disabled: (true unless @wkclass.attendances.size.zero?) })
+                      disabled: (true unless @wkclass.attendances.size.zero?) }), {},
+                    { "data-action": "content-loader#change"}
     %>
   </div>
 
@@ -29,9 +28,9 @@
     <%= form.datetime_select :start_time, default: Time.parse('10:30') %>
   </div>
 
-  <div class="field">
+  <div class="field" data-controller = "content-loader" data-content-loader-url-value = <%= wkclasses_instructor_select_path%>>
     <%= form.label :instructor_id %>
-    <%= form.collection_select :instructor_id, @instructors, :id, :name, selected: @instructor_id, include_blank: true %>
+    <%= form.collection_select :instructor_id, @instructors, :id, :name, {selected: @instructor_id, include_blank: true}, {"data-action": "content-loader#change"} %>
   </div>
 
   <div class="field">
@@ -61,4 +60,4 @@
   </div>
 <% end %>
 
-<%= javascript_pack_tag 'wkclass/dropdown_populate' %>
+<%#= javascript_pack_tag 'wkclass/dropdown_populate' %>

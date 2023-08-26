@@ -2,6 +2,7 @@
 <% provide(:greeting, @client.name) %>
 
 <%= render partial: 'client_greeting' %>
-<%= render partial: 'history_heading' %>
-<%= render partial: 'client_packages_table', locals: {detailed: true}  unless @purchases.empty? %>
-
+<%= turbo_frame_tag 'client_packages' do%>
+  <%= render partial: 'history_heading' %>
+  <%= render partial: 'client_packages_table', locals: {detailed: true}  unless @purchases.empty? %>
+<% end %>

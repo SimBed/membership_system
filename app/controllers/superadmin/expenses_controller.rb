@@ -8,6 +8,7 @@ class Superadmin::ExpensesController < Superadmin::BaseController
     respond_to do |format|
       format.html
       format.csv { send_data @expenses.to_csv }
+      format.turbo_stream
     end
   end
 

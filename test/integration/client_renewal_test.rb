@@ -26,22 +26,26 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
 
     assert_template 'client/clients/book'
     # puts @response.parsed_body
-    assert_select 'form', count: 1
+    # 1 form for razorpay + 1 for logout
+    assert_select 'form', count: 2
     # get client_shop_path(@client)
     # assert_template 'public_pages/shop'
     Setting.renew_online = false
     get client_book_path(@account_client.client)
 
-    assert_select 'form', false
+    # assert_select 'form', false
+    # 0 form for razorpay + 1 for logout    
+    assert_select 'form', count: 1
     Setting.renew_online = true
     Setting.days_remain = 60
     get client_book_path(@account_client.client)
 
-    assert_select 'form', count: 1
+    assert_select 'form', count: 2
     Setting.days_remain = 58
     get client_book_path(@account_client.client)
 
-    assert_select 'form', false
+    # assert_select 'form', false
+    assert_select 'form', count: 1    
   end
 
   test 'renewal details correct for client with ongoing package' do

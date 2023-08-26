@@ -1,6 +1,8 @@
-<% message_array= Array.new(1,Array.wrap(message_array))  if (message_array.is_a? String) || (!message_array.all? { |e| e.class==Array }) %>
+<% message_array = Array.new(1,Array.wrap(message_array))  if (message_array.is_a? String) || (!message_array.all? { |e| e.class==Array }) %>
 <% message_array.each do |message| %>
-  <div class="alert alert-<%= message_type %>">
+  <div class="flash__message alert alert-<%= message_type %>"
+       data-controller="removals"
+       data-action="animationend->removals#remove">
     <% if message.is_a?(Array) %>
         <%= content_tag :div, raw(message.join('<br/>')) %>
     <% else %>

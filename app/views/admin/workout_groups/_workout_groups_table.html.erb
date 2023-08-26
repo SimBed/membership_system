@@ -1,36 +1,23 @@
-<table class="table table-secondary table-striped caption-top">
-  <caption>Workout Group List <small><%="(#{@workout_groups.size})"%></small></caption>
-  <tbody >
-    <tr>
-      <th scope="col">Group</th>
-      <th scope="col">Partner</th>
-      <th scope="col">Workout</th>
-      <% unless logged_in_as?('partner') %>
-        <th scope="col">Account</th>
-        <th scope="col">Service</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      <% end %>
-    </tr>
-    <% @workout_groups.each do |workout_group| %>
-      <tr>
-        <% if logged_in_as?('partner', 'superadmin') %>
-          <td><%= link_to workout_group.name, admin_workout_group_path(workout_group), class: 'like_button extra_small' %></td>
-          <td><%= link_to workout_group.partner.name, admin_partner_path(workout_group.partner), class: 'like_button extra_small' %></td>
-        <% else %>
-          <td><%= workout_group.name %></td>
-          <td><%= workout_group.partner.name %></td>
-        <% end %>
-        <td class="extra_small"><%= workout_group.workout_list %></td>
-        <% unless logged_in_as?('partner') %>
-          <td><%= workout_group.requires_account? ? raw("&check;") : "-" %></td>
-          <td><%= workout_group.service %></td>
-          <td><%= image_tag('gst.png', class: "table_icon") if workout_group.gst_applies %></td>
-          <td><%= image_tag('invoice.png', class: "table_icon") if workout_group.requires_invoice %></td>
-          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_workout_group_path(workout_group)%></td>
-         <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div id="workout-groups-table" class="container px-0 mb-5 margin-override">
+  <table class="table table-secondary table-striped caption-top">
+    <caption>Workout Group List <small><%="(#{@workout_groups.size})"%></small></caption>
+    <tbody >
+      <thead>
+        <tr>
+          <th scope="col">Group</th>
+          <th scope="col">Partner</th>
+          <th scope="col">Workout</th>
+          <% unless logged_in_as?('partner') %>
+            <th scope="col">Account</th>
+            <th scope="col">Service</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @workout_groups %>
+      </tbody>
+  </table>
+</div>

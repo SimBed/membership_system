@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_03_014307) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_08_11_122060) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,9 +20,9 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.string "remember_digest"
     t.boolean "activated", default: false
     t.string "reset_digest"
-    t.datetime "reset_sent_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "reset_sent_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "ac_type"
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
@@ -33,8 +32,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.integer "score"
     t.bigint "challenge_id", null: false
     t.bigint "client_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["challenge_id"], name: "index_achievements_on_challenge_id"
     t.index ["client_id"], name: "index_achievements_on_client_id"
     t.index ["date"], name: "index_achievements_on_date"
@@ -45,16 +44,16 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.integer "purchase_id"
     t.integer "adjustment"
     t.text "note"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["purchase_id"], name: "index_adjustments_on_purchase_id"
   end
 
   create_table "assignments", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "role_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_assignments_on_account_id"
     t.index ["role_id"], name: "index_assignments_on_role_id"
   end
@@ -62,8 +61,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
   create_table "attendances", force: :cascade do |t|
     t.integer "wkclass_id"
     t.integer "purchase_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "status", default: "booked"
     t.string "booked_by"
     t.integer "amendment_count", default: 0
@@ -78,8 +77,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.string "metric"
     t.string "metric_type"
     t.bigint "challenge_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["challenge_id"], name: "index_challenges_on_challenge_id"
     t.index ["name"], name: "index_challenges_on_name"
   end
@@ -89,8 +88,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.string "last_name"
     t.string "email"
     t.string "phone"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "instagram"
     t.integer "account_id"
     t.text "note"
@@ -113,21 +112,21 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
     t.text "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
+    t.datetime "run_at", precision: nil
+    t.datetime "locked_at", precision: nil
+    t.datetime "failed_at", precision: nil
     t.string "locked_by"
     t.string "queue"
-    t.datetime "created_at", precision: 6
-    t.datetime "updated_at", precision: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "discount_assignments", force: :cascade do |t|
     t.bigint "discount_id", null: false
     t.bigint "purchase_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["discount_id"], name: "index_discount_assignments_on_discount_id"
     t.index ["purchase_id"], name: "index_discount_assignments_on_purchase_id"
   end
@@ -142,8 +141,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.boolean "renewal_post_package_expiry", default: false
     t.boolean "renewal_pre_trial_expiry", default: false
     t.boolean "renewal_post_trial_expiry", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["first_package"], name: "index_discount_reasons_on_first_package"
     t.index ["friends_and_family"], name: "index_discount_reasons_on_friends_and_family"
     t.index ["name"], name: "index_discount_reasons_on_name"
@@ -165,8 +164,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.boolean "aggregatable", default: false
     t.date "start_date"
     t.date "end_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["discount_reason_id"], name: "index_discounts_on_discount_reason_id"
     t.index ["end_date"], name: "index_discounts_on_end_date"
     t.index ["group"], name: "index_discounts_on_group"
@@ -179,8 +178,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.string "goal"
     t.string "level"
     t.string "studio"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "table_time_id"
     t.bigint "table_day_id"
     t.integer "duration", default: 60
@@ -195,8 +194,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.integer "amount"
     t.date "date"
     t.bigint "workout_group_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amount"], name: "index_expenses_on_amount"
     t.index ["workout_group_id"], name: "index_expenses_on_workout_group_id"
   end
@@ -204,8 +203,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
   create_table "fitternities", force: :cascade do |t|
     t.integer "max_classes"
     t.date "expiry_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "freezes", force: :cascade do |t|
@@ -213,8 +212,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.date "start_date"
     t.date "end_date"
     t.text "note"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["purchase_id"], name: "index_freezes_on_purchase_id"
   end
 
@@ -222,8 +221,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.integer "rate"
     t.date "date_from"
     t.bigint "instructor_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "current", default: true
     t.boolean "group"
     t.string "name"
@@ -235,8 +234,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
   create_table "instructors", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "current", default: true
     t.string "email"
     t.string "whatsapp"
@@ -253,8 +252,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.string "status"
     t.string "payment_id"
     t.integer "account_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "client_ui"
     t.index ["client_ui"], name: "index_orders_on_client_ui"
   end
@@ -262,8 +261,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
   create_table "partners", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "account_id"
     t.string "email"
     t.string "phone"
@@ -277,8 +276,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.bigint "attendance_id", null: false
     t.integer "amount"
     t.string "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["attendance_id"], name: "index_penalties_on_attendance_id", unique: true
     t.index ["purchase_id"], name: "index_penalties_on_purchase_id"
   end
@@ -287,8 +286,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.integer "price"
     t.date "date_from"
     t.integer "product_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.date "date_until"
     t.index ["date_from"], name: "index_prices_on_date_from"
     t.index ["date_until"], name: "index_prices_on_date_until"
@@ -300,8 +299,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.integer "validity_length"
     t.string "validity_unit"
     t.integer "workout_group_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "sellonline", default: false
     t.boolean "current", default: true
     t.string "color"
@@ -324,8 +323,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.boolean "adjust_restart", default: false
     t.integer "ar_payment"
     t.date "ar_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "fitternity_id"
     t.integer "price_id"
     t.string "status", default: "not started"
@@ -349,16 +348,16 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
     t.string "item"
     t.integer "amount"
     t.bigint "workout_group_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["workout_group_id"], name: "index_regular_expenses_on_workout_group_id"
   end
 
   create_table "rel_workout_group_workouts", force: :cascade do |t|
     t.integer "workout_group_id"
     t.integer "workout_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["workout_group_id"], name: "index_rel_workout_group_workouts_on_workout_group_id"
     t.index ["workout_id"], name: "index_rel_workout_group_workouts_on_workout_id"
   end
@@ -366,23 +365,23 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.integer "view_priority"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "settings", force: :cascade do |t|
     t.string "var", null: false
     t.text "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["var"], name: "index_settings_on_var", unique: true
   end
 
   create_table "table_days", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "timetable_id"
     t.index ["name"], name: "index_table_days_on_name"
     t.index ["timetable_id"], name: "index_table_days_on_timetable_id"
@@ -390,8 +389,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
 
   create_table "table_times", force: :cascade do |t|
     t.time "start"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "timetable_id"
     t.index ["start"], name: "index_table_times_on_start"
     t.index ["timetable_id"], name: "index_table_times_on_timetable_id"
@@ -399,16 +398,16 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
 
   create_table "timetables", force: :cascade do |t|
     t.string "title"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["title"], name: "index_timetables_on_title"
   end
 
   create_table "wkclasses", force: :cascade do |t|
     t.integer "workout_id"
-    t.datetime "start_time"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "start_time", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "instructor_id"
     t.integer "instructor_cost"
     t.integer "max_capacity"
@@ -421,8 +420,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
 
   create_table "workout_groups", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "partner_id"
     t.integer "partner_share"
     t.boolean "gst_applies", default: true
@@ -436,8 +435,8 @@ ActiveRecord::Schema.define(version: 2023_07_03_014307) do
 
   create_table "workouts", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "current", default: true
     t.boolean "instructor_initials", default: false
     t.boolean "no_instructor", default: false

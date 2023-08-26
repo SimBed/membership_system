@@ -1,50 +1,21 @@
 <div id="products-table" class="container px-0 mb-5 margin-override">
   <table class="table table-secondary table-striped caption-top">
-    <tbody>
-      <tr>
-        <th scope="col">Product</th>
-        <th class="nomobile" scope="col">Sell Online</th>        
-        <th class="nomobile" scope="col">Active</th>        
-        <th class="nomobile" scope="col">Rider</th>        
-        <th class="nomobile" scope="col">Has Rider</th>
-        <% if logged_in_as?('admin', 'superadmin') %>
-          <th scope="col">Total Count</th>
-          <th scope="col">Ongoing Count</th>
-        <% end %>
-        <th scope="col">Base (Rs)</th>
-      </tr>
-      <% @products.each do |product| %>
+      <thead>
         <tr>
-          <% if logged_in_as?('admin', 'superadmin') %>        
-            <th class="fw-light"><%= link_to product.name, admin_product_path(product), class: 'like_button' %></th>
-          <% else %>
-            <th class="fw-light"><%= product.name %></th>
-          <% end %>
-          <% if logged_in_as?('superadmin') %>          
-            <td class="nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), method: :patch %></td>
-          <% else %>
-            <td class="nomobile"><%= tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)] %></td>
-          <% end %>
+          <th scope="col">Product</th>
+          <th class="nomobile" scope="col">Sell Online</th>        
+          <th class="nomobile" scope="col">Active</th>        
+          <th class="nomobile" scope="col">Rider</th>        
+          <th class="nomobile" scope="col">Has Rider</th>
           <% if logged_in_as?('admin', 'superadmin') %>
-            <td class="nomobile"><%= link_to image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')), admin_product_path(product, current: !product.current?), method: :patch %></td>        
-          <% else %>
-            <td class="nomobile"><%= image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')) %></td>        
+            <th scope="col">Total Count</th>
+            <th scope="col">Ongoing Count</th>
           <% end %>
-          <td><%= product.rider? ? raw("&check;") : "-" %></td>
-          <td><%= product.has_rider? ? raw("&check;") : "-" %></td>
-          <!--image_tag('insta.png', class: ["table_icon",("instawaiver" unless product.sellonline?)].compact.join(' '))-->
-          <% product_data = @products_data[product.name.to_sym] %>
-          <% if logged_in_as?('admin', 'superadmin') %>
-            <td><%= product_data[:total_count] %></td>
-            <td><%= product_data[:ongoing_count] %></td>
-          <% end %>
-          <td><%= number_with_delimiter(product_data[:base_price]) %></td>
-          <%# if logged_in_as?('superadmin') %>
-            <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
-          <%# end %>
-          <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }%></td-->
+          <th scope="col">Base (Rs)</th>
         </tr>
-      <% end %>
-    </tbody>
+      </thead>
+      <tbody id='products'>
+        <%= render @products %>
+      </tbody>
   </table>
 </div>

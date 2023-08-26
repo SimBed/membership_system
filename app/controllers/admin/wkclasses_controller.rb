@@ -130,6 +130,13 @@ class Admin::WkclassesController < Admin::BaseController
     end
   end
 
+  def clear_filters
+    # *splat operator is used to turn array into an argument list
+    # https://ruby-doc.org/core-2.0.0/doc/syntax/calling_methods_rdoc.html#label-Array+to+Arguments+Conversion
+    clear_session(*session_filter_list)
+    redirect_to admin_wkclasses_path
+  end
+
   def filter
     clear_session(*session_filter_list)
     session[:classes_period] = params[:classes_period]
@@ -139,13 +146,13 @@ class Admin::WkclassesController < Admin::BaseController
     redirect_to admin_wkclasses_path
   end
 
-  def instructor
-    # @instructor_rates = Instructor&.find(params[:selected_instructor_id])&.instructor_rates
+  def instructor_select
     workout = Workout.where(id: params[:selected_workout_id])&.first
     @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_by_current_group_instructor_rate || []
     (@instructor_rates = @instructor_rates.select(&:group?)) if workout&.group_workout?
     (@instructor_rates = @instructor_rates.reject(&:group?)) if workout&.pt_workout?
-    render 'instructor.js.erb'
+    # render 'instructor.js.erb'
+    render layout:false
   end
 
   private
@@ -237,14 +244,22 @@ class Admin::WkclassesController < Admin::BaseController
 
   def handle_pagination
     # when exporting data, want it all not just the page of pagination
-    @wkclasses = if params[:export_all]
-                  #  @wkclasses.page(params[:page]).per(100_000)
-                   @pagy, @records = pagy(@wkclasses, items: 100_000)
-                  else
-                    # @wkclasses.page params[:page]
-                    @pagy, @records = pagy(@wkclasses)
-               end
+    if params[:export_all]
+      @pagy, @wkclasses = pagy(@wkclasses, items: 100_000)
+    else
+      @pagy, @wkclasses = pagy(@wkclasses)
+    end
   end
+  # def handle_pagination
+  #   # when exporting data, want it all not just the page of pagination
+  #   @wkclasses = if params[:export_all]
+  #                 #  @wkclasses.page(params[:page]).per(100_000)
+  #                  @pagy, @records = pagy(@wkclasses, items: 100_000)
+  #                 else
+  #                   # @wkclasses.page params[:page]
+  #                   @pagy, @records = pagy(@wkclasses)
+  #              end
+  # end
 
   def handle_index_response
     respond_to do |format|
@@ -253,6 +268,7 @@ class Admin::WkclassesController < Admin::BaseController
       # Railscasts #362 Exporting Csv And Excel
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @wkclasses.to_csv }
+      format.turbo_stream      
     end
   end
 

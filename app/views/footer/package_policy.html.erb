@@ -1,11 +1,9 @@
 <section class="mb-5" id="policy">
 	<div class="container">
-  <h3 class="mt-2 fw-bolder text-uppercase">policies</h3>
-		<div class="row">
-			<div class="">
+  <h3 class="mb-4 fw-bolder text-center text-uppercase">policies</h3>
         <div class="text-center">
           <button id="group_btn" class="btn_policy_type btn btn-filter rounded-pill current" onclick="showPolicy(event, 'group_content')">Group</button>
-          <button id="pt_btn" class="btn_policy_type btn btn-filter rounded-pill" onclick="showPolicy(event, 'pt_content')">PT</button>     
+          <button id="pt_btn" class="btn_policy_type btn btn-filter rounded-pill px-4" onclick="showPolicy(event, 'pt_content')">PT</button>     
         </div>
         <div id='group_content' class = 'policy_content' >
           <%= render 'group_package_policy' %>

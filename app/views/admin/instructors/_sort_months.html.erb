@@ -1,0 +1,5 @@
+<form action=<%= "/admin/instructors/#{params[:id]}" %> method="GET">
+  <select name="revenue_month" onchange="this.form.requestSubmit()" class= "sort">
+    <%= options_for_select @months, session[:revenue_month] %>
+  </select>
+</form>

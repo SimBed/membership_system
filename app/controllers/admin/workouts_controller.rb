@@ -4,10 +4,10 @@ class Admin::WorkoutsController < Admin::BaseController
   def index
     @workouts = Workout.order_by_current
     @workouts = @workouts.current if session[:filter_workout_active].present?
-    respond_to do |format|
-      format.html
-      format.js { render 'index.js.erb' }
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.js { render 'index.js.erb' }
+    # end
   end
 
   def show; end

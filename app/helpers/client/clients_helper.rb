@@ -27,7 +27,7 @@ module Client::ClientsHelper
       confirmation = t('client.clients.attendance.create.full')
       { css_class: 'table-secondary',
         link: (link_to '#',
-                       data: { confirm: confirmation },
+                       data: { turbo_confirm: confirmation },
                        class: 'icon-container' do tag.i class: ["bi bi-battery-full"] end)
         }
     else
@@ -38,8 +38,7 @@ module Client::ClientsHelper
           image_tag('add.png', class: 'table_icon'),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id),
-          method: :post,
-          data: { confirm: confirmation },
+          data: { turbo_method: :post, turbo_confirm: confirmation },
           class: 'icon-container'
         ) }
 
@@ -78,8 +77,7 @@ module Client::ClientsHelper
     link_to(
       image_tag(png, class: 'table_icon'),
       admin_attendance_path(attendance),
-      method: :patch,
-      data: { confirm: confirmation },
+      data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )
   end

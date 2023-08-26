@@ -1,19 +1,12 @@
-<table class="table table-secondary table-striped caption-top">
-  <caption></caption>
-  <tbody>
-    <% @expenses.each do |expense| %>
+<div id="expenses_table" class="container px-1 mb-5 margin-override">
+  <table class="table table-secondary table-striped caption-top">
+    <caption></caption>
+    <tbody>
+      <%= render @expenses %>
       <tr>
-        <th scope="row"><%= expense.item %></th>
-        <td><%= number_with_delimiter(expense.amount) %></td>
-        <td><%= expense.date.strftime '%b %y' %></td>
-        <td><%= link_to expense.workout_group.name, admin_workout_group_path(expense.workout_group), class: 'like_button' %></td>
-        <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_expense_path(expense) %></td>
-        <td><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_expense_path(expense), method: :delete, data: { confirm: 'Expense will be deleted. Are you sure?' } %></td>
+        <th scope="row">Total</th>
+        <td class="fw-bold"><%= rupees(@expenses.sum(:amount)) %></td>
       </tr>
-    <% end %>
-    <tr>
-      <th scope="row">Total</th>
-      <td class="fw-bold"><%= rupees(@expenses.sum(:amount)) %></td>
-    </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>

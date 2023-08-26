@@ -1,3 +1,4 @@
+<div class="accordion">
 <% @products.each_with_index do |product, index| %>
   <div class="accordion-item product <%=product.css_class%>">
     <div class="accordion-header" id=<%="heading-1-#{index}"%>>
@@ -34,3 +35,4 @@
     </div>
   </div>
 <% end %>
+</div>

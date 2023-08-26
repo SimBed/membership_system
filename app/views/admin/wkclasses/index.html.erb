@@ -1,14 +1,12 @@
 <div class="container px-1 margin-override">
-  <h4>Classes <%= link_to image_tag('add.png', class: "button_icon"), new_admin_wkclass_path, class: "icon-container" %></h4>
+  <h4>Classes <%= link_to image_tag('add.png', class: "button_icon"), new_admin_wkclass_path %></h4>
 </div>
-<div id="wkclasses-filter" class="container px-1 mb-5 margin-override">
+<%= turbo_frame_tag 'wkclasses-and-filter' do %>
   <%= render partial: 'filter_form' %>
-</div>
-<% if logged_in_as?('superadmin') %>
-  <div class="container px-1 margin-override">  
+  <% if logged_in_as?('superadmin') %>
     <%= render partial: 'download' %>
-  </div> 
+  <% end %>
+    <%= turbo_frame_tag 'wkclasses' do %>  
+      <%= render partial: 'wkclasses_table' %>
+    <% end %>
 <% end %>
-<div id="wkclasses-table" class="container px-0 mb-5 margin-override">
-  <%= render partial: 'classes_table' %>
-</div>

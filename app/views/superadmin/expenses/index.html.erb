@@ -1,14 +1,10 @@
-<h4>Expenses <%= link_to image_tag('add.png'), new_superadmin_expense_path %></h4>
-<form action=<%= "/superadmin/expenses/filter" %> method="GET">
-  <select name="revenue_month" onchange="this.form.submit()" class= "sort">
-    <%= options_for_select @months, session[:revenue_month] %>
-  </select>
-</form>
-<% if logged_in_as?('superadmin') %>
-  <div class="container px-1 margin-override">  
-    <%= render partial: 'download' %>
-  </div>
-<% end %>
-<div id="expenses_table" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'expenses_table' %>
+<div id="rates_table" class="container px-1 margin-override">
+  <h4>Expenses <%= link_to image_tag('add.png', class: 'button_icon'), new_superadmin_expense_path %></h4>
 </div>
+<%= render partial: 'filter_form' %>
+<% if logged_in_as?('superadmin') %>
+  <%= render partial: 'download' %>
+<% end %>
+<%= turbo_frame_tag 'expenses' do %>
+  <%= render partial: 'expenses_table' %>
+<% end %>

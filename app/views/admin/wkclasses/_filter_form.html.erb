@@ -1,61 +1,67 @@
-<div class="container search">
-  <hr class = "search mb-3"></hr>
+<div id="wkclasses-filter" class="container px-2 mb-5 margin-override">
+  <div class="container search">
+    <hr class = "search mb-3"></hr>
 
-  <%= form_with(url: wkclass_filter_path, method: "get", local: false, class: "form-class") do %>
-    <div class="container mb-1 px-1">
-      <div class="row">
-        <div class="col-4 px-0">
-          <fieldset>
-            <legend>WORKOUT</legend>
-            <% @workouts.each do |wk| %>
-              <%= label_tag nil, class: "chbox-lbl-filters" do %>
-                <%= check_box_tag 'any_workout_of[]', wk.name, session[:filter_any_workout_of].present? ? session[:filter_any_workout_of].include?(wk.name) : false, id: "chbox#{wk.id}", onchange: 'Rails.fire(this.form, "submit")' %>
-                <%= wk.name %>
+    <%= form_with(url: wkclass_filter_path, method: "get", class: "form-class", data: {turbo_frame: "wkclasses"}) do %>
+      <div class="container mb-1 px-1">
+        <div class="row">
+          <div class="col-4 px-0">
+            <fieldset>
+              <legend>WORKOUT</legend>
+              <% @workouts.each do |wk| %>
+                <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                  <%= check_box_tag 'any_workout_of[]', wk.name, session[:filter_any_workout_of].present? ? session[:filter_any_workout_of].include?(wk.name) : false, id: "chbox#{wk.id}", onchange: "this.form.requestSubmit()" %>
+                  <%= wk.name %>
+                <% end %>
               <% end %>
-            <% end %>
+            </fieldset>
+          </div>
+          <div class="col-4 px-0">
+            <fieldset>
+              <legend>ATTRIBUTE</legend>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'in_workout_group', 'Group', session[:filter_in_workout_group].present? ? true : false, class: "checkbox-class", id: "chbox_in_workout_group", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Group' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'todays_class', 'todays_class', session[:filter_todays_class].present? ? true : false, class: "checkbox-class", id: "chbox_todays_class",onchange: "this.form.requestSubmit()"  %>
+                <%= 'Today' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'yesterdays_class', 'yesterdays_class', session[:filter_yesterdays_class].present? ? true : false, class: "checkbox-class", id: "chbox_yesterdays_class", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Yesterday' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'tomorrows_class', 'tomorrows_class', session[:filter_tomorrows_class].present? ? true : false, class: "checkbox-class", id: "chbox_tomorrows_class", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Tomorrow' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'past', 'past', session[:filter_past].present? ? true : false, class: "checkbox-class", id: "chbox_past", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Past' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'future', 'future', session[:filter_future].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Future' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'problematic', 'problematic', session[:filter_problematic].present? ? true : false, class: "checkbox-class", id: "chbox_problematic", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Problematic' %>
+              <% end %>
+            </fieldset>
+          </div>
+
+          <div class="container d-flex">
+            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_wkclass_filters_path, {class: "search searchdelete icon-container"} %>
+          </div>
+
+          <fieldset class="mt-2">
+            <select name="classes_period" class= "sort" onchange="this.form.requestSubmit()">
+              <%= options_for_select @months, session[:classes_period] %>
+            </select>
           </fieldset>
         </div>
-        <div class="col-4 px-0">
-          <fieldset>
-            <legend>ATTRIBUTE</legend>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%#= check_box_tag 'spacegroup', Rails.env.production? ? 'Space Group' : 'Space', session[:filter_spacegroup].present? ? true : false, class: "checkbox-class", id: "chbox_spacegroup", onchange: "this.form.submit()"  %>
-              <%= check_box_tag 'in_workout_group', 'Group', session[:filter_in_workout_group].present? ? true : false, class: "checkbox-class", id: "chbox_in_workout_group", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Group' %>
-            <% end %>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'todays_class', 'todays_class', session[:filter_todays_class].present? ? true : false, class: "checkbox-class", id: "chbox_todays_class",onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Today' %>
-            <% end %>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'yesterdays_class', 'yesterdays_class', session[:filter_yesterdays_class].present? ? true : false, class: "checkbox-class", id: "chbox_yesterdays_class", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Yesterday' %>
-            <% end %>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'tomorrows_class', 'tomorrows_class', session[:filter_tomorrows_class].present? ? true : false, class: "checkbox-class", id: "chbox_tomorrows_class", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Tomorrow' %>
-            <% end %>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'past', 'past', session[:filter_past].present? ? true : false, class: "checkbox-class", id: "chbox_past", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Past' %>
-            <% end %>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'future', 'future', session[:filter_future].present? ? true : false, class: "checkbox-class", id: "chbox_future", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Future' %>
-            <% end %>
-            <%= label_tag nil, class: "chbox-lbl-filters" do %>
-              <%= check_box_tag 'problematic', 'problematic', session[:filter_problematic].present? ? true : false, class: "checkbox-class", id: "chbox_problematic", onchange: 'Rails.fire(this.form, "submit")'  %>
-              <%= 'Problematic' %>
-            <% end %>
-          </fieldset>
-        </div>
-        <fieldset class="mt-2">
-          <select name="classes_period" onchange="this.form.submit()" class= "sort">
-            <%= options_for_select @months, session[:classes_period] %>
-          </select>
-        </fieldset>
       </div>
-    </div>
-  <% end %>
-  <hr class = "search mb-3"></hr>
+    <% end %>
+    <hr class = "search mb-3"></hr>
+  </div>
 </div>

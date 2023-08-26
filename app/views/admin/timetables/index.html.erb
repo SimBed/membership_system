@@ -1,8 +1,6 @@
 <div class="container px-1 margin-override">
-  <h4> Timetables <%= link_to image_tag('add.png'), new_admin_timetable_path %></h4>
+  <h4> Timetables <%= link_to image_tag('add.png', class: "button_icon"), new_admin_timetable_path %></h4>
 </div>
+<%= render partial: 'timetables_table' %>
 
-<div id="purchases-table" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'timetables_table' %>
-</div>
 

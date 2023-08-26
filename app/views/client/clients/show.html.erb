@@ -18,49 +18,18 @@
             <%= yield(:challenges_heading) %>
           </h6>
             <h2>
-              <form action=<%= "/client/clients/#{params[:id]}/#client-challenge" %> method="GET" >
-                <select name="challenge_id" onchange="this.form.submit()" class= "sort">
+              <form action=<%= "/client/clients/#{params[:id]}/#client-challenge" %> method="GET" data-turbo-frame="achievement_chart" >
+                <select name="challenge_id" class= "sort" onchange="this.form.requestSubmit()" >
                   <%= options_for_select @challenges_entered, session[:challenge_id] %>
                 </select>
               </form>
             </h2>
-        </div>  
-      <%= render partial: 'achievement_chart' %>
+        </div>
+        <%= turbo_frame_tag 'achievement_chart' do %>
+          <%= render 'achievement_chart' %>
+        <% end %>
     </div>
   <% end %>  
 <% end %>
 
-<div id="client-password-reset" class="ps-1">
-  <h6 class="fw-bolder fst-italic mb-1">
-    Password Reset
-  </h6>
-  <%= form_with(model: [:admin, @account]) do |form| %>
-    <% if @account.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@account.errors.count, "error") %> prohibited this password from being updated:</h2>
-        <ul>
-          <% @account.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <div class="field mb-1">
-      <%= form.label :new_password, style:"width:12em;" %>
-      <%= form.text_field :new_password %>
-    </div>
-
-    <div class="field mb-1">
-      <%= form.label :new_password_confirmation, style:"width:12em;" %>
-      <%= form.text_field :new_password_confirmation %>
-    </div>
-
-    <div><%= form.hidden_field :requested_by, value: 'client' %></div>
-
-    <div class="actions">
-      <%= form.submit 'Update Password' %>
-    </div>
-  <% end %>
-
-</div>
+<%= render partial: 'client/clients/password_reset' %>
