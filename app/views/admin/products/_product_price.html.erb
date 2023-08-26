@@ -1,0 +1,10 @@
+<tr>
+  <td><%= number_with_delimiter(price.price) %></td>
+  <td><%= price.date_from.strftime('%d %b %y') %></td>
+  <td><%= ((price.date_until || Date.today) - Date.today > 3650) ? raw("&infin;") :price.date_until&.strftime('%d %b %y') %></td>
+  <td><%= Purchase.where(price_id:price).size %></td>
+  <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless price.current?)].compact.join(' ')), admin_price_path(price, current: !price.current?, product_id: params[:id] ), data: {turbo_method: :patch} %></td>                    
+  <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_price_path(price), data: {turbo: false} %></td>
+  <td><%= link_to image_tag('delete.png', class: "table_icon").html_safe, admin_price_path(price), {data: {turbo_method: :delete, turbo_confirm: 'Price will be deleted. Are you sure?' }} %></td>
+</tr>
+

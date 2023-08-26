@@ -1,0 +1,8 @@
+<tr>
+  <td><%= achievement.date.strftime('%d/%m/%y') %></td>
+  <td><%= achievement.score %></td>
+  <td><%= link_to achievement.client.name, admin_client_path(achievement.client), class: 'like_button', data: {turbo: false} %></td>
+  <td><%= link_to achievement.challenge.name, shared_challenge_path(achievement.challenge) %> </td>
+  <td class="pl-3 pl-md-5"><%= link_to image_tag("edit.png", class: "table_icon"), edit_shared_achievement_path(achievement), data: { turbo: false } %></td>
+  <td class="pl-md-3"><%= link_to image_tag("delete.png", class: "table_icon"), shared_achievement_path(achievement), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Are you sure?' } %></td>
+</tr>

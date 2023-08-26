@@ -1,17 +1,23 @@
 module ApplicationHelper
   include Pagy::Frontend
   
-  def flash_message(type, text = nil)
+  def flash_message(type, text = nil, now = nil)
     return if type.nil?
 
-    flash[type] ||= []
-    flash[type] << (text.is_a?(Array) ? text : [text])
+    if now
+      flash.now[type] ||= []
+      flash.now[type] << (text.is_a?(Array) ? text : [text])
+    else
+      flash[type] ||= []
+      flash[type] << (text.is_a?(Array) ? text : [text])
+    end
   end
 
   def render_flash
     rendered = []
     flash.each do |message_type, message_array|
-      rendered << render(partial: 'partials/flash', locals: { message_type:, message_array: }) if message_array.present?
+      # rendered << render(partial: 'partials/flash', locals: { message_type:, message_array: }) if message_array.present?
+      rendered << render('partials/flash', { message_type:, message_array: }) if message_array.present?
     end
     raw(rendered.join('<br/>'))
   end

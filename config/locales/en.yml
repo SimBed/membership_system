@@ -23,6 +23,7 @@ en:
         warning: Forbidden
       update:
         success: Your password has been changed
+        fail: Update failed. Passwords either don't match or too short (min 6 characters)
       show:
         warning: Forbidden 
     adjustments:
@@ -93,6 +94,13 @@ en:
       expire:
         success: "%{name}'s purchase was successfully expired"
         unexpired: "%{name}'s purchase has been brought back to life"
+    timetables:
+      create:
+        success: Timetable was successfully added
+      update:
+        success: Timetable was successfully updated
+      destroy:
+        success: Timetable was successfully deleted
     wkclasses:
       create:
         success: "%{repeats} successfully added"
@@ -173,6 +181,21 @@ en:
   public_pages:
     create_account:
       daily_account_limit: Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.
+  shared:
+    achievements:
+      create:
+        success: Achievement was successfully added
+      update:
+        success: Achievement was successfully updated
+      destroy:
+        success: Achievement was successfully deleted
+    challenges:
+      create:
+        success: Challenge was successfully added
+      update:
+        success: Challenge was successfully updated
+      destroy:
+        success: Challenge was successfully deleted
   forbidden: Forbidden
   new_purchase_by_client: Thank you for your purchase. You can see details of your purchase on this page. Go to the Book page to book your classes
   signup: "Welcome to The Space %{name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."

@@ -1,0 +1,18 @@
+<div id="challenges-table" class="container px-0 mb-5 margin-override">
+  <table class="table table-secondary table-striped caption-top">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Metric</th>
+        <th>Metric Type</th>
+        <th>Main Challenge</th>
+        <% if logged_in_as?('superadmin') %>
+          <th colspan="2"></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @challenges %>
+    </tbody>
+  </table>
+</div>

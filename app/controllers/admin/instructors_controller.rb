@@ -72,9 +72,6 @@ class Admin::InstructorsController < Admin::BaseController
       # this seems to be the way to use sort_by with a secondary order (but fails when attendance is nil for some reason "|| 'Z'" mitigates this)
       [w.attendances&.first&.client&.name || 'Z', -w.start_time.to_i]
     end
-    # restore to ActiveRecord and recover order.
-    # ids = @wkclasses_with_instructor_expense.map(&:id)
-    # @wkclasses_with_instructor_expense = Wkclass.recover_order(ids)
   end
 
   def set_period

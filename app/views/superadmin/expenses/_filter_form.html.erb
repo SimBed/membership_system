@@ -1,0 +1,12 @@
+<% if false %>
+<form action=<%= "/superadmin/expenses/filter" %> method="GET">
+  <select name="revenue_month" class= "sort" onchange="this.form.submit()" >
+    <%= options_for_select @months, session[:revenue_month] %>
+  </select>
+</form>
+<% end %>
+
+<%= form_with(url: superadmin_expenses_filter_path, method: "get", class: "form-class", data: {turbo_frame: "expenses"}) do |form| %>
+   <%= form.select :revenue_month, options_for_select(@months, session[:revenue_month]), {class: "sort"}, {onchange: "this.form.requestSubmit()"} %>
+<% end %>
+

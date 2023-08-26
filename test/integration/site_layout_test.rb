@@ -44,7 +44,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', '/switch_account_role?role=junioradmin'
     assert_select 'a[href=?]', '/switch_account_role?role=instructor'
     assert_select 'a[href=?]', '/switch_account_role?role=client'
-    assert_select 'a[href=?]', logout_path
+    # assert_select 'a[href=?]', logout_path
+    assert_select 'form.button_to[action=?]', logout_path
     assert_select 'a[href=?]', login_path, count: 0
 
     assert_select 'a[href=?]', about_path
@@ -89,7 +90,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', '/switch_account_role?role=junioradmin'
     assert_select 'a[href=?]', '/switch_account_role?role=instructor', count: 0
     assert_select 'a[href=?]', '/switch_account_role?role=client', count: 0
-    assert_select 'a[href=?]', logout_path
+    # assert_select 'a[href=?]', logout_path
+    assert_select 'form.button_to[action=?]', logout_path    
     assert_select 'a[href=?]', login_path, count: 0
 
     assert_select 'a[href=?]', about_path
@@ -132,7 +134,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', '/switch_account_role?role=junioradmin', count: 0
     assert_select 'a[href=?]', '/switch_account_role?role=instructor', count: 0
     assert_select 'a[href=?]', '/switch_account_role?role=client', count: 0
-    assert_select 'a[href=?]', logout_path
+    # assert_select 'a[href=?]', logout_path
+    assert_select 'form.button_to[action=?]', logout_path      
     assert_select 'a[href=?]', login_path, count: 0
 
     assert_select 'a[href=?]', about_path
@@ -175,7 +178,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
     assert_select 'a[href=?]', superadmin_orders_path, count: 0
     assert_select 'a[href=?]', superadmin_settings_path, count: 0
-    assert_select 'a[href=?]', logout_path
+    # assert_select 'a[href=?]', logout_path
+    assert_select 'form.button_to[action=?]', logout_path      
     assert_select 'a[href=?]', login_path, count: 0
 
     assert_select 'a[href=?]', about_path
@@ -227,7 +231,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
     assert_select 'a[href=?]', superadmin_orders_path, count: 0
     assert_select 'a[href=?]', superadmin_settings_path, count: 0
-    assert_select 'a[href=?]', logout_path
+    # assert_select 'a[href=?]', logout_path
+    assert_select 'form.button_to[action=?]', logout_path    
     assert_select 'a[href=?]', login_path, count: 0
 
     assert_select 'a[href=?]', about_path

@@ -1,66 +1,48 @@
-<div class="container search">
-  <div class="d-flex">
-    <form action="/admin/clients" method="GET">
-      <div class="mt-0">
-        <i class="fas fa-sort-alpha-down"></i>
-        <select class="form-control-sm mb-2 sort" name="client_sort_option" onchange="this.form.submit()">
-          <option disabled="disabled" selected="selected" value="">Sort by</option>
-          <option value="first_name" <%="selected" if session[:client_sort_option] == "first_name"%> >first name</option>
-          <option value="last_name" <%="selected" if session[:client_sort_option] == "last_name"%> >last name</option>
-          <option value="created_at" <%="selected" if session[:client_sort_option] == "created_at"%> >date added</option>
-        </select>
-    </div>
-    </form>
+<div id="clients-filter" class="container px-1 mb-5 margin-override">
+  <div class="container search">
+    <%= render partial: 'sort_selection' %>
+    <hr class = "search mb-3"></hr>
+    <%= form_with(url: client_filter_path, method: "get", class: "form-class", data: {turbo_frame: "clients"}) do %>
+      <div class="field">
+        <%= text_field_tag :search_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_client_name], oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="field">
+        <%= text_field_tag :search_client_number, nil, class: "form-control-sm mb-2 search", placeholder: "Number search…", value: session[:search_client_number], oninput: "this.form.requestSubmit()" %>
+      </div>
+      <div class="container mb-1">
+        <div class="row">
+          <div class="col-6 px-0">
+            <fieldset>
+              <legend>ATTRIBUTE</legend>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'cold', 'cold', session[:filter_cold].present? ? true : false, class: "checkbox-class", id: "chbox_cold", onchange: "this.form.requestSubmit()" %>
+                <%= 'cold' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'enquiry', 'enquiry', session[:filter_enquiry].present? ? true : false, class: "checkbox-class", id: "chbox_enquiry", onchange: "this.form.requestSubmit()" %>
+                <%= 'enquiry' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'packagee', 'packagee', session[:filter_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: "this.form.requestSubmit()" %>
+                <%= 'has package' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'active', 'active', session[:filter_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: "this.form.requestSubmit()" %>
+                <%= 'active' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'one_time_trial', 'one_time_trial', session[:filter_one_time_trial].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: "this.form.requestSubmit()" %>
+                <%= 'one time trial' %>
+              <% end %>
+            </fieldset>
+          </div>
+
+          <div class="container d-flex">
+            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_client_filters_path, {class: "search searchdelete icon-container"} %>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
-
-  <hr class = "search mb-3"></hr>
-
-  <%= form_with(url: client_filter_path, method: "get", local: false, class: "form-class") do %>
-
-  <div class="field">
-  <%= text_field_tag :search_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_client_name], onchange: 'Rails.fire(this.form, "submit")' %>
-  </div>
-
-  <div class="field">
-  <%= text_field_tag :search_client_number, nil, class: "form-control-sm mb-2 search", placeholder: "Number search…", value: session[:search_client_number], onchange: 'Rails.fire(this.form, "submit")' %>
-  </div>
-
-  <div class="container mb-1">
-  <div class="row">
-
-  <div class="col-6 px-0">
-    <fieldset>
-      <legend>ATTRIBUTE</legend>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'cold', 'cold', session[:filter_cold].present? ? true : false, class: "checkbox-class", id: "chbox_cold", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'cold' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'enquiry', 'enquiry', session[:filter_enquiry].present? ? true : false, class: "checkbox-class", id: "chbox_enquiry", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'enquiry' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'packagee', 'packagee', session[:filter_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'has package' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'active', 'active', session[:filter_active].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'active' %>
-      <% end %>
-      <%= label_tag nil, class: "chbox-lbl-filters" do %>
-        <%= check_box_tag 'one_time_trial', 'one_time_trial', session[:filter_one_time_trial].present? ? true : false, class: "checkbox-class", id: "chbox_active", onchange: 'Rails.fire(this.form, "submit")' %>
-        <%= 'one time trial' %>
-      <% end %>
-    </fieldset>
-  </div>
-
-  <div class="container d-flex">
-    <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_client_filters_path, {remote: true, class: "search searchdelete icon-container"} %>
-  </div>
-  <% end %>
-
-  </div>
-  </div>
-
   <hr class = "search mb-3"></hr>
 </div>

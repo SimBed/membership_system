@@ -14,7 +14,7 @@ module AttendanceSystem
     config.load_defaults 6.1
 
     # DPS https://github.com/collectiveidea/delayed_job/tree/v4.1.10
-    config.active_job.queue_adapter = :delayed_job
+    config.active_job.queue_adapter = :delayed_job    
 
     # Configuration for the application, engines, and railties goes here.
     #

@@ -3,21 +3,13 @@
     <%= @product.formal_name %>
     <%= image_tag('attendances.png', class: ["table_icon",("active-product" unless @product.current?)].compact.join(' ')) %>
   </h6>
-  <h6>
-    <form action=<%= "/admin/products/#{params[:id]}" %> method="GET" data-remote="true" class="ms-3 align-with-header">
-        <select name="product_period" onchange="Rails.fire(this.form, 'submit')" class="sort">
-          <%= options_for_select @months, session[:product_period] %>
-        </select>
-    </form>
-  </h6>
 </div>
-
-<div id="product-price-table" class="container px-1 mb-5 margin-override">
-  <%= render partial: 'product_price_table' %>
-</div>
-
-<div id="product-purchased-table" class="container px-1 mb-3 margin-override">
-  <%= render partial: 'product_purchased_table' %>
-</div>
+<%= turbo_frame_tag 'product_prices' do %>
+  <%= render partial: 'product_prices_table' %>
+<% end %>
+<%= turbo_frame_tag 'products_purchased' do %>
+<%= render partial: 'filter_prices'%>
+  <%= render partial: 'products_purchased_table' %>
+<% end %> 
 
 <%= link_to image_tag('back.png', class: "back_icon"), admin_products_path, class: "icon-container" %>

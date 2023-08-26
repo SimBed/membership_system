@@ -114,7 +114,10 @@ class Admin::PurchasesController < Admin::BaseController
   def new_purchase_client_filter
     clear_session(:select_client_name)
     session[:select_client_name] = params[:select_client_name] || session[:select_client_name]
-    redirect_to new_admin_purchase_path
+    @clients = Client.order_by_first_name
+    @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
+    render json: { clientindex: @selected_client_index}
+    # redirect_to new_admin_purchase_path
   end
 
   def clear_filters
@@ -159,7 +162,10 @@ class Admin::PurchasesController < Admin::BaseController
     # @payment_after_discount = [0, (@base_price.price * (1 - discount_percent.to_f / 100) - discount_fixed).round(0)].max
     # apply_discount defined in ApplyDiscount concern
     @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount, @discretion_discount, @commercial_discount)
-    render 'payment_after_discount.js'
+     # render 'payment_after_discount.js'
+     render json: { base_price_price: @base_price.price,
+                   payment_after_discount: @payment_after_discount,
+                   base_price_id: @base_price.id }
   end
 
   def dop_change
@@ -173,8 +179,10 @@ class Admin::PurchasesController < Admin::BaseController
     @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', dop)
     @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', dop)
     @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', dop)
-
-    render 'discounts_after_dop_change.js'
+    render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, @renewal_discounts, :id, :name, selected: @purchase_renewal_discount_id || @discount_none.id ),
+    status: helpers.collection_select(:purchase, :status_discount_id, @status_discounts, :id, :name, selected: @purchase_status_discount_id || @discount_none.id ),
+    oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, @oneoff_discounts, :id, :name, selected: @purchase_oneoff_discount_id ||  @discount_none.id ) }
+    # render 'discounts_after_dop_change.js'
   end
 
   private
@@ -331,7 +339,7 @@ class Admin::PurchasesController < Admin::BaseController
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
     @other_attributes = %w[classpass close_to_expiry fixed package_not_trial trial uninvoiced unpaid remind_to_renew sunset_passed written_off]
-    @months = months_logged + ['All']
+    @months = ['All'] + months_logged
   end
 
   def handle_sort
@@ -434,6 +442,7 @@ class Admin::PurchasesController < Admin::BaseController
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @purchases.to_csv }
       format.xls
+      format.turbo_stream
     end
   end
 end

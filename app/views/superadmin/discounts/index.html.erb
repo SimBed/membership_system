@@ -1,90 +1,9 @@
-<h4>Discounts <%= link_to image_tag('add.png'), new_superadmin_discount_path %></h4>
-<div id="discounts_table" class="container px-1 mb-5 margin-override overflow-auto">
-  <table class="table table-secondary caption-top table-hover">
-    <caption>current</caption>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Percent</th>
-        <th>Fixed</th>
-        <th>Group</th>
-        <th>Pt</th>
-        <th>Online</th>
-        <th>Aggregate</th>
-        <th>Start date</th>
-        <th>End date</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @discount_type_hash[:current].each_key do |rationale| %>
-        <% unless @discount_type_hash[:current][rationale].blank? %>
-          <tr>
-            <%= tag.td rationale, colspan:"12", class: %w(fw-bolder text-uppercase text-light) + [rationale == :oneoff ? 'discount-warning' : 'bg-secondary'] %>
-          </tr>
-          <% @discount_type_hash[:current][rationale].uniq.each do |discount| %>
-            <tr>
-              <td><%= discount.discount_reason.name %></td>
-              <td><%= number_with_precision(discount.percent&.round(2), precision: 2,  strip_insignificant_zeros: true) %></td>
-              <td><%= number_with_delimiter(discount.fixed) %></td>
-              <td><%= discount.group? ? raw("&check;") : "-" %></td>
-              <td><%= discount.pt? ? raw("&check;") : "-" %></td>
-              <td><%= discount.online? ? raw("&check;") : "-" %></td>
-              <td><%= discount.aggregatable? ? raw("&check;") : "-" %></td>
-              <td><%= discount.start_date.strftime '%d %b %Y' %></td>
-              <td><%= (discount.end_date - Date.today > 3650) ? raw("&infin;") : (discount.end_date.strftime '%d %b %Y') %></td>
-              <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless discount.current?)].compact.join(' ')), superadmin_discount_path(discount, current: !discount.current?), method: :patch %></td>                    
-              <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_discount_path(discount) unless discount.no_discount? %></td>
-              <td><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_discount_path(discount), method: :delete, data: { confirm: 'Discount will be deleted. Are you sure?' } unless (discount.no_discount? || discount.used?) %></td>
-            </tr>
-          <% end %>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
-
-  <hr class ="my-5">
-
-  <table class="table table-secondary caption-top table-hover">
-  <caption>not current</caption>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Percent</th>
-        <th>Fixed</th>
-        <th>Group</th>
-        <th>Pt</th>
-        <th>Online</th>
-        <th>Aggregate</th>
-        <th>Start date</th>
-        <th>End date</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @discount_type_hash[:not_current].each_key do |rationale| %>
-        <% unless @discount_type_hash[:not_current][rationale].blank? %>
-          <tr>
-            <td colspan="12" class="fw-bolder text-uppercase text-light bg-secondary"><%= rationale %></td>
-          </tr>
-          <% @discount_type_hash[:not_current][rationale].uniq.each do |discount| %>
-            <tr>
-              <td><%= discount.discount_reason.name %></td>
-              <td><%= number_with_precision(discount.percent&.round(2), precision: 2,  strip_insignificant_zeros: true) %></td>
-              <td><%= number_with_delimiter(discount.fixed) %></td>
-              <td><%= discount.group? ? raw("&check;") : "-" %></td>
-              <td><%= discount.pt? ? raw("&check;") : "-" %></td>
-              <td><%= discount.online? ? raw("&check;") : "-" %></td>
-              <td><%= discount.aggregatable? ? raw("&check;") : "-" %></td>
-              <td><%= discount.start_date.strftime '%d %b %Y' %></td>
-              <td><%= (discount.end_date - Date.today > 3650) ? raw("&infin;") : (discount.end_date.strftime '%d %b %Y') %></td>
-              <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless discount.current?)].compact.join(' ')), superadmin_discount_path(discount, current: !discount.current?), method: :patch %></td>                    
-              <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_discount_path(discount) unless discount.no_discount? %></td>
-              <td><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_discount_path(discount), method: :delete, data: { confirm: 'Discount will be deleted. Are you sure?' } unless discount.no_discount? || discount.used? %></td>
-            </tr>
-          <% end %>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
+<div class="container px-1 margin-override">
+  <h4>Discounts <%= link_to image_tag('add.png', class: 'button_icon'), new_superadmin_discount_path %></h4>
+</div>
+<div id="discounts_table_active" class="container px-1 mb-5 margin-override overflow-auto">
+  <%= render 'discounts_table_active' %>
+</div>
+<div id="discounts_table_inactive" class="container px-1 mb-5 margin-override overflow-auto">
+  <%= render 'discounts_table_inactive' %>
 </div>

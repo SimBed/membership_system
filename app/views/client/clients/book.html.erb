@@ -15,7 +15,9 @@
 <% end %>
 <%#= render partial: 'client_heading', locals: {selection: false} %>
 <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_visible.empty? %>
-<%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_visible.empty? %>
+<%= turbo_frame_tag 'client_bookings' do %>
+  <%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_visible.empty? %>
+<% end %>
 <!--div id="consistency" class="container px-1 mb-5">
   <%#= render partial: 'consistency' %>
 </div-->

@@ -1,10 +1,12 @@
 <% if @achievements.present? || @main_challenge_selected %>   
   <%= render partial: 'achievement_heading' %>
-  <% unless @main_challenge_selected %>
-    <%= render partial: 'achievement_chart' %>
-    <%= render partial: 'achievement_table' %>
+  <%= turbo_frame_tag 'achievement_chart' do %>
+    <% unless @main_challenge_selected %>
+        <%= render partial: 'achievement_chart' %>
+        <%= render partial: 'achievement_table' %>
+    <% end %>
+    <%= render partial: 'achievement_league' %>
   <% end %>
-  <%= render partial: 'achievement_league' %>
 <% else %>
   <div class="container">
     <h6>Not signed up for a challenge yet?</h6>

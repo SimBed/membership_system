@@ -20,7 +20,7 @@ class Shared::AchievementsController < Shared::BaseController
   def create
     @achievement = Achievement.new(achievement_params)
     if @achievement.save
-      flash[:success] = 'Achievement was successfully created.'
+      flash_message :success, t('.success')
       redirect_to shared_achievements_path
     else
       set_options
@@ -29,17 +29,17 @@ class Shared::AchievementsController < Shared::BaseController
   end
 
   def update
-      if @achievement.update(achievement_params)
-        flash[:success] = 'Achievement was successfully updated.'
-        redirect_to shared_achievements_path
-      else
-       render :edit, status: :unprocessable_entity
-      end
+    if @achievement.update(achievement_params)
+      flash_message :success, t('.success')
+      redirect_to shared_achievements_path
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
     @achievement.destroy
-    flash[:success] = 'Achievement was successfully destroyed.'
+    flash_message :success, t('.success')
     redirect_to shared_achievements_path
   end
 

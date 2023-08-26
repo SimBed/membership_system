@@ -1,0 +1,10 @@
+<tr>
+  <%=content_tag(:th, rate.instructor.name, class: ("fw-light" unless rate.current?), scope: 'row')%>
+  <td><%= group_or_pt(rate.group) %></td>
+  <td><%= rate.name %></td>
+  <td><%= number_with_delimiter(rate.rate) %></td>
+  <td><%= rate.date_from.strftime('%d %b %y') %></td>
+  <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless rate.current?)].compact.join(' ')), superadmin_instructor_rate_path(rate, current: !rate.current?), data: {turbo_method: :patch} %></td>        
+  <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_instructor_rate_path(rate), data: {turbo: false} %></td>
+</tr>
+

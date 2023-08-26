@@ -1,0 +1,8 @@
+<tr>
+  <th scope="row"><%= expense.item %></th>
+  <td><%= number_with_delimiter(expense.amount) %></td>
+  <td><%= expense&.date&.strftime '%b %y' %></td>
+  <td><%= link_to expense.workout_group.name, admin_workout_group_path(expense.workout_group), class: 'like_button', data: {turbo: false} %></td>
+  <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_expense_path(expense), data: {turbo: false} %></td>
+  <td><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_expense_path(expense), data: { turbo_method: :delete, turbo_confirm: 'Expense will be deleted. Are you sure?' } %></td>
+</tr>

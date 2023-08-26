@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-load File.expand_path("spring", __dir__)
-APP_PATH = File.expand_path('../config/application', __dir__)
+APP_PATH = File.expand_path("../config/application", __dir__)
 require_relative "../config/boot"
+require "rails/commands"
 
 # DPS: https://gist.github.com/tskogberg/c7cbd42008f8ec8fd920817a2229cf33
 # Make a clean exit on Heroku while running a rails console.

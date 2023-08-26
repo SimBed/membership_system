@@ -1,0 +1,15 @@
+<% unused = @unused_ids.include? d.id %>
+<tr>
+  <td><%= d.name %></td>
+  <td><%= d.rationale %></td>
+  <td><%= d.student? ? raw("&check;") : "-" %></td>
+  <td><%= d.friends_and_family? ? raw("&check;") : "-" %></td>
+  <td><%= d.first_package? ? raw("&check;") : "-" %></td>
+  <td><%= d.renewal_pre_package_expiry? ? raw("&check;") : "-" %></td>
+  <td><%= d.renewal_post_package_expiry? ? raw("&check;") : "-" %></td>
+  <td><%= d.renewal_pre_trial_expiry? ? raw("&check;") : "-" %></td>
+  <td><%= d.renewal_post_trial_expiry? ? raw("&check;") : "-" %></td>
+  <td><%= (link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_discount_reason_path(d)) if unused %></td>
+  <td><%= (link_to image_tag('delete.png', class: "table_icon"), superadmin_discount_reason_path(d), data: { turbo_method: :delete, turbo_confirm: 'Discount Reason will be deleted. Are you sure?' }) if unused %></td>
+</tr>
+

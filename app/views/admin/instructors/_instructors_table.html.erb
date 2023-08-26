@@ -1,26 +1,7 @@
-<table class="table table-secondary table-striped caption-top">
-  <tbody>
-    <% @instructors.each do |instructor| %>
-      <tr>
-        <%=content_tag(:th, instructor.name, class: ("fw-light" unless instructor.current?), scope: 'row')%>
-        <% if logged_in_as?('superadmin') %>
-          <td><%= instructor.wkclasses.size %></td>
-        <% end %>            
-        <td class="nomobile"><%= instructor.email %></td>
-        <td><%= number(instructor.whatsapp, instructor.whatsapp) %></td>        
-        <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless instructor.current?)].compact.join(' ')), admin_instructor_path(instructor, current: !instructor.current?), method: :patch %></td>        
-        <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_instructor_path(instructor) %></td>
-        <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_instructor_path(instructor), method: :delete, data: { confirm: 'Instructor and all its workouts will be deleted. Are you sure?' } %></td-->
-        <% if logged_in_as?('superadmin') %>   
-          <td>
-            <% if instructor.account.nil? %>
-              <%= link_to image_tag('add.png', class: "table_icon"), admin_accounts_path(email: instructor.email, id: instructor.id, ac_type: 'instructor'), method: :post, data: { confirm: 'An account for this instructor will be created. Are you sure?' }  %>
-            <% else %>
-              <%= link_to image_tag('forgot-password.png', class: "table_icon"), admin_account_path(instructor.account, requested_by: 'admin'), method: :patch, data: { confirm: "This instructor's password will be reset. Are you sure?" } %>
-            <% end %>
-          </td>
-        <% end %>   
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div id="instructors_table" class="container px-0 mb-5 margin-override">
+  <table class="table table-secondary table-striped caption-top">
+    <tbody id="instructors">
+      <%= render @instructors %>
+    </tbody>
+  </table>
+</div>

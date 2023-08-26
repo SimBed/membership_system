@@ -1,7 +1,7 @@
 <nav id="mainNav" class="navbar navbar-expand-lg navbar-sticky navbar-dark bg-black inverted">
 
   <div class="container">
-    <%= link_to root_path, class: "navbar-brand" do %>
+    <%= link_to root_path, class: "navbar-brand", data: {turbo: false} do %>
       <%= image_tag('SpaceLogo_white.png', alt: "logo") %>
     <% end %>
 
@@ -22,11 +22,11 @@
 
         <li class="nav-item">
           <% if current_account %>
-            <%= link_to logout_path, method: :delete, class: "nav-link active" do %>
+            <%= link_to logout_path, method: :delete, class: "nav-link active", data: {turbo: false} do %>
               <i class="fa fa-door-open"></i>
             <% end %>
           <% else %>
-            <%= link_to login_path, class: "nav-link" do %>
+            <%= link_to login_path, class: "nav-link", data: {turbo: false} do %>
               <i class="fa fa-sign-in-alt"></i>
               <span class="link-text">Login</span>
             <% end %>

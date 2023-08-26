@@ -1,4 +1,5 @@
-<%= javascript_pack_tag 'timetable-slider', defer:true %>
+<%#= javascript_pack_tag 'timetable-slider', defer:true %>
+<%= javascript_import_module_tag "custom/timetable-slider" %>
 <section class="overflow-hidden pt-3 pt-xl-4 bg-dark text-white text-center mt-2" id="timetable">    
 <div class="container">
 <h5 class="text-uppercase fw-bolder">Group Class Timetable</h3>
@@ -12,7 +13,7 @@
       <% @entries_hash.each_with_index do |(day, _entry), index| %>
       <div class="mb-3 tt-day<%= ' live' if index == 0 %>" id=<%= index %>>
         <div class="d-flex flex-column mb-3">        
-          <div class="tt-date-title pt-2 pb-1"><%= timetable_day_name(day, @todays_day, @tomorrows_day, :long_name).capitalize.upcase %></div>
+          <div class="tt-date-title pt-3 pb-1"><%= timetable_day_name(day, @todays_day, @tomorrows_day, :long_name).capitalize.upcase %></div>
           <div class="tt-date pb-2"><%= Date.yesterday.next_occurring(day.downcase.to_sym).strftime("%b %e") %></div>
         </div>
         <% @entries_hash[day].each do |entry| %>

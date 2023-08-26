@@ -44,7 +44,13 @@ class Client::ClientsController < ApplicationController
     # @products = @products.reject {|p| p.trial?} if logged_in? && current_account.client.has_purchased?
     # https://blog.kiprosh.com/preloading-associations-while-using-find_by_sql/
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
-    ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
+    # ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
+    # Rails 7 update
+    # https://stackoverflow.com/questions/74430650/rails-7-activerecordassociationspreloader-new-preload    
+    ActiveRecord::Associations::Preloader.new(
+      records: @products,
+      associations: :workout_group
+    ).call    
     @renewal = Renewal.new(@client)
     # to update razorpay button from default 'Pay Now'
     @trial_price = Product.trial.space_group.first.base_price_at(Time.zone.now).price
@@ -62,6 +68,10 @@ class Client::ClientsController < ApplicationController
     # @renewal = @client.renewal
     @renewal = Renewal.new(@client)
     @quotation = Setting.quotation
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def pt

@@ -28,11 +28,14 @@ class Admin::ProductsController < Admin::BaseController
 
   def show
     set_period
-    @purchases = Purchase.by_product_date(@product.id, session[:product_period])
+    @purchases = Purchase.by_product_date(@product.id, @period)
+    # add all in due course
+    # @months = ['All'] + months_logged
     @months = months_logged
-    # messy because of the Price default sope which is useful for the grouped_collection_select in the purchase form (prices dropdown)
-    # @prices = @product.prices.unscope(:order).order_by_current_discount
-    @prices = @product.prices
+    #NOTE: sort_by fails with booleans
+    #NOTE: Date object cant directly be converted to integer for reverse ordering
+    # https://stackoverflow.com/questions/4492557/convert-ruby-date-to-integer    
+    @prices = @product.prices.sort_by { |p| [p.current? ? 0 : 1, -p.date_from.to_time.to_i]}
     respond_to do |format|
       format.html
       format.js { render 'show.js.erb' }
@@ -129,8 +132,9 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def set_period
-    period = params[:product_period] || session[:product_period] || Time.zone.today.beginning_of_month.strftime('%b %Y')
-    session[:product_period] = (Date.parse(period).beginning_of_month..Date.parse(period).end_of_month.end_of_day)
+    default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
+    session[:product_period] = params[:product_period] || session[:product_period] || default_month
+    @period = month_period(session[:product_period])
   end
 
   def prepare_items_for_dropdowns

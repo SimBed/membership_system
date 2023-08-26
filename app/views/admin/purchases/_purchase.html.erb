@@ -1,0 +1,17 @@
+<tr class="extra_small">
+  <th scope="row" class="extra_small">
+    <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
+      <%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button", data: { turbo: false } %>
+    <% else %>
+      <%= purchase.client.name %>
+    <% end %>
+  </th>
+  <td class="extra_small"><%= link_to purchase.name_with_dop, admin_purchase_path(purchase), class: "like_button", data: { turbo: false } %></td>
+  <td class="extra_small nomobile"><%= purchase.start_to_expiry %></td>
+  <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase), data: { turbo: false } %></td>
+  <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
+    <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), data: { "turbo-method": :delete, turbo_confirm: 'Purchase can be deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></td>
+  <% else %>
+    <td class="nomobile"></td>
+  <% end %>           
+</tr>

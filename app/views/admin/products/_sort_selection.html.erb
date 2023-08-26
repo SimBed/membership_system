@@ -1,0 +1,17 @@
+<form action="/admin/products" method="GET">
+  <div class="mt-0">
+    <i class="fas fa-sort-alpha-down"></i>
+    <select class="form-control-sm mb-2 sort" name="product_sort_option" onchange="this.form.requestSubmit()">
+      <option disabled="disabled" selected="selected" value="">Sort by</option>
+      <option value="product_name" <%="selected" if session[:product_sort_option] == "product_name"%> >name</option>
+      <option value="sell_online" <%="selected" if session[:product_sort_option] == "sell_online"%> >sell online</option>
+      <% if logged_in_as?('admin', 'superadmin')%>
+        <option value="total_count" <%="selected" if session[:product_sort_option] == "total_count"%> >total count</option>
+        <option value="ongoing_count" <%="selected" if session[:product_sort_option] == "ongoing_count"%> >ongoing count</option>
+        <option value="price" <%="selected" if session[:product_sort_option] == "price"%> >price</option>
+      <%end%>
+    </select>
+  </div>
+</form>
+
+

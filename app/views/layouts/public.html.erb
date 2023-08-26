@@ -5,10 +5,13 @@
     <%= render 'layouts/meta' %>
     <%# https://stackoverflow.com/questions/27195019/how-to-disable-turbolinks-in-a-specific-page %>
     <meta name="turbolinks-visit-control" content="reload">
-    <%= stylesheet_pack_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'application' %>
-    <%= stylesheet_pack_tag 'admin', media: 'all' %>  
-    <%= javascript_pack_tag 'admin' %> 
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# this loads Sprockets/Rails asset pipeline %>
+    <%= stylesheet_link_tag 'custom', 'data-turbo-track': 'reload' %>
+    <%= javascript_importmap_tags %> <%#  this loads JS from importmaps %>
+    <%#= stylesheet_pack_tag 'application', media: 'all' %>
+    <%#= javascript_pack_tag 'application' %>
+    <%#= stylesheet_pack_tag 'admin', media: 'all' %>  
+    <%#= javascript_pack_tag 'admin' %> 
     <%#= favicon_link_tag asset_path('favicon.png') %>
     <%# https://favicon.io/favicon-generator/ %>
     <%= favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: "180x180" %>

@@ -1,0 +1,91 @@
+.fs-4 {
+  font-size: calc(1.325rem + .9vw)!important;
+}
+
+.display-2 {
+    font-size: calc(1.485rem + 2.82vw);
+  }
+
+.fw-bold {
+  font-weight: 500 !important;
+}
+
+.fs-4 {
+  font-size: calc(1.325rem + .9vw)!important;
+}
+
+.display-2 {
+    font-size: calc(1.485rem + 2.82vw);
+  }
+
+.py-10 {
+  padding-top: 5rem!important;
+  padding-bottom: 5rem!important;
+}
+
+.mb-10 {
+    margin-bottom: 5rem!important;
+}
+
+.mt-10 {
+  margin-top: 5rem!important
+}
+
+.navbar-brand {
+    padding-top: .40625rem;
+    padding-bottom: .40625rem;
+    margin-right: 4rem;
+    font-size: 1.125rem;
+    white-space: nowrap
+  }
+
+.navbar {
+  padding: 1rem 0
+}
+
+.fs-lg {
+  font-size: 1.125rem!important;
+}
+
+.px-10 {
+  padding-right: 5rem!important;
+  padding-left: 5rem!important;
+}
+
+.pb-2 {
+  padding-bottom: 1rem!important;
+}
+
+.pt-20 {
+  padding-top: 10rem!important;
+}
+
+.pt-15 {
+  padding-top: 7.5rem!important;
+}
+
+// .container {
+//   --bs-gutter-x: 40px!important;
+// }
+
+.btn {
+--bs-btn-padding-x: 1rem;
+--bs-btn-padding-y: 0.5rem;
+}
+
+.table td, .table th {
+  padding: 0.5rem;
+}
+
+h6, .h6 {
+  font-size: 1.0rem;
+}
+
+#services .accordion, #services .accordion-button, #services .accordion-body, #services .accordion-item {
+  background-color: black;
+  color: white;
+  border: black;
+  .accordion-button:focus {
+    border: black;
+  }
+}

@@ -1,11 +1,7 @@
-<table class="table table-secondary table-striped">
-  <tbody>
-    <% @timetables.each do |timetable| %>
-      <tr>
-        <td><%= link_to timetable.title, [:admin, timetable], class: 'like_button'  %></td>
-        <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_timetable_path(timetable) %></td>
-        <td><%= link_to image_tag('delete.png', class: "table_icon"), [:admin, timetable], method: :delete, data: { confirm: 'Timetable will be deleted. Are you sure?' }%></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div id="timetable-table" class="container px-1 mb-5 margin-override">
+  <table class="table table-secondary table-striped">
+    <tbody>
+      <%= render @timetables %>
+    </tbody>
+  </table>
+</div>

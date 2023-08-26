@@ -1,0 +1,11 @@
+<% main_challenge = challenge.main_challenge %>
+<tr>
+  <td><%= link_to challenge.name, shared_challenge_path(challenge), class: "like_button" %></td>
+  <td><%= challenge.metric %></td>
+  <td><%= challenge.metric_type %></td>
+  <td><%= main_challenge ? challenge.main_challenge.name : raw("&check;") %></td>
+  <% if logged_in_as?('superadmin') %>
+    <td class="pl-3 pl-md-5"><%= link_to image_tag("edit.png", class: "table_icon"), edit_shared_challenge_path(challenge) %></td>
+    <td class="pl-md-3"><%= link_to image_tag("delete.png", class: "table_icon"), shared_challenge_path(challenge), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Are you sure?' } %></td>
+  <% end %>
+</tr>

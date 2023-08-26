@@ -2,9 +2,9 @@
   <div class="container search">
     <%= render partial: 'sort_selection' %>
     <hr class = "search mb-3"></hr>
-    <%= form_with(url: purchase_filter_path, method: "get", local: false, class: "form-class") do %>
+    <%= form_with(url: purchase_filter_path, method: "get", class: "form-class", data: {turbo_frame: "purchases"}) do %>
       <div class="field">
-        <%= text_field_tag :search_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_name], onchange: 'Rails.fire(this.form, "submit")' %>
+        <%= text_field_tag :search_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_name], oninput: "this.form.requestSubmit()" %>
       </div>
       <div class="container mb-1">
         <div class="row">
@@ -14,7 +14,8 @@
               <% @workout_group.each do |wg| %>
                 <%= label_tag nil, class: "chbox-lbl-filters" do %>
                   <!-- onChange: "this.form.submit()" won't fire ajax request. See Gamliela answer https://stackoverflow.com/questions/6959481/rails-trying-to-submit-a-form-onchange-of-dropdown -->
-                  <%= check_box_tag 'workout_group[]', wg, session[:filter_workout_group].present? ? session[:filter_workout_group].include?(wg) : false, id: "chbox#{wg}", onchange: 'Rails.fire(this.form, "submit")' %>
+                  <!-- now superceded by Turbo https://stackoverflow.com/questions/68624668/how-can-i-submit-a-form-on-input-change-with-turbo-streams-->
+                  <%= check_box_tag 'workout_group[]', wg, session[:filter_workout_group].present? ? session[:filter_workout_group].include?(wg) : false, id: "chbox#{wg}", onchange: "this.form.requestSubmit()" %>
                   <%= wg %>
                 <% end %>
               <% end %>
@@ -26,7 +27,7 @@
               <legend>STATUS</legend>
               <% @statuses.each do |status| %>
                 <%= label_tag nil, class: "chbox-lbl-filters" do %>
-                  <%= check_box_tag 'statuses[]', status, session[:filter_statuses].present? ? session[:filter_statuses].include?(status) : false, class: "checkbox-class", id: "chbox#{status}", onchange: 'Rails.fire(this.form, "submit")'  %>
+                  <%= check_box_tag 'statuses[]', status, session[:filter_statuses].present? ? session[:filter_statuses].include?(status) : false, class: "checkbox-class", id: "chbox#{status}", onchange: "this.form.requestSubmit()"  %>
                   <%= status %>
                 <% end %>
               <% end %>
@@ -38,7 +39,7 @@
               <legend>ATTRIBUTE</legend>
                 <% @other_attributes.each do |attribute| %>
                   <%= label_tag nil, class: "chbox-lbl-filters" do %>
-                    <%= check_box_tag attribute, attribute, session["filter_#{attribute}"].present? ? true : false, class: "checkbox-class", id: "chbox#{attribute}", onchange: 'Rails.fire(this.form, "submit")'  %>
+                    <%= check_box_tag attribute, attribute, session["filter_#{attribute}"].present? ? true : false, class: "checkbox-class", id: "chbox#{attribute}", onchange: "this.form.requestSubmit()"  %>
                     <%= attribute.split('_').join(' ') %>
                   <% end %>
                 <% end %>
@@ -46,11 +47,11 @@
           </div>
 
           <div class="container d-flex">
-            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_purchase_filters_path, {remote: true, class: "search searchdelete icon-container"} %>
+            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_purchase_filters_path, {class: "search searchdelete icon-container"} %>
           </div>
 
           <fieldset class="mt-2" style="margin-left:-1.3rem">
-            <select name="purchases_period" onchange="this.form.submit()" class= "sort">
+            <select name="purchases_period" class= "sort" onchange="this.form.requestSubmit()">
               <%= options_for_select @months, session[:purchases_period] %>
             </select>
           </fieldset>
@@ -59,4 +60,4 @@
     <% end %>
     <hr class = "search mb-3"></hr>
   </div>
-</div>  
+</div>

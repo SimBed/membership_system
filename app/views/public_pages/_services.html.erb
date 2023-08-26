@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="">
 				<div class="accordion accordion-highlight" id="accordion-1">
-					<div class="accordion-item">
+					<div class="accordion-item inverted">
 						<h2 class="accordion-header" id="heading-1-1">
 							<button class="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse"
 								data-bs-target="#collapse-1-1" aria-expanded="false" aria-controls="collapse-1-1">
@@ -22,7 +22,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="accordion-item">
+					<div class="accordion-item inverted">
 						<h2 class="accordion-header" id="heading-1-2">
 							<button class="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse"
 								data-bs-target="#collapse-1-2" aria-expanded="false" aria-controls="collapse-1-2">
@@ -35,11 +35,11 @@
                 <p class="">Workout in The Space’s signature style! Power-packed group classes led by expert coaches & supported by our dynamic fitness community.
                             Daily Fitness - Strength, Speed, Fat Loss & High Energy - Ready to make it happen?
                 </p>
-                <p><%= link_to "Know More...", group_classes_path, class: "btn btn-outline-white rounded-pill mt-2", 'data-turbolinks': false %></p>
+                <p><%= link_to "Know More...", group_classes_path, class: "btn btn-outline-white rounded-pill mt-2", data: {turbo: false} %></p>
 							</div>
 						</div>
 					</div>
-					<div class="accordion-item">
+					<div class="accordion-item inverted">
 						<h2 class="accordion-header" id="heading-1-3">
 							<button class="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse"
 								data-bs-target="#collapse-1-3" aria-expanded="false" aria-controls="collapse-1-3">
