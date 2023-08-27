@@ -21,21 +21,23 @@ function updateDay(event) {
 }
 
 
-// let smallScreenWindow = window.matchMedia("(max-width: 767px)");
-// const swipeArea = document.querySelector('#timetable');
-// if (smallScreenWindow.matches) {
-//   let startX;
-  
-//   swipeArea.addEventListener('touchstart', handleTouchStart, false);
-//   swipeArea.addEventListener('touchend', handleTouchEnd, false);
-// }
-// else {
-//   swipeArea.removeEventListener('touchstart', handleTouchStart, false);
-//   swipeArea.removeEventListener('touchend', handleTouchEnd, false);
-// }
+let startX;
+let smallScreenWindow = window.matchMedia("(max-width: 767px)");
+const swipeArea = document.querySelector('#timetable');
+if (smallScreenWindow.matches) {
+  // touchstart and touchend are HTML DOM events
+  // https://www.w3schools.com/jsref/dom_obj_event.asp
+  swipeArea.addEventListener('touchstart', handleTouchStart);
+  swipeArea.addEventListener('touchend', handleTouchEnd);
+}
+else {
+  swipeArea.removeEventListener('touchstart', handleTouchStart);
+  swipeArea.removeEventListener('touchend', handleTouchEnd);
+}
 
 
-// // mm in the function arg is the matchMedia object, passed back into the function
+// i think this can be deleted
+// mm in the function arg is the matchMedia object, passed back into the function
 // smallScreenWindow.addEventListener('change', function(mm) {
 //   const swipeArea = document.querySelector('#timetable');
 //     if (mm.matches) {
@@ -50,22 +52,21 @@ function updateDay(event) {
 //     }
 // });
 
-// function handleTouchStart(event) {
-//   const touch = event.touches[0];
-//   startX = touch.clientX;
-//   // console.log(startX);
-// }
+function handleTouchStart(event) {
+  const touch = event.touches[0];
+  startX = touch.clientX;
+}
 
-// function handleTouchEnd(event) {
-//   const touch = event.changedTouches[0];
-//   const endX = touch.clientX;
-//   //  60 is a reasonable allowance to avoid swiping up being mistaken for swiping across
-//   if (endX > startX + 60) {
-//     nextDay();
-//   } else if (endX < startX - 60) {
-//     prevDay();
-//   }
-// }
+function handleTouchEnd(event) {
+  const touch = event.changedTouches[0];
+  const endX = touch.clientX;
+  //  60 is a reasonable allowance to avoid swiping up being mistaken for swiping across
+  if (endX > startX + 60) {
+    nextDay();
+  } else if (endX < startX - 60) {
+    prevDay();
+  }
+}
 
 function getNextDay(currentDay) {
   if (currentDay == daycols.length - 1) {

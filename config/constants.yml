@@ -35,6 +35,7 @@ default: &default
 
 development:
   <<: *default
+  timetable_id: 1
 
 test:
   <<: *default
