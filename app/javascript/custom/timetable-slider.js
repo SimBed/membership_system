@@ -21,51 +21,51 @@ function updateDay(event) {
 }
 
 
-let smallScreenWindow = window.matchMedia("(max-width: 767px)");
-const swipeArea = document.querySelector('#timetable');
-if (smallScreenWindow.matches) {
-  let startX;
+// let smallScreenWindow = window.matchMedia("(max-width: 767px)");
+// const swipeArea = document.querySelector('#timetable');
+// if (smallScreenWindow.matches) {
+//   let startX;
   
-  swipeArea.addEventListener('touchstart', handleTouchStart, false);
-  swipeArea.addEventListener('touchend', handleTouchEnd, false);
-}
-else {
-  swipeArea.removeEventListener('touchstart', handleTouchStart, false);
-  swipeArea.removeEventListener('touchend', handleTouchEnd, false);
-}
+//   swipeArea.addEventListener('touchstart', handleTouchStart, false);
+//   swipeArea.addEventListener('touchend', handleTouchEnd, false);
+// }
+// else {
+//   swipeArea.removeEventListener('touchstart', handleTouchStart, false);
+//   swipeArea.removeEventListener('touchend', handleTouchEnd, false);
+// }
 
 
-// mm in the function arg is the matchMedia object, passed back into the function
-smallScreenWindow.addEventListener('change', function(mm) {
-  const swipeArea = document.querySelector('#timetable');
-    if (mm.matches) {
-      let startX;
+// // mm in the function arg is the matchMedia object, passed back into the function
+// smallScreenWindow.addEventListener('change', function(mm) {
+//   const swipeArea = document.querySelector('#timetable');
+//     if (mm.matches) {
+//       let startX;
       
-      swipeArea.addEventListener('touchstart', handleTouchStart, false);
-      swipeArea.addEventListener('touchend', handleTouchEnd, false);
-    }
-    else {
-      swipeArea.removeEventListener('touchstart', handleTouchStart, false);
-      swipeArea.removeEventListener('touchend', handleTouchEnd, false);
-    }
-});
+//       swipeArea.addEventListener('touchstart', handleTouchStart, false);
+//       swipeArea.addEventListener('touchend', handleTouchEnd, false);
+//     }
+//     else {
+//       swipeArea.removeEventListener('touchstart', handleTouchStart, false);
+//       swipeArea.removeEventListener('touchend', handleTouchEnd, false);
+//     }
+// });
 
-function handleTouchStart(event) {
-  const touch = event.touches[0];
-  startX = touch.clientX;
-  // console.log(startX);
-}
+// function handleTouchStart(event) {
+//   const touch = event.touches[0];
+//   startX = touch.clientX;
+//   // console.log(startX);
+// }
 
-function handleTouchEnd(event) {
-  const touch = event.changedTouches[0];
-  const endX = touch.clientX;
-  //  60 is a reasonable allowance to avoid swiping up being mistaken for swiping across
-  if (endX > startX + 60) {
-    nextDay();
-  } else if (endX < startX - 60) {
-    prevDay();
-  }
-}
+// function handleTouchEnd(event) {
+//   const touch = event.changedTouches[0];
+//   const endX = touch.clientX;
+//   //  60 is a reasonable allowance to avoid swiping up being mistaken for swiping across
+//   if (endX > startX + 60) {
+//     nextDay();
+//   } else if (endX < startX - 60) {
+//     prevDay();
+//   }
+// }
 
 function getNextDay(currentDay) {
   if (currentDay == daycols.length - 1) {
