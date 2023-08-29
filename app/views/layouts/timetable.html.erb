@@ -22,7 +22,7 @@
       <div class="offcanvas-wrap">
         <section class="overflow-hidden">
             <% # https://stackoverflow.com/questions/2448789/rails-easy-way-to-add-more-than-one-flashnotice-at-a-time %>
-            <div id="flash_messages">
+            <div id="flash_messages" class="flash">
               <%= render_flash %>
             </div>
             <%= yield %>
