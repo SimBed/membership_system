@@ -7,6 +7,8 @@ class ProductTest < ActiveSupport::TestCase
                            validity_unit: 'M',
                            color: 'none',
                            workout_group_id: workout_groups(:space).id)
+    @product_without_purchase  = products(:spaceothers)
+    @client = clients(:aparna)                           
   end
 
   test 'should be valid' do
@@ -44,5 +46,19 @@ class ProductTest < ActiveSupport::TestCase
     @product.save
 
     assert_predicate similar_product, :valid?
+  end
+
+  test '#deletable?' do
+    refute @product_without_purchase.deletable? # as it has a price
+    price = @product_without_purchase.base_price_at(Time.zone.now)
+    Purchase.create(client_id: @client.id,
+                    product_id: @product_without_purchase.id,
+                    payment: price.price, dop: '2022-02-15', payment_mode: 'Cash',
+                    price_id: price.id,
+                    purchase_id: nil)
+    price.destroy
+    refute @product_without_purchase.deletable?
+    Purchase.last.destroy
+    assert @product_without_purchase.deletable?
   end
 end

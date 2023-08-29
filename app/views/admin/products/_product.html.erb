@@ -14,8 +14,8 @@
   <% else %>
     <td class="nomobile"><%= image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')) %></td>        
   <% end %>
-  <td><%= product.rider? ? raw("&check;") : "-" %></td>
-  <td><%= product.has_rider? ? raw("&check;") : "-" %></td>
+  <td class="nomobile"><%= product.rider? ? raw("&check;") : "-" %></td>
+  <td class="nomobile"><%= product.has_rider? ? raw("&check;") : "-" %></td>
   <% product_data = @products_data[product.name.to_sym] %>
   <% if logged_in_as?('admin', 'superadmin') %>
     <td><%= product_data[:total_count] %></td>
@@ -25,7 +25,11 @@
   <%# if logged_in_as?('superadmin') %>
     <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
   <%# end %>
-  <!--td><%#= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), method: :delete, data: { confirm: "#{product.name} and its purchases will be deleted. Are you sure?" }%></td-->
+  <% if logged_in_as?('superadmin') && product.deletable? %>
+    <td class="nomobile"> <%= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), data: { turbo_method: :delete, turbo_confirm: "#{product.name} has no purchases and so can be deleted. Are you sure?" } %></td>
+  <% else %>
+    <td class="nomobile"></td>
+  <% end %>
 </tr>
 
 

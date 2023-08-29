@@ -43,6 +43,12 @@ class Price < ApplicationRecord
     return false
   end
 
+  def deletable?
+    return true if Purchase.where(price_id: id).empty?
+
+    false
+  end
+
   # def full_name
   #   # "#{name} #{discount}%".gsub(' 0%', '')
   #   "#{name} #{Price.discount_format(self)}%"

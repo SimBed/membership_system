@@ -155,6 +155,12 @@ class Product < ApplicationRecord
     Purchase.not_fully_expired.where(product_id: id).size
   end
 
+  def deletable?
+    return true if purchases.empty? && prices.empty?
+    
+    false
+  end
+
   private
 
   # see comment on full_name_must_be_unique in Client model
