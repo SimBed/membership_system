@@ -74,6 +74,11 @@ button.btn_product_type {
     opacity: 0.8}
   }
 
+  a.disable-link {
+    pointer-events: none;
+  }
+    
+
 @media (min-width: 900px) {
 
   body {

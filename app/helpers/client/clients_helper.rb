@@ -25,10 +25,13 @@ module Client::ClientsHelper
       { css_class: 'table-secondary', link: '' }
     elsif wkclass.at_capacity?
       confirmation = t('client.clients.attendance.create.full')
-      { css_class: 'table-secondary',
-        link: (link_to '#',
-                       data: { turbo_confirm: confirmation },
-                       class: 'icon-container' do tag.i class: ["bi bi-battery-full"] end)
+      # remarkably difficult to have a tooltip with spaces in it
+      # https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces
+      title = "class\u00a0is\u00a0currently\u00a0full"
+      { css_class: "table-secondary",
+        data_attributes: "data-toggle=tooltip",
+        tooltip_title: "title=#{title}",
+        link: (link_to '#', class: 'icon-container disable-link' do tag.i class: ["bi bi-battery-full"] end)
         }
     else
       confirmation = t('client.clients.attendance.create.confirm')
