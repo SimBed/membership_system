@@ -70,15 +70,8 @@
         <% end %>
 
         <li class="nav-item">
-          <% if current_account %>
-            <%= button_to logout_path, method: :delete, class: "nav-link active", data: {turbo: false} do %>
-              <i class="fa fa-door-open"></i>
-            <% end %>
-          <% else %>
-            <%= link_to login_path, class: "nav-link", data: {turbo: false} do %>
-              <i class="fa fa-sign-in-alt"></i>
-              <span class="link-text">Login</span>
-            <% end %>
+          <%= button_to logout_path, method: :delete, class: "nav-link active", data: {turbo: false} do %>
+            <i class="fa fa-door-open"></i>
           <% end %>
         </li>
       </ul>

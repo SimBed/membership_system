@@ -22,7 +22,7 @@
         <td><%= entry.studio %></td>
         <td><%= link_to 'Show', [:admin, entry] %></td>
         <td><%= link_to 'Edit', edit_admin_entry_path(entry) %></td>
-        <td><%= link_to 'Destroy', [:admin, entry], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', [:admin, entry], data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

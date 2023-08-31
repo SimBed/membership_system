@@ -26,7 +26,7 @@
             <%=day.name%>
             <div class = "editButton">
               <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_table_day_path(day) %>
-              <%= link_to image_tag('delete.png', class: "edit_icon"), admin_table_day_path(day), method: :delete, data: { confirm: 'This will delete the timetable colum and all the days entries. Are you sure?' } %>
+              <%= link_to image_tag('delete.png', class: "edit_icon"), admin_table_day_path(day), data: { turbo_method: :delete, turbo_confirm: "This will delete the timetable day and all the day's entries. Are you sure?" } %>
             </div>    
           </th>
           <th class= "small-screen" style="text-align:center;"><%=day.short_name%></th>

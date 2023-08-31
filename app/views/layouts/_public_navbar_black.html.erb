@@ -23,7 +23,7 @@
       <% end %>
         <li class="nav-item">
           <% if current_account %>
-            <%= link_to logout_path, method: :delete, class: "nav-link active", data: {turbo: false} do %>
+            <%= link_to logout_path, class: "nav-link active", data: {turbo_method: :delete, turbo: false} do %>
               <i class="fa fa-door-open"></i>
             <% end %>
           <% else %>

@@ -14,15 +14,15 @@
       </tr>
     </thead>
     <tbody>
-      <% freezes.each_with_index do |f, index| %>
+      <% freezes.each_with_index do |freeze, index| %>
         <tr>
           <th scope="row"><%= index + 1 %></th>
-          <td><%= f.start_date.strftime('%d %b %y') %></td>
-          <td><%= f.end_date.strftime('%d %b %y') %></td>
-          <td><%= "#{pluralize(f.duration, 'day')}" %></td>
-          <td><%= f.note %></td>
-          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(f), class: "icon-container" %></td>
-          <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(f), method: :delete, data: { confirm: 'Freeze will be deleted Are you sure?' } %></td>
+          <td><%= freeze.start_date.strftime('%d %b %y') %></td>
+          <td><%= freeze.end_date.strftime('%d %b %y') %></td>
+          <td><%= "#{pluralize(freeze.duration, 'day')}" %></td>
+          <td><%= freeze.note %></td>
+          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(freeze), class: "icon-container" %></td>
+          <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(freeze), data: { turbo_method: :delete, turbo_confirm: 'Freeze will be deleted Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>

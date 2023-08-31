@@ -2,7 +2,7 @@
   <th><%=time.start.strftime("%l.%M")%>
     <div class = "editButton">
       <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_table_time_path(time) %>
-      <%= link_to image_tag('delete.png', class: "edit_icon"), admin_table_time_path(time), method: :delete, data: { confirm: 'This will delete the timetable row and all the entries for that time. Are you sure?' } %>
+      <%= link_to image_tag('delete.png', class: "edit_icon"), admin_table_time_path(time), data: { turbo_method: :delete, turbo_confirm: 'This will delete the timetable row and all the entries for that time. Are you sure?' } %>
     </div>
   </th>
   <% @days.each do |day| %>
@@ -17,7 +17,7 @@
           <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_entry_path(timetable_id: params[:id], table_day_id: day.id, table_time_id: time.id) %>
         <% else %>
         <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_entry_path(entry) %>
-        <%= link_to image_tag('delete.png', class: "edit_icon"), admin_entry_path(entry), method: :delete, data: { confirm: 'Are you sure?' } %>
+        <%= link_to image_tag('delete.png', class: "edit_icon"), admin_entry_path(entry), data: { turbo_method: :delete, confirm: 'Are you sure?' } %>
       <% end %>
       </div>
     </td>
