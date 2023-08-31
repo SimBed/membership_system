@@ -36,13 +36,14 @@
   document.getElementById("freeze_start_date").onchange =  function () {
     // dynamically make freeze period default to 14 days
     // surprisingly awkward to manage date objects in javascript
-    const start_date_string = document.getElementById("freeze_start_date").value;
-    const start_date_array = start_date_string.split('-');
+    let start_date_string = document.getElementById("freeze_start_date").value;
+    let start_date_array = start_date_string.split('-');
     // https://attacomsian.com/blog/javascript-date-add-days
-    const start_date = new Date(start_date_array[0], start_date_array[1] - 1, start_date_array[2]);
-    const end_date = new Date();
-    end_date.setDate(start_date.getDate() + 13);
-    end_date_string = end_date.toISOString().slice(0,10)
+    let start_date = new Date(start_date_array[0], start_date_array[1] - 1, start_date_array[2]);
+    // getDate gets the day of the month of the data. setDate knows to add to the month of the date if the number of days being set goes over the end of the month
+    // this mutates start_date
+    start_date.setDate(start_date.getDate() + 13);
+    let end_date_string = start_date.toISOString().slice(0,10)
     document.getElementById("freeze_end_date").value = end_date_string;
   }
 </script>
