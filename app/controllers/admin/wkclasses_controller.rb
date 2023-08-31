@@ -46,7 +46,10 @@ class Admin::WkclassesController < Admin::BaseController
     handle_filter
     handle_period
     check_record_returned
-    # @wkindex = @wkclasses.index(@wkclass)
+    respond_to do |format|
+      format.html
+      format.turbo_stream      
+    end
   end
 
   def new
