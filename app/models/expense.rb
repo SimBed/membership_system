@@ -3,6 +3,8 @@ class Expense < ApplicationRecord
   belongs_to :workout_group
   scope :order_by_date, -> { order(date: :desc) }
   scope :during, ->(period) { where({ date: period }) }
+  validates :item, presence: true
+  validates :amount, presence: true
   validate :unique_expense
 
   def self.by_workout_group(workout_group, period)

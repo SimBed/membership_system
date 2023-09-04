@@ -37,7 +37,7 @@ class PublicPagesController < ApplicationController
       end
     else
       @account = Account.new
-      render 'signup', layout: 'login'
+      render 'signup', layout: 'login', status: 422
     end
   end
   

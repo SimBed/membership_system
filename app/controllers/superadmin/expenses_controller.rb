@@ -28,6 +28,7 @@ class Superadmin::ExpensesController < Superadmin::BaseController
       redirect_to superadmin_expenses_path
       flash[:success] = t('.success')
     else
+      @workout_groups = WorkoutGroup.all.map { |w| [w.name, w.id] }
       render :new, status: :unprocessable_entity
     end
   end
