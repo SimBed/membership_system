@@ -6,8 +6,8 @@
       </tr>
       <% @physical_attendances.each do |attendance| %>
         <tr class="less-padding">
-          <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
-          <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
+          <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small", data: { turbo: false } %></td>
+          <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small", data: { turbo: false } %></td>
           <% if view_financials %>
             <td class="adj-line-height"><%= number_with_delimiter(attendance.revenue) %></td>
           <% end %>
