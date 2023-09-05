@@ -42,7 +42,7 @@ class PublicPagesController < ApplicationController
   end
   
   def wedontsupport
-    render layout: 'white_canvas'
+    render layout: 'client'
   end
 
   def hearts

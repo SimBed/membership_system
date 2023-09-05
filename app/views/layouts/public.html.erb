@@ -33,7 +33,7 @@
     <% else %>
       <%= render 'layouts/public_navbar' %>
     <% end %>
-    <main id="">
+    <main>
       <%= yield %>
       <%#= debug(params) if Rails.env.development? %>
       <%= current_account&.ac_type if Rails.env.development? %>

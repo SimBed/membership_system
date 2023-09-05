@@ -19,17 +19,15 @@
   <body>
     <%= render 'layouts/admin_navbar' %>
     <main id="white-canvas">
-      <div class="offcanvas-wrap">
-        <section class="overflow-hidden">
-            <% # https://stackoverflow.com/questions/2448789/rails-easy-way-to-add-more-than-one-flashnotice-at-a-time %>
-            <div id="flash_messages" class="flash">
-              <%= render_flash %>
-            </div>
-            <%= yield %>
-            <%= debug(params) if Rails.env.development? %>
-            <%= debug(current_account&.ac_type) if Rails.env.development? %>
-        </section>
-      </div>
+      <section class="overflow-hidden">
+        <% # https://stackoverflow.com/questions/2448789/rails-easy-way-to-add-more-than-one-flashnotice-at-a-time %>
+        <div id="flash_messages" class="flash">
+          <%= render_flash %>
+        </div>
+        <%= yield %>
+        <%= debug(params) if Rails.env.development? %>
+        <%= debug(current_account&.ac_type) if Rails.env.development? %>
+      </section>
     </main>
    <%= render 'layouts/footer' %>   
   </body>

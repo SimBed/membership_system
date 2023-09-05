@@ -35,10 +35,6 @@ class Client::ClientsController < ApplicationController
     @client_results = @challenge.results if @achievements.present? || @main_challenge_selected
   end
 
-  def buy
-
-  end
-
   def shop
     @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)
     # @products = @products.reject {|p| p.trial?} if logged_in? && current_account.client.has_purchased?

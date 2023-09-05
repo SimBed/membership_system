@@ -1,11 +1,7 @@
-//
-// tables
-//
-
 .table {
   td,
   th {
-    padding: rem(24) rem(16);
+    padding: 1.5rem 1rem;
   }
 
   th {
@@ -19,12 +15,12 @@
     // font-weight: $font-weight-normal;
     // DPS      
     // padding-left: 0;
-      padding-left: rem(10);
+      padding-left: 0.625rem;
     }
 
     > *:last-child {
     // DPS         
-      padding-right: rem(10);
+      padding-right: 0.625rem;
     }
   }
 
@@ -43,20 +39,5 @@
   th,
   tr {
     border-width: 0;
-  }
-}
-
-// bordered
-.table-bordered {
-  border: $border-width solid $border-color;
-
-  thead {
-    border-bottom-width: $border-width;
-  }
-
-  tbody {
-    tr:nth-child(odd) {
-      background: rgba($black, 0.05);
-    }
   }
 }

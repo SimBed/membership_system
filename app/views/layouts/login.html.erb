@@ -21,13 +21,13 @@
   <body>
     <%= render 'layouts/public_navbar_black' %>
     <main id="white-canvas">
-      <div class="offcanvas-wrap">
-      <% unless flash.empty? %>
-        <div id="flash_messages" class="flash">
-          <%= render_flash %>
-        </div>
-      <% end %> 
-      </div>    
+      <section class="navbar-space">
+        <% unless flash.empty? %>
+          <div id="flash_messages" class="flash">
+            <%= render_flash %>
+          </div>
+        <% end %>
+      </section>
       <%= yield %>
       <%#= debug(params) if Rails.env.development? %>
       <%= current_account&.ac_type if Rails.env.development? %>
