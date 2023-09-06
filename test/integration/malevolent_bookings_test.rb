@@ -165,7 +165,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     end
     # assert_redirected_to admin_wkclass_path @attendance.wkclass, {no_scroll: true}
     assert_redirected_to admin_wkclasses_path
-    assert_equal([['Attendance was successfully updated']], flash[:success])
+    assert_equal([["Tina Dehal's attendance was successfully updated to cancelled late"]], flash[:success])
   end
 
   test 'admin should not be able to make amendment to booking for provisonally expired package when change will improve package terms' do

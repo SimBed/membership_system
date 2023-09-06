@@ -133,23 +133,7 @@ class Admin::AttendancesController < Admin::BaseController
     @attendance.destroy
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash_message :success, t('.success')
-    # flash[:success] = t('.success')
   end
-
-  # index of attendances not used
-  # def index
-  #   set_period
-  #   @attendances = Attendance.by_workout_group(session[:workout_group], @period)
-  #   # @attendances.sort_by { |a| [a.wkclass.start_time, a.purchase.name] }.reverse!
-  #   @revenue = @attendances.map(&:revenue).inject(0, :+)
-  #   @months = months_logged
-  #   @workout_groups = ['All'] + WorkoutGroup.all.map { |wg| [wg.name.to_s] }
-  #   @attendances = Attendance.all if params[:export_all]
-  #   respond_to do |format|
-  #     format.html
-  #     format.csv { send_data @attendances.to_csv }
-  #   end
-  # end
 
   private
 
@@ -312,17 +296,8 @@ class Admin::AttendancesController < Admin::BaseController
 
   def handle_client_update_response
     set_attendances
-    respond_to do |format|
-      format.html do
-        flash_client_update_success
-        redirect_to client_book_path(@client)
-      end
-      format.js do
-        # not currently used
-        flash.now[:success] = "Booking for #{@wkclass_name} on #{@wkclass_day} updated to '#{@updated_status}'"
-        render 'admin/wkclasses/update_attendance.js.erb'
-      end
-    end
+    flash_client_update_success
+    redirect_to client_book_path(@client)
   end
 
   # https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller
@@ -342,17 +317,8 @@ class Admin::AttendancesController < Admin::BaseController
 
   def handle_admin_update_response
     set_attendances
-    respond_to do |format|
-      format.html do
-        flash_message :success, t('.success')
-        # flash[:success] = t('.success')
-        redirect_back fallback_location: admin_wkclasses_path
-      end
-      format.js do
-        flash.now[:success] = "#{@attendance.client_name}'s booking was successfully updated to  #{@attendance.status}"
-        render template: 'admin/wkclasses/update_attendance', formats: :js
-      end
-    end
+    flash_message :success, t('.success', name: @attendance.client_name, status: @attendance.status)
+    redirect_back fallback_location: admin_wkclasses_path
   end
 
   def set_attendances

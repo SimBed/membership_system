@@ -20,11 +20,11 @@ class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
     # admin (incorrectly) logs attendance as no show
     assert_difference '@purchase.reload.no_shows', 1 do
-      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }, xhr: true
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     end
     # admin makes correction
     assert_difference '@purchase.reload.no_shows', -1 do
-      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }, xhr: true
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
     end
   end
 
@@ -39,7 +39,9 @@ class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
     # admin (incorrectly) logs attendance as no show
     assert_equal  Date.parse('20 june 2022'), @purchase.reload.expiry_date
     assert_difference '@purchase.reload.no_shows', 1 do
-      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }, xhr: true
+      # xhr redundant now use Turbo
+      # patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }, xhr: true
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     end
     # admin makes correction
     assert_difference -> { @purchase.reload.expiry_date } => 2, -> { @purchase.reload.no_shows } => -1, -> { @purchase.reload.late_cancels } => 1 do
@@ -59,11 +61,11 @@ class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
     assert_equal Date.parse('Mon, 20 June 2022'), @purchase.reload.expiry_date
     # admin (incorrectly) logs attendance as no show
     assert_difference '@purchase.reload.no_shows', 1 do
-      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }, xhr: true
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
     end
     # admin makes correction
     assert_difference -> { @purchase.reload.expiry_date } => 1, -> { @purchase.reload.no_shows } => -1, -> { @purchase.reload.late_cancels } => 1 do
-      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled late' } }, xhr: true
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled late' } }
     end
   end
 end
