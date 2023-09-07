@@ -41,3 +41,54 @@
     border-width: 0;
   }
 }
+td.nomobile, th.nomobile {
+  display: none;
+}
+div.nomobile {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  td.nomobile, th.nomobile {
+    display: table-cell;
+  }
+
+  div.nomobile {
+    display: block;
+  }
+}
+
+table.table th, table.table td {
+  padding: 0.5rem;
+}
+
+// override /components/_table.scss which for some reason removes padding at beginning and end
+.table tbody tr {
+  border-top-width: 0;
+
+  > *:first-child {
+    padding-left: 0.5rem;
+  }
+
+  > *:last-child {
+    padding-right: 0.5rem;
+  }
+}
+
+td.adj-line-height {
+  line-height: 1.5rem;
+}
+
+td.discount-warning {
+  background-color: $red;
+  &:after {
+    content: " (warning may affect prices in shop & renewals)";
+    text-transform: lowercase;
+  }
+}
+
+.table-striped>tbody>tr:nth-child(odd)>th.stripe-override,
+.table-striped>tbody>tr:nth-child(even)>th.stripe-override {
+  background-color: $white;
+  background: linear-gradient($gray-700, $gray-200);
+  box-shadow: none; }

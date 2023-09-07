@@ -1,4 +1,4 @@
-<div class="container px-1 margin-override mb-1">
+<div class="container px-1 mb-1">
   <h4>Products
     <% if logged_in_as?('admin', 'superadmin') %>
       <%= link_to image_tag('add.png', class: "button_icon"), new_admin_product_path, class: "icon-container" %>
@@ -6,7 +6,7 @@
   </h4>
 </div>
 <turbo-frame id="product-frame">
-  <div id="products-filter" class="container px-1 mb-5 margin-override">
+  <div id="products-filter" class="container px-1 mb-5">
     <%= render partial: 'filter_form' %>
   </div>  
   <% if logged_in_as?('superadmin') %>

@@ -1,0 +1,79 @@
+div.search {
+	position:relative;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin:0;
+}
+
+div i.fa, i.fas {
+  font-size: 1.1rem;
+}
+
+div i.fa-sort-alpha-down{
+  color: $gray-700;
+}
+
+%select {
+  color: $gray-700;
+  border: solid;
+  border-color: $gray-50;
+  border-width: 1px;
+  background-color: $gray-50;
+}
+
+select.sort {
+  @extend %select;
+  padding: 0.5rem 0.5rem;  
+  min-height: calc(1.5em + 0.5rem + 2px);    
+}
+
+select.attendance {
+  @extend %select;
+}
+
+.form-control-sm {
+  min-height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: .875rem;
+  border-radius: 0.2rem;
+}
+
+form fieldset {
+  color: $gray-800;
+  font-family: $font-stack;
+  font-size: 0.9em;
+  font-weight: normal;
+  label {
+    margin-right: 0.5rem;
+    margin-bottom: 0.4rem;
+    line-height: 0.7rem;
+  }
+}
+
+legend {
+  width:auto;
+  font-size: 0.9rem;
+  font-weight: normal;
+  padding-right: 0.75rem;
+}
+
+.chbox-lbl-filters {
+  font-size: 0.8rem;
+}
+
+label {
+  display: block;
+  line-height: 1.1rem; }
+
+/*couldn't get to the bottom of why this is needed but checkbox and checkbox label misaligned without */
+input[type="checkbox"] {
+  vertical-align: middle
+}
+
+.searchdelete {
+  margin-left:auto;
+}
+
+div.field, div.actions {
+  margin-bottom: 0.4rem;
+}

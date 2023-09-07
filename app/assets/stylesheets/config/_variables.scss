@@ -2,6 +2,7 @@
 // consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
 
 $white: #ffffff;
+$gray-50: #f8f9fa;
 $gray-100: #eeeeee;
 $gray-200: #dddddd;
 $gray-300: #bbbbbb;
@@ -121,7 +122,7 @@ $component-active-color: $white !default;
 $component-active-bg: $primary !default;
 
 
-$font-family-sans-serif: "Inter", sans-serif;
+$font-stack: "Quicksand", "Arial";
 
 $font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
 $font-size-sm: $font-size-base * 0.875 !default;

@@ -1,4 +1,4 @@
-<div id="workouts-filter" class="container ps-2 mt-1 margin-override">
+<div id="workouts-filter" class="container ps-2 mt-1">
   <%= form_with(url: workout_filter_path, method: "get", class: "form-class", data: {turbo_frame: "workouts"}) do |f| %>
     <fieldset>
       <%= label_tag nil, class: "chbox-lbl-filters" do %>

@@ -1,0 +1,14 @@
+a.like_button {
+  border-radius: 1rem;
+  line-height: 1.25;
+  padding: 0 0.2rem;
+  box-shadow: 0 1px $gray-700;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: $gray-700;
+  }
+  @include media-breakpoint-up(md) {
+     padding: 0rem 0.5rem;
+    }
+}

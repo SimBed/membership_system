@@ -92,7 +92,8 @@
 
     > .dropdown-toggle {
       &::after {
-        display: none;
+        // avoid hiding the the caret
+        display: inline-block;
       }
     }
   }

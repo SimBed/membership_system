@@ -2,27 +2,27 @@
   <%= render partial: 'client_heading' %>
 </div>
 
-<div id="client-summary" class="container px-1 mb-5 margin-override">
+<div id="client-summary" class="container px-1 mb-5">
   <%= render partial: 'client_summary' %>
 </div>
 
-<div id="ongoing-packages" class="container px-1 mb-3 margin-override">
+<div id="ongoing-packages" class="container px-1 mb-3">
   <%= render partial: 'ongoing_packages' %>
 </div>
 
 <% unless @ongoing_packages.empty? %>
-  <hr class="container px-1 mb-3 margin-override thick-divide">
+  <hr class="container px-1 mb-3 thick-divide">
 <% end %>
 
-<div id="ongoing-dropins" class="container px-1 mb-3 margin-override">
+<div id="ongoing-dropins" class="container px-1 mb-3">
   <%= render partial: 'ongoing_dropins' %>
 </div>
 
 <% unless @ongoing_dropins.empty? %>
-  <hr class="container px-1 mb-3 margin-override thick-divide">
+  <hr class="container px-1 mb-3 thick-divide">
 <% end %>
 
-<div id="expired-purchases" class="container px-1 mb-3 margin-override">
+<div id="expired-purchases" class="container px-1 mb-3">
   <%= render partial: 'expired_purchases' %>
 </div>
 
