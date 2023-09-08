@@ -77,3 +77,17 @@ input[type="checkbox"] {
 div.field, div.actions {
   margin-bottom: 0.4rem;
 }
+
+div.actions input {
+  background-color: $black;
+  border-color: $black;
+  color: $white;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  box-shadow: 0.3rem 0.3rem 0.6rem $gray-800;
+  text-transform: uppercase;
+  &:hover {
+    opacity: 0.8;
+    box-shadow: none;    
+  }
+}

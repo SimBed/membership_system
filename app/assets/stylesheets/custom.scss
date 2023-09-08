@@ -11,102 +11,6 @@ $font-weight-bold: 700;
 $primary: blue;
 $border-color-inverted: rgba($white, 0.2);
 
-body {
-  background-color: #ffffff;
-  color: #333;
-  margin: 0;
-  margin-top: 0; }
-
-body, p, ol, ul, td {
-  font-family: $font-stack;
-  font-size: 0.8rem;  
-  line-height: 1.0rem; }
-
-.navbar div {
-  justify-content: space-between; }
-
-a {
-    color: #000; }
-
-a.forgot-password {
-color: blue; }
-
-a.forgot-password:hover {
-  color: black; }
-
-// override components/_navbar.scss
-.navbar-brand img {
-    max-height: 3.5rem; }
-
-.navbar {
-  // padding: 1rem 0;
-}
-
-#mainNav .nav-link {
-  display: flex;
-  align-items: center;
-  color: var(--text-primary);
-  text-decoration: none;
-  // filter: grayscale(100%) opacity(0.7);
-  transition: var(--transition-speed); }
-
-#mainNav .nav-link:hover {
-  filter: grayscale(0%) opacity(1);
-    i.fa {
-    color: green; } }
-
-#white-canvas {
-  .navbar-space {
-    padding-top: 8rem; }
-  .btn-primary {
-    background-color: black; } }
-
-@media (min-width: 900px) {
-  #white-canvas .navbar-space {
-      padding-top: 10rem;
-    }
- }
-
-img.table_icon {
-  width: 1.0rem;
-  height: 1.0rem;
-  opacity: 1.0;
-  }
-
-a img.table_icon:hover {
-  transform: scale(1.2);
-  opacity: 0.5
-  }  
-
-a img.button_icon:hover {
-transform: scale(1.1);
-}  
-
-  .field_with_errors {
-    padding: 2px;
-    background-color: red;
-    display: table; }
-  
-  #error_explanation {
-    width: 450px;
-    border: 2px solid red;
-    padding: 7px 7px 0;
-    margin-bottom: 20px;
-    background-color: #f0f0f0; }
-  
-  #error_explanation h2 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px -7px 0;
-    background-color: #c00;
-    color: #fff; }
-  
-  #error_explanation ul li {
-    font-size: 12px;
-    list-style: square; }
-
 .float {
   position:fixed;
 	bottom: 15%;
@@ -377,17 +281,7 @@ div.group-class .tagline2, section.book-trial p.tagline2 {
 
 
 @media (min-width: 900px) {
-  body, p, ol, ul, td {
-    font-size: 1.1rem; }
 
-  // override components/_navbar.scss
-  .navbar-brand img {
-    max-height: 4.5rem; }
-  
-  main {
-    margin: 1rem;
-    margin-top: 0; }
-    
   img.table_icon {
     width: 1.3rem;
     height: 1.3rem; }
@@ -462,38 +356,7 @@ div.insta-blocker-bottom {
   z-index:2;
 }
 
-.navbar-sticky {
-  // transform: translateY(0);
-  // transition: all .4s ease-in-out;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: auto;
-  left: 0;
-  opacity: 1;
-  z-index: 1040;
-  animation: animate 0.5s linear;
-}
 
-// the navbar flickers on screen refresh, this makes it less unpleasant
-@keyframes animate {
-  0% {
-    opacity: 0;
-    // top: -50px;
-  }
-  100% {
-    opacity: 1;
-    // top: 0;
-  }
-}
-
-.navbar-headroom {
-  margin-top: 7rem;
-}
-
-nav.disappear {
-  transform: translateY(-100%);
-}
 
 button.slider_btn {
   flex-grow: 1;

@@ -1,17 +1,21 @@
 body {
-  font-size: 0.8rem;
   color: $gray-700;
+  background-color: #ffffff;  
+  font-size: 0.8rem;
+  line-height: 1.0rem;
   font-family: $font-stack;
+  margin: 0;
   @include media-breakpoint-up(lg) {
-    margin: 1rem;
-    margin-top: 0;
+    font-size: 1.1rem;    
+    margin: 0 1rem 1rem 1rem;
+    main {
+      margin: 1rem;
+      margin-top: 0; }    
   }
 }
 
-h4 {
-  margin-bottom: 0.5rem;
-}
+h4 {margin-bottom: 0.5rem;}
 
-h6 {
-  font-size: 1rem;
-}
+h6 {font-size: 1rem;}
+
+a {color: #000;}

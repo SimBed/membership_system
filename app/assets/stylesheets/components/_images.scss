@@ -18,3 +18,19 @@ img.back_icon {
     height: 1.4rem;
   }
 }
+
+
+img.table_icon {
+  width: 1.0rem;
+  height: 1.0rem;
+  opacity: 1.0;
+  }
+
+a img.table_icon:hover {
+  transform: scale(1.2);
+  opacity: 0.5
+  }  
+
+a img.button_icon:hover {
+transform: scale(1.1);
+}  
