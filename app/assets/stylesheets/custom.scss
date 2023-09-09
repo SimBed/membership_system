@@ -11,132 +11,6 @@ $font-weight-bold: 700;
 $primary: blue;
 $border-color-inverted: rgba($white, 0.2);
 
-.float {
-  position:fixed;
-	bottom: 15%;
-	right: 5%;
-}
-
-#shop .card-body {
-  padding-left: 0rem;
-  padding-right: 0rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;  
-}
-
-#shop .btn {
-  padding: 0.5rem 1rem;
-}
-#shop #Flex_btn {
-  padding: 0.5rem 2.3rem;
-}
-
-// more or less properties of classes badge bg-primary rounded-pill
-.razorpay-payment-button {
-  background-color: #000000;
-  border-radius: 50rem;
-  display: inline-block;
-  padding: 0.5em 0.75em;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1;
-  color: #ffffff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
-#trial-btn input.razorpay-payment-button {
-  background-color: white;
-  color: black;
-}
-
-#shop .name {
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}  
-#shop .classes, #shop .trial-name {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-#shop .trial-tagline {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}  
-
-#shop .value-statement {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-
-#shop .duration {
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}  
-#shop .base-price {
-  text-decoration: line-through;  
-  font-size: 0.8rem;
-  font-weight: 500;
-}  
-#shop .discount-price {
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-#shop ul.product-notes {
-  font-size: 0.8rem;
-  font-weight: 500;
-  list-style: none;
-  padding-left: 0;
-  text-align: left;  
-}
-
-#shop .accordion-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#shop .accordion-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 1em;
-}
-
-#shop .accordion-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 1em;
-}
-
-@media (min-width: 600px) {
-  #shop .accordion-item {
-    padding: 0 20%;
-    border-left-width: 0;
-    border-right-width: 0;
-  }
-}
-
-@media (min-width: 1400px) {
-  #shop .accordion-item {
-    padding: 0 30%;
-  }
-}
-
 .form-mandatory::after {
   content: "  *";
   font-size: 0.7rem;
@@ -157,11 +31,7 @@ h3.discount-statement {
   letter-spacing: 0.1em;
 }
 
-img.footerlogo {
-  width: 6rem;
-  display: block;
-  margin: auto;
-}
+
 
 .carousel-item .review {
   width: 75%;
@@ -279,57 +149,6 @@ div.group-class .tagline2, section.book-trial p.tagline2 {
   margin-top: -12rem !important;
 }}
 
-
-@media (min-width: 900px) {
-
-  img.table_icon {
-    width: 1.3rem;
-    height: 1.3rem; }
-
-  #shop .card-body {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;   
-  }
-
-  #shop .name {
-    font-size: 0.7rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }  
-  #shop .classes {
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }  
-  #shop .duration {
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }  
-  #shop .base-price {
-    text-decoration: line-through;  
-    font-size: 0.9rem;
-    font-weight: 500;
-  }  
-  #shop .discount-price {
-    font-size: 0.9rem;
-    font-weight: 500;
-  }    
-
-  #renewal span.renewal-price {
-    font-size: 1.2rem;
-  }
-
-  h3.discount-statement {
-    font-size: 0.8rem;
-  }  
-}
-
 #carouselTestimonial .carousel-item.active {
   display: flex;
   justify-content: center;
@@ -354,41 +173,6 @@ div.insta-blocker-bottom {
   left: 0;
   right:0;
   z-index:2;
-}
-
-
-
-button.slider_btn {
-  flex-grow: 1;
-  text-transform: uppercase;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  font-weight: 700;
-  /* flex-basis: 100%; */
-  // width: 40px;
-  // height: 40px;
-  // border-radius: 50%;
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
-.button-container {
-  display: flex;
-}
-
-.button-container button {
-  border: 1px solid grey;
-}
-
-.button-container button.live { 
-  background-color: rgb(105, 105,105);
-}
-
-@media (min-width: 768px) {
-.button-container {
-  display: none
-}
 }
 
 .carousel div.tt-date-title {

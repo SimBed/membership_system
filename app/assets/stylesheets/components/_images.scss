@@ -1,36 +1,41 @@
-img.header_icon {
-  width: 1.0rem;
-  height: 1.0rem;
-}  
-
 img.fitternity, img.waiver, img.instawaiver, img.active-workout, img.active-product, i.sellonline, a.whatsapp_group {
   opacity: 0.1;
-}
+ }
 
 img.back_icon {
   width: 2.0rem;
   height: 2.0rem;
-}
+ }
 
-@media (min-width: 900px) {
-   img.header_icon {
+img.header_icon {
+  width: 1.0rem;
+  height: 1.0rem;
+  @include media-breakpoint-up(lg) {
     width: 1.4rem;
     height: 1.4rem;
-  }
-}
+    }   
+ }
 
-
-img.table_icon {
+a img.table_icon {
   width: 1.0rem;
   height: 1.0rem;
   opacity: 1.0;
+  &:hover {
+    transform: scale(1.2);
+    opacity: 0.5
+    }    
+  @include media-breakpoint-up(lg) {
+    width: 1.3rem;
+    height: 1.3rem;
+    } 
   }
-
-a img.table_icon:hover {
-  transform: scale(1.2);
-  opacity: 0.5
-  }  
 
 a img.button_icon:hover {
 transform: scale(1.1);
-}  
+}
+
+img.footerlogo {
+  width: 6rem;
+  display: block;
+  margin: auto;
+}

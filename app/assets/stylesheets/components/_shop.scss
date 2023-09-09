@@ -1,36 +1,137 @@
-//
-// product
-//
+// #shop #Flex_btn {
+//   padding: 0.5rem 2.3rem;
+// }
+div.package_type_btns .btn {
+  width: 7rem;
+}
 
-.product-image {
-  position: relative;
-  margin-bottom: 0.75rem;
+#shop .name {
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}  
+#shop .classes, #shop .trial-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
 
-  img {
-    max-width: 100%;
+#shop .trial-tagline {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}  
+
+#shop .value-statement {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+#shop .duration {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}  
+#shop .base-price {
+  text-decoration: line-through;  
+  font-size: 0.8rem;
+  font-weight: 500;
+}  
+#shop .discount-price {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+#shop ul.product-notes {
+  font-size: 0.8rem;
+  font-weight: 500;
+  list-style: none;
+  padding-left: 0;
+  text-align: left;  
+}
+
+#shop .accordion-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#shop .accordion-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1em;
+}
+
+#shop .accordion-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1em;
+}
+
+@media (min-width: 900px) {
+
+  #shop .card-body {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;   
   }
 
-  &:hover {
-    img + img {
-      opacity: 1;
-    }
+  #shop .name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .classes {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .duration {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }  
+  #shop .base-price {
+    text-decoration: line-through;  
+    font-size: 0.9rem;
+    font-weight: 500;
+  }  
+  #shop .discount-price {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }    
+
+  #renewal span.renewal-price {
+    font-size: 1.2rem;
   }
 
-  a {
-    position: relative;
-    display: block;
-  }
+  h3.discount-statement {
+    font-size: 0.8rem;
+  }  
+}
 
-  img + img {
-    @include transition;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
+
+
+@media (min-width: 600px) {
+  #shop .accordion-item {
+    padding: 0 20%;
+    border-left-width: 0;
+    border-right-width: 0;
   }
 }
 
-.product-title {
-  display: flex;
-  color: $black;
+@media (min-width: 1400px) {
+  #shop .accordion-item {
+    padding: 0 30%;
+  }
 }

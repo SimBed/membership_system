@@ -4,15 +4,17 @@
   </div>
 
   <div class="text-center mt-10">
-    <h6 class="mb-4 text-uppercase fw-bolder">packages</h6> 
-    <button id="Unlimited_btn" class="btn_product_type btn btn-filter rounded-pill current" onclick="showProduct(event, 'unlimited')">Unlimited</button>
-    <button id="Flex_btn" class="btn_product_type btn btn-filter rounded-pill" onclick="showProduct(event, 'fixed')">Flex</button>
+    <h6 class="mb-4 text-uppercase fw-bolder">packages</h6>
+    <div class="package_type_btns">    
+      <button id="Unlimited_btn" class="btn_product_type btn btn-filter current" onclick="showProduct(event, 'unlimited')">Unlimited</button>
+      <button id="Flex_btn" class="btn_product_type btn btn-filter" onclick="showProduct(event, 'fixed')">Flex</button>
+    </div>
     <div class="px-2 my-4 value-statement product unlimited">Our best value memberships for training regularly. The more you train, the better the value!</div>        
     <div class="px-2 my-4 value-statement product fixed">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
   </div>
   
   <%= render 'public_pages/group_classes/shop_product_list' %>
-  <div class="mt-3"> <%= link_to "Buy Now", signup_path, class: "btn btn-outline-black rounded-pill bg-light px-2 py-1 bg-dark text-white" %> </div>
+  <div class="mt-3"> <%= link_to "Buy Now", signup_path, class: "btn btn-outline-black bg-light px-2 py-1 bg-dark text-white" %> </div>
   <div class="container mt-3">
     <h5 class="px-3 fw-bolder">Save 10% on your first membership at The Space</h5>
   </div>
