@@ -8,7 +8,7 @@
       <% if @renewal.offer_online_discount? %>   
         <s class="me-1"><%= rupees(yield(:base_price))%></s>
       <% end %>    
-      <span class = "renewal-price"><%= "#{rupees(yield(:renewal_price))}" %></span>
+      <span class = "span1"><%= "#{rupees(yield(:renewal_price))}" %></span>
     </p>
     <%= render partial: 'razor_form' %>
     <p class="mt-1"><%= "or visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'}".html_safe %></p>    

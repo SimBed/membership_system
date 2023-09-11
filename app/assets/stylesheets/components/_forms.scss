@@ -91,3 +91,14 @@ div.actions input {
     box-shadow: none;    
   }
 }
+
+form {
+  .form-mandatory::after {
+    content: "  *";
+    font-size: 0.7rem;
+  }
+
+  span.sub-label {
+    font-size: 0.7rem;
+  }
+}

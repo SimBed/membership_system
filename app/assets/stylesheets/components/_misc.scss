@@ -2,3 +2,23 @@ div.admin-password-reset-table-wrapper {
   // display: block;
   overflow-x: auto;
   }
+
+div.insta-blocker-top {
+  width: 7.5rem;
+  height: 2.5rem;
+  background-color:white;
+  position: absolute;
+  top: 0.5rem;
+  right:0;
+  z-index:2;
+}
+
+div.insta-blocker-bottom {
+  height: 8rem;
+  background-color:white;
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  right:0;
+  z-index:2;
+}

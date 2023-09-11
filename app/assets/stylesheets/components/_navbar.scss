@@ -108,6 +108,13 @@ nav.disappear {
   transform: translateY(-100%);
 }
 
+// so bottom items in dropdowns with lots of items dont become inaccesssible on phone
+.highnavbar {
+  @include media-breakpoint-down(sm) {
+    margin-top: -12rem !important;
+  }
+}
+
 
 
 

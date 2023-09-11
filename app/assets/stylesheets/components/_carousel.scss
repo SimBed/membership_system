@@ -1,0 +1,163 @@
+.carousel {
+  .more-than-gym {
+    color: $white;
+    background-color: $black;
+    p {
+      width: 75%;
+      margin: auto;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      text-align: justify;
+    }
+    h6 {
+      font-size: 1.1rem;
+      line-height: 1.25;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
+
+  .reviews {
+    p {  
+    font-size: 1.25rem;
+    line-height: 1.25;
+      &.review-text {
+        width: 75%;
+        margin: auto;
+        margin-bottom: 1rem;
+      }
+      &.reviewer {
+        font-weight: 700
+      }
+    }
+  }
+
+  .signature-classes {
+    .carousel-item img {
+      filter: grayscale(100%) opacity(50%);
+    }
+    .carousel-caption {
+      top: 15%;
+      left: 10%;
+      right: 10%;
+      @include media-breakpoint-up(sm) {
+        top: 25%
+      }
+      @include media-breakpoint-up(md) {
+        top: 30%
+      }
+      @include media-breakpoint-up(xl) {
+        top: 35%
+      }
+    }
+    .carousel-footer {
+      position: relative;
+      left: auto;
+      right: auto;
+      padding: 1rem 1rem 3rem 1rem;
+      @include media-breakpoint-up(xl) {
+        padding: 1rem 10% 3rem 10%;
+       }  
+      p {
+        font-size: 0.9rem;
+        letter-spacing: 0.1em;
+        text-align: justify;
+        @include media-breakpoint-up(xl) {
+          font-size: 1.1rem;
+          letter-spacing: 0.15em;  
+         }      
+      }
+    }    
+  }
+
+  .testimonials {
+    .carousel-item.active {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+
+.carousel div.tt-date-title {
+  font-size: 1.25rem;
+  color: white;
+}
+.carousel div.tt-date {
+  font-size: 0.8rem;
+  border-bottom: thin solid grey;
+  color: grey;
+}
+.carousel div.tt-title {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+}
+.carousel div.tt-goal {
+  font-size: 1.0rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+  padding-bottom: 1.5rem;  
+  line-height: 1em;
+}
+
+@media(min-width:768px) {
+.carousel div.tt-title-container {
+  height: 5rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+.carousel div.tt-title {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);  
+}
+
+.carousel div.tt-goal-container {
+  height: 4rem;
+  position: relative;
+  text-align: center;
+  width:100%;
+}
+
+.carousel div.tt-goal {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+
+}
+}
+
+.carousel div.tt-time {
+  font-size: 0.8rem;
+  color: grey;
+  padding-bottom: 0.25rem;
+}
+.carousel div.tt-goal {
+  font-size: 1.0rem;
+  color: grey;
+}
+@media (min-width: 768px) {
+  .carousel div.tt-goal {
+    font-size: 0.6rem;
+  }
+}
+.carousel div.tt-level {
+  font-size: 0.8rem;
+  color: grey;
+}
+.carousel div.tt-studio {
+  font-size: 0.8rem;
+  color: grey;
+}
+
+
+  
+
+

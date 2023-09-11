@@ -1,0 +1,24 @@
+.tagline {
+  p.tagline-xl {
+    // fs-4
+    font-size: calc(1.325rem + .9vw);
+    line-height: 2.4rem;      
+  }
+  p.tagline-lg {
+    font-size: 1.4rem;
+    line-height: 1.8rem;  
+    font-weight: bold;
+  }
+  p.tagline-md {
+    font-size: 1.0rem;
+    line-height: 1.2rem;  
+    font-weight: bold;
+  }
+  p.tagline-sm {
+    font-size: 0.8rem;
+    line-height: 1.2rem;  
+    @include media-breakpoint-up(md) {
+      font-size: 1.0rem;
+    }         
+  }
+}

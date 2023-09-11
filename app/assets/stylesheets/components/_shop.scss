@@ -5,6 +5,13 @@ div.package_type_btns .btn {
   width: 7rem;
 }
 
+h3.discount-statement {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em
+}
+
 #shop .name {
   font-size: 0.7rem;
   font-weight: 500;
@@ -111,16 +118,10 @@ div.package_type_btns .btn {
     font-weight: 500;
   }    
 
-  #renewal span.renewal-price {
-    font-size: 1.2rem;
-  }
-
   h3.discount-statement {
     font-size: 0.8rem;
   }  
 }
-
-
 
 @media (min-width: 600px) {
   #shop .accordion-item {

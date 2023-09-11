@@ -1,0 +1,94 @@
+.slider {
+  div.date-title {
+  font-size: 1.25rem;
+  color: $white;
+  }
+
+  div.date {
+    font-size: 0.8rem;
+    border-bottom: thin solid $gray-700;
+    color: $gray-700;
+  }
+
+  div.title-container {
+    @include media-breakpoint-up(md) {    
+    height: 5rem;
+    position: relative;
+    text-align: center;
+    width:100%;
+    }
+    .title {
+      font-size: 1.0rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: $white;
+      @include media-breakpoint-up(md) {
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);     
+      }       
+    }
+  }
+
+  div.time {
+    @include media-breakpoint-up(md) {
+    font-size: 0.8rem;
+    color: $gray-700;
+    padding-bottom: 0.25rem;
+    }
+  }
+
+  div.goal-container {
+    @include media-breakpoint-up(md) {
+      height: 4rem;
+      position: relative;
+      text-align: center;
+      width:100%;
+    }
+    .goal {
+      font-size: 1.0rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: $gray-700;
+      padding-bottom: 1.5rem;  
+      line-height: 1em;
+      @include media-breakpoint-up(md) {
+        font-size: 0.6rem;        
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+      }  
+    }
+  }
+
+  div.level {
+    font-size: 0.8rem;
+    color: $gray-700;
+  }
+
+  div.studio {
+    font-size: 0.8rem;
+    color: $gray-700;
+  }
+
+  div.tt-day {
+    display: none;
+    animation: fadeIn 0.7s;
+    @include media-breakpoint-up(md) {
+      display: block;
+      padding-right: 2rem;
+    }
+    &.live {
+      display: block;
+    }      
+  }
+}
+
+@keyframes fadeIn {
+  from { margin-left: 100%; }
+}
+  
+
+

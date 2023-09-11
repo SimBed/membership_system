@@ -1,6 +1,6 @@
 <section class="pb-xl-5 mb-3 pt-3 text-center signature">
   <h5 class="mb-3 text-uppercase fw-bolder">signature classes</h5>  
-  <div id="carouselSignature" class="carousel slide cover overflow-hidden inverted bg-black" data-bs-ride="false">
+  <div id="carouselSignature" class="carousel slide overflow-hidden inverted bg-black" data-bs-ride="false">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
       <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -10,68 +10,67 @@
       <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="5" aria-label="Slide 6"></button>
       <button type="button" data-bs-target="#carouselSignature" data-bs-slide-to="6" aria-label="Slide 7"></button>
     </div>
-    <div class="carousel-inner">
+    <div class="carousel-inner signature-classes">
       <div class="carousel-item active" data-bs-interval="5000">
         <%# note rails precompiles all the assets and puts them in public/assets accessible as /assets
         so (unintuitively) rails won't find them if a subfolder (like images) is included in the path
         [this doesn't explain why subfolder group should stay?]
         https://stackoverflow.com/questions/15827763/rails-why-images-are-not-showing-in-my-rails-basic-app %>
         <img src=<%= asset_path 'group/afterburn.jpg' %> class="d-block w-100" alt="afterburn">
-        <div class="carousel-caption carousel-caption-signature">
+        <div class="carousel-caption">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">afterburn</h1>
-          <p class="text-uppercase mb-3"></p>
         </div>
-        <div class="carousel-class-desc-caption">
+        <div class="carousel-footer">
           <p class='description'>Be prepared to dig deep & push hard! A competitive high intensity full body metabolic conditioning class designed to train all three metabolic pathways, amp up your cardiovascular endurance and target your core. Steady state sequences building up to maximum effort resistance cycles topped off with ab blaster circuits - Maximum Effort to Maximise Fat Burn! Feel energized, revitalized and ready to take on anything.</p>
         </div>
       </div>
       <div class="carousel-item" data-bs-interval="5000">
         <img src=<%= asset_path 'group/cardio.jpg' %> class="d-block w-100" alt="cardio sculpt">
-        <div class="carousel-caption carousel-caption-signature">
+        <div class="carousel-caption">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">cardio sculpt</h1>
           <p class="text-uppercase mb-3"></p>
         </div>
-        <div class="carousel-class-desc-caption">          
+        <div class="carousel-footer">          
           <p class='description'>A high-energy class that combine Push Pull skill training & a heart-pumping HIIT circuit. Develop calisthenic skills for Handstands, Pull ups and Pistol Squats and build that aerobic engine. Finish with targeted body sculpting finishers that will make your body feel tighter, toned, and more sculpted than ever before - Leave perspired & inspired!</p>
         </div>
       </div>
       <div class="carousel-item" data-bs-interval="5000">
         <img src=<%= asset_path 'group/bodypump1.jpg' %> class="d-block w-100" alt="body pump">
-        <div class="carousel-caption carousel-caption-signature">
+        <div class="carousel-caption">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">bodypump</h1>
           <p class="text-uppercase mb-3"></p>
         </div>
-        <div class="carousel-class-desc-caption">
+        <div class="carousel-footer">
           <p class='description'>On the menu, Toned Limbs, Popping Abs & Defined muscles. Sculpt your body using classic hypertrophy style training to isolate and strengthen even the tiniest muscles - so that you don’t just look strong on the outside but grow strong on the inside too!</p>
         </div>
       </div>
       <div class="carousel-item" data-bs-interval="5000">
         <img src=<%= asset_path 'group/s&c1.jpg' %> class="d-block w-100" alt="strength & conditioning">
-        <div class="carousel-caption carousel-caption-signature">
+        <div class="carousel-caption">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">strength & conditioning</h1>
           <p class="text-uppercase mb-3"></p>
         </div>
-        <div class="carousel-class-desc-caption">          
+        <div class="carousel-footer">          
           <p class='description'>Build your Mind & Body in our S&C classes. Progressive workouts incorporating Barbell & Landmine Training, Weighted Flows, Locomotion, Skill, and Power work. Stay continuously challenged, refine technique, enhance strength and lose fat. Discover resilience and an energized mind-body harmony that will keep you “Long Term Strong”</p>
         </div>
       </div>
       <div class="carousel-item" data-bs-interval="5000">
         <img src=<%= asset_path 'group/foundation.jpg' %> class="d-block w-100" alt="strength & conditioning">
-        <div class="carousel-caption carousel-caption-signature">
+        <div class="carousel-caption">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">foundation</h1>
           <p class="text-uppercase mb-3"></p>
         </div>
-        <div class="carousel-class-desc-caption">          
+        <div class="carousel-footer">          
           <p class='description'>The perfect class to start your strength journey. We teach you correct technique and build baseline strength for essential exercise movements finishing up each workout with a beginner friendly metcon to get the heart racing</p>
         </div>
       </div>
       <div class="carousel-item" data-bs-interval="5000">
         <img src=<%= asset_path 'group/pilates.jpg' %> class="d-block w-100" alt="strength & conditioning">
-        <div class="carousel-caption carousel-caption-signature">
+        <div class="carousel-caption">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">pilates</h1>
           <p class="text-uppercase mb-3"></p>
         </div>
-        <div class="carousel-class-desc-caption">          
+        <div class="carousel-footer">          
           <p class='description'>If you want to feel strong yet flexible, agile yet controlled, powerful yet mindful Pilates is for you. Take your pick of our two signature Pilates styles:</p> 
             Pilates Suspension Method:
             <p class='description'>
@@ -83,11 +82,11 @@
       </div>
       <div class="carousel-item" data-bs-interval="5000">
         <img src=<%= asset_path 'group/wod.jpg' %> class="d-block w-100" alt="community wod">
-        <div class="carousel-caption carousel-caption-signature">
+        <div class="carousel-caption">
           <h1 class="display-2 lh-sm fw-bold text-uppercase mb-0">community wod</h1>
           <p class="text-uppercase mb-3"></p>
         </div>
-        <div class="carousel-class-desc-caption">          
+        <div class="carousel-footer">          
           <p class='description'>#PeopleofTheSpace - connected by our passion for sweat, drive to keep growing and need to excel!  This is where our coaches & members show up, move hard and sweat up a storm. Strong minds, bodies and friendships unite at the end of each week. We work together, Sweat together, Conquer together.</p>
         </div>
       </div>
