@@ -102,3 +102,15 @@ form {
     font-size: 0.7rem;
   }
 }
+
+h2 form {
+  display: inline-block;
+  font-size: 0.5em;
+  select.sort {
+    color: $gray-700;
+    border: solid;
+    border-color: $gray-50;
+    border-width: 1px;
+    background-color: $gray-50;  
+  }
+}

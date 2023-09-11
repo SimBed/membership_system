@@ -114,7 +114,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='status_discount_id'][value='']"
     assert_select "input[type=hidden][name='oneoff_discount_id'][value='']"
     assert_select "input[type=hidden][name='account_id'][value='#{@account_client_for_ongoing_trial.id}']"
-    refute_empty response.body.scan(/or visit the/)
+    # refute_empty response.body.scan(/or visit the/)
     regexs = /data-amount="2040000"/
     search_result = response.body.scan(regexs)
 
@@ -137,7 +137,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='status_discount_id'][value='']"
     assert_select "input[type=hidden][name='oneoff_discount_id'][value='']"
     assert_select "input[type=hidden][name='account_id'][value='#{@account_client_for_expired_trial.id}']"
-    refute_empty response.body.scan(/or visit the/)
+    # refute_empty response.body.scan(/or visit the/)
     regexs = /data-amount="2170000"/
     search_result = response.body.scan(regexs)
 

@@ -30,6 +30,16 @@ a img.table_icon {
     } 
   }
 
+td img.table_icon {
+  width: 1.0rem;
+  height: 1.0rem;
+  opacity: 1.0;
+  @include media-breakpoint-up(lg) {
+    width: 1.3rem;
+    height: 1.3rem;
+    } 
+  }
+
 a img.button_icon:hover {
 transform: scale(1.1);
 }

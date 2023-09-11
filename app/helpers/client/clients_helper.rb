@@ -110,9 +110,9 @@ module Client::ClientsHelper
   end
 
   def visit_shop_statement(rider)
-    return "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'} now".html_safe if !rider
+    return "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'like_button text-uppercase'} now".html_safe if !rider
 
-    "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'} for more group classes".html_safe
+    "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'like_button text-uppercase'} for more group classes".html_safe
   end
 
   def renewal_saving(product, renewal)
