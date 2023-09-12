@@ -16,18 +16,19 @@ img.header_icon {
     }   
  }
 
-a img.table_icon {
+img.table_icon {
   width: 1.0rem;
   height: 1.0rem;
   opacity: 1.0;
-  &:hover {
-    transform: scale(1.2);
-    opacity: 0.5
-    }    
   @include media-breakpoint-up(lg) {
     width: 1.3rem;
     height: 1.3rem;
     } 
+  }
+
+a img.table_icon:hover {
+  transform: scale(1.2);
+  opacity: 0.5
   }
 
 td img.table_icon {
