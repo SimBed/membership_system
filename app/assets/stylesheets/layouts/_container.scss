@@ -18,3 +18,11 @@ div.actions input {
 	right: 5%;
 }
 
+//  get preview button for admin timetable builderr on right
+.positioning-wrap {
+  display: flex;
+    div:last-child {
+      margin-left: auto;
+    }
+}
+

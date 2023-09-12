@@ -5,21 +5,15 @@
   }
 
   th {
-    // font-weight: $font-weight-normal;
-    // DPS
     font-weight: $font-weight-bold;
   }
 
   tr {
     > *:first-child {
-    // font-weight: $font-weight-normal;
-    // DPS      
-    // padding-left: 0;
       padding-left: 0.625rem;
     }
 
-    > *:last-child {
-    // DPS         
+    > *:last-child {      
       padding-right: 0.625rem;
     }
   }
@@ -92,3 +86,97 @@ td.discount-warning {
   background-color: $white;
   background: linear-gradient($gray-700, $gray-200);
   box-shadow: none; }
+
+
+  // admin timetable builder
+  table.timetable {
+    background-color: #dddddd;
+    color: $gray-800;
+    font-weight: $font-weight-bolder;
+    font-family: $font-stack;  
+    border-spacing: 0;
+    border-top-right-radius: 0.6em;
+    border-top-left-radius: 0.6em;
+    font-size: 0.6rem;
+    margin-left: 0;
+    margin-top: -0.5em;
+    margin-bottom: 2.5em;
+    text-align: center;
+    width: 99%;
+    position: relative;
+    border: $white solid 0.06em;
+    padding: 0.4em 0.2em 0.4em 0.2em;
+    @include media_breakpoint_up(md) {
+      font-size: 1rem;
+    }
+
+    th {
+      position:relative; /*DPS added June 2019 so symbol could be placed in bottom corner of data cell */
+      width: 7%;
+      border: $white solid 0.14em;
+      padding-left: 0.1em;
+      padding-right: 0.1em;
+      &.large-screen {
+        display: none;
+      }      
+      @include media_breakpoint_up(md) {
+        padding-right: 0.8em;
+        padding-left: 0.4em;
+        &.small-screen {
+          display: none;
+        }
+        &.large-screen {
+          display: table-cell;
+        }          
+      }
+
+    }
+
+    tr:hover {background-color: $white}
+
+    td {
+      position: relative; /*DPS added June 2019 so symbol could be placed in bottom corner of data cell */
+      width: 13%;
+      border: $white solid 0.06em;
+      padding: 0.4em 0.2em 0.4em 0.2em;
+      @include media_breakpoint_up(md) {
+        padding-right: 0.8em;
+        padding-left: 0.4em;
+      }
+
+      div.workout-name {
+        font-size: 0.6rem;
+        font-weight:bold;
+        line-height: 0.7rem;
+        @include media_breakpoint_up(md) {
+          font-size: 1.0rem;
+          line-height: 1.4rem;
+        }         
+      }
+
+      div.bodypart {
+       font-size: 0.55rem;
+       font-weight:normal;
+       @include media_breakpoint_up(md) {
+        font-size: 0.8rem;
+       }             
+      }
+
+      div.studio {
+       font-size: 0.5rem;
+       font-weight:normal;
+       @include media_breakpoint_up(md) {
+        font-size: 0.75rem;
+       }             
+      }
+    }
+
+    a img.table_icon {
+      width: 0.8rem;
+      height: 0.8rem;
+      @include media_breakpoint_up(lg) {
+        width: 1.1rem;
+        height: 1.1rem;
+       }       
+    }
+  }

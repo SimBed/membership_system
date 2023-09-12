@@ -42,11 +42,8 @@ Rails.application.routes.draw do
   get '/timetable', to: 'admin/timetables#show_public', as: 'public_timetable'
   get '/superadmin/regular_expenses/add'
   get 'public_pages/wedontsupport'
-  # prototype homepage (redundant))
-  get '/welcome_home', to: 'public_pages#welcome_home'
-  # previous homepage (redundant)
   get '/buboo/hearts', to: 'public_pages#hearts'
-  get '/space_home', to: 'public_pages#space_home', as: 'wip_home'
+
   
   namespace :admin do
     resources :entries, only: [:new, :edit, :create, :update, :destroy]

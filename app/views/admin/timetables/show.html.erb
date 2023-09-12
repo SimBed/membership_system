@@ -1,32 +1,31 @@
 
 <div class="container">
   <div class="positioning-wrap">
-    <div><h4><%= @timetable.title %> <small></small></div></h4>
+    <div class="mb-3"><h4><%= @timetable.title %> <small></small></div></h4>
     <div class="GeneralText mb-2">
-      <input style= "display:inline;" id="btnPreview" type="button" class="btn btn-dark btn-generaltext"
-      onclick="return toggle_visibility('editButton', 'block')" value="Preview...">
+      <%= button_tag 'Preview...', id: "btnPreview", class:'btn btn-black', onclick:"return toggle_visibility('editButton', 'block')" %>
     </div>
   </div>
 
   <p class="GeneralText mb-1 mb-2">All classes are 60mins unless stated otherwise.</p>
 
-  <table class="TimetableTable">
+  <table class="timetable">
     <thead>
       <tr style="background-color:white;">
         <th>
           <div class = "editButton">
-            <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_table_time_path(timetable_id: params[:id]) %>time
+            <%= link_to image_tag('add.png', class: "table_icon"), new_admin_table_time_path(timetable_id: params[:id]) %>time
           </div>
           <div class = "editButton">
-            <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_table_day_path(timetable_id: params[:id]) %>day
+            <%= link_to image_tag('add.png', class: "table_icon"), new_admin_table_day_path(timetable_id: params[:id]) %>day
           </div>
         </th>
         <% @days.each do |day| %>
           <th class= "large-screen" style="text-align:center; text-transform: uppercase;">
             <%=day.name%>
             <div class = "editButton">
-              <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_table_day_path(day) %>
-              <%= link_to image_tag('delete.png', class: "edit_icon"), admin_table_day_path(day), data: { turbo_method: :delete, turbo_confirm: "This will delete the timetable day and all the day's entries. Are you sure?" } %>
+              <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_table_day_path(day) %>
+              <%= link_to image_tag('delete.png', class: "table_icon"), admin_table_day_path(day), data: { turbo_method: :delete, turbo_confirm: "This will delete the timetable day and all the day's entries. Are you sure?" } %>
             </div>    
           </th>
           <th class= "small-screen" style="text-align:center;"><%=day.short_name%></th>
@@ -79,10 +78,13 @@
       }
     }
     if(elements[0].style.display == 'none') {
-      btnValue.value="Edit Mode...";
+      console.log('hi')
+      // btnValue.value="Edit Mode...";
+      btnValue.innerText="Edit Mode...";
     } else {
-      btnValue.value="Preview...";
+      console.log('bye')
+      btnValue.innerText="Preview...";
       }
-    return true;
+    // return true;
   }
 </script>

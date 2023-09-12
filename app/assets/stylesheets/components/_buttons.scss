@@ -11,6 +11,7 @@
 }
 
 .btn {
+  font-size: 0.8rem;
   border-radius: 0.5rem;
   padding: 0.5rem;
   box-shadow: 0.3rem 0.3rem 0.6rem $gray-800;
@@ -18,6 +19,11 @@
   &:hover {
     opacity: 0.8;
     box-shadow: none;    
+  }
+  &.btn-black {
+    @include media-breakpoint-up(md) {
+      font-size: 1rem;
+     }  
   }
 }
 
@@ -97,7 +103,7 @@
 }
 
 
-// timetable
+// timetable slider
 
 button.slider_btn {
   flex-grow: 1;

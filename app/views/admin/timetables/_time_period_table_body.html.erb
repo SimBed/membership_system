@@ -1,23 +1,23 @@
 <tr>
   <th><%=time.start.strftime("%l.%M")%>
     <div class = "editButton">
-      <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_table_time_path(time) %>
-      <%= link_to image_tag('delete.png', class: "edit_icon"), admin_table_time_path(time), data: { turbo_method: :delete, turbo_confirm: 'This will delete the timetable row and all the entries for that time. Are you sure?' } %>
+      <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_table_time_path(time) %>
+      <%= link_to image_tag('delete.png', class: "table_icon"), admin_table_time_path(time), data: { turbo_method: :delete, turbo_confirm: 'This will delete the timetable row and all the entries for that time. Are you sure?' } %>
     </div>
   </th>
   <% @days.each do |day| %>
     <td>
       <% entry = Entry.where(table_time_id: time.id, table_day_id: day.id).first %>
-        <div class="Workout-Name" data-toggle="tooltip" title=<%="#{time.start.strftime("%l.%M")}-#{day.name}"%> ><%=entry&.workout&.name%></div>
-        <div class="Bodypart"><%=entry&.goal%></div>
-        <div class="Studio mt-1"><%=entry&.level%></div>
-        <div class="Studio mt-1"><%=entry&.studio%></div>
+        <div class="workout-name" data-toggle="tooltip" title=<%="#{time.start.strftime("%l.%M")}-#{day.name}"%> ><%=entry&.workout&.name%></div>
+        <div class="bodypart"><%=entry&.goal%></div>
+        <div class="studio mt-1"><%=entry&.level%></div>
+        <div class="studio mt-1"><%=entry&.studio%></div>
       <div class = "editButton">
         <% if entry.nil? %>
-          <%= link_to image_tag('add.png', class: "edit_icon"), new_admin_entry_path(timetable_id: params[:id], table_day_id: day.id, table_time_id: time.id) %>
+          <%= link_to image_tag('add.png', class: "table_icon"), new_admin_entry_path(timetable_id: params[:id], table_day_id: day.id, table_time_id: time.id) %>
         <% else %>
-        <%= link_to image_tag('edit.png', class: "edit_icon"), edit_admin_entry_path(entry) %>
-        <%= link_to image_tag('delete.png', class: "edit_icon"), admin_entry_path(entry), data: { turbo_method: :delete, confirm: 'Are you sure?' } %>
+        <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_entry_path(entry) %>
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_entry_path(entry), data: { turbo_method: :delete, confirm: 'Are you sure?' } %>
       <% end %>
       </div>
     </td>
