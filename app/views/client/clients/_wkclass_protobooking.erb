@@ -1,0 +1,30 @@
+<% booking_link_and_class = protobooking_link_and_class_for(wkclass, @client, index) %>
+<div class="book">
+  <%# note on precompilation all assets are put into /public/assets accesed by using /assets (the images bit is redundant, the intuitive
+  "/images/group/afterburn.jpg") or suchlike won't work. "/assets/group/afterburn.jpg" will work
+  https://stackoverflow.com/questions/15827763/rails-why-images-are-not-showing-in-my-rails-basic-app %>
+  <!--div class="book-item"><%#= image_tag booking_image(wkclass.name.delete(' ').downcase)  %></div-->
+  <div class="book-item"> <img src=<%= asset_path booking_image(wkclass.name.delete(' ').downcase) %>></div>
+ 
+  <div class="book-item">
+    <div class="details">
+      <div class="wkclass-name"><%=wkclass.name%></div>
+      <div class="studio">cellar</div>
+    </div>
+  </div>
+  <div class="book-item">
+    <div class="details">
+      <div class="date"><%= wkclass.start_time.strftime("%b %-d") %></div>
+      <div class="time"><%=wkclass.time%></div>
+      <div class="duration">1hr</div>
+    </div>
+  </div>
+  <div class="book-item">
+    <div class="details">      
+      <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
+    </div>
+  </div>
+  <div class="book-item">
+    <div <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></div>
+  </div>
+</div>

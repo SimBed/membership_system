@@ -4,6 +4,7 @@ export default class extends Controller {
   static values = { url: String, capacity: String }
 
   change() {
+    console.log('ds');
     this.load()
   }
 

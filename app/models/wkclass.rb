@@ -179,25 +179,11 @@ class Wkclass < ApplicationRecord
     attendances.map(&:revenue).inject(0, :+)
   end
 
-  # def booking_window
-  #   settings = Rails.application.config_for(:constants)['settings']
-  #   window_start = start_time.ago(settings[:booking_window_days_before].days).beginning_of_day
-  #   window_end = start_time - settings[:booking_window_minutes_before].minutes
-  #   (window_start..window_end)
-  # end
-
   def booking_window
     window_start = start_time.ago(Setting.booking_window_days_before.days).beginning_of_day
     window_end = start_time - Setting.booking_window_minutes_before.minutes
     (window_start..window_end)
   end
-
-  # def self.visibility_window
-  #   settings = Rails.application.config_for(:constants)['settings']
-  #   window_start = Time.zone.now - settings[:visibility_window_hours_before].hours
-  #   window_end = Time.zone.now.advance(days: settings[:visibility_window_days_ahead]).end_of_day
-  #   (window_start..window_end)
-  # end
 
   def self.visibility_window
     window_start = Time.zone.now - Setting.visibility_window_hours_before.hours

@@ -1,7 +1,4 @@
-<%# provide(:greeting, "Hi #{@client.first_name}!") %>
 <% provide(:greeting, "Group Class Booking") %>
-<%# provide(:expiry_statement, (@renewal[:trial] ? 'Your Trial has expired' : 'Your Package has expired') ) %>
-<%# <% provide(:renewal_statement, renewal_statement(@renewal[:ongoing], @renewal[:trial], @renewal[:valid], @client)) %>
 <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?, @client)) %>
 <% provide(:visit_shop_statement, visit_shop_statement(@renewal.product.rider?)) %>
 <% provide(:renewal_product, @renewal.product&.formal_name) %>
@@ -10,22 +7,13 @@
 <% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?)) %>
 
 <%= render partial: 'client_greeting' %>
-<% if Setting.renew_online && @renewal.alert_to_renew? #&& !@renewal.product.rider? %>
+<%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_show.empty? %>
+<%= turbo_frame_tag 'client_bookings' do %>
+  <%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_show.empty? %>
+<% end %>
+<% if Setting.renew_online && @renewal.alert_to_renew? %>
   <%= render partial: 'renewal' %>
 <% end %>
-<%#= render partial: 'client_heading', locals: {selection: false} %>
-<%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_visible.empty? %>
-<%= turbo_frame_tag 'client_bookings' do %>
-  <%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_visible.empty? %>
-<% end %>
-<!--div id="consistency" class="container px-1 mb-5">
-  <%#= render partial: 'consistency' %>
-</div-->
 <% unless @purchases.empty? %>
   <%= render partial: 'client_packages_table', locals: {detailed: false} %>
 <% end %>
-
-<div id="heart_quote" class="container px-1">
-  <%#= render partial: 'client_heart' %>
-  <%#= render partial: 'quotation' %>
-</div>

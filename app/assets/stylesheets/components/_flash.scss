@@ -8,6 +8,7 @@
   align-items: center;
   max-width: 100%;
   width: max-content;
+  z-index: 1;
 
   &__message {
     animation: appear-then-fade 4s both;

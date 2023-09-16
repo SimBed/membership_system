@@ -15,6 +15,7 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :in_booking_window, only: [:create]
   before_action :reached_max_capacity, only: [:create, :update]
   before_action :reached_max_amendments, only: [:update]
+  before_action :set_booking_day, only: [:create, :update]
   after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
 
   def footfall
@@ -73,7 +74,11 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass = @attendance.wkclass
     @wkclass_name = @wkclass.name
     @wkclass_day = @wkclass.day_of_week
-    redirect_to client_book_path(@client)
+    if params[:proto] == 'proto'
+     redirect_to client_protobook_path(@client)
+    else
+      redirect_to client_book_path(@client)
+    end
     # redirect_to "/client/clients/#{@client.id}/book"
     # attendances_helper has booking_flash_hash with a method as a value
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
@@ -297,8 +302,12 @@ class Admin::AttendancesController < Admin::BaseController
   def handle_client_update_response
     set_attendances
     flash_client_update_success
-    redirect_to client_book_path(@client)
-  end
+    if params[:proto] == 'proto'
+      redirect_to client_protobook_path(@client)
+    else
+      redirect_to client_book_path(@client)
+    end    
+   end
 
   # https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller
   # adding newline to flash surprisingly awkward. Adapted application.html.erb per 'dirty' suggestion.
@@ -545,5 +554,10 @@ class Admin::AttendancesController < Admin::BaseController
     session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || default_month
     @period = month_period(session[:attendance_period])
     session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
+  end
+  
+  def set_booking_day # so day on slider shown doesn't revert to default on response 
+    default_booking_day = 0
+    session[:booking_day] = params[:booking_day] || session[:booking_day] || default_booking_day
   end
 end

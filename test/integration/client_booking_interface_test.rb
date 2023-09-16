@@ -64,8 +64,8 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     # type of link changes from post to patch so one less (new) booking link after the booking
     assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 2
     attendance = Attendance.where(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id).first
-
-    assert_select 'a[href=?]', admin_attendance_path(attendance), count: 1
+    assert_select "a:match('href', ?)", /#{admin_attendances_path(attendance)}/, count: 1
+    # assert_select 'a[href=?]', admin_attendance_path(attendance), count: 1
   end
 
   test 'class booking links appear correctly when class gets full' do

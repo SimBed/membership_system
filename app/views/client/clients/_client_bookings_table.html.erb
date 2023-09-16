@@ -1,53 +1,17 @@
-<div id="bookings-table" class="container px-0 mb-5">  
-  <table class="table table-striped">
-    <tbody>
-      <% unless @wkclasses_window_closed.empty? %>
-        <tr>
-          <th class="stripe-override" colspan="5">booking window closed</th>
-        </tr>
-        <% @wkclasses_window_closed.each do |wkclass| %>
-          <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
-          <tr class ="<%=booking_link_and_class[:css_class]%>">
-            <th scope="row"><%= wkclass.date %></th>
-            <td><%= wkclass.time %></td>
-            <td><%= wkclass.workout.name %></td>
-            <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
-            <td><%= booking_link_and_class[:link] %></td>
-          </tr>
+<%# replaced with stimulus %>
+<%#= javascript_import_module_tag "custom/booking-slider" %>
+  <section id="bookings-table" class="mb-5">
+  <div id="" class="container px-0 mt-5 mb-5">  
+    <table class="table table-striped">
+      <tbody>
+        <% unless @wkclasses_show.empty? %>
+          <%= render partial: 'wkclass_booking', collection: @wkclasses_show, as: :wkclass %>        
         <% end %>
-      <% end %>
-      <% unless @wkclasses_in_booking_window.empty? %>
-        <tr>
-          <th class="stripe-override" colspan="5">booking window open</th>
-        </tr>
-        <% @wkclasses_in_booking_window.each do |wkclass| %>
-          <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
-          <tr class ="<%=booking_link_and_class[:css_class]%>">
-            <th scope="row"><%= wkclass.date %></th>
-            <td><%= wkclass.time %></td>
-            <td><%= wkclass.workout.name %></td>
-            <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
-            <td <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></td>
-          </tr>
-        <% end %>
-      <% end %>
-      <% if false %>
-        <% unless @wkclasses_not_yet_open.empty? %>
-          <tr>
-            <th class="stripe-override" colspan="5">booking window opening soon</th>
-          </tr>
-          <% @wkclasses_not_yet_open.each do |wkclass| %>
-            <% booking_link_and_class = booking_link_and_class_for(wkclass, @client) %>
-            <tr class ="<%=booking_link_and_class[:css_class]%>">
-              <th scope="row"><%= wkclass.date %></th>
-              <td><%= wkclass.time %></td>
-              <td><%= wkclass.workout.name %></td>
-              <td><%= Attendance.applicable_to(wkclass, @client)&.status %></td>
-              <td><%= booking_link_and_class[:link] %></td>
-            </tr>
-          <% end %>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
-</div>  
+      </tbody>
+    </table>
+  </div>
+  </section>
+
+
+
+

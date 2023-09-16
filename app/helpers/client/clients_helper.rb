@@ -8,16 +8,25 @@ module Client::ClientsHelper
     whatsapp.phony_formatted(format: :international, spaces: '-')
   end
 
-  def booking_link_and_class_for(wkclass, client)
+  def booking_link_and_class_for(wkclass, client, day)
     attendance = Attendance.applicable_to(wkclass, client)
     if attendance.nil?
-      handle_new_booking(wkclass, client)
+      handle_new_booking(wkclass, client, day)
     else
-      handle_update_booking(attendance, wkclass, client)
+      handle_update_booking(attendance, wkclass, client, day)
     end
   end
 
-  def handle_new_booking(wkclass, client)
+  def protobooking_link_and_class_for(wkclass, client, day)
+    attendance = Attendance.applicable_to(wkclass, client)
+    if attendance.nil?
+      handle_new_protobooking(wkclass, client, day)
+    else
+      handle_update_protobooking(attendance, wkclass, client, day)
+    end
+  end
+
+  def handle_new_booking(wkclass, client, day)
     purchase = Purchase.use_for_booking(wkclass, client)
     if purchase.nil? ||
        purchase.restricted_on?(wkclass) ||
@@ -36,11 +45,12 @@ module Client::ClientsHelper
     else
       confirmation = t('client.clients.attendance.create.confirm')
       confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
-      { css_class: 'table-secondary',
+      { css_class: '',
         link: link_to(
-          image_tag('add.png', class: 'table_icon'),
+          image_tag('add.png', class: 'table_icon mx-auto'),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
-                                 'attendance[purchase_id]': purchase.id),
+                                 'attendance[purchase_id]': purchase.id,
+                                 'booking_day': day),
           data: { turbo_method: :post, turbo_confirm: confirmation },
           class: 'icon-container'
         ) }
@@ -48,38 +58,112 @@ module Client::ClientsHelper
     end
   end
 
-  def handle_update_booking(attendance, wkclass, client)
-    case attendance.status
-    when 'booked'
-      { css_class: 'table-success',
-        link: link_to_update(attendance, amendment: 'cancel') }
-    when 'cancelled early'
-      # if wkclass.committed_on_same_day?(client)
-      if attendance.purchase.restricted_on?(wkclass)
-        { css_class: 'table-secondary', link: '' }
-    else
-      { css_class: 'table-secondary',
-        link: link_to_update(attendance, amendment: 'rebook') }
-    end
-    when 'cancelled late', 'no show'
-      { css_class: 'table-danger', link: '' }
-    else # 'attended'
+  def handle_new_protobooking(wkclass, client, day)
+    purchase = Purchase.use_for_booking(wkclass, client)
+    if purchase.nil? ||
+       purchase.restricted_on?(wkclass) ||
+       !wkclass.booking_window.cover?(Time.zone.now)
       { css_class: 'table-secondary', link: '' }
+    elsif wkclass.at_capacity?
+      confirmation = t('client.clients.attendance.create.full')
+      # remarkably difficult to have a tooltip with spaces in it
+      # https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces
+      title = "class\u00a0is\u00a0currently\u00a0full"
+      { css_class: "table-secondary",
+        data_attributes: "data-toggle=tooltip",
+        tooltip_title: "title=#{title}",
+        link: (link_to '#', class: 'icon-container disable-link' do tag.i class: ["bi bi-battery-full"] end)
+        }
+    else
+      confirmation = t('client.clients.attendance.create.confirm')
+      confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
+      { css_class: '',
+        link: link_to(
+          image_tag('add.png', class: 'table_icon mx-auto'),
+          admin_attendances_path('attendance[wkclass_id]': wkclass.id,
+                                 'attendance[purchase_id]': purchase.id,
+                                 'booking_day': day,
+                                 'proto': 'proto'),
+          data: { turbo_method: :post, turbo_confirm: confirmation },
+          class: 'icon-container'
+        ) }
+
     end
   end
 
-  def link_to_update(attendance, amendment:)
+  def handle_update_booking(attendance, wkclass, client, day)
+    case attendance.status
+    when 'booked'
+      { css_class: 'text-success',
+        link: link_to_update(attendance, day, amendment: 'cancel') }
+    when 'cancelled early'
+      # if wkclass.committed_on_same_day?(client)
+      if attendance.purchase.restricted_on?(wkclass)
+        { css_class: 'text-muted', link: '' }
+    else
+      { css_class: 'text-muted',
+        link: link_to_update(attendance, day, amendment: 'rebook') }
+    end
+    when 'cancelled late', 'no show'
+      { css_class: 'text-danger', link: '' }
+    else # 'attended'
+      { css_class: 'text-muted', link: '' }
+    end
+  end
+
+  def handle_update_protobooking(attendance, wkclass, client, day)
+    case attendance.status
+    when 'booked'
+      { css_class: 'text-success',
+        link: link_to_protoupdate(attendance, day, amendment: 'cancel') }
+    when 'cancelled early'
+      # if wkclass.committed_on_same_day?(client)
+      if attendance.purchase.restricted_on?(wkclass)
+        { css_class: 'text-muted', link: '' }
+    else
+      { css_class: 'text-muted',
+        link: link_to_protoupdate(attendance, day, amendment: 'rebook') }
+    end
+    when 'cancelled late', 'no show'
+      { css_class: 'text-danger', link: '' }
+    else # 'attended'
+      { css_class: 'text-muted', link: '' }
+    end
+  end
+
+  def link_to_update(attendance, day, amendment:)
     if amendment == 'cancel'
-      png = 'delete.png'
+      image = 'delete.png'
+      image_class = 'table_icon mx-auto filter-red'
       confirmation = t('client.clients.attendance.update.from_booked.confirm')
     else
-      png = 'add.png'
+      image = 'add.png'
+      image_class = 'table_icon mx-auto'      
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
     end
     link_to(
-      image_tag(png, class: 'table_icon'),
-      admin_attendance_path(attendance),
+      image_tag(image, class: image_class),
+      admin_attendance_path(attendance, 'booking_day': day),
+      data: { turbo_method: :patch, turbo_confirm: confirmation },
+      class: 'icon-container'
+    )
+  end
+
+  def link_to_protoupdate(attendance, day, amendment:)
+    if amendment == 'cancel'
+      image = 'delete.png'
+      image_class = 'table_icon mx-auto filter-red'
+      confirmation = t('client.clients.attendance.update.from_booked.confirm')
+    else
+      image = 'add.png'
+      image_class = 'table_icon mx-auto'      
+      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
+      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
+    end
+    link_to(
+      image_tag(image, class: image_class),
+      admin_attendance_path(attendance, 'booking_day': day, 'proto': 'proto'),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )
@@ -119,9 +203,40 @@ module Client::ClientsHelper
     renewal.base_price(product).price - renewal.price(product)
   end
 
+  def booking_image_prev(workout_name)
+    path = "group/#{workout_name}.jpg"
+    default = "/assets/group/defaultbooking.jpg"
+    return "/assets/group/#{workout_name}.jpg" if asset_exist?(path)
+
+    default
+  end
+
+  def booking_image(workout_name)
+    path = "group/#{workout_name}.jpg"
+    default = "group/defaultbooking.jpg"
+    return path if asset_exist?(path)
+
+    default
+  end
+
+  def booking_day_name(index, day)
+    return 'today'.capitalize if index == 0
+    return 'tomorrow'.capitalize if index == 1
+
+    day.strftime("%a").capitalize
+  end
   private
 
   def format_rate(renewal_type)
     number_with_precision(Discount.rate(Time.zone.now.to_date)[renewal_type][:percent], strip_insignificant_zeros: true)
   end
+
+  # https://stackoverflow.com/questions/6782978/rails-3-1-determine-if-asset-exists
+  def asset_exist?(path)
+    if Rails.configuration.assets.compile
+      Rails.application.precompiled_assets.include? path
+    else
+      Rails.application.assets_manifest.assets[path].present?
+    end
+  end  
 end

@@ -1,0 +1,21 @@
+<% provide(:greeting, "Group Class Booking") %>
+<% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?, @client)) %>
+<% provide(:visit_shop_statement, visit_shop_statement(@renewal.product.rider?)) %>
+<% provide(:renewal_product, @renewal.product&.formal_name) %>
+<% provide(:renewal_price, @renewal.price(@renewal.product).to_s) %>
+<% provide(:base_price, @renewal.base_price(@renewal.product).price.to_s) %>
+<% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?)) %>
+
+<div class="booking-page">
+  <%= render partial: 'client_greeting' %>
+  <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_show.empty? %>
+  <%= turbo_frame_tag 'client_bookings' do %>
+    <%= render partial: 'client_protobookings_table' if @renewal.package_ongoing? && !@wkclasses_show.empty? %>
+  <% end %>
+  <% if Setting.renew_online && @renewal.alert_to_renew? %>
+    <%= render partial: 'renewal' %>
+  <% end %>
+  <% unless @purchases.empty? %>
+    <%= render partial: 'client_packages_table', locals: {detailed: false} %>
+  <% end %>
+</div>

@@ -41,6 +41,16 @@ td img.table_icon {
     } 
   }
 
+a img.table_icon {
+  width: 1.0rem;
+  height: 1.0rem;
+  opacity: 1.0;
+  @include media-breakpoint-up(lg) {
+    width: 1.3rem;
+    height: 1.3rem;
+    } 
+  }
+
 a img.button_icon:hover {
 transform: scale(1.1);
 }
@@ -49,4 +59,9 @@ img.footerlogo {
   width: 6rem;
   display: block;
   margin: auto;
+}
+
+img.filter-red {
+  // https://codepen.io/sosuke/pen/Pjoqqp
+  filter: invert(10%) sepia(83%) saturate(7500%) hue-rotate(7deg) brightness(111%) contrast(117%);
 }
