@@ -1,17 +1,23 @@
 <%# replaced with stimulus %>
 <%#= javascript_import_module_tag "custom/booking-slider" %>
-  <section id="bookings-table" class="mb-5">
-  <div id="" class="container px-0 mt-5 mb-5">  
-    <table class="table table-striped">
-      <tbody>
-        <% unless @wkclasses_show.empty? %>
-          <%= render partial: 'wkclass_booking', collection: @wkclasses_show, as: :wkclass %>        
-        <% end %>
-      </tbody>
-    </table>
+<section id="bookings-table" class="mb-5">
+  <div class="carousel carousel-visible">
+    <div class="button-container-full-width" data-controller="booking">
+      <% @days.each_with_index do |day, index| %>
+        <button class="slider-btn-full-width<%=' live' if index.to_s == session[:booking_day] %>" data-day=<%= index %> ><%= booking_day_name(index, day) %></button>
+      <% end %>
+    </div>    
+    <div class="d-md-flex justify-content-center canvas">
+      <% @wkclasses_show_by_day.each_with_index do |day, index| %>
+        <div class="booking-day<%= ' live' if index.to_s == session[:booking_day] %>" id=<%= index %>>
+          <% if day.empty? %>
+            <div class= 'mx-auto' >no classes to book</div>
+          <% else %>
+            <%= render partial: 'wkclass_booking', collection: day, as: :wkclass, locals: {index: index} %>                  
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
-  </section>
-
-
-
+</section>
 

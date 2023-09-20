@@ -30,7 +30,6 @@ Rails.application.routes.draw do
   delete '/logout',  to: 'auth/sessions#destroy'
   get '/switch_account_role',  to: 'auth/sessions#switch_account_role'
   get    'client/clients/:id/book',   to: 'client/clients#book', as: 'client_book'
-  get    'client/clients/:id/protobook',   to: 'client/clients#protobook', as: 'client_protobook'
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
   get    'client/clients/:id/buy',   to: 'client/clients#buy', as: 'client_buy'
   get    'client/clients/:id/shop',   to: 'client/clients#shop', as: 'client_shop'

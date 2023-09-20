@@ -74,11 +74,7 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass = @attendance.wkclass
     @wkclass_name = @wkclass.name
     @wkclass_day = @wkclass.day_of_week
-    if params[:proto] == 'proto'
-     redirect_to client_protobook_path(@client)
-    else
-      redirect_to client_book_path(@client)
-    end
+    redirect_to client_book_path(@client)
     # redirect_to "/client/clients/#{@client.id}/book"
     # attendances_helper has booking_flash_hash with a method as a value
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
@@ -302,12 +298,8 @@ class Admin::AttendancesController < Admin::BaseController
   def handle_client_update_response
     set_attendances
     flash_client_update_success
-    if params[:proto] == 'proto'
-      redirect_to client_protobook_path(@client)
-    else
-      redirect_to client_book_path(@client)
-    end    
-   end
+    redirect_to client_book_path(@client)
+  end
 
   # https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller
   # adding newline to flash surprisingly awkward. Adapted application.html.erb per 'dirty' suggestion.

@@ -17,15 +17,6 @@ module Client::ClientsHelper
     end
   end
 
-  def protobooking_link_and_class_for(wkclass, client, day)
-    attendance = Attendance.applicable_to(wkclass, client)
-    if attendance.nil?
-      handle_new_protobooking(wkclass, client, day)
-    else
-      handle_update_protobooking(attendance, wkclass, client, day)
-    end
-  end
-
   def handle_new_booking(wkclass, client, day)
     purchase = Purchase.use_for_booking(wkclass, client)
     if purchase.nil? ||
@@ -58,39 +49,6 @@ module Client::ClientsHelper
     end
   end
 
-  def handle_new_protobooking(wkclass, client, day)
-    purchase = Purchase.use_for_booking(wkclass, client)
-    if purchase.nil? ||
-       purchase.restricted_on?(wkclass) ||
-       !wkclass.booking_window.cover?(Time.zone.now)
-      { css_class: 'table-secondary', link: '' }
-    elsif wkclass.at_capacity?
-      confirmation = t('client.clients.attendance.create.full')
-      # remarkably difficult to have a tooltip with spaces in it
-      # https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces
-      title = "class\u00a0is\u00a0currently\u00a0full"
-      { css_class: "table-secondary",
-        data_attributes: "data-toggle=tooltip",
-        tooltip_title: "title=#{title}",
-        link: (link_to '#', class: 'icon-container disable-link' do tag.i class: ["bi bi-battery-full"] end)
-        }
-    else
-      confirmation = t('client.clients.attendance.create.confirm')
-      confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
-      { css_class: '',
-        link: link_to(
-          image_tag('add.png', class: 'table_icon mx-auto'),
-          admin_attendances_path('attendance[wkclass_id]': wkclass.id,
-                                 'attendance[purchase_id]': purchase.id,
-                                 'booking_day': day,
-                                 'proto': 'proto'),
-          data: { turbo_method: :post, turbo_confirm: confirmation },
-          class: 'icon-container'
-        ) }
-
-    end
-  end
-
   def handle_update_booking(attendance, wkclass, client, day)
     case attendance.status
     when 'booked'
@@ -103,26 +61,6 @@ module Client::ClientsHelper
     else
       { css_class: 'text-muted',
         link: link_to_update(attendance, day, amendment: 'rebook') }
-    end
-    when 'cancelled late', 'no show'
-      { css_class: 'text-danger', link: '' }
-    else # 'attended'
-      { css_class: 'text-muted', link: '' }
-    end
-  end
-
-  def handle_update_protobooking(attendance, wkclass, client, day)
-    case attendance.status
-    when 'booked'
-      { css_class: 'text-success',
-        link: link_to_protoupdate(attendance, day, amendment: 'cancel') }
-    when 'cancelled early'
-      # if wkclass.committed_on_same_day?(client)
-      if attendance.purchase.restricted_on?(wkclass)
-        { css_class: 'text-muted', link: '' }
-    else
-      { css_class: 'text-muted',
-        link: link_to_protoupdate(attendance, day, amendment: 'rebook') }
     end
     when 'cancelled late', 'no show'
       { css_class: 'text-danger', link: '' }
@@ -145,25 +83,6 @@ module Client::ClientsHelper
     link_to(
       image_tag(image, class: image_class),
       admin_attendance_path(attendance, 'booking_day': day),
-      data: { turbo_method: :patch, turbo_confirm: confirmation },
-      class: 'icon-container'
-    )
-  end
-
-  def link_to_protoupdate(attendance, day, amendment:)
-    if amendment == 'cancel'
-      image = 'delete.png'
-      image_class = 'table_icon mx-auto filter-red'
-      confirmation = t('client.clients.attendance.update.from_booked.confirm')
-    else
-      image = 'add.png'
-      image_class = 'table_icon mx-auto'      
-      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
-      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
-    end
-    link_to(
-      image_tag(image, class: image_class),
-      admin_attendance_path(attendance, 'booking_day': day, 'proto': 'proto'),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )

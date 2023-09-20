@@ -54,7 +54,7 @@ class Client::ClientsController < ApplicationController
   end
 
   def book
-    session[:booking_day] = params[:booking_day] || session[:booking_day] || 0
+    session[:booking_day] = params[:booking_day] || session[:booking_day] || '0'
     # @wkclasses_visible = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
     # @wkclasses_window_closed = @wkclasses_visible.select { |w| w.booking_window.end < Time.zone.now }
     # @wkclasses_not_yet_open = @wkclasses_visible.select { |w| w.booking_window.begin > Time.zone.now }
@@ -67,24 +67,7 @@ class Client::ClientsController < ApplicationController
       @wkclasses_show_by_day.push(@wkclasses_show.on_date(day))
     end
     # @wkclasses_in_booking_window = @wkclasses_visible.select { |w| w.booking_window.cover?(Time.zone.now) }
-    # incluide attendances and wkclass so can find last booked session in PT package without additional query
-    @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])
-    @renewal = Renewal.new(@client)
-    # @quotation = Setting.quotation
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
-  end
-
-  def protobook
-    session[:booking_day] = params[:booking_day] || session[:booking_day] || 0
-    @wkclasses_show = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
-    @days = (Date.today..Date.today.advance(days: Setting.visibility_window_days_ahead)).to_a
-    @wkclasses_show_by_day = []
-    @days.each do |day|
-      @wkclasses_show_by_day.push(@wkclasses_show.on_date(day))
-    end
+    # include attendances and wkclass so can find last booked session in PT package without additional query
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])
     @renewal = Renewal.new(@client)
     respond_to do |format|
