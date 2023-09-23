@@ -425,13 +425,13 @@ class Admin::PurchasesController < Admin::BaseController
 
   def handle_pagination
     # when exporting data, want it all not just the page of pagination
-    @purchases = if params[:export_all]
-                  #  @purchases.page(params[:page]).per(100_000)
-                   @pagy, @records = pagy(@purchases, items: 100_000)
-                 else
-                  #  @purchases.page params[:page]
-                  @pagy, @records = pagy(@purchases)
-                 end
+    if params[:export_all]
+      #  @purchases.page(params[:page]).per(100_000)
+      @pagy, @purchases = pagy(@purchases, items: 100_000)
+    else
+      #  @purchases.page params[:page]
+      @pagy, @purchases = pagy(@purchases)
+    end
   end
 
   def handle_index_response
