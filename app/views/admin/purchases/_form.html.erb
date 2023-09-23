@@ -6,6 +6,7 @@
 prior to introduction of the admin folder structure/namespace the named route for the url "/purchases" was purchases_path
 With the admin namespace, the required url is "/admin/purchase" with named route admin_purchases_path.
 I don't see it in the documentation for form_with but the array syntax [:admin, purchase] as the model argument achieves this %>
+<%# found it https://guides.rubyonrails.org/form_helpers.html#dealing-with-namespaces %>
 <%= form_with(model: [:admin, purchase],  data: { controller: "purchase-discount", "purchase-discount-url-value": purchases_discount_path, "purchase-discount-dateurl-value": purchases_dop_change_path }) do |form| %>
   <% if purchase.errors.any? %>
     <div id="error_explanation">

@@ -1,3 +1,5 @@
 <h3>New Class</h3>
-<%= render 'form', wkclass: @wkclass %>
+<%= turbo_frame_tag @wkclass do %>
+  <%= render 'form', wkclass: @wkclass %>
+<% end %>
 <%= link_to image_tag('back.png', class: "back_icon"), admin_wkclasses_path, class: "icon-container" %>

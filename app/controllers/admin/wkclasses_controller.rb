@@ -60,8 +60,6 @@ class Admin::WkclassesController < Admin::BaseController
   def edit
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
-    # @instructor_id = @wkclass.instructor&.id
-    # @instructor_rate = @wkclass.instructor_rate&.id
   end
 
   def create
@@ -80,7 +78,9 @@ class Admin::WkclassesController < Admin::BaseController
     else
       @wkclass = Wkclass.new(wkclass_params)
       if @wkclass.save
-        redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+        # redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+        # the index method will respond with a turbo-stream (no create.turbo_stream.erb needed)
+        redirect_to admin_wkclasses_path
         flash[:success] = t('.success', repeats: '1 class was')
       else
         prepare_items_for_dropdowns
@@ -253,25 +253,14 @@ class Admin::WkclassesController < Admin::BaseController
       @pagy, @wkclasses = pagy(@wkclasses)
     end
   end
-  # def handle_pagination
-  #   # when exporting data, want it all not just the page of pagination
-  #   @wkclasses = if params[:export_all]
-  #                 #  @wkclasses.page(params[:page]).per(100_000)
-  #                  @pagy, @records = pagy(@wkclasses, items: 100_000)
-  #                 else
-  #                   # @wkclasses.page params[:page]
-  #                   @pagy, @records = pagy(@wkclasses)
-  #              end
-  # end
 
   def handle_index_response
     respond_to do |format|
       format.html
-      format.js { render 'index.js.erb' }
       # Railscasts #362 Exporting Csv And Excel
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @wkclasses.to_csv }
-      format.turbo_stream      
+      format.turbo_stream     
     end
   end
 

@@ -5,7 +5,7 @@
   <td><%= wkclass.time %></td>
   <td><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></td>
   <td><%= wkclass.max_capacity - physical_attendances %> <%= image_tag('group.png', class: "header_icon")%></td>
-  <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass), data: { turbo: false }  %></td>
+  <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass), data: { turbo_frame: 'wkclass_edit' }  %></td>
   <% if wkclass.deletable? %>         
     <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), data: { "turbo-method": :delete, turbo_confirm: 'Class can be deleted as it has no attendances. But are you sure?' } %></td>
   <% else %>

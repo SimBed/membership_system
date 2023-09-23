@@ -1,8 +1,14 @@
 <div class="container px-1">
-  <h4>Classes <%= link_to image_tag('add.png', class: "button_icon"), new_admin_wkclass_path %></h4>
+  <h4>Classes <%= link_to image_tag('add.png', class: "button_icon"),
+                          new_admin_wkclass_path,
+                          data: { turbo_frame: dom_id(Wkclass.new) } %>
+  </h4>
+  <%= turbo_frame_tag Wkclass.new %>  
+
 </div>
 <%= turbo_frame_tag 'wkclasses-and-filter' do %>
   <%= render partial: 'filter_form' %>
+  <%= turbo_frame_tag 'wkclass_edit' %>  
   <% if logged_in_as?('superadmin') %>
     <%= render partial: 'download' %>
   <% end %>

@@ -1,5 +1,5 @@
 <%#= javascript_import_module_tag "custom/dropdown_populate" %>
-<%= form_with(model: [:admin, wkclass], data: {turbo: false}) do |form| %>
+<%= form_with(model: [:admin, wkclass], class: 'wkclass_form') do |form| %>
   <% if wkclass.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>
@@ -57,6 +57,10 @@
 
   <div class="actions">
     <%= form.submit wkclass.new_record? ? 'create class' : 'update class' %>
+  </div>
+
+  <div class="cancel">
+    <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclasses_path %>
   </div>
 <% end %>
 
