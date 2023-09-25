@@ -2,13 +2,13 @@
   <div class="page_entries_info px-1">
     <%#= paginate @clients, remote: true %>
     <%#= page_entries_info @clients %>
-    <%#= "#{@records&.count} of #{@pagy&.count}" %>
-    <%== pagy_nav @pagy %>
+    <% if @admin_plus %>
+      <div class="record-count">
+        <%= "showing #{@clients&.count} of #{@pagy&.count}" %>
+      </div>
+    <% end %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
   </div>
-
-  <%# admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
-  <%# junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
-  <%# junioradmin = logged_in_as?('junioradmin') ? true : false %>
 
   <table class="table table-secondary table-striped caption-top">
     <caption></caption>
