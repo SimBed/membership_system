@@ -204,7 +204,7 @@ class Admin::WkclassesController < Admin::BaseController
 
   def wkclass_params
     cost = InstructorRate.find(params[:wkclass][:instructor_rate_id]).rate if params[:wkclass][:instructor_rate_id].present?
-    params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id, :instructor_rate_id, :max_capacity, :level)
+    params.require(:wkclass).permit(:workout_id, :start_time, :instructor_id, :instructor_rate_id, :max_capacity, :level, :studio, :duration)
           .merge({ instructor_cost: cost })
   end
 
@@ -225,6 +225,8 @@ class Admin::WkclassesController < Admin::BaseController
     @capacities = (0..30).to_a + [500]
     @repeats = (0..11).to_a if @wkclass.new_record?
     @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
+    @studios = ['Cellar', 'Window', 'Garden', 'Den']
+    @durations = [60, 45, 90]
     @instructor_id = @wkclass.instructor&.id
     @instructor_rate = @wkclass.instructor_rate&.id
   end

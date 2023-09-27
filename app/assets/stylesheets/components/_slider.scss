@@ -192,6 +192,9 @@ div.booking-page {
         }
         .duration {  
           font-size: 0.7rem;  
+          &::after {
+            content:"mins";
+          }
         }
         .date {  
           font-size: 0.6rem;

@@ -48,6 +48,16 @@
     <%= form.select :level, options_for_select(@levels, @wkclass.level) %>
   </div>
 
+  <div class="field">
+    <%= form.label :studio, 'Studio' %>
+    <%= form.select :studio, options_for_select(@studios, @wkclass.studio) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :duration, 'Duration' %>
+    <%= form.select :duration, options_for_select(@durations, @wkclass.duration) %>
+  </div>
+
   <% unless @repeats.nil? %>
     <div class="field">
       <%= form.label :repeats, 'Repeat for a further this many weeks' %>
@@ -63,5 +73,3 @@
     <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclasses_path %>
   </div>
 <% end %>
-
-<%#= javascript_pack_tag 'wkclass/dropdown_populate' %>
