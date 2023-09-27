@@ -1,0 +1,18 @@
+.canvas {
+  position: relative;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  &.gray100-canvas {
+    background-color: $gray-100;
+  }  
+  &.black-canvas {
+    background-color: $black;
+    padding-top: 0;
+    padding-bottom: 0;    
+  }  
+  @include media-breakpoint-up(md) {
+    width: 32rem;
+    margin-left: auto;
+    margin-right: auto;    
+  }
+}

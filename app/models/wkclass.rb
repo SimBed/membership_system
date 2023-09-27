@@ -47,6 +47,9 @@ class Wkclass < ApplicationRecord
   # scope :empty_class, -> { left_joins(:attendances).where(attendances: { id: nil }) }
   # Rubocop recommends
   scope :empty_class, -> { where.missing(:attendances) }
+  # limited means multiple bookings in a day restrictions apply ie not Open Gym
+  scope :limited, -> { joins(:workout).where(workouts: { limited: true }) }
+  scope :unlimited, -> { joins(:workout).where(workouts: { limited: false }) }
   # unfortunately the clean way results in structurally incomaptible error. Workaround to this either by a) work on ruby objects (as for Client#active or
   # b) by putting all the joins/distincts at the end of the query as nar8789 answer https://stackoverflow.com/questions/40742078/relation-passed-to-or-must-be-structurally-compatible-incompatible-values-r
   # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }

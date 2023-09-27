@@ -1,0 +1,34 @@
+<section id="opengym-bookings-table" class="mb-5">
+  <div class="d-md-flex justify-content-center open-gym canvas black-canvas">
+    <h6 class='py-4 mb-0'>open gym</h6>
+      <% @open_gym_wkclasses.each do |wkclass|%>
+      <% booking_link_and_class = booking_link_and_class_for(wkclass, @client, 0) %>
+        <div class="booking">
+          <div class="book-item">
+            <div class="details">
+              <div class="date"><%= wkclass.start_time.strftime("%a %b %-d") %></div>
+            </div>
+          </div>  
+          <div class="book-item">
+            <div class="details">          
+              <div class="time"><%=wkclass.time%></div>
+            </div>
+          </div>               
+          <div class="book-item">
+            <div class="details">
+              <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
+            </div>
+          </div>                
+          <div class="book-item">
+            <div class="details">
+              <div <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></div> 
+            </div>
+          </div>                 
+        </div>
+      <% end %>
+  </div>
+</section>
+
+
+
+

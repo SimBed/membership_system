@@ -38,7 +38,7 @@ module Client::ClientsHelper
       confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
       { css_class: '',
         link: link_to(
-          image_tag('add.png', class: 'table_icon mx-auto'),
+          image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}" ),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id,
                                  'booking_day': day),
@@ -55,17 +55,16 @@ module Client::ClientsHelper
       { css_class: 'text-success',
         link: link_to_update(attendance, day, amendment: 'cancel') }
     when 'cancelled early'
-      # if wkclass.committed_on_same_day?(client)
       if attendance.purchase.restricted_on?(wkclass)
-        { css_class: 'text-muted', link: '' }
+        { css_class: '', link: '' }
     else
-      { css_class: 'text-muted',
+      { css_class: '',
         link: link_to_update(attendance, day, amendment: 'rebook') }
     end
     when 'cancelled late', 'no show'
       { css_class: 'text-danger', link: '' }
     else # 'attended'
-      { css_class: 'text-muted', link: '' }
+      { css_class: '', link: '' }
     end
   end
 
@@ -76,7 +75,7 @@ module Client::ClientsHelper
       confirmation = t('client.clients.attendance.update.from_booked.confirm')
     else
       image = 'add.png'
-      image_class = 'table_icon mx-auto'      
+      image_class = "table_icon mx-auto #{'filter-white' unless attendance.wkclass.workout.limited?}" 
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
     end

@@ -1,0 +1,4 @@
+<%= turbo_stream.update "opengym_bookings" do %>
+  <%= render partial: "opengym_bookings_table" %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

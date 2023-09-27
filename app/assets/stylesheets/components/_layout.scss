@@ -1,5 +1,8 @@
 section {
   position: relative;
+  .open-gym {
+    // background-color: $black;
+  }
 }
 
 .level-1 {
@@ -12,11 +15,4 @@ section {
   @include media-breakpoint-up(lg) {
     font-size: 1.2rem;
    }
-}
-
-h3.subheading {
-  font-size: 0.65rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
 }

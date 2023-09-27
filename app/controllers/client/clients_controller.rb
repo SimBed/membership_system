@@ -59,20 +59,24 @@ class Client::ClientsController < ApplicationController
     # @wkclasses_window_closed = @wkclasses_visible.select { |w| w.booking_window.end < Time.zone.now }
     # @wkclasses_not_yet_open = @wkclasses_visible.select { |w| w.booking_window.begin > Time.zone.now }
     # @wkclasses_in_booking_window = @wkclasses_visible - @wkclasses_window_closed - @wkclasses_not_yet_open
-    @wkclasses_show = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
+    @wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
     @days = (Date.today..Date.today.advance(days: Setting.visibility_window_days_ahead)).to_a
     # Should be done in model
     @wkclasses_show_by_day = []
     @days.each do |day|
       @wkclasses_show_by_day.push(@wkclasses_show.on_date(day))
     end
-    # @wkclasses_in_booking_window = @wkclasses_visible.select { |w| w.booking_window.cover?(Time.zone.now) }
+    @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).todays_class.order_by_reverse_date
     # include attendances and wkclass so can find last booked session in PT package without additional query
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])
     @renewal = Renewal.new(@client)
     respond_to do |format|
       format.html
-      format.turbo_stream
+      if params[:limited] == 'true' # ie not open gym
+        format.turbo_stream
+      else
+        format.turbo_stream {  render :book_opengym }
+      end
     end
   end
 

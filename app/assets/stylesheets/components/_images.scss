@@ -68,3 +68,7 @@ img.filter-red {
   // https://codepen.io/sosuke/pen/Pjoqqp
   filter: invert(10%) sepia(83%) saturate(7500%) hue-rotate(7deg) brightness(111%) contrast(117%);
 }
+img.filter-white {
+
+  filter: brightness(0) saturate(100%) invert(97%) sepia(98%) saturate(192%) hue-rotate(187deg) brightness(111%) contrast(100%);
+}
