@@ -1,0 +1,11 @@
+<div id="other_services_table" class="container px-1">
+  <h4>Other Services <%= link_to image_tag('add.png', class: 'button_icon'),
+                                 new_superadmin_other_service_path,
+                                 data: { turbo_frame: dom_id(OtherService.new) } %>
+  </h4>
+  <%= turbo_frame_tag OtherService.new %>  
+</div>
+
+<%= turbo_frame_tag 'other_services' do %>
+  <%= render partial: 'other_services_table' %>
+<% end %>

@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     resources :discounts
     resources :discount_reasons
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
+    resources :other_services, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :regular_expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :instructor_rates, only: [:index, :new, :edit, :create, :update, :destroy]
     resource :settings

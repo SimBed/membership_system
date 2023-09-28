@@ -1,0 +1,6 @@
+<tr>
+  <th scope="row"><%= other_service.name %></th>
+  <td><%= other_service.link %></td>
+  <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_other_service_path(other_service), data: {turbo: false} %></td>
+  <td><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_other_service_path(other_service), data: { turbo_method: :delete, turbo_confirm: 'Service will be deleted. Are you sure?' } %></td>
+</tr>

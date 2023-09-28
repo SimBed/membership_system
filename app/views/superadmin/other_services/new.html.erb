@@ -1,0 +1,5 @@
+<h4>New Other Service</h4>
+<%= turbo_frame_tag @other_service do %>
+  <%= render 'form', other_service: @other_service %>
+<% end %>
+<%= link_to 'Back', superadmin_other_services_path %>

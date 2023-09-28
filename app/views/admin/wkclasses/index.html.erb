@@ -4,8 +4,8 @@
                           data: { turbo_frame: dom_id(Wkclass.new) } %>
   </h4>
   <%= turbo_frame_tag Wkclass.new %>  
-
 </div>
+
 <%= turbo_frame_tag 'wkclasses-and-filter' do %>
   <%= render partial: 'filter_form' %>
   <%= turbo_frame_tag 'wkclass_edit' %>  

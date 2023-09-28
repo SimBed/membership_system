@@ -1,0 +1,4 @@
+<%= turbo_stream.update "other_services" do %>
+  <%= render partial: "other_services_table" %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "partials/flashes" %>
