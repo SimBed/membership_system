@@ -67,6 +67,7 @@ class Client::ClientsController < ApplicationController
       @wkclasses_show_by_day.push(@wkclasses_show.on_date(day))
     end
     @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).todays_class.order_by_reverse_date
+    @other_services = OtherService.all
     # include attendances and wkclass so can find last booked session in PT package without additional query
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])
     @renewal = Renewal.new(@client)
