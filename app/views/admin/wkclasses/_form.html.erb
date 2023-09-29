@@ -25,7 +25,7 @@
 
   <div class="field">
     <%= form.label :start_time %>
-    <%= form.datetime_select :start_time, default: Time.parse('10:30') %>
+    <%= form.datetime_select :start_time, default: Time.parse('10:30'), start_hour: 06, end_hour: 22, minute_step: 5   %>
   </div>
 
   <div class="field" data-controller = "content-loader" data-content-loader-url-value = <%= wkclasses_instructor_select_path%>>
