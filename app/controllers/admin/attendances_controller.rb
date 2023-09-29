@@ -6,6 +6,7 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :junioradmin_account, only: [:destroy]
   before_action :junioradmin_or_instructor_account, only: [:new]
   before_action :correct_account_or_junioradmin_or_instructor_account, only: [:create, :update]
+  before_action :set_booking_day, only: [:create, :update, :destroy], if: -> { client? }
   before_action :provisionally_expired, only: [:create, :update], unless: -> { fitternity? }
   before_action :modifiable_status, only: [:update]
   # https://stackoverflow.com/questions/49414318/how-to-use-rails-before-action-conditional-for-only-some-actions
@@ -15,7 +16,6 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :in_booking_window, only: [:create]
   before_action :reached_max_capacity, only: [:create, :update]
   before_action :reached_max_amendments, only: [:update]
-  before_action :set_booking_day, only: [:create, :update]
   after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
 
   def footfall
@@ -42,9 +42,9 @@ class Admin::AttendancesController < Admin::BaseController
       # needed for after_action callback
       @purchase = @attendance.purchase
       handle_freeze
-      logged_in_as?('client') ? after_successful_create_by_client : after_successful_create_by_admin
+      client? ? after_successful_create_by_client : after_successful_create_by_admin
     else
-      logged_in_as?('client') ? after_unsuccessful_create_by_client : after_unsuccessful_create_by_admin
+      client? ? after_unsuccessful_create_by_client : after_unsuccessful_create_by_admin
     end
   end
 
@@ -106,7 +106,7 @@ class Admin::AttendancesController < Admin::BaseController
   def update
     @purchase = @attendance.purchase
     @wkclass = @attendance.wkclass
-    update_by_client if logged_in_as?('client')
+    update_by_client if client?
     if logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
       result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status]).update
       flash_message(*result.flash_array)
@@ -375,7 +375,7 @@ class Admin::AttendancesController < Admin::BaseController
     flash_hash = booking_flash_hash.dig(@booking_type, :daily_limit_met)
     flash_message flash_hash[:colour], (send flash_hash[:message])
     # flash_hash[:colour] = send flash_hash[:message]
-    if logged_in_as?('client')
+    if client?
       redirect_to client_book_path(@client)
     else # must be admin
       redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
@@ -388,7 +388,7 @@ class Admin::AttendancesController < Admin::BaseController
 
     flash_hash = booking_flash_hash.dig(@booking_type, :already_booked)
     flash_message flash_hash[:colour], (send flash_hash[:message])
-    if logged_in_as?('client')
+    if client?
       redirect_to client_book_path(@client)
     else # must be admin (not conceviable through UI)
       redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
@@ -430,7 +430,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def reached_max_amendments
-    return unless logged_in_as?('client') && @attendance.maxed_out_amendments?
+    return unless client? && @attendance.maxed_out_amendments?
 
     flash_message booking_flash_hash[:update][:prior_amendments][:colour],
                   (send booking_flash_hash[:update][:prior_amendments][:message])
@@ -443,7 +443,7 @@ class Admin::AttendancesController < Admin::BaseController
     data_items_provisionally_expired(new_booking: true)
     return unless @purchase.provisionally_expired?
 
-    if logged_in_as?('client')
+    if client?
       flash_message :warning,
                     ['The maximum number of classes has already been booked.',
                      'Renew you Package if you wish to attend this class']
@@ -483,7 +483,7 @@ class Admin::AttendancesController < Admin::BaseController
     else # update
       data_items_provisionally_expired(new_booking: false)
       if @purchase.provisionally_expired?
-        action_client_rebook_cancellation_when_prov_expired if logged_in_as?('client') && @attendance.status != 'booked'
+        action_client_rebook_cancellation_when_prov_expired if client? && @attendance.status != 'booked'
         # if the change results in an extra class or validity term reduction
         action_admin_rebook_cancellation_when_prov_expired if logged_in_as?('junioradmin', 'admin', 'superadmin') && extra_benefits_after_change?
       end
@@ -549,6 +549,10 @@ class Admin::AttendancesController < Admin::BaseController
     session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
   end
   
+  def client?
+    logged_in_as?('client')
+  end
+
   def set_booking_day # so day on slider shown doesn't revert to default on response 
     default_booking_day = 0
     session[:booking_day] = params[:booking_day] || session[:booking_day] || default_booking_day

@@ -60,13 +60,15 @@ class Client::ClientsController < ApplicationController
     # @wkclasses_not_yet_open = @wkclasses_visible.select { |w| w.booking_window.begin > Time.zone.now }
     # @wkclasses_in_booking_window = @wkclasses_visible - @wkclasses_window_closed - @wkclasses_not_yet_open
     @wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
+    @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
     @days = (Date.today..Date.today.advance(days: Setting.visibility_window_days_ahead)).to_a
     # Should be done in model
     @wkclasses_show_by_day = []
+    @opengym_wkclasses_show_by_day = []
     @days.each do |day|
       @wkclasses_show_by_day.push(@wkclasses_show.on_date(day))
+      @opengym_wkclasses_show_by_day.push(@open_gym_wkclasses.on_date(day))
     end
-    @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).todays_class.order_by_reverse_date
     @other_services = OtherService.all
     # include attendances and wkclass so can find last booked session in PT package without additional query
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])

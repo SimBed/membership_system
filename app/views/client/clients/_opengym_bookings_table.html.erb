@@ -1,33 +1,20 @@
+<%# replaced with stimulus %>
+<%#= javascript_import_module_tag "custom/booking-slider" %>
 <section id="opengym-bookings-table" class="">
   <div class="d-md-flex justify-content-center open-gym canvas black-canvas pb-3">
     <h6 class='style-1 py-4 mb-0'>open gym</h6>
-      <% @open_gym_wkclasses.each do |wkclass|%>
-      <% booking_link_and_class = booking_link_and_class_for(wkclass, @client, 0) %>
-        <div class="booking">
-          <div class="book-item">
-            <div class="details">
-              <div class="date"><%= wkclass.start_time.strftime("%a %b %-d") %></div>
-            </div>
-          </div>  
-          <div class="book-item">
-            <div class="details">          
-              <div class="time"><%=wkclass.time%></div>
-            </div>
-          </div>               
-          <div class="book-item">
-            <div class="details">
-              <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
-            </div>
-          </div>                
-          <div class="book-item">
-            <div class="details">
-              <div <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></div> 
-            </div>
-          </div>                 
+      <% @opengym_wkclasses_show_by_day.each_with_index do |day, index|%>
+        <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>">
+          <% if day.empty? %>
+            <div class= 'mx-auto' >no classes to book</div>
+          <% else %>
+            <%= render partial: 'opengym_booking', collection: day, as: :wkclass, locals: {index: index} %>                  
+          <% end %>
         </div>
       <% end %>
   </div>
 </section>
+
 
 
 

@@ -1,0 +1,23 @@
+<% booking_link_and_class = booking_link_and_class_for(wkclass, @client, index) %>
+  <div class="open-gym-booking">
+    <div class="book-item">
+      <div class="details">
+        <div class="date"><%= wkclass.start_time.strftime("%a %b %-d") %></div>
+      </div>
+    </div>  
+    <div class="book-item">
+      <div class="details">          
+        <div class="time"><%=wkclass.time%></div>
+      </div>
+    </div>               
+    <div class="book-item">
+      <div class="details">
+        <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
+      </div>
+    </div>                
+    <div class="book-item">
+      <div class="details">
+        <div <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></div> 
+      </div>
+    </div>                 
+  </div>
