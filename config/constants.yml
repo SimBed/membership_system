@@ -1,6 +1,6 @@
 default: &default
 
- timetable_id: 4
+ timetable_id: 5
  window_capacity: 8
 
  attendance_statuses:
@@ -39,6 +39,7 @@ development:
 
 test:
   <<: *default
+  timetable_id: 4  
 
 production:
   <<: *default
