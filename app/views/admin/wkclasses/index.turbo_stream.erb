@@ -2,3 +2,4 @@
   <%= render partial: "wkclasses_table" %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>
+<%= turbo_stream.remove "errors" %>

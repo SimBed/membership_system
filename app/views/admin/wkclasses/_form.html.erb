@@ -1,14 +1,16 @@
 <%#= javascript_import_module_tag "custom/dropdown_populate" %>
 <%= form_with(model: [:admin, wkclass], class: 'wkclass_form') do |form| %>
-  <% if wkclass.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>
-      <ul>
-        <% wkclass.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
+  <%= turbo_frame_tag 'errors' do%>
+    <% if wkclass.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(wkclass.errors.count, "error") %> prohibited this wkclass from being saved:</h2>
+        <ul>
+          <% wkclass.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   <% end %>
 
   <%#= form.collection_select :workout_id, @workouts, :id, :name, { selected: (@wkclass.workout&.id || @workouts.first) }, { disabled: (true unless @wkclass.attendances.size.zero?) } %>
