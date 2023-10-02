@@ -1,7 +1,7 @@
-  <div id="class_summary" class="mb-2">
-    <%= render partial: 'class_summary' %>
-  </div>
-  <div id="classes_table" class="container px-1 mb-3">
+<div id="class_summary" class="container px-1 ">
+  <%= render partial: 'class_summary' %>
+
+  <div id="classes_table" class="mb-3">
     <%= turbo_frame_tag 'wkclasses' do %>
       <%= render partial: 'class_attendance_table' %>
     <% end %>
@@ -10,4 +10,5 @@
     <% end %>
   </div>
 
-<%= link_to image_tag('back.png', class: "back_icon"), admin_wkclasses_path, class: "icon-container" %>
+  <%= link_to image_tag('back.png', class: "back_icon"), admin_wkclasses_path, class: "icon-container" %>
+</div>

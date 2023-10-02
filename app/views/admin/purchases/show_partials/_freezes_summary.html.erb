@@ -21,10 +21,11 @@
           <td><%= freeze.end_date.strftime('%d %b %y') %></td>
           <td><%= "#{pluralize(freeze.duration, 'day')}" %></td>
           <td><%= freeze.note %></td>
-          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(freeze), class: "icon-container" %></td>
+          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(freeze), class: "icon-container", data: { turbo_frame: 'freeze_edit' } %></td>
           <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(freeze), data: { turbo_method: :delete, turbo_confirm: 'Freeze will be deleted Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% end %>
+<%= turbo_frame_tag 'freeze_edit' %> 

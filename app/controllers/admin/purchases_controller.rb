@@ -52,6 +52,7 @@ class Admin::PurchasesController < Admin::BaseController
     @attendances_amnesty = @purchase.attendances.amnesty.merge(Attendance.order_by_date)
     @frozen_now = @purchase.freezed?(Time.zone.now)
     sunset_hash
+    handle_show_response
   end
 
   def new
@@ -445,4 +446,11 @@ class Admin::PurchasesController < Admin::BaseController
       format.turbo_stream
     end
   end
+
+  def handle_show_response
+    respond_to do |format|
+      format.html
+      # format.turbo_stream
+    end    
+  end  
 end

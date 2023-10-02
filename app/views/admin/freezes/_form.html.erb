@@ -1,4 +1,5 @@
-<%= form_with(model: [:admin, freeze]) do |form| %>
+<%= form_with(model: [:admin, freeze], class: 'admin_form',  data: {turbo_frame: "_top"}) do |form| %>
+  <% purchase = params[:purchase] || @freeze.purchase.id %>
   <% if freeze.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(freeze.errors.count, "error") %> prohibited this adjustment from being saved:</h2>
@@ -10,7 +11,7 @@
     </div>
   <% end %>
 
-  <div><%= form.hidden_field :purchase_id, value: params[:purchase] || freeze.purchase_id %></div>
+  <div><%= form.hidden_field :purchase_id, value: purchase || freeze.purchase_id %></div>
 
   <div class="field" id="freeze_start">
     <%= form.label :start_date %>
@@ -30,6 +31,10 @@
   <div class="actions">
     <%= form.submit %>
   </div>
+
+  <div class="cancel">
+    <%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase) %>
+  </div>  
 <% end %>
 
 <script>

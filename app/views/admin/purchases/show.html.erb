@@ -6,15 +6,19 @@
   <%#= reformat - locals hash no longer needed(?) as client version is its own partial now (not shared) %>
   <%= render partial: 'admin/purchases/show_partials/purchase_summary', locals: {setting: 'admin_purchase_show'} %>
   <%= render partial: 'admin/purchases/show_partials/purchase_details' %>
-</div>
 
-<div id="amendment-links" class="mb-3 d-flex">
-  <div>
-    <%= link_to image_tag('freeze.png', class: "table_icon" ), new_admin_freeze_path(purchase: @purchase.id), class: "icon-container" %> |
-    <%= link_to image_tag('adjust.png', class: "table_icon" ), new_admin_adjustment_path(purchase: @purchase.id), class: "icon-container" %> |
-    <%= link_to image_tag('edit.png', class: "table_icon" ), edit_admin_purchase_path(@purchase), class: "icon-container" %>
+  <div id="amendment-links" class="mb-3 d-flex">
+    <div>
+      <%= link_to image_tag('freeze.png', class: "table_icon" ),
+                  new_admin_freeze_path(purchase: @purchase.id),
+                  class: "icon-container",
+                  data: { turbo_frame: dom_id(Freeze.new) } %> |
+      <%= link_to image_tag('adjust.png', class: "table_icon" ), new_admin_adjustment_path(purchase: @purchase.id), class: "icon-container" %> |
+      <%= link_to image_tag('edit.png', class: "table_icon" ), edit_admin_purchase_path(@purchase), class: "icon-container" %>
+    </div>
+    <div class="me-3 ms-auto">
+      <%= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>
+    </div>
   </div>
-  <div class="me-3 ms-auto">
-    <%= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>
-  </div>
+  <%= turbo_frame_tag Freeze.new %>      
 </div>

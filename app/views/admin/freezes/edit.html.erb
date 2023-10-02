@@ -1,2 +1,4 @@
 <h4>Editing Freeze</h4>
-<%= render 'form', freeze: @freeze %>
+<%= turbo_frame_tag 'freeze_edit' do %>
+  <%= render 'form', freeze: @freeze %>
+<% end %>

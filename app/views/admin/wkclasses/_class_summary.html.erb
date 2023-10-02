@@ -1,25 +1,27 @@
-<h5 class ="class-attendance-header">  <%= "#{@wkclass.summary}" %>
-  <span class="me-2"></span>
-  <%#= link_to image_tag('add.png', class: "button_icon"), new_admin_attendance_path(wkclass_id: @wkclass.id), class: "icon-container" %>
-</h5>
-<div class="new-attendance-container">
-  <% unless @qualifying_purchases.empty? %>
-    <%= render 'admin/attendances/form', attendance: @attendance %>
-  <% end %>
-</div>
-<%# scroll: true parameter not being used. Can remove in due course if no use found %>
-<%= link_to '<<', admin_wkclass_path(@wkclasses.next_item(params[:id].to_i), scroll: true), {class: "paginate_icon"} unless params[:no_scroll] %>
-<div class ="d-inline-block">
-  <%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
-</div>
-<% unless logged_in_as?('junioradmin', 'instructor') %>
-  <div id="attendances_revenue" class ="d-inline-block">
-    <%= rupees(@wkclass.revenue) %> |
+<div class="mb-2">
+  <h5 class ="class-attendance-header">  <%= "#{@wkclass.summary}" %>
+    <span class="me-2"></span>
+    <%#= link_to image_tag('add.png', class: "button_icon"), new_admin_attendance_path(wkclass_id: @wkclass.id), class: "icon-container" %>
+  </h5>
+  <div class="new-attendance-container">
+    <% unless @qualifying_purchases.empty? %>
+      <%= render 'admin/attendances/form', attendance: @attendance %>
+    <% end %>
   </div>
-<% end %>
-<%= @wkclass.instructor&.name %>
-<% unless logged_in_as?('instructor') %>
-  <%= link_to image_tag('edit.png', class: "header_icon"), edit_admin_wkclass_path(@wkclass) %>
-<% end %>
-<%# <%= link_to '>>', {id: @wkclasses.next(params[:id]).id} , {class: "pl-2"} %>
-<%= link_to '>>', admin_wkclass_path(@wkclasses.prev_item(params[:id].to_i), scroll: true), {class: "paginate_icon pl-2"} unless params[:no_scroll] %>
+  <%# scroll: true parameter not being used. Can remove in due course if no use found %>
+  <%= link_to '<<', admin_wkclass_path(@wkclasses.next_item(params[:id].to_i), scroll: true), {class: "paginate_icon"} unless params[:no_scroll] %>
+  <div class ="d-inline-block">
+    <%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
+  </div>
+  <% unless logged_in_as?('junioradmin', 'instructor') %>
+    <div id="attendances_revenue" class ="d-inline-block">
+      <%= rupees(@wkclass.revenue) %> |
+    </div>
+  <% end %>
+  <%= @wkclass.instructor&.name %>
+  <% unless logged_in_as?('instructor') %>
+    <%= link_to image_tag('edit.png', class: "header_icon"), edit_admin_wkclass_path(@wkclass) %>
+  <% end %>
+  <%# <%= link_to '>>', {id: @wkclasses.next(params[:id]).id} , {class: "pl-2"} %>
+  <%= link_to '>>', admin_wkclass_path(@wkclasses.prev_item(params[:id].to_i), scroll: true), {class: "paginate_icon pl-2"} unless params[:no_scroll] %>
+</div>

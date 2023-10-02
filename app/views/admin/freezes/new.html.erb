@@ -1,2 +1,4 @@
-<h2>New freeze</h2>
-<%= render 'form', freeze: @freeze %>
+<h4>New Freeze</h4>
+<%= turbo_frame_tag @freeze do %>
+  <%= render 'form', freeze: @freeze %>
+<% end %>
