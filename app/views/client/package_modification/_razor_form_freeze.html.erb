@@ -10,7 +10,7 @@
     data-theme.color="#1a2b3c"
   >
   </script>
-  <input type="hidden" value="<%= "#{params[:purchase]}" %>" name="purchase_id">                                                
+  <input type="hidden" value="<%= "#{params[:purchase_id]}" %>" name="purchase_id">                                                
   <input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
   <input type="hidden" value="<%= "#{Time.zone.today.advance(days: 1)}" %>" name="start_date" id="start_date">
 	<input type="hidden" value="shop page" name="client_ui">

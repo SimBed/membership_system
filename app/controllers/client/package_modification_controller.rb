@@ -41,7 +41,21 @@ class Client::PackageModificationController < ApplicationController
   end
 
   def adjust_restart; end
+  
   def transfer; end
+
+  def cancel_freeze
+    @purchase = Purchase.find(params[:purchase_id])
+    render partial: 'client/clients/package_modifications/freeze'
+  end
+
+  def cancel_adjust_restart
+    render partial: 'client/clients/package_modifications/adjust_restart'
+  end
+
+  def cancel_transfer
+    render partial: 'client/clients/package_modifications/transfer'
+  end
 
   private
 

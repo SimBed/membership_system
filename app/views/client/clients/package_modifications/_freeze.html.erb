@@ -1,0 +1,3 @@
+  <%= turbo_frame_tag 'freeze_new' do %>
+  <div class="text-center pb-3"><%= link_to 'Freeze', client_package_modification_new_freeze_path(@client, purchase_id: @purchase.id), class: 'w-50 btn btn-outline-black rounded-pill bg-light px-2 py-1' %></div>
+  <% end %>

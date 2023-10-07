@@ -1,13 +1,6 @@
-  <div class="d-flex flex-column canvas canvas py-0">
-    <h6 class='style-1 py-4 mb-0'>package modifications</h6>
-    <%= turbo_frame_tag 'freeze_new' do %>
-    <div class="text-center pb-3"><%= link_to 'Freeze', client_package_modification_new_freeze_path(@client, purchase: @purchase.id), class: 'w-50 btn btn-outline-black rounded-pill bg-light px-2 py-1' %></div>
-    <% end %>
-    <%= turbo_frame_tag 'adjust_restart' do %>
-    <div class="text-center pb-3"><%= link_to 'Adjust & Restart', client_package_modification_adjust_restart_path(@client), class: 'w-50 btn btn-outline-black rounded-pill bg-light px-2 py-1' %></div>
-    <% end %>
-    <%= turbo_frame_tag 'transfer' do %>
-    <div class="text-center pb-3"><%= link_to 'Transfer', client_package_modification_transfer_path(@client), class: 'w-50 btn btn-outline-black rounded-pill bg-light px-2 py-1' %></div>
-    <% end %>
-  </div>
-
+<div class="d-flex flex-column canvas canvas py-0">
+  <h6 class='style-1 py-4 mb-0'>package modifications</h6>
+  <%= render 'client/clients/package_modifications/freeze' %>
+  <%= render 'client/clients/package_modifications/adjust_restart' %>
+  <%= render 'client/clients/package_modifications/transfer' %>
+</div>
