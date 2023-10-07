@@ -1,0 +1,18 @@
+<form action=<%= client_buy_freeze_path(@client) %> method="POST">
+  <script
+    src="https://checkout.razorpay.com/v1/checkout.js"
+    data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
+    data-amount="<%= "65000" %>"
+    data-name="<%= "The Space" %>"
+    data-description="<%= "Package Freeze" %>"
+    data-image="<%= asset_path 'favicon.ico' %>"
+    data-prefill.email="<%= "#{current_account&.email}" %>"
+    data-theme.color="#1a2b3c"
+  >
+  </script>
+  <input type="hidden" value="<%= "#{params[:purchase]}" %>" name="purchase_id">                                                
+  <input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
+  <input type="hidden" value="<%= "#{Time.zone.today.advance(days: 1)}" %>" name="start_date" id="start_date">
+	<input type="hidden" value="shop page" name="client_ui">
+	<input type="hidden" value="650" name="price">
+</form>

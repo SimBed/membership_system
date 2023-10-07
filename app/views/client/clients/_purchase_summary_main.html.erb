@@ -1,5 +1,5 @@
 <caption class="ps-1">
-  <%= @purchase.formal_name %> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%>
+  <%= @purchase.formal_name %> <%=image_tag('cold.png') if @purchase.display_frozen?(Time.zone.now)%>
 </caption>
 <tbody>
   <tr>

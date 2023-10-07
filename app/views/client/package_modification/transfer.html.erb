@@ -1,0 +1,11 @@
+<h4>Transfer</h4>
+<%= turbo_frame_tag 'transfer' do %>
+  <div class="pseudo-form text-center mx-2 mb-3">
+    <div class="px-4">
+      <p>Things not worked out as planned? You may be able to transfer your Package to a friend or family member. Please read about our Transfer option under 'Modifications' <%= link_to 'here', '/terms&conditions', class: "fw-bolder text-decoration-underline", target: '_blank' %></p>  
+    </div>
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), client_book_path(@client) %>
+    </div>
+  </div>
+<% end %>

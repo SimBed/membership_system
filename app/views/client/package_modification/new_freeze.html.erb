@@ -1,0 +1,22 @@
+<h4>New Freeze</h4>
+<%= turbo_frame_tag 'freeze_new' do %>
+<div class="pseudo-form text-center mx-2 mb-3">
+  <div class="mb-2" data-controller="freeze">
+    <label for="start">Freeze this Package for 14 days starting on:</label>
+    <input type="date"
+           name="start"
+           class="freeze-start"
+           value=<%= Time.zone.today.advance(days: 1) %>
+           min=<%= Time.zone.today.advance(days: 1) %>
+           max=<%= Time.zone.today.advance(days: 31) %>
+           data-freeze-target="source"
+           data-action="freeze#copy_to_razorpay_form">
+  </div>
+  <%= render 'razor_form_freeze' %>
+  <div class="fs-8 mt-3">
+  <p>Before paying, please read terms under 'Modifications' <%= link_to 'here', '/terms&conditions', class: "fw-bolder text-decoration-underline", target: '_blank' %></p></div>
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), client_book_path(@client) %>
+    </div>
+</div>
+<% end %>

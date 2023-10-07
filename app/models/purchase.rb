@@ -233,6 +233,17 @@ class Purchase < ApplicationRecord
     freezes.select { |f| adate.between?(f.start_date, f.end_date.end_of_day) }
   end
 
+  def display_frozen?(adate)
+    freezed?(adate) && !expired? 
+  end
+
+  # not used (all packages with bookable classes that are not expired can be frozen, so need to develop such a method yet)
+  def freezable?
+    return false if expired?
+    
+    true
+  end
+
   # use for manually automating bulk freezes over holidays
   def freezes_cover?(period)
     freezes.map { |f| f.applies_during(period) }.any?

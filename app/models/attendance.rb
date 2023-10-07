@@ -12,11 +12,13 @@ class Attendance < ApplicationRecord
   delegate :name, to: :client, prefix: :client
   delegate :product, to: :purchase
   scope :in_cancellation_window, -> { joins(:wkclass).merge(Wkclass.in_cancellation_window) }
+  scope :during, ->(period) { joins(:wkclass).merge(Wkclass.during(period)) }
   scope :amnesty, -> { where(amnesty: true) }
   scope :no_amnesty, -> { where.not(amnesty: true) }
   scope :confirmed, -> { where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['booked']) }
   scope :attended, -> { where(status: 'attended') }
   scope :committed, -> { where(status: %w[booked attended]) }
+  scope :booked, -> { where(status: 'booked') }
   # scope :provisional, -> { where(status: Rails.application.config_for(:constants)["attendance_statuses"]) }
   # scope :committed, lambda {
   #                       where(status: Rails.application.config_for(:constants)['attendance_statuses'] - ['cancelled early', 'cancelled late'])

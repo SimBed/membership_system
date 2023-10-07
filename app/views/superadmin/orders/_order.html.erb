@@ -3,7 +3,7 @@
   <td> <%= link_to order.payment_id, superadmin_order_path(order) %> </td>
   <td> <%= order.created_at.strftime('%d %b %y') %> </td>
   <td> <%= link_to order.account.client.name, admin_client_path(order.account.client) %> </td>
-  <td> <%= order.product.name %> </td>
+  <td> <%= order.product.name if order.product %> </td>
   <td> <%= order.price %> </td>
   <td> <%= order.client_ui if order.client_ui %> </td>
   <%if params[:status]== "captured" %>

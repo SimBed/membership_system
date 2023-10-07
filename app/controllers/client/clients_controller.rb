@@ -1,7 +1,6 @@
 class Client::ClientsController < ApplicationController
   layout 'client'
   before_action :correct_account, except: [:timetable]
-  # before_action :set_timetable, only: [:welcome, :space_home]
 
   def show
     prepare_data_for_view
@@ -141,11 +140,3 @@ class Client::ClientsController < ApplicationController
     @main_challenge_selected = true if main_challenge_ids.include? session[:challenge_id].to_i
   end
 end
-
-  # def challenge
-  #   clear_session(:challenge_id)
-  #   session[:challenge_id] ||= params[:challenge_id]
-  #   @challenge = Challenge.find_by(id: session[:challenge_id])
-  #   @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
-  #   @clients = @challenge&.positions
-  # end

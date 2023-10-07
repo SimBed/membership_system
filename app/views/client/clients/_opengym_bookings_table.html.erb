@@ -2,7 +2,7 @@
 <%#= javascript_import_module_tag "custom/booking-slider" %>
 <section id="opengym-bookings-table" class="">
   <div class="d-md-flex justify-content-center open-gym canvas black-canvas pb-3">
-    <h6 class='style-1 py-4 mb-0'>open gym</h6>
+    <h6 class='style-1 text-white py-4 mb-0'>open gym</h6>
       <% @opengym_wkclasses_show_by_day.each_with_index do |day, index|%>
         <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>">
           <% if day.empty? %>

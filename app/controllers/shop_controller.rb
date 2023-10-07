@@ -6,8 +6,4 @@ class ShopController < ApplicationController
     @products = Product.package.includes(:workout_group).order_by_name_max_classes.reject(&:pt?)
   end
 
-  def sell
-    # render layout: false
-    # render layout: "pricing_layout"
-  end
 end

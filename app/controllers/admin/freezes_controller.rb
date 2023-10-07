@@ -15,6 +15,7 @@ class Admin::FreezesController < Admin::BaseController
       @purchase = @freeze.purchase
       redirect_to admin_purchase_path(Purchase.find(freeze_params[:purchase_id]))
       flash[:success] = t('.success')
+      cancel_bookings_during_freeze(@freeze)
       update_purchase_status([@purchase])
     else
       render :new, status: :unprocessable_entity

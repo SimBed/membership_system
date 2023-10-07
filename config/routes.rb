@@ -30,6 +30,10 @@ Rails.application.routes.draw do
   delete '/logout',  to: 'auth/sessions#destroy'
   get '/switch_account_role',  to: 'auth/sessions#switch_account_role'
   get    'client/clients/:id/book',   to: 'client/clients#book', as: 'client_book'
+  get    'client/package_modification/:id/new_freeze',   to: 'client/package_modification#new_freeze', as: 'client_package_modification_new_freeze'
+  get    'client/package_modification/:id/adjust_restart',   to: 'client/package_modification#adjust_restart', as: 'client_package_modification_adjust_restart'
+  get    'client/package_modification/:id/transfer',   to: 'client/package_modification#transfer', as: 'client_package_modification_transfer'
+  post   'client/clients/:id/buy_freeze',   to: 'client/package_modification#buy_freeze', as: 'client_buy_freeze'
   get    'client/clients/:id/history',   to: 'client/clients#history', as: 'client_history'
   get    'client/clients/:id/buy',   to: 'client/clients#buy', as: 'client_buy'
   get    'client/clients/:id/shop',   to: 'client/clients#shop', as: 'client_shop'
@@ -78,6 +82,7 @@ Rails.application.routes.draw do
   end
   # get 'client/clients/:id', to: 'client/clients#show', as: 'client_show'
   namespace :client do
+    # get 'package_modification/new_freeze'
     resources :clients, only: [:show]
     resources :password_resets, only: [:new, :create, :edit, :update]
   end

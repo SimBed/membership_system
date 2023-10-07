@@ -180,6 +180,10 @@ en:
       destroy:
         success: Regular Expense was successfully deleted
   client:
+    package_modification:
+      buy_freeze:
+        success: Your package has been frozen  
+        booking_cancelled: A booking during your freeze has been cancelled 
     clients:
       attendance:
         create:

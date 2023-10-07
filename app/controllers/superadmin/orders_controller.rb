@@ -1,7 +1,7 @@
 class Superadmin::OrdersController < Superadmin::BaseController
   skip_before_action :verify_authenticity_token
   skip_before_action :superadmin_account, only: [:create]
-  # this before filter created issues on phones where overzealous browsers deleted sessions (so logging the client out) whicle the razorpay button was still active and used
+  # this before filter created issues on phones where overzealous browsers deleted sessions (so logging the client out) while the razorpay button was still active and used
   # before_action :client_account, only: [:create]
   before_action :set_order, only: [:show, :refund]
 
@@ -74,6 +74,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
 
   def order_params
     p = params.permit(:product_id, :account_id, :price_id, :price, :razorpay_payment_id, :payment_id, :client_ui)
+    #delete returns nil if the key doesn't exist and the key's value if it does.
     p.merge!({ payment_id: p.delete(:razorpay_payment_id) || p[:payment_id] })
     p
   end

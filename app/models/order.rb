@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   include OrderConcerns::Razorpay
-  belongs_to :product
+  belongs_to :product, optional: true
   belongs_to :account, optional: true
   scope :order_by_date, -> { order(created_at: :desc) }
 
