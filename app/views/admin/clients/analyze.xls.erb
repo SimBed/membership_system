@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="https://www.w3.org/TR/html40/">
+
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Name</Data></Cell>
+        <Cell><Data ss:Type="String">Id</Data></Cell>
+        <Cell><Data ss:Type="String">Group Packages</Data></Cell>
+        <Cell><Data ss:Type="String">Member Since</Data></Cell>
+        <Cell><Data ss:Type="String">First Attendance</Data></Cell>
+        <Cell><Data ss:Type="String">Lifespan</Data></Cell>
+        <Cell><Data ss:Type="String">Active membership</Data></Cell>
+        <Cell><Data ss:Type="String">Prop Active</Data></Cell>
+        <Cell><Data ss:Type="String">Total Spend</Data></Cell>
+      </Row>
+    <% @clients.each do |ca| %>
+      <% ca = ClientAnalyzer.new(ca) %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= ca.client.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.client.id %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.group_package_count %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.joined.strftime('%d %b %y') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.first_class&.strftime('%d %b %y') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.life_span.round(1) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.active_membership %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.prop_active %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= number_with_delimiter(ca.total_spend) %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
