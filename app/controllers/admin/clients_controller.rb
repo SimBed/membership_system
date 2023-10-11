@@ -206,10 +206,4 @@ class Admin::ClientsController < Admin::BaseController
   #     self.class.layout 'application'
   #   end
   # end
-
-  def set_admin_status
-    @admin_plus = logged_in_as?('admin', 'superadmin') ? true : false
-    @junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false
-    @junioradmin = logged_in_as?('junioradmin') ? true : false
-  end
 end

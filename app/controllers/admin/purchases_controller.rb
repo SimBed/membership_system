@@ -10,6 +10,7 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :changing_main_purchase_product?, only: :update
   before_action :changing_main_purchase_name?, only: :update
   before_action :changing_rider?, only: :update
+  before_action :set_admin_status, only: [:index]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
   # this approach is no good as the callback should be after a successful create not a failed create
@@ -58,10 +59,6 @@ class Admin::PurchasesController < Admin::BaseController
   def new
     @purchase = Purchase.new
     prepare_items_for_dropdowns
-    respond_to do |format|
-      format.html
-      format.js { render 'new.js.erb' }
-    end
   end
 
   def edit
@@ -240,7 +237,7 @@ class Admin::PurchasesController < Admin::BaseController
       # redirect_to new_admin_purchase_path
       @purchase = Purchase.new(purchase_params)
       prepare_items_for_dropdowns
-      render 'new'
+      render :new, status: :unprocessable_entity
     else
       return unless @product.trial? && @client.has_had_trial? && !@purchase.trial?
 

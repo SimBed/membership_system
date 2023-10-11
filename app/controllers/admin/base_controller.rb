@@ -9,6 +9,11 @@ class Admin::BaseController < ApplicationController
     end
   end
 
+  def set_admin_status
+    @admin_plus = logged_in_as?('admin', 'superadmin') ? true : false
+    @junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false
+    @junioradmin = logged_in_as?('junioradmin') ? true : false
+  end
 
   private
 
@@ -19,4 +24,5 @@ class Admin::BaseController < ApplicationController
   def set_public_timetable
     @current_timetable = Timetable.find(Rails.application.config_for(:constants)['timetable_id'])
   end
+ 
 end

@@ -1,6 +1,0 @@
-var p = document.getElementById('purchase_renewal_discount_id')
-p.innerHTML = "<%= j collection_select(:purchase, :renewal_discount_id, @renewal_discounts, :id, :name, selected: @purchase_renewal_discount_id || @discount_none.id ) %>";
-var p = document.getElementById('purchase_status_discount_id')
-p.innerHTML = "<%= j collection_select(:purchase, :status_discount_id, @status_discounts, :id, :name, selected: @purchase_status_discount_id || @discount_none.id ) %>";
-var p = document.getElementById('purchase_oneoff_discount_id')
-p.innerHTML = "<%= j collection_select(:purchase, :oneoff_discount_id, @oneoff_discounts, :id, :name, selected: @purchase_oneoff_discount_id ||  @discount_none.id ) %>";

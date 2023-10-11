@@ -56,7 +56,7 @@
     <% unless @sunset_hash[:action].nil? %>
       <tr>
         <th scope="row">Sunset action</th>
-        <td><%= link_to (tag.i class: ["bi", @sunset_hash[:image], ("" if  @purchase.expired?)]), expire_purchase_path(@purchase), method: :patch, data: { confirm: @sunset_hash[:confirm] } %></td>
+        <td><%= link_to (tag.i class: ["bi", @sunset_hash[:image], ("" if  @purchase.expired?)]), expire_purchase_path(@purchase), data: { turbo_method: :patch , turbo_confirm: @sunset_hash[:confirm] } %></td>
       </tr>
     <% end %>   
     <% unless @purchase.not_started? || @purchase.expired? %>

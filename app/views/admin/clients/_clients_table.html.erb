@@ -3,8 +3,8 @@
     <%#= paginate @clients, remote: true %>
     <%#= page_entries_info @clients %>
     <% if @admin_plus %>
-      <div class="record-count">
-        <%= "showing #{@clients&.count} of #{@pagy&.count}" %>
+      <div class="record-count mb-1">
+        <%= "showing #{@clients&.length} of #{@pagy&.count}" %>
       </div>
     <% end %>
     <%== pagy_bootstrap_combo_nav_js(@pagy) %>

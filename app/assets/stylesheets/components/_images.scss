@@ -72,3 +72,7 @@ img.filter-white {
 
   filter: brightness(0) saturate(100%) invert(97%) sepia(98%) saturate(192%) hue-rotate(187deg) brightness(111%) contrast(100%);
 }
+
+a i.bi-sunset:hover, a i.bi-sunrise:hover {
+  transform: scale(1.2);
+  }

@@ -2,11 +2,16 @@
   <div class="page_entries_info px-1">
     <%#= paginate @purchases, remote: true %>
     <%#= page_entries_info @purchases %>
-    <%== pagy_nav @pagy %>
+    <% if @admin_plus %>
+      <div class="record-count mb-1">
+        <%= "showing #{@purchases&.length} of #{@pagy&.count}" %>
+      </div>
+    <% end %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
   </div>
 
   <table class="table table-secondary table-striped caption-top">
-    <% if logged_in_as?('admin', 'superadmin') %>
+    <% if @admin_plus %>
       <caption class="px-1"><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
     <% end %>
     <thead>

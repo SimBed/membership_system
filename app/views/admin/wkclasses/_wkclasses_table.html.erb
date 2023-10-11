@@ -2,7 +2,12 @@
   <div class="page_entries_info px-1">
     <%#= paginate @wkclasses, remote: true %>
     <%#= page_entries_info @wkclasses, entry_name: 'classes' %>
-    <%== pagy_nav @pagy %>
+    <% if @admin_plus %>
+      <div class="record-count mb-1">
+        <%= "showing #{@wkclasses&.length} of #{@pagy&.count}" %>
+      </div>
+    <% end %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
   </div>
 
   <table class="table table-secondary table-striped caption-top">
