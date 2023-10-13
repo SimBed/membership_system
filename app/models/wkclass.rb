@@ -82,6 +82,12 @@ class Wkclass < ApplicationRecord
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
+  scope :booked_for, ->(client) {joins(attendances: [purchase: [:client]]).where(clients: {id: client.id}).where(attendances: {status: 'booked'})}
+  # def self.booked_for(client)
+  #   Wkclass.joins(attendances: [purchase: [:client]])
+  #          .where(clients: {id: client.id})
+  #          .where(attendances: {status: 'booked'})
+  # end
 
   # would like to use #or method but see difficulties above re structrurally compatible
   def self.problematic
@@ -107,26 +113,18 @@ class Wkclass < ApplicationRecord
            .distinct
   end
 
-  # not allowed 2 physical attendances on same day. Used in already_committed attendance controller callback
-  # def booked_or_attended_on_same_day?(client)
-  #   bookings_attendances_on_same_day =
-  #     Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
-  #            .where('clients.id = ? AND attendances.status IN (?)', client.id, %w[booked attended])
-  #   return false if bookings_attendances_on_same_day.empty?
-  #
-  #   true
-  # end
-
-  # def committed_on_same_day?(client)
-  #   # fixed packages can be used however the client wants (eg twice a day is ok)
-  #   non_amnesty_attendances_on_same_day =
-  #     Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
-  #            .where('clients.id = ? AND attendances.amnesty = false', client.id)
-  #            .merge(Purchase.unlimited.package)
-  #   return false if non_amnesty_attendances_on_same_day.empty?
-  #
-  #   true
-  # end
+  # not used/does not work. booked attendances from other clients are returned 
+  # def self.my_bookings_for(client)
+  #   # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate
+  #   Wkclass.in_booking_visibility_window
+  #          .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
+  #          .joins(:attendances)
+  #          .where(attendances: {status: 'booked'})
+  #          .where('clients.id': client.id)
+  #          .where('workout_group.renewable': true)
+  #          .merge(Purchase.not_fully_expired.exclude(Purchase.unexpired_rider_without_ongoing_main))
+  #          .distinct
+  # end  
 
   def committed_on_same_day?(client)
     # Used in already_committed attendances_controller before_action callback
@@ -260,7 +258,31 @@ class Wkclass < ApplicationRecord
     errors.add(:base, 'A class for this workout, instructor and time already exists') unless id == wkclass.id
   end
 
-  # def pt_instructor
+
+end
+
+  # not allowed 2 physical attendances on same day. Used in already_committed attendance controller callback
+  # def booked_or_attended_on_same_day?(client)
+  #   bookings_attendances_on_same_day =
+  #     Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
+  #            .where('clients.id = ? AND attendances.status IN (?)', client.id, %w[booked attended])
+  #   return false if bookings_attendances_on_same_day.empty?
+  #
+  #   true
+  # end
+
+  # def committed_on_same_day?(client)
+  #   # fixed packages can be used however the client wants (eg twice a day is ok)
+  #   non_amnesty_attendances_on_same_day =
+  #     Wkclass.where.not(id: id).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
+  #            .where('clients.id = ? AND attendances.amnesty = false', client.id)
+  #            .merge(Purchase.unlimited.package)
+  #   return false if non_amnesty_attendances_on_same_day.empty?
+  #
+  #   true
+  # end
+
+    # def pt_instructor
   #   return unless Instructor.exists?(instructor_id)
 
   #   if ('PT'.in? name) && !('PT'.in? instructor.name)
@@ -271,4 +293,3 @@ class Wkclass < ApplicationRecord
   #     errors.add(:base, 'PT instructor only available for PT')
   #   end
   # end
-end

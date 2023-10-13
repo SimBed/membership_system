@@ -23,12 +23,13 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     assert_difference '@client.attendances.no_amnesty.size', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @purchase.id } }
+                                                           purchase_id: @purchase.id },
+                                            booking_section: 'group' }
     end
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 'booked', @attendance.status
-    assert_redirected_to client_book_path(@client.id, limited: true)
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
     # assert_redirected_to "/client/clients/#{@client.id}/book"
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
   end
@@ -86,7 +87,8 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
   test '2nd booking on same day when 2nd is limited (ie Open Gym)' do
     log_in_as(@account_client)
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-                                                         purchase_id: @purchase.id } }
+                                                         purchase_id: @purchase.id },
+                                           booking_section: 'group' }
     opengym = Wkclass.create(
       workout_id: 8,
       start_time: '2022-04-22 21:00:00',
@@ -96,10 +98,11 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     )
     assert_difference '@client.attendances.no_amnesty.size', 1 do
     post admin_attendances_path, params: { attendance: { wkclass_id: opengym.id,
-                                                          purchase_id: @purchase.id } }
+                                                          purchase_id: @purchase.id },
+                                           booking_section: 'opengym' }
     end  
 
-    assert_redirected_to client_book_path(@client.id, limited: false)
+    assert_redirected_to client_book_path(@client.id, booking_section: 'opengym')
     refute_predicate flash, :empty?
   end
   
@@ -116,10 +119,10 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                           purchase_id: @purchase.id } }
     assert_difference '@client.attendances.no_amnesty.size', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-      purchase_id: @purchase.id } }      
+      purchase_id: @purchase.id }, booking_section: 'group' }      
     end  
 
-    assert_redirected_to client_book_path(@client.id, limited: true)
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
     refute_predicate flash, :empty?
   end
 
@@ -144,10 +147,11 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     assert_difference 'Attendance.count', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
-                                                           purchase_id: @purchase.id } }
+                                                           purchase_id: @purchase.id },
+                                             booking_section: 'group' }
     end
 
-    assert_redirected_to client_book_path(@client.id, limited: true)
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
   end
 
@@ -160,10 +164,11 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     assert_difference 'Attendance.count', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
-                                                           purchase_id: @purchase.id } }
+                                                           purchase_id: @purchase.id },
+                                             booking_section: 'group'}
     end
 
-    assert_redirected_to client_book_path(@client.id, limited: true)
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
     refute_predicate flash, :empty?
   end
 

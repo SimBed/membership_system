@@ -8,16 +8,16 @@ module Client::ClientsHelper
     whatsapp.phony_formatted(format: :international, spaces: '-')
   end
 
-  def booking_link_and_class_for(wkclass, client, day)
+  def booking_link_and_class_for(wkclass, client, day, booking_section)
     attendance = Attendance.applicable_to(wkclass, client)
     if attendance.nil?
-      handle_new_booking(wkclass, client, day)
+      handle_new_booking(wkclass, client, day, booking_section)
     else
-      handle_update_booking(attendance, wkclass, client, day)
+      handle_update_booking(attendance, wkclass, client, day, booking_section)
     end
   end
 
-  def handle_new_booking(wkclass, client, day)
+  def handle_new_booking(wkclass, client, day, booking_section)
     purchase = Purchase.use_for_booking(wkclass, client)
     if purchase.nil? ||
        purchase.restricted_on?(wkclass) ||
@@ -41,7 +41,8 @@ module Client::ClientsHelper
           image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}" ),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id,
-                                 'booking_day': day),
+                                 'booking_day': day,
+                                 'booking_section': booking_section),
           data: { turbo_method: :post, turbo_confirm: confirmation },
           class: 'icon-container'
         ) }
@@ -49,17 +50,17 @@ module Client::ClientsHelper
     end
   end
 
-  def handle_update_booking(attendance, wkclass, client, day)
+  def handle_update_booking(attendance, wkclass, client, day, booking_section)
     case attendance.status
     when 'booked'
       { css_class: 'text-success',
-        link: link_to_update(attendance, day, amendment: 'cancel') }
+        link: link_to_update(attendance, day, amendment: 'cancel', booking_section: booking_section) }
     when 'cancelled early'
       if attendance.purchase.restricted_on?(wkclass)
         { css_class: '', link: '' }
     else
       { css_class: '',
-        link: link_to_update(attendance, day, amendment: 'rebook') }
+        link: link_to_update(attendance, day, amendment: 'rebook', booking_section: booking_section) }
     end
     when 'cancelled late', 'no show'
       { css_class: 'text-danger', link: '' }
@@ -68,7 +69,7 @@ module Client::ClientsHelper
     end
   end
 
-  def link_to_update(attendance, day, amendment:)
+  def link_to_update(attendance, day, amendment:, booking_section:)
     if amendment == 'cancel'
       image = 'delete.png'
       image_class = 'table_icon mx-auto filter-red'
@@ -81,7 +82,7 @@ module Client::ClientsHelper
     end
     link_to(
       image_tag(image, class: image_class),
-      admin_attendance_path(attendance, 'booking_day': day),
+      admin_attendance_path(attendance, 'booking_day': day, 'booking_section': booking_section),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )
@@ -143,6 +144,12 @@ module Client::ClientsHelper
 
     day.strftime("%a").capitalize
   end
+
+  # not used
+  def day_index(date)
+    (date - Time.zone.now.to_date).to_i
+  end
+
   private
 
   def format_rate(renewal_type)

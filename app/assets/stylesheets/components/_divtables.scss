@@ -132,3 +132,74 @@ div.open-gym {
     }
   }
 }
+
+div.my-booking {
+    display: flex;
+    flex-direction: column;
+    background-color: $black;
+  .my-booking-booking {
+    display: flex;
+    align-items: center;
+    background-color: $gray-900;
+    color: $gray-500;
+    box-shadow: -1px 0.5px 1px $gray-500;
+    margin-bottom: 0.2rem;
+    padding: 0.5rem;
+    @include media-breakpoint-up(md) {
+      width: 30rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .book-item {
+      flex: 1; 
+      padding-left: 1rem;
+      &:nth-child(2) {
+        flex-grow: 1.5;
+      }           
+    }
+    .details {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+      .wkclass-name {
+        text-transform: capitalize;
+        font-weight: bolder;
+        padding-bottom: 0.2rem;
+      }      
+      .studio {
+        text-transform: capitalize;
+        font-size: 0.8rem;          
+        &::before {
+          background-image: url('location.png');
+          background-size: 1em 1em;
+          display: inline-block;
+          width: 1em; 
+          height: 1em;
+          content:"";
+        }
+      }
+      .time {
+        font-size: 0.8rem;            
+      }
+      .duration {  
+        font-size: 0.7rem;  
+        &::after {
+          content:"mins";
+        }
+      }      
+      .status {
+        font-size: 0.7rem;
+        text-transform: uppercase;  
+        font-weight: bold;
+      }
+    }         
+    &:nth-child(odd) {
+      background-color: $gray-900;
+    }
+    &:nth-child(even) {
+      background-color: $gray-800;
+    }
+  }
+}
+
+

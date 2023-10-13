@@ -74,8 +74,8 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass = @attendance.wkclass
     @wkclass_name = @wkclass.name
     @wkclass_day = @wkclass.day_of_week
-    # pass whether the class is limited or not to render the correct turbo_stream to update the correct table open gym/group
-    redirect_to client_book_path(@client, limited: @wkclass.workout.limited)
+    # pass which section the request came from (can only be opengym or group for create) to render the correct turbo_stream to update the correct table opengym/group/my-bookings
+    redirect_to client_book_path(@client, booking_section: params[:booking_section])
     # redirect_to "/client/clients/#{@client.id}/book"
     # attendances_helper has booking_flash_hash with a method as a value
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
@@ -299,7 +299,11 @@ class Admin::AttendancesController < Admin::BaseController
   def handle_client_update_response
     set_attendances
     flash_client_update_success
-    redirect_to client_book_path(@client, limited: @wkclass.workout.limited)
+    # pass which section the request came from to render the correct turbo_stream to update the correct table opengym/group/my-bookings
+    # pass limited as well, as if the request is from my_bookings the turbo stream needs to now whether to update group table or opengym table
+    # limited not used in the end (can be deleted). When a mybooking is cancelled, update both opengym and group. If you dust update the impacted table, then when the day of the cancelled class is different from
+    # the day currently selected, there will be inconsistency between the day shown and the non-impacted listing 
+    redirect_to client_book_path(@client, booking_section: params[:booking_section], limited: @wkclass.workout.limited)
   end
 
   # https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller

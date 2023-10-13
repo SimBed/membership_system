@@ -16,6 +16,9 @@
     <%= render partial: 'opengym_bookings_table' if @renewal.package_ongoing? && !@open_gym_wkclasses.empty? %>
   <% end %>
   <%= render partial: 'other_services' unless @other_services.empty? %>
+  <%= turbo_frame_tag 'my_bookings' do %>
+    <%= render partial: 'my_bookings_table' if @renewal.package_ongoing? %>
+  <% end %>
   <% if Setting.renew_online && @renewal.alert_to_renew? %>
     <%= render partial: 'renewal' %>
   <% end %>

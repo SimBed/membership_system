@@ -1,10 +1,16 @@
-<% booking_link_and_class = booking_link_and_class_for(wkclass, @client, index, 'opengym') %>
-  <div class="open-gym-booking">
+<% booking_link_and_class = booking_link_and_class_for(wkclass, @client, session[:booking_day], 'all') %>
+  <div class="my-booking-booking">
     <div class="book-item">
       <div class="details">
         <div class="date"><%= wkclass.start_time.strftime("%a %b %-d") %></div>
       </div>
-    </div>  
+    </div>
+    <div class="book-item">
+      <div class="details">
+        <div class="wkclass-name"><%=wkclass.name%></div>
+        <div class="studio"><%=wkclass.studio%></div>
+      </div>
+    </div>    
     <div class="book-item">
       <div class="details">          
         <div class="time"><%=wkclass.time%></div>

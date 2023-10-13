@@ -60,6 +60,10 @@ class Client::ClientsController < ApplicationController
     # @wkclasses_in_booking_window = @wkclasses_visible - @wkclasses_window_closed - @wkclasses_not_yet_open
     @wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
     @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
+    @my_bookings = Wkclass.booked_for(@client).show_in_bookings_for(@client).order_by_reverse_date
+    # switching the order round (as below) returns wkclasses with booked attendances not of @client. Couldn't figue this out 
+    # Wkclass.show_in_bookings_for(@client).booked_for(@client).order_by_reverse_date
+    # Wkclass.show_in_bookings_for(c).merge(Wkclass.booked_for(c)).order_by_reverse_date
     @days = (Date.today..Date.today.advance(days: Setting.visibility_window_days_ahead)).to_a
     # Should be done in model
     @wkclasses_show_by_day = []
@@ -74,10 +78,12 @@ class Client::ClientsController < ApplicationController
     @renewal = Renewal.new(@client)
     respond_to do |format|
       format.html
-      if params[:limited] == 'true' # ie not open gym
+      if params[:booking_section] == 'group'
         format.turbo_stream
+      elsif params[:booking_section] == 'opengym'
+        format.turbo_stream { render :book_opengym }
       else
-        format.turbo_stream {  render :book_opengym }
+        format.turbo_stream { render :book_my_bookings }
       end
     end
   end
