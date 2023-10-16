@@ -16,6 +16,14 @@ class Freeze < ApplicationRecord
     (start_date..end_date).overlaps?(period)
   end
 
+  def days_frozen
+    return 0 if Time.zone.now < start_date
+
+    return (end_date - start_date + 1).to_i if Time.zone.now > end_date
+
+    (Time.zone.now.to_date - start_date).to_i
+  end
+
   private
 
   def duration_length

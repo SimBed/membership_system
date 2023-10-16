@@ -18,16 +18,16 @@
         <Cell><Data ss:Type="String">Prop Active</Data></Cell>
         <Cell><Data ss:Type="String">Total Spend</Data></Cell>
       </Row>
-    <% @clients.each do |ca| %>
-      <% ca = ClientAnalyzer.new(ca) %>
+    <% @clients.each do |client| %>
+      <% ca = ClientAnalyzer.new(client) %>
       <Row>
-        <Cell><Data ss:Type="String"><%= ca.client.name %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= ca.client.id %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= client.id %></Data></Cell>
         <Cell><Data ss:Type="String"><%= ca.group_package_count %></Data></Cell>
         <Cell><Data ss:Type="String"><%= ca.joined.strftime('%d %b %y') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= ca.first_class&.strftime('%d %b %y') %></Data></Cell>
         <Cell><Data ss:Type="String"><%= ca.life_span.round(1) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= ca.active_membership %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ca.total_active_membership %></Data></Cell>
         <Cell><Data ss:Type="String"><%= ca.prop_active %></Data></Cell>
         <Cell><Data ss:Type="String"><%= number_with_delimiter(ca.total_spend) %></Data></Cell>
       </Row>
