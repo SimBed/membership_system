@@ -7,7 +7,9 @@
         <%= "showing #{@clients&.length} of #{@pagy&.count}" %>
       </div>
     <% end %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>    
   </div>
 
   <table class="table table-secondary table-striped caption-top">
