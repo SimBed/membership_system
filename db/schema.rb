@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_28_065617) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_20_101513) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -411,6 +411,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_065617) do
     t.index ["title"], name: "index_timetables_on_title"
   end
 
+  create_table "waitings", force: :cascade do |t|
+    t.bigint "wkclass_id", null: false
+    t.bigint "purchase_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["purchase_id"], name: "index_waitings_on_purchase_id"
+    t.index ["wkclass_id"], name: "index_waitings_on_wkclass_id"
+  end
+
   create_table "wkclasses", force: :cascade do |t|
     t.integer "workout_id"
     t.datetime "start_time", precision: nil
@@ -471,4 +480,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_065617) do
   add_foreign_key "penalties", "purchases"
   add_foreign_key "purchases", "purchases"
   add_foreign_key "regular_expenses", "workout_groups"
+  add_foreign_key "waitings", "purchases"
+  add_foreign_key "waitings", "wkclasses"
 end

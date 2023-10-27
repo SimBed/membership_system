@@ -196,6 +196,13 @@ en:
           from_cancelled_early:
             confirm: You will be rebooked for this class. Are you sure?
             confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?
+    waitings:
+      create:
+        success: "You have been added to the waiting list for %{wkclass_name}. You will be sent a message if a spot opens up."
+        warning: "Only make waiting list changes through the dashboard."    
+      destroy:
+        success: "You have been removed from the waiting list for %{wkclass_name}."
+        warning: "Only make waiting list changes through the dashboard."    
   public_pages:
     create_account:
       daily_account_limit: Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.

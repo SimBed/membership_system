@@ -5,6 +5,7 @@ class Client < ApplicationRecord
   has_many :attendances, through: :purchases
   has_many :achievements, dependent: :destroy
   has_many :challenges, through: :achievements
+  has_many :waitings, through: :purchases
   belongs_to :account, optional: true
   before_save :downcase_email
   before_save :uppercase_names
@@ -190,7 +191,8 @@ class Client < ApplicationRecord
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
   end
 
-  def booked?(wkclass)
+  # method once named booked? but this is misleading
+  def associated_with?(wkclass)
     return true if attendances.includes(:wkclass).map(&:wkclass).include? wkclass
 
     return false
@@ -227,6 +229,14 @@ class Client < ApplicationRecord
     return stored_number unless Phony.plausible?(stored_number)
 
     stored_number.gsub(send(:country_code, number), '')
+  end
+
+  def on_waiting_list_for?(wkclass)
+    waitings.where(wkclass_id: wkclass.id).any?
+  end
+
+  def waiting_list_for(wkclass)
+    waitings.where(wkclass_id: wkclass.id)&.first
   end
 
   private

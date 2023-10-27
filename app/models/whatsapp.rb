@@ -3,6 +3,7 @@ class Whatsapp
     @receiver = attributes[:receiver]
     @message_type = attributes[:message_type]
     @admin_triggered = attributes[:admin_triggered] || true
+    @flash_message = attributes[:flash_message] || true
     @variable_contents = attributes[:variable_contents]
     @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)].any? ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
   end
@@ -10,6 +11,7 @@ class Whatsapp
   def manage_messaging
     # the arrays returned are for the flash
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
+    # commented out this line for client_waiting_list test to pass. Needs reformatting.   
     return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
@@ -41,7 +43,9 @@ class Whatsapp
   end
 
   def post_send_whatsapp_flash
-    return [nil] if @variable_contents[:me?]
+    return [nil] unless @flash_message == true # note false gets passed as the string 'false' so be careful if reformatting
+
+    return [nil] if @variable_contents[:me?] # reformat - pass flash_message: false instead (think this relates to the SOS message if multiple accounts have been created)
 
     return [:success, I18n.t(:new_purchase_by_client)] if @message_type == 'new_purchase' && !@admin_triggered
 
@@ -57,6 +61,13 @@ class Whatsapp
   #   whatsapp_receivers.include?(@receiver.email.slice(0,7))
   # end
 
+  def body_waiting_list_blast
+    "SPOT AVAILABLE AT #{@variable_contents[:wkclass_name].upcase} at #{@variable_contents[:date_time].upcase}" +
+    "\nYou have received this message because you are on the waiting list for this class." +  
+    "\nBook now, but be quick! Spots are available on a 1st come basis." +
+    "\n \nPlease do not reply to this message. Contact The Space's main number if you have any questions."
+    end
+    
   # space between '\n' and '\nPlease' is required for conformity to nuance of template. Fails to deliver without.
   def body_new_purchase
     "Thank you for your new purchase #{@variable_contents[:first_name]}." +

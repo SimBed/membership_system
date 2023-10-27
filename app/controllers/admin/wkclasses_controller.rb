@@ -6,6 +6,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :set_repeats, only: [:create, :repeat]
   before_action :attendance_check, only: :repeat
   before_action :attendance_remain_check, only: :repeat
+  before_action :affects_waiting_list, only: :update
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
@@ -91,8 +92,9 @@ class Admin::WkclassesController < Admin::BaseController
 
   def update
     if @wkclass.update(wkclass_params)
+      notify_waiting_list(@wkclass, flash_message: true) if @affects_waiting_list
       redirect_to admin_wkclasses_path
-      flash[:success] = t('.success')
+      flash_message :success, t('.success')
     else
       prepare_items_for_dropdowns
       @workout = @wkclass.workout
@@ -198,6 +200,12 @@ class Admin::WkclassesController < Admin::BaseController
       'start_time(3i)': advanced_date.day.to_s, }
   end
 
+  def affects_waiting_list
+    @affects_waiting_list = false
+
+    @affects_waiting_list = true if @wkclass.at_capacity? && wkclass_params[:max_capacity].to_i > @wkclass.max_capacity
+  end
+
   def set_wkclass
     @wkclass = Wkclass.find(params[:id])
   end
@@ -275,6 +283,23 @@ class Admin::WkclassesController < Admin::BaseController
 
     flash[:danger] = t('.record_not_returned')
     redirect_to admin_wkclasses_path
+  end
+
+  # make dry - repeated in attendances controller
+  def notify_waiting_list(wkclass, flash_message: false)
+    return if wkclass.in_the_past?
+
+    return if wkclass.at_capacity?
+
+    wkclass.waitings.each do |waiting|
+      result = Whatsapp.new( { receiver: waiting.purchase.client,
+                               message_type: 'waiting_list_blast',
+                               flash_message: flash_message,
+                               variable_contents: { wkclass_name: wkclass.name,
+                               date_time: wkclass.date_time_short } }).manage_messaging
+      # splat just breaks the array returned eg [:warning, waiting list blast message sent by Whatsapp to 0000] up into idividual arguments
+      flash_message(*result)
+    end
   end
 
 end

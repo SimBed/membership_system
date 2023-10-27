@@ -147,9 +147,9 @@ class ClientTest < ActiveSupport::TestCase
     assert_equal 'Amala Paw', @client.name
   end
 
-  test 'booked? method' do
-    assert @client2.booked? @booked_class
-    refute @client.booked? @booked_class
+  test 'associated_with? method' do
+    assert @client2.associated_with? @booked_class
+    refute @client.associated_with? @booked_class
   end
 
   test 'deletable? method' do

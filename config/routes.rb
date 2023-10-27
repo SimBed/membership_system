@@ -86,6 +86,7 @@ Rails.application.routes.draw do
   end
   # get 'client/clients/:id', to: 'client/clients#show', as: 'client_show'
   namespace :client do
+    resources :waitings, only: [:create, :destroy]
     # get 'package_modification/new_freeze'
     resources :clients, only: [:show]
     resources :password_resets, only: [:new, :create, :edit, :update]

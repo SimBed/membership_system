@@ -67,12 +67,17 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     assert_template 'client/clients/book'
     # only 1 class booked but shown twice (once in group, once in my_bookings)
     assert_equal 2, booking_count('booked')
-    # type of link changes from post to patch so one less (new) booking link after the booking (but 2 more update booking links (1 in group section/1 in my booking section))
-    # note the addition of \/ [escape backslash] in the regexs to just select for post-style urls admin/attendances/... not patch style admin/attendances?...
-    # this is confusing the response shows update urls like href=\"/admin/attendances?attendance%5Bpurchase_id%5D=459&amp;attendance%5Bwkclass_id%5D=548
-    # whereas the browser shows them as href="/admin/attendances/2120?booking_day=1
-    # however the test seems to work like this
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}\//, count: 2
+    # after booking:
+    # type of link changes from post to patch
+    # patch link doubles up as once in group section/once in my booking section
+    # post link for other class on same day  may disappear if class becomes unbookable
+    # so 3 posts becomes 2 patches and  3 -1 (post to patch) -1 (same day class unbookable) = 1 post
+    # example of post/patch syntax
+    # post to  "/admin/attendances?attendance%5Bpurchase_id%5D=824&amp;attendance%5Bwkclass_id%5D=1133&amp;booking_day=1&amp;booking_section=group"
+    # patch to "/admin/attendances/2139?booking_day=1&amp;booking_section=group"
+    # find way to export response to file for easier debugging
+    # not used in end - but note the addition of \/ [escape backslash] in the regexs if want to select for backslash
+    assert_select "a:match('href', ?)", /#{admin_attendances_path}[?]/, count: 1
     attendance = Attendance.where(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id).first
     assert_select "a:match('href', ?)", /#{admin_attendance_path(attendance)}/, count: 2
     # assert_select 'a[href=?]', admin_attendance_path(attendance), count: 1
@@ -90,7 +95,8 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     get client_book_path(@client)
     # classes with a booking link reduces by 1
     assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 2 # 22/4, 22/4, 24/4
-    # 1 class shows a full icon
-    assert_select "i.bi-battery-full", 1
+    # 1 class shows link for waiting list
+    assert_select "a:match('href', ?)", /#{client_waitings_path}/, count: 1
+    # assert_select "i.bi-battery-full", 1
   end
 end

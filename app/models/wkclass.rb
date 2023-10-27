@@ -13,6 +13,7 @@ class Wkclass < ApplicationRecord
                                   }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
+  has_many :waitings
   belongs_to :instructor
   belongs_to :workout
   belongs_to :instructor_rate
@@ -154,6 +155,10 @@ class Wkclass < ApplicationRecord
     start_time.strftime('%H:%M')
   end
 
+  def date_time_short
+    start_time.strftime('%H:%M, %a %d')
+  end
+
   def day_of_week
     start_time.strftime('%A')
   end
@@ -194,6 +199,12 @@ class Wkclass < ApplicationRecord
 
   def at_capacity?
     return true if physical_attendances.count >= max_capacity
+
+    false
+  end
+  
+  def in_the_past?
+    return true if Time.zone.now > start_time
 
     false
   end

@@ -36,12 +36,12 @@ class Admin::AttendancesController < Admin::BaseController
 
   def create
     handle_fitternity and return if fitternity?
-
     @attendance = Attendance.new(attendance_params)
     if @attendance.save
       # needed for after_action callback
       @purchase = @attendance.purchase
       handle_freeze
+      remove_from_waiting_list
       client? ? after_successful_create_by_client : after_successful_create_by_admin
     else
       client? ? after_unsuccessful_create_by_client : after_unsuccessful_create_by_admin
@@ -84,7 +84,8 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def after_successful_create_by_admin
-    redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
+    @wkclass = @attendance.wkclass
+    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash_message :success, "#{@attendance.client_name}'s attendance was successfully logged"
   end
 
@@ -111,7 +112,11 @@ class Admin::AttendancesController < Admin::BaseController
       result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status]).update
       flash_message(*result.flash_array)
       update_purchase_status([@purchase]) if result.penalty_change?
-      handle_admin_update_response if result.success?
+      if result.success?
+        remove_from_waiting_list
+        flash_message (notify_waiting_list(@wkclass, flash_message: true) if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status])
+        handle_admin_update_response
+      end
     end
   end
 
@@ -133,6 +138,7 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass = Wkclass.find(@attendance.wkclass.id)
     @purchase = @attendance.purchase
     @attendance.destroy
+    notify_waiting_list(@wkclass, flash_message: true)
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash_message :success, t('.success')
   end
@@ -151,7 +157,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def set_new_attendance_dropdown_options
     # fitternity now redundant
-    # fitternity_options = Client.select {|c| c.fitternity}.reject {|c| c.booked?(@wkclass)}.map {|c| ["#{c.name} (Fitternity)", "Fitternity #{c.id}"] }
+    # fitternity_options = Client.select {|c| c.fitternity}.reject {|c| c.associated_with?(@wkclass)}.map {|c| ["#{c.name} (Fitternity)", "Fitternity #{c.id}"] }
     @qualifying_purchases = Purchase.qualifying_purchases(@wkclass) #+ fitternity_options
   end
 
@@ -191,24 +197,24 @@ class Admin::AttendancesController < Admin::BaseController
     params.require(:attendance).permit(:id, :status)
   end
 
-  def correct_account_or_junioradmin
-    @client = if new_booking?
-                if fitternity?
-                  # purchase_id key is now not well named as for fitternity its of the form ['Fitternity <client_id>']
-                  Client.find(params.dig(:attendance, :purchase_id).split.last.to_i)
-                else
-                  Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
-                end
-              else
-                # update or destroy
-                @attendance.client
-              end
+  # def correct_account_or_junioradmin
+  #   @client = if new_booking?
+  #               if fitternity?
+  #                 # purchase_id key is now not well named as for fitternity its of the form ['Fitternity <client_id>']
+  #                 Client.find(params.dig(:attendance, :purchase_id).split.last.to_i)
+  #               else
+  #                 Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
+  #               end
+  #             else
+  #               # update or destroy
+  #               @attendance.client
+  #             end
 
-    return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
-    flash_message :warning, t('.warning')
-    # flash[:warning] = 'Forbidden'
-    redirect_to login_path
-  end
+  #   return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
+  #   flash_message :warning, t('.warning')
+  #   # flash[:warning] = 'Forbidden'
+  #   redirect_to login_path
+  # end
 
   # make dry  
   def correct_account_or_junioradmin_or_instructor_account
@@ -277,6 +283,8 @@ class Admin::AttendancesController < Admin::BaseController
       @attendance.update(amnesty: false)
       handle_freeze
     end
+    remove_from_waiting_list
+    notify_waiting_list(@wkclass, flash_message: false)
   end
 
   def action_cancelled_late
@@ -560,5 +568,24 @@ class Admin::AttendancesController < Admin::BaseController
   def set_booking_day # so day on slider shown doesn't revert to default on response 
     default_booking_day = 0
     session[:booking_day] = params[:booking_day] || session[:booking_day] || default_booking_day
+  end
+
+  def remove_from_waiting_list
+    @client.waiting_list_for(@wkclass).destroy if @client.on_waiting_list_for?(@wkclass)
+  end
+
+  # make dry - repeated in wkclasses controller
+  def notify_waiting_list(wkclass, flash_message: false)
+    return if wkclass.in_the_past?
+
+    return if wkclass.at_capacity?
+
+    wkclass.waitings.each do |waiting|
+      Whatsapp.new( { receiver: waiting.purchase.client,
+                      message_type: 'waiting_list_blast',
+                      flash_message: flash_message,
+                      variable_contents: { wkclass_name: wkclass.name,
+                                           date_time: wkclass.date_time_short } }).manage_messaging
+    end
   end
 end

@@ -10,6 +10,7 @@ class Purchase < ApplicationRecord
   has_many :penalties, dependent: :destroy
   has_many :discount_assignments, dependent: :destroy
   has_many :discounts, through: :discount_assignments
+  has_many :waitings
   # some pts are given a rider benfeit of group classes
   has_one :rider_purchase, class_name: 'Purchase', dependent: :destroy # , foreign_key: "purchase_id"
   belongs_to :main_purchase, class_name: 'Purchase', foreign_key: 'purchase_id', optional: true

@@ -1,4 +1,5 @@
 <% booking_link_and_class = booking_link_and_class_for(wkclass, @client, index, 'group') %>
+<% attendance_format = AttendanceFormat.new(wkclass, @client, index, 'group') %>
 <div class="booking">
   <%# note on precompilation all assets are put into /public/assets accessed by using /assets (the images bit is redundant, the intuitive
   "/images/group/afterburn.jpg") or suchlike won't work. "/assets/group/afterburn.jpg" will work
@@ -21,10 +22,15 @@
   </div>
   <div class="book-item">
     <div class="details">      
-      <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
+      <!--div class ="<%#=booking_link_and_class[:css_class]%> status"><%#= Attendance.applicable_to(wkclass, @client)&.status %></div-->
+      <div class ="<%= attendance_format.css_class %> status"><%= attendance_format.status %></div>
+      <% if attendance_format.on_waiting_list && !attendance_format.wkclass_at_capacity %>
+        <div class=""><%= attendance_format.waiting_list_remove_link  %></div>
+      <% end %>      
     </div>
   </div>
   <div class="book-item">
-    <div <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></div>
+    <!--div <%#=booking_link_and_class[:data_attributes]%> <%#= booking_link_and_class[:tooltip_title] %>><%#= booking_link_and_class[:link] %></div-->
+    <div <%= attendance_format.data_attributes %> <%= attendance_format.tooltip_title %>><%= attendance_format.booking_link %></div>
   </div>
 </div>
