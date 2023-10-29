@@ -133,6 +133,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     
     log_in_as(@account_client)
     follow_redirect!
+    File.write("test_output.html", response.body)
     assert_template 'client/clients/book'
     assert_select "a:match('href', ?)", /#{admin_attendances_path}\//, count: 1 
     assert_select "img:match('src', ?)", %r{.*assets/add.*}, count: 3 # 22/4, 22/4, 24/4
@@ -166,7 +167,8 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
   # this test demonstrates the flash message associated with the Whatsapp class is triggered without explicitly demonstrating the send_whatsapp method fired
   # I tried to stub the instance method send_whatsapp but had difficulties stubbing an instance method (distinct from a class method)
   # when clients trigger a waiting list blast they (obviously) don't receive a flash about it, so these cases are untested (aka manually tested) for now
-  # note the  
+  # note the  return [nil] unless Rails.env.production? line in Whatsapp#manage_messaging must be commented out for this test to pass. Not ideal. Need to reformat method.
+
   test "waiting list notified when spot opens up (due to capacity increase)" do
     @tomorrows_class_early.update(max_capacity: 0)
     log_in_as(@account_client)

@@ -4,6 +4,7 @@
   <div id="classes_table" class="mb-3">
     <%= turbo_frame_tag 'wkclasses' do %>
       <%= render partial: 'class_attendance_table' %>
+      <%= render partial: 'waiting_list' unless @waitings.empty? %>
     <% end %>
     <% unless logged_in_as?('instructor') %>
       <%= render partial: 'repeat_form' if @wkclass.attendances&.first&.purchase&.pt? %>

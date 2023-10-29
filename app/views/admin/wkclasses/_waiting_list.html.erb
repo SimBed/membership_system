@@ -1,0 +1,13 @@
+  <table class="table table-secondary table-striped">
+    <tbody>
+      <tr>
+        <th class="stripe-override" colspan="5">Waiting List <small><%= "(#{@waitings&.size})" %> </small></th>
+      </tr>
+      <% @waitings.each do |waiting| %>
+        <tr class="">
+          <td><%= waiting.purchase.client.name %></td>
+          <td><%= waiting.purchase.client.phone || waiting.purchase.client.whatsapp %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

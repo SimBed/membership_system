@@ -5,9 +5,9 @@
         <th class="stripe-override" colspan="5">Attendances <small><%= "(#{@physical_attendances&.size || 0})" %> </small></th>
       </tr>
       <% @physical_attendances.each do |attendance| %>
-        <tr class="less-padding">
-          <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small", data: { turbo: false } %></td>
-          <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small", data: { turbo: false } %></td>
+        <tr class="">
+          <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
+          <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
           <% if view_financials %>
             <td class="adj-line-height"><%= number_with_delimiter(attendance.revenue) %></td>
           <% end %>
@@ -22,11 +22,11 @@
           <th class="stripe-override" colspan="5">No-amnesties <small><%= "(#{@ethereal_attendances_no_amnesty&.size || 0})" %> </small></th>
         </tr>
         <% @ethereal_attendances_no_amnesty.each do |attendance| %>
-          <tr class="less-padding">
-            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
-            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
+          <tr class="">
+            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></td>
+            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button" %></td>
             <% if view_financials %>
-              <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
+              <td class=""><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
             <% unless logged_in_as?('instructor') %>
@@ -41,11 +41,11 @@
           <th class="stripe-override" colspan="5">Amnesties <small><%= "(#{@ethereal_attendances_amnesty&.size || 0})" %> </small></th>
         </tr>
         <% @ethereal_attendances_amnesty.each do |attendance| %>
-          <tr class="less-padding">
-            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button extra_small" %></td>
-            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button extra_small" %></td>
+          <tr class="">
+            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></td>
+            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button" %></td>
             <% if view_financials %>
-              <td class="extra_small"><%= number_with_delimiter(attendance.revenue) %></td>
+              <td class=""><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
             <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
             <% unless logged_in_as?('instructor') %>
