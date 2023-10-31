@@ -12,7 +12,7 @@ class Whatsapp
     # the arrays returned are for the flash
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
     # commented out this line for client_waiting_list test to pass. Needs reformatting.   
-    return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
+    # return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @admin_triggered
@@ -66,7 +66,7 @@ class Whatsapp
     "\nYou have received this message because you are on the waiting list for this class." +  
     "\nBook now, but be quick! Spots are available on a 1st come basis." +
     "\n \nPlease do not reply to this message. Contact The Space's main number if you have any questions."
-    end
+  end
     
   # space between '\n' and '\nPlease' is required for conformity to nuance of template. Fails to deliver without.
   def body_new_purchase
@@ -78,10 +78,10 @@ class Whatsapp
 
   def body_package_expiry
     "Hi #{@variable_contents[:first_name]}" +
-      "\nYour Package at The Space expires on #{@variable_contents[:day]}." +
-      "\nRenew today & save #{@variable_contents[:discount]}% on your next Package!. After expiry, full price rates will apply." +
+      "\nYour Group Class Package at The Space expires on #{@variable_contents[:day]}." +
+      "\nRenew today & save #{@variable_contents[:discount]}% on your next Group Class Package!. After expiry, full price rates will apply." +
       "\n \nLogin to your account to renew or contact us to discuss more options." +
-      "\n \nPlease do not reply to this message. Contact The Space directly for renewal."
+      "\n \nPlease do not reply to this message. Contact The Space's front desk number if you have any questions."
   end
 
   def body_trial_expiry
