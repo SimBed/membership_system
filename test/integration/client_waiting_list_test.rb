@@ -133,7 +133,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     
     log_in_as(@account_client)
     follow_redirect!
-    File.write("test_output.html", response.body)
+    # File.write("test_output.html", response.body)
     assert_template 'client/clients/book'
     assert_select "a:match('href', ?)", /#{admin_attendances_path}\//, count: 1 
     assert_select "img:match('src', ?)", %r{.*assets/add.*}, count: 3 # 22/4, 22/4, 24/4

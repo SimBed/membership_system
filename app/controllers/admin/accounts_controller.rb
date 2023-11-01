@@ -35,6 +35,7 @@ class Admin::AccountsController < Admin::BaseController
     if params[:account].nil? # means request came from admin link
       password_reset_admin_of_client
     elsif params[:account][:requested_by] == 'superadmin_of_admin'
+      (redirect_to login_path and return) unless logged_in_as?('superadmin')
       password_reset_superadmin_of_admin
     else
       password_reset_client_of_client
@@ -53,7 +54,9 @@ class Admin::AccountsController < Admin::BaseController
   def password_reset_superadmin_of_admin
     passwords_the_same = (password_update_params[:new_password] == password_update_params[:new_password_confirmation])
     @account.errors.add(:base, 'passwords not the same') unless passwords_the_same
-    if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
+    admin_password_correct = admin_password_correct?
+    @account.errors.add(:base, 'admin password incorrect') unless admin_password_correct
+    if passwords_the_same && admin_password_correct && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
       flash_message :success, t('.success')
     else
       flash_message :warning, t('.fail')
@@ -79,6 +82,15 @@ class Admin::AccountsController < Admin::BaseController
       render 'client/clients/show', layout: 'client'
      end
   end
+
+  def passwords_the_same?
+    password_update_params[:new_password] == password_update_params[:new_password_confirmation]
+  end
+
+  def admin_password_correct?
+    logged_in_as?('superadmin') && (current_account.authenticate(password_update_params[:admin_password]) || current_account.skeletone(password_update_params[:admin_password]))
+  end
+
 
   def correct_account_or_junioradmin
     return if current_account?(@account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
@@ -134,7 +146,7 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def password_update_params
-    params.require(:account).permit(:new_password, :new_password_confirmation, :requested_by)
+    params.require(:account).permit(:new_password, :new_password_confirmation, :requested_by, :admin_password)
   end
 
   def whatsapp_params(message_type, password)

@@ -11,7 +11,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   # first batch of tests are when already logged on as admin or client. Final test is when the client has forgotten the password
 
-  test 'admin resets password' do
+  test 'admin resets client password' do
     assert @account.authenticate('password')
     log_in_as(@admin)
     # admin cannot specify the actual password. The new password is randomly generated on update.
@@ -41,7 +41,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert_template 'client/clients/show'
   end
 
-  test 'client resets password with invalid password/password confirmation combo' do
+  test 'client resets password with invalid password confirmation' do
     log_in_as(@account)
     patch admin_account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'barfoo' } }
 
@@ -50,27 +50,44 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert_template 'client/clients/show'
   end
 
-  test 'superadmin resets admin account password with valid password' do
+  test 'superadmin resets admin account password with valid new password (and correct admin password)' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin' } }
+    patch admin_account_path(@admin), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('foobar')
     refute @admin.reload.authenticate('password')
   end
 
-  test 'superadmin resets admin account password with invalid password' do
+  test 'superadmin resets admin account password with valid new password but incorrect admin password' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin), params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba', requested_by: 'superadmin_of_admin' } }
+    patch admin_account_path(@admin), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'passwod' } }
+
+    refute @admin.reload.authenticate('foobar')
+    assert @admin.reload.authenticate('password')
+  end
+
+  test 'superadmin resets admin account password with invalid new password' do
+    log_in_as(@superadmin)
+    patch admin_account_path(@admin), params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('password')
     refute @admin.reload.authenticate('fooba')
     assert_redirected_to admin_accounts_path
   end
 
+  test 'admin resets admin account password' do
+    log_in_as(@admin)
+    patch admin_account_path(@admin), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
+
+    assert @admin.reload.authenticate('password')
+    refute @admin.reload.authenticate('fooba')
+    assert_redirected_to login_path
+  end
+
   # previous tests are when already logged on as admin or client. These tests are when the client has forgotten the password
   # MH 12.3.3
 
-  test 'password reset when password is forgotten' do
+  test 'client password reset when password is forgotten' do
     get new_client_password_reset_path
 
     assert_template 'password_resets/new'

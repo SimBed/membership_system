@@ -12,7 +12,7 @@ class Whatsapp
     # the arrays returned are for the flash
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
     # commented out this line for client_waiting_list test to pass. Needs reformatting.   
-    # return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
+    return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
     return [nil] if @message_type == 'early_cancels_no_penalty'
 
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @admin_triggered
@@ -31,6 +31,21 @@ class Whatsapp
       from: "whatsapp:#{@from_number}",
       to: "whatsapp:#{@to_number}",
       body:
+    )
+  end
+
+  # https://www.twilio.com/docs/content/whatsappauthentication
+  def send_password
+    twilio_initialise
+    client = Twilio::REST::Client.new(@account_sid, @auth_token)
+    client.messages.create(
+      from: "whatsapp:#{@from_number}",
+      to: "whatsapp:#{@to_number}",      
+      content_sid: 'HXdfb9c88a6cbad1bad04a1bc458a34dc0',
+      content_variables: {
+        '1' => '123456'
+      }.to_json,
+      messaging_service_sid: 'MGeba3973c4b868c0b4716f1874bce6969'
     )
   end
 
