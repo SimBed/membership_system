@@ -18,6 +18,8 @@ gem 'pagy'
 gem 'net-smtp', require: false
 gem 'net-imap', require: false
 gem 'net-pop', require: false
+# for fater pagy performance https://ddnexus.github.io/pagy/docs/api/javascript/setup/
+gem "oj", "~> 3.16"
 gem 'pg', '~> 1.1'
 gem 'phony_rails'
 gem 'puma', '~> 5.0'
@@ -68,3 +70,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"
+
+
