@@ -13,7 +13,7 @@ class Wkclass < ApplicationRecord
                                   }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
   has_many :purchases, through: :attendances
   has_many :clients, through: :purchases
-  has_many :waitings
+  has_many :waitings, dependent: :destroy
   belongs_to :instructor
   belongs_to :workout
   belongs_to :instructor_rate
