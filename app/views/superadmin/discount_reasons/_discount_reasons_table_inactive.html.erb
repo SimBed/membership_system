@@ -1,0 +1,22 @@
+<div id="discount_reasons_table" class="container px-1 mb-5 overflow-auto">
+  <table class="table table-secondary table-striped caption-top table-hover">
+  <caption>not current</caption>    
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Rationale</th>
+        <th>Student</th>
+        <th>Friends & Family</th>
+        <th>First Package</th>
+        <th>Renewal Pre Package Expiry</th>
+        <th>Renewal Post Package Expiry</th>
+        <th>Renewal Pre Trial Expiry</th>
+        <th>Renewal Post Trial Expiry</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'discount_reason', collection: @discount_reasons_not_current, as: :d %>
+    </tbody>
+  </table>
+</div>

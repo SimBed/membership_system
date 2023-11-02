@@ -2,7 +2,8 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
   before_action :set_discount_reason, only: %i[ show edit update destroy ]
 
   def index
-    @discount_reasons = DiscountReason.order_by_rationale
+    @discount_reasons_current = DiscountReason.current.order_by_rationale
+    @discount_reasons_not_current = DiscountReason.not_current.order_by_rationale
     @unused_ids = DiscountReason.unused.map(&:id)
   end
 
@@ -46,7 +47,7 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
 
   def prepare_items_for_dropdowns
     # @discount_reason_names = Rails.application.config_for(:constants)['discount_names']
-    @discount_reason_names = Setting.discount_names
+    @discount_reason_names = Setting.discount_reason_names
     @discount_reason_rationales = Rails.application.config_for(:constants)['discount_rationales']
     @discount_reason_applications = Rails.application.config_for(:constants)['discount_applications']
   end
@@ -62,7 +63,7 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
     (applies_to_param = { params['discount_reason']['applies_to'] => true }) if DiscountReason.column_names.any? params['discount_reason']['applies_to']
     params.require(:discount_reason)
           .permit(:name, :rationale, :student, :friends_and_family, :first_package, :renewal_pre_package_expiry,
-            :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry)
+            :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry, :current)
           .merge applies_to_param
   end
 end

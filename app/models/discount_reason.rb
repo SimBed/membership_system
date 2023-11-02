@@ -8,6 +8,8 @@ class DiscountReason < ApplicationRecord
   scope :order_by_rationale, -> { order(:rationale, :name) }
   #  don't want to be able to delete the nil discount_reason from the index of discount_reasons. This is not explicitly associated with any purchase but (the discount with the none discount_reason) is selected in the form to indicate no discount applies
   scope :unused, -> { left_joins(discounts: [:purchases]).where(purchases: { id: nil }).where.not(rationale: 'Base') }
+  scope :current, -> { where(current: true) }
+  scope :not_current, -> { where.not(current: true) }
 
   private
 

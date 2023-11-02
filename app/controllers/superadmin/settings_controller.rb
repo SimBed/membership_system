@@ -20,6 +20,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
       Setting.send("#{key}=", params[:setting][key].strip) unless params[:setting][key].nil?
     end
     flash[:success] = 'Setting was successfully updated.'
+    # NOTE: in routes.rb singular 'resource :settings' [not 'resources: settings'] so superadmin_settings_path is handled by the show method
     redirect_to superadmin_settings_path
   end
 

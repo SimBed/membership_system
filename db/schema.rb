@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_20_101513) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_02_124156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -143,6 +143,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_20_101513) do
     t.boolean "renewal_post_trial_expiry", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "current", default: true
+    t.index ["current"], name: "index_discount_reasons_on_current"
     t.index ["first_package"], name: "index_discount_reasons_on_first_package"
     t.index ["friends_and_family"], name: "index_discount_reasons_on_friends_and_family"
     t.index ["name"], name: "index_discount_reasons_on_name"

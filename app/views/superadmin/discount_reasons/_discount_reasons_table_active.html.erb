@@ -1,5 +1,6 @@
 <div id="discount_reasons_table" class="container px-1 mb-5 overflow-auto">
   <table class="table table-secondary table-striped caption-top table-hover">
+    <caption>current</caption>
     <thead>
       <tr>
         <th>Name</th>
@@ -15,7 +16,7 @@
       </tr>
     </thead>
     <tbody>
-      <%= render partial: 'discount_reason', collection: @discount_reasons, as: :d %>
+      <%= render partial: 'discount_reason', collection: @discount_reasons_current, as: :d %>
     </tbody>
   </table>
 </div>

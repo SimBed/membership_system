@@ -1,0 +1,12 @@
+<section class="mb-5">   
+  <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Discount Reason Names</h5>
+  <div class="card bg-opaque-white">
+    <div class="card-body bg-light">               
+
+      <div class="form-group mb-2">
+        <%= f.text_area :discount_reason_names, value: Setting.discount_reason_names.join("\n"), class: "form-control", style: "height: 15rem;" %>
+      </div>         
+
+    </div>
+  </div>
+</section>  
