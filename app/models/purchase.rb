@@ -399,7 +399,7 @@ class Purchase < ApplicationRecord
 
   def sunset_action
     return :sunrise if expiry_cause == 'sunset'
-    return :sunset if sun_has_set?
+    return :sunset if sun_has_set? && !expired?
 
     nil
   end
