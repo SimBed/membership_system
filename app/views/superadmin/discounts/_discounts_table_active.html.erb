@@ -9,6 +9,7 @@
       <th>Pt</th>
       <th>Online</th>
       <th>Aggregate</th>
+      <th>Count</th>
       <th>Start date</th>
       <th>End date</th>
       <th colspan="3"></th>
@@ -18,7 +19,7 @@
     <% @discount_type_hash[:current].each_key do |rationale| %>
       <% unless @discount_type_hash[:current][rationale].blank? %>
         <tr>
-          <%= tag.td rationale, colspan:"12", class: %w(fw-bolder text-uppercase text-light) + [rationale == :oneoff ? 'discount-warning' : 'bg-secondary'] %>
+          <%= tag.td rationale, colspan:"13", class: %w(fw-bolder text-uppercase text-light) + [rationale == :oneoff ? 'discount-warning' : 'bg-secondary'] %>
         </tr>
         <% @discount_type_hash[:current][rationale].uniq.each do |discount| %>
           <tr>
@@ -29,6 +30,7 @@
             <td><%= discount.pt? ? raw("&check;") : "-" %></td>
             <td><%= discount.online? ? raw("&check;") : "-" %></td>
             <td><%= discount.aggregatable? ? raw("&check;") : "-" %></td>
+            <td><%= discount.da_count %></td>
             <td><%= discount.start_date.strftime '%d %b %Y' %></td>
             <td><%= (discount.end_date - Date.today > 3650) ? raw("&infin;") : (discount.end_date.strftime '%d %b %Y') %></td>
             <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless discount.current?)].compact.join(' ')), superadmin_discount_path(discount, current: !discount.current?), data: {turbo_method: :patch} %></td>                    

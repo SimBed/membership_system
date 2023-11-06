@@ -2,22 +2,41 @@ class Superadmin::DiscountsController < Superadmin::BaseController
   before_action :set_discount, only: %i[ show edit update destroy ]
 
   def index
+    discounts_counted = Discount.counted
+    discounts_current = discounts_counted.current(Time.zone.now.to_date)
+    discounts_not_current = discounts_counted.not_current(Time.zone.now.to_date)
     @discount_type_hash = { current: {
-                              base: Discount.current(Time.zone.now.to_date).by_rationale('Base'),
-                              commercial: Discount.current(Time.zone.now.to_date).by_rationale('Commercial'),
-                              discretion: Discount.current(Time.zone.now.to_date).by_rationale('Discretion'),
-                              oneoff: Discount.current(Time.zone.now.to_date).by_rationale('Oneoff'),
-                              status: Discount.current(Time.zone.now.to_date).by_rationale('Status'),
-                              renewal: Discount.current(Time.zone.now.to_date).by_rationale('Renewal')
+                              base: discounts_current.by_rationale('Base').unscope(:order),
+                              commercial: discounts_current.by_rationale('Commercial').unscope(:order),
+                              discretion: discounts_current.by_rationale('Discretion').unscope(:order),
+                              oneoff: discounts_current.by_rationale('Oneoff').unscope(:order),
+                              status: discounts_current.by_rationale('Status').unscope(:order),
+                              renewal: discounts_current.by_rationale('Renewal').unscope(:order)
                             },
                             not_current: {
-                              base: Discount.not_current(Time.zone.now.to_date).by_rationale('Base'),
-                              commercial: Discount.not_current(Time.zone.now.to_date).by_rationale('Commercial'),
-                              discretion: Discount.not_current(Time.zone.now.to_date).by_rationale('Discretion'),
-                              oneoff: Discount.not_current(Time.zone.now.to_date).by_rationale('Oneoff'),
-                              status: Discount.not_current(Time.zone.now.to_date).by_rationale('Status'),
-                              renewal: Discount.not_current(Time.zone.now.to_date).by_rationale('Renewal')
+                              base: discounts_not_current.by_rationale('Base').unscope(:order),
+                              commercial: discounts_not_current.by_rationale('Commercial').unscope(:order),
+                              discretion: discounts_not_current.by_rationale('Discretion').unscope(:order),
+                              oneoff: discounts_not_current.by_rationale('Oneoff').unscope(:order),
+                              status: discounts_not_current.by_rationale('Status').unscope(:order),
+                              renewal: discounts_not_current.by_rationale('Renewal').unscope(:order)
                             } }
+    # @discount_type_hash = { current: {
+    #                           base: Discount.current(Time.zone.now.to_date).by_rationale('Base'),
+    #                           commercial: Discount.current(Time.zone.now.to_date).by_rationale('Commercial'),
+    #                           discretion: Discount.current(Time.zone.now.to_date).by_rationale('Discretion'),
+    #                           oneoff: Discount.current(Time.zone.now.to_date).by_rationale('Oneoff'),
+    #                           status: Discount.current(Time.zone.now.to_date).by_rationale('Status'),
+    #                           renewal: Discount.current(Time.zone.now.to_date).by_rationale('Renewal')
+    #                         },
+    #                         not_current: {
+    #                           base: Discount.not_current(Time.zone.now.to_date).by_rationale('Base'),
+    #                           commercial: Discount.not_current(Time.zone.now.to_date).by_rationale('Commercial'),
+    #                           discretion: Discount.not_current(Time.zone.now.to_date).by_rationale('Discretion'),
+    #                           oneoff: Discount.not_current(Time.zone.now.to_date).by_rationale('Oneoff'),
+    #                           status: Discount.not_current(Time.zone.now.to_date).by_rationale('Status'),
+    #                           renewal: Discount.not_current(Time.zone.now.to_date).by_rationale('Renewal')
+    #                         } }
   end
 
   def new
