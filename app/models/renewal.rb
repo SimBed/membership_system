@@ -29,10 +29,16 @@ class Renewal
     #   oneoff: Discount.with_rationale_at('Oneoff', Time.zone.now)&.first }
   end
 
+  def oneoff_discount?
+    return true unless discount_hash[:oneoff].nil?
+
+    false
+  end
+
   def new_client?
     return true if @groupex_package_purchases.empty?
 
-    return false
+    false
   end
 
   def expired_trial?
@@ -50,25 +56,22 @@ class Renewal
   def ongoing_trial?
     return true if from_trial? && package_ongoing?
 
-    return false
+    false
   end
 
   def renewal_offer
-    # return "renewal_posttrial_expiry" if new_client? #need a new client rate setting
     return 'first_package' if new_client?
     return 'renewal_post_trial_expiry' if expired_trial?
-    # return "base" if expired_package?
     return 'renewal_post_package_expiry' if expired_package?
     return 'renewal_pre_trial_expiry' if ongoing_trial?
 
-    # "renewal_pre_expiry"  # ongoing package
     'renewal_pre_package_expiry' # ongoing package
   end
 
   def offer_online_discount?
     return false if discount_hash.values.map(&:nil?).all?
 
-		  true
+		true
 	end
 
   def price(product)

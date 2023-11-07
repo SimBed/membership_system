@@ -104,12 +104,14 @@ module Client::ClientsHelper
     end
   end
 
-  def shop_discount_statement(ongoing, trial)
+  def shop_discount_statement(ongoing, trial, oneoff)
+    return 'Special Discount Applies' if oneoff
     return "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if ongoing.nil?
     return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
     return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
 
-    "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" # if !ongoing && trial
+    "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
+
   end
 
   def visit_shop_statement(rider)
