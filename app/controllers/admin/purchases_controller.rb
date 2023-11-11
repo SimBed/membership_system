@@ -447,7 +447,7 @@ class Admin::PurchasesController < Admin::BaseController
   def handle_show_response
     respond_to do |format|
       format.html
-      # format.turbo_stream
+      format.turbo_stream
     end    
   end  
 end

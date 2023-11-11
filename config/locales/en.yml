@@ -50,6 +50,7 @@ en:
     freezes:
       create:
         success: Freeze was successfully added
+        booking_cancelled: A booking during the freeze has been cancelled 
       update:
         success: Freeze was successfully updated
       destroy:
