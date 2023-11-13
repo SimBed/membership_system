@@ -1,2 +1,4 @@
-<h3>New adjustment</h3>
-<%= render 'form', adjustment: @adjustment %>
+<h4>New Adjustment</h4>
+<%= turbo_frame_tag @adjustment do %>
+  <%= render 'form', adjustment: @adjustment %>
+<% end %>

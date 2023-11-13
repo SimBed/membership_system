@@ -57,7 +57,7 @@ class Admin::AccountsController < Admin::BaseController
     admin_password_correct = admin_password_correct?
     @account.errors.add(:base, 'admin password incorrect') unless admin_password_correct
     if passwords_the_same && admin_password_correct && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
-      flash_message :success, t('.success')
+      flash_message :success, t('.password_success')
     else
       flash_message :warning, t('.fail')
      end

@@ -7,6 +7,10 @@ class Admin::InstructorsController < Admin::BaseController
 
   def index
     @instructors = Instructor.order_by_current.order_by_name
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show

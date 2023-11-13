@@ -1,0 +1,4 @@
+<%= turbo_stream.update "instructors" do %>
+  <%= render partial: "instructors_table" %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

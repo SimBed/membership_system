@@ -24,6 +24,7 @@ en:
       update:
         success: Your password has been changed
         fail: Update failed. Passwords either don't match or too short (min 6 characters)
+        password_success: The password has been changed        
       show:
         warning: Forbidden 
     adjustments:
