@@ -6,7 +6,7 @@
       <%= render partial: 'class_attendance_table' %>
       <%= render partial: 'waiting_list' unless @waitings.empty? %>
     <% end %>
-    <% unless logged_in_as?('instructor') %>
+    <% if @junioradmin_plus %>
       <%= render partial: 'repeat_form' if @wkclass.attendances&.first&.purchase&.pt? %>
     <% end %>
   </div>

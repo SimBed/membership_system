@@ -6,8 +6,13 @@
       </tr>
       <% @physical_attendances.each do |attendance| %>
         <tr class="">
-          <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
-          <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
+          <% if @junioradmin_plus %>
+            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
+            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
+          <% else %>
+            <td><%= attendance.client.name %></td>
+            <td><%= attendance.product.name %></td>
+          <% end %>
           <% if view_financials %>
             <td class="adj-line-height"><%= number_with_delimiter(attendance.revenue) %></td>
           <% end %>
@@ -23,8 +28,13 @@
         </tr>
         <% @ethereal_attendances_no_amnesty.each do |attendance| %>
           <tr class="">
-            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
-            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
+            <% if @junioradmin_plus %>
+              <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
+              <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
+            <% else %>
+              <td><%= attendance.client.name %></td>
+              <td><%= attendance.product.name %></td>
+            <% end %>
             <% if view_financials %>
               <td class=""><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>
@@ -42,8 +52,13 @@
         </tr>
         <% @ethereal_attendances_amnesty.each do |attendance| %>
           <tr class="">
-            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
-            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
+            <% if @junioradmin_plus %>
+              <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
+              <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
+            <% else %>
+              <td><%= attendance.client.name %></td>
+              <td><%= attendance.product.name %></td>
+            <% end %>
             <% if view_financials %>
               <td class=""><%= number_with_delimiter(attendance.revenue) %></td>
             <% end %>

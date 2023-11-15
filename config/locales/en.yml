@@ -35,6 +35,8 @@ en:
       destroy:
         success: Adjustment was successfully deleted
     clients:
+      index:
+        password_reset: This client's password will be reset. Are you sure?
       create:
         success: "%{name} was successfully added"
       update:
