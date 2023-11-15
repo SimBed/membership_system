@@ -19,7 +19,7 @@
   <td class="nomobile">
     <%= render partial: 'whatsapp_group', locals: {client: client} %>
   </td>
-  <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(client), data: { turbo: false } %></td>
+  <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(client), data: { turbo_frame: 'client_edit' } %></td>
   <% if @admin_plus && client.deletable? %> 
     <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_client_path(client), data: { "turbo-method": :delete, turbo_confirm: 'Client has no purchases so can be deleted. But are you sure?' } %></td>
       <% else %>

@@ -13,17 +13,9 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     @wkclass = wkclasses(:wkclass_mat)
   end
 
+  # no new method for attendances controller (add directly from wkclass/:id)
   # no edit method for attendances controller
   # no show method for attendances controller
-
-  test 'should redirect new when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
-      log_in_as(account_holder)
-      get new_admin_attendance_path
-
-      assert_redirected_to login_path
-    end
-  end
 
   test 'should redirect create when not logged in as correct client, junior admin or more senior' do
     [nil, @account_client2, @account_partner1].each do |account_holder|

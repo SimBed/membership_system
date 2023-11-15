@@ -4,7 +4,7 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :fitternity?
   before_action :set_attendance, only: [:update, :destroy]
   before_action :junioradmin_account, only: [:destroy]
-  before_action :junioradmin_or_instructor_account, only: [:new]
+  # before_action :junioradmin_or_instructor_account, only: [:new]
   before_action :correct_account_or_junioradmin_or_instructor_account, only: [:create, :update]
   before_action :set_booking_day, only: [:create, :update, :destroy], if: -> { client? }
   before_action :provisionally_expired, only: [:create, :update], unless: -> { fitternity? }
@@ -26,13 +26,13 @@ class Admin::AttendancesController < Admin::BaseController
     Purchase.default_timezone = :local
   end
 
-  def new
-    session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
-    @attendance = Attendance.new
-    @wkclass = Wkclass.find(session[:wkclass_id])
-    # [["Aakash Shah (Fitternity)", "Fitternity 271"],...]
-    set_new_attendance_dropdown_options
-  end
+  # def new
+  #   session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
+  #   @attendance = Attendance.new
+  #   @wkclass = Wkclass.find(session[:wkclass_id])
+  #   # [["Aakash Shah (Fitternity)", "Fitternity 271"],...]
+  #   set_new_attendance_dropdown_options
+  # end
 
   def create
     handle_fitternity and return if fitternity?

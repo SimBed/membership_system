@@ -60,7 +60,7 @@ Rails.application.routes.draw do
     resources :timetables
     resources :accounts, only: [:index, :create, :update]
     resources :adjustments, only: [:new, :edit, :create, :update, :destroy]
-    resources :attendances, only: [ :new, :create, :update, :destroy]
+    resources :attendances, only: [ :create, :update, :destroy]
     resources :clients
     resources :fitternities
     resources :freezes, only: [:new, :edit, :create, :update, :destroy]

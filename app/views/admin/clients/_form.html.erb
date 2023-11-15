@@ -1,4 +1,5 @@
-<%= form_with(model: [:admin, client], data: {turbo: false}) do |form| %>
+<%= form_with(model: [:admin, client], class: 'admin_form pt-4') do |form| %>
+<%#= form_with(model: [:admin, client], data: {turbo: false}) do |form| %>
   <% if client.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>
@@ -76,4 +77,8 @@
   <div class="actions">
     <%= form.submit @client.new_record? ? 'add client' : 'update client' %>
   </div>
+
+  <div class="cancel">
+    <%= link_to image_tag('delete.png', class: "table_icon"), admin_clients_path %>
+  </div>  
 <% end %>

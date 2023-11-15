@@ -74,8 +74,8 @@ class Admin::ClientsController < Admin::BaseController
           format.turbo_stream { flash_message :success, t('.success', name: @client.name), true }
         end
       else
-        redirect_to admin_client_path(@client)
-        # redirect_to admin_clients_path
+        # redirect_to admin_client_path(@client)
+        redirect_to admin_clients_path
         flash_message :success, t('.success', name: @client.name)
       end
     else
