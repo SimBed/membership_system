@@ -202,4 +202,39 @@ div.my-booking {
   }
 }
 
+  div.admin-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 auto;
+    .row  {
+      background-color: #e9e9e9;
+      margin: 0;
+    }
+    .row:nth-child(even) {
+      background-color: #f9f9f9;         
+    }
+
+    .column {
+      flex: 0.25;
+      padding: 10px;
+      border-right: 1px solid #ccc;
+      transition: background-color 0.3s ease;
+      overflow:auto;      
+      &:last-child {
+        border-right: none;
+      }
+    
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+    .col-2x {
+      flex: 2;
+    }
+  }
+
+
+
 

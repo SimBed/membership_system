@@ -1,0 +1,8 @@
+<%= turbo_stream.update "forgot-password-#{@account_holder.id}" do %>
+  <%= render partial: "forgot-password", locals: { client: @account_holder } %>
+<% end %>
+<turbo-stream action="prepend" target="flash">
+  <template>
+    <%= render_flash %> 
+  </template>
+</turbo-stream>

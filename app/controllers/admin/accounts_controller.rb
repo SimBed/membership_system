@@ -47,8 +47,11 @@ class Admin::AccountsController < Admin::BaseController
   def password_reset_admin_of_client
     password = AccountCreator.password_wizard(Setting.password_length)
     @account.update(password: password, password_confirmation: password)
-    flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging)
-    redirect_back fallback_location: admin_clients_path
+    flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging, true)
+    respond_to do |format|
+      format.html { redirect_back fallback_location: admin_clients_path }
+      format.turbo_stream
+    end
   end
 
   def password_reset_superadmin_of_admin

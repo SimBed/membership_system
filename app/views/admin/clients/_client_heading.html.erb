@@ -1,20 +1,7 @@
 <% admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
 <h4>
   <%= @client.name %>
-  <%= image_tag(status_icon(@client)) unless status_icon(@client).nil? %>
-  <%= link_to image_tag('insta.png', class: ["table_icon",("instawaiver" unless @client.instawaiver?)].compact.join(' ')), admin_client_path(@client, instawaiver: !@client.instawaiver?), method: :patch %>
-  <%#= image_tag('waiver.png', class: ["table_icon",("waiver" unless @client.waiver?)].compact.join(' ')) %>
-  <%= link_to image_tag('waiver.png', class: ["table_icon",("waiver" unless @client.waiver?)].compact.join(' ')), admin_client_path(@client, waiver: !@client.waiver?), method: :patch %>  
-  <%#= image_tag('eff.png', class: ["table_icon",("fitternity" unless @client.fitternity?)].compact.join(' ')) %>
-  <% if admin_plus %>
-    <td>
-      <% if @client.account.nil? %>
-        <%= link_to image_tag('add.png', class: "table_icon"), admin_accounts_path(email: @client.email, id: @client.id, ac_type: 'client'), data: { turbo_method: :post, confirm: 'An account for this client will be created. Are you sure?' }  %>
-      <% else %>
-        <%= link_to image_tag('forgot-password.png', class: "table_icon"), admin_account_path(@client.account, requested_by: 'admin'), method: :patch, data: { confirm: "This client's password will be reset. Are you sure?" } %>
-      <% end %>
-    </td>
-  <% end %>  
+
   <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(@client) %>
   <!--form action=<%#= "/admin/clients/#{params[:id]}" %> method="GET" >
     <select name="purchaseid" onchange="this.form.submit()" class= "sort">
@@ -22,3 +9,20 @@
     </select>
   </form-->
 </h4>
+<div>
+  <%= image_tag(status_icon(@client)) unless status_icon(@client).nil? %>
+  <turbo-frame id="insta-<%= @client.id  %>">    
+    <%= render partial: 'insta', locals: {client: @client} %>
+  </turbo-frame> 
+  <turbo-frame id="waiver-<%= @client.id  %>">    
+    <%= render partial: 'waiver', locals: {client: @client} %>
+  </turbo-frame>
+  <turbo-frame id="whatsapp-group-<%= @client.id  %>">    
+    <%= render partial: 'whatsapp_group', locals: {client: @client} %>
+  </turbo-frame>
+  <% if admin_plus %>
+    <turbo-frame id="forgot-password-<%= @client.id  %>">    
+      <%= render partial: 'forgot-password', locals: {client: @client} %>
+    </turbo-frame> 
+  <% end %>    
+</div>

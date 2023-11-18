@@ -68,10 +68,14 @@ class Admin::ClientsController < Admin::BaseController
     if @client.update(client_params)
       # @client.account.update(email: @client.email) if update_account_email
       @client.account.update_column(:email, @client.email) if update_account_email
-      if client_params[:email].nil? # means not the update form, but a link to update waiver or instagram
+      if client_params[:email].nil? # means not the update form, but a link to update waiver or instagram\
+        # if params[:link_from_show] == 'true'
+        #   redirect_to admin_client_path(@client)
+        # else
         respond_to do |format|
           format.html { redirect_back fallback_location: admin_clients_path, success: t('.success', name: @client.name) }
           format.turbo_stream { flash_message :success, t('.success', name: @client.name), true }
+          # end
         end
       else
         # redirect_to admin_client_path(@client)

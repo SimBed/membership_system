@@ -1,4 +1,4 @@
-<%= turbo_frame_tag 'client_edit' do %>
+<%= turbo_frame_tag dom_id(@client) do %>
   <div class="container mb-4">  
     <%= render 'form', client: @client, class: 'mb-4' %>
   </div>

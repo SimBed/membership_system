@@ -8,7 +8,7 @@
 </div>
 <%= turbo_frame_tag 'clients-and-filter' do %>
   <%= render partial: 'filter_form' %>
-  <%= turbo_frame_tag 'client_edit' %>    
+  <%#= turbo_frame_tag 'client_edit' %>    
   <% if logged_in_as?('superadmin') %>
     <div class="container px-1 mb-2">  
       <%= render partial: 'download' %>
