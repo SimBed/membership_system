@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, freeze], class: 'admin_form') do |form| %>
+<%= form_with(model: [:admin, freeze], class: 'admin_form mb-2') do |form| %>
   <% purchase = params[:purchase] || @freeze.purchase.id %>
   <%= turbo_frame_tag 'errors' do %>  
     <% if freeze.errors.any? %>

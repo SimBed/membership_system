@@ -1,4 +1,6 @@
-<div id="client-heading" class="text-center mb-3">
+<%= turbo_frame_tag 'client-heading' do %>
   <%= render partial: 'admin/purchases/show_partials/client_heading' %>
-</div>
-<%= render 'purchase_table' %>
+<% end %>
+<%= turbo_frame_tag 'purchase-table' do %>
+  <%= render 'purchase_table' %>
+<% end %>

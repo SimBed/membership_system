@@ -228,6 +228,7 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def already_had_trial?
+    return if purchase_params[:client_id].blank? || purchase_params[:product_id].blank? #if either client or purchase are blank this will be picked up in the model validation
     @client = Client.find(purchase_params[:client_id])
     @product = Product.find(purchase_params[:product_id])
     if new_purchase?
@@ -247,6 +248,7 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def changing_main_purchase_product?
+    return if params[:purchase][:product_id].blank?
     original_purchase_has_rider = @purchase.rider_purchase.present?
     new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
     return if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)

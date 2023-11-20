@@ -1,17 +1,19 @@
-<h4>
-  <% if logged_in_as?('admin', 'superadmin') %>
-    <%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "like_button" %>
-  <% else %>
-    <%=@purchase.client.name %>
-  <% end %>
-</h4>
-<h7 class="bolditalics mb-0">
-  <% if logged_in_as?('admin', 'superadmin') %>
-    <%= link_to @purchase.formal_name, admin_product_path(@purchase.product), class: "like_button" %>
-  <% else %>
-    <%=@purchase.formal_name %>
-  <% end %>
-  <% if @frozen_now %>
-    <%= image_tag('cold.png')%>
-  <% end %>
-</h7>
+<div id="client-heading" class="text-center mb-3">
+  <h4>
+    <% if logged_in_as?('admin', 'superadmin') %>
+      <%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "like_button", data: {turbo: false} %>
+    <% else %>
+      <%=@purchase.client.name %>
+    <% end %>
+  </h4>
+  <h7 class="bolditalics mb-0">
+    <% if logged_in_as?('admin', 'superadmin') %>
+      <%= link_to @purchase.formal_name, admin_product_path(@purchase.product), class: "like_button", data: {turbo: false} %>
+    <% else %>
+      <%=@purchase.formal_name %>
+    <% end %>
+    <% if @frozen_now %>
+      <%= image_tag('cold.png')%>
+    <% end %>
+  </h7>
+</div>
