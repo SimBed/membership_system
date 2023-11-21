@@ -1,7 +1,7 @@
 <div id="client-heading" class="text-center mb-3">
   <h4>
     <% if logged_in_as?('admin', 'superadmin') %>
-      <%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "like_button", data: {turbo: false} %>
+      <%= link_to @purchase.client.name, admin_client_path(@purchase.client), class: "like_button", linked_from: "linked_from", data: {turbo: false} %>
     <% else %>
       <%=@purchase.client.name %>
     <% end %>

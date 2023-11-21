@@ -28,9 +28,11 @@
       <%= render partial: 'expired_purchases' %>
     </div>
 
-    <div class="cancel">
-      <%= link_to image_tag('delete.png', class: "table_icon"), admin_clients_path %>
-    </div>   
+    <% if @cancel_button %>
+      <div class="cancel">
+        <%= link_to image_tag('delete.png', class: "table_icon"), admin_clients_path %>
+      </div>
+    <% end %>
   </div>
 <% end %>
 

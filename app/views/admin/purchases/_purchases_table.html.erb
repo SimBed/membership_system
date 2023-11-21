@@ -12,21 +12,21 @@
     </div>   
   </div>
 
-  <table class="table table-secondary table-striped caption-top">
+  <div class="container px-0 mb-5">
     <% if @admin_plus %>
-      <caption class="px-1"><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></caption>
+      <div class="mt-2 px-1"><%= rupees(@purchases_all_pages_sum) %><small> (all pages)</small></div>
     <% end %>
-    <thead>
-      <tr class="extra_small">
-        <th scope="col">Client</th>
-        <th scope="col">Purchase Date</th>
-        <th scope="col" class="nomobile">Start to Expiry</th>
-        <th scope="col" class="nomobile"></th>
-        <th scope="col" class="nomobile"></th>
-      </tr>
-    </thead>
-    <tbody id="purchases">
+    <div class="admin-table mt-2">
+      <div class="row fw-bolder">
+        <div class="column col-2x">Client</div>
+        <div class="column col-3x">Purchase Date</div>
+        <div class="column col-2x nomobile">Start to Expiry</div>
+        <div class="column nomobile"></div>
+        <div class="column nomobile"></div>
+      </div>
+    </div>
+    <div class="admin-table">
       <%= render @purchases %>
-    </tbody>
-  </table>
-</div>  
+    </div>
+  </div>
+</div>

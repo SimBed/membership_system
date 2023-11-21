@@ -1,5 +1,5 @@
 <h2>Editing Purchase</h2>
-<%= turbo_frame_tag 'purchase_edit' do %>
+<%= turbo_frame_tag @purchase do %>
   <%= render 'form', purchase: @purchase %>
 <% end %>
 <%= link_to image_tag('clipboard.png', class: "back_icon"), admin_purchase_path(@purchase), class: "icon-container" %> |

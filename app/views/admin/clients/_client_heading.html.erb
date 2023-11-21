@@ -2,7 +2,7 @@
 <h4>
   <%= @client.name %>
 
-  <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(@client) %>
+  <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(@client, link_from: @link_from) %>
   <!--form action=<%#= "/admin/clients/#{params[:id]}" %> method="GET" >
     <select name="purchaseid" onchange="this.form.submit()" class= "sort">
       <%#= options_for_select @products_purchased, session[:purchaseid] %>

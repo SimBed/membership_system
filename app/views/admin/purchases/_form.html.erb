@@ -1,4 +1,4 @@
-<div class="admin_form">
+<div class="admin_form pt-4 my-2">
   <div class="field" data-controller = "purchase-discount" data-purchase-discount-clientfilterurl-value = <%= new_purchase_client_filter_path %>> 
     <%= text_field_tag :search_client_name, nil, {class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name], "data-action": "purchase-discount#clientsearch"} %>
   </div>
@@ -112,12 +112,14 @@
     <% end %>
 
     <div class="actions">
-      <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase'  %>
+      <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase' %>
     </div>
   <% end %>
 
   <div class="cancel">
-    <%= link_to image_tag('delete.png', class: "table_icon"), (@purchase.new_record? ? admin_purchases_path : admin_purchase_path(@purchase)) %>
+    <%# <%= link_to image_tag('delete.png', class: "table_icon"), (@purchase.new_record? ? admin_purchases_path : admin_purchase_path(@purchase)) %>
+    <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
+    <%#= link_to image_tag('delete.png', class: "table_icon"), admin_purchases_path %>
   </div>    
 </div>
 

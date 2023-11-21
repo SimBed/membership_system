@@ -59,9 +59,11 @@ class Admin::PurchasesController < Admin::BaseController
   def new
     @purchase = Purchase.new
     prepare_items_for_dropdowns
+    @form_cancel_link = admin_purchases_path
   end
 
   def edit
+    @form_cancel_link = params[:link_from] == 'show' ? admin_purchase_path(@purchase) : admin_purchases_path 
     prepare_items_for_dropdowns
   end
 

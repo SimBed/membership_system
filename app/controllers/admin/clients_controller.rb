@@ -41,15 +41,22 @@ class Admin::ClientsController < Admin::BaseController
     @ongoing_packages = @client.purchases.not_fully_expired.package.order_by_dop
     @ongoing_dropins = @client.purchases.not_fully_expired.dropin.order_by_dop
     @expired_purchases = @client.purchases.fully_expired.order_by_dop
+    @link_from = params[:link_from]
+    @cancel_button = true if @link_from == 'index'
     prepare_data_for_view
     set_show_dropdown_items
   end
 
   def new
     @client = Client.new
+    @form_cancel_link = admin_clients_path
   end
 
-  def edit; end
+  def edit
+    # @form_cancel_link = params[:link_from].blank? ? admin_clients_path : admin_client_path(@client)
+    # @form_cancel_link = params[:link_from] == 'index' ? admin_client_path(@client, link_from: 'index' ) : admin_clients_path
+    @form_cancel_link = params[:link_from] == 'index' ? admin_client_path(@client, link_from: 'index') : admin_client_path(@client, link_from: params[:link_from] )
+  end
 
   def create
     @client = Client.new(client_params)
@@ -68,17 +75,14 @@ class Admin::ClientsController < Admin::BaseController
     if @client.update(client_params)
       # @client.account.update(email: @client.email) if update_account_email
       @client.account.update_column(:email, @client.email) if update_account_email
-      if client_params[:email].nil? # means not the update form, but a link to update waiver or instagram\
-        # if params[:link_from_show] == 'true'
-        #   redirect_to admin_client_path(@client)
-        # else
+      @quick_link = true if client_params[:email].nil? # means not the update form, but a link to update waiver\instagram\whatsapp
+      if @quick_link
         respond_to do |format|
           format.html { redirect_back fallback_location: admin_clients_path, success: t('.success', name: @client.name) }
           format.turbo_stream { flash_message :success, t('.success', name: @client.name), true }
-          # end
         end
       else
-        # redirect_to admin_client_path(@client)
+        # redirect_to admin_client_path(@client, link_from: params[:link_from])
         redirect_to admin_clients_path
         flash_message :success, t('.success', name: @client.name)
       end

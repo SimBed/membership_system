@@ -6,7 +6,7 @@
         <% wkclass = attendance.wkclass %>
         <tr>
           <th scope="row"><%= attendances.size - index %></th>
-          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button" %></td>
+          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button", data: { turbo: false } %></td>
           <td><%= attendance.status %></td>
         </tr>
       <% end %>
