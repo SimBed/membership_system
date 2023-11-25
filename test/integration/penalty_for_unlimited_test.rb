@@ -70,7 +70,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal 4, @purchase.reload.late_cancels
-    assert_redirected_to client_book_path(@client.id, limited: true)
+    assert_redirected_to client_book_path(@client.id, limited: true, major_change: true)
     assert_equal [["HIIT on Monday is 'cancelled late'", 'A deduction will be made to your Package.',
                    'Avoid deductions by making changes to bookings before the deadlines']], flash[:danger]
   end
@@ -103,5 +103,28 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
 
     # assert_redirected_to client_book_path(@client.id)
     # assert_equal "Booking is 'no show' and too late to change", flash[:warning]
+  end
+
+  test 'booking after new expiry date should get cancelled following a penalty late cancellation that brings expiry date forward' do
+    log_in_as(@account_client)
+    # book a class
+    # wkclass4 25/4/2022
+    # Make adjustment to package so expiry date is 24/4/2022
+    @purchase.adjustments.create(adjustment: -57)
+    @purchase.update(expiry_date: @purchase.expiry_date_calc)
+    assert_equal Date.parse('24/04/2022'), @purchase.expiry_date
+    # book classes on 22/4/2005 and on final day of package (25/4/2022)
+    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                         purchase_id: @purchase.id } }
+    post admin_attendances_path, params: { attendance: { wkclass_id: @wkclass3.id,
+                                                         purchase_id: @purchase.id } }
+    # amend purchase so next late cancel will cause a penalty
+    @purchase.update(late_cancels: 2)
+    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    # cancel today's class late
+    travel_to(@tomorrows_class_early.start_time - 10.minutes)
+    assert_difference '@client.attendances.booked.count', -2 do
+      patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled late' } }
+    end
   end
 end

@@ -29,7 +29,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 'booked', @attendance.status
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
     # assert_redirected_to "/client/clients/#{@client.id}/book"
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
   end
@@ -102,7 +102,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                            booking_section: 'opengym' }
     end  
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'opengym')
+    assert_redirected_to client_book_path(@client.id, booking_section: 'opengym', major_change: false)
     refute_predicate flash, :empty?
   end
   
@@ -122,7 +122,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       purchase_id: @purchase.id }, booking_section: 'group' }      
     end  
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
     refute_predicate flash, :empty?
   end
 
@@ -151,7 +151,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                              booking_section: 'group' }
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
   end
 
@@ -168,7 +168,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                              booking_section: 'group'}
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
+    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
     refute_predicate flash, :empty?
   end
 

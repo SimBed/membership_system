@@ -6,12 +6,14 @@ en:
         warning: Attendance was not updated
       create:
         warning: Forbidden
+        booking_cancelled: A booking made for after the new expiry date has been cancelled        
       destroy:
         success: Attendance was successfully deleted
         warning: Forbidden
       update:
         success: "%{name}'s attendance was successfully updated to %{status}"
         warning: Forbidden
+        booking_cancelled: A booking made for after the new expiry date has been cancelled            
       action_new_booking_when_prov_expired:
         admin:
           warning: The maximum number of classes has already been booked
@@ -30,8 +32,10 @@ en:
     adjustments:
       create:
         success: Adjustment was successfully added
+        booking_cancelled: A booking made for after the new expiry date has been cancelled  
       update:
         success: Adjustment was successfully updated
+        booking_cancelled: A booking made for after the new expiry date has been cancelled        
       destroy:
         success: Adjustment was successfully deleted
     clients:
@@ -93,6 +97,7 @@ en:
         rider_fail: Rider was not successfully added
       update:
         success: Purchase was successfully updated
+        booking_cancelled: A booking made for after the new expiry date has been cancelled 
       destroy:
         success: "%{name}'s purchase was successfully deleted"
       expire:
@@ -199,7 +204,7 @@ en:
             confirm: You will be cancelled for this class. Deductions may apply to late cancellations and no-shows. Are you sure?
           from_cancelled_early:
             confirm: You will be rebooked for this class. Are you sure?
-            confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?
+            confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?      
     waitings:
       create:
         success: "You have been added to the waiting list for %{wkclass_name}. You will be sent a message if a spot opens up."
@@ -229,4 +234,3 @@ en:
   new_purchase_by_client: Thank you for your purchase. You can see details of your purchase on this page. Go to the Book page to book your classes
   signup: "Welcome to The Space %{name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."
   message_sent: "%{message_type} message sent by Whatsapp to %{to_number}"
-

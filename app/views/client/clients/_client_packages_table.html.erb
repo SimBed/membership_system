@@ -1,21 +1,23 @@
-<div id="packages-table" class="container px-0">
-  <h6 class="fw-bolder fst-italic mb-0 ps-1">
-    Package Status
-  </h6>
-  <% @purchases.each do |purchase| %>
-    <% @purchase = purchase %>
-    <%= render partial: 'purchase_summary' %>
-    <%# this page is shown on the history page (where details are wanted, but options to modify not wanted) and on bookings page vice-veras.
-    detailed == true means history page, otherwise booking page %>
-    <% if detailed == false %>
-      <%= render partial: 'package_modifications' %> <%# no need for unless purchase.expired? as only unexpired purchases are shown on booking page%>
+<% unless @purchases.empty? %>
+  <div class="container px-0">
+    <h6 class="fw-bolder fst-italic mb-0 ps-1">
+      Package Status
+    </h6>
+    <% @purchases.each do |purchase| %>
+      <% @purchase = purchase %>
+      <%= render partial: 'purchase_summary' %>
+      <%# this page is shown on the history page (where details are wanted, but options to modify not wanted) and on bookings page vice-veras.
+      detailed == true means history page, otherwise booking page %>
+      <% if detailed == false %>
+        <%= render partial: 'package_modifications' unless purchase.trial? %>  <%# no need for unless purchase.expired? as only unexpired purchases are shown on booking page%>
+      <% end %>
+      <% if detailed == true %>
+        <%= render partial: 'purchase_attendances' %>
+      <% end %>
+        <%= render partial: 'freezes_summary' %>
+        <%= render partial: 'adjustments_summary' %>
+        <%= render partial: 'penalties_summary' %>
+      <hr>
     <% end %>
-    <% if detailed == true %>
-      <%= render partial: 'purchase_attendances' %>
-    <% end %>
-      <%= render partial: 'freezes_summary' %>
-      <%= render partial: 'adjustments_summary' %>
-      <%= render partial: 'penalties_summary' %>
-    <hr>
-  <% end %>
-</div>
+  </div>
+<% end %>

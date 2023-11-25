@@ -156,11 +156,15 @@ class AttendanceFormat
     end
 
     def link_for_update_booking
+      return '' if unbookable? # a class legitimately booked, but then auto-cancelled due to expiry date change due to eg freeze break or penalty
+
       case @attendance.status
       when 'booked'
         get_params('update_from_booked')
         link_maker(@image_params, @route, @route_params, @turbo_params)       
       when 'cancelled early'
+        return '' if @purchase.expiry_date.beginning_of_day < @wkclass.start_time.beginning_of_day # class got auto-cancelled due to an event that caused the expiry_date to become earlier (eg a no show penalty or freeze break)
+
         if @wkclass_at_capacity && !@on_waiting_list
           get_params('at_capacity_not_on_waiting_list')
         elsif @wkclass_at_capacity && @on_waiting_list
@@ -179,7 +183,7 @@ class AttendanceFormat
     def unbookable?
       return true if @purchase.nil? || @purchase.restricted_on?(@wkclass) || !@wkclass.booking_window.cover?(@time)
   
-        return false
+      return false
     end    
 
     # ActionController::Base.helpers.link_to '#', class: 'icon-container disable-link' do ActionController::Base.helpers.tag.i class: ["bi bi-battery-full"] end
@@ -190,7 +194,7 @@ class AttendanceFormat
       ActionController::Base.helpers.link_to(
         ActionController::Base.helpers.image_tag(image_params[:src], class: image_params[:css_class]),
         Rails.application.routes.url_helpers.send(route, route_params),
-        data: { turbo_method: turbo_params[:method], turbo_confirm: turbo_params[:confirm] },
+        data: { turbo_method: turbo_params[:method], turbo_confirm: turbo_params[:confirmation] },
         class: 'icon-container'
         )
     end

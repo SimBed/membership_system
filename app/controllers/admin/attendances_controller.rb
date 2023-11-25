@@ -16,7 +16,8 @@ class Admin::AttendancesController < Admin::BaseController
   before_action :in_booking_window, only: [:create]
   before_action :reached_max_capacity, only: [:create, :update]
   before_action :reached_max_amendments, only: [:update]
-  after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
+  # after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
+  after_action -> { update_purchase_status([@purchase]) }, only: [:update, :destroy]
 
   def footfall
     Purchase.default_timezone = :utc
@@ -75,7 +76,8 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass_name = @wkclass.name
     @wkclass_day = @wkclass.day_of_week
     # pass which section the request came from (can only be opengym or group for create) to render the correct turbo_stream to update the correct table opengym/group/my-bookings
-    redirect_to client_book_path(@client, booking_section: params[:booking_section])
+    update_purchase_status([@purchase])
+    redirect_to client_book_path(@client, booking_section: params[:booking_section], major_change: @major_change) # pass whether a major change occurred to trigger either a full page reload or just a discrete turbo_frame
     # redirect_to "/client/clients/#{@client.id}/book"
     # attendances_helper has booking_flash_hash with a method as a value
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
@@ -85,6 +87,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def after_successful_create_by_admin
     @wkclass = @attendance.wkclass
+    update_purchase_status([@purchase])    
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash_message :success, "#{@attendance.client_name}'s attendance was successfully logged"
   end
@@ -311,7 +314,7 @@ class Admin::AttendancesController < Admin::BaseController
     # pass limited as well, as if the request is from my_bookings the turbo stream needs to now whether to update group table or opengym table
     # limited not used in the end (can be deleted). When a mybooking is cancelled, update both opengym and group. If you dust update the impacted table, then when the day of the cancelled class is different from
     # the day currently selected, there will be inconsistency between the day shown and the non-impacted listing 
-    redirect_to client_book_path(@client, booking_section: params[:booking_section], limited: @wkclass.workout.limited)
+    redirect_to client_book_path(@client, booking_section: params[:booking_section], limited: @wkclass.workout.limited, major_change: @major_change) # pass whether a major change occurred to trigger either a full page reload or just a discrete turbo_frame
   end
 
   # https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller

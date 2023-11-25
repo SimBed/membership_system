@@ -76,14 +76,22 @@ class Client::ClientsController < ApplicationController
     # include attendances and wkclass so can find last booked session in PT package without additional query
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])
     @renewal = Renewal.new(@client)
+    params[:booking_section] = nil if params[:major_change] == 'true' # do full page reload if major change
+      # redirect_to client_book_path(@client)
+      # request.format = :html
+      # respond_to do |format|
+      #   format.html
+      # end
     respond_to do |format|
       format.html
       if params[:booking_section] == 'group'
         format.turbo_stream
       elsif params[:booking_section] == 'opengym'
         format.turbo_stream { render :book_opengym }
-      else
+      elsif params[:booking_section] == 'my_bookings'
         format.turbo_stream { render :book_my_bookings }
+      else
+        format.turbo_stream { render :book_all_streams }
       end
     end
   end

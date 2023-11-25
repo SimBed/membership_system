@@ -19,10 +19,14 @@ class ApplicationController < ActionController::Base
     # this could be avoided and done as one update request with some reformatting of the calc methods (to include an optional argument)
     purchases.each do |p|
       orig_status = p.status
-      p.update(start_date: p.start_date_calc)
+      orig_expiry_date = p.expiry_date
+      p.update(start_date: p.start_date_calc) 
       p.update(expiry_date: p.expiry_date_calc)
       p.update(status: p.status_calc)
       status_changed = orig_status != p.status ? true : false
+      expiry_earlier = expiry_earlier?(p.expiry_date, orig_expiry_date)
+      # expiry_earlier = p.expiry_date.nil? ? false : orig_expiry_date > p.expiry_date
+      @major_change = status_changed || expiry_earlier # if there is a major change then we will do full page reload rsther than discrete turbo-frames update
       # NOTE: rider = nil would return false, so this means if p is a rider then set rider p.rider and carry out the conditional, otherwise dont
       if rider = p.rider_purchase
         # the rider cant continue once the main has expired
@@ -30,10 +34,27 @@ class ApplicationController < ActionController::Base
         # conceivably the rider can be reactivated from expired if a change is made to the main that brings the main back from expired
         rider.update(status: rider.status_calc) if !p.expired? && status_changed
       end
+      # cancel any bookings that are now outside new expiry date
+      if expiry_earlier
+        period = (p.expiry_date.advance(days: 1)..Float::INFINITY)
+        post_expiry_attendances = p.attendances.during(period).booked
+        post_expiry_attendances.each do |a|
+          a.update(status:'cancelled early')
+          flash_message :danger, t('.booking_cancelled')
+        end
+      end
     end
   end
 
   def cancel_bookings_during_freeze(freeze)
+    freeze_period = freeze.start_date..freeze.end_date
+    freeze.purchase.attendances.booked.during(freeze_period).each do |a|
+      a.update(status:'cancelled early')
+      flash_message :danger, t('.booking_cancelled')
+    end
+  end
+
+  def cancel_bookings_post_new_expiry(freeze)
     freeze_period = freeze.start_date..freeze.end_date
     freeze.purchase.attendances.booked.during(freeze_period).each do |a|
       a.update(status:'cancelled early')
@@ -79,4 +100,11 @@ class ApplicationController < ActionController::Base
   def deal_with_partner
     redirect_to admin_partner_path(@account.partner) if logged_in_as?('partner')
   end
+
+  private
+    def expiry_earlier?(current_expiry_date, orig_expiry_date)
+      return false if current_expiry_date.nil? || orig_expiry_date.nil?
+
+      orig_expiry_date > current_expiry_date
+    end
 end
