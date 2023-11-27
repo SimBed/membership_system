@@ -6,9 +6,9 @@
     <input type="date"
            name="start"
            class="freeze-start"
-           value=<%= Time.zone.today.advance(days: 1) %>
-           min=<%= Time.zone.today.advance(days: 1) %>
-           max=<%= Time.zone.today.advance(days: 31) %>
+           value=<%= @default_start_dates[:earliest] %>
+           min=<%= @default_start_dates[:earliest] %>
+           max=<%= @default_start_dates[:latest] %>
            data-freeze-target="source"
            data-action="freeze#copy_to_razorpay_form">
   </div>
@@ -16,7 +16,7 @@
   <div class="fs-8 mt-3">
   <p>Before paying, please read terms under 'Modifications' <%= link_to 'here', '/terms&conditions', class: "fw-bolder text-decoration-underline", target: '_blank' %></p></div>
     <div class="cancel">
-      <%= link_to image_tag('delete.png', class: "table_icon"), client_package_modification_cancel_freeze_path(@client, purchase_id: params[:purchase_id]) %>
+      <%= link_to image_tag('delete.png', class: "table_icon"), client_package_modification_cancel_freeze_path(@client, purchase_id: @purchase.id) %>
     </div>
 </div>
 <% end %>

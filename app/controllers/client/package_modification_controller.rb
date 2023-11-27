@@ -3,7 +3,10 @@ class Client::PackageModificationController < ApplicationController
   layout 'client'
   before_action :correct_account
 
-  def new_freeze; end
+  def new_freeze
+    @purchase = Purchase.find(params[:purchase_id])
+    @default_start_dates = @purchase.default_new_freeze_start_dates
+  end
 
   def buy_freeze
     begin

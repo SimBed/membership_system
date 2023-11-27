@@ -238,6 +238,18 @@ class Purchase < ApplicationRecord
     freezed?(adate) && !expired? 
   end
 
+  # for new freeze form in client booking page
+  def default_new_freeze_start_dates
+    earliest = Time.zone.today.advance(days: 1)
+    if freezed?(Time.zone.now)
+      current_freeze = freezes_cover(Time.zone.now).first # shouldn't be more than 1 so reasonable to take first
+      earliest = [earliest, current_freeze.end_date.advance(days: 1)].max
+    end
+    # freeze option will be restircted from being shown on expiry date so no possibility of default_start_date being later than latest_start_date
+    latest = [earliest.advance(days: 30), expiry_date].min    
+    { earliest: earliest, latest: latest }
+  end
+
   # not used (all packages with bookable classes that are not expired can be frozen, so need to develop such a method yet)
   def freezable?
     return false if expired?
