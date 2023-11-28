@@ -11,7 +11,7 @@ class Purchase < ApplicationRecord
   has_many :discount_assignments, dependent: :destroy
   has_many :discounts, through: :discount_assignments
   has_many :waitings, dependent: :destroy
-  # some pts are given a rider benfeit of group classes
+  # some pts are given a rider benefit of group classes
   has_one :rider_purchase, class_name: 'Purchase', dependent: :destroy # , foreign_key: "purchase_id"
   belongs_to :main_purchase, class_name: 'Purchase', foreign_key: 'purchase_id', optional: true
   before_save :set_sunset_date
@@ -212,13 +212,13 @@ class Purchase < ApplicationRecord
   def status_calc
     return 'expired' if adjust_restart?
 
+    return 'expired' if rider? && main_purchase.expired?
+
     status_hash = self.status_hash
     return 'not started' if status_hash[:attendance_provisional] == 'not started'
     return 'booked but not started' if status_hash[:attendance_provisional] == 'booked but not started'
     return 'expired' if status_hash[:attendance_confirmed] == 'exhausted' || status_hash[:validity] == 'expired'
     return 'classes all booked' if status_hash[:attendance_provisional] == 'exhausted'
-
-    # return 'booked first class'
 
     'ongoing'
   end

@@ -61,7 +61,7 @@
   <% if @purchase.provisionally_expired? %>
     <tr>
       <th scope="row">Last class booked for</th>
-      <td><%= @purchase.will_expire_on %></td>
+      <td><%= @purchase.will_expire_on&.strftime('%d %b %y') %></td>
     </tr>
   <% end %>
   <% if @purchase.adjust_restart %>

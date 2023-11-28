@@ -31,10 +31,11 @@ class ApplicationController < ActionController::Base
       if rider = p.rider_purchase
         # the rider cant continue once the main has expired
         rider.update(status: 'expired', expiry_date: p.expiry_date) if p.expired? && !rider.expired?
-        # conceivably the rider can be reactivated from expired if a change is made to the main that brings the main back from expired
+        # conceivably the rider can be reactivated from expired if a change is made to the main that brings the main back from expired. (This is benign when main purchase changes to 'classes all booked')
         rider.update(status: rider.status_calc) if !p.expired? && status_changed
       end
       # cancel any bookings that are now outside new expiry date
+      # could also cancel any pt rider bookings post main expiry, but this may cause undisproportionate business problems
       if expiry_earlier
         period = (p.expiry_date.advance(days: 1)..Float::INFINITY)
         post_expiry_attendances = p.attendances.during(period).booked

@@ -87,7 +87,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def after_successful_create_by_admin
     @wkclass = @attendance.wkclass
-    update_purchase_status([@purchase])    
+    update_purchase_status([@purchase])
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash_message :success, "#{@attendance.client_name}'s attendance was successfully logged"
   end
