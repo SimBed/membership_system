@@ -2,9 +2,9 @@
   <h2 class="fw-bolder">Personal Training</h2>
 </div>
 <% @unexpired_purchases.each do |purchase| %>
-  <div id="pt-bookings-table" class="container px-0 mb-5">
-    <%= render partial: 'pt_client_bookings_table',locals: {purchase: purchase} %>
-    <hr>
-    <%= render partial: 'pt_client_packages_table',locals: {purchase: purchase} %>
+  <div id="pt-bookings-table" class="container px-0 mb-4">
+    <%= render partial: 'pt_client_packages_table', locals: {purchase: purchase} %>
+    <%= render partial: 'pt_client_bookings_table', locals: {purchase: purchase} %>
   </div>  
+  <hr class = "divider thick">
 <% end %>
