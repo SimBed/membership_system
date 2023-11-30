@@ -19,31 +19,31 @@
       <% client = current_account.client %>
         <%# if current_account.without_purchase? %>        
           <li class="nav-item">
-            <%= link_to "Shop", client_shop_path(client), class: "nav-link", 'data-turbolinks': false%>
+            <%= link_to "Shop", client_shop_path(client), class: "nav-link #{active_link_for(path: client_shop_path(client))}", 'data-turbolinks': false %>
           </li>
         <%# end %>
         <li class="nav-item">
-          <%= link_to "History", client_history_path(client), class: "nav-link"%>
+          <%= link_to "History", client_history_path(client), class: "nav-link #{active_link_for(path: client_history_path(client))}" %>
         </li>
         <% unless current_account.without_purchase? %>
           <li class="nav-item">
-            <%= link_to "Book", client_book_path(client), class: "nav-link"%>
+            <%= link_to "Book", client_book_path(client), class: "nav-link #{active_link_for(path: client_book_path(client))}" %>
           </li>
         <% end %>
         <% if current_account.client.pt? %>
           <li class="nav-item">
-            <%= link_to "PT", client_pt_path(client), class: "nav-link"%>
+            <%= link_to "PT", client_pt_path(client), class: "nav-link #{active_link_for(path: client_pt_path(client))}" %>
           </li>
         <% end %>
         <li class="nav-item">
-          <%= link_to "Timetable", client_timetable_path, class: "nav-link", 'data-turbolinks': false%>
+          <%= link_to "Timetable", client_timetable_path, class: "nav-link #{active_link_for(path: client_timetable_path)}", 'data-turbolinks': false %>
         </li>
         <li class="nav-item">
-          <%= link_to "Profile", client_client_path(client), class: "nav-link"%>
+          <%= link_to "Profile", client_client_path(client), class: "nav-link #{active_link_for(path: client_client_path(client))}" %>
         </li>
         <% if Setting.show_challenge %>
           <li class="nav-item">
-            <%= link_to "Achievements", client_achievements_path(client), class: "nav-link"%>
+            <%= link_to "Achievements", client_achievements_path(client), class: "nav-link #{active_link_for(path: client_achievements_path(client))}" %>
           </li>
         <% end %>
       </ul>
@@ -70,7 +70,7 @@
         <% end %>
 
         <li class="nav-item">
-          <%= button_to logout_path, method: :delete, class: "nav-link active", data: {turbo: false} do %>
+          <%= link_to logout_path, class: "nav-link", data: {turbo_method: :delete} do %>               
             <i class="fa fa-door-open"></i>
           <% end %>
         </li>

@@ -20,7 +20,8 @@ $border-color-inverted: rgba($white, 0.2);
   // links
   a:not(.btn):not(.dropdown-item) {
     color: $white;
-
+    &.active {
+      color: $gray-600;}
     &:hover {
       color: rgba($white, 0.75);
     }

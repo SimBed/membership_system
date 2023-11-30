@@ -46,6 +46,10 @@ module ApplicationHelper
     number_to_currency(amount, precision: 0, unit: 'Rs. ')
   end
 
+  def active_link_for(path:)
+    'active' if request.path == path
+  end
+
   private
 
   def months_between(start_date, end_date)
