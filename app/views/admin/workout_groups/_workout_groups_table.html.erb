@@ -1,23 +1,20 @@
-<div id="workout-groups-table" class="container px-0 mb-5">
-  <table class="table table-secondary table-striped caption-top">
-    <caption>Workout Group List <small><%="(#{@workout_groups.size})"%></small></caption>
-    <tbody >
-      <thead>
-        <tr>
-          <th scope="col">Group</th>
-          <th scope="col">Partner</th>
-          <th scope="col">Workout</th>
-          <% unless logged_in_as?('partner') %>
-            <th scope="col">Account</th>
-            <th scope="col">Service</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <%= render @workout_groups %>
-      </tbody>
-  </table>
+<div class="container px-0 mb-5">
+  <div>Workout Group List <small><%="(#{@workout_groups.size})"%></small></div>
+  <div class="admin-table mt-2">
+    <div class="row fw-bolder">
+      <div class="column col-2x">Group</div>
+      <div class="column col-2x">Partner</div>
+      <div class="column col-3x">Workout</div>
+      <% unless logged_in_as?('partner') %>
+        <div class="column col-1x">Account</div>
+        <div class="column col-1x">Service</div>
+        <div class="column"></div>
+        <div class="column"></div>
+        <div class="column"></div>
+      <% end %>
+    </div>
+  </div>
+  <div class="admin-table">
+    <%= render @workout_groups %>
+  </div>
 </div>

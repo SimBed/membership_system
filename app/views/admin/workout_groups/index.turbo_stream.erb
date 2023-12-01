@@ -1,0 +1,4 @@
+<%= turbo_stream.update "workout-groups-table" do %>
+  <%= render partial: "workout_groups_table" %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

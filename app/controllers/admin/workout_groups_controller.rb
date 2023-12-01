@@ -12,6 +12,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     else
       @workout_groups = WorkoutGroup.order_by_name
     end
+    handle_index_response
   end
 
   def show
@@ -37,11 +38,13 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def new
     @workout_group = WorkoutGroup.new
     prepare_items_for_dropdowns
+    @form_cancel_link = admin_workout_groups_path
   end
 
   def edit
     prepare_items_for_dropdowns
     @partner = @workout_group.partner
+    @form_cancel_link = admin_workout_groups_path    
   end
 
   def create
@@ -87,11 +90,23 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     @services = Rails.application.config_for(:constants)['workout_group_services']
   end
 
+  # def set_period
+  #   default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
+  #   session[:revenue_month] = params[:revenue_month] || session[:revenue_month] || default_month
+  #   session[:revenue_month] = default_month if session[:revenue_month] == 'All'
+  #   @period = month_period(session[:revenue_month])
+  # end
+
+  # became more complicated when hotwired workout_group show as multiple workout groups can be shown at the same time with different periods 
   def set_period
+    workout_group = "workout_group_#{@workout_group.id}".to_sym
+    session[workout_group] = {} if session[workout_group].nil?
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
-    session[:revenue_month] = params[:revenue_month] || session[:revenue_month] || default_month
-    session[:revenue_month] = default_month if session[:revenue_month] == 'All'
-    @period = month_period(session[:revenue_month])
+    # must be session[workout_group]['revenue_month'] not session[workout_group][:revenue_month]  
+    session[workout_group][:revenue_month] = params[:revenue_month] || session[workout_group]['revenue_month'] || default_month
+    session[workout_group][:revenue_month] = default_month if session[workout_group][:revenue_month] == 'All'
+    @period = month_period(session[workout_group][:revenue_month])
+    @revenue_month = session[workout_group][:revenue_month]
   end
 
   def set_revenue_summary
@@ -117,6 +132,13 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       partner_share: @workout_group.partner_share_amount(@period)
     }
     @summary.merge!(expense_params)
+  end
+
+  def handle_index_response
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def set_workout_group

@@ -218,10 +218,10 @@ div.my-booking {
 
     .column {
       flex: 0.25;
+      overflow: hidden;      
       padding: 10px;
       border-right: 1px solid #ccc;
-      transition: background-color 0.3s ease;
-      overflow:auto;      
+      transition: background-color 0.3s ease;   
       &:last-child {
         border-right: none;
       }
@@ -230,11 +230,19 @@ div.my-booking {
         background-color: #ddd;
       }
     }
+    .col-1x {
+      flex: 1;
+    }
     .col-2x {
       flex: 2;
+      overflow: auto;
     }
     .col-3x {
       flex: 3;
+      overflow: auto;
+      &.extra-small {
+        font-size: 0.8rem;
+      }
     }
   }
 

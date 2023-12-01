@@ -1,31 +1,39 @@
-<h4><strong><i><%= "#{@workout_group.name}" %></i></strong> Profit Share</h4>
-<form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET" data-turbo-frame="revenue"}>
-  <select name="revenue_month" onchange="this.form.requestSubmit()" class= "sort">
-    <%= options_for_select @months, session[:revenue_month] %>
-  </select>
-</form>
-<%= turbo_frame_tag 'revenue' do %>
-  <div id="revenues-table" class="container px-1 mb-5">
-    <%= render partial: 'revenues_table' %>
-  </div>
+<%= turbo_frame_tag dom_id(@workout_group) do %>
+  <div class="admin_form my-2">
+    <h5><strong><i><%= "#{@workout_group.name}" %></i></strong> Profit Share</h5>
+    <!--form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET"}>
+      <select name="revenue_month" onchange="this.form.requestSubmit()" class= "sort">
+        <%#= options_for_select @months, session[:revenue_month] %>
+      </select>
+    </form-->
 
-  <% unless @summary[:variable_expense].zero? %>
-  <div id="wkclasses-with-expense-table" class="container px-1 mt-5 mb-5">
-    <%= render partial: 'wkclasses_with_expense_table' %>
-  </div>
-  <% end %>
+    <%= form_with(url: admin_workout_group_path(@workout_group), method: "get") do |form| %>
+      <%= form.select :revenue_month, options_for_select(@months, @revenue_month), {}, {class: "sort", onchange: "this.form.requestSubmit()"} %>
+    <% end %>
 
-  <% unless @summary[:variable_expense].zero? %>
-  <div id="instructors-expense-table" class="container px-1 mt-5 mb-5">
-    <%= render partial: 'instructors_expense_subtotal' %>
-  </div>
-  <% end %>
+    <div id="revenues-table" class="container px-1 mb-5">
+      <%= render partial: 'revenues_table' %>
+    </div>
 
-  <% unless @summary[:fixed_expense].zero? %>
-  <div id="other-expense-table" class="container px-1 mt-5 mb-3">
-    <%= render partial: 'other_expense_table' %>
+    <% unless @summary[:variable_expense].zero? %>
+      <div id="wkclasses-with-expense-table" class="container px-1 mt-5 mb-5">
+        <%= render partial: 'wkclasses_with_expense_table' %>
+      </div>
+    <% end %>
+
+    <% unless @summary[:variable_expense].zero? %>
+      <div id="instructors-expense-table" class="container px-1 mt-5 mb-5">
+        <%= render partial: 'instructors_expense_subtotal' %>
+      </div>
+    <% end %>
+
+    <% unless @summary[:fixed_expense].zero? %>
+      <div id="other-expense-table" class="container px-1 mt-5 mb-3">
+        <%= render partial: 'other_expense_table' %>
+      </div>
+    <% end %>
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), admin_workout_groups_path %>
+    </div>
   </div>
-  <% end %>
 <% end %>
-
-<%= link_to image_tag('back.png', class: "back_icon"), admin_workout_groups_path, class: "icon-container" %>

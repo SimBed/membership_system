@@ -50,6 +50,12 @@ module ApplicationHelper
     'active' if request.path == path
   end
 
+  def form_test
+    form_with(url: '/', method: "get", class: "form-class", data: {turbo_frame: "expenses"}) do |form|
+      form.select :revenue_month, options_for_select(['feb']), {}, {class: "sort", onchange: "this.form.requestSubmit()"}
+    end
+  end
+  
   private
 
   def months_between(start_date, end_date)

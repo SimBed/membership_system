@@ -7,7 +7,7 @@
         <% wkclass_size = wkclass.attendances.size %>      
         <th scope="row"><%= index + 1 %></th>
         <% if logged_in_as?('superadmin') %>
-          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button" %></td>
+          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button", data:{ turbo: false } %></td>
         <% else %>
           <td><%= wkclass.summary %></td>
         <% end %>
