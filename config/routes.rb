@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   get '/timetable', to: 'admin/timetables#show_public', as: 'public_timetable'
   get '/superadmin/regular_expenses/add'
   get '/admin/client_analyze', to: 'admin/clients#analyze', as: 'client_analyze'
+  get 'admin/workout_groups/:id/show_workouts', to: 'admin/workout_groups#show_workouts', as: 'show_workouts'
   get 'public_pages/wedontsupport'
   get '/buboo/hearts', to: 'public_pages#hearts'
 

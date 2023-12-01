@@ -2,12 +2,12 @@
   <div>Workout Group List <small><%="(#{@workout_groups.size})"%></small></div>
   <div class="admin-table mt-2">
     <div class="row fw-bolder">
-      <div class="column col-2x">Group</div>
-      <div class="column col-2x">Partner</div>
-      <div class="column col-3x">Workout</div>
+      <div class="column col-1x extra-small">Group</div>
+      <div class="column col-1x extra-small">Partner</div>
+      <div class="column col-1x extra-small">Workouts</div>
       <% unless logged_in_as?('partner') %>
-        <div class="column col-1x">Account</div>
-        <div class="column col-1x">Service</div>
+        <div class="column col-1x extra-small">Account</div>
+        <div class="column col-1x extra-small">Service</div>
         <div class="column"></div>
         <div class="column"></div>
         <div class="column"></div>

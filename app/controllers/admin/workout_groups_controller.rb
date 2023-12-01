@@ -2,7 +2,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   skip_before_action :admin_account, only: [:show, :index, :instructor_expense_filter]
   before_action :partner_or_admin_account, only: [:index]
   before_action :correct_account_or_superadmin, only: [:show, :instructor_expense_filter]
-  before_action :set_workout_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_workout_group, only: [:show, :edit, :update, :destroy, :show_workouts]
 
   def index
     if logged_in_as?('partner')
@@ -80,6 +80,12 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     clear_session(:filter_instructor)
     session[:filter_instructor] = params[:instructor]
     redirect_to "/admin/workout_groups/#{params[:id]}"
+  end
+
+  def show_workouts
+    @current_workouts = @workout_group.workouts.current.order_by_name
+    @not_current_workouts = @workout_group.workouts.not_current.order_by_name
+    dan=1
   end
 
   private
