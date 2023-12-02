@@ -1,3 +1,5 @@
-<h3>New Purchase</h3>
-<%= render 'form', purchase: @purchase %>
-<%= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>
+<%= turbo_frame_tag @purchase do %>
+  <div class="col-md-6 mb-4">
+    <%= render 'form', purchase: @purchase %>
+  </div>
+<% end %>

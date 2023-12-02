@@ -2,5 +2,8 @@
 <%= turbo_stream.update "clients" do %>
   <%= render partial: "clients_table" %>
 <% end %>
+<%= turbo_stream.update "new_client" do %>
+  <%= render inline:'' %>
+<% end %>
 <%#= turbo_stream.prepend "flash", partial: "layouts/flashhot" %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

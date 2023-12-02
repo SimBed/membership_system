@@ -6,7 +6,7 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :set_purchase, only: [:show, :edit, :update, :destroy, :expire]
   before_action :sanitize_params, only: [:create, :update]
   # this should be a callback on Purchase model not a filter
-  before_action :already_had_trial?, only: [:create, :update]
+  # before_action :already_had_trial?, only: [:create, :update]
   before_action :changing_main_purchase_product?, only: :update
   before_action :changing_main_purchase_name?, only: :update
   before_action :changing_rider?, only: :update
@@ -75,7 +75,8 @@ class Admin::PurchasesController < Admin::BaseController
         DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
       end
       # equivalent to redirect_to admin_purchase_path @purchase
-      redirect_to [:admin, @purchase]
+      # redirect_to [:admin, @purchase]
+      redirect_to admin_purchases_path
       flash_message :success, t('.success')
       post_purchase_processing
       create_rider if @purchase.product.has_rider?
@@ -229,25 +230,25 @@ class Admin::PurchasesController < Admin::BaseController
     false
   end
 
-  def already_had_trial?
-    return if purchase_params[:client_id].blank? || purchase_params[:product_id].blank? #if either client or purchase are blank this will be picked up in the model validation
-    @client = Client.find(purchase_params[:client_id])
-    @product = Product.find(purchase_params[:product_id])
-    if new_purchase?
-      return unless @product.trial? && @client.has_had_trial?
+  # def already_had_trial?
+  #   return if purchase_params[:client_id].blank? || purchase_params[:product_id].blank? #if either client or purchase are blank this will be picked up in the model validation
+  #   @client = Client.find(purchase_params[:client_id])
+  #   @product = Product.find(purchase_params[:product_id])
+  #   if new_purchase?
+  #     return unless @product.trial? && @client.has_had_trial?
 
-      flash[:warning] = "Purchase not created. #{@client.name} has already had a Trial"
-      # redirect_to new_admin_purchase_path
-      @purchase = Purchase.new(purchase_params)
-      prepare_items_for_dropdowns
-      render :new, status: :unprocessable_entity
-    else
-      return unless @product.trial? && @client.has_had_trial? && !@purchase.trial?
+  #     flash[:warning] = "Purchase not created. #{@client.name} has already had a Trial"
+  #     # redirect_to new_admin_purchase_path
+  #     @purchase = Purchase.new(purchase_params)
+  #     prepare_items_for_dropdowns
+  #     render :new, status: :unprocessable_entity
+  #   else
+  #     return unless @product.trial? && @client.has_had_trial? && !@purchase.trial?
 
-      flash[:warning] = "Purchase not updated. #{@client.name} has already had a Trial"
-      redirect_to edit_admin_purchase_path(@purchase)
-    end
-  end
+  #     flash[:warning] = "Purchase not updated. #{@client.name} has already had a Trial"
+  #     redirect_to edit_admin_purchase_path(@purchase)
+  #   end
+  # end
 
   def changing_main_purchase_product?
     return if params[:purchase][:product_id].blank?

@@ -6,4 +6,4 @@
   <%= render 'purchase_table' %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>
-<%= turbo_stream.remove "errors" %>
+<%= turbo_stream.remove "error_explanation" %>

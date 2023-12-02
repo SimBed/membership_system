@@ -27,6 +27,7 @@ class Purchase < ApplicationRecord
     validates :ar_payment, presence: true
     validates :ar_date, presence: true
   end
+  validate :check_if_already_had_trial
   # Fitternity redundant now
   # validates :fitternity, presence: true, if: :fitternity_id
   # validate :fitternity_payment
@@ -435,6 +436,17 @@ class Purchase < ApplicationRecord
 
   def max_class_expiry_date
     attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max
+  end
+
+  def check_if_already_had_trial
+    already_had_trial = if persisted?
+      # editing from non-trial to trial. Note Self is the new intended purchase, not the same as the original Purchase.find(id) purchase
+      !Purchase.find(id).trial? && product.trial? && client.has_had_trial?
+    else
+      product&.trial? && client&.has_had_trial?
+    end
+
+    errors.add(:base, "Client has already had a trial") if already_had_trial
   end
 
   def attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true)
