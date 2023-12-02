@@ -85,7 +85,6 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def show_workouts
     @current_workouts = @workout_group.workouts.current.order_by_name
     @not_current_workouts = @workout_group.workouts.not_current.order_by_name
-    dan=1
   end
 
   private

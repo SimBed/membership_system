@@ -93,16 +93,12 @@ class WorkoutGroup < ApplicationRecord
   def gst_rate
     return 0 unless gst_applies
 
-    # Rails.application.config_for(:constants)['gst_rate'].first.to_f / 100
     Setting.gst_rate.to_f / 100
   end
 
-  # def attendances_in(revenue_date)
-  #   attendances.in_month(Date.parse(revenue_date), Date.parse(revenue_date) + 1.month).count
-  # end
-
   def expiry_revenue(period)
-    purchases.fully_expired.select { |p| p.expired_in?(period) }.map(&:expiry_revenue).inject(0, :+)
+    # purchases.fully_expired.select { |p| p.expired_in?(period) }.map(&:expiry_revenue).inject(0, :+)
+    purchases.expired_in(period).map(&:expiry_revenue).inject(0, :+)
   end
 
   def create_rel_workout_group_workout
