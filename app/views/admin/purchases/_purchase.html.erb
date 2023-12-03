@@ -2,7 +2,7 @@
   <div class="row">
     <div class="column col-2x">
       <% if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
-        <%= link_to purchase.client.name, admin_client_path(purchase.client), class: "like_button", data: { turbo: false } %>
+        <%= link_to purchase.client.name, admin_client_path(purchase.client, link_from: 'purchases_index'), class: "like_button", data: { turbo: false } %>
       <% else %>
         <%= purchase.client.name %>
       <% end %>

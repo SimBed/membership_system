@@ -42,7 +42,7 @@ class Admin::ClientsController < Admin::BaseController
     @ongoing_dropins = @client.purchases.not_fully_expired.dropin.order_by_dop
     @expired_purchases = @client.purchases.fully_expired.order_by_dop
     @link_from = params[:link_from]
-    @cancel_button = true if @link_from == 'index'
+    @cancel_button = true if @link_from == 'clients_index'
     prepare_data_for_view
     set_show_dropdown_items
   end
@@ -55,7 +55,7 @@ class Admin::ClientsController < Admin::BaseController
   def edit
     # @form_cancel_link = params[:link_from].blank? ? admin_clients_path : admin_client_path(@client)
     # @form_cancel_link = params[:link_from] == 'index' ? admin_client_path(@client, link_from: 'index' ) : admin_clients_path
-    @form_cancel_link = params[:link_from] == 'index' ? admin_client_path(@client, link_from: 'index') : admin_client_path(@client, link_from: params[:link_from] )
+    @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path #admin_client_path(@client, link_from: params[:link_from] )
   end
 
   def create
@@ -87,6 +87,7 @@ class Admin::ClientsController < Admin::BaseController
         flash_message :success, t('.success', name: @client.name)
       end
     else
+      @form_cancel_link = params[:client][:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path
       render :edit, status: :unprocessable_entity
     end
   end

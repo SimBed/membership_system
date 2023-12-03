@@ -53,6 +53,7 @@ class Admin::PurchasesController < Admin::BaseController
     @attendances_amnesty = @purchase.attendances.amnesty.merge(Attendance.order_by_date)
     @frozen_now = @purchase.freezed?(Time.zone.now)
     sunset_hash
+    @link_from = params[:link_from]
     handle_show_response
   end
 
@@ -101,6 +102,9 @@ class Admin::PurchasesController < Admin::BaseController
       flash_message :success, t('.success')
       update_purchase_status([@purchase])
     else
+      @form_cancel_link = params[:purchase][:link_from] == 'show' ? admin_purchase_path(@purchase, link_from: 'show') : admin_purchases_path
+      # @form_cancel_link = params[:link_from] == 'show' ? admin_purchase_path(@purchase) : admin_purchases_path
+      # @form_cancel_link = params[:purchase][:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path      
       prepare_items_for_dropdowns
       render :edit, status: :unprocessable_entity
     end

@@ -20,6 +20,8 @@
       </div>
     <% end %>
 
+    <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>    
+
     <div class="field">
       <%= form.label :client_id %>
       <%= form.collection_select :client_id, @clients, :id, :name, include_blank: true %>
