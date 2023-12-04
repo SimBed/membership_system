@@ -20,6 +20,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase_with_freeze = purchases(:purchase_with_freeze) # freeze 10/1/22 - 28/3/22
     @purchase_pt = purchases(:purchase_12C5WPT)
     @purchase_ptrider = purchases(:purchase_ptrider)
+    @purchase_main = @purchase_ptrider.main_purchase # purchase_12C5WPT
     @wkclass1 = wkclasses(:hiitfeb26)
     @wkclass_already_attended = wkclasses(:wkclass362)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
@@ -277,6 +278,17 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal Date.parse('18 Sep 2022'), @purchase_fixed.sunset_date_calc # dop 2022-02-15, 5W
     assert_equal Date.parse('4 April 2022'), @purchase_trial.sunset_date_calc # dop 2022-02-25, 1W
     assert_equal Date.parse('8 Aug 2022'), @purchase_with_freeze.sunset_date_calc # dop 2021-11-09, 3M (freeze 2022-01-10 - 2022-03-28)
+  end
+
+  test 'unexpired_rider_without_ongoing_main scope' do
+    assert 'not started', @purchase_ptrider.status
+    assert 'ongoing', @purchase_main.status
+    @purchases = Purchase.where(id: [@purchase_ptrider.id, @purchase_main.id])
+    assert_equal @purchases.unexpired_rider_without_ongoing_main, []
+    @purchase_main.update(status: 'not_started')
+    assert_equal @purchases.unexpired_rider_without_ongoing_main, [@purchase_ptrider]
+    @purchase_main.update(status: 'expired')
+    assert_equal @purchases.unexpired_rider_without_ongoing_main, [@purchase_ptrider]
   end
 
   # test 'associated fitternity (if there is one) should exist' do

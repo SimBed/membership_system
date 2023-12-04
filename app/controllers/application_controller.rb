@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
       expiry_earlier = expiry_earlier?(p.expiry_date, orig_expiry_date)
       # expiry_earlier = p.expiry_date.nil? ? false : orig_expiry_date > p.expiry_date
       @major_change = status_changed || expiry_earlier # if there is a major change then we will do full page reload rsther than discrete turbo-frames update
-      # NOTE: rider = nil would return false, so this means if p is a rider then set rider p.rider and carry out the conditional, otherwise dont
+      # NOTE: rider = nil would return false, so this means if p has a rider then set rider as p's rider and carry out the conditional, otherwise dont
       if rider = p.rider_purchase
         # the rider cant continue once the main has expired
         rider.update(status: 'expired', expiry_date: p.expiry_date) if p.expired? && !rider.expired?
