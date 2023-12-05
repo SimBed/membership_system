@@ -212,16 +212,27 @@ div.my-booking {
       background-color: #e9e9e9;
       margin: 0;
     }
-    .row:nth-child(even) {
-      background-color: #f9f9f9;         
+    &.striped {
+      .row:nth-child(even) {
+        background-color: #f9f9f9;       
+      }
+    }
+    &.narrow {
+      @include media-breakpoint-up(md) {
+        width: 50%;
+        margin-left: 0;
+       }         
     }
 
     .column {
       flex: 0.25;
       overflow: hidden;      
-      padding: 10px;
+      padding: 5px;
       border-right: 1px solid #ccc;
-      transition: background-color 0.3s ease;   
+      transition: background-color 0.3s ease;
+      @include media-breakpoint-up(md) {
+        padding: 10px;          
+       }      
       &.extra-small {
         font-size: 0.7rem;
         padding: 5px;
@@ -239,6 +250,7 @@ div.my-booking {
     }
     .col-1x {
       flex: 1;
+      overflow: auto;
     }
     .col-2x {
       flex: 2;
@@ -252,4 +264,6 @@ div.my-booking {
 
 
 
-
+  .accordion {
+    animation: fadeIn 0.7s;
+  }

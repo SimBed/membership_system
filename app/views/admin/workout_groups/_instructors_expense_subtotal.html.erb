@@ -1,24 +1,17 @@
-<table class="table table-secondary table-striped caption-top">
-  <caption>Instructor Expense Subtotals</caption>
-  <tbody>
-    <%# @instructor_cost_subtotals.each do |instructor, expense| %>
-      <!--tr>
-        <th scope="row"><%#= instructor %></th>
-        <td><%#= number_with_delimiter(expense) %></td>
-      </tr-->
-    <%# end %>
-    <% @instructor_cost_subtotals.each do |i| %>
-      <tr>
-        <th scope="row"><%= "#{i[0]} #{i[1]}" %></th>
-        <td><%= number_with_delimiter(i[2]) %></td>
-        <td><%= number_with_delimiter(i[3]) %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <th scope="row">Total</th>
-      <!--td><%#= number_with_delimiter(@instructor_cost_subtotals.values.sum)  %></td-->
-      <td><%= number_with_delimiter(@total_instructor_cost) %></td>
-      <td><%= number_with_delimiter(@wkclasses_with_instructor_expense.size) %></td>
-    </tr>
-  </tbody>
-</table>
+<div class="mb-2"><h6 class="fw-bolder">Instructor Expense Subtotals<h6></div>
+<div class="admin-table narrow striped">
+<% @instructor_cost_subtotals.each do |i| %>
+  <div class="row"> 
+    <div class="column col-1x"><%= "#{i[0]} #{i[1]}" %></div>
+    <div class="column col-1x"><%= number_with_delimiter(i[2]) %></div>
+    <div class="column col-1x"><%= number_with_delimiter(i[3]) %></div>        
+  </div>
+<% end %>
+<div class="row">
+  <div class="column col-1x">Total</div>
+  <div class="column col-1x"><%= number_with_delimiter(@total_instructor_cost) %></div>     
+  <div class="column col-1x"><%= number_with_delimiter(@wkclasses_with_instructor_expense.size) %></div>                 
+</div>
+</div>
+
+

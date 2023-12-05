@@ -23,8 +23,8 @@ div i.fa-sort-alpha-down{
 
 select.sort {
   @extend %select;
-  padding: 0.5rem 0.5rem;  
-  min-height: calc(1.5em + 0.5rem + 2px);    
+  padding: 0.1rem 0.5rem;  
+  // min-height: calc(1.5em + 0.5rem + 2px);    
 }
 
 select.attendance {

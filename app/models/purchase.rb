@@ -289,7 +289,7 @@ class Purchase < ApplicationRecord
     return 'adjust & restart' if adjust_restart
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
     return 'PT Package expired' if rider?
-    return 'sunset' if start_date.nil?
+    return 'sunset' if expired_on == sunset_date
 
     'max time period'
   end
@@ -411,7 +411,7 @@ class Purchase < ApplicationRecord
   end
 
   def sunset_action
-    return :sunrise if expiry_cause == 'sunset'
+    return :sunrise if expiry_cause == 'sunset' && status_calc != 'expired' # there should not be an option to sunrise a purchase that would otherwise be expired anyway
     return :sunset if sun_has_set? && !expired?
 
     nil

@@ -1,26 +1,23 @@
+<div class="mb-2"><h6 class="fw-bolder">* Classes with Instructor Expense<h6></div>
 <%= render partial: 'instructor_expense_filter_form' %>
-<table class="table table-secondary table-striped caption-top">
-  <caption>* Classes with Instructor Expense</caption>
-  <tbody>
+  <div class="admin-table striped mt-3">  
     <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
-      <tr>
-        <% wkclass_size = wkclass.attendances.size %>      
-        <th scope="row"><%= index + 1 %></th>
-        <% if logged_in_as?('superadmin') %>
-          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button", data:{ turbo: false } %></td>
-        <% else %>
-          <td><%= wkclass.summary %></td>
-        <% end %>
-        <td><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></td>
-        <td><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></td>        
-        <td><%= wkclass.instructor_name %></td>
-        <td><%= number_with_delimiter(wkclass.rate) %></td>
-      </tr>
+    <div class="row">
+      <% wkclass_size = wkclass.attendances.size %>      
+      <div class="column"><%= index + 1 %></div>
+      <% if logged_in_as?('superadmin') %>
+        <div class="column col-2x"><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button", data:{ turbo: false } %></div>
+      <% else %>
+        <div class="column col-2x"><%= wkclass.summary %></td>
+      <% end %>
+      <div class="column col-1x"><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></div>
+      <div class="column col-1x"><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></div>        
+      <div class="column col-1x"><%= wkclass.instructor_name %></div>
+      <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
+    </div>
     <% end %>
-    <tr>
-      <th scope="row">Total</th>
-      <td><%= rupees(@summary[:variable_expense_filtered]) %></td>
-    </tr>
-  </tbody>
-</table>
+    <div class="row">
+      <div class="column col fw-bolder">Total: <%= rupees(@summary[:variable_expense_filtered]) %></div>
+    </div>
+  </div>
 

@@ -1,56 +1,52 @@
-<table class="table table-secondary table-striped caption-top">
-  <tbody>
-    <tr>
-      <th scope="row" class="fw-light">Attendances</th>
-      <td><%= @summary[:attendance_count] %></td>
-    </tr>
-    <tr>
-      <th scope="row" class="fw-light">Number of Classes</th>
-      <td><%= @summary[:wkclass_count] %></td>
-    </tr>
-    <tr>
-      <th scope="row" class="fw-light">Base Revenue</th>
-      <td><%= number_with_delimiter(@summary[:base_revenue]) %></td>
-    </tr>
-    <tr>
-      <th scope="row" class="fw-light">Expiry Revenue</th>
-      <td><%= number_with_delimiter(@summary[:expiry_revenue]) %></td>
-    </tr>
-    <tr>
-      <th scope="row">Gross Revenue</th>
-      <td><%= number_with_delimiter(@summary[:gross_revenue]) %></td>
-    </tr>
-    <tr>
-      <th scope="row" class="fw-light">GST</th>
-      <td><%= number_to_currency(@summary[:gst], precision: 0, unit: '') %></td>
-    </tr>
-    <tr>
-      <th scope="row" class="fw-light">Net <small>(of GST)</small> Revenue</th>
-      <td><%= number_to_currency(@summary[:net_revenue], precision: 0, unit: '') %></td>
-    </tr>
-    <% unless @summary[:variable_expense].zero? %>
-      <tr>
-        <th scope="row" class="fw-light">Instructor (per-class) Expense*</th>
-        <td><%= number_with_delimiter(@summary[:variable_expense]) %></td>
-      </tr>
-    <% end %>
-    <% unless @summary[:fixed_expense].zero? %>
-    <tr>
-      <th scope="row" class="fw-light">Other Expenses**</th>
-      <td><%= number_with_delimiter(@summary[:fixed_expense]) %></td>
-    </tr>
-    <% end %>
-    <tr>
-      <th scope="row">Total Expense</th>
-      <td><%= number_with_delimiter(@summary[:total_expense]) %></td>
-    </tr>
-    <tr>
-      <th scope="row">Profit</th>
-      <td><%= number_to_currency(@summary[:profit], precision: 0, unit: '') %></td>
-    </tr>
-    <tr>
-      <th scope="row">Partner Share (Rs.)</th>
-      <td><%= number_to_currency(@summary[:partner_share], precision: 0, unit: '') %></td>
-    </tr>
-  </tbody>
-</table>
+  <div class="row">
+    <div class="column col-1x fw-light">Attendances</div>
+    <div class="column col-1x"><%= @summary[:attendance_count] %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">Number of Classes</div>
+    <div class="column col-1x"><%= @summary[:wkclass_count] %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">Base Revenue</div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:base_revenue]) %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">Expiry Revenue</div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:expiry_revenue]) %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">Gross Revenue</div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:gross_revenue]) %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">GST</div>
+    <div class="column col-1x"><%= number_to_currency(@summary[:gst], precision: 0, unit: '') %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">Net <small>(of GST)</small> Revenue</div>
+    <div class="column col-1x"><%= number_to_currency(@summary[:net_revenue], precision: 0, unit: '') %></div>
+  </div>
+  <% unless @summary[:variable_expense].zero? %>    
+    <div class="row">
+      <div class="column col-1x fw-light">Instructor (per-class) Expense*</div>
+      <div class="column col-1x"><%= number_with_delimiter(@summary[:variable_expense]) %></div>
+    </div>
+  <% end %>      
+  <% unless @summary[:fixed_expense].zero? %>    
+    <div class="row">
+      <div class="column col-1x fw-light">Other Expenses**</div>
+      <div class="column col-1x"><%= number_with_delimiter(@summary[:fixed_expense]) %></div>
+    </div>
+  <% end %>    
+  <div class="row">
+    <div class="column col-1x fw-light">Total Expense</div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:total_expense]) %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">Profit</div>
+    <div class="column col-1x"><%= number_to_currency(@summary[:profit], precision: 0, unit: '') %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-bolder">Partner Share (Rs.)</div>
+    <div class="column col-1x fw-bolder"><%= number_to_currency(@summary[:partner_share], precision: 0, unit: '') %></div>
+  </div>

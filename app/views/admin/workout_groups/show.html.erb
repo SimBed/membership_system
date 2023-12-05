@@ -7,22 +7,22 @@
       </select>
     </form-->
 
-    <%= form_with(url: admin_workout_group_path(@workout_group), method: "get") do |form| %>
+    <%= form_with(url: admin_workout_group_path(@workout_group), method: "get", class: 'mb-1 mx-1') do |form| %>
       <%= form.select :revenue_month, options_for_select(@months, @revenue_month), {}, {class: "sort", onchange: "this.form.requestSubmit()"} %>
     <% end %>
 
-    <div id="revenues-table" class="container px-1 mb-5">
+    <div id="revenues-table" class="container admin-table narrow striped px-1 mb-5">
       <%= render partial: 'revenues_table' %>
     </div>
 
     <% unless @summary[:variable_expense].zero? %>
-      <div id="wkclasses-with-expense-table" class="container px-1 mt-5 mb-5">
+      <div id="wkclasses-with-expense-table" class="container px-1 mt-3 mb-3">
         <%= render partial: 'wkclasses_with_expense_table' %>
       </div>
     <% end %>
 
     <% unless @summary[:variable_expense].zero? %>
-      <div id="instructors-expense-table" class="container px-1 mt-5 mb-5">
+      <div id="instructors-expense-table" class="container px-1 mt-3 mb-3">
         <%= render partial: 'instructors_expense_subtotal' %>
       </div>
     <% end %>

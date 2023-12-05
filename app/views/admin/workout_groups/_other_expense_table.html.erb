@@ -1,16 +1,15 @@
-<table class="table table-secondary table-striped caption-top">
-  <caption>** Other Expenses</caption>
-  <tbody>
-    <% @fixed_expenses.each_with_index do |x, index| %>
-      <tr>
-        <th scope="row"><%= index + 1 %></th>
-        <td><%= x.item %></td>
-        <td><%= rupees(x.amount) %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <th scope="row">Total</th>
-      <td><%= rupees(@summary[:fixed_expense]) %></td>
-    </tr>
-  </tbody>
-</table>
+<div class="mb-2"><h6 class="fw-bolder">** Other Expenses<h6></div>
+<div class="admin-table narrow striped">
+  <% @fixed_expenses.each_with_index do |x, index| %>
+    <div class="row"> 
+      <div class="column"><%= index + 1 %></div>
+      <div class="column col-1x"><%= x.item %></div>
+      <div class="column col-1x"><%= rupees(x.amount) %></div>        
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="column fw-bolder">Total</div>
+    <div class="column col-1x"></div>    
+    <div class="column col-1x fw-bolder"><%= rupees(@summary[:fixed_expense]) %></div>    
+  </div>
+</div>
