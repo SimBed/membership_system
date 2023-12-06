@@ -1,6 +1,6 @@
 # https://github.com/huacnlee/rails-settings-cached
 class Setting < RailsSettings::Base
-  cache_prefix { 'v1' }
+  # cache_prefix { 'v1' }
 
   scope :application do
     # field :whitelist, type: :array, default: %w[nishaap trivedi james@t riyajha]
