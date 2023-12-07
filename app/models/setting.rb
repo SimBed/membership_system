@@ -17,6 +17,7 @@ class Setting < RailsSettings::Base
     field :studios, type: :array, default: %w[Cellar Window Den]
     field :levels, type: :array, default: ['Beginner Friendly', 'All Levels', 'Intermediate']
     field :goals, type: :array, default: ['Hypertrophy', 'Foundations', 'HIIT & Core']
+    field :durations, type: :array, default: [60, 45, 90]
   end
 
   scope :discount do

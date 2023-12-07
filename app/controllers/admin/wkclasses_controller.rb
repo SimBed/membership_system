@@ -234,9 +234,9 @@ class Admin::WkclassesController < Admin::BaseController
     (@instructor_rates = @instructor_rates.select(&:group?)) if @wkclass&.workout&.group_workout?
     @capacities = (0..30).to_a + [500]
     @repeats = (0..11).to_a if @wkclass.new_record?
-    @levels = ['Beginner Friendly', 'All Levels', 'Intermediate']
-    @studios = ['Cellar', 'Window', 'Garden', 'Den']
-    @durations = [60, 45, 90]
+    @levels = Setting.levels #['Beginner Friendly', 'All Levels', 'Intermediate']
+    @studios = Setting.studios #['Cellar', 'Window', 'Garden', 'Den']
+    @durations = Setting.durations
     @instructor_id = @wkclass.instructor&.id
     @instructor_rate = @wkclass.instructor_rate&.id
   end

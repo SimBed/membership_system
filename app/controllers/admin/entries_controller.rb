@@ -54,5 +54,6 @@ class Admin::EntriesController < Admin::BaseController
     @levels = Setting.levels
     @studios = Setting.studios
     @goals = Setting.goals
+    @durations = Setting.durations
   end
 end

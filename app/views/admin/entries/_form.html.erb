@@ -37,8 +37,13 @@
 
   <div class="field">
     <%= form.label :duration, 'Duration (mins)' %>
-    <%= form.number_field :duration, value: form.object.duration, step: 5 %>
+    <%= form.select :duration, options_for_select(@durations, @entry.duration) %>
   </div>
+
+  <!--div class="field">
+    <%#= form.label :duration, 'Duration (mins)' %>
+    <%#= form.number_field :duration, value: form.object.duration, step: 5 %>
+  <div-->
 
   <div class="actions">
     <%= form.submit @entry.new_record? ? 'Add Entry' : 'Update Entry' %>     
