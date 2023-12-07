@@ -117,7 +117,7 @@ class Admin::AttendancesController < Admin::BaseController
       update_purchase_status([@purchase]) if result.penalty_change?
       if result.success?
         remove_from_waiting_list
-        flash_message (notify_waiting_list(@wkclass, flash_message: true) if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status])
+        flash_message (notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status])
         handle_admin_update_response
       end
     end
@@ -141,7 +141,7 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass = Wkclass.find(@attendance.wkclass.id)
     @purchase = @attendance.purchase
     @attendance.destroy
-    notify_waiting_list(@wkclass, flash_message: true)
+    notify_waiting_list(@wkclass, triggered_by: 'admin')
     redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
     flash_message :success, t('.success')
   end
@@ -287,7 +287,7 @@ class Admin::AttendancesController < Admin::BaseController
       handle_freeze
     end
     remove_from_waiting_list
-    notify_waiting_list(@wkclass, flash_message: false)
+    notify_waiting_list(@wkclass, triggered_by: 'client')
   end
 
   def action_cancelled_late
@@ -544,10 +544,7 @@ class Admin::AttendancesController < Admin::BaseController
                        reason: 'late cancellation' })
       update_purchase_status([@purchase])
       @penalty_given = true # for the flash
-      # no longer whatsapp as the flash already informs (also the flash below is appropriate for admin but not for a client)
-      # flash_message(*Whatsapp.new(whatsapp_params('late_cancels_penalty')).manage_messaging)
-    else
-      # flash_message(*Whatsapp.new(whatsapp_params('late_cancels_no_penalty')).manage_messaging)
+      # no longer whatsapp as the flash will inform
     end
   end
 
@@ -577,8 +574,8 @@ class Admin::AttendancesController < Admin::BaseController
     @client.waiting_list_for(@wkclass).destroy if @client.on_waiting_list_for?(@wkclass)
   end
 
-  # make dry - repeated in wkclasses controller
-  def notify_waiting_list(wkclass, flash_message: false)
+  #TODO: make dry - repeated in wkclasses controller
+  def notify_waiting_list(wkclass, triggered_by: 'admin')
     return if wkclass.in_the_past?
 
     return if wkclass.at_capacity?
@@ -586,7 +583,7 @@ class Admin::AttendancesController < Admin::BaseController
     wkclass.waitings.each do |waiting|
       Whatsapp.new( { receiver: waiting.purchase.client,
                       message_type: 'waiting_list_blast',
-                      flash_message: flash_message,
+                      triggered_by: triggered_by,
                       variable_contents: { wkclass_name: wkclass.name,
                                            date_time: wkclass.date_time_short } }).manage_messaging
     end

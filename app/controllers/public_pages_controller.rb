@@ -73,7 +73,8 @@ class PublicPagesController < ApplicationController
     daily_accounts_count = Account.where("DATE(created_at)='#{Time.zone.today.to_date}'").size
     return unless daily_accounts_count >= Setting.daily_account_limit
     
-    Whatsapp.new(receiver: 'me', message_type: 'daily_account_limit', variable_contents: { first_name: 'Dan', me?: true }).manage_messaging if Setting.daily_account_limit_triggered == false
+    Whatsapp.new(receiver: 'me', message_type: 'daily_account_limit', variable_contents: { first_name: 'Dan' }).manage_messaging if Setting.daily_account_limit_triggered == false
+    # mitigate multiple messages being sent once the message has been sent once
     Setting.daily_account_limit_triggered = true
     flash[:warning] = t('.daily_account_limit')
     redirect_to signup_path
@@ -97,7 +98,7 @@ class PublicPagesController < ApplicationController
   def whatsapp_params(message_type, password)
     { receiver: @client,
       message_type:,
-      admin_triggered: false,
+      triggered_by: 'client',
       variable_contents: { password: } }
   end
 end

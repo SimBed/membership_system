@@ -2,22 +2,21 @@ class Whatsapp
   def initialize(attributes = {})
     @receiver = attributes[:receiver]
     @message_type = attributes[:message_type]
-    @admin_triggered = attributes[:admin_triggered] || true
-    @flash_message = attributes[:flash_message] || true
+    @triggered_by = attributes[:triggered_by] || 'admin'
     @variable_contents = attributes[:variable_contents]
-    @to_number = [@receiver.is_a?(Client), @receiver.is_a?(Instructor)].any? ? @receiver.whatsapp_messaging_number : Rails.configuration.twilio[:me]
+    @to_number = to_number
+    @to_me = to_me
+    @apply_flash = apply_flash
   end
 
   def manage_messaging
     # the arrays returned are for the flash
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
     # commented out this line for client_waiting_list test to pass. Needs reformatting.   
-    return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
-    return [nil] if @message_type == 'early_cancels_no_penalty'
-
-    return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @admin_triggered
-
-    # return [nil] unless white_list_whatsapp_receivers
+    # return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
+    # return [nil] if @message_type == 'early_cancels_no_penalty'
+    return [nil] unless whatsapp_permitted
+    return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @triggered_by == 'admin'
 
     send_whatsapp
     post_send_whatsapp_flash
@@ -33,7 +32,7 @@ class Whatsapp
       body:
     )
   end
-
+  
   # https://www.twilio.com/docs/content/whatsappauthentication
   def send_password
     twilio_initialise
@@ -58,23 +57,50 @@ class Whatsapp
   end
 
   def post_send_whatsapp_flash
-    return [nil] unless @flash_message == true # note false gets passed as the string 'false' so be careful if reformatting
+    return [nil] unless @apply_flash
+    # TODO: clean, method new_purchase to new_purchase_by_client. if triggered by client ...[:success, I18n.t(:message_sent)]
+    return [:success, I18n.t(:new_purchase_by_client)] if @message_type == 'new_purchase' && @triggered_by == 'client'
 
-    return [nil] if @variable_contents[:me?] # reformat - pass flash_message: false instead (think this relates to the SOS message if multiple accounts have been created)
+    return [:success, I18n.t(:new_signup, name: @receiver.first_name)] if @message_type == 'new_signup'
 
-    return [:success, I18n.t(:new_purchase_by_client)] if @message_type == 'new_purchase' && !@admin_triggered
-
-    return [:success, I18n.t(:signup, name: @receiver.first_name)] if @message_type == 'signup'
-
-    # gsub so the flash says 'password reset message sent' not 'password_reset message sent'
+    # gsub so the flash says eg 'password reset message sent' not 'password_reset message sent'
     [:warning, I18n.t(:message_sent, message_type: @message_type.gsub('_', ' '), to_number: @to_number)]
-    # [:warning, "#{@message_type} message sent to #{@to_number}"]
   end
 
-  # def white_list_whatsapp_receivers
-  #   whatsapp_receivers = Setting.whitelist
-  #   whatsapp_receivers.include?(@receiver.email.slice(0,7))
-  # end
+  def whatsapp_permitted
+    return false if @message_type == 'early_cancels_no_penalty'
+
+    return true if Rails.env.production?
+
+    # for one test in client_waiting_list I have stubbed out whatsapp_send
+    return true if Rails.env.test? && @to_number == '+919161131111'
+    
+    return true if @to_me
+
+    false
+  end
+
+  def to_number
+    return @receiver.whatsapp_messaging_number if [@receiver.is_a?(Client), @receiver.is_a?(Instructor)].any?
+
+    return Rails.configuration.twilio[:me] if @receiver == 'me'
+
+    nil
+  end
+
+  def to_me
+    return true if @to_number == Rails.configuration.twilio[:me]
+
+    false
+  end
+
+  def apply_flash
+    return false if @triggered_by == 'client' && @message_type == 'waiting_list_blast'
+
+    return false if @message_type == 'daily_account_limit'
+
+    true
+  end
 
   def body_waiting_list_blast
     "SPOT AVAILABLE AT #{@variable_contents[:wkclass_name].upcase} at #{@variable_contents[:date_time].upcase}" +

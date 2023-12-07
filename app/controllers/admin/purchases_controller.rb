@@ -416,13 +416,6 @@ class Admin::PurchasesController < Admin::BaseController
     flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
   end
 
-  # whatsapp_recipient_numbers = [Rails.configuration.twilio[:me], Rails.configuration.twilio[:boss]]
-  # whatsapp_recipient_numbers.each do |recipient|
-  #   send_new_account_whatsapp(recipient)
-  #   send_new_purchase_whatsapp(recipient)
-  #   # send_temp_email_confirm_whatsapp(recipient)
-  # end
-
   # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
   def whatsapp_params(message_type)
     { receiver: @purchase.client,

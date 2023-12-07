@@ -1,4 +1,5 @@
 require "test_helper"
+require 'minitest/stub_any_instance'
 
 class ClientWaitingListTest < ActionDispatch::IntegrationTest
   setup do
@@ -164,17 +165,16 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
 
   end
 
-  # this test demonstrates the flash message associated with the Whatsapp class is triggered without explicitly demonstrating the send_whatsapp method fired
-  # I tried to stub the instance method send_whatsapp but had difficulties stubbing an instance method (distinct from a class method)
-  # when clients trigger a waiting list blast they (obviously) don't receive a flash about it, so these cases are untested (aka manually tested) for now
-  # note the  return [nil] unless Rails.env.production? line in Whatsapp#manage_messaging must be commented out for this test to pass. Not ideal. Need to reformat method.
-
+  # Whatsapp.stub :send_whatsapp, true do... didn't seem to work (the whatsapp message still got sent, so resorted to this minitest-stub_any_instance gem)
+  #TODO: when clients (rather than admin) trigger a waiting list blast they shouldn't receive a flash about it. No test for this currently.
   test "waiting list notified when spot opens up (due to capacity increase)" do
     @tomorrows_class_early.update(max_capacity: 0)
-    log_in_as(@account_client)
+    # use this @account_other_client rather than the usual @account, as this @other_client's number is whitelisted in whatsapp_permitted. If i whiteleisted @client's number,
+    # loads of (failed) whatsapps would get sent in in other tests where send_whatsapp isn't stubbed  
+    log_in_as(@account_other_client)
     assert_difference 'Waiting.all.size', 1 do
       post client_waitings_path, params: { wkclass_id: @tomorrows_class_early.id,
-                                          purchase_id: @purchase.id,
+                                          purchase_id: @other_client_purchase.id,
                                           booking_day: 0,
                                           booking_section: 'group' }
     end    
@@ -183,10 +183,11 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     follow_redirect! # clear out flashes from these requests
 
-    # Whatsapp.new.stub :send_whatsapp, { whatsapp_sent: true } do
-    patch admin_wkclass_path(@tomorrows_class_early), params: { wkclass: { max_capacity: 1 } }
-    assert_equal [['waiting list blast message sent by Whatsapp to +916193111111']], flash[:warning]    
-    assert_equal [['Class was successfully updated']], flash[:success]    
+    Whatsapp.stub_any_instance :send_whatsapp, true do
+      patch admin_wkclass_path(@tomorrows_class_early), params: { wkclass: { max_capacity: 1 } }
+      assert_equal [['waiting list blast message sent by Whatsapp to +919161131111']], flash[:warning]    
+      assert_equal [['Class was successfully updated']], flash[:success]    
+    end
 
     # assert_equal 1, @tomorrows_class_early.reload.max_capacity
    end  

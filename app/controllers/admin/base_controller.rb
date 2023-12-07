@@ -15,6 +15,16 @@ class Admin::BaseController < ApplicationController
     @junioradmin = logged_in_as?('junioradmin') ? true : false
   end
 
+  # def whatsapp_permitted(receiver, message_type)
+  #   return false if message_type == 'early_cancels_no_penalty'
+
+  #   return true if Rails.env.production?
+    
+  #   return true if reciever == 'me' || receiver.whatsapp_messaging_number == Rails.configuration.twilio[:me]
+
+  #   false
+  # end
+
   private
 
   def determine_layout

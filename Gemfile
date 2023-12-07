@@ -62,6 +62,8 @@ end
 group :test do
   gem 'capybara', '>= 3.26'
   gem 'faker'
+  # DPS couldn't stub Whatsapp#send_whatsapp without this
+  gem "minitest-stub_any_instance", "~> 1.0"
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
@@ -70,5 +72,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"
+
 
 
