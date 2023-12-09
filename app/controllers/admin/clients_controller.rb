@@ -53,9 +53,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def edit
-    # @form_cancel_link = params[:link_from].blank? ? admin_clients_path : admin_client_path(@client)
-    # @form_cancel_link = params[:link_from] == 'index' ? admin_client_path(@client, link_from: 'index' ) : admin_clients_path
-    @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path #admin_client_path(@client, link_from: params[:link_from] )
+    @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path
   end
 
   def create

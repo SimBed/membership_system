@@ -1,18 +1,20 @@
 <% junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
 <% physical_attendances = wkclass.physical_attendances.size %>
-<tr>
-  <th scope="row"><%= link_to wkclass.table_name, admin_wkclass_path(wkclass), class: "like_button", data: { turbo: false } %></th>
-  <td><%= wkclass.date %></td>
-  <td><%= wkclass.time %></td>
-  <td><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></td>
-  <td><%= wkclass.max_capacity - physical_attendances %> <%= image_tag('group.png', class: "header_icon")%></td>
-  <td><%= wkclass.waitings.size %> <%= image_tag('waiting.png', class: "header_icon")%></td>
-  <% if junioradmin_plus %>
-    <td class="nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass), data: { turbo_frame: 'wkclass_edit' } %></td>
-    <% if wkclass.deletable? %>
-      <td class="nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), data: { "turbo-method": :delete, turbo_confirm: 'Class can be deleted as it has no attendances. But are you sure?' } %></td>
-    <% else %>
-      <td class="nomobile"></td>
+<%= turbo_frame_tag wkclass do %>
+  <div class="row">
+    <div class="column col-1x"><%= link_to wkclass.table_name, admin_wkclass_path(wkclass, link_from: 'wkclasses_index'), class: "like_button" %></div>
+    <div class="column col-1x"><%= wkclass.date %></div>
+    <div class="column col-1x"><%= wkclass.time %></div>
+    <div class="column col-05x"><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></div>
+    <div class="column col-05x"><%= wkclass.max_capacity - physical_attendances %> <%= image_tag('group.png', class: "header_icon")%></div>
+    <div class="column col-05x"><%= wkclass.waitings.size %> <%= image_tag('waiting.png', class: "header_icon")%></div>
+    <% if junioradmin_plus %>
+      <div class="column nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass) %></div>
+      <% if wkclass.deletable? %>
+        <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), data: { "turbo-method": :delete, turbo_confirm: 'Class can be deleted as it has no attendances. But are you sure?' } %></div>
+      <% else %>
+        <div class="column nomobile"></div>
+      <% end %>
     <% end %>
-  <% end %>
-</tr>
+  </div>
+<% end %>

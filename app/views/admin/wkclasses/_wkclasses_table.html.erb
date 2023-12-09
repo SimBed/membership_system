@@ -1,7 +1,5 @@
 <div id="wkclasses-table" class="container px-0 mb-5">
   <div class="page_entries_info px-1">
-    <%#= paginate @wkclasses, remote: true %>
-    <%#= page_entries_info @wkclasses, entry_name: 'classes' %>
     <% if @admin_plus %>
       <div class="record-count mb-1">
         <%= "showing #{@wkclasses&.length} of #{@pagy&.count}" %>
@@ -12,12 +10,10 @@
     </div>   
   </div>
 
-  <table class="table table-secondary table-striped caption-top">
-    <caption></caption>
-    <tbody id="wkclasses">
-      <%= render @wkclasses %>
-    </tbody>
-  </table>
+  <div class="admin-table mt-3">
+    <%= render @wkclasses %>
+  </div>
+
 </div>
 
 

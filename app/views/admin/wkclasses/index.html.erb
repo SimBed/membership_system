@@ -8,7 +8,6 @@
 
 <%= turbo_frame_tag 'wkclasses-and-filter' do %>
   <%= render partial: 'filter_form' %>
-  <%= turbo_frame_tag 'wkclass_edit' %>  
   <% if logged_in_as?('superadmin') %>
     <%= render partial: 'download' %>
   <% end %>

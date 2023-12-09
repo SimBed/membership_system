@@ -88,7 +88,7 @@ class Admin::AttendancesController < Admin::BaseController
   def after_successful_create_by_admin
     @wkclass = @attendance.wkclass
     update_purchase_status([@purchase])
-    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+    redirect_to admin_wkclass_path(@wkclass, link_from: params[:attendance][:link_from])
     flash_message :success, "#{@attendance.client_name}'s attendance was successfully logged"
   end
 
@@ -142,7 +142,7 @@ class Admin::AttendancesController < Admin::BaseController
     @purchase = @attendance.purchase
     @attendance.destroy
     notify_waiting_list(@wkclass, triggered_by: 'admin')
-    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+    redirect_to admin_wkclass_path(@wkclass, link_from: params[:link_from])
     flash_message :success, t('.success')
   end
 
@@ -335,7 +335,8 @@ class Admin::AttendancesController < Admin::BaseController
   def handle_admin_update_response
     set_attendances
     flash_message :success, t('.success', name: @attendance.client_name, status: @attendance.status)
-    redirect_back fallback_location: admin_wkclasses_path
+    # redirect_back fallback_location: admin_wkclasses_path
+    redirect_to admin_wkclass_path(@attendance.wkclass, link_from: params[:attendance][:link_from])
   end
 
   def set_attendances

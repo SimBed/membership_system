@@ -248,6 +248,10 @@ div.my-booking {
         background-color: #ddd;
       }
     }
+    .col-05x {
+      flex: 0.5;
+      overflow: auto;
+    }
     .col-1x {
       flex: 1;
       overflow: auto;

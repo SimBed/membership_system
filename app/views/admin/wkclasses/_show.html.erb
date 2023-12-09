@@ -1,0 +1,20 @@
+<%= turbo_frame_tag dom_id(@wkclass) do %>
+  <div class="admin_form my-2">
+    <div class="container px-1 ">
+      <%= render partial: 'wkclass_summary' %>
+      <div id="attendances-table" class="mb-3">
+          <%= render partial: 'wkclass_attendance_table' %>
+          <%= render partial: 'waiting_list' unless @waitings.empty? %>
+        <% if @junioradmin_plus %>
+          <%= render partial: 'repeat_form' if @wkclass.attendances&.first&.purchase&.pt? %>
+        <% end %>
+      </div>
+
+      <% if @cancel_button %>
+        <div class="cancel">
+          <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclasses_path %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

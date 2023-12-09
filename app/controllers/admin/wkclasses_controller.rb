@@ -43,12 +43,14 @@ class Admin::WkclassesController < Admin::BaseController
     @attendance = Attendance.new
     @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
     # end
-    return if params[:no_scroll]
-
-    @wkclasses = Wkclass.order_by_date
-    handle_filter
-    handle_period
-    check_record_returned
+    # this section (which enbabled scrolling through the wkclassess) is redundant now we are hotwired
+    # return if params[:no_scroll]
+    # @wkclasses = Wkclass.order_by_date
+    # handle_filter
+    # handle_period
+    # check_record_returned
+    @link_from = params[:link_from]
+    @cancel_button = true if @link_from == 'wkclasses_index'    
     respond_to do |format|
       format.html
       format.turbo_stream      
@@ -63,6 +65,8 @@ class Admin::WkclassesController < Admin::BaseController
   def edit
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
+    @form_cancel_link = admin_wkclass_path(@wkclass, link_from: params[:link_from])
+    # @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_wkclass_path(@wkclass, link_from: 'purchases_index') : admin_wkclasses_path    
   end
 
   def create

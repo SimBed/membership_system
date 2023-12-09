@@ -1,15 +1,1 @@
-<div id="class_summary" class="container px-1 ">
-  <%= render partial: 'class_summary' %>
-
-  <div id="classes_table" class="mb-3">
-    <%= turbo_frame_tag 'wkclasses' do %>
-      <%= render partial: 'class_attendance_table' %>
-      <%= render partial: 'waiting_list' unless @waitings.empty? %>
-    <% end %>
-    <% if @junioradmin_plus %>
-      <%= render partial: 'repeat_form' if @wkclass.attendances&.first&.purchase&.pt? %>
-    <% end %>
-  </div>
-
-  <%= link_to image_tag('back.png', class: "back_icon"), admin_wkclasses_path, class: "icon-container" %>
-</div>
+<%= render partial: 'show' %>

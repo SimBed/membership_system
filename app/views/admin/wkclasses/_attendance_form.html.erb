@@ -1,6 +1,7 @@
 <!--%#= form_with(url: edit_admin_attendance_path(@attendance)) do |form| %-->
 <%= form_with(model: [:admin, object], class: "form-class", data: {turbo_method: :patch}) do |form| %>
   <!--div><%#= form.hidden_field :id, :value => object.id %> </div-->
+  <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>
   <div class="field">
     <!-- couldnt get the form helper 'form.select' approach to work. Generated more or less the same html as the direct approach. Return to this to resolve why..-->
     <%# final hash needs curly braces i suggest DPS Aug 2023 %>

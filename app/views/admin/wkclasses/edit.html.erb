@@ -1,8 +1,5 @@
-<h4>Editing Class</h4>
-<%= turbo_frame_tag 'wkclass_edit' do %>
-  <div class="container mb-4">  
+<%= turbo_frame_tag dom_id(@wkclass) do %>
+  <div class="container my-2">  
     <%= render 'form', wkclass: @wkclass, class: 'mb-4' %>
   </div>
 <% end %>
-<%#= link_to image_tag('clipboard.png', class: "back_icon"), admin_wkclass_path(@wkclass), class: "icon-container" %> |
-<%#= link_to image_tag('back.png', class: "back_icon"), admin_wkclasses_path, class: "icon-container" %>
