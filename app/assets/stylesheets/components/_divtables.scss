@@ -214,7 +214,7 @@ div.my-booking {
     }
     &.striped {
       .row:nth-child(even) {
-        background-color: #f9f9f9;       
+        background-color: $gray-200;       
       }
     }
     &.narrow {
@@ -264,8 +264,11 @@ div.my-booking {
       flex: 3;
       overflow: auto;
     }
-  }
 
+    .adj-line-height {
+      line-height: 1.5rem;
+    }
+  }
 
 
   .accordion {

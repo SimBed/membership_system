@@ -1,73 +1,17 @@
   <% view_financials = logged_in_as?('admin', 'superadmin') ? true : false %>
-  <table class="table table-secondary table-striped">
-    <tbody>
-      <tr>
-        <th class="stripe-override" colspan="5">Attendances <small><%= "(#{@physical_attendances&.size || 0})" %> </small></th>
-      </tr>
-      <% @physical_attendances.each do |attendance| %>
-        <tr class="">
-          <% if @junioradmin_plus %>
-            <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
-            <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
-          <% else %>
-            <td><%= attendance.client.name %></td>
-            <td><%= attendance.product.name %></td>
-          <% end %>
-          <% if view_financials %>
-            <td class="adj-line-height"><%= number_with_delimiter(attendance.revenue) %></td>
-          <% end %>
-          <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-          <% unless logged_in_as?('instructor') %>
-            <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance, link_from: params[:link_from]), data: { turbo_method: :delete, turbo_confirm: 'Attendance will be deleted. Are you sure?' } %></td> 
-          <% end %>
-        </tr>
-      <% end %>
-      <% unless @ethereal_attendances_no_amnesty.empty? %>
-        <tr>
-          <th class="stripe-override" colspan="5">No-amnesties <small><%= "(#{@ethereal_attendances_no_amnesty&.size || 0})" %> </small></th>
-        </tr>
-        <% @ethereal_attendances_no_amnesty.each do |attendance| %>
-          <tr class="">
-            <% if @junioradmin_plus %>
-              <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
-              <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
-            <% else %>
-              <td><%= attendance.client.name %></td>
-              <td><%= attendance.product.name %></td>
-            <% end %>
-            <% if view_financials %>
-              <td class=""><%= number_with_delimiter(attendance.revenue) %></td>
-            <% end %>
-            <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-            <% unless logged_in_as?('instructor') %>
-              <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance, link_from: params[:link_from]), {data: { turbo_method: :delete, turbo_confirm: 'Attendance will be deleted. Are you sure?' }} %></td> 
-              <!--td><%#= button_to 'X', admin_attendance_path(attendance), class: "button-image-sub", method: :delete, form: {data: { turbo_confirm: 'Attendance will be deleted. Are you sure?' }} %></td--> 
-            <% end %>
-          </tr>
-        <% end %>
-      <% end %>
-      <% unless @ethereal_attendances_amnesty.empty? %>
-        <tr>
-          <th class="stripe-override" colspan="5">Amnesties <small><%= "(#{@ethereal_attendances_amnesty&.size || 0})" %> </small></th>
-        </tr>
-        <% @ethereal_attendances_amnesty.each do |attendance| %>
-          <tr class="">
-            <% if @junioradmin_plus %>
-              <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></td>
-              <td><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></td>
-            <% else %>
-              <td><%= attendance.client.name %></td>
-              <td><%= attendance.product.name %></td>
-            <% end %>
-            <% if view_financials %>
-              <td class=""><%= number_with_delimiter(attendance.revenue) %></td>
-            <% end %>
-            <td><%= render 'admin/wkclasses/attendance_form', object: attendance %></td>
-            <% unless logged_in_as?('instructor') %>
-              <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance, link_from: params[:link_from]), {data: { turbo_method: :delete,  turbo_confirm: 'Attendance will be deleted. Are you sure?' }} %></td> 
-            <% end %>
-          </tr>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="admin-table striped mt-2">
+    <div class="mt-2 px-1">Attendances <small><%= "(#{@physical_attendances&.size || 0})" %> </small></div>
+    <%= render partial: 'wkclass_attendance', collection: @physical_attendances, as: :attendance, locals: {view_financials: view_financials} %>
+  </div>
+  <% unless @ethereal_attendances_no_amnesty.empty? %>
+    <div class="admin-table striped mt-2">
+      <div class="mt-2 px-1">No-amnesties <small><%= "(#{@ethereal_attendances_no_amnesty&.size || 0})" %> </small></div>
+      <%= render partial: 'wkclass_attendance', collection: @ethereal_attendances_no_amnesty, as: :attendance, locals: {view_financials: view_financials} %>
+    </div>
+  <% end %>
+  <% unless @ethereal_attendances_amnesty.empty? %>  
+    <div class="admin-table striped mt-2">
+      <div class="mt-2 px-1">Amnesties <small><%= "(#{@ethereal_attendances_amnesty&.size || 0})" %> </small></div>
+      <%= render partial: 'wkclass_attendance', collection: @ethereal_attendances_amnesty, as: :attendance, locals: {view_financials: view_financials} %>
+    </div>
+  <% end %>
