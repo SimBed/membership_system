@@ -394,7 +394,7 @@ class Admin::AttendancesController < Admin::BaseController
     if client?
       redirect_to client_book_path(@client)
     else # must be admin
-      redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+      redirect_to admin_wkclass_path(@wkclass)
     end
   end
 
@@ -407,7 +407,7 @@ class Admin::AttendancesController < Admin::BaseController
     if client?
       redirect_to client_book_path(@client)
     else # must be admin (not conceviable through UI)
-      redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+      redirect_to admin_wkclass_path(@wkclass)
     end
   end
 
@@ -469,8 +469,8 @@ class Admin::AttendancesController < Admin::BaseController
       redirect_to client_book_path(@client)
     else
       flash_message :warning, t('admin.attendances.action_new_booking_when_prov_expired.admin.warning')
-      # flash[:warning] = I18n.t 'admin.attendances.action_new_booking_when_prov_expired.admin.warning'
-      redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+      # linked_from param is not relevatn as this attempt at booking is not possible throug the UI
+      redirect_to admin_wkclass_path(@wkclass)
     end
   end
 
@@ -488,7 +488,7 @@ class Admin::AttendancesController < Admin::BaseController
     flash_message :warning,
                   ['The purchase has provisionally expired.',
                    'This change may not be possible without first cancelling a booking']
-    redirect_to admin_wkclass_path(@attendance.wkclass, no_scroll: true)
+    redirect_to admin_wkclass_path(@attendance.wkclass, link_from: params[:attendance][:link_from])
   end
 
   def provisionally_expired

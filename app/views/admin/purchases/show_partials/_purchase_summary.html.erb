@@ -12,11 +12,11 @@
       <th scope="row">Base Price</th>
       <td><%= rupees(@purchase.price.price) %></td>
     </tr>
-    <tr>
     <% unless @purchase.discounts.empty? %>
-      <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
-    <% end %>
     <tr>
+      <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
+    <tr>
+    <% end %>
       <th scope="row">Paid on</th>
       <td><%= @purchase.dop.strftime('%d %b %y') %></td>
     </tr>

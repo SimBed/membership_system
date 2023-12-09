@@ -1,4 +1,5 @@
 <%= form_with(url: wkclass_repeat_path, scope: 'wkclass') do |form| %>
+  <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>
   <div class="field">
     <%= form.label :repeats do %>
     Repeat for a further this many weeks

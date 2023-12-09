@@ -15,7 +15,7 @@
         <% wkclass = pen.attendance.wkclass %>
         <tr>
           <th scope="row"><%= index + 1 %></th>
-          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, no_scroll: true), class: "like_button" %></td>
+          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></td>
           <td><%= "#{pluralize(pen.amount, 'day')}" %></td>
           <td><%= pen.reason %></td>
         </tr>

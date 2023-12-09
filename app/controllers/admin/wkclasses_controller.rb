@@ -85,8 +85,6 @@ class Admin::WkclassesController < Admin::BaseController
     else
       @wkclass = Wkclass.new(wkclass_params)
       if @wkclass.save
-        # redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
-        # the index method will respond with a turbo-stream (no create.turbo_stream.erb needed)
         redirect_to admin_wkclasses_path
         flash[:success] = t('.success', repeats: '1 class was')
       else
@@ -134,7 +132,7 @@ class Admin::WkclassesController < Admin::BaseController
         flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were")
       else
         wkclass = wkclasses.select(&:invalid?).first
-        flash[:warning] = t('.partial_success', date_of_first_error: wkclass.start_time.to_date)
+        flash[:warning] = t('.partial_success', date_of_first_error: wkclass.start_time.to_date.strftime('%d %b %y'))
       end
     else
       flash[:warning] = t('.error')
@@ -170,16 +168,15 @@ class Admin::WkclassesController < Admin::BaseController
   def attendance_check
     @attendances = @wkclass.attendances
     return if @attendances.size == 1
-
     flash[:warning] = 'No classes created. There must be 1 and only 1 booking for this class.' # t('.not_one_booking')
-    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+    redirect_to admin_wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
   end
 
   def attendance_remain_check
     return if @attendances.first.purchase.attendances_remain >= @weeks_to_repeat
 
     flash[:warning] = 'No classes created. Number of repeats exceeds the number of bookings that remain on the Package' # t('.repeats_too_high')
-    redirect_to admin_wkclass_path(@wkclass, no_scroll: true)
+    redirect_to admin_wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
   end
 
   def set_repeats

@@ -123,7 +123,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
 
-    assert_redirected_to admin_wkclass_path(Wkclass.last(3)[2], no_scroll: true)
+    assert_redirected_to admin_wkclass_path(Wkclass.last(3)[2])
     assert_equal([['The maximum number of classes has already been booked']], flash[:warning])
   end
 
@@ -207,7 +207,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled late' } }
     end
 
-    assert_redirected_to admin_wkclass_path @attendance.wkclass, { no_scroll: true }
+    assert_redirected_to admin_wkclass_path @attendance.wkclass
     assert_equal [['The purchase has provisionally expired.',
                    'This change may not be possible without first cancelling a booking']], flash[:warning]
   end
