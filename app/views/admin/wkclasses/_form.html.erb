@@ -14,7 +14,7 @@
   <% end %>
 
   <%#= form.collection_select :workout_id, @workouts, :id, :name, { selected: (@wkclass.workout&.id || @workouts.first) }, { disabled: (true unless @wkclass.attendances.size.zero?) } %>
-
+  <div><%= form.hidden_field :page, value: params[:page] %></div>
   <div class="field" data-controller = "content-loader" data-content-loader-url-value = <%= wkclasses_instructor_select_path %> data-content-loader-capacity-value = 'yes'>
     <%# the wkclass must not be edited after an attendance has been added, otherwise careless administration may cause clients to attend a class for which they do not have an applicable product %>
     <% workout_options = @workouts.map { |w| [w.name, w.id, {'data-capacity' => w.default_capacity}] } %>

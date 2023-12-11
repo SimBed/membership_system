@@ -1,28 +1,25 @@
 <% adjustments = @purchase.adjustments %>
 <% unless adjustments.count.zero? %>
-  <table class="table table-secondary table-striped caption-top">
-    <caption><%= "#{pluralize(adjustments.size, 'Adjustment')} (#{pluralize(adjustments.map(&:adjustment).inject(&:+), 'day')})" %></caption>
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Date</th>
-        <th scope="col">Days</th>
-        <th scope="col">Note</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% adjustments.each_with_index do |adj, index| %>
-        <tr>
-          <th scope="row"><%= index + 1 %></th>
-          <td><%= adj.created_at.strftime('%d %b %y') %></td>
-          <td><%= "#{pluralize(adj.adjustment, 'day')}" %></td>
-          <td><%= adj.note %></td>
-          <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_adjustment_path(adj), class: "icon-container", data: { turbo_frame: 'freeze_edit' } %></td>
-          <td><%= link_to image_tag('delete.png', class: "table_icon"), admin_adjustment_path(adj), data: { turbo_method: :delete, turbo_confirm: 'Adjustment will be deleted. Are you sure?' } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="fst-italic ps-2"><%= "#{pluralize(adjustments.size, 'Adjustment')} (#{pluralize(adjustments.map(&:adjustment).inject(&:+), 'day')})" %></div>
+  <div class="admin-table striped mt-2 mb-4">
+    <div class="row thead">
+      <div class="column"></div>
+      <div class="column col-1x">Date</div>
+      <div class="column col-1x">Days</div>
+      <div class="column col-1x">Note</div>
+      <div class="column"></div>
+      <div class="column"></div>
+    </div>
+    <% adjustments.each_with_index do |adj, index| %>
+      <div class="row">
+        <div class="column"><%= index + 1 %></div>
+        <div class="column col-1x"><%= adj.created_at.strftime('%d %b %y') %></div>
+        <div class="column col-1x"><%= "#{pluralize(adj.adjustment, 'day')}" %></div>
+        <div class="column col-1x"><%= adj.note %></div>
+        <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_adjustment_path(adj), class: "icon-container", data: { turbo_frame: 'adjustment_edit' } %></div>
+        <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), admin_adjustment_path(adj), data: { turbo_method: :delete, turbo_confirm: 'Adjustment will be deleted. Are you sure?' } %></div>
+      </div>
+    <% end %>
+  </div>
+  <%= turbo_frame_tag 'adjustment_edit' %>  
 <% end %>

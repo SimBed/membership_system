@@ -1,95 +1,93 @@
-<table class="table table-secondary table-striped caption-top">
-  <caption>
-    <%= link_to @purchase.formal_name, admin_purchase_path(@purchase), class: "like_button" if setting == 'admin_client_show' %>
-    <%= 'Summary' if setting == 'admin_purchase_show' %>
-  </caption>
-  <tbody>
-    <tr>
-      <th scope="row">Payment</th>
-      <td><%= rupees(@purchase.payment) %></td>
-    </tr>
-    <tr>
-      <th scope="row">Base Price</th>
-      <td><%= rupees(@purchase.price.price) %></td>
-    </tr>
-    <% unless @purchase.discounts.empty? %>
-    <tr>
-      <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
-    <tr>
-    <% end %>
-      <th scope="row">Paid on</th>
-      <td><%= @purchase.dop.strftime('%d %b %y') %></td>
-    </tr>
-    <tr>
-      <th scope="row">Status</th>
-      <td><%= @purchase.status %></td>
-    </tr>
-    <% unless @purchase.not_started? %>
-      <tr>
-        <th scope="row">Expiry date</th>
-        <td><%= @purchase.expiry_date&.strftime('%d %b %y') %></td>
-      </tr>
-    <% end %>
-    <% unless @purchase.expired? %>    
-      <tr>
-        <th scope="row">Sunset date</th>
-        <td><%= @purchase.sunset_date.strftime('%d %b %y') %></td>
-      </tr>  
-    <% end %>     
-    <% unless @sunset_hash[:action].nil? %>
-      <tr>
-        <th scope="row">Sunset action</th>
-        <td><%= link_to (tag.i class: ["bi", @sunset_hash[:image], ("" if  @purchase.expired?)]), expire_purchase_path(@purchase), data: { turbo_method: :patch , turbo_confirm: @sunset_hash[:confirm] } %></td>
-      </tr>
-    <% end %>   
-    <% unless @purchase.not_started? || @purchase.expired? %>
-      <tr>
-        <th scope="row">Bookings left</th>
-        <td><%= @purchase.attendances_remain(provisional: true) %></td>
-      </tr>
-      <tr>
-        <th scope="row">Attendances left</th>
-        <td><%= @purchase.attendances_remain(provisional: false) %></td>
-      </tr>
-    <% end %>
-    <% if @purchase.expired? %>
-      <tr>
-        <th scope="row">Expiry cause</th>
-        <td><%= @purchase.expiry_cause %></td>
-      </tr>
-      <tr>
-        <th scope="row">Expired on</th>
-        <td><%= @purchase.expired_on&.strftime('%d %b %y') %></td>
-      </tr>
-    <% end %>
-    <% if @purchase.provisionally_expired? %>
-      <tr>
-        <th scope="row">Will expire on</th>
-        <td><%= @purchase.will_expire_on&.strftime('%d %b %y') %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <th scope="row">Payment mode</th>
-      <td><%= @purchase.payment_mode%></td>
-    </tr>
-    <tr>
-      <th scope="row">Invoice</th>
-      <td><%= @purchase.invoice %></td>
-    </tr>
-    <tr>
-      <th scope="row">Note</th>
-      <td><%= @purchase.note %></td>
-    </tr>
-    <% if @purchase.adjust_restart %>
-      <tr>
-        <th scope="row">A&R paid</th>
-        <td><%= rupees(@purchase.ar_payment) %></td>
-      </tr>
-      <tr>
-        <th scope="row">A&R paid on</th>
-        <td><%= @purchase.ar_date.strftime('%d %b %y') %></td>
-      </tr>
-    <% end %>
+<div class="fst-italic ps-2">    
+  <%= link_to @purchase.formal_name, admin_purchase_path(@purchase), class: "like_button" if setting == 'admin_client_show' %>
+  <%= 'Summary' if setting == 'admin_purchase_show' %>
+</div>
+<div class="admin-table striped mt-2 mb-4">
+  <div class="row">
+    <div class="column col-1x">Payment</div>
+    <div class="column col-1x"><%= rupees(@purchase.payment) %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x">Base Price</div>
+    <div class="column col-1x"><%= rupees(@purchase.price.price) %></div>
+  </div>
+  <% unless @purchase.discounts.empty? %>
 
-  </tbody>
-</table>
+      <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
+
+  <% end %>  
+  <div class="row">
+    <div class="column col-1x">Paid on</div>
+    <div class="column col-1x"><%= @purchase.dop.strftime('%d %b %y') %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x">Status</div>
+    <div class="column col-1x"><%= @purchase.status %></div>
+  </div>
+  <% unless @purchase.not_started? %>
+    <div class="row">
+      <div class="column col-1x">Expiry date</div>
+      <div class="column col-1x"><%= @purchase.expiry_date&.strftime('%d %b %y') %></div>
+    </div>  
+  <% end %>  
+  <% unless @purchase.expired? %>
+    <div class="row">
+      <div class="column col-1x">Sunset date</div>
+      <div class="column col-1x"><%= @purchase.sunset_date.strftime('%d %b %y') %></div>
+    </div>  
+  <% end %>  
+  <% unless @sunset_hash[:action].nil? %>
+    <div class="row">
+      <div class="column col-1x">Sunset action</div>
+      <div class="column col-1x"><%= link_to (tag.i class: ["bi", @sunset_hash[:image], ("" if  @purchase.expired?)]), expire_purchase_path(@purchase), data: { turbo_method: :patch , turbo_confirm: @sunset_hash[:confirm] } %></div>
+    </div>  
+  <% end %>  
+  <% unless @purchase.not_started? || @purchase.expired? %>
+    <div class="row">
+      <div class="column col-1x">Bookings left</div>
+      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: true) %></div>
+    </div>  
+    <div class="row">
+      <div class="column col-1x">Attendances left</div>
+      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: false) %></div>
+    </div>  
+  <% end %>  
+  <% if @purchase.expired? %>
+    <div class="row">
+      <div class="column col-1x">Expiry cause</div>
+      <div class="column col-1x"><%= @purchase.expiry_cause %></div>
+    </div>  
+    <div class="row">
+      <div class="column col-1x">Expiry on</div>
+      <div class="column col-1x"><%= @purchase.expired_on&.strftime('%d %b %y') %></div>
+    </div>  
+  <% end %>  
+  <% if @purchase.provisionally_expired? %>
+    <div class="row">
+      <div class="column col-1x">Will expire on</div>
+      <div class="column col-1x"><%= @purchase.will_expire_on&.strftime('%d %b %y') %></div>
+    </div>  
+  <% end %>  
+  <div class="row">
+    <div class="column col-1x">Payment mode</div>
+    <div class="column col-1x"><%= @purchase.payment_mode %></div>
+  </div>  
+  <div class="row">
+    <div class="column col-1x">Invoice</div>
+    <div class="column col-1x"><%= @purchase.invoice %></div>
+  </div>  
+  <div class="row">
+    <div class="column col-1x">Note</div>
+    <div class="column col-1x"><%= @purchase.note %></div>
+  </div>
+  <% if @purchase.adjust_restart %>
+    <div class="row">
+      <div class="column col-1x">A&R paid</div>
+      <div class="column col-1x"><%= rupees(@purchase.ar_payment) %></div>
+    </div> 
+    <div class="row">
+      <div class="column col-1x">A&R paid on</div>
+      <div class="column col-1x"><%= @purchase.ar_date.strftime('%d %b %y') %></div>
+    </div> 
+  <% end %> 
+</div>

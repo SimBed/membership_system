@@ -2,16 +2,16 @@
 <% physical_attendances = wkclass.physical_attendances.size %>
 <%= turbo_frame_tag wkclass do %>
   <div class="row">
-    <div class="column col-1x"><%= link_to wkclass.table_name, admin_wkclass_path(wkclass, link_from: 'wkclasses_index'), class: "like_button" %></div>
+    <div class="column col-1x"><%= link_to wkclass.table_name, admin_wkclass_path(wkclass, link_from: 'wkclasses_index', page: params[:page]), class: "like_button" %></div>
     <div class="column col-1x"><%= wkclass.date %></div>
     <div class="column col-1x"><%= wkclass.time %></div>
     <div class="column col-05x"><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></div>
     <div class="column col-05x"><%= wkclass.max_capacity - physical_attendances %> <%= image_tag('group.png', class: "header_icon")%></div>
     <div class="column col-05x"><%= wkclass.waitings.size %> <%= image_tag('waiting.png', class: "header_icon")%></div>
     <% if junioradmin_plus %>
-      <div class="column nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass) %></div>
+      <div class="column nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(wkclass, page: params[:page]) %></div>
       <% if wkclass.deletable? %>
-        <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass), data: { "turbo-method": :delete, turbo_confirm: 'Class can be deleted as it has no attendances. But are you sure?' } %></div>
+        <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclass_path(wkclass, page: params[:page]), data: { "turbo-method": :delete, turbo_confirm: 'Class can be deleted as it has no attendances. But are you sure?' } %></div>
       <% else %>
         <div class="column nomobile"></div>
       <% end %>

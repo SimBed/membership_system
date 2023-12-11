@@ -65,7 +65,7 @@ class Admin::WkclassesController < Admin::BaseController
   def edit
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
-    @form_cancel_link = admin_wkclass_path(@wkclass, link_from: params[:link_from])
+    @form_cancel_link = admin_wkclasses_path(link_from: params[:link_from], page: params[:page])
     # @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_wkclass_path(@wkclass, link_from: 'purchases_index') : admin_wkclasses_path    
   end
 
@@ -97,7 +97,7 @@ class Admin::WkclassesController < Admin::BaseController
   def update
     if @wkclass.update(wkclass_params)
       notify_waiting_list(@wkclass) if @affects_waiting_list
-      redirect_to admin_wkclasses_path
+      redirect_to admin_wkclasses_path(page: params[:wkclass][:page])
       flash_message :success, t('.success')
     else
       prepare_items_for_dropdowns
@@ -112,7 +112,7 @@ class Admin::WkclassesController < Admin::BaseController
     @purchases = @wkclass.attendances.map(&:purchase)
     @wkclass.destroy
     update_purchase_status(@purchases)
-    redirect_to admin_wkclasses_path
+    redirect_to admin_wkclasses_path(page: params[:page])
     flash[:success] = t('.success')
   end
 

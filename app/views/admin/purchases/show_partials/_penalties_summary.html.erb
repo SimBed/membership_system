@@ -1,25 +1,23 @@
 <% penalties = @purchase.penalties %>
 <% unless penalties.count.zero? %>
-  <table class="table table-secondary table-striped caption-top">
-    <caption><%= "#{pluralize(penalties.size, 'Penalty')} (#{pluralize(penalties.map(&:amount).inject(&:+), 'day')})" %></caption>
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Date</th>
-        <th scope="col">Days</th>
-        <th scope="col">Reason</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% penalties.each_with_index do |pen, index| %>
-        <% wkclass = pen.attendance.wkclass %>
-        <tr>
-          <th scope="row"><%= index + 1 %></th>
-          <td><%= link_to wkclass.summary, admin_wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></td>
-          <td><%= "#{pluralize(pen.amount, 'day')}" %></td>
-          <td><%= pen.reason %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="fst-italic ps-2"><%= "#{pluralize(penalties.size, 'Penalty')} (#{pluralize(penalties.map(&:amount).inject(&:+), 'day')})" %></div>
+  <div class="admin-table striped mt-2 mb-4">
+    <div class="row thead">
+      <div class="column"></div>
+      <div class="column col-1x">Class</div>
+      <div class="column col-1x">Date</div>
+      <div class="column col-1x">Days</div>
+      <div class="column col-1x">Reason</div>
+    </div>
+    <% penalties.each_with_index do |pen, index| %>
+      <% wkclass = pen.attendance.wkclass %>    
+      <div class="row">
+        <div class="column"><%= index + 1 %></div>
+        <div class="column col-1x"><%= link_to wkclass.name, admin_wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
+        <div class="column col-1x"><%= link_to wkclass.date %></div>
+        <div class="column col-1x"><%= "#{pluralize(pen.amount, 'day')}" %></div>
+        <div class="column col-1x"><%= pen.reason %></div>
+      </div>
+    <% end %>
+  </div>
 <% end %>

@@ -1,77 +1,75 @@
-<table class="table table-secondary table-striped caption-top">
-  <caption>Contact</caption>
-  <tbody>
-    <tr>
-      <th scope="row">Email</th>
-      <td><%= @client.email %></td>
-    </tr>
-    <% unless @client.whatsapp.blank? %>
-      <tr>
-        <th scope="row">Whatsapp</th>
-        <td><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></td>
-      </tr>
-    <% end %>
-    <% unless @client.phone.blank? %>
-      <tr>
-        <th scope="row">Phone</th>
-        <td><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></td>
-      </tr>
-    <% end %>      
-    <% unless @client.instagram.blank? %>
-      <tr>
-        <th scope="row">Instagram</th>
-        <td><%= @client.instagram %></td>
-      </tr>
-    <% end %>
-    <% if @client.student? %>
-      <tr>
-        <th scope="row">Student</th>
-        <td><%= raw("&check;") %></td>
-      </tr>
-    <% end %>
-    <% if @client.friends_and_family? %>
-      <tr>
-        <th scope="row">Friend & Family</th>
-        <td><%= raw("&check;") %></td>
-      </tr>
-    <% end %>
-    <% unless @client.note.blank? %>
-      <tr>
-        <th scope="row">Note</th>
-        <td><%= @client.note %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="fst-italic ps-2">Contact</div>
+<div class="admin-table striped mt-2 mb-4">
+  <div class="row">
+    <div class="column col-1x">Email</div>
+    <div class="column col-1x"><%= @client.email %></div>
+  </div>
+  <% unless @client.whatsapp.blank? %>
+  <div class="row">
+      <div class="column col-1x">Whatsapp</div>
+      <div class="column col-1x"><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></div>
+    </div>
+  <% end %>
+  <% unless @client.phone.blank? %>
+    <div class="row">
+      <div class="column col-1x">Phone</div>
+      <div class="column col-1x"><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></div>
+    </div>
+  <% end %>      
+  <% unless @client.instagram.blank? %>
+    <div class="row">
+      <div class="column col-1x">Instagram</div>
+      <div class="column col-1x"><%= @client.instagram %></div>
+    </div>
+  <% end %>
+  <% if @client.student? %>
+    <div class="row">
+      <div class="column col-1x">Student</div>
+      <div class="column col-1x"><%= raw("&check;") %></div>
+    </div>
+  <% end %>
+  <% if @client.friends_and_family? %>
+    <div class="row">
+      <div class="column col-1x">Friend & Family</div>
+      <div class="column col-1x"><%= raw("&check;") %></div>
+    </div>
+  <% end %>
+  <% unless @client.note.blank? %>
+    <div class="row">
+      <div class="column col-1x">Note</div>
+      <div class="column col-1x"><%= @client.note %></div>
+    </div>
+  <% end %>
+</div>
 
-<table class="table table-secondary table-striped caption-top">
-  <caption>History</caption>
-  <tbody>
-    <tr>
-      <th scope="row">Classes Attended</th>
-      <td><%= @client_hash[:attendances] %></td>
-    </tr>
-    <tr>
-      <th scope="row">Total Packages</th>
-      <td><%= @client_hash[:packages] %></td>
-    </tr>
-    <tr>
-      <th scope="row">Total DropIns</th>
-      <td><%= @client_hash[:dropins] %></td>
-    </tr>
-    <% if logged_in_as?('superadmin') %>
-      <tr>
-        <th scope="row">Total Spend</th>
-        <td><%= rupees(@client_hash[:spend]) %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <th scope="row">Last Class</th>
-      <td><%= @client_hash[:last_counted_class].nil? ? "not yet attended" : "#{time_ago_in_words(@client_hash[:last_counted_class])} ago" %></td>
-    </tr>
-    <tr>
-      <th scope="row">First contact</th>
-      <td><%= "#{time_ago_in_words(@client_hash[:date_created])} ago" %></td>
-    </tr>
-  </tbody>
-</table>
+
+<div class="fst-italic ps-2">History</div>
+<div class="admin-table striped mt-2">
+  <div class="row">
+    <div class="column col-1x">Classes Attended</div>
+    <div class="column col-1x"><%= @client_hash[:attendances] %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x">Total Packages</div>
+    <div class="column col-1x"><%= @client_hash[:packages] %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x">Total DropIns</div>
+    <div class="column col-1x"><%= @client_hash[:dropins] %></div>
+  </div>
+  <% if logged_in_as?('superadmin') %>
+    <div class="row">
+      <div class="column col-1x">Total Spend</div>
+      <div class="column col-1x"><%= rupees(@client_hash[:spend]) %></div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="column col-1x">Last Class</div>
+    <div class="column col-1x"><%= @client_hash[:last_counted_class].nil? ? "not yet attended" : "#{time_ago_in_words(@client_hash[:last_counted_class])} ago" %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x">First contact</div>
+    <div class="column col-1x"><%= "#{time_ago_in_words(@client_hash[:date_created])} ago" %></div>
+  </div>
+
+</div>
