@@ -1,35 +1,30 @@
-<tr>
+<div class="row">
   <% if logged_in_as?('admin', 'superadmin') %>        
-    <th class="fw-light"><%= link_to product.name, admin_product_path(product), class: 'like_button', data: { turbo: false } %></th>
+    <div class="column col-2x fw-light"><%= link_to product.name, admin_product_path(product), class: 'like_button', data: { turbo: false } %></div>
   <% else %>
-    <th class="fw-light"><%= product.name %></th>
+    <div class="column col-2x fw-light"><%= product.name %></div>
   <% end %>
   <% if logged_in_as?('superadmin') %>          
-    <td class="nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", "link", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), data: { "turbo-method": :patch } %></td>
+    <div class="column col-1x nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", "link", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), data: { "turbo-method": :patch } %></div>
   <% else %>
-    <td class="nomobile"><%= tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)] %></td>
+    <div class="column col-1x nomobile"><%= tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)] %></div>
   <% end %>
   <% if logged_in_as?('admin', 'superadmin') %>
-    <td class="nomobile"><%= link_to image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')), admin_product_path(product, current: !product.current?), data: { "turbo-method": :patch } %></td>        
+    <div class="column nomobile col-1x"><%= link_to image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')), admin_product_path(product, current: !product.current?), data: { "turbo-method": :patch } %></div>        
   <% else %>
-    <td class="nomobile"><%= image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')) %></td>        
+    <div class="column nomobile col-1x"><%= image_tag('attendances.png', class: ["table_icon",("active-product" unless product.current?)].compact.join(' ')) %></div>        
   <% end %>
-  <td class="nomobile"><%= product.rider? ? raw("&check;") : "-" %></td>
-  <td class="nomobile"><%= product.has_rider? ? raw("&check;") : "-" %></td>
+  <div class="column nomobile col-1x"><%= product.rider? ? raw("&check;") : "-" %></div>
+  <div class="column nomobile col-1x"><%= product.has_rider? ? raw("&check;") : "-" %></div>
   <% product_data = @products_data[product.name.to_sym] %>
   <% if logged_in_as?('admin', 'superadmin') %>
-    <td><%= product_data[:total_count] %></td>
-    <td><%= product_data[:ongoing_count] %></td>
+    <div class="column col-1x"><%= product_data[:total_count] %></div>
+    <div class="column col-1x"><%= product_data[:ongoing_count] %></div>
   <% end %>
-  <td><%= number_with_delimiter(product_data[:base_price]) %></td>
-  <%# if logged_in_as?('superadmin') %>
-    <!--td><%#= link_to image_tag('edit.png', class: "table_icon"), edit_admin_product_path(product) %></td-->
-  <%# end %>
+   <div class="column col-1x"><%= number_with_delimiter(product_data[:base_price]) %></div>
   <% if logged_in_as?('superadmin') && product.deletable? %>
-    <td class="nomobile"> <%= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), data: { turbo_method: :delete, turbo_confirm: "#{product.name} has no purchases and so can be deleted. Are you sure?" } %></td>
+    <div class="column"> <%= link_to image_tag('delete.png', class: "table_icon"), admin_product_path(product), data: { turbo_method: :delete, turbo_confirm: "#{product.name} has no purchases and so can be deleted. Are you sure?" } %></div>
   <% else %>
-    <td class="nomobile"></td>
+    <div class="column"></div>
   <% end %>
-</tr>
-
-
+</div>

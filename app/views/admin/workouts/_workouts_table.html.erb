@@ -1,16 +1,14 @@
-<div id="workouts-table" class="container px-0 mb-5">
-  <table class="table table-secondary table-striped caption-top">
-    <caption class="ps-1">Workout List <small><%="(#{@workouts.size})"%></small></caption>
-    <thead>
-      <tr>
-        <th scope="col" class="fst-italic">Workout</th>
-        <th scope="col" class="fst-italic">Workout Group</th>
-        <th scope="col" class="fst-italic">Active</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render @workouts %>
-    </tbody>
-  </table>
+<div class="container px-0 mb-5">
+  <div>Workout List <small><%="(#{@workouts.size})"%></small></div>
+  <div class="admin-table mt-2">
+    <div class="row thead">
+      <div class="column col-2x extra-small">Workout</div>
+      <div class="column col-2x extra-small">Workout Group</div>
+      <div class="column col-1x extra-small">Active</div>
+      <div class="column"></div>
+    </div>
+  </div>
+  <div class="admin-table">
+    <%= render @workouts %>
+  </div>
 </div>

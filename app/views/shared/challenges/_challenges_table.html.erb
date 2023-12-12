@@ -1,18 +1,17 @@
 <div id="challenges-table" class="container px-0 mb-5">
-  <table class="table table-secondary table-striped caption-top">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Metric</th>
-        <th>Metric Type</th>
-        <th>Main Challenge</th>
-        <% if logged_in_as?('superadmin') %>
-          <th colspan="2"></th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render @challenges %>
-    </tbody>
-  </table>
+  <div class="admin-table mt-2">
+    <div class="row fw-bolder">
+      <div class="column col-1x">Name</div>
+      <div class="column col-1x">Metric</div>
+      <div class="column col-1x">Metric Type</div>
+      <div class="column col-1x">Main Challenge</div>
+      <% if logged_in_as?('superadmin') %>
+        <div class="column"></div>
+        <div class="column"></div>
+      <% end %>
+    </div>
+  </div>
+  <div class="admin-table striped">
+    <%= render @challenges %>
+  </div>
 </div>

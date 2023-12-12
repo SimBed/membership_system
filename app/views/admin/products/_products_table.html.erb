@@ -1,22 +1,20 @@
 <div id="products-table" class="container px-0 mb-5">
-  <table class="table table-secondary table-striped caption-top">
-      <thead>
-        <tr>
-          <th scope="col">Product</th>
-          <th class="nomobile" scope="col">Sell Online</th>        
-          <th class="nomobile" scope="col">Active</th>        
-          <th class="nomobile" scope="col">Rider</th>        
-          <th class="nomobile" scope="col">Has Rider</th>
-          <% if logged_in_as?('admin', 'superadmin') %>
-            <th scope="col">Total Count</th>
-            <th scope="col">Ongoing Count</th>
-          <% end %>
-          <th scope="col">Base (Rs)</th>
-          <th class="nomobile" scope="col"></th>
-        </tr>
-      </thead>
-      <tbody id='products'>
-        <%= render @products %>
-      </tbody>
-  </table>
+  <div class="admin-table mt-2">
+    <div class="row fw-bolder">
+      <div class="column col-2x">Product</div>
+      <div class="nomobile column col-1x">Sell Online</div>        
+      <div class="nomobile column col-1x">Active</div>        
+      <div class="nomobile column col-1x">Rider</div>        
+      <div class="nomobile column col-1x">Has Rider</div>
+      <% if logged_in_as?('admin', 'superadmin') %>
+        <div class="column col-1x">Total Count</div>
+        <div class="column col-1x">Ongoing Count</div>
+      <% end %>
+        <div class="column col-1x">Base (Rs)</div>
+        <div class="column"></div>
+    </div>
+  </div>
+  <div class="admin-table striped">
+    <%= render @products %>
+  </div>
 </div>
