@@ -6,7 +6,8 @@ class Admin::InstructorsController < Admin::BaseController
   before_action :set_raw_numbers, only: :edit
 
   def index
-    @instructors = Instructor.order_by_current.order_by_name
+    @current_instructors = Instructor.current.order_by_name
+    @not_current_instructors = Instructor.not_current.order_by_name
     respond_to do |format|
       format.html
       format.turbo_stream

@@ -1,12 +1,7 @@
 <div id="regular_expenses_table" class="container px-1 mb-5">
-  <table class="table table-secondary table-striped caption-top">
-    <caption></caption>
-    <tbody>
-      <%= render partial: 'regular_expense', collection: @regular_expenses, as: :expense %>
-      <tr>
-        <th scope="row">Total</th>
-        <td class="fw-bold"><%= rupees(@regular_expenses.sum(:amount)) %></td>
-      </tr>
-    </tbody>
-  </table>
+<div class="admin-table striped mt-3">
+  <%= render partial: 'regular_expense', collection: @regular_expenses, as: :expense %>
+  <div class="row">
+    <div class="column col-x1 fw-bolder">Total: <%= rupees(@regular_expenses.sum(:amount)) %> </div>
+  </div>
 </div>

@@ -1,5 +1,10 @@
 <div id="instructors_table" class="container px-0 mb-5">
+  <div class="text-uppercase fst-italic">Current<small><%= "(#{@current_instructors.size})" %> </small></div>
   <div class="admin-table striped mt-2">
-    <%= render @instructors %>
+    <%= render @current_instructors, as: :instructor %>
+  </div>
+  <div class="text-uppercase fst-italic mt-3">Not Current<small><%= "(#{@not_current_instructors.size})" %> </small></div> 
+  <div class="admin-table striped mt-2">    
+    <%= render @not_current_instructors, as: :instructor %>
   </div>
 </div>

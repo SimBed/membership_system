@@ -9,6 +9,7 @@ class Instructor < ApplicationRecord
   scope :order_by_name, -> { order(:first_name, :last_name) }
   scope :order_by_current, -> { order(current: :desc) }
   scope :current, -> { where(current: true) }
+  scope :not_current, -> { where.not(current: true) }
   scope :has_rate, -> { joins(:instructor_rates).distinct }
   # scope :group_rates, -> { joins(:instructor_rates).where(instructor_rates: { group: true }) }
   # scope :pt_rates, -> { joins(:instructor_rates).where(instructor_rates: { group: false }) }

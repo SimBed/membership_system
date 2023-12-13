@@ -1,8 +1,10 @@
-<div class="container px-0">
-  <table class="table table-secondary table-striped caption-top">
-    <caption></caption>
-    <tbody>
-      <%= render partial: 'instructor_rate', collection: @instructor_rates, as: :rate %>
-    </tbody>
-  </table>
+<div id="instructor_rates_table" class="container px-1 mb-5">
+  <div class="text-uppercase fst-italic">Current Rates<small><%= " (#{@current_instructor_rates.size})" %> </small></div>  
+  <div class="admin-table striped">
+    <%=  render partial: 'instructor_rate', collection: @current_instructor_rates, as: :rate %>
+  </div>
+  <div class="text-uppercase fst-italic mt-3">Not Current Rates<small><%= " (#{@not_current_instructor_rates.size})" %> </small></div>  
+  <div class="admin-table striped">
+    <%=  render partial: 'instructor_rate', collection: @not_current_instructor_rates, as: :rate %>
+  </div>
 </div>

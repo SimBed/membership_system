@@ -157,7 +157,7 @@ class Admin::WkclassesController < Admin::BaseController
 
   def instructor_select
     workout = Workout.where(id: params[:selected_workout_id])&.first
-    @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_by_current_group_instructor_rate || []
+    @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_by_group_instructor_rate || []
     (@instructor_rates = @instructor_rates.select(&:group?)) if workout&.group_workout?
     (@instructor_rates = @instructor_rates.reject(&:group?)) if workout&.pt_workout?
     render layout:false
@@ -231,7 +231,7 @@ class Admin::WkclassesController < Admin::BaseController
     # @workouts = Workout.all.map { |w| [w.name, w.id] }
     @workouts = Workout.current.order_by_name
     @instructors = Instructor.current.has_rate.order_by_name
-    @instructor_rates = @wkclass&.instructor&.instructor_rates&.current&.order_by_current_group_instructor_rate || []
+    @instructor_rates = @wkclass&.instructor&.instructor_rates&.current&.order_by_group_instructor_rate || []
     (@instructor_rates = @instructor_rates.select(&:group?)) if @wkclass&.workout&.group_workout?
     @capacities = (0..30).to_a + [500]
     @repeats = (0..11).to_a if @wkclass.new_record?

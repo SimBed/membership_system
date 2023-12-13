@@ -1,7 +1,7 @@
-<tr>
-  <th scope="row"><%= expense.item %></th>
-  <td><%= number_with_delimiter(expense.amount) %></td>
-  <td><%= link_to expense.workout_group.name, admin_workout_group_path(expense.workout_group), class: 'like_button' %></td>
-  <td><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_regular_expense_path(expense) %></td>
-  <td><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_regular_expense_path(expense), data: {turbo_method: :delete, turbo_confirm: 'Expense will be deleted. Are you sure?' } %></td>
-</tr>
+<div class="row">
+  <div class="column col-2x"><%= expense.item %></div>
+  <div class="column col-1x"><%= number_with_delimiter(expense.amount) %></div>
+  <div class="column col-1x"><%= link_to expense.workout_group.name, admin_workout_group_path(expense.workout_group), class: 'like_button' %></div>
+  <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_superadmin_regular_expense_path(expense) %></div>
+  <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), superadmin_regular_expense_path(expense), data: {turbo_method: :delete, turbo_confirm: 'Expense will be deleted. Are you sure?' } %></div>
+</div>
