@@ -1,7 +1,7 @@
-<tr>
-  <th scope="row"><%= account.email %></th>
-  <td class=""><%= account.priority_role.name %></td>
-  <td>  
+<div class="row">
+  <div class="column col-1x"><%= account.email %></div>
+  <div class="column col-1x"><%= account.priority_role.name %></div>
+  <div class="column col-2x">  
     <%= form_with(model: [:admin, account]) do |form| %>
       <% if account.errors.any? %>
         <div id="error_explanation">
@@ -35,6 +35,6 @@
         <%= form.submit 'Update Password' %>
       </div>
     <% end %>
-  </td>
-</tr>
+  </div>
+</div>
 

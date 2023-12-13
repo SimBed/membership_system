@@ -209,9 +209,19 @@ div.my-booking {
     border-radius: 5px;
     margin: 0 auto;
     color: $black;
+    &.overflow {
+      overflow-x: auto;
+  }
     .row  {
       background-color: #e9e9e9;
       margin: 0;
+      &.extra-small .column {
+        font-size: 0.5rem;
+        padding: 5px;        
+        @include media-breakpoint-up(md) {
+          font-size: 0.8rem;  
+         }
+      }       
     }
     &.striped {
       .row:nth-child(even) {
@@ -234,14 +244,21 @@ div.my-booking {
       @include media-breakpoint-up(md) {
         padding: 10px;          
        }      
-      &.extra-small {
+      &.extra-small{
         font-size: 0.7rem;
         padding: 5px;
         @include media-breakpoint-up(md) {
           font-size: 1.0rem;
           padding: 10px;          
          }
-      }   
+      }
+      &.discount-warning {
+        background-color: $red;
+        &:after {
+          content: " (warning may affect prices in shop & renewals)";
+          text-transform: lowercase;
+        }
+      }        
       &:last-child {
         border-right: none;
       }
@@ -276,8 +293,10 @@ div.my-booking {
     letter-spacing: 0.05em;
     color: $gray-700;
     }
+    & .small {
+      font-size: 0.9rem;
+    }
   }
-
 
   .accordion {
     animation: fadeIn 0.7s;

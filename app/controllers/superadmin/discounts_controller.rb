@@ -21,22 +21,6 @@ class Superadmin::DiscountsController < Superadmin::BaseController
                               status: discounts_not_current.by_rationale('Status').unscope(:order),
                               renewal: discounts_not_current.by_rationale('Renewal').unscope(:order)
                             } }
-    # @discount_type_hash = { current: {
-    #                           base: Discount.current(Time.zone.now.to_date).by_rationale('Base'),
-    #                           commercial: Discount.current(Time.zone.now.to_date).by_rationale('Commercial'),
-    #                           discretion: Discount.current(Time.zone.now.to_date).by_rationale('Discretion'),
-    #                           oneoff: Discount.current(Time.zone.now.to_date).by_rationale('Oneoff'),
-    #                           status: Discount.current(Time.zone.now.to_date).by_rationale('Status'),
-    #                           renewal: Discount.current(Time.zone.now.to_date).by_rationale('Renewal')
-    #                         },
-    #                         not_current: {
-    #                           base: Discount.not_current(Time.zone.now.to_date).by_rationale('Base'),
-    #                           commercial: Discount.not_current(Time.zone.now.to_date).by_rationale('Commercial'),
-    #                           discretion: Discount.not_current(Time.zone.now.to_date).by_rationale('Discretion'),
-    #                           oneoff: Discount.not_current(Time.zone.now.to_date).by_rationale('Oneoff'),
-    #                           status: Discount.not_current(Time.zone.now.to_date).by_rationale('Status'),
-    #                           renewal: Discount.not_current(Time.zone.now.to_date).by_rationale('Renewal')
-    #                         } }
   end
 
   def new

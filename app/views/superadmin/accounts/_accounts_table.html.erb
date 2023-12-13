@@ -1,11 +1,5 @@
-<%# https://stackoverflow.com/questions/5533636/add-a-horizontal-scrollbar-to-an-html-table %>
 <div id="accounts-table" class="container px-0 mb-5">
-  <div class="admin-password-reset-table-wrapper">
-    <table class="table table-secondary table-striped caption-top">
-      <caption></caption>
-      <tbody>
-        <%= render partial: 'superadmin/accounts/account', collection: @accounts %>
-      </tbody>
-    </table>
+  <div class="admin-table striped mt-2">
+    <%= render partial: 'superadmin/accounts/account', collection: @accounts %>
   </div>
 </div>
