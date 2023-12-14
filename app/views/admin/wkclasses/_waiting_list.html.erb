@@ -1,13 +1,11 @@
-  <table class="table table-secondary table-striped">
-    <tbody>
-      <tr>
-        <th class="stripe-override" colspan="5">Waiting List <small><%= "(#{@waitings&.size})" %> </small></th>
-      </tr>
-      <% @waitings.each do |waiting| %>
-        <tr class="">
-          <td><%= waiting.purchase.client.name %></td>
-          <td><%= waiting.purchase.client.phone || waiting.purchase.client.whatsapp %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class="admin-table striped mt-2">
+  <div class="row with-gradient">
+    <div class="column col-1x">Waiting List <small><%= "(#{@waitings&.size})" %> </small></div>
+    <% @waitings.each do |waiting| %>
+      <div class="row">
+        <div class="column col-1x"><%= waiting.purchase.client.name %></div>
+        <div class="column col-1x"><%= waiting.purchase.client.phone || waiting.purchase.client.whatsapp %></div>
+      </div>
+    <% end %>
+  </div>
+</div>

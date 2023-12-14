@@ -1,15 +1,17 @@
 <% attendances = @purchase.attendances.amnesty.order_by_date %>
-<div class="fst-italic ps-2">Amnesties</div>
-<div class="admin-table striped mt-2 mb-4">
-  <div class="row">
-    <% attendances.each_with_index do |attendance, index| %>
-      <% wkclass = attendance.wkclass %>
-      <div class="row">
-        <div class="column"><%= attendances.size - index %></div>
-        <div class="column col-2x"><%= link_to wkclass.name, admin_wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
-        <div class="column col-2x"><%= link_to wkclass.date %></div>
-        <div class="column col-2x"><%= attendance.status %></div>
-      </div>
-    <% end %>
+<% unless attendances.empty? %>
+  <div class="fst-italic ps-2">Amnesties</div>
+  <div class="admin-table striped mt-2 mb-4">
+    <div class="row">
+      <% attendances.each_with_index do |attendance, index| %>
+        <% wkclass = attendance.wkclass %>
+        <div class="row">
+          <div class="column"><%= attendances.size - index %></div>
+          <div class="column col-2x"><%= link_to wkclass.name, admin_wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
+          <div class="column col-2x"><%= link_to wkclass.date %></div>
+          <div class="column col-2x"><%= attendance.status %></div>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

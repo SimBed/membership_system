@@ -2,46 +2,45 @@
 <div class="admin-table striped mt-2 mb-4">
   <div class="row">
     <div class="column col-1x">Email</div>
-    <div class="column col-1x"><%= @client.email %></div>
+    <div class="column col-2x"><%= @client.email %></div>
   </div>
   <% unless @client.whatsapp.blank? %>
   <div class="row">
       <div class="column col-1x">Whatsapp</div>
-      <div class="column col-1x"><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></div>
+      <div class="column col-2x"><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></div>
     </div>
   <% end %>
   <% unless @client.phone.blank? %>
     <div class="row">
       <div class="column col-1x">Phone</div>
-      <div class="column col-1x"><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></div>
+      <div class="column col-2x"><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></div>
     </div>
   <% end %>      
   <% unless @client.instagram.blank? %>
     <div class="row">
       <div class="column col-1x">Instagram</div>
-      <div class="column col-1x"><%= @client.instagram %></div>
+      <div class="column col-2x"><%= @client.instagram %></div>
     </div>
   <% end %>
   <% if @client.student? %>
     <div class="row">
       <div class="column col-1x">Student</div>
-      <div class="column col-1x"><%= raw("&check;") %></div>
+      <div class="column col-2x"><%= raw("&check;") %></div>
     </div>
   <% end %>
   <% if @client.friends_and_family? %>
     <div class="row">
       <div class="column col-1x">Friend & Family</div>
-      <div class="column col-1x"><%= raw("&check;") %></div>
+      <div class="column col-2x"><%= raw("&check;") %></div>
     </div>
   <% end %>
   <% unless @client.note.blank? %>
     <div class="row">
       <div class="column col-1x">Note</div>
-      <div class="column col-1x"><%= @client.note %></div>
+      <div class="column col-2x"><%= @client.note %></div>
     </div>
   <% end %>
 </div>
-
 
 <div class="fst-italic ps-2">History</div>
 <div class="admin-table striped mt-2">

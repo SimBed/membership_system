@@ -1,71 +1,68 @@
-<table class="table table-secondary table-striped caption-top">
-  <caption>
-    <%= link_to @purchase.formal_name, admin_purchase_path(@purchase, link_from: @link_from), class: "like_button", data: {turbo: false} %>
-    <%= image_tag(@purchase.expired? ? 'expired.png' : 'attendances.png', class: "table_icon") %>
-  </caption>
-  <tbody>
-    <% unless @purchase.expired? %>
-      <tr>
-        <th scope="row">Payment</th>
-        <td><%= rupees(@purchase.payment) %></td>
-      </tr>
-    <% end %>
-    <% unless @purchase.discounts.empty? %>
-    <tr>
-      <th scope="row">Discount</th>
-      <td><%=  @purchase.discounts.first.name %></td>
-    </tr>
-    <% end %>    
-    <% unless @purchase.dropin? %>
-      <tr>
-        <th scope="row">Paid on</th>
-        <td><%= @purchase.dop.strftime('%d %b %y') %></td>
-      </tr>
-      <tr>
-        <th scope="row">Status</th>
-        <td><%= @purchase.status %></td>
-      </tr>
-    <% end %>
-    <% unless @purchase.not_started? %>
-      <tr>
-        <th scope="row">Classes Attended</th>
-        <td><%= @purchase.attendances.attended.size %></td>
-      </tr>
-    <% end %>
-    <% unless @purchase.not_started? || @purchase.expired? %>
-      <tr>
-        <th scope="row">Expiry date</th>
-        <td><%= @purchase.expiry_date.strftime('%d %b %y') %></td>
-      </tr>
-      <tr>
-        <th scope="row">Bookings left</th>
-        <td><%= @purchase.attendances_remain(provisional: true) %></td>
-      </tr>
-    <% end %>
-    <% if @purchase.expired? %>
-      <tr>
-        <th scope="row">Expired on</th>
-        <td><%= @purchase.expired_on&.strftime('%d %b %y') %></td>
-      </tr>
-    <% end %>
-    <% if @purchase.provisionally_expired? %>
-      <tr>
-        <th scope="row">Will expire on</th>
-        <td><%= @purchase.will_expire_on %></td>
-      </tr>
-    <% end %>
-    <% if @purchase.rider? %>
-      <tr>
-        <th scope="row">Status of PT Package</th>
-        <td><%= @purchase.main_purchase.status %></td>
-      </tr>
-    <% end %>
-    <% unless @purchase.note.nil? %>
-      <tr>
-        <th scope="row">Note</th>
-        <td><%= @purchase.note %></td>
-      </tr>
-    <% end %>
-
-  </tbody>
-</table>
+<div class="text-uppercase fst-italic">
+  <%= link_to @purchase.formal_name, admin_purchase_path(@purchase, link_from: @link_from), class: "like_button", data: {turbo: false} %>
+  <%= image_tag(@purchase.expired? ? 'expired.png' : 'attendances.png', class: "table_icon") %>
+</div>
+<div class="admin-table striped mt-2">
+  <% unless @purchase.expired? %>
+    <div class="row">    
+      <div class="column col-1x">Payment</div>
+      <div class="column col-1x"><%= rupees(@purchase.payment) %></div>
+    </div>
+  <% end %>
+  <% unless @purchase.discounts.empty? %>
+    <div class="row">    
+      <div class="column col-1x">Discount</div>
+      <div class="column col-1x"><%= @purchase.discounts.first.name %></div>
+    </div>
+  <% end %>    
+  <% unless @purchase.dropin? %>
+    <div class="row">    
+      <div class="column col-1x">Paid On</div>
+      <div class="column col-1x"><%= @purchase.dop.strftime('%d %b %y') %></div>
+    </div>    
+    <div class="row">    
+      <div class="column col-1x">Status</div>
+      <div class="column col-1x"><%= @purchase.status %></div>
+    </div>    
+  <% end %>
+  <% unless @purchase.not_started? %>
+    <div class="row">    
+      <div class="column col-1x">Classes Attended</div>
+      <div class="column col-1x"><%= @purchase.attendances.attended.size %></div>
+    </div>     
+  <% end %>
+  <% unless @purchase.not_started? || @purchase.expired? %>
+    <div class="row">    
+      <div class="column col-1x">Expiry Date</div>
+      <div class="column col-1x"><%= @purchase.expiry_date.strftime('%d %b %y') %></div>
+    </div>    
+    <div class="row">    
+      <div class="column col-1x">Bookings Left</div>
+      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: true) %></div>
+    </div>
+  <% end %>
+  <% if @purchase.expired? %>
+    <div class="row">    
+      <div class="column col-1x">Expired On</div>
+      <div class="column col-1x"><%= @purchase.expired_on&.strftime('%d %b %y') %></div>
+    </div>     
+  <% end %>
+  <% if @purchase.provisionally_expired? %>
+    <div class="row">    
+      <div class="column col-1x">Will Expire On</div>
+      <div class="column col-1x"><%= @purchase.will_expire_on&.strftime('%d %b %y') %></div>
+    </div>
+  <% end %>
+  <% if @purchase.rider? %>
+    <div class="row">    
+      <div class="column col-1x">Status of PT Package</div>
+      <div class="column col-1x"><%= @purchase.main_purchase.status %></div>
+    </div>       
+  <% end %>
+  <% unless @purchase.note.nil? %>
+    <div class="row">    
+      <div class="column col-1x">Note</div>
+      <div class="column col-1x"><%= @purchase.note %></div>
+    </div>      
+  <% end %>
+</div>

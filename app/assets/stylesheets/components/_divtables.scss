@@ -221,7 +221,12 @@ div.my-booking {
         @include media-breakpoint-up(md) {
           font-size: 0.8rem;  
          }
-      }       
+      } 
+      &.with-gradient {
+        background-color: $white;
+        background: linear-gradient($gray-700, $gray-200);
+        box-shadow: none;
+      }            
     }
     &.striped {
       .row:nth-child(even) {
@@ -232,7 +237,7 @@ div.my-booking {
       @include media-breakpoint-up(md) {
         width: 50%;
         margin-left: 0;
-       }         
+       }  
     }
 
     .column {

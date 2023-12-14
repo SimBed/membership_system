@@ -1,12 +1,13 @@
-<tr>
-  <td> <%= order.id %> </td>
-  <td> <%= link_to order.payment_id, superadmin_order_path(order) %> </td>
-  <td> <%= order.created_at.strftime('%d %b %y') %> </td>
-  <td> <%= link_to order.account.client.name, admin_client_path(order.account.client) %> </td>
-  <td> <%= order.product.name if order.product %> </td>
-  <td> <%= order.price %> </td>
-  <td> <%= order.client_ui if order.client_ui %> </td>
-  <%if params[:status]== "captured" %>
-    <td> <%= link_to "refund", superadmin_order_refund_path(order) %> </td>
-  <%end%>
-</tr>
+<div class="row">    
+  <div class="column nomobile"><%= order.id %></div>
+  <div class="column col-2x"><%= link_to order.payment_id, superadmin_order_path(order) %></div>
+  <div class="column col-1x"><%= order.created_at.strftime('%d %b %y') %></div>
+  <div class="column col-1x"><%= link_to order.account.client.name, admin_client_path(order.account.client) %></div>
+  <div class="column col-1x"><%= order.product.name if order.product %></div>
+  <div class="column col-1x"><%= order.price %></div>
+  <div class="column col-1x"><%= order.status %></div>
+  <div class="column col-2x nomobile"><%= order.client_ui if order.client_ui %></div>
+  <%# if params[:status]== "captured" %>
+    <!--div class="column col-1x"> <%#= link_to "refund", superadmin_order_refund_path(order) %></div-->
+  <%# end %>
+</div>

@@ -6,8 +6,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
   before_action :set_order, only: [:show, :refund]
 
   def index
-    @pagy, @records = pagy(Order.filter(filter_params).includes(:account).order_by_date, link_extra: 'data-remote="false"')
-    # @orders = Order.filter(filter_params).includes(:account).order_by_date
+    @pagy, @orders = pagy(Order.filter(filter_params).includes(:account).order_by_date)
   end
 
   def show
@@ -55,16 +54,16 @@ class Superadmin::OrdersController < Superadmin::BaseController
       variable_contents: { first_name: @purchase.client.first_name } }
   end
 
-  def refund
-    begin
-      payment_id = Order.find_by_id(params[:id]).payment_id
-      @order = Order.process_refund(payment_id)
-      redirect_to action: 'show', id: @order.id
-    rescue Exception
-      flash[:alert] = 'Unable to refund payment (probably not enough credit on account).'
-      redirect_to superadmin_orders_path
-    end
-  end
+  # def refund
+  #   begin
+  #     payment_id = Order.find_by_id(params[:id]).payment_id
+  #     @order = Order.process_refund(payment_id)
+  #     redirect_to action: 'show', id: @order.id
+  #   rescue Exception
+  #     flash[:alert] = 'Unable to refund payment (probably not enough credit on account).'
+  #     redirect_to superadmin_orders_path
+  #   end
+  # end
 
   private
 
