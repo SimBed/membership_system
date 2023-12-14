@@ -54,14 +54,10 @@ class Client::ClientsController < ApplicationController
 
   def book
     session[:booking_day] = params[:booking_day] || session[:booking_day] || '0'
-    # @wkclasses_visible = Wkclass.show_in_bookings_for(@client).order_by_reverse_date
-    # @wkclasses_window_closed = @wkclasses_visible.select { |w| w.booking_window.end < Time.zone.now }
-    # @wkclasses_not_yet_open = @wkclasses_visible.select { |w| w.booking_window.begin > Time.zone.now }
-    # @wkclasses_in_booking_window = @wkclasses_visible - @wkclasses_window_closed - @wkclasses_not_yet_open
     @wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
     @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
     @my_bookings = Wkclass.booked_for(@client).show_in_bookings_for(@client).order_by_reverse_date
-    # switching the order round (as below) returns wkclasses with booked attendances not of @client. Couldn't figue this out 
+    # switching the order round (as below) returns wkclasses with booked attendances not of @client. Couldn't figure this out 
     # Wkclass.show_in_bookings_for(@client).booked_for(@client).order_by_reverse_date
     # Wkclass.show_in_bookings_for(c).merge(Wkclass.booked_for(c)).order_by_reverse_date
     @days = (Date.today..Date.today.advance(days: Setting.visibility_window_days_ahead)).to_a

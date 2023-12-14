@@ -32,22 +32,9 @@ class Admin::WkclassesController < Admin::BaseController
     @ethereal_attendances_no_amnesty = @wkclass.ethereal_attendances.no_amnesty.order_by_status
     @ethereal_attendances_amnesty = @wkclass.ethereal_attendances.amnesty.order_by_status
     @waitings = @wkclass.waitings.order_by_created
-    # if the 'wkclass show comes from the client_attendances_table and the date of that class is not in the period filter
-    # from the wkclass index filter form, the next_item helper will fail (unless the classes_period is reset to be consistent with the wkclass to be shown)
-    # clear_session(:filter_workout, :filter_spacegroup, :filter_todays_class, :filter_yesterdays_class, :filter_tomorrows_class, :filter_past, :filter_future, :classes_period) if params[:setting] == 'clientshow'
-    # session[:classes_period] = params[:classes_period] || session[:classes_period]
-    # set @wkclasses and @wkindex so the wkclasses can be scrolled through from each wkclass show
-
-    # new attendance now done from wkclass page
-    # unless params[:scroll] == 'true'
     @attendance = Attendance.new
     @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
-    # end
     # this section (which enbabled scrolling through the wkclassess) is redundant now we are hotwired
-    # return if params[:no_scroll]
-    # @wkclasses = Wkclass.order_by_date
-    # handle_filter
-    # handle_period
     # check_record_returned
     @link_from = params[:link_from]
     @cancel_button = true if @link_from == 'wkclasses_index'    

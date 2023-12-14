@@ -103,10 +103,6 @@ class Purchase < ApplicationRecord
     end
   end
 
-  # def pt?
-  #   product.pt? || 'PT'.in?(price.name) # i.e. PT Rider
-  # end
-
   def deletable?
     return true if attendances.empty? && freezes.empty? && adjustments.empty?
 
@@ -133,14 +129,15 @@ class Purchase < ApplicationRecord
   end
 
   # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2, {class: "close_to_expiry"}], ...]
-  # used in attendances controller to populate dropdown for new booking
+  # used in attendances controller to populate dropdown for new booking (background color now determined and shown in view, not in select field)
   def self.qualifying_purchases(wkclass)
     qualifying_for(wkclass).map do |p|
-      close_to_expiry = 'text-warning' if p.close_to_expiry? && !p.dropin?
-      payment_outstanding = 'text-danger' if p.client.payment_outstanding?
       date_if_multiple_purchases = p.dop.strftime('%b %d') if p.client.purchases.not_expired.size > 1
-      ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id,
-       { class: [close_to_expiry, payment_outstanding].join(' ').strip }]
+      ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id]
+      # close_to_expiry = 'text-warning' if p.close_to_expiry? && !p.dropin?
+      # payment_outstanding = 'text-danger' if p.client.payment_outstanding?
+      # ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id,
+      #  { class: [close_to_expiry, payment_outstanding].join(' ').strip }]
     end
   end
 
