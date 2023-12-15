@@ -24,6 +24,7 @@ class Admin::WkclassesController < Admin::BaseController
     @workouts = Workout.order_by_name.current
     @months = ['All'] + months_logged
     handle_pagination
+    session[:show_qualifying_purchases] = nil if params[:show_qualifying_purchases]  == 'no'    
     handle_index_response
   end
 
@@ -32,12 +33,15 @@ class Admin::WkclassesController < Admin::BaseController
     @ethereal_attendances_no_amnesty = @wkclass.ethereal_attendances.no_amnesty.order_by_status
     @ethereal_attendances_amnesty = @wkclass.ethereal_attendances.amnesty.order_by_status
     @waitings = @wkclass.waitings.order_by_created
-    @attendance = Attendance.new
-    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
+    session[:show_qualifying_purchases] ||= params[:show_qualifying_purchases]  || 'no'
+    if session[:show_qualifying_purchases] == 'yes'
+      @attendance = Attendance.new
+      @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
+    end
     # this section (which enbabled scrolling through the wkclassess) is redundant now we are hotwired
     # check_record_returned
     @link_from = params[:link_from]
-    @cancel_button = true if @link_from == 'wkclasses_index'    
+    @cancel_button = true if @link_from == 'wkclasses_index'
     respond_to do |format|
       format.html
       format.turbo_stream      

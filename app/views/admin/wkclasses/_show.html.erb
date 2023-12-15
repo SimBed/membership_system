@@ -1,6 +1,17 @@
 <%= turbo_frame_tag dom_id(@wkclass) do %>
   <div class="admin_form my-2">
     <div class="container px-1 ">
+      <% unless params[:link_from] == 'purchase_show' %>
+        <%= turbo_frame_tag 'new_attendance_form' do %>
+          <% if session[:show_qualifying_purchases] == 'yes' %>
+            <%= render 'new_attendance_form' %>
+          <% else %>
+            <div class="mb-2">
+              <%= render 'add_attendance_link' %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
       <%= render partial: 'wkclass_summary' %>
       <div id="attendances-table" class="mb-3">
           <%= render partial: 'wkclass_attendance_table' %>
@@ -12,7 +23,7 @@
 
       <% if @cancel_button %>
         <div class="cancel">
-          <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclasses_path(page: params[:page]) %>
+          <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclasses_path(page: params[:page], show_qualifying_purchases: 'no') %>
         </div>
       <% end %>
     </div>
