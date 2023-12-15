@@ -35,6 +35,14 @@ class Admin::AttendancesController < Admin::BaseController
   #   set_new_attendance_dropdown_options
   # end
 
+  def new
+    @wkclass = Wkclass.find(params[:wkclass_id])
+    @attendance = Attendance.new
+    session[:show_qualifying_purchases] = 'yes'
+    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
+  end
+  
+
   def create
     handle_fitternity and return if fitternity?
     @attendance = Attendance.new(attendance_params)
@@ -88,7 +96,7 @@ class Admin::AttendancesController < Admin::BaseController
   def after_successful_create_by_admin
     @wkclass = @attendance.wkclass
     update_purchase_status([@purchase])
-    redirect_to admin_wkclass_path(@wkclass, link_from: params[:attendance][:link_from])
+    redirect_to admin_wkclass_path(@wkclass, link_from: params[:attendance][:link_from], page: params[:attendance][:page], show_qualifying_purchases: 'yes')
     flash_message :success, "#{@attendance.client_name}'s attendance was successfully logged"
   end
 
@@ -336,7 +344,7 @@ class Admin::AttendancesController < Admin::BaseController
     set_attendances
     flash_message :success, t('.success', name: @attendance.client_name, status: @attendance.status)
     # redirect_back fallback_location: admin_wkclasses_path
-    redirect_to admin_wkclass_path(@attendance.wkclass, link_from: params[:attendance][:link_from])
+    redirect_to admin_wkclass_path(@attendance.wkclass, link_from: params[:attendance][:link_from], page: params[:attendance][:page])
   end
 
   def set_attendances

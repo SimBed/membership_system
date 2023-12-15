@@ -12,6 +12,8 @@
 
   <div><%= form.hidden_field :wkclass_id, :value => @wkclass&.id || attendance.wkclass.id %> </div>
   <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>
+  <div><%= form.hidden_field :page, value: params[:page] %></div>
+  <div><%= form.hidden_field :show_qualifying_purchases, value: 'yes' %></div>
   <%= form.select :purchase_id, options_for_select(@qualifying_purchases) %>
   <div class="actions mt-1 mb-2">
     <%= form.submit 'Log attendance' %>
