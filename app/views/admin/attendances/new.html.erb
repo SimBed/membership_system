@@ -1,4 +1,4 @@
-<%= turbo_frame_tag 'new_attendance_form' do %>
+<%= turbo_frame_tag "new_attendance_form_#{@wkclass.id}" do %>
   <% unless @qualifying_purchases.empty? %>
     <%= render 'admin/attendances/form', attendance: @attendance %>
   <% end %>
