@@ -163,7 +163,8 @@ class AttendanceFormat
         get_params('update_from_booked')
         link_maker(@image_params, @route, @route_params, @turbo_params)       
       when 'cancelled early'
-        return '' if @purchase.expiry_date.beginning_of_day < @wkclass.start_time.beginning_of_day # class got auto-cancelled due to an event that caused the expiry_date to become earlier (eg a no show penalty or freeze break)
+        # class got auto-cancelled due to an event that caused the expiry_date to become earlier (eg a no show penalty or freeze break); @purchase.expiry_date.beginning_of_day will error if not started (eg first booking cancelled early)
+        return '' if !@purchase.not_started? && @purchase.expiry_date.beginning_of_day < @wkclass.start_time.beginning_of_day 
 
         if @wkclass_at_capacity && !@on_waiting_list
           get_params('at_capacity_not_on_waiting_list')
