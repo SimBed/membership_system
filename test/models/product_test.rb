@@ -7,8 +7,8 @@ class ProductTest < ActiveSupport::TestCase
                            validity_unit: 'M',
                            color: 'none',
                            workout_group_id: workout_groups(:space).id)
-    @product_without_purchase  = products(:spaceothers)
-    @client = clients(:aparna)                           
+    @product_without_purchase = products(:spaceothers)
+    @client = clients(:aparna)
   end
 
   test 'should be valid' do
@@ -57,8 +57,10 @@ class ProductTest < ActiveSupport::TestCase
                     price_id: price.id,
                     purchase_id: nil)
     price.destroy
+
     refute @product_without_purchase.deletable?
     Purchase.last.destroy
+
     assert @product_without_purchase.deletable?
   end
 end

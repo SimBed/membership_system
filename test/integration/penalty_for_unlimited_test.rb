@@ -112,6 +112,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     # Make adjustment to package so expiry date is 24/4/2022
     @purchase.adjustments.create(adjustment: -57)
     @purchase.update(expiry_date: @purchase.expiry_date_calc)
+
     assert_equal Date.parse('24/04/2022'), @purchase.expiry_date
     # book classes on 22/4/2005 and on final day of package (25/4/2022)
     post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,

@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
   def setup
@@ -28,7 +28,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to login_path
-    assert_equal [["Only make waiting list changes through the dashboard."]], flash[:warning]
+    assert_equal [['Only make waiting list changes through the dashboard.']], flash[:warning]
   end
 
   test 'should redirect when client (somehow) tries to joins waiting list for a class they dont have a valid package for' do
@@ -43,7 +43,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to login_path
-    assert_equal [["Only make waiting list changes through the dashboard."]], flash[:warning]
+    assert_equal [['Only make waiting list changes through the dashboard.']], flash[:warning]
   end
 
   test 'should redirect when client (somehow) tries to add another client to the wating list' do
@@ -57,7 +57,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to login_path
-    assert_equal [["Only make waiting list changes through the dashboard."]], flash[:warning]
+    assert_equal [['Only make waiting list changes through the dashboard.']], flash[:warning]
   end
 
   test 'client legitimately joins waiting list when class at capacity' do
@@ -88,7 +88,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
       patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
     end
     assert @attendance.status, 'cancelled early'
-    
+
     # set class to capacity
     @tomorrows_class_early.update(max_capacity: 0)
 
@@ -106,22 +106,22 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
   test 'client legitimately leaves waiting list' do
     waiting = Waiting.create!(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id)
     log_in_as(@account_client)
-    assert_difference 'Waiting.all.size', -1 do    
+    assert_difference 'Waiting.all.size', -1 do
       delete client_waiting_path(waiting, booking_section: 'group')
     end
 
     assert_redirected_to client_book_path(@client.id, booking_section: 'group')
-    assert_equal [["You have been removed from the waiting list for HIIT."]], flash[:success]
+    assert_equal [['You have been removed from the waiting list for HIIT.']], flash[:success]
   end
 
   test 'should redirect when client (somehow) tries to remove another client from the wating list' do
     waiting = Waiting.create!(wkclass_id: @tomorrows_class_early.id, purchase_id: @other_client_purchase.id)
     log_in_as(@account_client)
-    assert_difference 'Waiting.all.size', 0 do    
+    assert_difference 'Waiting.all.size', 0 do
       delete client_waiting_path(waiting, booking_section: 'group')
     end
 
     assert_redirected_to login_path
-    assert_equal [["Only make waiting list changes through the dashboard."]], flash[:warning]
+    assert_equal [['Only make waiting list changes through the dashboard.']], flash[:warning]
   end
 end

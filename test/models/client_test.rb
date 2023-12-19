@@ -49,13 +49,13 @@ class ClientTest < ActiveSupport::TestCase
   end
 
   test 'whatsapp number should be unique' do
-    @client.whatsapp_raw = @client2.whatsapp.slice(3, 10) 
+    @client.whatsapp_raw = @client2.whatsapp.slice(3, 10)
 
     refute_predicate @client, :valid?
   end
 
   test 'phone number should be unique' do
-    @client.phone_raw = @client2.phone.slice(3, 10) 
+    @client.phone_raw = @client2.phone.slice(3, 10)
 
     refute_predicate @client, :valid?
   end

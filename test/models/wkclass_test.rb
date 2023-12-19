@@ -45,17 +45,20 @@ class WkclassTest < ActiveSupport::TestCase
 
   test 'show_in_bookings_for' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
+
     assert_equal [548, 568, 569, 570], Wkclass.show_in_bookings_for(@client).pluck(:id)
   end
 
   test 'booked_for' do
-    assert_equal [], Wkclass.booked_for(@client).pluck(:id)
+    assert_empty Wkclass.booked_for(@client).pluck(:id)
     Attendance.create(wkclass_id: @tomorrows_class_early.id,
                       purchase_id: @client.purchases.last.id,
                       status: 'booked')
+
     assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).pluck(:id)
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
-    assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)             
+
+    assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)
   end
 
   test 'chaining of booked_for and show_in_bookings_for' do # these are chained to display my_bookings to client
@@ -63,14 +66,15 @@ class WkclassTest < ActiveSupport::TestCase
                       purchase_id: @client.purchases.last.id,
                       status: 'booked')
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
+
     assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)
     # check a different client making a booking doesn't have any impact
     assert_difference 'Attendance.count', 1 do
-    Attendance.create(wkclass_id: @tomorrows_class_early.id,
-                      purchase_id: @client2.purchases.last.id,
-                      status: 'booked')    
+      Attendance.create(wkclass_id: @tomorrows_class_early.id,
+                        purchase_id: @client2.purchases.last.id,
+                        status: 'booked')
     end
-    assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)    
+    assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)
   end
 
   test 'physical_attendances' do

@@ -38,6 +38,7 @@ class Admin::TableTimesControllerTest < ActionDispatch::IntegrationTest
   test 'should update table_time' do
     log_in_as(@admin)
     patch admin_table_time_url(@table_time), params: { table_time: { start: @table_time.start } }
+
     assert_redirected_to admin_timetable_path(@timetable)
   end
 

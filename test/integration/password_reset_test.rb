@@ -52,7 +52,8 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'superadmin resets admin account password with valid new password (and correct admin password)' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
+    patch admin_account_path(@admin),
+          params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('foobar')
     refute @admin.reload.authenticate('password')
@@ -60,7 +61,8 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'superadmin resets admin account password with valid new password but incorrect admin password' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'passwod' } }
+    patch admin_account_path(@admin),
+          params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'passwod' } }
 
     refute @admin.reload.authenticate('foobar')
     assert @admin.reload.authenticate('password')
@@ -68,7 +70,8 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'superadmin resets admin account password with invalid new password' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin), params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
+    patch admin_account_path(@admin),
+          params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('password')
     refute @admin.reload.authenticate('fooba')
@@ -77,7 +80,8 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'admin resets admin account password' do
     log_in_as(@admin)
-    patch admin_account_path(@admin), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
+    patch admin_account_path(@admin),
+          params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('password')
     refute @admin.reload.authenticate('fooba')
@@ -111,11 +115,15 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_url
     # Inactive user
+    # rubocop:disable Rails/SkipsModelValidations
     account.toggle!(:activated)
+    # rubocop:enable Rails/SkipsModelValidations
     get edit_client_password_reset_path(account.reset_token, email: account.email)
 
     assert_redirected_to root_url
+    # rubocop:disable Rails/SkipsModelValidations
     account.toggle!(:activated)
+    # rubocop:enable Rails/SkipsModelValidations
     # Right email, wrong token
     get edit_client_password_reset_path('wrong token', email: account.email)
 

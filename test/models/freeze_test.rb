@@ -18,7 +18,6 @@ class FreezeTest < ActiveSupport::TestCase
     refute_predicate @freeze, :valid?
   end
 
-
   test 'period should not overlap an attendance' do
     # attendances on "Tue 22 Feb 22", "Mon 28 Feb 22", "Wed 23 Feb 22", "Wed 23 Feb 22", "Tue 25 Jan 22"
     @freeze.start_date = Date.parse('2022-02-27')

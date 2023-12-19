@@ -32,7 +32,7 @@ Style/ClassAndModuleChildren:
 Rails/RefuteMethods:
   EnforcedStyle: refute
 Rails/SkipsModelValidations:
-  AllowedMethods: ["increment!"]
+  AllowedMethods: ['increment!', 'decrement!',  'update_column', 'update_columns']
 Style/LineEndConcatenation:
   Enabled: false
 Minitest/MultipleAssertions:
@@ -48,5 +48,7 @@ Layout/LineLength:
 Minitest/AssertPredicate:
   Enabled: false
 Minitest/RefutePredicate:
+  Enabled: false
+Style/RedundantRegexpArgument:
   Enabled: false
 

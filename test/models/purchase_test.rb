@@ -169,9 +169,11 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 'not started', @purchase_dropin2.status_calc
     assert_equal 'ongoing', @purchase_fixed.status_calc
     travel_to Date.parse('1 February 2022') # expiry date of @purchase_pt is 8/2/2022
+
     assert_equal 'ongoing', @purchase_pt.status_calc
     assert_equal 'not started', @purchase_ptrider.status_calc
     @purchase_pt.update(status: 'expired') # once main is expired, rider must be expired
+
     assert_equal 'expired', @purchase_ptrider.reload.status_calc
   end
 
@@ -281,13 +283,16 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'unexpired_rider_without_ongoing_main scope' do
-    assert 'not started', @purchase_ptrider.status
-    assert 'ongoing', @purchase_main.status
+    assert_equal 'not started', @purchase_ptrider.status
+    assert_equal 'ongoing', @purchase_main.status
     @purchases = Purchase.where(id: [@purchase_ptrider.id, @purchase_main.id])
-    assert_equal @purchases.unexpired_rider_without_ongoing_main, []
+
+    assert_empty(@purchases.unexpired_rider_without_ongoing_main)
     @purchase_main.update(status: 'not_started')
+
     assert_equal @purchases.unexpired_rider_without_ongoing_main, [@purchase_ptrider]
     @purchase_main.update(status: 'expired')
+
     assert_equal @purchases.unexpired_rider_without_ongoing_main, [@purchase_ptrider]
   end
 

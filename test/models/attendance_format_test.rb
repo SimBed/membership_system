@@ -14,5 +14,4 @@ class AttendanceFormatTest < ActiveSupport::TestCase
   test 'booking_link method' do
     # assert_equal 'Amalu', @attendance_format.booking_link
   end
-
 end

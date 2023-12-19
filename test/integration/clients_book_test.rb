@@ -24,7 +24,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     assert_difference '@client.attendances.no_amnesty.size', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id },
-                                            booking_section: 'group' }
+                                             booking_section: 'group' }
     end
     @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
 
@@ -97,15 +97,15 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       max_capacity: 12
     )
     assert_difference '@client.attendances.no_amnesty.size', 1 do
-    post admin_attendances_path, params: { attendance: { wkclass_id: opengym.id,
-                                                          purchase_id: @purchase.id },
-                                           booking_section: 'opengym' }
-    end  
+      post admin_attendances_path, params: { attendance: { wkclass_id: opengym.id,
+                                                           purchase_id: @purchase.id },
+                                             booking_section: 'opengym' }
+    end
 
     assert_redirected_to client_book_path(@client.id, booking_section: 'opengym', major_change: false)
     refute_predicate flash, :empty?
   end
-  
+
   test '2nd booking on same day when 1st is limited (ie Open Gym) ' do
     log_in_as(@account_client)
     opengym = Wkclass.create(
@@ -114,13 +114,13 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
       instructor_id: 4,
       instructor_rate: instructor_rates(:amit_base),
       max_capacity: 12
-    )                                                          
-    post admin_attendances_path, params: { attendance: { wkclass_id:opengym.id,
-                                                          purchase_id: @purchase.id } }
+    )
+    post admin_attendances_path, params: { attendance: { wkclass_id: opengym.id,
+                                                         purchase_id: @purchase.id } }
     assert_difference '@client.attendances.no_amnesty.size', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-      purchase_id: @purchase.id }, booking_section: 'group' }      
-    end  
+                                                           purchase_id: @purchase.id }, booking_section: 'group' }
+    end
 
     assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
     refute_predicate flash, :empty?
@@ -165,7 +165,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     assert_difference 'Attendance.count', 1 do
       post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id },
-                                             booking_section: 'group'}
+                                             booking_section: 'group' }
     end
 
     assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)

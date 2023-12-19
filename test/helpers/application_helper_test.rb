@@ -3,7 +3,7 @@ class ApplicationHelperTest < ActionView::TestCase
   def setup; end
 
   test 'months_logged method' do
-    assert_equal ["Jun 2022", "May 2022", 'Apr 2022', 'Mar 2022', 'Feb 2022', 'Jan 2022', 'Dec 2021', 'Nov 2021', 'Oct 2021', 'Sep 2021', 'Aug 2021'],
+    assert_equal ['Jun 2022', 'May 2022', 'Apr 2022', 'Mar 2022', 'Feb 2022', 'Jan 2022', 'Dec 2021', 'Nov 2021', 'Oct 2021', 'Sep 2021', 'Aug 2021'],
                  months_logged
   end
 

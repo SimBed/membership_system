@@ -17,7 +17,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
 
   test 'class booking links appear correctly for client before and after admin adds and edits new class' do
     log_in_as(@account_client)
-    follow_redirect! #logging in as client triggers redirect to booking page
+    follow_redirect! # logging in as client triggers redirect to booking page
 
     assert_template 'client/clients/book'
     # assert_select 'a[href=?]', admin_attendances_path, count: 2
@@ -57,10 +57,10 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     follow_redirect!
     # There is a class on 25th but booking_window_days_before defaults to 2
     assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
-    assert_difference 'Attendance.count', 1 do    
-    post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
-                                                         purchase_id: @purchase.id },
-                                           booking_section: 'group' }
+    assert_difference 'Attendance.count', 1 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+                                                           purchase_id: @purchase.id },
+                                             booking_section: 'group' }
     end
     follow_redirect!
 
@@ -79,6 +79,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     # not used in end - but note the addition of \/ [escape backslash] in the regexs if want to select for backslash
     assert_select "a:match('href', ?)", /#{admin_attendances_path}[?]/, count: 1
     attendance = Attendance.where(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id).first
+
     assert_select "a:match('href', ?)", /#{admin_attendance_path(attendance)}/, count: 2
     # assert_select 'a[href=?]', admin_attendance_path(attendance), count: 1
   end

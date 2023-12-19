@@ -7,7 +7,7 @@ class PriceTest < ActiveSupport::TestCase
                        date_from: '2022-01-01',
                        date_until: '2122-01-01',
                        product_id: @product.id)
-    @price_Uc3mbase = prices(:Uc3mbase)
+    @price_uc3m_base = prices(:Uc3mbase)
     #  scope testing https://dev.to/konnorrogers/testing-scopes-with-rails-4ho9
     @price1 = Price.create!(price: 20_000, date_from: '2022-01-01', date_until: '2122-12-31', product_id: @product.id)
     @price1a = Price.create!(price: 21_000, date_from: '2022-06-01', date_until: '2022-12-31', product_id: @product.id)
@@ -46,8 +46,9 @@ class PriceTest < ActiveSupport::TestCase
   end
 
   test '#deletable?' do
-    refute @price_Uc3mbase.deletable? # as it has 2 associated purchases
-    Purchase.where(price_id: @price_Uc3mbase.id).destroy_all
-    assert @price_Uc3mbase.deletable?
-  end  
+    refute @price_uc3m_base.deletable? # as it has 2 associated purchases
+    Purchase.where(price_id: @price_uc3m_base.id).destroy_all
+
+    assert @price_uc3m_base.deletable?
+  end
 end
