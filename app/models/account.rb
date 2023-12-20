@@ -15,7 +15,7 @@ class Account < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
   validates :ac_type, presence: true
   has_secure_password
-  scope :has_role, ->(*role) {joins(assignments: [:role]).where(role: {name: [role]}).distinct }
+  scope :has_role, ->(*role) { joins(assignments: [:role]).where(role: { name: [role] }).distinct }
   # scope :order_by_ac_type, -> { order(:ac_type, :email) }
 
   # not yet used
@@ -23,7 +23,7 @@ class Account < ApplicationRecord
     # #& is Array class's intersection method
     # to_a won't convert string to array , but can achieve the same with splat operator or Array.wrap()
     # https://medium.com/rubycademy/3-safe-ways-to-convert-values-into-array-in-ruby-c3990a5223ef
-    # splat in argument and to_s in method means argument can be a single symbol/string or a comma separted list of symbols/strings 
+    # splat in argument and to_s in method means argument can be a single symbol/string or a comma separted list of symbols/strings
     (roles.pluck(:name) & role.map(&:to_s)).any?
   end
 
@@ -32,7 +32,7 @@ class Account < ApplicationRecord
   end
 
   def without_purchase?
-    return client.purchases.empty? if client
+    client.purchases.empty? if client
   end
 
   def clean_up
@@ -86,14 +86,13 @@ class Account < ApplicationRecord
   def self.setup_for(client)
     account_params = { email: client.email,
                        ac_type: 'client',
-                       account_holder: client
-                      }
+                       account_holder: client }
     result = AccountCreator.new(account_params).create
     if result.success?
       flash_for_account = :success, I18n.t('admin.accounts.create.success')
       # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
       flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',
-      variable_contents: { password: result.password }).manage_messaging
+                                        variable_contents: { password: result.password }).manage_messaging
       [flash_for_account, flash_for_whatsapp] # an array of arrays
     else
       [:warning, I18n.t('admin.accounts.create.warning')]

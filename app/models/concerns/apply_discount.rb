@@ -26,5 +26,4 @@ module ApplyDiscount
     rounded = n.round(-2)
     rounded > n ? rounded : rounded + 50
   end
-
 end

@@ -22,7 +22,7 @@ class Setting < RailsSettings::Base
 
   scope :discount do
     field :discount_reason_names, type: :array, default: ['Buddy', 'Class Pass', 'Complimentary', 'Fitternity', 'Friends & Family', 'Student', 'First Package',
-                                                   'Renewal of Package Before Expiry', 'Renewal of Package After Expiry', 'Renewal of Trial Before Expiry', 'Renewal of Trial After Expiry']
+                                                          'Renewal of Package Before Expiry', 'Renewal of Package After Expiry', 'Renewal of Trial Before Expiry', 'Renewal of Trial After Expiry']
   end
 
   scope :product do
@@ -70,7 +70,8 @@ class Setting < RailsSettings::Base
 
   # https://github.com/huacnlee/rails-settings-cached/issues/231
   scope :purchase do
-    field :payment_methods, type: :array, default: ['A&R conversion', 'Card-Credit', 'Card-Debit', 'Cash', 'Cheque', 'ClassPass', 'Fitternity', 'Google Pay', 'Instamojo', 'NEFT', 'Not applicable', 'Not paid', 'Paid to instructor', 'PayTM', 'Razorpay']
+    field :payment_methods, type: :array,
+                            default: ['A&R conversion', 'Card-Credit', 'Card-Debit', 'Cash', 'Cheque', 'ClassPass', 'Fitternity', 'Google Pay', 'Instamojo', 'NEFT', 'Not applicable', 'Not paid', 'Paid to instructor', 'PayTM', 'Razorpay']
     field :freeze_min_duration, type: :integer, default: 3
     field :sunset_limit_days, type: :hash, default: {
       'week_or_less' => 30,

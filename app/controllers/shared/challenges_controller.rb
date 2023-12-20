@@ -12,7 +12,7 @@ class Shared::ChallengesController < Shared::BaseController
 
   def new
     @challenge = Challenge.new
-    @challenges =  Challenge.order_by_name.map { |c| [c.name, c.id] }
+    @challenges = Challenge.order_by_name.map { |c| [c.name, c.id] }
   end
 
   def edit

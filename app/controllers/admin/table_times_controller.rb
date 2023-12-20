@@ -1,6 +1,6 @@
 class Admin::TableTimesController < Admin::BaseController
-  before_action :set_table_time, only: %i[ show edit update destroy ]
-  before_action :set_timetable, only: %i[ update destroy ]
+  before_action :set_table_time, only: %i[show edit update destroy]
+  before_action :set_timetable, only: %i[update destroy]
 
   def index
     @table_times = TableTime.all
@@ -21,7 +21,6 @@ class Admin::TableTimesController < Admin::BaseController
     else
       render :new, status: :unprocessable_entity
     end
-
   end
 
   def update

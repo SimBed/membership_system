@@ -1,7 +1,7 @@
 class Admin::TimetablesController < Admin::BaseController
   skip_before_action :admin_account, only: [:show_public, :show]
   before_action :junioradmin_account, only: :show
-  before_action :set_timetable, only: %i[ show edit update destroy ]
+  before_action :set_timetable, only: %i[show edit update destroy]
 
   def index
     @timetables = Timetable.all
@@ -24,8 +24,8 @@ class Admin::TimetablesController < Admin::BaseController
       @entries_hash[day.name] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
     end
     # used to establish whether 2nd day in the timetable slider is tomorrow or not
-    @todays_day = Date.today.strftime("%A")    
-    @tomorrows_day = Date.tomorrow.strftime("%A")    
+    @todays_day = Time.zone.today.strftime('%A')
+    @tomorrows_day = Date.tomorrow.strftime('%A')
     render 'public_pages/timetable', layout: 'public'
   end
 

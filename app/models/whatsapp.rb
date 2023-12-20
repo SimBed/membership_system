@@ -12,7 +12,7 @@ class Whatsapp
   def manage_messaging
     # the arrays returned are for the flash
     # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
-    # commented out this line for client_waiting_list test to pass. Needs reformatting.   
+    # commented out this line for client_waiting_list test to pass. Needs reformatting.
     # return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
     # return [nil] if @message_type == 'early_cancels_no_penalty'
     return [nil] unless whatsapp_permitted
@@ -32,14 +32,14 @@ class Whatsapp
       body:
     )
   end
-  
+
   # https://www.twilio.com/docs/content/whatsappauthentication
   def send_password
     twilio_initialise
     client = Twilio::REST::Client.new(@account_sid, @auth_token)
     client.messages.create(
       from: "whatsapp:#{@from_number}",
-      to: "whatsapp:#{@to_number}",      
+      to: "whatsapp:#{@to_number}",
       content_sid: 'HXdfb9c88a6cbad1bad04a1bc458a34dc0',
       content_variables: {
         '1' => '123456'
@@ -74,7 +74,7 @@ class Whatsapp
 
     # for one test in client_waiting_list I have stubbed out whatsapp_send
     return true if Rails.env.test? && @to_number == '+919161131111'
-    
+
     return true if @to_me
 
     false
@@ -104,11 +104,11 @@ class Whatsapp
 
   def body_waiting_list_blast
     "SPOT AVAILABLE AT #{@variable_contents[:wkclass_name].upcase} at #{@variable_contents[:date_time].upcase}" +
-    "\nYou have received this message because you are on the waiting list for this class." +  
-    "\nBook now, but be quick! Spots are available on a 1st come basis." +
-    "\n \nPlease do not reply to this message. Contact The Space's main number if you have any questions."
+      "\nYou have received this message because you are on the waiting list for this class." +
+      "\nBook now, but be quick! Spots are available on a 1st come basis." +
+      "\n \nPlease do not reply to this message. Contact The Space's main number if you have any questions."
   end
-    
+
   # space between '\n' and '\nPlease' is required for conformity to nuance of template. Fails to deliver without.
   def body_new_purchase
     "Thank you for your new purchase #{@variable_contents[:first_name]}." +

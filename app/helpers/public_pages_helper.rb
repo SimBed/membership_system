@@ -4,6 +4,6 @@ module PublicPagesHelper
 
     return 'tomorrow' if day == tomorrows_day
 
-    length == :short_name ? day.slice(0,2) : day
+    length == :short_name ? day.slice(0, 2) : day
   end
 end

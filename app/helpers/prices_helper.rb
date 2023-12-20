@@ -16,5 +16,4 @@ module PricesHelper
   # def discount_format(discount)
   #   "#{number_with_precision(discount, precision: 2, strip_insignificant_zeros: true)}%"
   # end
-
 end

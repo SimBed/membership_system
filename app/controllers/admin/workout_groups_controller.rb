@@ -44,7 +44,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def edit
     prepare_items_for_dropdowns
     @partner = @workout_group.partner
-    @form_cancel_link = admin_workout_groups_path    
+    @form_cancel_link = admin_workout_groups_path
   end
 
   def create
@@ -102,12 +102,12 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   #   @period = month_period(session[:revenue_month])
   # end
 
-  # became more complicated when hotwired workout_group show as multiple workout groups can be shown at the same time with different periods 
+  # became more complicated when hotwired workout_group show as multiple workout groups can be shown at the same time with different periods
   def set_period
     workout_group = "workout_group_#{@workout_group.id}".to_sym
     session[workout_group] = {} if session[workout_group].nil?
     default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
-    # must be session[workout_group]['revenue_month'] not session[workout_group][:revenue_month]  
+    # must be session[workout_group]['revenue_month'] not session[workout_group][:revenue_month]
     session[workout_group][:revenue_month] = params[:revenue_month] || session[workout_group]['revenue_month'] || default_month
     session[workout_group][:revenue_month] = default_month if session[workout_group][:revenue_month] == 'All'
     @period = month_period(session[workout_group][:revenue_month])

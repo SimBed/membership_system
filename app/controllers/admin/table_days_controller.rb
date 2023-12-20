@@ -1,6 +1,6 @@
 class Admin::TableDaysController < Admin::BaseController
-  before_action :set_table_day, only: %i[ show edit update destroy ]
-  before_action :set_timetable, only: %i[ update destroy ]
+  before_action :set_table_day, only: %i[show edit update destroy]
+  before_action :set_timetable, only: %i[update destroy]
 
   def index
     @table_days = TableDay.all
@@ -36,7 +36,7 @@ class Admin::TableDaysController < Admin::BaseController
     @table_day.destroy
     flash_message :success, "Timetable's day was successfully deleted"
     redirect_to admin_timetable_path(@timetable)
-   end
+  end
 
   private
 

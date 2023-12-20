@@ -41,10 +41,10 @@ class Admin::AttendancesController < Admin::BaseController
     session[:show_qualifying_purchases] = 'yes'
     @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
   end
-  
 
   def create
     handle_fitternity and return if fitternity?
+
     @attendance = Attendance.new(attendance_params)
     if @attendance.save
       # needed for after_action callback
@@ -62,7 +62,7 @@ class Admin::AttendancesController < Admin::BaseController
                       product_id: 1,
                       price_id: 2,
                       payment: 550,
-                      dop: Date.today(),
+                      dop: Time.zone.today(),
                       payment_mode: 'Fitternity',
                       fitternity_id: Fitternity.ongoing.first&.id }
 
@@ -227,7 +227,7 @@ class Admin::AttendancesController < Admin::BaseController
   #   redirect_to login_path
   # end
 
-  # make dry  
+  # make dry
   def correct_account_or_junioradmin_or_instructor_account
     @client = if new_booking?
                 if fitternity?
@@ -241,6 +241,7 @@ class Admin::AttendancesController < Admin::BaseController
                 @attendance.client
               end
     return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
+
     flash_message :warning, t('.warning')
     # flash[:warning] = 'Forbidden'
     redirect_to login_path
@@ -321,7 +322,7 @@ class Admin::AttendancesController < Admin::BaseController
     # pass which section the request came from to render the correct turbo_stream to update the correct table opengym/group/my-bookings
     # pass limited as well, as if the request is from my_bookings the turbo stream needs to now whether to update group table or opengym table
     # limited not used in the end (can be deleted). When a mybooking is cancelled, update both opengym and group. If you dust update the impacted table, then when the day of the cancelled class is different from
-    # the day currently selected, there will be inconsistency between the day shown and the non-impacted listing 
+    # the day currently selected, there will be inconsistency between the day shown and the non-impacted listing
     redirect_to client_book_path(@client, booking_section: params[:booking_section], limited: @wkclass.workout.limited, major_change: @major_change) # pass whether a major change occurred to trigger either a full page reload or just a discrete turbo_frame
   end
 
@@ -569,12 +570,12 @@ class Admin::AttendancesController < Admin::BaseController
     @period = month_period(session[:attendance_period])
     session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
   end
-  
+
   def client?
     logged_in_as?('client')
   end
 
-  def set_booking_day # so day on slider shown doesn't revert to default on response 
+  def set_booking_day # so day on slider shown doesn't revert to default on response
     default_booking_day = 0
     session[:booking_day] = params[:booking_day] || session[:booking_day] || default_booking_day
   end
@@ -583,18 +584,18 @@ class Admin::AttendancesController < Admin::BaseController
     @client.waiting_list_for(@wkclass).destroy if @client.on_waiting_list_for?(@wkclass)
   end
 
-  #TODO: make dry - repeated in wkclasses controller
+  # TODO: make dry - repeated in wkclasses controller
   def notify_waiting_list(wkclass, triggered_by: 'admin')
     return if wkclass.in_the_past?
 
     return if wkclass.at_capacity?
 
     wkclass.waitings.each do |waiting|
-      Whatsapp.new( { receiver: waiting.purchase.client,
-                      message_type: 'waiting_list_blast',
-                      triggered_by: triggered_by,
-                      variable_contents: { wkclass_name: wkclass.name,
-                                           date_time: wkclass.date_time_short } }).manage_messaging
+      Whatsapp.new({ receiver: waiting.purchase.client,
+                     message_type: 'waiting_list_blast',
+                     triggered_by:,
+                     variable_contents: { wkclass_name: wkclass.name,
+                                          date_time: wkclass.date_time_short } }).manage_messaging
     end
   end
 end

@@ -52,13 +52,13 @@ class RenewalTest < ActiveSupport::TestCase
     refute @renewal_trial_expired.ongoing_trial?
     assert @renewal_trial_ongoing.ongoing_trial?
   end
-  test '#discount' do
-    assert_equal 1250, @renewal_package_ongoing_unlimited.discount(@renewal_package_ongoing_unlimited.product)
-    assert_nil @renewal_package_expired_unlimited.discount(@renewal_package_expired_unlimited.product)
-    assert_equal 600, @renewal_package_ongoing_fixed.discount(@renewal_package_ongoing_fixed.product)
-    assert_nil @renewal_new_client.discount(@renewal_new_client.product)
-    assert_equal 3800, @renewal_trial_expired.discount(@renewal_trial_expired.product)
-    assert_equal 5100, @renewal_trial_ongoing.discount(@renewal_trial_ongoing.product)
+  test '#renewal_saving' do
+    assert_equal 1250, @renewal_package_ongoing_unlimited.renewal_saving(@renewal_package_ongoing_unlimited.product)
+    assert_equal 0, @renewal_package_expired_unlimited.renewal_saving(@renewal_package_expired_unlimited.product)
+    assert_equal 600, @renewal_package_ongoing_fixed.renewal_saving(@renewal_package_ongoing_fixed.product)
+    assert_equal 0, @renewal_new_client.renewal_saving(@renewal_new_client.product)
+    assert_equal 3800, @renewal_trial_expired.renewal_saving(@renewal_trial_expired.product)
+    assert_equal 5100, @renewal_trial_ongoing.renewal_saving(@renewal_trial_ongoing.product)
   end
   test '#alert_to_renew?' do
     assert @renewal_package_ongoing_unlimited.alert_to_renew?
@@ -77,7 +77,7 @@ class RenewalTest < ActiveSupport::TestCase
     assert @renewal_package_ongoing_unlimited.valid?
     assert @renewal_package_expired_unlimited.valid?
     assert @renewal_package_ongoing_fixed.valid?
-    assert_nil @renewal_new_client.valid?
+    refute @renewal_new_client.valid?
     assert @renewal_trial_expired.valid?
     assert @renewal_trial_ongoing.valid?
     # destroy base price of client's ongoing product so renewal no longer valid

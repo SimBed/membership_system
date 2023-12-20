@@ -130,7 +130,8 @@ class Admin::ClientsController < Admin::BaseController
     return { whatsapp_group: params[:whatsapp_group] } if params[:whatsapp_group].present?
 
     # modifier_is_client is necessary so validation of Client model can vary from admin to client (ie new signups through the web must provide more robust data)
-    params.require(:client).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :phone_raw, :instagram, :hotlead, :student, :friends_and_family, :note)
+    params.require(:client).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :phone_raw, :instagram, :hotlead, :student, :friends_and_family,
+                                   :note)
           .merge(phone_country_code: 'IN')
           .merge(modifier_is_client: false)
   end
@@ -164,16 +165,16 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def handle_sort
-    @clients = @clients.send("order_by_#{session[:client_sort_option]}") #.page params[:page]
+    @clients = @clients.send("order_by_#{session[:client_sort_option]}") # .page params[:page]
   end
 
   def handle_pagination
     # when exporting data, want it all not just the page of pagination
     if params[:export_all]
-    #  @clients.page(params[:page]).per(100_000)
+      #  @clients.page(params[:page]).per(100_000)
       @pagy, @clients = pagy(@clients, items: 100_000)
     else
-    #  @clients.page params[:page]
+      #  @clients.page params[:page]
       @pagy, @clients = pagy(@clients)
     end
   end

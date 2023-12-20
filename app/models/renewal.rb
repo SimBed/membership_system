@@ -17,7 +17,7 @@ class Renewal
     student_discount = Discount.student_at(Time.zone.now)&.first if @client.student?
     friends_and_family_discount = Discount.friends_and_family_at(Time.zone.now)&.first if @client.friends_and_family?
     oneoff_discount = Discount.with_rationale_at('Oneoff', Time.zone.now)&.first
-    best_discount = [renewal_discount, student_discount, friends_and_family_discount, oneoff_discount].compact.sort_by { |d| [d.percent, d.fixed] }.last
+    best_discount = [renewal_discount, student_discount, friends_and_family_discount, oneoff_discount].compact.max_by { |d| [d.percent, d.fixed] }
     hash = { renewal: nil, status: nil, oneoff: nil }
     hash[best_discount.discount_reason.rationale.downcase.to_sym] = best_discount unless best_discount.nil?
     hash
@@ -71,8 +71,8 @@ class Renewal
   def offer_online_discount?
     return false if discount_hash.values.map(&:nil?).all?
 
-		true
-	end
+    true
+  end
 
   def price(product)
     return base_price(product).price if product.trial?
@@ -84,22 +84,22 @@ class Renewal
     product.base_price_at(Time.zone.now)
   end
 
-  # unused I think  / renewal_saving used in view (from clients_helper). make consistent and delete unused one
-  def discount(product)
-    return nil if new_client? || !valid? || base_price(self.product).price == price(self.product)
+  def renewal_saving(product)
+    base_product_price = base_price(product).price
+    return 0 unless base_product_price
 
-    base_price(self.product).price - price(self.product)
+    base_product_price - price(product)
   end
 
   def valid?
-    return nil if new_client?
+    return false if new_client?
     return false if base_price(product).nil?
 
     true
   end
 
   def alert_to_renew?
-    return nil if new_client?
+    return false if new_client?
     return true unless package_ongoing?
 
     @client.alert_to_renew?
@@ -108,13 +108,13 @@ class Renewal
   def package_ongoing?
     return true if @ongoing_groupex_package_purchases.any?
 
-    return false
+    false
   end
 
   def from_trial?
     return true if @last_groupex_package_purchase&.trial?
 
-    return false
+    false
   end
 
   def product

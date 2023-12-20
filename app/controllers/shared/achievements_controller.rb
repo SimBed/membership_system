@@ -1,5 +1,5 @@
 class Shared::AchievementsController < Shared::BaseController
-  before_action :set_achievement, only: %i[ show edit update destroy ]
+  before_action :set_achievement, only: %i[show edit update destroy]
 
   def index
     @achievements = Achievement.order_by_date
@@ -44,16 +44,17 @@ class Shared::AchievementsController < Shared::BaseController
   end
 
   private
-    def set_achievement
-      @achievement = Achievement.find(params[:id])
-    end
 
-    def set_options
-      @challenges = Challenge.all
-      @clients = Client.order_by_first_name
-    end
+  def set_achievement
+    @achievement = Achievement.find(params[:id])
+  end
 
-    def achievement_params
-      params.require(:achievement).permit(:date, :score, :challenge_id, :client_id)
-    end
+  def set_options
+    @challenges = Challenge.all
+    @clients = Client.order_by_first_name
+  end
+
+  def achievement_params
+    params.require(:achievement).permit(:date, :score, :challenge_id, :client_id)
+  end
 end

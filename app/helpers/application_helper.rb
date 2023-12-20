@@ -1,6 +1,6 @@
 module ApplicationHelper
   include Pagy::Frontend
-  
+
   def flash_message(type, text = nil, now = nil)
     return if type.nil?
 
@@ -51,11 +51,11 @@ module ApplicationHelper
   end
 
   def form_test
-    form_with(url: '/', method: "get", class: "form-class", data: {turbo_frame: "expenses"}) do |form|
-      form.select :revenue_month, options_for_select(['feb']), {}, {class: "sort", onchange: "this.form.requestSubmit()"}
+    form_with(url: '/', method: 'get', class: 'form-class', data: { turbo_frame: 'expenses' }) do |form|
+      form.select :revenue_month, options_for_select(['feb']), {}, { class: 'sort', onchange: 'this.form.requestSubmit()' }
     end
   end
-  
+
   private
 
   def months_between(start_date, end_date)

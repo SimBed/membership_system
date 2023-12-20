@@ -16,5 +16,4 @@ class PackageMenu
 
     base_price(product) - price(product)
   end
-
 end

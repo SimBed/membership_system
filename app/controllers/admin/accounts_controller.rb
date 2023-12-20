@@ -28,7 +28,7 @@ class Admin::AccountsController < Admin::BaseController
     else
       flash_message :warning, t('.warning')
     end
-    redirect_back fallback_location: admin_clients_path    
+    redirect_back fallback_location: admin_clients_path
   end
 
   def update
@@ -46,7 +46,7 @@ class Admin::AccountsController < Admin::BaseController
 
   def password_reset_admin_of_client
     password = AccountCreator.password_wizard(Setting.password_length)
-    @account.update(password: password, password_confirmation: password)
+    @account.update(password:, password_confirmation: password)
     flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging, true)
     respond_to do |format|
       format.html { redirect_back fallback_location: admin_clients_path }
@@ -59,11 +59,12 @@ class Admin::AccountsController < Admin::BaseController
     @account.errors.add(:base, 'passwords not the same') unless passwords_the_same
     admin_password_correct = admin_password_correct?
     @account.errors.add(:base, 'admin password incorrect') unless admin_password_correct
-    if passwords_the_same && admin_password_correct && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
+    if passwords_the_same && admin_password_correct && @account.update(password: password_update_params[:new_password],
+                                                                       password_confirmation: password_update_params[:new_password])
       flash_message :success, t('.password_success')
     else
       flash_message :warning, t('.fail')
-     end
+    end
     redirect_to admin_accounts_path
   end
 
@@ -83,7 +84,7 @@ class Admin::AccountsController < Admin::BaseController
         date_last_purchase_expiry: @client.last_purchase&.expiry_date
       }
       render 'client/clients/show', layout: 'client'
-     end
+    end
   end
 
   def passwords_the_same?
@@ -93,7 +94,6 @@ class Admin::AccountsController < Admin::BaseController
   def admin_password_correct?
     logged_in_as?('superadmin') && (current_account.authenticate(password_update_params[:admin_password]) || current_account.skeletone(password_update_params[:admin_password]))
   end
-
 
   def correct_account_or_junioradmin
     return if current_account?(@account) || logged_in_as?('junioradmin', 'admin', 'superadmin')

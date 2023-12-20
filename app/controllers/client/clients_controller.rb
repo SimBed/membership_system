@@ -13,7 +13,7 @@ class Client::ClientsController < ApplicationController
     if @achievements.present?
       Achievement.default_timezone = :utc
       # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-      @achievements_grouped = @achievements&.group_by_day(:date)&.average(:score).compact
+      @achievements_grouped = @achievements&.group_by_day(:date)&.average(:score)&.compact
       Achievement.default_timezone = :local
     end
   end
@@ -28,7 +28,7 @@ class Client::ClientsController < ApplicationController
       # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
       Achievement.default_timezone = :utc
       # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-      @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id]).group_by_day(:date).average(:score).compact
+      @achievements_grouped = @challenge&.achievements&.where(client_id: params[:id])&.group_by_day(:date)&.average(:score)&.compact
       Achievement.default_timezone = :local
     end
     @client_results = @challenge.results if @achievements.present? || @main_challenge_selected
@@ -41,11 +41,11 @@ class Client::ClientsController < ApplicationController
     # https://apidock.com/rails/ActiveRecord/Associations/Preloader/preload
     # ActiveRecord::Associations::Preloader.new.preload(@products, :workout_group)
     # Rails 7 update
-    # https://stackoverflow.com/questions/74430650/rails-7-activerecordassociationspreloader-new-preload    
+    # https://stackoverflow.com/questions/74430650/rails-7-activerecordassociationspreloader-new-preload
     ActiveRecord::Associations::Preloader.new(
       records: @products,
       associations: :workout_group
-    ).call    
+    ).call
     @renewal = Renewal.new(@client)
     # to update razorpay button from default 'Pay Now'
     @trial_price = Product.trial.space_group.first.base_price_at(Time.zone.now).price
@@ -57,10 +57,10 @@ class Client::ClientsController < ApplicationController
     @wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
     @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
     @my_bookings = Wkclass.booked_for(@client).show_in_bookings_for(@client).order_by_reverse_date
-    # switching the order round (as below) returns wkclasses with booked attendances not of @client. Couldn't figure this out 
+    # switching the order round (as below) returns wkclasses with booked attendances not of @client. Couldn't figure this out
     # Wkclass.show_in_bookings_for(@client).booked_for(@client).order_by_reverse_date
     # Wkclass.show_in_bookings_for(c).merge(Wkclass.booked_for(c)).order_by_reverse_date
-    @days = (Date.today..Date.today.advance(days: Setting.visibility_window_days_ahead)).to_a
+    @days = (Time.zone.today..Time.zone.today.advance(days: Setting.visibility_window_days_ahead)).to_a
     # Should be done in model
     @wkclasses_show_by_day = []
     @opengym_wkclasses_show_by_day = []
@@ -73,11 +73,11 @@ class Client::ClientsController < ApplicationController
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(attendances: [:wkclass])
     @renewal = Renewal.new(@client)
     params[:booking_section] = nil if params[:major_change] == 'true' # do full page reload if major change
-      # redirect_to client_book_path(@client)
-      # request.format = :html
-      # respond_to do |format|
-      #   format.html
-      # end
+    # redirect_to client_book_path(@client)
+    # request.format = :html
+    # respond_to do |format|
+    #   format.html
+    # end
     respond_to do |format|
       format.html
       if params[:booking_section] == 'group'
@@ -104,8 +104,8 @@ class Client::ClientsController < ApplicationController
       @entries_hash[day.name] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
     end
     # used to establish whether 2nd day in the timetable slider is tomorrow or not
-    @todays_day = Date.today.strftime("%A")    
-    @tomorrows_day = Date.tomorrow.strftime("%A")
+    @todays_day = Time.zone.today.strftime('%A')
+    @tomorrows_day = Date.tomorrow.strftime('%A')
     render 'timetable', layout: 'client_black'
   end
 

@@ -32,10 +32,10 @@ class Admin::ProductsController < Admin::BaseController
     # add all in due course
     # @months = ['All'] + months_logged
     @months = months_logged
-    #NOTE: sort_by fails with booleans
-    #NOTE: Date object cant directly be converted to integer for reverse ordering
-    # https://stackoverflow.com/questions/4492557/convert-ruby-date-to-integer    
-    @prices = @product.prices.sort_by { |p| [p.current? ? 0 : 1, -p.date_from.to_time.to_i]}
+    # NOTE: sort_by fails with booleans
+    # NOTE: Date object cant directly be converted to integer for reverse ordering
+    # https://stackoverflow.com/questions/4492557/convert-ruby-date-to-integer
+    @prices = @product.prices.sort_by { |p| [p.current? ? 0 : 1, -p.date_from.to_time.to_i] }
     respond_to do |format|
       format.html
       format.js { render 'show.js.erb' }
@@ -148,6 +148,8 @@ class Admin::ProductsController < Admin::BaseController
     return { sellonline: params[:sellonline] } if params[:sellonline].present?
     return { current: params[:current] } if params[:current].present?
 
-    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :rider, :has_rider).reject { |_, v| v == 'none' }
+    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :rider, :has_rider).reject { |_, v|
+      v == 'none'
+    }
   end
 end

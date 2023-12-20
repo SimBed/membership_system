@@ -1,5 +1,4 @@
 module Client::ClientsHelper
-
   def number(whatsapp, phone)
     return nil if whatsapp.blank? && phone.blank?
 
@@ -28,17 +27,16 @@ module Client::ClientsHelper
       # remarkably difficult to have a tooltip with spaces in it
       # https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces
       title = "class\u00a0is\u00a0currently\u00a0full"
-      { css_class: "table-secondary",
-        data_attributes: "data-toggle=tooltip",
+      { css_class: 'table-secondary',
+        data_attributes: 'data-toggle=tooltip',
         tooltip_title: "title=#{title}",
-        link: (link_to '#', class: 'icon-container disable-link' do tag.i class: ["bi bi-battery-full"] end)
-        }
+        link: (link_to '#', class: 'icon-container disable-link' do tag.i class: ['bi bi-battery-full'] end) }
     else
       confirmation = t('client.clients.attendance.create.confirm')
       confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
       { css_class: '',
         link: link_to(
-          image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}" ),
+          image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}"),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id,
                                  'booking_day': day,
@@ -54,14 +52,14 @@ module Client::ClientsHelper
     case attendance.status
     when 'booked'
       { css_class: 'text-success',
-        link: link_to_update(attendance, day, amendment: 'cancel', booking_section: booking_section) }
+        link: link_to_update(attendance, day, amendment: 'cancel', booking_section:) }
     when 'cancelled early'
       if attendance.purchase.restricted_on?(wkclass)
         { css_class: '', link: '' }
-    else
-      { css_class: '',
-        link: link_to_update(attendance, day, amendment: 'rebook', booking_section: booking_section) }
-    end
+      else
+        { css_class: '',
+          link: link_to_update(attendance, day, amendment: 'rebook', booking_section:) }
+      end
     when 'cancelled late', 'no show'
       { css_class: 'text-danger', link: '' }
     else # 'attended'
@@ -76,7 +74,7 @@ module Client::ClientsHelper
       confirmation = t('client.clients.attendance.update.from_booked.confirm')
     else
       image = 'add.png'
-      image_class = "table_icon mx-auto #{'filter-white' unless attendance.wkclass.workout.limited?}" 
+      image_class = "table_icon mx-auto #{'filter-white' unless attendance.wkclass.workout.limited?}"
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
       confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
     end
@@ -111,22 +109,21 @@ module Client::ClientsHelper
     return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
 
     "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
-
   end
 
   def visit_shop_statement(rider)
-    return "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'like_button text-uppercase'} now".html_safe if !rider
+    return "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'like_button text-uppercase'} now".html_safe unless rider
 
     "Visit the #{link_to 'Shop', client_shop_path(@client), class: 'like_button text-uppercase'} for more group classes".html_safe
   end
 
-  def renewal_saving(product, renewal)
-    renewal.base_price(product).price - renewal.price(product)
-  end
+  # def renewal_saving(product, renewal)
+  #   renewal.base_price(product).price - renewal.price(product)
+  # end
 
   def booking_image_prev(workout_name)
     path = "group/#{workout_name}.jpg"
-    default = "/assets/group/defaultbooking.jpg"
+    default = '/assets/group/defaultbooking.jpg'
     return "/assets/group/#{workout_name}.jpg" if asset_exist?(path)
 
     default
@@ -134,7 +131,7 @@ module Client::ClientsHelper
 
   def booking_image(workout_name)
     path = "group/#{workout_name}.jpg"
-    default = "group/defaultbooking.jpg"
+    default = 'group/defaultbooking.jpg'
     return path if asset_exist?(path)
 
     default
@@ -144,7 +141,7 @@ module Client::ClientsHelper
     return 'today'.capitalize if index == 0
     return 'tomorrow'.capitalize if index == 1
 
-    day.strftime("%a").capitalize
+    day.strftime('%a').capitalize
   end
 
   # not used
@@ -165,5 +162,5 @@ module Client::ClientsHelper
     else
       Rails.application.assets_manifest.assets[path].present?
     end
-  end  
+  end
 end

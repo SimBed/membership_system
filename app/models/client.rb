@@ -88,7 +88,7 @@ class Client < ApplicationRecord
                             }
 
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
-  scope :in_league, ->(league) {joins(results: [:league]).where(results: { league_id: league.id }) }
+  scope :in_league, ->(league) { joins(results: [:league]).where(results: { league_id: league.id }) }
 
   # paginates_per Setting.clients_pagination
 
@@ -149,7 +149,6 @@ class Client < ApplicationRecord
     attendances.confirmed.includes(:wkclass).map(&:start_time).max
   end
 
-
   def last_counted_class
     attendances.confirmed.no_amnesty.includes(:wkclass).map(&:start_time).max
   end
@@ -195,7 +194,7 @@ class Client < ApplicationRecord
   def associated_with?(wkclass)
     return true if attendances.includes(:wkclass).map(&:wkclass).include? wkclass
 
-    return false
+    false
   end
 
   def alert_to_renew?

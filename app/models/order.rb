@@ -32,7 +32,7 @@ class Order < ApplicationRecord
 
     def filter(params)
       scope = params[:status] ? Order.send(params[:status]) : Order.captured
-      return scope
+      scope
     end
   end
 end

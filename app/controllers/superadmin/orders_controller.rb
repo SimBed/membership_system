@@ -25,10 +25,10 @@ class Superadmin::OrdersController < Superadmin::BaseController
         @purchase = Purchase.new(purchase_params)
         if @purchase.save
           [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
-            DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) if !params[discount].blank?
+            DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) unless params[discount].blank?
           end
           flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
-           # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
+          # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
           if logged_in_as?('client')
             redirect_to client_history_path account.client
           else
@@ -40,7 +40,6 @@ class Superadmin::OrdersController < Superadmin::BaseController
           redirect_to root_path
         end
       end
-
     rescue Exception
       flash[:danger] = 'Unable to process payment. Please contact The Space'
       redirect_to root_path
@@ -73,7 +72,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
 
   def order_params
     p = params.permit(:product_id, :account_id, :price_id, :price, :razorpay_payment_id, :payment_id, :client_ui)
-    #delete returns nil if the key doesn't exist and the key's value if it does.
+    # delete returns nil if the key doesn't exist and the key's value if it does.
     p.merge!({ payment_id: p.delete(:razorpay_payment_id) || p[:payment_id] })
     p
   end

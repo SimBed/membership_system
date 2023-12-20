@@ -1,5 +1,5 @@
 class Superadmin::DiscountReasonsController < Superadmin::BaseController
-  before_action :set_discount_reason, only: %i[ show edit update destroy ]
+  before_action :set_discount_reason, only: %i[show edit update destroy]
 
   def index
     @discount_reasons_current = DiscountReason.current.order_by_rationale
@@ -57,13 +57,14 @@ class Superadmin::DiscountReasonsController < Superadmin::BaseController
   end
 
   def discount_reason_params
-    [:student, :friends_and_family, :first_package, :renewal_pre_package_expiry, :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry].each do |column|
+    [:student, :friends_and_family, :first_package, :renewal_pre_package_expiry, :renewal_post_package_expiry, :renewal_pre_trial_expiry,
+     :renewal_post_trial_expiry].each do |column|
       params['discount_reason'][column] = false
     end
     (applies_to_param = { params['discount_reason']['applies_to'] => true }) if DiscountReason.column_names.any? params['discount_reason']['applies_to']
     params.require(:discount_reason)
           .permit(:name, :rationale, :student, :friends_and_family, :first_package, :renewal_pre_package_expiry,
-            :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry, :current)
+                  :renewal_post_package_expiry, :renewal_pre_trial_expiry, :renewal_post_trial_expiry, :current)
           .merge applies_to_param
   end
 end

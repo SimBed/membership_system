@@ -8,7 +8,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :attendance_check, only: :repeat
   before_action :attendance_remain_check, only: :repeat
   before_action :affects_waiting_list, only: :update
-  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
@@ -24,7 +24,7 @@ class Admin::WkclassesController < Admin::BaseController
     @workouts = Workout.order_by_name.current
     @months = ['All'] + months_logged
     handle_pagination
-    session[:show_qualifying_purchases] = nil if params[:show_qualifying_purchases]  == 'no'    
+    session[:show_qualifying_purchases] = nil if params[:show_qualifying_purchases] == 'no'
     handle_index_response
   end
 
@@ -33,7 +33,7 @@ class Admin::WkclassesController < Admin::BaseController
     @ethereal_attendances_no_amnesty = @wkclass.ethereal_attendances.no_amnesty.order_by_status
     @ethereal_attendances_amnesty = @wkclass.ethereal_attendances.amnesty.order_by_status
     @waitings = @wkclass.waitings.order_by_created
-    session[:show_qualifying_purchases] ||= params[:show_qualifying_purchases]  || 'no'
+    session[:show_qualifying_purchases] ||= params[:show_qualifying_purchases] || 'no'
     if session[:show_qualifying_purchases] == 'yes'
       @attendance = Attendance.new
       @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
@@ -44,7 +44,7 @@ class Admin::WkclassesController < Admin::BaseController
     @cancel_button = true if @link_from == 'wkclasses_index'
     respond_to do |format|
       format.html
-      format.turbo_stream      
+      format.turbo_stream
     end
   end
 
@@ -57,7 +57,7 @@ class Admin::WkclassesController < Admin::BaseController
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
     @form_cancel_link = admin_wkclasses_path(link_from: params[:link_from], page: params[:page])
-    # @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_wkclass_path(@wkclass, link_from: 'purchases_index') : admin_wkclasses_path    
+    # @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_wkclass_path(@wkclass, link_from: 'purchases_index') : admin_wkclasses_path
   end
 
   def create
@@ -151,7 +151,7 @@ class Admin::WkclassesController < Admin::BaseController
     @instructor_rates = Instructor.where(id: params[:selected_instructor_id])&.first&.instructor_rates&.current&.order_by_group_instructor_rate || []
     (@instructor_rates = @instructor_rates.select(&:group?)) if workout&.group_workout?
     (@instructor_rates = @instructor_rates.reject(&:group?)) if workout&.pt_workout?
-    render layout:false
+    render layout: false
   end
 
   private
@@ -159,6 +159,7 @@ class Admin::WkclassesController < Admin::BaseController
   def attendance_check
     @attendances = @wkclass.attendances
     return if @attendances.size == 1
+
     flash[:warning] = 'No classes created. There must be 1 and only 1 booking for this class.' # t('.not_one_booking')
     redirect_to admin_wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
   end
@@ -226,8 +227,8 @@ class Admin::WkclassesController < Admin::BaseController
     (@instructor_rates = @instructor_rates.select(&:group?)) if @wkclass&.workout&.group_workout?
     @capacities = (0..30).to_a + [500]
     @repeats = (0..11).to_a if @wkclass.new_record?
-    @levels = Setting.levels #['Beginner Friendly', 'All Levels', 'Intermediate']
-    @studios = Setting.studios #['Cellar', 'Window', 'Garden', 'Den']
+    @levels = Setting.levels # ['Beginner Friendly', 'All Levels', 'Intermediate']
+    @studios = Setting.studios # ['Cellar', 'Window', 'Garden', 'Den']
     @durations = Setting.durations
     @instructor_id = @wkclass.instructor&.id
     @instructor_rate = @wkclass.instructor_rate&.id
@@ -263,7 +264,7 @@ class Admin::WkclassesController < Admin::BaseController
       # Railscasts #362 Exporting Csv And Excel
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @wkclasses.to_csv }
-      format.turbo_stream     
+      format.turbo_stream
     end
   end
 
@@ -286,13 +287,12 @@ class Admin::WkclassesController < Admin::BaseController
     return if wkclass.at_capacity?
 
     wkclass.waitings.each do |waiting|
-      result = Whatsapp.new( { receiver: waiting.purchase.client,
-                               message_type: 'waiting_list_blast',
-                               variable_contents: { wkclass_name: wkclass.name,
-                               date_time: wkclass.date_time_short } }).manage_messaging
+      result = Whatsapp.new({ receiver: waiting.purchase.client,
+                              message_type: 'waiting_list_blast',
+                              variable_contents: { wkclass_name: wkclass.name,
+                                                   date_time: wkclass.date_time_short } }).manage_messaging
       # splat just breaks the array returned eg [:warning, waiting list blast message sent by Whatsapp to 0000] up into idividual arguments
       flash_message(*result)
     end
   end
-
 end

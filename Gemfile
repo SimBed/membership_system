@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby '3.0.1'
-ruby File.read(".ruby-version").strip
+ruby File.read('.ruby-version').strip
 gem 'bcrypt'
 gem 'bootstrap', '~> 5.3.0.alpha3'
 gem 'chartkick', '~> 4.2'
@@ -11,7 +11,7 @@ gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'groupdate', '~> 6.1'
 gem 'honeybadger', '~> 5.2'
-gem "importmap-rails"
+gem 'importmap-rails'
 gem 'jbuilder', '~> 2.7'
 # gem 'kaminari'
 gem 'pagy'
@@ -19,12 +19,12 @@ gem 'net-smtp', require: false
 gem 'net-imap', require: false
 gem 'net-pop', require: false
 # for fater pagy performance https://ddnexus.github.io/pagy/docs/api/javascript/setup/
-gem "oj", "~> 3.16"
+gem 'oj', '~> 3.16'
 gem 'pg', '~> 1.1'
 gem 'phony_rails'
 gem 'puma', '~> 5.0'
 # gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
-gem "rails", "~> 7.0.0"
+gem 'rails', '~> 7.0.0'
 gem 'rails-controller-testing'
 gem 'rails-settings-cached', '~> 2.8'
 gem 'razorpay'
@@ -43,7 +43,7 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-rails', require: false
-  gem "rails-erd"
+  gem 'rails-erd'
 end
 
 group :development do
@@ -63,7 +63,7 @@ group :test do
   gem 'capybara', '>= 3.26'
   gem 'faker'
   # DPS couldn't stub Whatsapp#send_whatsapp without this
-  gem "minitest-stub_any_instance", "~> 1.0"
+  gem 'minitest-stub_any_instance', '~> 1.0'
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
@@ -71,7 +71,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Use Redis for Action Cable
-gem "redis", "~> 4.0"
-
-
-
+gem 'redis', '~> 4.0'

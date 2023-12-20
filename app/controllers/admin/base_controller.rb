@@ -19,7 +19,7 @@ class Admin::BaseController < ApplicationController
   #   return false if message_type == 'early_cancels_no_penalty'
 
   #   return true if Rails.env.production?
-    
+
   #   return true if reciever == 'me' || receiver.whatsapp_messaging_number == Rails.configuration.twilio[:me]
 
   #   false
@@ -34,5 +34,4 @@ class Admin::BaseController < ApplicationController
   def set_public_timetable
     @current_timetable = Timetable.find(Rails.application.config_for(:constants)['timetable_id'])
   end
- 
 end

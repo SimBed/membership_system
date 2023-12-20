@@ -51,7 +51,7 @@ class Purchase < ApplicationRecord
   scope :fixed, -> { joins(:product).merge(Product.fixed) }
   scope :trial, -> { joins(:product).merge(Product.trial) }
   # scope :sunset_passed, -> { where(sunset_date: (Date.today..Date.Infinity.new)) }
-  scope :sunset_passed, -> { not_fully_expired.where('sunset_date < ?', Date.today).order(:sunset_date) }
+  scope :sunset_passed, -> { not_fully_expired.where('sunset_date < ?', Time.zone.today).order(:sunset_date) }
   scope :package_started_not_expired, -> { package.started.not_expired }
   scope :package_started_not_fully_expired, -> { package.started.not_fully_expired }
   scope :renewable, -> { joins(product: [:workout_group]).where(workout_groups: { renewable: true }) }
@@ -73,7 +73,7 @@ class Purchase < ApplicationRecord
                        package.where(invoice: nil).joins(product: [:workout_group])
                               .where(workout_groups: { requires_invoice: true })
                      }
-  scope :service_type, lambda { |service| joins(product: [:workout_group]).where(workout_groups: { service: }) }
+  scope :service_type, ->(service) { joins(product: [:workout_group]).where(workout_groups: { service: }) }
   scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :written_off, -> { where(payment_mode: 'Write Off') }
@@ -84,7 +84,7 @@ class Purchase < ApplicationRecord
   scope :unexpired_rider_without_ongoing_main, -> { not_fully_expired.joins(:main_purchase).where.not(main_purchase: { status: ['ongoing', 'classes all booked'] }) }
   scope :rider, -> { where.not(purchase_id: nil) }
   scope :main_purchase, -> { where(purchase_id: nil) }
-  scope :expired_in, ->(period) { where(expiry_date: period)}
+  scope :expired_in, ->(period) { where(expiry_date: period) }
   # used in Purchases controller's handle_sort method
   # raw SQL in Active Record functions will give an error to guard against SQL injection
   # in the case where the raw SQl contains user input i.e. a params value
@@ -122,7 +122,7 @@ class Purchase < ApplicationRecord
   def self.available_for_booking(wkclass, client)
     available_to(wkclass).where(client_id: client.id).reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
-        (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?)  ||
+        (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
         p.expires_before?(wkclass.start_time.to_date) ||
         p.already_used_for?(wkclass)
     end
@@ -172,13 +172,13 @@ class Purchase < ApplicationRecord
   end
 
   def restricted_on?(wkclass)
-    return false if !wkclass.workout.limited? # open gym can be booked even if another class is booked on same day
+    return false unless wkclass.workout.limited? # open gym can be booked even if another class is booked on same day
 
     return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
 
     attendances.committed.includes(:wkclass).reject { |a| a.wkclass == wkclass || !a.wkclass.workout.limited }
-                                            .map { |a| a.start_time.to_date }
-                                            .include?(wkclass.start_time.to_date)
+               .map { |a| a.start_time.to_date }
+               .include?(wkclass.start_time.to_date)
   end
 
   def already_used_for?(wkclass)
@@ -234,7 +234,7 @@ class Purchase < ApplicationRecord
   end
 
   def display_frozen?(adate)
-    freezed?(adate) && !expired? 
+    freezed?(adate) && !expired?
   end
 
   # for new freeze form in client booking page
@@ -245,14 +245,14 @@ class Purchase < ApplicationRecord
       earliest = [earliest, current_freeze.end_date.advance(days: 1)].max
     end
     # freeze option will be restircted from being shown on expiry date so no possibility of default_start_date being later than latest_start_date
-    latest = [earliest.advance(days: 30), expiry_date].min    
-    { earliest: earliest, latest: latest }
+    latest = [earliest.advance(days: 30), expiry_date].min
+    { earliest:, latest: }
   end
 
   # not used (all packages with bookable classes that are not expired can be frozen, so need to develop such a method yet)
   def freezable?
     return false if expired?
-    
+
     true
   end
 
@@ -380,7 +380,7 @@ class Purchase < ApplicationRecord
   # https://juanitofatas.com/ruby-3-keyword-arguments
   # Prefix argument with ** if you want to pass in keywords:
   def remind_to_renew?(days_remain: 5, attendances_remain: 2)
-    keyword_args = { days_remain: days_remain, attendances_remain: attendances_remain }
+    keyword_args = { days_remain:, attendances_remain: }
     return true if close_to_expiry?(**keyword_args) && !renewed?
 
     false
@@ -391,7 +391,7 @@ class Purchase < ApplicationRecord
     return true if clients_ongoing_packages.size > 1
 
     false
-  end  
+  end
 
   def start_date_calc
     attendances.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
@@ -404,7 +404,7 @@ class Purchase < ApplicationRecord
   end
 
   def sun_has_set?
-    Date.today > sunset_date
+    Time.zone.today > sunset_date
   end
 
   def sunset_action
@@ -437,13 +437,13 @@ class Purchase < ApplicationRecord
 
   def check_if_already_had_trial
     already_had_trial = if persisted?
-      # editing from non-trial to trial. Note Self is the new intended purchase, not the same as the original Purchase.find(id) purchase
-      !Purchase.find(id).trial? && product.trial? && client.has_had_trial?
-    else
-      product&.trial? && client&.has_had_trial?
-    end
+                          # editing from non-trial to trial. Note Self is the new intended purchase, not the same as the original Purchase.find(id) purchase
+                          !Purchase.find(id).trial? && product.trial? && client.has_had_trial?
+                        else
+                          product&.trial? && client&.has_had_trial?
+                        end
 
-    errors.add(:base, "Client has already had a trial") if already_had_trial
+    errors.add(:base, 'Client has already had a trial') if already_had_trial
   end
 
   def attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true)
@@ -454,7 +454,8 @@ class Purchase < ApplicationRecord
     return 'booked but not started' if attendance_count_confirmed.zero?
     # 'started'
     return 'unlimited' if max_classes == 1000
-    return attendance_count if attendance_count < max_classes
+
+    attendance_count if attendance_count < max_classes
   end
 
   def validity(attendance_count, expiry_date)

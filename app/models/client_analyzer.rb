@@ -9,12 +9,12 @@ class ClientAnalyzer
     @group_packages.size
   end
 
-  def joined 
+  def joined
     @client.created_at
   end
 
   def first_class
-    @group_packages.started.joins(attendances: [:wkclass]).where.not(attendances: {amnesty: true}).minimum(:start_time)
+    @group_packages.started.joins(attendances: [:wkclass]).where.not(attendances: { amnesty: true }).minimum(:start_time)
   end
 
   def life_span
@@ -22,7 +22,7 @@ class ClientAnalyzer
 
     (Time.zone.today.to_date - first_class.to_date + 1).to_i
   end
-  
+
   def total_active_membership
     total_days = 0
     @group_packages.started.each do |package|

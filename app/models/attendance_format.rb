@@ -16,22 +16,22 @@ class AttendanceFormat
   def booking_link
     return link_for_new_booking if @new_booking
 
-    link_for_update_booking 
+    link_for_update_booking
   end
 
-  # this doesn't appear in the usual link column of the booking page, but in the status column when a spot opens up and the client has the option to book or to remove from waiting list 
+  # this doesn't appear in the usual link column of the booking page, but in the status column when a spot opens up and the client has the option to book or to remove from waiting list
   def waiting_list_remove_link
     waiting = @client.waiting_list_for(@wkclass)
-    image_params = {src: 'delete.png',
-                    css_class: 'table_icon mx-auto'}
+    image_params = { src: 'delete.png',
+                     css_class: 'table_icon mx-auto' }
     route = 'client_waiting_path'
-    route_params = {id: waiting.id,
-                    booking_day: @day,
-                    booking_section: @booking_section}
-    turbo_params = {method: :delete,
-                    confirmation: "You'll be removed from the waiting list"}
+    route_params = { id: waiting.id,
+                     booking_day: @day,
+                     booking_section: @booking_section }
+    turbo_params = { method: :delete,
+                     confirmation: "You'll be removed from the waiting list" }
 
-    link_maker(image_params, route, route_params, turbo_params)  
+    link_maker(image_params, route, route_params, turbo_params)
   end
 
   def css_class # for status
@@ -39,7 +39,7 @@ class AttendanceFormat
       if @purchase.nil? || @wkclass.at_capacity?
         'table-secondary'
       else
-      ''
+        ''
       end
     else
       case @attendance.status
@@ -49,12 +49,12 @@ class AttendanceFormat
         'text-danger'
       else # attended or cancelled early
         ''
-      end      
+      end
     end
   end
-  
+
   def data_attributes
-    return "data-toggle=tooltip" if @wkclass_at_capacity || @client.on_waiting_list_for?(@wkclass)
+    return 'data-toggle=tooltip' if @wkclass_at_capacity || @client.on_waiting_list_for?(@wkclass)
 
     nil
   end
@@ -84,178 +84,177 @@ class AttendanceFormat
   def get_params(booking_situation)
     case booking_situation
     when 'at_capacity_not_on_waiting_list'
-      @image_params = {src: 'waiting.png',
-                       css_class: 'table_icon mx-auto'}
+      @image_params = { src: 'waiting.png',
+                        css_class: 'table_icon mx-auto' }
       @route = 'client_waitings_path'
-      @route_params = {wkclass_id: @wkclass.id,
-                      purchase_id: @purchase.id,
-                      booking_day: @day,
-                      booking_section: @booking_section}
-      @turbo_params = {method: :post,
-                      confirmation: "You'll be added to the waiting list"}
+      @route_params = { wkclass_id: @wkclass.id,
+                        purchase_id: @purchase.id,
+                        booking_day: @day,
+                        booking_section: @booking_section }
+      @turbo_params = { method: :post,
+                        confirmation: "You'll be added to the waiting list" }
     when 'at_capacity_on_waiting_list'
       waiting = @client.waiting_list_for(@wkclass)
-      @image_params = {src: 'remove.png',
-                       css_class: 'table_icon mx-auto'}
+      @image_params = { src: 'remove.png',
+                        css_class: 'table_icon mx-auto' }
       @route = 'client_waiting_path'
-      @route_params = {id: waiting.id,
-                       booking_day: @day,
-                       booking_section: @booking_section}
-      @turbo_params = {method: :delete,
-                       confirmation: "You'll be removed from the waiting list"}
+      @route_params = { id: waiting.id,
+                        booking_day: @day,
+                        booking_section: @booking_section }
+      @turbo_params = { method: :delete,
+                        confirmation: "You'll be removed from the waiting list" }
     when 'new_booking'
       confirmation = I18n.t('client.clients.attendance.create.confirm')
-      confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)                        
-      @image_params = {src: 'add.png',
-                       css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}"}
+      confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
+      @image_params = { src: 'add.png',
+                        css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}" }
       @route = 'admin_attendances_path'
-      @route_params = {attendance: {wkclass_id: @wkclass.id, purchase_id: @purchase.id},
-                       booking_day: @day,
-                       booking_section: @booking_section}
-      @turbo_params = {method: :post,
-                       confirmation: confirmation}        
+      @route_params = { attendance: { wkclass_id: @wkclass.id, purchase_id: @purchase.id },
+                        booking_day: @day,
+                        booking_section: @booking_section }
+      @turbo_params = { method: :post,
+                        confirmation: }
     when 'update_from_booked'
       confirmation = I18n.t('client.clients.attendance.update.from_booked.confirm')
-      @image_params = {src: 'delete.png',
-                      css_class: 'table_icon mx-auto filter-red'}
+      @image_params = { src: 'delete.png',
+                        css_class: 'table_icon mx-auto filter-red' }
       @route = 'admin_attendance_path'
-      @route_params = {id: @attendance.id,
-                       booking_day: @day,
-                       booking_section: @booking_section}
-      @turbo_params = {method: :patch,
-                       confirmation: confirmation}
+      @route_params = { id: @attendance.id,
+                        booking_day: @day,
+                        booking_section: @booking_section }
+      @turbo_params = { method: :patch,
+                        confirmation: }
     when 'rebook'
-      image_class = "table_icon mx-auto #{'filter-white' unless @attendance.wkclass.workout.limited?}" 
+      image_class = "table_icon mx-auto #{'filter-white' unless @attendance.wkclass.workout.limited?}"
       confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm')
       confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if @attendance.purchase.freezed?(@attendance.wkclass.start_time)
-      @image_params = {src: 'add.png',
-                      css_class: image_class}
+      @image_params = { src: 'add.png',
+                        css_class: image_class }
       @route = 'admin_attendance_path'
-      @route_params = {id: @attendance.id,
-                      booking_day: @day,
-                      booking_section: @booking_section}
-      @turbo_params = {method: :patch,
-                      confirmation: confirmation}
+      @route_params = { id: @attendance.id,
+                        booking_day: @day,
+                        booking_section: @booking_section }
+      @turbo_params = { method: :patch,
+                        confirmation: }
     end
-
   end
 
   private
 
-    def link_for_new_booking
-      return '' if unbookable?
+  def link_for_new_booking
+    return '' if unbookable?
 
-      if  @wkclass_at_capacity && !@on_waiting_list
-        get_params('at_capacity_not_on_waiting_list')    
+    if @wkclass_at_capacity && !@on_waiting_list
+      get_params('at_capacity_not_on_waiting_list')
+    elsif @wkclass_at_capacity && @on_waiting_list
+      get_params('at_capacity_on_waiting_list')
+    else
+      get_params('new_booking')
+    end
+    link_maker(@image_params, @route, @route_params, @turbo_params)
+  end
+
+  def link_for_update_booking
+    return '' if unbookable? # a class legitimately booked, but then auto-cancelled due to expiry date change due to eg freeze break or penalty
+
+    case @attendance.status
+    when 'booked'
+      get_params('update_from_booked')
+      link_maker(@image_params, @route, @route_params, @turbo_params)
+    when 'cancelled early'
+      # class got auto-cancelled due to an event that caused the expiry_date to become earlier (eg a no show penalty or freeze break); @purchase.expiry_date.beginning_of_day will error if not started (eg first booking cancelled early)
+      return '' if !@purchase.not_started? && @purchase.expiry_date.beginning_of_day < @wkclass.start_time.beginning_of_day
+
+      if @wkclass_at_capacity && !@on_waiting_list
+        get_params('at_capacity_not_on_waiting_list')
       elsif @wkclass_at_capacity && @on_waiting_list
-        get_params('at_capacity_on_waiting_list')    
+        get_params('at_capacity_on_waiting_list')
       else
-        get_params('new_booking')    
+        get_params('rebook')
       end
-      link_maker(@image_params, @route, @route_params, @turbo_params)  
+      link_maker(@image_params, @route, @route_params, @turbo_params)
+    when 'cancelled late', 'no show'
+      ''
+    else # 'attended'
+      ''
     end
+  end
 
-    def link_for_update_booking
-      return '' if unbookable? # a class legitimately booked, but then auto-cancelled due to expiry date change due to eg freeze break or penalty
+  def unbookable?
+    return true if @purchase.nil? || @purchase.restricted_on?(@wkclass) || !@wkclass.booking_window.cover?(@time)
 
-      case @attendance.status
-      when 'booked'
-        get_params('update_from_booked')
-        link_maker(@image_params, @route, @route_params, @turbo_params)       
-      when 'cancelled early'
-        # class got auto-cancelled due to an event that caused the expiry_date to become earlier (eg a no show penalty or freeze break); @purchase.expiry_date.beginning_of_day will error if not started (eg first booking cancelled early)
-        return '' if !@purchase.not_started? && @purchase.expiry_date.beginning_of_day < @wkclass.start_time.beginning_of_day 
+    false
+  end
 
-        if @wkclass_at_capacity && !@on_waiting_list
-          get_params('at_capacity_not_on_waiting_list')
-        elsif @wkclass_at_capacity && @on_waiting_list
-          get_params('at_capacity_on_waiting_list')
-        else
-          get_params('rebook')          
-        end
-      link_maker(@image_params, @route, @route_params, @turbo_params)  
-      when 'cancelled late', 'no show'
-        ''
-      else # 'attended'
-        ''
-      end
-    end
+  # ActionController::Base.helpers.link_to '#', class: 'icon-container disable-link' do ActionController::Base.helpers.tag.i class: ["bi bi-battery-full"] end
 
-    def unbookable?
-      return true if @purchase.nil? || @purchase.restricted_on?(@wkclass) || !@wkclass.booking_window.cover?(@time)
-  
-      return false
-    end    
+  def link_maker(image_params, route, route_params, turbo_params)
+    # eg af.link_maker({src: 'add.png', css_class: 'table_icon'},'client_waitings_path',{wkclass_id: 1, purchase_id: 5},{method: :post, confirm:  'ok'})
+    # "<a data-turbo-method=\"post\" data-turbo-confirm=\"ok\" class=\"icon-container\" href=\"/client/waitings?purchase_id=5&amp;wkclass_id=1\"><img class=\"table_icon\" src=\"/assets/add-8d45e.png\" /></a>"
+    ActionController::Base.helpers.link_to(
+      ActionController::Base.helpers.image_tag(image_params[:src], class: image_params[:css_class]),
+      Rails.application.routes.url_helpers.send(route, route_params),
+      data: { turbo_method: turbo_params[:method], turbo_confirm: turbo_params[:confirmation] },
+      class: 'icon-container'
+    )
+  end
 
-    # ActionController::Base.helpers.link_to '#', class: 'icon-container disable-link' do ActionController::Base.helpers.tag.i class: ["bi bi-battery-full"] end
- 
-    def link_maker(image_params, route, route_params, turbo_params)
-      # eg af.link_maker({src: 'add.png', css_class: 'table_icon'},'client_waitings_path',{wkclass_id: 1, purchase_id: 5},{method: :post, confirm:  'ok'})
-      # "<a data-turbo-method=\"post\" data-turbo-confirm=\"ok\" class=\"icon-container\" href=\"/client/waitings?purchase_id=5&amp;wkclass_id=1\"><img class=\"table_icon\" src=\"/assets/add-8d45e.png\" /></a>"        
-      ActionController::Base.helpers.link_to(
-        ActionController::Base.helpers.image_tag(image_params[:src], class: image_params[:css_class]),
-        Rails.application.routes.url_helpers.send(route, route_params),
-        data: { turbo_method: turbo_params[:method], turbo_confirm: turbo_params[:confirmation] },
-        class: 'icon-container'
-        )
-    end
-    
-    # def get_params(booking_situation)
-    #   case booking_situation
-    #   when 'at_capacity_not_on_waiting_list'
-    #     @image_params = {src: 'waiting.png',
-    #                      css_class: 'table_icon mx-auto'}
-    #     @route = 'client_waitings_path'
-    #     @route_params = {wkclass_id: @wkclass.id,
-    #                     purchase_id: @purchase.id,
-    #                     booking_day: @day,
-    #                     booking_section: @booking_section}
-    #     @turbo_params = {method: :post,
-    #                     confirmation: "You'll be added to the waiting list"}
-    #   when 'at_capacity_on_waiting_list'
-    #     waiting = @client.waiting_list_for(@wkclass)
-    #     @image_params = {src: 'remove.png',
-    #                      css_class: 'table_icon mx-auto'}
-    #     @route = 'client_waiting_path'
-    #     @route_params = {id: waiting.id,
-    #                      booking_day: @day,
-    #                      booking_section: @booking_section}
-    #     @turbo_params = {method: :delete,
-    #                      confirmation: "You'll be removed from the waiting list"}
-    #   when 'new_booking'
-    #     confirmation = I18n.t('client.clients.attendance.create.confirm')
-    #     confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)                        
-    #     @image_params = {src: 'add.png',
-    #                      css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}"}
-    #     @route = 'admin_attendances_path'
-    #     @route_params = {attendance: {wkclass_id: @wkclass.id, purchase_id: @purchase.id},
-    #                      booking_day: @day,
-    #                      booking_section: @booking_section}
-    #     @turbo_params = {method: :post,
-    #                      confirmation: confirmation}        
-    #   when 'update_from_booked'
-    #     confirmation = I18n.t('client.clients.attendance.update.from_booked.confirm')
-    #     @image_params = {src: 'delete.png',
-    #                     css_class: 'table_icon mx-auto filter-red'}
-    #     @route = 'admin_attendance_path'
-    #     @route_params = {id: @attendance.id,
-    #                      booking_day: @day,
-    #                      booking_section: @booking_section}
-    #     @turbo_params = {method: :patch,
-    #                      confirmation: confirmation}
-    #   when 'rebook'
-    #     image_class = "table_icon mx-auto #{'filter-white' unless @attendance.wkclass.workout.limited?}" 
-    #     confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm')
-    #     confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if @attendance.purchase.freezed?(@attendance.wkclass.start_time)
-    #     @image_params = {src: 'add.png',
-    #                     css_class: image_class}
-    #     @route = 'admin_attendance_path'
-    #     @route_params = {id: @attendance.id,
-    #                     booking_day: @day,
-    #                     booking_section: @booking_section}
-    #     @turbo_params = {method: :patch,
-    #                     confirmation: confirmation}
-    #   end
+  # def get_params(booking_situation)
+  #   case booking_situation
+  #   when 'at_capacity_not_on_waiting_list'
+  #     @image_params = {src: 'waiting.png',
+  #                      css_class: 'table_icon mx-auto'}
+  #     @route = 'client_waitings_path'
+  #     @route_params = {wkclass_id: @wkclass.id,
+  #                     purchase_id: @purchase.id,
+  #                     booking_day: @day,
+  #                     booking_section: @booking_section}
+  #     @turbo_params = {method: :post,
+  #                     confirmation: "You'll be added to the waiting list"}
+  #   when 'at_capacity_on_waiting_list'
+  #     waiting = @client.waiting_list_for(@wkclass)
+  #     @image_params = {src: 'remove.png',
+  #                      css_class: 'table_icon mx-auto'}
+  #     @route = 'client_waiting_path'
+  #     @route_params = {id: waiting.id,
+  #                      booking_day: @day,
+  #                      booking_section: @booking_section}
+  #     @turbo_params = {method: :delete,
+  #                      confirmation: "You'll be removed from the waiting list"}
+  #   when 'new_booking'
+  #     confirmation = I18n.t('client.clients.attendance.create.confirm')
+  #     confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
+  #     @image_params = {src: 'add.png',
+  #                      css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}"}
+  #     @route = 'admin_attendances_path'
+  #     @route_params = {attendance: {wkclass_id: @wkclass.id, purchase_id: @purchase.id},
+  #                      booking_day: @day,
+  #                      booking_section: @booking_section}
+  #     @turbo_params = {method: :post,
+  #                      confirmation: confirmation}
+  #   when 'update_from_booked'
+  #     confirmation = I18n.t('client.clients.attendance.update.from_booked.confirm')
+  #     @image_params = {src: 'delete.png',
+  #                     css_class: 'table_icon mx-auto filter-red'}
+  #     @route = 'admin_attendance_path'
+  #     @route_params = {id: @attendance.id,
+  #                      booking_day: @day,
+  #                      booking_section: @booking_section}
+  #     @turbo_params = {method: :patch,
+  #                      confirmation: confirmation}
+  #   when 'rebook'
+  #     image_class = "table_icon mx-auto #{'filter-white' unless @attendance.wkclass.workout.limited?}"
+  #     confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm')
+  #     confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if @attendance.purchase.freezed?(@attendance.wkclass.start_time)
+  #     @image_params = {src: 'add.png',
+  #                     css_class: image_class}
+  #     @route = 'admin_attendance_path'
+  #     @route_params = {id: @attendance.id,
+  #                     booking_day: @day,
+  #                     booking_section: @booking_section}
+  #     @turbo_params = {method: :patch,
+  #                     confirmation: confirmation}
+  #   end
 
-    # end
+  # end
 end

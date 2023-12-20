@@ -5,7 +5,7 @@ task price_update_discount: :environment do
     old_price.update(current: false)
     new_price.discount = Setting.pre_expiry_trial_renewal.to_f
     new_price.price = new_price.discounted_price
-    new_price.date_from = Date.today
+    new_price.date_from = Time.zone.today
     new_price.name = 'Early Trial Renewal'
     new_price.save
   end
@@ -15,7 +15,7 @@ task price_update_discount: :environment do
     old_price.update(current: false)
     new_price.discount = Setting.post_expiry_trial_renewal.to_f
     new_price.price = new_price.discounted_price
-    new_price.date_from = Date.today
+    new_price.date_from = Time.zone.today
     new_price.name = 'Late Trial Renewal'
     new_price.save
   end

@@ -17,10 +17,10 @@ class AdminBookingUpdater
   def update
     if @attendance.update(status: @new_status)
       action_admin_update_success
-      return OpenStruct.new(success?: true, penalty_change?: @penalty_change, flash_array: @flash_array)
+      OpenStruct.new(success?: true, penalty_change?: @penalty_change, flash_array: @flash_array)
     else
       @flash_array = [:warning, I18n.t('admin.attendances.update_by_admin.warning')]
-      return OpenStruct.new(success?: false, penalty_change?: @penalty_change, flash_array: @flash_array)
+      OpenStruct.new(success?: false, penalty_change?: @penalty_change, flash_array: @flash_array)
     end
   end
 

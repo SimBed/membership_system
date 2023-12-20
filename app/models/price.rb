@@ -2,21 +2,9 @@ class Price < ApplicationRecord
   belongs_to :product
   validates :date_from, presence: true, allow_blank: false
   validates :date_until, presence: true, allow_blank: false
-  # validates :name, presence: true
   validates :price, presence: true, numericality: { only_integer: true }
-  # validate :current_base_check
-  # redundant
-  # scope :order_by_current_price, -> { order(current: :desc, price: :desc) }
-  # scope :order_by_current_discount, -> { order(current: :desc, discount: :asc) }
-  # scope :current, -> { where(current: true).order(price: :desc) }
-  # scope :base, -> { where(base: true) }
-  # default_scope { order('prices.discount ASC') }
-  # default_scope -> { order(:discount) }
   # in case an old price is not retired, there may be multiple prices retireved, in which case we should use the one with the most recent date_from
-  # revert to this ordering for :base_at after susccessful deploy, once old style prices deleted
   scope :base_at, ->(date) { where('DATE(?) BETWEEN date_from AND date_until', date).order(date_from: :desc) }
-  # temporary ordering
-  # scope :base_at, ->(date) { where('DATE(?) BETWEEN date_from AND date_until', date).order(price: :desc) }
 
   def current?
     Time.zone.now.between?(date_from, date_until)
@@ -40,7 +28,7 @@ class Price < ApplicationRecord
 
     return true if created_at < Date.new(2022, 10, 05)
 
-    return false
+    false
   end
 
   def deletable?
@@ -49,11 +37,6 @@ class Price < ApplicationRecord
     false
   end
 
-  # def full_name
-  #   # "#{name} #{discount}%".gsub(' 0%', '')
-  #   "#{name} #{Price.discount_format(self)}%"
-  # end
-  #
   # def self.discount_format(price)
   #   # hack to access helpers in model
   #   # https://www.quora.com/How-do-I-use-helper-methods-in-models-in-rails

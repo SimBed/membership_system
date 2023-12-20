@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     purchases.each do |p|
       orig_status = p.status
       orig_expiry_date = p.expiry_date
-      p.update(start_date: p.start_date_calc) 
+      p.update(start_date: p.start_date_calc)
       p.update(expiry_date: p.expiry_date_calc)
       p.update(status: p.status_calc)
       status_changed = orig_status != p.status ? true : false
@@ -36,13 +36,13 @@ class ApplicationController < ActionController::Base
       end
       # cancel any bookings that are now outside new expiry date
       # could also cancel any pt rider bookings post main expiry, but this may cause undisproportionate business problems
-      if expiry_earlier
-        period = (p.expiry_date.advance(days: 1)..Float::INFINITY)
-        post_expiry_attendances = p.attendances.during(period).booked
-        post_expiry_attendances.each do |a|
-          a.update(status:'cancelled early')
-          flash_message :danger, t('.booking_cancelled')
-        end
+      next unless expiry_earlier
+
+      period = (p.expiry_date.advance(days: 1)..Float::INFINITY)
+      post_expiry_attendances = p.attendances.during(period).booked
+      post_expiry_attendances.each do |a|
+        a.update(status: 'cancelled early')
+        flash_message :danger, t('.booking_cancelled')
       end
     end
   end
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   def cancel_bookings_during_freeze(freeze)
     freeze_period = freeze.start_date..freeze.end_date
     freeze.purchase.attendances.booked.during(freeze_period).each do |a|
-      a.update(status:'cancelled early')
+      a.update(status: 'cancelled early')
       flash_message :danger, t('.booking_cancelled')
     end
   end
@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   def cancel_bookings_post_new_expiry(freeze)
     freeze_period = freeze.start_date..freeze.end_date
     freeze.purchase.attendances.booked.during(freeze_period).each do |a|
-      a.update(status:'cancelled early')
+      a.update(status: 'cancelled early')
       flash_message :danger, t('.booking_cancelled')
     end
   end
@@ -78,13 +78,13 @@ class ApplicationController < ActionController::Base
 
   def deal_with_client
     begin
-    (redirect_to client_shop_path(@account.client) if logged_in_as?('client') && @account.without_purchase?) and return
+      (redirect_to client_shop_path(@account.client) if logged_in_as?('client') && @account.without_purchase?) and return
 
-    # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
-    redirect_to client_book_path(@account.client) if logged_in_as?('client') # groupex only
-    
-    # the rescue is only needed because I've manually assigned a client to superadmin (for role-shifting) leaving the original account of the client
-    # without a client account, so on attempted log in, @account.client is nil and things fail.
+      # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
+      redirect_to client_book_path(@account.client) if logged_in_as?('client') # groupex only
+
+      # the rescue is only needed because I've manually assigned a client to superadmin (for role-shifting) leaving the original account of the client
+      # without a client account, so on attempted log in, @account.client is nil and things fail.
     rescue Exception
       log_out if logged_in?
       redirect_to login_path
@@ -95,7 +95,7 @@ class ApplicationController < ActionController::Base
   def deal_with_instructor
     # default to general wkclasses page (not instructor class page) as instructors class page for instructor without commission is restricted
     redirect_to admin_wkclasses_path if logged_in_as?('instructor')
-    # redirect_to admin_instructor_path(@account.instructor) if logged_in_as?('instructor')    
+    # redirect_to admin_instructor_path(@account.instructor) if logged_in_as?('instructor')
   end
 
   def deal_with_partner
@@ -103,9 +103,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
-    def expiry_earlier?(current_expiry_date, orig_expiry_date)
-      return false if current_expiry_date.nil? || orig_expiry_date.nil?
 
-      orig_expiry_date > current_expiry_date
-    end
+  def expiry_earlier?(current_expiry_date, orig_expiry_date)
+    return false if current_expiry_date.nil? || orig_expiry_date.nil?
+
+    orig_expiry_date > current_expiry_date
+  end
 end

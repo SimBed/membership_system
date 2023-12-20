@@ -29,10 +29,14 @@ class Product < ApplicationRecord
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
   # scope :order_by_total_count, -> { left_joins(:purchases).group(:id).order('COUNT(purchases.id) DESC') }
-  scope :order_by_total_count, -> { left_joins(:purchases, :workout_group).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)') }
+  scope :order_by_total_count, lambda {
+                                 left_joins(:purchases, :workout_group).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)')
+                               }
   # scope :order_by_total_count, -> { left_joins(:purchases, :workout_group).group(:id, :current, 'workout_groups.id').order('products.current desc, workout_groups.id, COUNT(purchases.id) DESC') }
   # ongoing account removes products with zero purchases
-  scope :order_by_ongoing_count, -> { left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)') }
+  scope :order_by_ongoing_count, lambda {
+                                   left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)')
+                                 }
   scope :current, -> { where(current: true) }
 
   def self.online_order_by_wg_classes_days
@@ -75,12 +79,12 @@ class Product < ApplicationRecord
   end
 
   def shop_name_classes
-    "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited'}"
+    (max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited').to_s
   end
 
   def shop_name_duration
     formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
-    "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}"
+    ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym]).to_s
   end
 
   def formal_unit
@@ -107,7 +111,8 @@ class Product < ApplicationRecord
     return :unlimited_package if unlimited_package?
     return :fixed_package if fixed_package?
     return :trial if trial?
-    return :dropin if dropin?
+
+    :dropin if dropin?
   end
 
   def product_style
@@ -157,7 +162,7 @@ class Product < ApplicationRecord
 
   def deletable?
     return true if purchases.empty? && prices.empty?
-    
+
     false
   end
 

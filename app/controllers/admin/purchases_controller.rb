@@ -64,7 +64,7 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def edit
-    @form_cancel_link = params[:link_from] == 'show' ? admin_purchase_path(@purchase) : admin_purchases_path 
+    @form_cancel_link = params[:link_from] == 'show' ? admin_purchase_path(@purchase) : admin_purchases_path
     prepare_items_for_dropdowns
   end
 
@@ -91,7 +91,9 @@ class Admin::PurchasesController < Admin::BaseController
     if @purchase.update(purchase_params)
       # if the edit does not change the discounts, then no further action, otherwise delete all the purchases existing DiscountAssignments and create new ones
       existing_discounts = DiscountAssignment.where(purchase_id: @purchase.id,).pluck(:discount_id).sort
-      updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map { |d| params[:purchase][d] }.compact.sort
+      updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map { |d|
+        params[:purchase][d]
+      }.compact.sort
       unless existing_discounts == updated_discounts
         DiscountAssignment.where(purchase_id: @purchase.id).destroy_all
         [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
@@ -104,7 +106,7 @@ class Admin::PurchasesController < Admin::BaseController
     else
       @form_cancel_link = params[:purchase][:link_from] == 'show' ? admin_purchase_path(@purchase, link_from: 'show') : admin_purchases_path
       # @form_cancel_link = params[:link_from] == 'show' ? admin_purchase_path(@purchase) : admin_purchases_path
-      # @form_cancel_link = params[:purchase][:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path      
+      # @form_cancel_link = params[:purchase][:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path
       prepare_items_for_dropdowns
       render :edit, status: :unprocessable_entity
     end
@@ -121,7 +123,7 @@ class Admin::PurchasesController < Admin::BaseController
     session[:select_client_name] = params[:select_client_name] || session[:select_client_name]
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
-    render json: { clientindex: @selected_client_index}
+    render json: { clientindex: @selected_client_index }
     # redirect_to new_admin_purchase_path
   end
 
@@ -167,8 +169,8 @@ class Admin::PurchasesController < Admin::BaseController
     # @payment_after_discount = [0, (@base_price.price * (1 - discount_percent.to_f / 100) - discount_fixed).round(0)].max
     # apply_discount defined in ApplyDiscount concern
     @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount, @discretion_discount, @commercial_discount)
-     # render 'payment_after_discount.js'
-     render json: { base_price_price: @base_price.price,
+    # render 'payment_after_discount.js'
+    render json: { base_price_price: @base_price.price,
                    payment_after_discount: @payment_after_discount,
                    base_price_id: @base_price.id }
   end
@@ -184,9 +186,11 @@ class Admin::PurchasesController < Admin::BaseController
     @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', dop)
     @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', dop)
     @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', dop)
-    render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, @renewal_discounts, :id, :name, selected: @purchase_renewal_discount_id || @discount_none.id ),
-    status: helpers.collection_select(:purchase, :status_discount_id, @status_discounts, :id, :name, selected: @purchase_status_discount_id || @discount_none.id ),
-    oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, @oneoff_discounts, :id, :name, selected: @purchase_oneoff_discount_id ||  @discount_none.id ) }
+    render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, @renewal_discounts, :id, :name, selected: @purchase_renewal_discount_id || @discount_none.id),
+                   status: helpers.collection_select(:purchase, :status_discount_id, @status_discounts, :id, :name,
+                                                     selected: @purchase_status_discount_id || @discount_none.id),
+                   oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, @oneoff_discounts, :id, :name,
+                                                     selected: @purchase_oneoff_discount_id || @discount_none.id) }
     # render 'discounts_after_dop_change.js'
   end
 
@@ -197,12 +201,12 @@ class Admin::PurchasesController < Admin::BaseController
     rider_product_price = rider_product.base_price_at(Time.zone.now)
     @rider_purchase = @purchase.dup
     if @rider_purchase.update({ product_id: rider_product.id,
-                                 payment: 0,
-                                 payment_mode: 'Not applicable',
-                                 invoice: nil,
-                                 note: nil,
-                                 price_id: rider_product_price.id,
-                                 purchase_id: @purchase.id })
+                                payment: 0,
+                                payment_mode: 'Not applicable',
+                                invoice: nil,
+                                note: nil,
+                                price_id: rider_product_price.id,
+                                purchase_id: @purchase.id })
       flash_message :success, t('.rider_success')
     else
       flash_message :warning, t('.rider_fail')
@@ -256,6 +260,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def changing_main_purchase_product?
     return if params[:purchase][:product_id].blank?
+
     original_purchase_has_rider = @purchase.rider_purchase.present?
     new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
     return if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
@@ -450,6 +455,6 @@ class Admin::PurchasesController < Admin::BaseController
     respond_to do |format|
       format.html
       format.turbo_stream
-    end    
-  end  
+    end
+  end
 end

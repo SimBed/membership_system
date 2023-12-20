@@ -16,7 +16,7 @@ class Workout < ApplicationRecord
   def group_workout?
     workout_groups.any?(&:groupex?)
   end
-  
+
   def pt_workout?
     workout_groups.any?(&:pt?)
   end

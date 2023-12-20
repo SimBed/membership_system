@@ -11,17 +11,17 @@ class PublicPagesController < ApplicationController
   def group_classes
     @home = true
     @trial_price = Product.trial.first.base_price_at(Time.zone.now).price
-    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)    
+    @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)
     @menu = PackageMenu.new()
     @group = true
   end
-  
+
   def signup
     @account = Account.new
     @client = Client.new
     render layout: 'login'
   end
-  
+
   def create_account
     @client = Client.new(client_params)
     if @client.save
@@ -40,13 +40,13 @@ class PublicPagesController < ApplicationController
       render 'signup', layout: 'login', status: 422
     end
   end
-  
+
   def wedontsupport
     render layout: 'client'
   end
 
   def hearts
-    render layout: false  
+    render layout: false
   end
 
   def sell; end
@@ -54,9 +54,9 @@ class PublicPagesController < ApplicationController
   def welcome_home; end
 
   def space_home; end
-  
+
   private
-  
+
   def set_timetable
     @timetable = Timetable.find(Rails.application.config_for(:constants)['timetable_id'])
     @days = @timetable.table_days.order_by_day
@@ -65,15 +65,16 @@ class PublicPagesController < ApplicationController
       @entries_hash[day.name] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
     end
     # used to establish whether 2nd day in the timetable slider is tomorrow or not
-    @todays_day = Date.today.strftime("%A")
-    @tomorrows_day = Date.tomorrow.strftime("%A")
+    @todays_day = Time.zone.today.strftime('%A')
+    @tomorrows_day = Date.tomorrow.strftime('%A')
   end
-  
+
   def daily_account_limit
     daily_accounts_count = Account.where("DATE(created_at)='#{Time.zone.today.to_date}'").size
     return unless daily_accounts_count >= Setting.daily_account_limit
-    
-    Whatsapp.new(receiver: 'me', message_type: 'daily_account_limit', variable_contents: { first_name: 'Dan' }).manage_messaging if Setting.daily_account_limit_triggered == false
+
+    Whatsapp.new(receiver: 'me', message_type: 'daily_account_limit',
+                 variable_contents: { first_name: 'Dan' }).manage_messaging if Setting.daily_account_limit_triggered == false
     # mitigate multiple messages being sent once the message has been sent once
     Setting.daily_account_limit_triggered = true
     flash[:warning] = t('.daily_account_limit')

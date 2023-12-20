@@ -16,7 +16,7 @@ class Challenge < ApplicationRecord
       sub_challenge_results
     end
   end
-  
+
   def main_challenge_results
     sub_challenge_ids = sub_challenges.pluck(:id).join(',')
     sql = "SELECT unaggregated.id, unaggregated.first_name, sum(max_score) AS sum_max_score
@@ -30,7 +30,7 @@ class Challenge < ApplicationRecord
           GROUP BY unaggregated.id, unaggregated.first_name
           ORDER BY sum_max_score DESC;"
 
-      ActiveRecord::Base.connection.exec_query(sql)
+    ActiveRecord::Base.connection.exec_query(sql)
   end
 
   def sub_challenge_results
@@ -42,7 +42,7 @@ class Challenge < ApplicationRecord
            GROUP BY clients.id
            ORDER BY max_score DESC;"
 
-      ActiveRecord::Base.connection.exec_query(sql)
+    ActiveRecord::Base.connection.exec_query(sql)
   end
 
   def has_sub_challenges?
@@ -60,10 +60,10 @@ class Challenge < ApplicationRecord
   #                   .sort_by {|h| -h['max_score']}
   #   # 1 array of ActiveRecord::Results
   #   # 2 array of array of hashes [ [...], [{"id"=>41, "first_name"=>"Anne", "max_score"=>3850}, {"id"=>209, "first_name"=>"Aakash", "max_score"=>2500}],...]
-  #   # 3 hash of clients results {41=>[{"id"=>41, "first_name"=>"Anne", "max_score"=>3901}, {"id"=>41, "first_name"=>"Anne", "max_score"=>3850}], 209=>[...],...}    
+  #   # 3 hash of clients results {41=>[{"id"=>41, "first_name"=>"Anne", "max_score"=>3901}, {"id"=>41, "first_name"=>"Anne", "max_score"=>3850}], 209=>[...],...}
   #   # 4 reduce each array of hashes to a single hash, showing the aggregated client score
   #   else
   #     sub_challenge_results
   #   end
-  # end  
+  # end
 end

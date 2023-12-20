@@ -16,7 +16,7 @@ class Client::PasswordResetsController < ApplicationController
       redirect_to login_path
     else
       flash.now[:danger] = 'Email address not found'
-      # https://stackoverflow.com/questions/70400958/error-form-responses-must-redirect-to-another-location      
+      # https://stackoverflow.com/questions/70400958/error-form-responses-must-redirect-to-another-location
       # render 'new'
       render 'new', status: 422 # Unprocessable Entity
     end
