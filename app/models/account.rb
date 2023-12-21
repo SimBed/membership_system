@@ -90,12 +90,12 @@ class Account < ApplicationRecord
     account_params = { email: client.email,
                        ac_type: 'client',
                        account_holder: client }
-    result = AccountCreator.new(account_params).create
-    if result.success?
+    outcome = AccountCreator.new(account_params).create
+    if outcome.success?
       flash_for_account = :success, I18n.t('admin.accounts.create.success')
       # https://stackoverflow.com/questions/18071374/pass-rails-error-message-from-model-to-controller
       flash_for_whatsapp = Whatsapp.new(receiver: client, message_type: 'new_account',
-                                        variable_contents: { password: result.password }).manage_messaging
+                                        variable_contents: { password: outcome.password }).manage_messaging
       [flash_for_account, flash_for_whatsapp] # an array of arrays
     else
       [:warning, I18n.t('admin.accounts.create.warning')]

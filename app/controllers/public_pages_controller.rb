@@ -25,14 +25,14 @@ class PublicPagesController < ApplicationController
   def create_account
     @client = Client.new(client_params)
     if @client.save
-      result = AccountCreator.new(account_params).create
-      if result.success?
-        log_in result.account
+      outcome = AccountCreator.new(account_params).create
+      if outcome.success?
+        log_in outcome.account
         @renewal = Renewal.new(@client)
         redirect_to client_shop_path @client
-        flash_message(*Whatsapp.new(whatsapp_params('new_signup', result.password)).manage_messaging)
+        flash_message(*Whatsapp.new(whatsapp_params('new_signup', outcome.password)).manage_messaging)
       else
-        @account = result.account # the invalid account object with its error messages is returned by the Struct
+        @account = outcome.account # the invalid account object with its error messages is returned by the Struct
         render 'signup', layout: 'login'
       end
     else

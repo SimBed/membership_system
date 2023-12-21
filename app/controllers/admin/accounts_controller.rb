@@ -20,11 +20,11 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def create
-    result = AccountCreator.new(account_params).create
-    if result.success?
+    outcome = AccountCreator.new(account_params).create
+    if outcome.success?
       flash_message :success, t('.success')
       message_type = params[:ac_type] == 'instructor' ? 'new_instructor_account' : 'new_account'
-      flash_message(*Whatsapp.new(whatsapp_params(message_type, result.password)).manage_messaging)
+      flash_message(*Whatsapp.new(whatsapp_params(message_type, outcome.password)).manage_messaging)
     else
       flash_message :warning, t('.warning')
     end
