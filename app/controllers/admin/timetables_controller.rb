@@ -33,8 +33,7 @@ class Admin::TimetablesController < Admin::BaseController
     @timetable = Timetable.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @timetable = Timetable.new(timetable_params)

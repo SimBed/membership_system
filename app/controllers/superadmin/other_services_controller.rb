@@ -13,8 +13,7 @@ class Superadmin::OtherServicesController < Superadmin::BaseController
     @other_service = OtherService.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @other_service = OtherService.new(other_service_params)

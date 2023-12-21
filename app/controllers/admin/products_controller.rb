@@ -148,8 +148,8 @@ class Admin::ProductsController < Admin::BaseController
     return { sellonline: params[:sellonline] } if params[:sellonline].present?
     return { current: params[:current] } if params[:current].present?
 
-    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :rider, :has_rider).reject { |_, v|
+    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :rider, :has_rider).reject do |_, v|
       v == 'none'
-    }
+    end
   end
 end

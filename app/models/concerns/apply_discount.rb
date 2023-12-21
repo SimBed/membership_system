@@ -20,6 +20,7 @@ module ApplyDiscount
   end
 
   # courtesy engineersmnky https://stackoverflow.com/questions/51274453/ruby-round-integer-to-nearest-multiple-of-5
+  # TODO make dry - also in models/price.rb
   def up_to_nearest50(n)
     return n if (n % 50).zero?
 

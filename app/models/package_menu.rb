@@ -1,7 +1,5 @@
 class PackageMenu
   include ApplyDiscount
-  def initialize()
-  end
 
   def price(product)
     apply_discount(product.base_price_at(Time.zone.now), Discount.with_renewal_rationale_at('first_package', Time.zone.now)&.first)

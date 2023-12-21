@@ -1,7 +1,7 @@
 class Challenge < ApplicationRecord
   has_many :achievements, dependent: :destroy
   has_many :clients, through: :achievements
-  has_many :sub_challenges, class_name: 'Challenge'
+  has_many :sub_challenges, class_name: 'Challenge', dependent: nil
   belongs_to :main_challenge, class_name: 'Challenge', foreign_key: 'challenge_id', optional: true
   validates :name, presence: true, length: { maximum: 40 }, uniqueness: { case_sensitive: false }
   validates :metric, presence: true, length: { maximum: 10 }

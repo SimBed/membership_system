@@ -91,9 +91,9 @@ class Admin::PurchasesController < Admin::BaseController
     if @purchase.update(purchase_params)
       # if the edit does not change the discounts, then no further action, otherwise delete all the purchases existing DiscountAssignments and create new ones
       existing_discounts = DiscountAssignment.where(purchase_id: @purchase.id,).pluck(:discount_id).sort
-      updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map { |d|
+      updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map do |d|
         params[:purchase][d]
-      }.compact.sort
+      end.compact.sort
       unless existing_discounts == updated_discounts
         DiscountAssignment.where(purchase_id: @purchase.id).destroy_all
         [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|

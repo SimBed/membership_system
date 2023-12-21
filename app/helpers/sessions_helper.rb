@@ -99,45 +99,45 @@ module SessionsHelper
   end
 
   def admin_account
-    unless logged_in_as?('admin', 'superadmin')
-      flash[:warning] = I18n.t(:forbidden)
-      redirect_to login_path
-    end
+    return if logged_in_as?('admin', 'superadmin')
+
+    flash[:warning] = I18n.t(:forbidden)
+    redirect_to login_path
   end
 
   def superadmin_account
-    unless logged_in_as?('superadmin')
-      flash[:warning] = I18n.t(:forbidden)
-      redirect_to login_path
-    end
+    return if logged_in_as?('superadmin')
+
+    flash[:warning] = I18n.t(:forbidden)
+    redirect_to login_path
   end
 
   def junioradmin_account
-    unless logged_in_as?('junioradmin', 'admin', 'superadmin')
-      flash[:warning] = I18n.t(:forbidden)
-      redirect_to login_path
-    end
+    return if logged_in_as?('junioradmin', 'admin', 'superadmin')
+
+    flash[:warning] = I18n.t(:forbidden)
+    redirect_to login_path
   end
 
   def client_account
-    unless logged_in_as?('client')
-      flash[:warning] = 'Only logged-in clients can buy from the shop'
-      redirect_to login_path
-    end
+    return if logged_in_as?('client')
+
+    flash[:warning] = 'Only logged-in clients can buy from the shop'
+    redirect_to login_path
   end
 
   def junioradmin_or_instructor_account
-    unless logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
-      flash[:warning] = I18n.t(:forbidden)
-      redirect_to login_path
-    end
+    return if logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
+
+    flash[:warning] = I18n.t(:forbidden)
+    redirect_to login_path
   end
 
   def admin_or_instructor_account
-    unless logged_in_as?('admin', 'superadmin', 'instructor')
-      flash[:warning] = I18n.t(:forbidden)
-      redirect_to login_path
-    end
+    return if logged_in_as?('admin', 'superadmin', 'instructor')
+
+    flash[:warning] = I18n.t(:forbidden)
+    redirect_to login_path
   end
 
   def logged_in_account

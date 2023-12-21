@@ -26,13 +26,14 @@ class Client::WaitingsController < ApplicationController
     @purchase = Purchase.where(id: params[:purchase_id]).first || Waiting.find(params[:id]).purchase
     @client = @purchase.client
 
-    unless current_account?(@client.account)
-      redirect_to login_path
-      flash_message :warning, t('.warning')
-    end
+    return if current_account?(@client.account)
+
+    redirect_to login_path
+    flash_message :warning, t('.warning')
   end
 
-  def set_booking_day # so day on slider shown doesn't revert to default on response
+  # so day on slider shown doesn't revert to default on response, make dry repeated in attendances_controller
+  def set_booking_day
     default_booking_day = 0
     session[:booking_day] = params[:booking_day] || session[:booking_day] || default_booking_day
   end

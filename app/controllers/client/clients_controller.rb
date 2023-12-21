@@ -10,12 +10,12 @@ class Client::ClientsController < ApplicationController
     @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
     # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
     @achievements = @challenge&.achievements&.where(client_id: params[:id])
-    if @achievements.present?
-      Achievement.default_timezone = :utc
-      # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-      @achievements_grouped = @achievements&.group_by_day(:date)&.average(:score)&.compact
-      Achievement.default_timezone = :local
-    end
+    return unless @achievements.present?
+
+    Achievement.default_timezone = :utc
+    # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
+    @achievements_grouped = @achievements&.group_by_day(:date)&.average(:score)&.compact
+    Achievement.default_timezone = :local
   end
 
   def achievement
@@ -80,11 +80,12 @@ class Client::ClientsController < ApplicationController
     # end
     respond_to do |format|
       format.html
-      if params[:booking_section] == 'group'
+      case params[:booking_section]
+      when 'group'
         format.turbo_stream
-      elsif params[:booking_section] == 'opengym'
+      when 'opengym'
         format.turbo_stream { render :book_opengym }
-      elsif params[:booking_section] == 'my_bookings'
+      when 'my_bookings'
         format.turbo_stream { render :book_my_bookings }
       else
         format.turbo_stream { render :book_all_streams }

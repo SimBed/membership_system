@@ -1,8 +1,9 @@
 class Account < ApplicationRecord
-  has_one :client
-  has_one :partner
-  has_many :orders
-  has_one :instructor
+  # dependent option controls what happens to the associated objects when their owner is destroyed (a client can survive wihtout an account)
+  has_one :client, dependent: nil
+  has_one :partner, dependent: nil
+  has_one :instructor, dependent: nil
+  has_many :orders, dependent: :destroy
   has_many :assignments, dependent: :destroy
   has_many :roles, through: :assignments
   attr_accessor :remember_token, :reset_token, :current_role
@@ -21,10 +22,12 @@ class Account < ApplicationRecord
   # not yet used
   def has_role?(*role)
     # #& is Array class's intersection method
-    # to_a won't convert string to array , but can achieve the same with splat operator or Array.wrap()
+    # to_a won't convert string to array, but can achieve the same with splat operator or Array.wrap()
     # https://medium.com/rubycademy/3-safe-ways-to-convert-values-into-array-in-ruby-c3990a5223ef
     # splat in argument and to_s in method means argument can be a single symbol/string or a comma separted list of symbols/strings
-    (roles.pluck(:name) & role.map(&:to_s)).any?
+    # (roles.pluck(:name) & role.map(&:to_s)).any?
+    # and Style Guide preference
+    roles.pluck(:name).intersect?(role.map(&:to_s))
   end
 
   def priority_role

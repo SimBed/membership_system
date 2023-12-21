@@ -4,8 +4,7 @@ class Client::PasswordResetsController < ApplicationController
   before_action :valid_account, only: [:edit, :update]
   before_action :check_expiration, only: [:edit, :update]
 
-  def new
-  end
+  def new; end
 
   def create
     @account = Account.find_by(email: params[:password_reset][:email].downcase)
@@ -22,8 +21,7 @@ class Client::PasswordResetsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if params[:account][:password].empty?
@@ -59,9 +57,9 @@ class Client::PasswordResetsController < ApplicationController
   end
 
   def check_expiration
-    if @account.password_reset_expired?
-      flash[:danger] = 'Password reset has expired.'
-      redirect_to new_client_password_reset_url
-    end
+    return unless @account.password_reset_expired?
+
+    flash[:danger] = 'Password reset has expired.'
+    redirect_to new_client_password_reset_url
   end
 end

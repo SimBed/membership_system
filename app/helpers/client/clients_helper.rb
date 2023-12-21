@@ -30,7 +30,9 @@ module Client::ClientsHelper
       { css_class: 'table-secondary',
         data_attributes: 'data-toggle=tooltip',
         tooltip_title: "title=#{title}",
-        link: (link_to '#', class: 'icon-container disable-link' do tag.i class: ['bi bi-battery-full'] end) }
+        link: (link_to '#', class: 'icon-container disable-link' do
+                 tag.i class: ['bi bi-battery-full']
+               end) }
     else
       confirmation = t('client.clients.attendance.create.confirm')
       confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
@@ -138,7 +140,7 @@ module Client::ClientsHelper
   end
 
   def booking_day_name(index, day)
-    return 'today'.capitalize if index == 0
+    return 'today'.capitalize if index.zero?
     return 'tomorrow'.capitalize if index == 1
 
     day.strftime('%a').capitalize

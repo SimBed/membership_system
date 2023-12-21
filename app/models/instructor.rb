@@ -1,6 +1,6 @@
 class Instructor < ApplicationRecord
   include WhatsappNumber
-  has_many :wkclasses
+  has_many :wkclasses, dependent: nil
   has_many :instructor_rates, dependent: :destroy
   belongs_to :account, optional: true
   validates :first_name, presence: true

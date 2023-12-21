@@ -7,7 +7,7 @@ class Product < ApplicationRecord
   # has_many :current_price_objects, lambda { where(current: true) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
   # the price is no longer explicitly selected following rearchitecture so current_price_objects is now redundant
   # has_many :current_price_objects, lambda { where('DATE(?) BETWEEN date_from AND date_until', Time.zone.now) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
-  has_many :orders
+  has_many :orders, dependent: :destroy
   belongs_to :workout_group
   validates :max_classes, presence: true
   validates :validity_length, presence: true
@@ -23,8 +23,12 @@ class Product < ApplicationRecord
   scope :fixed, -> { where('max_classes between ? and ?', 2, 999) }
   # time to add a trial attribute to Product model
   scope :trial, -> { where(validity_length: 1, validity_unit: 'W', max_classes: 1000) }
-  scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W', max_classes: 1000) }
-  scope :package_not_trial, -> { package.not_trial }
+  # https://docs.rubocop.org/rubocop-rails/cops_rails.html#railswherenot
+  # scope :not_trial, -> { where.not(validity_length: 1, validity_unit: 'W', max_classes: 1000) }
+  # scope :not_trial, -> { where.not("validity_length=? and validity_unit=? and max_classes=?", 1, 'W', 1000) }
+  scope :not_trial, -> { trial.invert_where }
+  # not because of implementation of invert_where in not_trial scope, reverse thae chaningin order here will give wrong result
+  scope :package_not_trial, -> { not_trial.package }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', 'workout_groups.name', :max_classes) }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails

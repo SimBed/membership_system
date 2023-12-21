@@ -51,4 +51,6 @@ Minitest/RefutePredicate:
   Enabled: false
 Style/RedundantRegexpArgument:
   Enabled: false
+Naming/MethodParameterName:
+  MinNameLength: 1
 

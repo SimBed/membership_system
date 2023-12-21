@@ -1,6 +1,6 @@
 class Partner < ApplicationRecord
   include WhatsappNumber
-  has_many :workout_groups
+  has_many :workout_groups, dependent: nil
   belongs_to :account, optional: true
   validates :first_name, presence: true
   validates :last_name, presence: true

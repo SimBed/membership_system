@@ -127,7 +127,7 @@ class Client < ApplicationRecord
   end
 
   def has_purchased?
-    !purchases.size.zero?
+    !purchases.empty?
   end
 
   def has_had_trial?

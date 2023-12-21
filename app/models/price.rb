@@ -26,7 +26,7 @@ class Price < ApplicationRecord
     # percentage discounts were crudely calculated and input. The new design of the Price method calculates precisely and rounds up to nearest Rs.50
     return false if created_at.nil?
 
-    return true if created_at < Date.new(2022, 10, 05)
+    return true if created_at < Date.new(2022, 10, 5)
 
     false
   end

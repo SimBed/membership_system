@@ -9,8 +9,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
     @pagy, @orders = pagy(Order.filter(filter_params).includes(:account).order_by_date)
   end
 
-  def show
-  end
+  def show; end
 
   def create
     begin

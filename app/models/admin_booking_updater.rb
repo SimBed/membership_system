@@ -57,10 +57,10 @@ class AdminBookingUpdater
     # and delete any associated penalty. Edge and not of serious consequence.
     cancel_attribute = self.class.status_map(old_status)
     @purchase.decrement!(cancel_attribute)
-    unless @attendance.penalty.nil?
-      @attendance.penalty.destroy
-      @penalty_change = true
-    end
+    return if @attendance.penalty.nil?
+
+    @attendance.penalty.destroy
+    @penalty_change = true
   end
 
   def cancellation_penalty(package_type, cancel_attribute: :early_cancels)

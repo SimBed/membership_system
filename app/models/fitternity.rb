@@ -1,5 +1,5 @@
 class Fitternity < ApplicationRecord
-  has_many :purchases
+  has_many :purchases, dependent: nil
   has_many :attendances, through: :purchases
   scope :ongoing, -> { all.reject(&:expired?) }
 

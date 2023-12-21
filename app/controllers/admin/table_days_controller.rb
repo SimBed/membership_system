@@ -10,8 +10,7 @@ class Admin::TableDaysController < Admin::BaseController
     @table_day = TableDay.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @table_day = TableDay.new(table_day_params)

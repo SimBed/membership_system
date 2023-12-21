@@ -10,8 +10,7 @@ class Admin::TableTimesController < Admin::BaseController
     @table_time = TableTime.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @table_time = TableTime.new(table_time_params)

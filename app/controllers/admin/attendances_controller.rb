@@ -119,16 +119,16 @@ class Admin::AttendancesController < Admin::BaseController
     @purchase = @attendance.purchase
     @wkclass = @attendance.wkclass
     update_by_client if client?
-    if logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
-      result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status]).update
-      flash_message(*result.flash_array)
-      update_purchase_status([@purchase]) if result.penalty_change?
-      if result.success?
-        remove_from_waiting_list
-        flash_message (notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status])
-        handle_admin_update_response
-      end
-    end
+    return unless logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
+
+    result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status]).update
+    flash_message(*result.flash_array)
+    update_purchase_status([@purchase]) if result.penalty_change?
+    return unless result.success?
+
+    remove_from_waiting_list
+    flash_message (notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status])
+    handle_admin_update_response
   end
 
   def update_by_client
@@ -549,13 +549,13 @@ class Admin::AttendancesController < Admin::BaseController
     # no more than one penalty per attendance
     return unless package_type == :unlimited_package && @attendance.penalty.nil?
 
-    if penalty
-      Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1,
-                       reason: 'late cancellation' })
-      update_purchase_status([@purchase])
-      @penalty_given = true # for the flash
-      # no longer whatsapp as the flash will inform
-    end
+    return unless penalty
+
+    Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1,
+                     reason: 'late cancellation' })
+    update_purchase_status([@purchase])
+    @penalty_given = true # for the flash
+    # no longer whatsapp as the flash will inform
   end
 
   def whatsapp_params(message_type)
@@ -575,7 +575,8 @@ class Admin::AttendancesController < Admin::BaseController
     logged_in_as?('client')
   end
 
-  def set_booking_day # so day on slider shown doesn't revert to default on response
+# so day on slider shown doesn't revert to default on response
+  def set_booking_day
     default_booking_day = 0
     session[:booking_day] = params[:booking_day] || session[:booking_day] || default_booking_day
   end
