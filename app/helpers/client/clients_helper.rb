@@ -2,7 +2,7 @@ module Client::ClientsHelper
   def number(whatsapp, phone)
     return nil if whatsapp.blank? && phone.blank?
 
-    return phone.phony_formatted(format: :international, spaces: '-') unless phone.blank?
+    return phone.phony_formatted(format: :international, spaces: '-') if phone.present?
 
     whatsapp.phony_formatted(format: :international, spaces: '-')
   end
@@ -12,7 +12,7 @@ module Client::ClientsHelper
     if attendance.nil?
       handle_new_booking(wkclass, client, day, booking_section)
     else
-      handle_update_booking(attendance, wkclass, client, day, booking_section)
+      handle_update_booking(attendance, wkclass, day, booking_section)
     end
   end
 
@@ -23,7 +23,6 @@ module Client::ClientsHelper
        !wkclass.booking_window.cover?(Time.zone.now)
       { css_class: 'table-secondary', link: '' }
     elsif wkclass.at_capacity?
-      confirmation = t('client.clients.attendance.create.full')
       # remarkably difficult to have a tooltip with spaces in it
       # https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces
       title = "class\u00a0is\u00a0currently\u00a0full"
@@ -41,8 +40,8 @@ module Client::ClientsHelper
           image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}"),
           admin_attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id,
-                                 'booking_day': day,
-                                 'booking_section': booking_section),
+                                 booking_day: day,
+                                 booking_section:),
           data: { turbo_method: :post, turbo_confirm: confirmation },
           class: 'icon-container'
         ) }
@@ -50,7 +49,7 @@ module Client::ClientsHelper
     end
   end
 
-  def handle_update_booking(attendance, wkclass, client, day, booking_section)
+  def handle_update_booking(attendance, wkclass, day, booking_section)
     case attendance.status
     when 'booked'
       { css_class: 'text-success',
@@ -82,26 +81,26 @@ module Client::ClientsHelper
     end
     link_to(
       image_tag(image, class: image_class),
-      admin_attendance_path(attendance, 'booking_day': day, 'booking_section': booking_section),
+      admin_attendance_path(attendance, booking_day: day, booking_section:),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )
   end
 
-  def renewal_statement(ongoing, trial, valid, client)
-    if valid
-      return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
-      return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
-      return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
+  def renewal_statement(ongoing, trial, valid)
+    # ongoing trial
+    return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
 
-      'Your Group Package has expired. Renew your Package now!'
-    else
-      return "Buy your first Package before your trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!" if ongoing && trial
-      return "Buy your next Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial
-      return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
+    # ongoing package
+    return "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial && valid
 
-      'Your Group Package has expired. Renew your Package now!'
-    end
+    return "Buy your next Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!" if ongoing && !trial && !valid
+
+    # expired trial
+    return "Your Trial has expired. Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!" if !ongoing && trial
+
+    # expired package
+    'Your Group Package has expired. Renew your Package now!'
   end
 
   def shop_discount_statement(ongoing, trial, oneoff)

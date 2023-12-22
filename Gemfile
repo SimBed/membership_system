@@ -13,13 +13,12 @@ gem 'groupdate', '~> 6.1'
 gem 'honeybadger', '~> 5.2'
 gem 'importmap-rails'
 gem 'jbuilder', '~> 2.7'
-# gem 'kaminari'
-gem 'pagy'
-gem 'net-smtp', require: false
 gem 'net-imap', require: false
 gem 'net-pop', require: false
+gem 'net-smtp', require: false
 # for fater pagy performance https://ddnexus.github.io/pagy/docs/api/javascript/setup/
 gem 'oj', '~> 3.16'
+gem 'pagy'
 gem 'pg', '~> 1.1'
 gem 'phony_rails'
 gem 'puma', '~> 5.0'
@@ -40,10 +39,10 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rails-erd'
   gem 'rubocop', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-rails', require: false
-  gem 'rails-erd'
 end
 
 group :development do

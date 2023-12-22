@@ -34,7 +34,9 @@ class ClientAnalyzer
   end
 
   def prop_active
-    (total_active_membership.to_f / life_span.to_f * 100).round(1)
+    # (total_active_membership.to_f / life_span.to_f * 100).round(1)
+    # Style guide prefers .to_f on 1 side only or Float division method Numeric#fdiv
+    (total_active_membership.fdiv(life_span) * 100).round(1)
   end
 
   def total_spend

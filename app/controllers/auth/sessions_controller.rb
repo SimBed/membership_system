@@ -38,7 +38,7 @@ class Auth::SessionsController < Auth::BaseController
   private
 
   def has_role?
-    return if logged_in? && current_account_role_names.any?(params[:role])
+    return false if logged_in? && current_account_role_names.any?(params[:role])
 
     flash[:warning] = 'unauthorised role'
     redirect_back fallback_location: login_path

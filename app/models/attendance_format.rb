@@ -34,7 +34,7 @@ class AttendanceFormat
     link_maker(image_params, route, route_params, turbo_params)
   end
 
-# for status
+  # for status
   def css_class
     if @new_booking
       if @purchase.nil? || @wkclass.at_capacity?

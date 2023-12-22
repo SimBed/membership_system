@@ -192,7 +192,7 @@ class Admin::WkclassesController < Admin::BaseController
     advanced_date = date.advance(weeks: n)
     { 'start_time(1i)': advanced_date.year.to_s,
       'start_time(2i)': advanced_date.month.to_s,
-      'start_time(3i)': advanced_date.day.to_s, }
+      'start_time(3i)': advanced_date.day.to_s }
   end
 
   def affects_waiting_list

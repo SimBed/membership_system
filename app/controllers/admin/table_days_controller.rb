@@ -1,6 +1,6 @@
 class Admin::TableDaysController < Admin::BaseController
-  before_action :set_table_day, only: %i[show edit update destroy]
-  before_action :set_timetable, only: %i[update destroy]
+  before_action :set_table_day, only: [:show, :edit, :update, :destroy]
+  before_action :set_timetable, only: [:update, :destroy]
 
   def index
     @table_days = TableDay.all

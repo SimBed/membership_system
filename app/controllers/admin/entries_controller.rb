@@ -1,5 +1,5 @@
 class Admin::EntriesController < Admin::BaseController
-  before_action :set_entry, only: %i[show edit update destroy]
+  before_action :set_entry, only: [:show, :edit, :update, :destroy]
 
   def index
     @entries = Entry.all

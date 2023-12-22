@@ -1,5 +1,5 @@
 class Superadmin::DiscountReasonsController < Superadmin::BaseController
-  before_action :set_discount_reason, only: %i[show edit update destroy]
+  before_action :set_discount_reason, only: [:show, :edit, :update, :destroy]
 
   def index
     @discount_reasons_current = DiscountReason.current.order_by_rationale

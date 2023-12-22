@@ -8,6 +8,8 @@ class Admin::AdjustmentsController < Admin::BaseController
     @adjustment = Adjustment.new
   end
 
+  def edit; end
+
   def create
     @adjustment = Adjustment.new(adjustment_params)
 
@@ -19,8 +21,6 @@ class Admin::AdjustmentsController < Admin::BaseController
       render :new, status: :unprocessable_entity
     end
   end
-
-  def edit; end
 
   def update
     if @adjustment.update(adjustment_params)

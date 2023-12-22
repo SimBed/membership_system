@@ -1,5 +1,5 @@
 class Shared::AchievementsController < Shared::BaseController
-  before_action :set_achievement, only: %i[show edit update destroy]
+  before_action :set_achievement, only: [:show, :edit, :update, :destroy]
 
   def index
     @achievements = Achievement.order_by_date

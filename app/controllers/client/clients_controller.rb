@@ -10,7 +10,7 @@ class Client::ClientsController < ApplicationController
     @challenges_entered = @client.challenges.order_by_name.distinct.map { |c| [c.name, c.id] }
     # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
     @achievements = @challenge&.achievements&.where(client_id: params[:id])
-    return unless @achievements.present?
+    return if @achievements.blank?
 
     Achievement.default_timezone = :utc
     # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact

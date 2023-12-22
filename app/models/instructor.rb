@@ -38,7 +38,7 @@ class Instructor < ApplicationRecord
   end
 
   def initials
-    name.split().map(&:first).join
+    name.split.map(&:first).join
   end
 
   # make dry same code used in client method

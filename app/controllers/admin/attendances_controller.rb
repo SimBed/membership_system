@@ -62,7 +62,7 @@ class Admin::AttendancesController < Admin::BaseController
                       product_id: 1,
                       price_id: 2,
                       payment: 550,
-                      dop: Time.zone.today(),
+                      dop: Time.zone.today,
                       payment_mode: 'Fitternity',
                       fitternity_id: Fitternity.ongoing.first&.id }
 
@@ -127,6 +127,7 @@ class Admin::AttendancesController < Admin::BaseController
     return unless result.success?
 
     remove_from_waiting_list
+    # contrary to rubocop, leave space before parentheses
     flash_message (notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status])
     handle_admin_update_response
   end
@@ -382,7 +383,7 @@ class Admin::AttendancesController < Admin::BaseController
 
   def in_booking_window
     wkclass = Wkclass.find(params.dig(:attendance, :wkclass_id).to_i)
-    return if (wkclass.booking_window).cover?(Time.zone.now) || admin_modification?
+    return if wkclass.booking_window.cover?(Time.zone.now) || admin_modification?
 
     flash_hash = booking_flash_hash.dig(:booking, :too_late)
     flash_message flash_hash[:colour], (send flash_hash[:message], false)
@@ -575,7 +576,7 @@ class Admin::AttendancesController < Admin::BaseController
     logged_in_as?('client')
   end
 
-# so day on slider shown doesn't revert to default on response
+  # so day on slider shown doesn't revert to default on response
   def set_booking_day
     default_booking_day = 0
     session[:booking_day] = params[:booking_day] || session[:booking_day] || default_booking_day

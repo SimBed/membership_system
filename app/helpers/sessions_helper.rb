@@ -1,15 +1,15 @@
 module SessionsHelper
   def log_in(account)
     session[:account_id] = account.id
-    if (role_name = cookies.signed[:role_name])
-      if account.roles.include? role_name
-        session[:role_name] = role_name
-      else
-        session[:role_name] = account.roles.first.name
-      end
-    else
-      session[:role_name] = account.roles.first.name
-    end
+    session[:role_name] = if (role_name = cookies.signed[:role_name])
+                            if account.roles.include? role_name
+                              role_name
+                            else
+                              account.roles.first.name
+                            end
+                          else
+                            account.roles.first.name
+                          end
   end
 
   def remember(account)

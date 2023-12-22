@@ -37,7 +37,7 @@ class PublicPagesController < ApplicationController
       end
     else
       @account = Account.new
-      render 'signup', layout: 'login', status: 422
+      render 'signup', layout: 'login', status: :unprocessable_entity
     end
   end
 
@@ -73,8 +73,10 @@ class PublicPagesController < ApplicationController
     daily_accounts_count = Account.where("DATE(created_at)='#{Time.zone.today.to_date}'").size
     return unless daily_accounts_count >= Setting.daily_account_limit
 
-    Whatsapp.new(receiver: 'me', message_type: 'daily_account_limit',
-                 variable_contents: { first_name: 'Dan' }).manage_messaging if Setting.daily_account_limit_triggered == false
+    if Setting.daily_account_limit_triggered == false
+      Whatsapp.new(receiver: 'me', message_type: 'daily_account_limit',
+                   variable_contents: { first_name: 'Dan' }).manage_messaging
+    end
     # mitigate multiple messages being sent once the message has been sent once
     Setting.daily_account_limit_triggered = true
     flash[:warning] = t('.daily_account_limit')

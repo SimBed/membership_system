@@ -1,5 +1,5 @@
 class Shared::ChallengesController < Shared::BaseController
-  before_action :set_challenge, only: %i[show edit update destroy]
+  before_action :set_challenge, only: [:show, :edit, :update, :destroy]
 
   def index
     @challenges = Challenge.order_by_name

@@ -1,9 +1,9 @@
 class AdminBookingUpdater
   include AttendancesHelper
   Outcome = Struct.new(:success?, :penalty_change?, :flash_array)
-  # attendances_controller#update  
+  # attendances_controller#update
   # flash_message AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update
-  
+
   def initialize(attributes = {})
     @attendance = attributes[:attendance]
     @wkclass = attributes[:wkclass]

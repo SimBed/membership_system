@@ -144,7 +144,7 @@ class Client < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  # note this includes (probably irrelevantly) early cancelled classes
+  # NOTE: this includes (probably irrelevantly) early cancelled classes
   def last_class
     attendances.confirmed.includes(:wkclass).map(&:start_time).max
   end

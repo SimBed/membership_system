@@ -23,12 +23,13 @@ class ApplicationController < ActionController::Base
       p.update(start_date: p.start_date_calc)
       p.update(expiry_date: p.expiry_date_calc)
       p.update(status: p.status_calc)
-      status_changed = orig_status != p.status ? true : false
+      status_changed = orig_status != p.status
       expiry_earlier = expiry_earlier?(p.expiry_date, orig_expiry_date)
       # expiry_earlier = p.expiry_date.nil? ? false : orig_expiry_date > p.expiry_date
       @major_change = status_changed || expiry_earlier # if there is a major change then we will do full page reload rsther than discrete turbo-frames update
       # NOTE: rider = nil would return false, so this means if p has a rider then set rider as p's rider and carry out the conditional, otherwise dont
-      if rider = p.rider_purchase
+      # NOTE: sage rubocop advice, Use == if you meant to do a comparison or wrap the expression in parentheses to indicate you meant to assign in a condition
+      if (rider = p.rider_purchase)
         # the rider cant continue once the main has expired
         rider.update(status: 'expired', expiry_date: p.expiry_date) if p.expired? && !rider.expired?
         # conceivably the rider can be reactivated from expired if a change is made to the main that brings the main back from expired. (This is benign when main purchase changes to 'classes all booked')
@@ -77,19 +78,17 @@ class ApplicationController < ActionController::Base
   end
 
   def deal_with_client
-    begin
-      (redirect_to client_shop_path(@account.client) if logged_in_as?('client') && @account.without_purchase?) and return
+    (redirect_to client_shop_path(@account.client) if logged_in_as?('client') && @account.without_purchase?) and return
 
-      # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
-      redirect_to client_book_path(@account.client) if logged_in_as?('client') # groupex only
+    # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
+    redirect_to client_book_path(@account.client) if logged_in_as?('client') # groupex only
 
-      # the rescue is only needed because I've manually assigned a client to superadmin (for role-shifting) leaving the original account of the client
-      # without a client account, so on attempted log in, @account.client is nil and things fail.
-    rescue Exception
-      log_out if logged_in?
-      redirect_to login_path
-      flash[:danger] = 'No client associated with this account. Unable to login.'
-    end
+    # the rescue is only needed because I've manually assigned a client to superadmin (for role-shifting) leaving the original account of the client
+    # without a client account, so on attempted log in, @account.client is nil and things fail.
+  rescue Exception
+    log_out if logged_in?
+    redirect_to login_path
+    flash[:danger] = 'No client associated with this account. Unable to login.'
   end
 
   def deal_with_instructor
@@ -101,8 +100,6 @@ class ApplicationController < ActionController::Base
   def deal_with_partner
     redirect_to admin_partner_path(@account.partner) if logged_in_as?('partner')
   end
-
-  private
 
   def expiry_earlier?(current_expiry_date, orig_expiry_date)
     return false if current_expiry_date.nil? || orig_expiry_date.nil?

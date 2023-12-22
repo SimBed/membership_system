@@ -27,8 +27,6 @@ Naming/PredicateName:
   AllowedMethods: ['is_logged_in?']
 Style/SymbolArray:
   EnforcedStyle: brackets
-Style/ClassAndModuleChildren:
-  EnforcedStyle: compact
 Rails/RefuteMethods:
   EnforcedStyle: refute
 Rails/SkipsModelValidations:
@@ -53,4 +51,8 @@ Style/RedundantRegexpArgument:
   Enabled: false
 Naming/MethodParameterName:
   MinNameLength: 1
+# Style/ClassAndModuleChildren:
+#   EnforcedStyle: compact  
+Style/ClassAndModuleChildren:
+  Enabled: false
 

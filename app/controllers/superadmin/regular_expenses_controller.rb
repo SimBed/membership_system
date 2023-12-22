@@ -53,7 +53,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
         date:,
         workout_group_id: r.workout_group_id
       )
-      rejected += 1 unless new_expense.errors.blank?
+      rejected += 1 if new_expense.errors.present?
     end
     session[:revenue_month] = date.strftime('%b %Y')
     redirect_to superadmin_expenses_path

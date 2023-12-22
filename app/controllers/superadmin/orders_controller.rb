@@ -12,37 +12,35 @@ class Superadmin::OrdersController < Superadmin::BaseController
   def show; end
 
   def create
-    begin
-      # don't want price_id from params
-      # Order's #process_razorpayment captures the payment and returns a slightly altered hash to the one we send it (without the price_id we no longer need,
-      # with an actual price amount (in rupees) and the Razorpay object's status ('captured')
-      order = Order.create(Order.process_razorpayment(order_params))
-      if order.status == 'captured'
-        account = Account.find(order_params[:account_id])
-        purchase_params = { client_id: account.client.id, product_id: order.product_id, price_id: order_params[:price_id],
-                            payment: order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
-        @purchase = Purchase.new(purchase_params)
-        if @purchase.save
-          [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
-            DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) unless params[discount].blank?
-          end
-          flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
-          # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
-          if logged_in_as?('client')
-            redirect_to client_history_path account.client
-          else
-            flash[:warning] = 'Your browser may have logged you out of the system. Please login again to see your purchase and book your classes'
-            redirect_to login_path
-          end
-        else
-          flash[:alert] = 'Unable to process payment.'
-          redirect_to root_path
+    # don't want price_id from params
+    # Order's #process_razorpayment captures the payment and returns a slightly altered hash to the one we send it (without the price_id we no longer need,
+    # with an actual price amount (in rupees) and the Razorpay object's status ('captured')
+    order = Order.create(Order.process_razorpayment(order_params))
+    if order.status == 'captured'
+      account = Account.find(order_params[:account_id])
+      purchase_params = { client_id: account.client.id, product_id: order.product_id, price_id: order_params[:price_id],
+                          payment: order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started' }
+      @purchase = Purchase.new(purchase_params)
+      if @purchase.save
+        [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
+          DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) if params[discount].present?
         end
+        flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
+        # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
+        if logged_in_as?('client')
+          redirect_to client_history_path account.client
+        else
+          flash[:warning] = 'Your browser may have logged you out of the system. Please login again to see your purchase and book your classes'
+          redirect_to login_path
+        end
+      else
+        flash[:alert] = 'Unable to process payment.'
+        redirect_to root_path
       end
-    rescue Exception
-      flash[:danger] = 'Unable to process payment. Please contact The Space'
-      redirect_to root_path
     end
+  rescue Exception
+    flash[:danger] = 'Unable to process payment. Please contact The Space'
+    redirect_to root_path
   end
 
   def whatsapp_params(message_type)

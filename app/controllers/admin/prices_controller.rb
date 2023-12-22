@@ -9,6 +9,14 @@ class Admin::PricesController < Admin::BaseController
     session[:pre_oct22_price] = false
   end
 
+  def edit
+    # @base_price = @price.base_price || 0
+    # @discounted_price = @price.discounted_price || 0
+    @pre_oct22_price = @price.pre_oct22_price?
+    # helpful to have this info stored on the browser, available to javascript
+    session[:pre_oct22_price] = @pre_oct22_price
+  end
+
   def create
     @price = Price.new(price_params)
 
@@ -22,14 +30,6 @@ class Admin::PricesController < Admin::BaseController
       # render "admin/prices/new?product_id=#{price_params[:product_id]}", status: :unprocessable_entity
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    # @base_price = @price.base_price || 0
-    # @discounted_price = @price.discounted_price || 0
-    @pre_oct22_price = @price.pre_oct22_price?
-    # helpful to have this info stored on the browser, available to javascript
-    session[:pre_oct22_price] = @pre_oct22_price
   end
 
   def update

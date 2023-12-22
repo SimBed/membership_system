@@ -90,7 +90,7 @@ class Admin::PurchasesController < Admin::BaseController
   def update
     if @purchase.update(purchase_params)
       # if the edit does not change the discounts, then no further action, otherwise delete all the purchases existing DiscountAssignments and create new ones
-      existing_discounts = DiscountAssignment.where(purchase_id: @purchase.id,).pluck(:discount_id).sort
+      existing_discounts = DiscountAssignment.where(purchase_id: @purchase.id).pluck(:discount_id).sort
       updated_discounts = [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].map do |d|
         params[:purchase][d]
       end.compact.sort
@@ -259,11 +259,11 @@ class Admin::PurchasesController < Admin::BaseController
   # end
 
   def changing_main_purchase_product?
-    return if params[:purchase][:product_id].blank?
+    return false if params[:purchase][:product_id].blank?
 
     original_purchase_has_rider = @purchase.rider_purchase.present?
     new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
-    return if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
+    return false if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
 
     flash[:warning] = "Purchase not updated. Can't change a purchase without a rider to one with a rider." if !original_purchase_has_rider && new_product_has_rider
     flash[:warning] = "Purchase not updated. Can't change a purchase with a rider to one without a rider." if original_purchase_has_rider && !new_product_has_rider
@@ -274,14 +274,14 @@ class Admin::PurchasesController < Admin::BaseController
     original_purchase_has_rider = @purchase.rider_purchase.present?
     client_changed = @purchase.client_id != params[:purchase][:client_id].to_i
 
-    return unless client_changed && original_purchase_has_rider
+    return false unless client_changed && original_purchase_has_rider
 
     flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
     redirect_to edit_admin_purchase_path(@purchase)
   end
 
   def changing_rider?
-    return if @purchase.main_purchase.nil?
+    return false if @purchase.main_purchase.nil?
 
     flash[:warning] = "Purchase not updated. Can't change details of a purchase that is a rider"
     redirect_to admin_purchase_path(@purchase)

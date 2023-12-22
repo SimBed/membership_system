@@ -25,8 +25,8 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     # @instructor_cost_counts = @wkclasses_with_instructor_expense.unscope(:order).joins(:instructor).group("first_name || ' ' || last_name").count(:instructor_cost).delete_if { |k, v| v.zero? }
     # ugly way to get aggregate functions together with the grouping itself
     # https://stackoverflow.com/questions/27145994/rails-activerecord-perform-group-sum-and-count-in-one-query
-    @instructor_cost_subtotals = @wkclasses_with_instructor_expense.unscope(:order).joins(:instructor).group("first_name || ' ' || last_name").pluck('max(first_name),max(last_name),sum(instructor_cost), count(instructor_cost)')
-    @total_instructor_cost = @instructor_cost_subtotals.map { |i| i[2] }.compact.sum
+    @instructor_cost_subtotals = @wkclasses_with_instructor_expense.unscope(:order).joins(:instructor).group("first_name || ' ' || last_name").pluck('max(first_name), max(last_name), sum(instructor_cost), count(instructor_cost)')
+    @total_instructor_cost = @instructor_cost_subtotals.pluck(2).compact.sum
     @fixed_expenses = Expense.by_workout_group(@workout_group.name, @period)
     @months = months_logged
     @summary = {}

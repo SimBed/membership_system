@@ -9,6 +9,8 @@ class Admin::FreezesController < Admin::BaseController
     @freeze = Freeze.new(start_date:, end_date:)
   end
 
+  def edit; end
+
   def create
     @freeze = Freeze.new(freeze_params)
     if @freeze.save
@@ -21,8 +23,6 @@ class Admin::FreezesController < Admin::BaseController
       render :new, status: :unprocessable_entity
     end
   end
-
-  def edit; end
 
   def update
     if @freeze.update(freeze_params)

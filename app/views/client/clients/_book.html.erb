@@ -1,6 +1,6 @@
 <%= turbo_frame_tag 'book' do %>
   <% provide(:greeting, "Book a Class") %>
-  <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?, @client)) %>
+  <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?)) %>
   <% provide(:visit_shop_statement, visit_shop_statement(@renewal.product.rider?)) %>
   <% provide(:renewal_product, @renewal.product&.formal_name) %>
   <% provide(:renewal_price, @renewal.price(@renewal.product).to_s) %>

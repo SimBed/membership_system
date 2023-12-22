@@ -97,21 +97,21 @@ class Admin::ProductsController < Admin::BaseController
 
   def handle_sort
     # reformat
-    case session[:product_sort_option]
-    when 'product_name'
-      @products = Product.order_by_name_max_classes
-    when 'total_count'
-      @products = Product.order_by_total_count
-    when 'ongoing_count'
-      @products = Product.order_by_ongoing_count
-    when 'sell_online'
-      @products = Product.online_order_by_wg_classes_days
-    when 'price'
-      @products = Product.order_by_base_price
-    else
-      # just for now
-      @products = Product.order_by_name_max_classes
-    end
+    @products = case session[:product_sort_option]
+                when 'product_name'
+                  Product.order_by_name_max_classes
+                when 'total_count'
+                  Product.order_by_total_count
+                when 'ongoing_count'
+                  Product.order_by_ongoing_count
+                when 'sell_online'
+                  Product.online_order_by_wg_classes_days
+                when 'price'
+                  Product.order_by_base_price
+                else
+                  # just for now
+                  Product.order_by_name_max_classes
+                end
   end
 
   def sort_on_object
@@ -139,7 +139,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def prepare_items_for_dropdowns
     @workout_groups = WorkoutGroup.all
-    @validity_units = [['days', 'D'], ['weeks', 'W'], ['months', 'M']]
+    @validity_units = [%w[days D], %w[weeks W], %w[months M]]
     @colors = Setting.product_colors
   end
 

@@ -7,7 +7,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
 
   def create
     @errors = ActiveModel::Errors.new(self)
-    params[:setting].keys.each do |key|
+    params[:setting].each_key do |key|
       next if params[:setting][key].nil?
 
       setting = Setting.new(var: key)
@@ -16,7 +16,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
     end
 
     render :show if @errors.any?
-    params[:setting].keys.each do |key|
+    params[:setting].each_key do |key|
       Setting.send("#{key}=", params[:setting][key].strip) unless params[:setting][key].nil?
     end
     flash[:success] = 'Setting was successfully updated.'
@@ -24,7 +24,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
     redirect_to superadmin_settings_path
   end
 
-  private
+  # private
 
   # dont need strong parameters. Requests can only come from superadmin
   # attempt to tidy up strong parameters with *Setting.all.map { |s| s.var } failed because the Setting with the relevant var only exists after first being set

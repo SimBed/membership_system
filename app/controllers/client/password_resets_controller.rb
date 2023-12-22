@@ -6,6 +6,8 @@ class Client::PasswordResetsController < ApplicationController
 
   def new; end
 
+  def edit; end
+
   def create
     @account = Account.find_by(email: params[:password_reset][:email].downcase)
     if @account
@@ -17,11 +19,9 @@ class Client::PasswordResetsController < ApplicationController
       flash.now[:danger] = 'Email address not found'
       # https://stackoverflow.com/questions/70400958/error-form-responses-must-redirect-to-another-location
       # render 'new'
-      render 'new', status: 422 # Unprocessable Entity
+      render 'new', status: :unprocessable_entity # 422
     end
   end
-
-  def edit; end
 
   def update
     if params[:account][:password].empty?
@@ -50,8 +50,8 @@ class Client::PasswordResetsController < ApplicationController
   end
 
   def valid_account
-    unless (@account && @account.activated? &&
-            @account.authenticated?(:reset, params[:id]))
+    unless @account&.activated? &&
+           @account&.authenticated?(:reset, params[:id])
       redirect_to root_url
     end
   end

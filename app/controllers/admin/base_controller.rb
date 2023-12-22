@@ -10,20 +10,10 @@ class Admin::BaseController < ApplicationController
   end
 
   def set_admin_status
-    @admin_plus = logged_in_as?('admin', 'superadmin') ? true : false
-    @junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false
-    @junioradmin = logged_in_as?('junioradmin') ? true : false
+    @admin_plus = logged_in_as?('admin', 'superadmin')
+    @junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin')
+    @junioradmin = logged_in_as?('junioradmin')
   end
-
-  # def whatsapp_permitted(receiver, message_type)
-  #   return false if message_type == 'early_cancels_no_penalty'
-
-  #   return true if Rails.env.production?
-
-  #   return true if reciever == 'me' || receiver.whatsapp_messaging_number == Rails.configuration.twilio[:me]
-
-  #   false
-  # end
 
   private
 
