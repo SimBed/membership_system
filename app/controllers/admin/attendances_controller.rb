@@ -127,8 +127,7 @@ class Admin::AttendancesController < Admin::BaseController
     return unless result.success?
 
     remove_from_waiting_list
-    # contrary to rubocop, leave space before parentheses
-    flash_message (notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status])
+    notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status]
     handle_admin_update_response
   end
 
@@ -588,16 +587,15 @@ class Admin::AttendancesController < Admin::BaseController
 
   # TODO: make dry - repeated in wkclasses controller
   def notify_waiting_list(wkclass, triggered_by: 'admin')
-    return if wkclass.in_the_past?
+    waitings = wkclass.waitings
+    return if waitings.empty? || wkclass.in_the_past? || wkclass.at_capacity?
 
-    return if wkclass.at_capacity?
-
-    wkclass.waitings.each do |waiting|
-      Whatsapp.new({ receiver: waiting.purchase.client,
-                     message_type: 'waiting_list_blast',
-                     triggered_by:,
-                     variable_contents: { wkclass_name: wkclass.name,
-                                          date_time: wkclass.date_time_short } }).manage_messaging
+    waitings.each do |waiting|
+      flash_message(*Whatsapp.new({ receiver: waiting.purchase.client,
+                                    message_type: 'waiting_list_blast',
+                                    triggered_by:,
+                                    variable_contents: { wkclass_name: wkclass.name,
+                                                         date_time: wkclass.date_time_short } }).manage_messaging)
     end
   end
 end
