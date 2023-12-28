@@ -49,15 +49,6 @@ class Wkclass < ApplicationRecord
   # limited means multiple bookings in a day restrictions apply ie not Open Gym
   scope :limited, -> { joins(:workout).where(workouts: { limited: true }) }
   scope :unlimited, -> { joins(:workout).where(workouts: { limited: false }) }
-  # unfortunately the clean way results in structurally incomaptible error. Workaround to this either by a) work on ruby objects (as for Client#active or
-  # b) by putting all the joins/distincts at the end of the query as nar8789 answer https://stackoverflow.com/questions/40742078/relation-passed-to-or-must-be-structurally-compatible-incompatible-values-r
-  # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
-  # unfortunately this doesn't work either due to both .joins(:attendances) and .left_joins(:attendances) confusing the issue (removing the joins corrects the empty class undercount but increases the incomplete count)
-  # scope :problematic, -> { instructorless # and past
-  #                         .or(where(attendances: {status: 'booked'}).unscope(:order)) # incomplete
-  #                         .or(where(attendances: {id: nil})) # empty class
-  #                         .or(where.not(instructor_rate: {rate: 0})).joins(:instructor_rate) # has instructor cost
-  #                         .joins(:attendances).left_joins(:attendances).distinct} # dump all the joins/distinct at end of query
   # penalties in last days of Package can cause expiry date to be earlier than final class. Dont want these cases to be considered problematic
   scope :has_booking_post_purchase_expiry, lambda {
                                              joins(attendances: [:purchase])
@@ -77,29 +68,59 @@ class Wkclass < ApplicationRecord
   scope :booked_for, ->(client) { joins(attendances: [purchase: [:client]]).where(clients: { id: client.id }).where(attendances: { status: 'booked' }) }
 
   # would like to use #or method but see difficulties above re structrurally compatible
-  def self.problematic
-    problematic_past = Setting.problematic_past
-    past_wkclasses = past(problematic_past)
-    # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
-    instructorless_wkclasses = past_wkclasses.instructorless.map(&:id)
-    incomplete_wkclasses = past_wkclasses.incomplete.map(&:id)
-    empty_with_cost_wkclasses = past_wkclasses.empty_class.has_instructor_cost.map(&:id)
-    period = (Time.zone.now.advance(months: -problematic_past)..Float::INFINITY)
-    booking_post_purchase_expiry = during(period).has_booking_post_purchase_expiry.map(&:id) # can arise due to careless administration when using the repeat funstionality
-    Wkclass.where(id: (instructorless_wkclasses + incomplete_wkclasses + empty_with_cost_wkclasses.uniq + booking_post_purchase_expiry.uniq))
-  end
+  # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
+  # this method is the 'ruby object' equivalent to the 'raw-sql' approach below
 
-  # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
-  # need a client_bookable attribute in workout_group
+  class << self
+    def problematic
+      problematic_duration = Setting.problematic_duration
+      wkclasses_past = past(problematic_duration)
+      wkclasses_past_and_future = during((Time.zone.now.advance(months: -problematic_duration)..Float::INFINITY))
+      Wkclass.where(id: problematic_ids(wkclasses_past, wkclasses_past_and_future))
+    end
 
-  def self.show_in_bookings_for(client)
-    # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate
-    Wkclass.in_booking_visibility_window
-           .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
-           .where('clients.id': client.id)
-           .where('workout_group.renewable': true)
-           .merge(Purchase.not_fully_expired.exclude(Purchase.unexpired_rider_without_ongoing_main))
-           .distinct
+    def instructorless_ids(wkclasses)
+      wkclasses.instructorless.map(&:id)
+    end
+
+    def incomplete_ids(wkclasses)
+      wkclasses.incomplete.map(&:id)
+    end
+
+    def empty_with_cost_ids(wkclasses)
+      wkclasses.empty_class.has_instructor_cost.map(&:id)
+    end
+
+    def booking_post_purchase_expiry(wkclasses)
+      wkclasses.has_booking_post_purchase_expiry.map(&:id) # can arise due to careless administration when using the repeat functionality
+    end
+
+    def problematic_ids(wkclasses_past, wkclasses_past_and_future)
+      instructorless_ids(wkclasses_past) + incomplete_ids(wkclasses_past) + empty_with_cost_ids(wkclasses_past) + booking_post_purchase_expiry(wkclasses_past_and_future)
+    end
+
+    # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
+    # need a client_bookable attribute in workout_group
+    def show_in_bookings_for(client)
+      # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate
+      Wkclass.in_booking_visibility_window
+             .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
+             .where('clients.id': client.id)
+             .where('workout_group.renewable': true)
+             .merge(Purchase.not_fully_expired.exclude(Purchase.unexpired_rider_without_ongoing_main))
+             .distinct
+    end
+
+    def in_workout_group(workout_group_name)
+      joins(workout: [rel_workout_group_workouts: [:workout_group]])
+        .where(workout_groups: { name: workout_group_name.to_s })
+    end
+
+    def visibility_window
+      window_start = Time.zone.now - Setting.visibility_window_hours_before.hours
+      window_end = Time.zone.now.advance(days: Setting.visibility_window_days_ahead).end_of_day
+      (window_start..window_end)
+    end
   end
 
   def committed_on_same_day?(client)
@@ -115,11 +136,6 @@ class Wkclass < ApplicationRecord
     return false if attendances_on_same_day.empty?
 
     true
-  end
-
-  def self.in_workout_group(workout_group_name)
-    joins(workout: [rel_workout_group_workouts: [:workout_group]])
-      .where(workout_groups: { name: workout_group_name.to_s })
   end
 
   def date
@@ -163,12 +179,6 @@ class Wkclass < ApplicationRecord
   def booking_window
     window_start = start_time.ago(Setting.booking_window_days_before.days).beginning_of_day
     window_end = start_time - Setting.booking_window_minutes_before.minutes
-    (window_start..window_end)
-  end
-
-  def self.visibility_window
-    window_start = Time.zone.now - Setting.visibility_window_hours_before.hours
-    window_end = Time.zone.now.advance(days: Setting.visibility_window_days_ahead).end_of_day
     (window_start..window_end)
   end
 

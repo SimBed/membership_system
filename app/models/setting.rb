@@ -34,7 +34,7 @@ class Setting < RailsSettings::Base
   end
 
   scope :wkclass do
-    field :problematic_past, type: :integer, default: 2
+    field :problematic_duration, type: :integer, default: 2
   end
 
   scope :renewal do
