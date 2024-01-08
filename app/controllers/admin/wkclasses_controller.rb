@@ -50,6 +50,7 @@ class Admin::WkclassesController < Admin::BaseController
 
   def new
     @wkclass = Wkclass.new
+    @form_cancel_link = admin_wkclasses_path
     prepare_items_for_dropdowns
   end
 

@@ -1,7 +1,7 @@
 class Admin::PurchasesController < Admin::BaseController
   include ApplyDiscount
-  skip_before_action :admin_account, except: [:destroy, :expire]
-  before_action :junioradmin_account, except: [:destroy, :expire]
+  skip_before_action :admin_account
+  before_action :junioradmin_account
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: [:show, :edit, :update, :destroy, :expire]
   before_action :sanitize_params, only: [:create, :update]
