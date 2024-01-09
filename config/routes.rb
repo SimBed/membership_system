@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   get '/client/timetable', to: 'client/clients#timetable', as: 'client_timetable' 
   get '/footfall', to: 'admin/attendances#footfall'
   get '/timetable', to: 'admin/timetables#show_public', as: 'public_timetable'
+  post '/timetable/:id/copy', to: 'admin/timetables#deep_copy', as: 'timetable_deep_copy'
   get '/superadmin/regular_expenses/add'
   get '/admin/client_analyze', to: 'admin/clients#analyze', as: 'client_analyze'
   get 'admin/workout_groups/:id/show_workouts', to: 'admin/workout_groups#show_workouts', as: 'show_workouts'

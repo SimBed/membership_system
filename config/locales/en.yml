@@ -110,6 +110,8 @@ en:
         success: Timetable was successfully updated
       destroy:
         success: Timetable was successfully deleted
+      deep_copy:
+        success: Timetable was successfully copied
     wkclasses:
       create:
         success: "%{repeats} successfully added"

@@ -1,7 +1,7 @@
 class Admin::TimetablesController < Admin::BaseController
   skip_before_action :admin_account, only: [:show_public, :show]
   before_action :junioradmin_account, only: :show
-  before_action :set_timetable, only: [:show, :edit, :update, :destroy]
+  before_action :set_timetable, only: [:show, :edit, :update, :destroy, :deep_copy]
 
   def index
     @timetables = Timetable.all
@@ -58,6 +58,13 @@ class Admin::TimetablesController < Admin::BaseController
     @timetable.destroy
     flash[:success] = t('.success')
     redirect_to admin_timetables_path
+  end
+
+  def deep_copy
+    t_copy = @timetable.deep_clone include: [ {table_days: :entries}, { table_times: :entries} ], use_dictionary: true
+    t_copy.update(title: "#{t_copy.title} (copy)") # NOTE: update saves record
+    flash[:success] = t('.success')
+    redirect_to admin_timetables_path    
   end
 
   private
