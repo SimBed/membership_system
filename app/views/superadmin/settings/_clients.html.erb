@@ -2,7 +2,12 @@
   <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Client</h5>
   <div class="card bg-opaque-white">
     <div class="card-body bg-light">               
-      
+
+      <div class="form-group mb-2">
+        <label class="control-label">Activities</label>        
+        <%= f.text_area :strength_markers, value: Setting.strength_markers.join("\n"), class: "form-control", style: "height: 15rem;" %>
+      </div>
+
       <div class="form-group mb-2">
         <label class="control-label">If a client hasn't attended for more than this many months, they are considered cold</label>
         <%= f.number_field :cold, value: Setting.cold, class: "form-control", style: "width: 5rem;" %>

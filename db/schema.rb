@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_02_124156) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_10_080502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -387,6 +387,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_124156) do
     t.index ["var"], name: "index_settings_on_var", unique: true
   end
 
+  create_table "strength_markers", force: :cascade do |t|
+    t.string "name"
+    t.integer "weight"
+    t.integer "reps"
+    t.integer "sets"
+    t.date "date"
+    t.text "note"
+    t.bigint "client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_strength_markers_on_client_id"
+    t.index ["date"], name: "index_strength_markers_on_date"
+    t.index ["name"], name: "index_strength_markers_on_name"
+  end
+
   create_table "table_days", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -482,6 +497,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_124156) do
   add_foreign_key "penalties", "purchases"
   add_foreign_key "purchases", "purchases"
   add_foreign_key "regular_expenses", "workout_groups"
+  add_foreign_key "strength_markers", "clients"
   add_foreign_key "waitings", "purchases"
   add_foreign_key "waitings", "wkclasses"
 end

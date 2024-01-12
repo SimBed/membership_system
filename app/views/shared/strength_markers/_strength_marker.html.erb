@@ -1,0 +1,21 @@
+<% admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
+<div class="row">
+  <div class="column col-1x"><%= strength_marker.date.strftime('%d %b %y') %></div>
+  <div class="column col-1x"><%= strength_marker.name %></div>
+  <div class="column col-1x"><%= strength_marker.weight %></div>
+  <div class="column col-1x"><%= strength_marker.reps %></div>
+  <div class="column col-1x"><%= strength_marker.sets %></div>
+  <div class="column col-1x"><%= strength_marker.note %></div>
+  <% unless @client %>
+    <div class="column col-2x">
+      <% if admin_plus %>
+        <%= link_to strength_marker.client.name, admin_client_path(strength_marker.client), class: 'like_button', data: {turbo: false} %>
+      <% else %>
+        <div class="column col-2x"><%= strength_marker.client.name %></div>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="column nomobile"><%= link_to image_tag("edit.png", class: "table_icon"), edit_shared_strength_marker_path(strength_marker), data: { turbo: false } %></div>
+  <div class="column nomobile"><%= link_to image_tag("delete.png", class: "table_icon"), shared_strength_marker_path(strength_marker), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Are you sure?' } %></div>
+</div>
+

@@ -51,6 +51,7 @@ class Setting < RailsSettings::Base
     field :pre_expiry_trial_renewal, type: :integer, default: 0
     field :days_remain, type: :integer, default: 14
     field :attendances_remain, type: :integer, default: 4
+    field :strength_markers, type: :array, default: ['Back Squat', 'BarBell Strict Press', 'Pull Ups', 'DB Incline Bench Row', 'Hang Power Snatch', 'Deadlift', 'Bar Dip']    
   end
 
   scope :pagination do

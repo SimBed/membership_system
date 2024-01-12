@@ -42,10 +42,13 @@
           <%= link_to "Profile", client_client_path(client), class: "nav-link #{active_link_for(path: client_client_path(client))}" %>
         </li>
         <% if Setting.show_challenge %>
-          <li class="nav-item">
+          <li-- class="nav-item">
             <%= link_to "Achievements", client_achievements_path(client), class: "nav-link #{active_link_for(path: client_achievements_path(client))}" %>
           </li>
         <% end %>
+        <!--li class="nav-item">
+          <%#= link_to "Markers", shared_strength_markers_path, class: "nav-link #{active_link_for(path: shared_strength_markers_path)}" %>
+        </li-->
       </ul>
 
       <ul class="navbar-nav">

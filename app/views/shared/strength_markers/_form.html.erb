@@ -1,0 +1,56 @@
+<%= form_with(model: [:shared, strength_marker]) do |form| %>
+  <% if strength_marker.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(strength_marker.errors.count, "error") %> prohibited this strength marker from being saved:</h2>
+
+      <ul>
+        <% strength_marker.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @client %>
+    <%= form.hidden_field :client_id, value: @client.id %>
+  <% else %>
+    <div class="field">
+      <%= form.label :client_id %>
+      <%= form.collection_select :client_id, @clients, :id, :name  %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.select :name, @strength_markers %>
+  </div>
+
+  <div class="field">
+    <%= form.label :weight, 'Weight (kg)' %>
+    <%= form.number_field :weight, step: 0.25 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :reps %>
+    <%= form.number_field :reps %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sets %>
+    <%= form.number_field :sets %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date %>
+    <%= form.date_select :date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note %>
+    <%= form.text_area :note %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

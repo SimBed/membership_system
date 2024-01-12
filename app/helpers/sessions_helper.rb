@@ -140,6 +140,13 @@ module SessionsHelper
     redirect_to login_path
   end
 
+  def admin_or_instructor_or_client_account
+    return if logged_in_as?('admin', 'superadmin', 'instructor', 'client')
+
+    flash[:warning] = I18n.t(:forbidden)
+    redirect_to login_path
+  end
+
   def logged_in_account
     return if logged_in?
 

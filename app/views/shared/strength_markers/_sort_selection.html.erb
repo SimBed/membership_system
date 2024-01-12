@@ -1,0 +1,12 @@
+<form action="/shared/strength_markers" method="GET">
+  <div class="mt-0">
+    <i class="fas fa-sort-alpha-down"></i>
+    <select class="form-control-sm sort" name="strength_marker_sort_option" onchange="this.form.requestSubmit()">
+      <option disabled="disabled" selected="selected" value="">Sort by</option>
+      <option value="date" <%="selected" if session[:strength_marker_sort_option] == "date"%> >date</option>
+      <option value="name" <%="selected" if session[:strength_marker_sort_option] == "name"%> >activity</option>
+      <option value="weight" <%="selected" if session[:strength_marker_sort_option] == "weight"%> >weight</option>
+    </select>
+  </div>
+</form>
+

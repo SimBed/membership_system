@@ -1,0 +1,8 @@
+<div class="container px-1">
+  <h4>Strength Markers <%= link_to image_tag('add.png', class: "button_icon"), new_shared_strength_marker_path %></h4>
+</div>
+<%= turbo_frame_tag 'strength_markers' do %>
+  <%= render partial: 'filter_form' %>
+  <%= render partial: 'strength_marker_chart' unless session[:client_select] == 'All' %>
+  <%= render 'strength_markers_table' %>
+<% end %>
