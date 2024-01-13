@@ -143,7 +143,11 @@ class AttendanceFormat
   private
 
   def link_for_new_booking
-    return '' if unbookable?
+    if unbookable?
+      return '' unless @on_waiting_list
+
+      return waiting_list_remove_link
+    end
 
     if @wkclass_at_capacity && !@on_waiting_list
       get_params('at_capacity_not_on_waiting_list')
