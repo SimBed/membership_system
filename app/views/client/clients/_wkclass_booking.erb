@@ -24,7 +24,7 @@
     <div class="details">      
       <!--div class ="<%#=booking_link_and_class[:css_class]%> status"><%#= Attendance.applicable_to(wkclass, @client)&.status %></div-->
       <div class ="<%= attendance_format.css_class %> status"><%= attendance_format.status %></div>
-      <% if attendance_format.on_waiting_list && !attendance_format.wkclass_at_capacity %>
+      <% if attendance_format.waiting_list_remove_link_under_status %>
         <div class=""><%= attendance_format.waiting_list_remove_link  %></div>
       <% end %>      
     </div>

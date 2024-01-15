@@ -50,7 +50,7 @@ class Client::WaitingsController < ApplicationController
   end
 
   def valid_package
-    return if Purchase.use_for_booking(@wkclass, @client)&.id == params[:purchase_id].to_i
+    return if Purchase.use_for_booking(@wkclass, @client, restricted: false)&.id == params[:purchase_id].to_i
 
     # occasionally a client may cancel early and subsequently wish to join the waiting list (use_for_booking method rejects (via already_used_for? method purchases with attendances associated to the class))
     return if @client.associated_with?(@wkclass)

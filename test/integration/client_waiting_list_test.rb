@@ -37,6 +37,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 1
     assert_select "a:match('href', ?)", %r{#{client_waitings_path}/}, count: 0
     assert_select "img:match('src', ?)", %r{.*assets/remove.*}, count: 0
+    assert_select 'div', "class full", 1
 
     # client joins waiting list
     assert_difference 'Waiting.all.size', 1 do
@@ -53,6 +54,8 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 0
     assert_select "a:match('href', ?)", /#{client_waiting_path(Waiting.last)}/, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/remove.*}, count: 1
+    assert_select 'div', "on waiting list", 1
+
 
     # client leaves waiting list
     assert_difference 'Waiting.all.size', -1 do
@@ -147,6 +150,32 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     assert_select "a:match('href', ?)", %r{#{client_waitings_path}/}, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/remove.*}, count: 0
     assert_select "img:match('src', ?)", %r{.*assets/delete.*}, count: 1
+  end
+
+  test 'waiting list remove link and image appears correctly when client books a class while on a waiting list of a different class' do
+    @tomorrows_class_early.update(max_capacity: 0)
+    # client joins waiting list
+    log_in_as(@account_client)
+    assert_difference 'Waiting.all.size', 1 do
+      post client_waitings_path, params: { wkclass_id: @tomorrows_class_early.id,
+                                           purchase_id: @purchase.id,
+                                           booking_day: 0,
+                                           booking_section: 'group' }
+    end
+
+    # client joins a different class
+    assert_difference '@client.attendances.size', 1 do
+      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
+                                                           purchase_id: @purchase.id },
+                                             booking_section: 'group' }
+    end    
+
+    follow_redirect!
+    assert_template 'client/clients/book'
+    assert_select "a:match('href', ?)", /#{client_waiting_path(Waiting.last)}/, count: 1
+    assert_select "img:match('src', ?)", %r{.*assets/remove.*}, count: 1
+    assert_select 'div', "on waiting list", 1
+    assert_select 'div', "booked", 1
   end
 
   test 'client removed from waiting list when booking a class while on waiting list' do

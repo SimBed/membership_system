@@ -6,12 +6,14 @@ class AttendanceFormat
     @booking_section = booking_section
     @attendance = Attendance.applicable_to(@wkclass, @client)
     @new_booking = @attendance.nil?
-    @purchase = Purchase.use_for_booking(@wkclass, @client) || @attendance&.purchase
     @wkclass_at_capacity = @wkclass.at_capacity?
     @on_waiting_list = client.on_waiting_list_for?(wkclass)
+    # if not at capacity then the next column will be occupied with a booking link
+    @waiting_list_remove_link_under_status = true if @on_waiting_list && !@wkclass_at_capacity
+    @purchase = Purchase.use_for_booking(@wkclass, @client, restricted: false) || @attendance&.purchase
     @time = Time.zone.now
   end
-  attr_reader :on_waiting_list, :wkclass_at_capacity
+  attr_reader :waiting_list_remove_link_under_status
 
   def booking_link
     return link_for_new_booking if @new_booking
@@ -140,14 +142,26 @@ class AttendanceFormat
     end
   end
 
+  def unbookable?(restricted: true)
+    return true if @purchase.nil? || !@wkclass.booking_window.cover?(@time)
+
+    return true if @purchase.restricted_on?(@wkclass) && restricted 
+
+    false
+  end
+
   private
 
   def link_for_new_booking
-    if unbookable?
-      return '' unless @on_waiting_list
+    # if unbookable?
+    #   return '' unless @on_waiting_list
 
-      return waiting_list_remove_link
-    end
+    #   get_params('at_capacity_on_waiting_list')
+    #   return link_maker(@image_params, @route, @route_params, @turbo_params)
+    # end
+    return '' if unbookable?(restricted: false)
+
+    return '' if !@on_waiting_list && unbookable?(restricted: true)
 
     if @wkclass_at_capacity && !@on_waiting_list
       get_params('at_capacity_not_on_waiting_list')
@@ -185,11 +199,18 @@ class AttendanceFormat
     end
   end
 
-  def unbookable?
-    return true if @purchase.nil? || @purchase.restricted_on?(@wkclass) || !@wkclass.booking_window.cover?(@time)
+  # def unbookable?(waiting: false)
+  #   return true if @purchase.nil? || !@wkclass.booking_window.cover?(@time)
 
-    false
-  end
+  #   return true if @purchase.restricted_on?(@wkclass) unless waiting 
+
+  #   false
+  # end
+  # def unbookable?
+  #   return true if @purchase.nil? || @purchase.restricted_on?(@wkclass) || !@wkclass.booking_window.cover?(@time)
+
+  #   false
+  # end
 
   # ActionController::Base.helpers.link_to '#', class: 'icon-container disable-link' do ActionController::Base.helpers.tag.i class: ["bi bi-battery-full"] end
 

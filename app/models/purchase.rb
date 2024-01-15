@@ -109,29 +109,40 @@ class Purchase < ApplicationRecord
     false
   end
 
-  # reformat qualifying_for and available_for_booking into single method
-  def self.qualifying_for(wkclass)
-    available_to(wkclass).reject do |p|
-      p.purchased_after?(wkclass.start_time.to_date) ||
-        (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
-        p.expires_before?(wkclass.start_time.to_date) ||
-        p.already_used_for?(wkclass)
-    end
-  end
+  # # reformat qualifying_for and available_for_booking into single method
+  # def self.qualifying_for(wkclass)
+  #   available_to(wkclass).reject do |p|
+  #     p.purchased_after?(wkclass.start_time.to_date) ||
+  #       (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
+  #       p.expires_before?(wkclass.start_time.to_date) ||
+  #       p.already_used_for?(wkclass)
+  #   end
+  # end
 
-  def self.available_for_booking(wkclass, client)
-    available_to(wkclass).where(client_id: client.id).reject do |p|
+  # def self.available_for_booking(wkclass, client)
+  #   available_to(wkclass).where(client_id: client.id).reject do |p|
+  #     p.purchased_after?(wkclass.start_time.to_date) ||
+  #       (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
+  #       p.expires_before?(wkclass.start_time.to_date) ||
+  #       p.already_used_for?(wkclass)
+  #   end
+  # end
+
+  def self.available_for_booking(wkclass, client = nil, restricted: true)
+    purchases = client.nil? ? available_to(wkclass) : available_to(wkclass).where(client_id: client.id)
+    purchases = purchases.reject do |p|
       p.purchased_after?(wkclass.start_time.to_date) ||
-        (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
         p.expires_before?(wkclass.start_time.to_date) ||
         p.already_used_for?(wkclass)
     end
+    purchases = purchases.reject { |p| (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) } if restricted
+    purchases
   end
 
   # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2, {class: "close_to_expiry"}], ...]
   # used in attendances controller to populate dropdown for new booking (background color now determined and shown in view, not in select field)
   def self.qualifying_purchases(wkclass)
-    qualifying_for(wkclass).map do |p|
+    available_for_booking(wkclass).map do |p|
       date_if_multiple_purchases = p.dop.strftime('%b %d') if p.client.purchases.not_expired.size > 1
       ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id]
       # close_to_expiry = 'text-warning' if p.close_to_expiry? && !p.dropin?
@@ -141,9 +152,9 @@ class Purchase < ApplicationRecord
     end
   end
 
-  def self.use_for_booking(wkclass, client)
+  def self.use_for_booking(wkclass, client, restricted: true)
     # in unusual case of more than one available purchase, use the started one (earliest dop if 2 started ones) or the earliest dop if no started one
-    purchases = available_for_booking(wkclass, client)
+    purchases = available_for_booking(wkclass, client, restricted: restricted)
     return purchases.first if purchases.size < 2
 
     started_purchases = purchases.reject(&:not_started?)

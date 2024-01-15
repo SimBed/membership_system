@@ -124,14 +124,24 @@ class PurchaseTest < ActiveSupport::TestCase
   #   assert_equal 6000 / 8, @purchase_fixed.revenue_for_class(@purchase_fixed.attendances.last.wkclass)
   # end
 
-  test 'qualifying_for method' do
+  # test 'qualifying_for method' do
+  #   assert_equal [374, 201, 212, 4, 335, 312, 368, 229, 200, 441, 99, 198, 120, 224, 360, 125, 341, 119, 90],
+  #                Purchase.qualifying_for(@wkclass1).pluck(:id)
+  # end
+  # 90 are frozen, but correctly still appears
+
+  test 'available_for_booking method (no client)' do
     assert_equal [374, 201, 212, 4, 335, 312, 368, 229, 200, 441, 99, 198, 120, 224, 360, 125, 341, 119, 90],
-                 Purchase.qualifying_for(@wkclass1).pluck(:id)
+                 Purchase.available_for_booking(@wkclass1).pluck(:id)
   end
   # 90 are frozen, but correctly still appears
 
-  test 'available_for_booking method' do
+  test 'available_for_booking method (with client)' do
     assert_equal [4], Purchase.available_for_booking(@wkclass1, @client2).pluck(:id)
+  end
+
+  test 'available_for_booking method (with client and not restricted i. for waiting list purposes)' do
+    assert_equal [4], Purchase.available_for_booking(@wkclass1, @client2, restricted: false).pluck(:id)
   end
 
   test 'use_for_booking method' do
