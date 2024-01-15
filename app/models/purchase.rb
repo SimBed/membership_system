@@ -109,25 +109,7 @@ class Purchase < ApplicationRecord
     false
   end
 
-  # # reformat qualifying_for and available_for_booking into single method
-  # def self.qualifying_for(wkclass)
-  #   available_to(wkclass).reject do |p|
-  #     p.purchased_after?(wkclass.start_time.to_date) ||
-  #       (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
-  #       p.expires_before?(wkclass.start_time.to_date) ||
-  #       p.already_used_for?(wkclass)
-  #   end
-  # end
-
-  # def self.available_for_booking(wkclass, client)
-  #   available_to(wkclass).where(client_id: client.id).reject do |p|
-  #     p.purchased_after?(wkclass.start_time.to_date) ||
-  #       (p.committed_on?(wkclass.start_time.to_date) && wkclass.workout.limited?) ||
-  #       p.expires_before?(wkclass.start_time.to_date) ||
-  #       p.already_used_for?(wkclass)
-  #   end
-  # end
-
+  # method allows for 'booking' onto waiting list ie restricted: false (ok to join a waiting list if booked for another class at same time)
   def self.available_for_booking(wkclass, client = nil, restricted: true)
     purchases = client.nil? ? available_to(wkclass) : available_to(wkclass).where(client_id: client.id)
     purchases = purchases.reject do |p|
@@ -140,15 +122,11 @@ class Purchase < ApplicationRecord
   end
 
   # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2, {class: "close_to_expiry"}], ...]
-  # used in attendances controller to populate dropdown for new booking (background color now determined and shown in view, not in select field)
+  # used in attendances controller to populate dropdown for new booking
   def self.qualifying_purchases(wkclass)
     available_for_booking(wkclass).map do |p|
       date_if_multiple_purchases = p.dop.strftime('%b %d') if p.client.purchases.not_expired.size > 1
       ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id]
-      # close_to_expiry = 'text-warning' if p.close_to_expiry? && !p.dropin?
-      # payment_outstanding = 'text-danger' if p.client.payment_outstanding?
-      # ["#{p.client.first_name} #{p.client.last_name} #{p.name} #{date_if_multiple_purchases}", p.id,
-      #  { class: [close_to_expiry, payment_outstanding].join(' ').strip }]
     end
   end
 
@@ -168,16 +146,9 @@ class Purchase < ApplicationRecord
       .order(dop: :desc)
   end
 
-  # def revenue_for_class(wkclass)
-  #   return 0 unless wkclass.purchases.include?(self)
-  #
-  #   payment / product.attendance_estimate
-  # end
-
   def committed_on?(adate)
     return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
 
-    # attendances.committed.includes(:wkclass).map { |a| a.start_time.to_date }.include?(adate)
     # committed if attendance on same day (but ignore Open Gym attendances (ie workouts that are not limited ))
     attendances.committed.includes(:wkclass).map { |a| a.wkclass.workout.limited ? a.start_time.to_date : nil }.include?(adate)
   end
@@ -205,7 +176,6 @@ class Purchase < ApplicationRecord
   end
 
   def purchased_after?(adate)
-    # (adate..Float::INFINITY).cover? dop
     dop > adate
   end
 
@@ -255,16 +225,9 @@ class Purchase < ApplicationRecord
       current_freeze = freezes_cover(Time.zone.now).first # shouldn't be more than 1 so reasonable to take first
       earliest = [earliest, current_freeze.end_date.advance(days: 1)].max
     end
-    # freeze option will be restircted from being shown on expiry date so no possibility of default_start_date being later than latest_start_date
+    # freeze option will be restricted from being shown on expiry date so no possibility of default_start_date being later than latest_start_date
     latest = [earliest.advance(days: 30), expiry_date].min
     { earliest:, latest: }
-  end
-
-  # not used (all packages with bookable classes that are not expired can be frozen, so need to develop such a method yet)
-  def freezable?
-    return false if expired?
-
-    true
   end
 
   # use for manually automating bulk freezes over holidays
@@ -486,22 +449,4 @@ class Purchase < ApplicationRecord
       validity: validity(attendance_count_provisional, expiry_date_calc) }
   end
 
-  # def fitternity_payment
-  #   # if something weird happens and price is nil this will get picked up by the required validation asscociated with belongs_to, but not beofre the sytem crashes with price.name (or 'in? nil' if changed to price&.name)
-  #   return if price.nil?
-
-  #   if ('Fitternity'.in? price.name) && (payment_mode != 'Fitternity')
-  #     errors.add(:base, 'A Fitternity price must have a Fitternity payment mode')
-  #   end
-
-  #   if !('Fitternity'.in? price.name) && (payment_mode == 'Fitternity')
-  #     errors.add(:base, 'A price that is not Fitternity can not have a Fitternity payment mode')
-  #   end
-  # end
-
-  # def fitternity_ongoing_package
-  #   return unless payment_mode == 'Fitternity'
-
-  #   errors.add(:base, 'No ongoing Fitternity package') if Fitternity.ongoing.size.zero?
-  # end
 end

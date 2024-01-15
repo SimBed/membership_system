@@ -1,91 +1,11 @@
-<div id="shop">
-
-  <div class="text-center">
-    <h2 class="display-2 mb-1">Shop</h2>
-    <h3 class="display-6 mb-1">GROUP CLASSES</h3>
-    <% if @renewal.offer_online_discount? && !@renewal.new_client? %>
-      <h3 class="display-2 fw-light discount-statement mb-3"><%= shop_discount_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.oneoff_discount?) %></h3>
-    <% end %>
-  </div>
-    
-  <% if @renewal.new_client? %>  
-    <div class="text-center bg-black inverted">
-      <div class="trial-name pt-2 mb-1">unlimited 1 week trial</div>
-      <%=  render 'razor_form_trial' %>
-      <div class="trial-tagline pb-3 mt-1 tagline">
-        <p class="tagline-sm">Try our classes. Meet our people</p>
-      </div>
-    </div>
-  <% end %>
-
-  <div class="text-center">
-    <div class="trial-name my-3">packages</div>
-    <div class="package_type_btns">
-      <button id="Unlimited_btn" class="btn_product_type btn btn-filter current" onclick="showProduct(event, 'unlimited')">Unlimited</button>
-      <button id="Flex_btn" class="btn_product_type btn btn-filter" onclick="showProduct(event, 'fixed')">Flex</button>
-    </div>
-    <div class="px-2 my-3 value-statement product unlimited">Our best value memberships for training regularly. The more you train, the better the value!</div>        
-    <div class="px-2 my-3 value-statement product fixed">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
-  </div>
-
-  <div class="container px-1 ps-sm-10">
-    <div class="bg-white px-md-2">
-      <div class="accordion" id="accordion-1">
-        <%= render 'shop_product_list' %>
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-2">
-    <ul class="text-secondary">
-      <li><%= link_to 'Terms & Conditions', '/terms&conditions' %> apply</li>
-      <li>Prices include GST</li>
-      <li>Payment portal convenience fee applied at checkout</li>
-    </ul>
-  </div>
+<div id="shop" class="admin_form pt-4 my-2">
+  <%= render 'client/clients/shop/title_renewal'%>
+  <%= render 'client/clients/shop/new_client'%>
+  <%= render 'client/clients/shop/menu'%>
+  <%= render 'client/clients/shop/notes'%>
 </div>
 
-<script>
-  function showProduct(evt, productType) {
 
-    var i, product, product_type_btns, display_var;
-
-    display_var = "none";
-    if (productType == 'all') {
-      display_var = "block";
-    }
-
-    // Get all elements with class= "product" and hide them 
-    product = document.getElementsByClassName("product");
-    for (i = 0; i < product.length; i++) {
-    product[i].style.display = display_var;
-    }
-
-    // Get all elements with class="btn_product_type" and remove the class "active"
-    product_type_btns = document.getElementsByClassName("btn_product_type");
-    for (i = 0; i < product_type_btns.length; i++) {
-    product_type_btns[i].className = product_type_btns[i].className.replace(" current", "");
-    }
-
-    // Get all elements with class= "productType" and show them
-    selected_products = document.getElementsByClassName(productType);
-    for (i = 0; i < selected_products.length; i++) {
-    selected_products[i].style.display = "block";
-    }  
-
-    // add an "active" class to the button that opened the tab
-      evt.currentTarget.className += " current";
-  }
-  // set text of razorpay button, which by default razorpay forces to be 'Pay Now'
-  var trialbtn = document.getElementById("trial-btn")
-  if (trialbtn) { document.getElementById("trial-btn").getElementsByClassName("razorpay-payment-button")[0].value= '<%= rupees(@trial_price) %>' }
-  // Click on option wanted to be visible as default
-  <% if @last_product_fixed %>
-    document.getElementById("Flex_btn").click();
-  <% else %>
-    document.getElementById("Unlimited_btn").click();
-  <% end %>
-</script>
 
 
 
