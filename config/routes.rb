@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get '/clients/filter', to: 'admin/clients#filter', as: 'client_filter'
   get '/workouts/filter', to: 'admin/workouts#filter', as: 'workout_filter'
   get '/strength_markers/filter', to: 'shared/strength_markers#filter', as: 'strength_marker_filter'
+  get '/body_markers/filter', to: 'shared/body_markers#filter', as: 'body_marker_filter'
   get '/workout_group/:id/instructor_expense_filter', to: 'admin/workout_groups#instructor_expense_filter'
   get '/purchases/client_filter', to: 'admin/purchases#new_purchase_client_filter', as: 'new_purchase_client_filter'
   patch '/purchases/:id/expire', to: 'admin/purchases#expire', as: 'expire_purchase'
@@ -96,7 +97,8 @@ Rails.application.routes.draw do
   end
 
   namespace :shared do
-    resources :strength_markers
+    resources :strength_markers, except: [:show]
+    resources :body_markers, except: [:show]
     resources :achievements, except: [:show]
     resources :challenges
   end

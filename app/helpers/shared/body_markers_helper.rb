@@ -1,0 +1,2 @@
+module Shared::BodyMarkersHelper
+end

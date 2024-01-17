@@ -27,17 +27,17 @@
 
   <div class="field">
     <%= form.label :weight, 'Weight (kg)' %>
-    <%= form.number_field :weight, step: 0.25 %>
+    <%= form.number_field :weight, step: 0.25, value: strength_marker.weight || 0, in: 0..300 %>
   </div>
 
   <div class="field">
     <%= form.label :reps %>
-    <%= form.number_field :reps %>
+    <%= form.number_field :reps, in: 1..50 %>
   </div>
 
   <div class="field">
     <%= form.label :sets %>
-    <%= form.number_field :sets %>
+    <%= form.number_field :sets, in: 1..20 %>
   </div>
 
   <div class="field">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_10_080502) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_16_104638) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -70,6 +70,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_080502) do
     t.index ["purchase_id"], name: "index_attendances_on_purchase_id"
     t.index ["status"], name: "index_attendances_on_status"
     t.index ["wkclass_id"], name: "index_attendances_on_wkclass_id"
+  end
+
+  create_table "body_markers", force: :cascade do |t|
+    t.string "bodypart"
+    t.float "measurement"
+    t.date "date"
+    t.text "note"
+    t.bigint "client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bodypart"], name: "index_body_markers_on_bodypart"
+    t.index ["client_id"], name: "index_body_markers_on_client_id"
+    t.index ["date"], name: "index_body_markers_on_date"
+    t.index ["measurement"], name: "index_body_markers_on_measurement"
   end
 
   create_table "challenges", force: :cascade do |t|
@@ -389,7 +403,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_080502) do
 
   create_table "strength_markers", force: :cascade do |t|
     t.string "name"
-    t.integer "weight"
+    t.float "weight"
     t.integer "reps"
     t.integer "sets"
     t.date "date"
@@ -485,6 +499,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_080502) do
   add_foreign_key "achievements", "clients"
   add_foreign_key "assignments", "accounts"
   add_foreign_key "assignments", "roles"
+  add_foreign_key "body_markers", "clients"
   add_foreign_key "challenges", "challenges"
   add_foreign_key "discount_assignments", "discounts"
   add_foreign_key "discount_assignments", "purchases"

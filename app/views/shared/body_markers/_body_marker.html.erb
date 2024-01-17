@@ -1,0 +1,19 @@
+<% admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
+<div class="row">
+  <div class="column col-1x"><%= body_marker.date.strftime('%d %b %y') %></div>
+  <div class="column col-1x"><%= body_marker.bodypart %></div>
+  <div class="column col-1x"><%= number_with_precision(body_marker.measurement, precision: 2, strip_insignificant_zeros: true) %></div>
+  <div class="column col-1x"><%= body_marker.note %></div>
+  <% unless @client %>
+    <div class="column col-2x">
+      <% if admin_plus %>
+        <%= link_to body_marker.client.name, admin_client_path(body_marker.client), class: 'like_button', data: {turbo: false} %>
+      <% else %>
+        <div class="column col-2x"><%= body_marker.client.name %></div>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="column nomobile"><%= link_to image_tag("edit.png", class: "table_icon"), edit_shared_body_marker_path(body_marker), data: { turbo: false } %></div>
+  <div class="column nomobile"><%= link_to image_tag("delete.png", class: "table_icon"), shared_body_marker_path(body_marker), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Marker will be deleted. Are you sure?' } %></div>
+</div>
+

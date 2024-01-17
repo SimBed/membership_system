@@ -4,6 +4,7 @@ class Client < ApplicationRecord
   has_many :purchases, dependent: :destroy
   has_many :attendances, through: :purchases
   has_many :strength_markers, dependent: :destroy
+  has_many :body_markers, dependent: :destroy
   has_many :achievements, dependent: :destroy
   has_many :challenges, through: :achievements
   has_many :waitings, through: :purchases
@@ -90,6 +91,7 @@ class Client < ApplicationRecord
 
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
   scope :has_strength_marker, -> { where.associated(:strength_markers).distinct}
+  scope :has_body_marker, -> { where.associated(:body_markers).distinct}
   # scope :has_strength_marker, -> { left_joins(:strength_markers).where.not(strength_markers: {client_id: nil}).distinct}
 
   # paginates_per Setting.clients_pagination

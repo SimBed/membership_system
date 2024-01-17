@@ -1,8 +1,15 @@
+<div class="text-center">
+  <div class="">
+    <%= link_to 'strength', shared_strength_markers_path, class:'option_choice current me-1' %>
+    <%= link_to 'body', shared_body_markers_path, class:'option_choice' %>
+  </div>
+</div>
+
 <div class="container px-1">
   <h4>Strength Markers <%= link_to image_tag('add.png', class: "button_icon"), new_shared_strength_marker_path %></h4>
 </div>
 <%= turbo_frame_tag 'strength_markers' do %>
   <%= render partial: 'filter_form' %>
-  <%= render partial: 'strength_marker_chart' unless session[:client_select] == 'All' %>
+  <%# <%= render partial: 'strength_marker_chart' unless session[:client_select] == 'All' %>
   <%= render 'strength_markers_table' %>
 <% end %>

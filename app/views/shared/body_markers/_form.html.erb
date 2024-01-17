@@ -1,0 +1,46 @@
+<%= form_with(model: [:shared, body_marker]) do |form| %>
+  <% if body_marker.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(body_marker.errors.count, "error") %> prohibited this body marker from being saved:</h2>
+
+      <ul>
+        <% body_marker.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @client %>
+    <%= form.hidden_field :client_id, value: @client.id %>
+  <% else %>
+    <div class="field">
+      <%= form.label :client_id %>
+      <%= form.collection_select :client_id, @clients, :id, :name  %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :bodypart %>
+    <%= form.select :bodypart, @body_markers %>
+  </div>
+
+  <div class="field">
+    <%= form.label :measurement, 'Measurement (inches)' %>
+    <%= form.number_field :measurement, step: 0.01, in: 0..300 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date %>
+    <%= form.date_select :date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note %>
+    <%= form.text_area :note %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

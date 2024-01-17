@@ -2,7 +2,7 @@
 <div class="row">
   <div class="column col-1x"><%= strength_marker.date.strftime('%d %b %y') %></div>
   <div class="column col-1x"><%= strength_marker.name %></div>
-  <div class="column col-1x"><%= strength_marker.weight %></div>
+  <div class="column col-1x"><%= number_with_precision(strength_marker.weight, precision: 2, strip_insignificant_zeros: true) %></div>
   <div class="column col-1x"><%= strength_marker.reps %></div>
   <div class="column col-1x"><%= strength_marker.sets %></div>
   <div class="column col-1x"><%= strength_marker.note %></div>
@@ -16,6 +16,5 @@
     </div>
   <% end %>
   <div class="column nomobile"><%= link_to image_tag("edit.png", class: "table_icon"), edit_shared_strength_marker_path(strength_marker), data: { turbo: false } %></div>
-  <div class="column nomobile"><%= link_to image_tag("delete.png", class: "table_icon"), shared_strength_marker_path(strength_marker), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Are you sure?' } %></div>
+  <div class="column nomobile"><%= link_to image_tag("delete.png", class: "table_icon"), shared_strength_marker_path(strength_marker), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Marker will be deleted. Are you sure?' } %></div>
 </div>
-

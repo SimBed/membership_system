@@ -231,6 +231,13 @@ en:
         success: Strength Marker was successfully updated
       destroy:
         success: Strength Marker was successfully deleted
+    body_markers:
+      create:
+        success: Body Marker was successfully added
+      update:
+        success: Body Marker was successfully updated
+      destroy:
+        success: Body Marker was successfully deleted
     challenges:
       create:
         success: Challenge was successfully added

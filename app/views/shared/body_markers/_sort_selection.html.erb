@@ -1,0 +1,12 @@
+<form action="/shared/body_markers" method="GET">
+  <div class="mt-0">
+    <i class="fas fa-sort-alpha-down"></i>
+    <select class="form-control-sm sort" name="body_marker_sort_option" onchange="this.form.requestSubmit()">
+      <option disabled="disabled" selected="selected" value="">Sort by</option>
+      <option value="date" <%="selected" if session[:body_marker_sort_option] == "date"%> >date</option>
+      <option value="bodypart" <%="selected" if session[:body_marker_sort_option] == "bodypart"%> >bodypart</option>
+      <option value="measurement" <%="selected" if session[:body_marker_sort_option] == "measurement"%> >measurement</option>
+    </select>
+  </div>
+</form>
+

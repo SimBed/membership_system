@@ -1,0 +1,18 @@
+<div id="body_markers-table" class="container px-0 mb-5">
+  <div class="admin-table mt-2">
+    <div class="row fw-bolder">
+      <div class="column col-1x">Date</div>
+      <div class="column col-1x">Bodypart</div>
+      <div class="column col-1x">Measurement</div>
+      <div class="column col-1x">Note</div>
+      <% unless @client %>
+        <div class="column col-2x">Client</div>
+      <% end %>
+      <div class="column nomobile"></div>
+      <div class="column nomobile"></div>
+    </div>
+  </div>
+  <div class="admin-table striped">
+    <%= render @body_markers %>
+  </div>
+</div>

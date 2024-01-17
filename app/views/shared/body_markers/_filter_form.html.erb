@@ -1,7 +1,7 @@
-<div id="strength_markers-filter" class="container px-1 my-3">
+<div id="body_markers-filter" class="container px-1 my-3">
   <div class="container search">
     <% if @client %>
-      <%= form_with(url: strength_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
+      <%= form_with(url: body_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "body_markers"}) do %>
         <fieldset class="mt-2" style="margin-left:-1.3rem">
           <select name="marker_select" class= "sort" onchange="this.form.requestSubmit()">
             <%= options_for_select @markers, session[:marker_select] %>
@@ -9,7 +9,7 @@
         </fieldset>      
       <% end %>
     <% else %>
-      <%= form_with(url: strength_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
+      <%= form_with(url: body_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "body_markers"}) do %>
         <fieldset class="my-2">
         <label class='d-inline'>client:</label>
           <select name="client_select" class= "sort" onchange="this.form.requestSubmit()">
@@ -17,14 +17,14 @@
           </select>
         </fieldset>      
       <% end %>
-      <%= form_with(url: strength_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
+      <%= form_with(url: body_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "body_markers"}) do %>
         <fieldset class="">
         <label class='d-inline'>marker:</label>
-          <select name="strength_marker_select" class= "sort" onchange="this.form.requestSubmit()">
-            <%= options_for_select @markers, session[:strength_marker_select] %>
+          <select name="body_marker_select" class= "sort" onchange="this.form.requestSubmit()">
+            <%= options_for_select @markers, session[:body_marker_select] %>
           </select>
         </fieldset>      
-      <% end %>      
+      <% end %>
     <% end %>
     <hr class = "my-2"></hr>    
     <%= render partial: 'sort_selection' %>
