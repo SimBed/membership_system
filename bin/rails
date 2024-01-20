@@ -11,5 +11,3 @@ if ENV["DYNO"]
     Signal.trap("SIGHUP") { exit 0 }
   end
 end
-
-require "rails/commands"

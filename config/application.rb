@@ -23,5 +23,12 @@ module AttendanceSystem
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # remove red border from form error fields (otherwise a pain to remove when hotwiring)
+    # https://stackoverflow.com/questions/5267998/rails-3-field-with-errors-wrapper-changes-the-page-appearance-how-to-avoid-t
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| 
+      html_tag
+    }
   end
 end
+

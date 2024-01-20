@@ -52,7 +52,7 @@ class Setting < RailsSettings::Base
     field :days_remain, type: :integer, default: 14
     field :attendances_remain, type: :integer, default: 4
     field :strength_markers, type: :array, default: ['Back Squat', 'BarBell Strict Press', 'Pull Ups', 'DB Incline Bench Row', 'Hang Power Snatch', 'Deadlift', 'Bar Dip']
-    field :body_markers, type: :array, default: ['Neck', 'Chest', 'Lower Chest', 'Waist', 'Low Wist', 'Hips', 'Thigh (R)', 'Thigh (L)', 'Calf (R)', 'Calf (L)', 'Biceps (R)', 'Biceps (L)']
+    field :body_markers, type: :array, default: ['Neck', 'Chest', 'Lower Chest', 'Waist', 'Low Waist', 'Hips', 'Thigh (R)', 'Thigh (L)', 'Calf (R)', 'Calf (L)', 'Biceps (R)', 'Biceps (L)']
   end
 
   scope :pagination do

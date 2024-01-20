@@ -1,7 +1,7 @@
 class BodyMarker < ApplicationRecord
   belongs_to :client
   validates :date, presence: true
-  validates :measurement, presence: true, numericality: true  
+  validates :measurement, presence: true, numericality: true
   validates :bodypart, presence: true
 
   scope :order_by_date, -> { order(date: :desc, bodypart: :asc, measurement: :asc) }

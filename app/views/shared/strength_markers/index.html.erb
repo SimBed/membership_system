@@ -10,6 +10,6 @@
 </div>
 <%= turbo_frame_tag 'strength_markers' do %>
   <%= render partial: 'filter_form' %>
-  <%# <%= render partial: 'strength_marker_chart' unless session[:client_select] == 'All' %>
+  <%# <%= render partial: 'strength_markers_chart' unless session[:client_select] == 'All' %>
   <%= render 'strength_markers_table' %>
 <% end %>

@@ -1,17 +1,19 @@
-<%= form_with(model: [:shared, body_marker]) do |form| %>
-  <% if body_marker.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(body_marker.errors.count, "error") %> prohibited this body marker from being saved:</h2>
+<%= form_with(model: [:shared, body_marker], class: 'admin_form pt-4 my-2') do |form| %>
+  <%= turbo_frame_tag 'errors' do %>
+    <% if body_marker.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(body_marker.errors.count, "error") %> prohibited this body marker from being saved:</h2>
 
-      <ul>
-        <% body_marker.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
+        <ul>
+          <% body_marker.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   <% end %>
 
-  <% if @client %>
+  <% if @client_logging %>
     <%= form.hidden_field :client_id, value: @client.id %>
   <% else %>
     <div class="field">
@@ -43,4 +45,8 @@
   <div class="actions">
     <%= form.submit %>
   </div>
+
+  <div class="cancel">
+    <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
+  </div>    
 <% end %>

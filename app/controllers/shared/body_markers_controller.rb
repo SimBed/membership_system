@@ -30,6 +30,7 @@ class Shared::BodyMarkersController < Shared::BaseController
       BodyMarker.default_timezone = :local
       prepare_client_filter
       prepare_marker_filter
+      handle_index_response
     end    
   end
 
@@ -37,11 +38,13 @@ class Shared::BodyMarkersController < Shared::BaseController
 
   def new
     @body_marker = BodyMarker.new
+    @form_cancel_link = shared_body_markers_path
     set_options
   end
 
   def edit
     set_options
+    @form_cancel_link = shared_body_markers_path
   end
 
   def create
@@ -61,6 +64,7 @@ class Shared::BodyMarkersController < Shared::BaseController
       redirect_to shared_body_markers_path
     else
       set_options
+      @form_cancel_link = shared_body_markers_path
       render :edit, status: :unprocessable_entity
     end
   end  
@@ -108,11 +112,13 @@ class Shared::BodyMarkersController < Shared::BaseController
 
     def set_client
       return unless logged_in_as? 'client'
+
       @client = current_account.client
+      @client_logging = true
     end
 
     def set_options
-      (@clients = Client.order_by_first_name) unless @client
+      (@clients = Client.order_by_first_name) unless @client_logging
       @body_markers = Setting.body_markers
     end
 
@@ -129,7 +135,7 @@ class Shared::BodyMarkersController < Shared::BaseController
       params.require(:body_marker).permit(:bodypart, :measurement, :date, :note, :client_id)
     end
 
-    def correct_account_or_admin_or_instructor_account
+    def correct_account_or_admin_or_instructor_account # correct this for when client logged in (@client already set)
       @client = if request.post? #create
                     Client.find(params.dig(:body_marker, :client_id).to_i)
                 else # edit, update, destroy
@@ -139,5 +145,12 @@ class Shared::BodyMarkersController < Shared::BaseController
   
       flash_message :warning, t('.warning')
       redirect_to login_path
+    end
+    
+    def handle_index_response
+      respond_to do |format|
+        format.html
+        format.turbo_stream
+      end
     end    
 end

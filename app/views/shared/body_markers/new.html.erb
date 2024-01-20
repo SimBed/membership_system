@@ -1,2 +1,5 @@
-<h4>New Body Marker</h4>
-<%= render 'form', body_marker: @body_marker %>
+<%= turbo_frame_tag @body_marker do %>
+  <div class="col-md-6 mb-4">
+    <%= render 'form', body_marker: @body_marker %>
+  </div>
+<% end %>
