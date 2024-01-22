@@ -85,6 +85,8 @@ class Purchase < ApplicationRecord
   scope :rider, -> { where.not(purchase_id: nil) }
   scope :main_purchase, -> { where(purchase_id: nil) }
   scope :expired_in, ->(period) { where(expiry_date: period) }
+  # no guarantee the natural expiry was not on the sunset date but highly unlikely (we do not record that a package ahas been actively sunset). 
+  scope :sunsetted, -> { where('sunset_date=expiry_date')}
   # used in Purchases controller's handle_sort method
   # raw SQL in Active Record functions will give an error to guard against SQL injection
   # in the case where the raw SQl contains user input i.e. a params value

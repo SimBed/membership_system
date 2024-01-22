@@ -329,7 +329,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def handle_filter
     # arity doesn't work with scopes so struggled to reformat this further. eg Purchase.method(:classpass).arity returns -1 not zero.
-    %w[uninvoiced package_not_trial close_to_expiry unpaid classpass trial fixed remind_to_renew sunset_passed written_off].each do |key|
+    %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid written_off].each do |key|
       @purchases = @purchases.send(key) if session["filter_#{key}"].present?
       # some scopes will return an array (not an ActiveRecord) eg close_to_expiry so
       # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
@@ -350,7 +350,7 @@ class Admin::PurchasesController < Admin::BaseController
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
-    @other_attributes = %w[classpass close_to_expiry fixed package_not_trial trial uninvoiced unpaid remind_to_renew sunset_passed written_off]
+    @other_attributes = %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid written_off]
     @months = ['All'] + months_logged
   end
 
@@ -400,8 +400,8 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def params_filter_list
-    [:workout_group, :statuses, :uninvoiced, :package_not_trial, :close_to_expiry,
-     :unpaid, :classpass, :trial, :fixed, :search_name, :purchases_period, :remind_to_renew, :sunset_passed, :written_off]
+    [:workout_group, :statuses, :search_name, :purchases_period] \
+    + %i[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid written_off]
   end
 
   # ['workout_group_filter',...'invoice_filter',...:search_name]
