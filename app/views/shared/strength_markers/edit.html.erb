@@ -1,2 +1,5 @@
-<h4>Editing Strength Marker</h4>
-<%= render 'form', strength_marker: @strength_marker %>
+<%= turbo_frame_tag dom_id(@strength_marker) do %>
+  <div class="container mb-4">  
+    <%= render 'form', strength_marker: @strength_marker, class: 'mb-4' %>
+  </div>
+<% end %>

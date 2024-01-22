@@ -1,4 +1,12 @@
 <div id="body-markers-table" class="container px-0 mb-5">
+  <div class="page_entries_info px-1">
+      <div class="record-count mb-1">
+        <%= "showing #{@body_markers&.length} of #{@pagy&.count}" %>
+      </div>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>   
+  </div>
   <div class="admin-table mt-2">
     <div class="row fw-bolder">
       <div class="column col-1x">Date</div>

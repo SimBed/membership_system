@@ -8,13 +8,3 @@
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>
 <%= turbo_stream.remove "errors" %>
-
-<%= turbo_stream.after "new_body_marker" do %>
-  <script>
-  const error_fields = document.getElementsByClassName("field_with_errors");
-  for (var i = 0; i < error_fields.length; i++){
-        error_fields[i].classList.add("field");
-        error_fields[i].classList.remove("field_with_errors");
-  }
-  </script>
-<% end %>

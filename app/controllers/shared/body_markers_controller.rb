@@ -20,7 +20,7 @@ class Shared::BodyMarkersController < Shared::BaseController
     else
       @body_markers = BodyMarker.all
       handle_client_filter
-      handle_marker_filter      
+      handle_marker_filter
       handle_sort
       BodyMarker.default_timezone = :utc
       @all_markers_grouped = @body_markers.unscope(:order)&.group(:bodypart)&.group_by_day(:date)&.average(:measurement)&.compact
@@ -30,6 +30,7 @@ class Shared::BodyMarkersController < Shared::BaseController
       BodyMarker.default_timezone = :local
       prepare_client_filter
       prepare_marker_filter
+      handle_pagination
       handle_index_response
     end    
   end
@@ -38,8 +39,8 @@ class Shared::BodyMarkersController < Shared::BaseController
 
   def new
     @body_marker = BodyMarker.new
-    @form_cancel_link = shared_body_markers_path
     set_options
+    @form_cancel_link = shared_body_markers_path
   end
 
   def edit
@@ -54,6 +55,7 @@ class Shared::BodyMarkersController < Shared::BaseController
       redirect_to shared_body_markers_path
     else
       set_options
+      @form_cancel_link = shared_body_markers_path
       render :new, status: :unprocessable_entity
     end
   end
@@ -93,6 +95,10 @@ class Shared::BodyMarkersController < Shared::BaseController
     def handle_sort
       @body_markers = @body_markers.send("order_by_#{session[:body_marker_sort_option]}")
     end
+
+    def handle_pagination
+      @pagy, @body_markers = pagy(@body_markers)
+    end  
 
     def handle_client_filter
       return unless session[:client_select].present? && session[:client_select] != 'All'

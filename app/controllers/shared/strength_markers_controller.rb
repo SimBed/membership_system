@@ -30,6 +30,8 @@ class Shared::StrengthMarkersController < Shared::BaseController
       # StrengthMarker.default_timezone = :local
       prepare_client_filter
       prepare_marker_filter
+      handle_pagination
+      handle_index_response
     end
   end
 
@@ -38,10 +40,12 @@ class Shared::StrengthMarkersController < Shared::BaseController
   def new
     @strength_marker = StrengthMarker.new
     set_options
+    @form_cancel_link = shared_strength_markers_path
   end
 
   def edit
     set_options
+    @form_cancel_link = shared_strength_markers_path        
   end
 
   def create
@@ -51,6 +55,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
       redirect_to shared_strength_markers_path
     else
       set_options
+      @form_cancel_link = shared_strength_markers_path
       render :new, status: :unprocessable_entity
     end
   end
@@ -61,6 +66,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
       redirect_to shared_strength_markers_path
     else
       set_options
+      @form_cancel_link = shared_strength_markers_path
       render :edit, status: :unprocessable_entity
     end
   end  
@@ -88,6 +94,10 @@ class Shared::StrengthMarkersController < Shared::BaseController
     def handle_sort
       @strength_markers = @strength_markers.send("order_by_#{session[:strength_marker_sort_option]}")
     end
+
+    def handle_pagination
+      @pagy, @strength_markers = pagy(@strength_markers)
+    end      
 
     def handle_client_filter
       return unless session[:client_select].present? && session[:client_select] != 'All'
@@ -137,5 +147,12 @@ class Shared::StrengthMarkersController < Shared::BaseController
   
       flash_message :warning, t('.warning')
       redirect_to login_path
-    end        
+    end
+
+    def handle_index_response
+      respond_to do |format|
+        format.html
+        format.turbo_stream
+      end
+    end
 end
