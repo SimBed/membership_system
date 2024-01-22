@@ -1,14 +1,14 @@
-<table class="table table-secondary table-striped caption-top">
-  <tbody>
+<div class="container px-0 mb-5">
+  <div>Workout Group List <small><%="(#{@partner.workout_groups.size})"%></small></div>
+  <div class="admin-table striped">
     <% @partner.workout_groups.each do |wg| %>
-      <tr>
-        <th scope="row"><%= link_to wg.name, admin_workout_group_path(wg), class: 'like_button' %></th>
-        <td><%= number_to_currency(@partner_share[wg.name.to_sym], precision: 0, unit: '') %></td>
-      </tr>
+      <div class="row">
+        <div class="column col-1x"><%= link_to wg.name, admin_workout_group_path(wg), class: 'like_button' %></div>
+        <div class="column col-1x"><%= number_to_currency(@partner_share[wg.name.to_sym], precision: 0, unit: '') %></div>
+      </div>
     <% end %>
-    <tr>
-      <th scope="row">Total</th>
-      <td class="fw-bold"><%= rupees(@total_share) %></td>
-    </tr>
-  </tbody>
-</table>
+    <div class="row">
+      <div class="column col-1x">Total</div>
+      <div class="column col-1x"><%= rupees(@total_share) %></div>
+    </div>
+</div>

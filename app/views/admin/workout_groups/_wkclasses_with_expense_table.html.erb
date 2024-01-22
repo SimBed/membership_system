@@ -8,7 +8,7 @@
       <% if logged_in_as?('superadmin') %>
         <div class="column col-2x"><%= link_to wkclass.summary, admin_wkclass_path(wkclass, link_from: 'workout_group_show'), class: "like_button", data:{ turbo: false } %></div>
       <% else %>
-        <div class="column col-2x"><%= wkclass.summary %></td>
+        <div class="column col-2x"><%= wkclass.summary %></div>
       <% end %>
       <div class="column col-1x"><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></div>
       <div class="column col-1x"><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></div>        
