@@ -49,6 +49,24 @@
               <% end %>
             </fieldset>
           </div>
+          <div class="col-4 px-0">
+
+          <fieldset class="">
+              <legend class='d-block'>TIME</legend>          
+            <select name="at_time" class= "sort d-block" onchange="this.form.requestSubmit()">
+              <%= options_for_select @wkclass_times, session[:filter_at_time] %>
+            </select>
+          </fieldset>          
+            <%# <fieldset>
+              <legend>TIME</legend>
+              <% @wkclass_times.each do |wk_time| %>
+                <%# <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                  <%# <%= check_box_tag 'any_time_at[]', wk_time, session[:filter_any_time_at].present? ? session[:filter_any_time_at].include?(wk_time) : false, id: "chbox#{wk_time}", onchange: "this.form.requestSubmit()" %>
+                  <%# <%= wk_time %>
+                <%# <% end %>
+              <%# <% end %>
+            <%# </fieldset> %>
+          </div>
 
           <div class="container d-flex">
             <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_wkclass_filters_path, {class: "search searchdelete icon-container"} %>

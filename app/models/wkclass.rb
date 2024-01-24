@@ -121,6 +121,27 @@ class Wkclass < ApplicationRecord
       window_end = Time.zone.now.advance(days: Setting.visibility_window_days_ahead).end_of_day
       (window_start..window_end)
     end
+
+    def start_times
+      sql = "SELECT to_char(time_only, 'HH24:MI') FROM (SELECT DISTINCT start_time:: timestamp:: time time_only FROM wkclasses ORDER BY time_only) r;"
+      ActiveRecord::Base.connection.exec_query(sql).rows.flatten
+    end
+
+    # def any_time_at(times_filter)
+    #   sql = "SELECT * from (SELECT *, start_time:: timestamp:: time time_only FROM wkclasses) r where r.time_only IN (#{times_filter.map{|s| "\'#{s}\'"}.join(', ')});"
+    #   find_by_sql(sql)
+    #   # ActiveRecord::Base.connection.exec_query(sql).rows.flatten
+    # end
+
+    def at_time(time)
+      return self.all if time == 'All'
+      # https://stackoverflow.com/questions/23650313/convert-array-to-string-with-quotes
+      sql = "SELECT * from (SELECT *, start_time:: timestamp:: time time_only FROM wkclasses order by start_time DESC) r where r.time_only = #{"\'#{time}\'"}"
+      # recover order and return activerecord
+      ids = find_by_sql(sql).pluck(:id)
+      # need wkclasses.id to avoid ambiguity error
+      where(id: ids).order(Arel.sql("POSITION(wkclasses.id::TEXT IN '#{ids.join(',')}')"))
+    end
   end
 
   def committed_on_same_day?(client)

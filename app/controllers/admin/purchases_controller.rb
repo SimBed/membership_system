@@ -388,7 +388,7 @@ class Admin::PurchasesController < Admin::BaseController
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     # @products = Product.order_by_name_max_classes.includes(:workout_group, :current_price_objects)
-    @products = Product.order_by_name_max_classes
+    @products = Product.current.order_by_name_max_classes
     @payment_methods = Setting.payment_methods
     # @renewal_discounts = Discount.with_rationale_at('renewal, @purchase.dop || Time.zone.now)
     @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first

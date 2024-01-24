@@ -23,6 +23,7 @@ class Admin::WkclassesController < Admin::BaseController
     # @wkclasses = @wkclasses.page params[:page]
     @workouts = Workout.order_by_name.current
     @months = ['All'] + months_logged
+    @wkclass_times = ['All'] + Wkclass.start_times
     handle_pagination
     session[:show_qualifying_purchases] = nil if params[:show_qualifying_purchases] == 'no'
     handle_index_response
@@ -213,7 +214,7 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def params_filter_list
-    [:any_workout_of, :in_workout_group, :todays_class, :yesterdays_class, :tomorrows_class, :past, :future, :problematic, :classes_period]
+    [:any_workout_of, :in_workout_group, :at_time, :todays_class, :yesterdays_class, :tomorrows_class, :past, :future, :problematic, :classes_period]
   end
 
   def session_filter_list
@@ -238,9 +239,14 @@ class Admin::WkclassesController < Admin::BaseController
   def handle_filter
     %w[any_workout_of in_workout_group].each do |key|
       @wkclasses = @wkclasses.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
+      # @wkclasses = Wkclass.where(id: @wkclasses.map(&:id)) if @wkclasses.is_a?(Array)
     end
     %w[todays_class yesterdays_class tomorrows_class past future problematic].each do |key|
       @wkclasses = @wkclasses.send(key) if session["filter_#{key}"].present?
+    end
+    # at_time isn't a scope so manage separately
+    if session[:filter_at_time].present?
+      @wkclasses = @wkclasses.send(:at_time, session[:filter_at_time])
     end
   end
 
