@@ -388,7 +388,8 @@ class Admin::PurchasesController < Admin::BaseController
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     # @products = Product.order_by_name_max_classes.includes(:workout_group, :current_price_objects)
-    @products = Product.current.order_by_name_max_classes
+    # params[:id] existence implies edit rather than new (problematic if editing a purchase and the product that was previously current no longer is) 
+    @products = params[:id] ? Product.order_by_name_max_classes : Product.current.order_by_name_max_classes 
     @payment_methods = Setting.payment_methods
     # @renewal_discounts = Discount.with_rationale_at('renewal, @purchase.dop || Time.zone.now)
     @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
@@ -445,8 +446,9 @@ class Admin::PurchasesController < Admin::BaseController
       format.js { render 'index.js.erb' }
       # Railscasts #362 Exporting Csv And Excel
       # https://www.youtube.com/watch?v=SelheZSdZj8
-      format.csv { send_data @purchases.to_csv }
-      format.xls
+      format.csv { send_data @purchases.to_csv, filename: "purchases-#{Time.zone.today.strftime('%e %b %Y')}.csv" }
+      # https://stackoverflow.com/questions/617055/setting-the-filename-for-a-downloaded-file-in-a-rails-application Grant Neufeld to add a bespoke filename
+      format.xls {  response.headers['Content-Disposition'] = "attachment; filename=\"purchases-#{Time.zone.today.strftime('%e %b %Y')}.xls\""}
       format.turbo_stream
     end
   end
