@@ -97,7 +97,8 @@ en:
         rider_fail: Rider was not successfully added
       update:
         success: Purchase was successfully updated
-        booking_cancelled: A booking made for after the new expiry date has been cancelled 
+        booking_cancelled: A booking made for after the new expiry date has been cancelled
+        adjust_and_restart: This purchase has been expired by A&R and a new purchase with no attendances has been created 
       destroy:
         success: "%{name}'s purchase was successfully deleted"
       expire:

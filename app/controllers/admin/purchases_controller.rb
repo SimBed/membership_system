@@ -10,6 +10,7 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :changing_main_purchase_product?, only: :update
   before_action :changing_main_purchase_name?, only: :update
   before_action :changing_rider?, only: :update
+  before_action :adjust_and_restarting?, only: :update
   before_action :set_admin_status, only: [:index]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
@@ -100,6 +101,8 @@ class Admin::PurchasesController < Admin::BaseController
           DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
         end
       end
+      adjust_and_restart and return if @adjust_and_restarting
+
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
       update_purchase_status([@purchase])
@@ -287,6 +290,17 @@ class Admin::PurchasesController < Admin::BaseController
     redirect_to admin_purchase_path(@purchase)
   end
 
+  def adjust_and_restarting?
+    @adjust_and_restarting = !@purchase.adjust_restart && purchase_params[:adjust_restart] == '1'
+  end
+
+  def adjust_and_restart
+    new_purchase = @purchase.dup
+    new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )
+    flash_message :warning, t('.adjust_and_restart')
+    redirect_to admin_purchases_path
+  end
+
   def set_purchase
     @purchase = Purchase.find(params[:id])
   end
@@ -313,6 +327,7 @@ class Admin::PurchasesController < Admin::BaseController
         params['ar_date(1i)'] = ''
         params['ar_date(2i)'] = ''
         params['ar_date(3i)'] = ''
+        params['ar_payment'] = 0
       end
     end
   end
@@ -329,7 +344,8 @@ class Admin::PurchasesController < Admin::BaseController
 
   def handle_filter
     # arity doesn't work with scopes so struggled to reformat this further. eg Purchase.method(:classpass).arity returns -1 not zero.
-    %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid written_off].each do |key|
+    %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid
+       written_off].each do |key|
       @purchases = @purchases.send(key) if session["filter_#{key}"].present?
       # some scopes will return an array (not an ActiveRecord) eg close_to_expiry so
       # HACK: convert back to ActiveRecord for the order_by scopes of the index method, which will fail on an Array
@@ -350,7 +366,8 @@ class Admin::PurchasesController < Admin::BaseController
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
-    @other_attributes = %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid written_off]
+    @other_attributes = %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid
+                           written_off]
     @months = ['All'] + months_logged
   end
 
@@ -388,8 +405,8 @@ class Admin::PurchasesController < Admin::BaseController
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     # @products = Product.order_by_name_max_classes.includes(:workout_group, :current_price_objects)
-    # params[:id] existence implies edit rather than new (problematic if editing a purchase and the product that was previously current no longer is) 
-    @products = params[:id] ? Product.order_by_name_max_classes : Product.current.order_by_name_max_classes 
+    # params[:id] existence implies edit rather than new (problematic if editing a purchase and the product that was previously current no longer is)
+    @products = params[:id] ? Product.order_by_name_max_classes : Product.current.order_by_name_max_classes
     @payment_methods = Setting.payment_methods
     # @renewal_discounts = Discount.with_rationale_at('renewal, @purchase.dop || Time.zone.now)
     @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
@@ -448,7 +465,7 @@ class Admin::PurchasesController < Admin::BaseController
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @purchases.to_csv, filename: "purchases-#{Time.zone.today.strftime('%e %b %Y')}.csv" }
       # https://stackoverflow.com/questions/617055/setting-the-filename-for-a-downloaded-file-in-a-rails-application Grant Neufeld to add a bespoke filename
-      format.xls {  response.headers['Content-Disposition'] = "attachment; filename=\"purchases-#{Time.zone.today.strftime('%e %b %Y')}.xls\""}
+      format.xls { response.headers['Content-Disposition'] = "attachment; filename=\"purchases-#{Time.zone.today.strftime('%e %b %Y')}.xls\"" }
       format.turbo_stream
     end
   end
