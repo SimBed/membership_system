@@ -125,7 +125,7 @@ class Shared::BodyMarkersController < Shared::BaseController
 
     def set_options
       (@clients = Client.order_by_first_name) unless @client_logging
-      @body_markers = Setting.body_markers
+      @body_markers = Setting.body_markers.sort
     end
 
     def prepare_client_filter
@@ -134,7 +134,8 @@ class Shared::BodyMarkersController < Shared::BaseController
     end
 
     def prepare_marker_filter
-      @markers = ['All'] + Setting.body_markers.sort
+      # @markers = ['All'] + Setting.body_markers.sort
+      @markers = ['All'] + BodyMarker.select(:bodypart).distinct.order(:bodypart).pluck(:bodypart)      
     end
 
     def body_marker_params

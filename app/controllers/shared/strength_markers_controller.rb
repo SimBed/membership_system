@@ -121,7 +121,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
 
     def set_options
       (@clients = Client.order_by_first_name) unless @client
-      @strength_markers = Setting.strength_markers
+      @strength_markers = Setting.strength_markers.sort
     end
 
     def prepare_client_filter
@@ -130,7 +130,8 @@ class Shared::StrengthMarkersController < Shared::BaseController
     end
 
     def prepare_marker_filter
-      @markers = ['All'] + Setting.strength_markers.sort
+      # @markers = ['All'] + Setting.strength_markers.sort
+      @markers = ['All'] + StrengthMarker.select(:name).distinct.order(:name).pluck(:name)
     end
 
     def strength_marker_params
