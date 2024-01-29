@@ -72,7 +72,6 @@ export default class extends Controller {
     let selected_commercial_discount_id = document.getElementById("purchase_commercial_discount_id").value || 0;
     let selected_discretion_discount_id = document.getElementById("purchase_discretion_discount_id").value || 0;
     let selected_product_id = document.getElementById("purchase_product_id").value || 0;
-    // let instructor_rate_select = document.getElementById('wkclass_instructor_rate_id')
     let basePriceEl = document.getElementById('purchase_base_price');
     let paymentEl = document.getElementById('purchase_payment');
     let priceIdEl = document.getElementById('purchase_price_id');
@@ -93,17 +92,23 @@ export default class extends Controller {
                                    priceIdEl.value = JSON.parse(s).base_price_id})
     });
   }
+
+  adjust_restart() {
+    var currentState = 'hidden';
+    if (document.getElementById("ar_payment").classList.contains("d-none")) {
+        currentState = 'visible';
+      }
+      var x = document.getElementsByClassName("ar");
+      var i;
+      for (i = 0; i < x.length; i++) {
+        x[i].classList.toggle('d-none')
+      }
+      if (currentState == 'hidden') {
+        var x = document.getElementsByClassName("arvalue");
+        var i;
+        for (i = 0; i < x.length; i++) {
+          x[i].value="";
+        }
+      }
+  }
 }
-
-// var p = document.getElementById('purchase_base_price')
-// p.value = "<%= j(@base_price.price) %>";
-
-// var p = document.getElementById('purchase_payment')
-// p.value = "<%= j(@payment_after_discount) %>";
-
-// var p = document.getElementById('purchase_price_id')
-// p.value = "<%= j(@base_price.id) %>";
-
-// render json: { base_price_price: @base_price.price,
-//   payment_after_discount: @payment_after_discount,
-//   base_price_id: @base_price.id }

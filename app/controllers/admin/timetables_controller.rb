@@ -10,6 +10,7 @@ class Admin::TimetablesController < Admin::BaseController
   def show
     # could build a entries hash to avoid database lookups in the view
     @days = @timetable.table_days.order_by_day
+    @colspan = @days.size + 1
     @morning_times = @timetable.table_times.during('morning').order_by_time
     @afternoon_times = @timetable.table_times.during('afternoon').order_by_time
     @evening_times = @timetable.table_times.during('evening').order_by_time

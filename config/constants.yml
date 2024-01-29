@@ -1,6 +1,6 @@
 default: &default
 
- timetable_id: 6
+ timetable_id: 7
  window_capacity: 8
 
  attendance_statuses:

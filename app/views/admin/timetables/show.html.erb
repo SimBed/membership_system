@@ -2,8 +2,8 @@
 <div class="container">
   <div class="positioning-wrap">
     <div class="mb-3"><h4><%= @timetable.title %> <small></small></div></h4>
-    <div class="GeneralText mb-2">
-      <%= button_tag 'Preview...', id: "btnPreview", class:'btn btn-black', onclick:"return toggle_visibility('editButton', 'block')" %>
+    <div class="GeneralText mb-2" data-controller="timetable-builder" data-timetable-builder-cssclass-value="editButton" data-timetable-builder-display-value="block">
+      <%= button_tag 'Preview...', id: "btnPreview", class:'btn btn-black', data: {action: "timetable-builder#toggle_visibility"} %>
     </div>
   </div>
 
@@ -35,7 +35,7 @@
 
     <% unless @morning_times.empty? %>
       <tr style="background:linear-gradient(white,#dddddd)">
-        <th colspan="7">MORNING</th>
+        <th colspan=<%= @colspan %>>MORNING</th>
       </tr>
       <% @morning_times.each do |time| %>
         <%= render 'time_period_table_body', time: time %>
@@ -44,7 +44,7 @@
 
     <% unless @afternoon_times.empty? %>
       <tr style="background:linear-gradient(white,#dddddd)">
-        <th colspan="7">AFTERNOON</th>
+        <th colspan=<%= @colspan %>>AFTERNOON</th>
       </tr>
       <% @afternoon_times.each do |time| %>
         <%= render 'time_period_table_body', time: time %>
@@ -53,7 +53,7 @@
 
     <% unless @evening_times.empty? %>
       <tr style="background:linear-gradient(white,#dddddd)">
-        <th colspan="7">EVENING</th>
+        <th colspan=<%= @colspan %>>EVENING</th>
       </tr>
       <% @evening_times.each do |time| %>
         <%= render 'time_period_table_body', time: time %>
@@ -62,29 +62,3 @@
 
   </table>
 </div>
-
-<script>
-  <!--Switch between edit and preview mode-->
-  function toggle_visibility(className, display){
-    var elements = document.getElementsByClassName(className);
-    var btnValue = document.getElementById("btnPreview");
-    n = elements.length;
-      for (var i = 0; i < n; i++) {
-      var e = elements[i];
-      if(window.getComputedStyle(e, null).display == display) {
-        e.style.display = 'none';
-      } else {
-        e.style.display = display;
-      }
-    }
-    if(elements[0].style.display == 'none') {
-      console.log('hi')
-      // btnValue.value="Edit Mode...";
-      btnValue.innerText="Edit Mode...";
-    } else {
-      console.log('bye')
-      btnValue.innerText="Preview...";
-      }
-    // return true;
-  }
-</script>
