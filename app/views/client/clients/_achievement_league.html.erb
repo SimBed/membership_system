@@ -1,22 +1,22 @@
 <div id="challenges-table" class="container px-0 mb-5">
-  <h4>Challenge League</h4>
-  <table class="table table-secondary table-striped caption-top">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th class="pr-3 pr-md-5">Best</th>
-        <th>Rank</th>
-      </tr>
-    </thead>
-
-    <tbody>
+  <h5>Challenge League</h5>
+  <div id="challenges-table" class="container px-0 mb-5">
+    <div class="admin-table striped mt-2">
+      <div class="row fw-bolder">
+        <div class="column col-1x">Name</div>
+        <div class="column col-1x">Best</div>
+        <div class="column col-1x">Rank</div>
+      </div>
       <% @client_results.each_with_index do |client, index| %>
-        <tr>
-          <td class=<%= [("fw-bolder" if client['id'] == @client.id)].compact.join(' ') %>><%= client['first_name'] %></td>
-          <td><%= @main_challenge_selected ? client['sum_max_score'] : client['max_score'] %></td>
-          <td><%= index + 1 %></td>
-        </tr>
+        <div class="row">
+          <%= content_tag(:div, client['first_name'], class: ["column col-1x",("fw-bolder" if client['id'] == @client.id)].compact.join(' ')) %>      
+          <div class="column col-1x"><%= @main_challenge_selected ? client['sum_max_score'] : client['max_score'] %></div>         
+          <div class="column col-1x"><%= index + 1 %></div>        
+        </div>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>
+
+
+

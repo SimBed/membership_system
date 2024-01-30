@@ -1,21 +1,18 @@
 <div id="achievements-table" class="container px-0 mb-5">
-  <table class="table table-secondary table-striped caption-top">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th class="pr-2 pr-md-5">Score</th>
-        <th>Challenge</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @achievements.each do |achievement| %>
-        <tr>
-          <td><%= achievement.date.strftime('%d/%m/%y') %></td>
-          <td><%= achievement.score %></td>
-          <td><%= link_to achievement.challenge.name, shared_challenge_path(achievement.challenge) %> </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="admin-table striped mt-2">
+    <div class="row fw-bolder">
+      <div class="column col-1x">Date</div>
+      <div class="column col-1x">Score</div>
+      <div class="column col-1x">Challenge</div>
+    </div>
+    <% @achievements.each do |achievement| %>
+      <div class="row">
+        <div class="column col-1x"><%= achievement.date.strftime('%d/%m/%y') %></div>         
+        <div class="column col-1x"><%= number_with_delimiter(achievement.score) %></div>         
+        <div class="column col-1x"><%= achievement.challenge.name %></div>        
+      </div>
+    <% end %>
+  </div>
 </div>
+
+
