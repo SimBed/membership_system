@@ -8,6 +8,7 @@ class StrengthMarker < ApplicationRecord
   scope :order_by_date, -> { order(date: :desc, name: :asc, weight: :asc) }
   scope :order_by_name, -> { order(name: :desc, date: :desc) }
   scope :order_by_weight, -> { order(weight: :desc, date: :desc) }
-  scope :with_client_id, ->(id) { joins(:client).where(client: {id: id})}
+  # scope :with_client_id, ->(id) { joins(:client).where(client: {id: id})}
+  scope :with_client_id, ->(id) { where(client_id: id)}
   scope :with_marker_name, ->(name) { where(name: name )}
 end

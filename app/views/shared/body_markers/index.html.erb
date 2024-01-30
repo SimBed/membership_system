@@ -14,6 +14,6 @@
 </div>
 <%= turbo_frame_tag 'body_markers' do %>
   <%= render partial: 'filter_form' %>
-  <%= render partial: 'body_markers_chart' unless session[:client_select] == 'All' %>
+  <%= render partial: 'body_markers_chart' unless @hide_chart %>
   <%= render 'body_markers_table' %>
 <% end %>

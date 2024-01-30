@@ -1,41 +1,21 @@
 class Shared::StrengthMarkersController < Shared::BaseController
   skip_before_action :admin_or_instructor_account
-  before_action :admin_or_instructor_or_client_account, only: [:index, :new]
+  before_action :admin_or_instructor_or_client_account, only: [:index, :new, :filter]
   before_action :set_strength_marker, only: [:edit, :update, :destroy]
   before_action :set_client
   before_action :correct_account_or_admin_or_instructor_account, only: [:edit, :create, :update, :destroy]  
   before_action :initialize_sort, only: :index
 
   def index
-    if logged_in_as? 'client'
-      @strength_markers = StrengthMarker.with_client_id(@client.id)
-      handle_marker_filter
-      handle_sort
-      # return if @strength_markers.blank?
-      # StrengthMarker.default_timezone = :utc
-      # # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-      # @all_markers_grouped = @strength_markers.unscope(:order)&.group(:name)&.group_by_day(:date)&.average(:weight)&.compact
-      # StrengthMarker.default_timezone = :local
-      prepare_marker_filter
-    else
-      @strength_markers = StrengthMarker.all
-      handle_client_filter
+      @strength_markers =  @view_all ?  StrengthMarker.all : @client.strength_markers
+      handle_client_filter if @view_all # admin not client
       handle_marker_filter      
       handle_sort
-      # StrengthMarker.default_timezone = :utc
-      # @all_markers_grouped = @strength_markers.unscope(:order)&.group(:name)&.group_by_day(:date)&.average(:weight)&.compact
-      # # hack to fix quirk of date format for column chart
-      # # https://github.com/ankane/chartkick/issues/352
-      # @all_markers_grouped.transform_keys!{ |key| [key[0],key[1].strftime("%d %b")] }
-      # StrengthMarker.default_timezone = :local
-      prepare_client_filter
+      prepare_client_filter if @view_all # admin not client
       prepare_marker_filter
       handle_pagination
       handle_index_response
-    end
   end
-
-  def show; end
 
   def new
     @strength_marker = StrengthMarker.new
@@ -78,8 +58,8 @@ class Shared::StrengthMarkersController < Shared::BaseController
   end
   
   def filter
-    session[:strength_marker_select] = params[:strength_marker_select] || session[:vmarker_select] 
-    unless logged_in_as? 'client'
+    session[:strength_marker_select] = params[:strength_marker_select] || session[:strength_marker_select] 
+    if @view_all
       session[:client_select] = params[:client_select] || session[:client_select] 
     end
     redirect_to shared_strength_markers_path
@@ -107,6 +87,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
 
     def handle_marker_filter
       return unless session[:strength_marker_select].present? && session[:strength_marker_select] != 'All'
+
       @strength_markers = @strength_markers.with_marker_name(session[:strength_marker_select])
     end    
 
@@ -116,22 +97,26 @@ class Shared::StrengthMarkersController < Shared::BaseController
 
     def set_client
       return unless logged_in_as? 'client'
+
       @client = current_account.client
     end
 
     def set_options
-      (@clients = Client.order_by_first_name) unless @client
-      @strength_markers = Setting.strength_markers.sort
+      (@client_options = Client.order_by_first_name) if @view_all
+      @strength_marker_options = Setting.strength_markers.sort
     end
 
     def prepare_client_filter
       clients_with_strength_markers = Client.has_strength_marker.order_by_first_name.map { |c| [c.name, c.id] }
-      @clients = ['All'] + clients_with_strength_markers
+      @client_filters = ['All'] + clients_with_strength_markers
     end
 
     def prepare_marker_filter
-      # @markers = ['All'] + Setting.strength_markers.sort
-      @markers = ['All'] + StrengthMarker.select(:name).distinct.order(:name).pluck(:name)
+      if @view_all
+        @marker_filters = ['All'] + StrengthMarker.select(:name).distinct.order(:name).pluck(:name)
+      else
+        @marker_filters = ['All'] + @client.strength_markers.select(:name).distinct.order(:name).pluck(:name)
+      end
     end
 
     def strength_marker_params
@@ -139,12 +124,14 @@ class Shared::StrengthMarkersController < Shared::BaseController
     end
 
     def correct_account_or_admin_or_instructor_account
+      return if @view_all #logged_in_as?('admin', 'superadmin', 'instructor')
+
       @client = if request.post? #create
-                    Client.find(params.dig(:strength_marker, :client_id).to_i)
+                  Client.find(params.dig(:strength_marker, :client_id).to_i)
                 else # edit, update, destroy
                   @strength_marker.client
                 end
-      return if current_account?(@client&.account) || logged_in_as?('admin', 'superadmin', 'instructor')
+      return if current_account?(@client&.account)
   
       flash_message :warning, t('.warning')
       redirect_to login_path

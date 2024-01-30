@@ -1,14 +1,6 @@
 <div id="body_markers-filter" class="container px-1 my-3">
   <div class="container search">
-    <% if @client %>
-      <%= form_with(url: body_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "body_markers"}) do %>
-        <fieldset class="mt-2" style="margin-left:-1.3rem">
-          <select name="marker_select" class= "sort" onchange="this.form.requestSubmit()">
-            <%= options_for_select @markers, session[:marker_select] %>
-          </select>
-        </fieldset>      
-      <% end %>
-    <% else %>
+    <% if @view_all %>
       <%= form_with(url: body_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "body_markers"}) do %>
         <fieldset class="my-2">
         <label class='d-inline'>client:</label>
@@ -17,14 +9,14 @@
           </select>
         </fieldset>      
       <% end %>
-      <%= form_with(url: body_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "body_markers"}) do %>
-        <fieldset class="">
-        <label class='d-inline'>marker:</label>
-          <select name="body_marker_select" class= "sort" onchange="this.form.requestSubmit()">
-            <%= options_for_select @markers, session[:body_marker_select] %>
-          </select>
-        </fieldset>      
-      <% end %>
+    <% end %>
+    <%= form_with(url: body_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "body_markers"}) do %>
+      <fieldset class="">
+      <label class='d-inline'>marker:</label>
+        <select name="body_marker_select" class= "sort" onchange="this.form.requestSubmit()">
+          <%= options_for_select @marker_filters, session[:body_marker_select] %>
+        </select>
+      </fieldset>      
     <% end %>
     <hr class = "my-2"></hr>    
     <%= render partial: 'sort_selection' %>

@@ -1,38 +1,30 @@
 class Shared::BodyMarkersController < Shared::BaseController
   skip_before_action :admin_or_instructor_account
-  before_action :admin_or_instructor_or_client_account, only: [:index, :new]
+  before_action :admin_or_instructor_or_client_account, only: [:index, :new, :filter]
   before_action :set_body_marker, only: [:edit, :update, :destroy]
   before_action :set_client
   before_action :correct_account_or_admin_or_instructor_account, only: [:edit, :create, :update, :destroy]  
   before_action :initialize_sort, only: :index  
 
   def index
-    if logged_in_as? 'client'
-      @body_markers = BodyMarker.with_client_id(@client.id)
+      @body_markers =  @view_all ?  BodyMarker.all : @client.body_markers
+      handle_client_filter if @view_all # admin not client
       handle_marker_filter
       handle_sort
-      # return if @body_markers.blank?
-      # BodyMarker.default_timezone = :utc
-      # # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact
-      # @all_markers_grouped = @body_markers.unscope(:order)&.group(:bodypart)&.group_by_day(:date)&.average(:measurement)&.compact
-      # BodyMarker.default_timezone = :local
-      prepare_marker_filter
-    else
-      @body_markers = BodyMarker.all
-      handle_client_filter
-      handle_marker_filter
-      handle_sort
-      BodyMarker.default_timezone = :utc
-      @all_markers_grouped = @body_markers.unscope(:order)&.group(:bodypart)&.group_by_day(:date)&.average(:measurement)&.compact
-      # hack to fix quirk of date format for column chart (but no good on line_chart, unintneded consequence that when dates are not all in same year, shown as year 2001..??)
-      # https://github.com/ankane/chartkick/issues/352
-      # @all_markers_grouped.transform_keys!{ |key| [key[0],key[1].strftime("%d %b")] }
-      BodyMarker.default_timezone = :local
-      prepare_client_filter
+      @hide_chart = @body_markers.empty? || @view_all && session[:client_select] == 'All' ? true : false
+      unless @body_markers.empty?
+        BodyMarker.default_timezone = :utc
+        # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact        
+        @all_markers_grouped = @body_markers.unscope(:order)&.group(:bodypart)&.group_by_day(:date)&.average(:measurement)&.compact
+        # hack to fix quirk of date format for column chart (but no good on line_chart, unintneded consequence that when dates are not all in same year, shown as year 2001..??)
+        # https://github.com/ankane/chartkick/issues/352
+        # @all_markers_grouped.transform_keys!{ |key| [key[0],key[1].strftime("%d %b")] }
+        BodyMarker.default_timezone = :local
+      end
+      prepare_client_filter if @view_all # admin not client
       prepare_marker_filter
       handle_pagination
       handle_index_response
-    end    
   end
 
   def show; end
@@ -79,7 +71,7 @@ class Shared::BodyMarkersController < Shared::BaseController
   
   def filter
     session[:body_marker_select] = params[:body_marker_select] || session[:body_marker_select] 
-    unless logged_in_as? 'client'
+    if @view_all
       session[:client_select] = params[:client_select] || session[:client_select] 
     end
     redirect_to shared_body_markers_path
@@ -134,25 +126,31 @@ class Shared::BodyMarkersController < Shared::BaseController
     end
 
     def prepare_marker_filter
-      # @markers = ['All'] + Setting.body_markers.sort
-      @markers = ['All'] + BodyMarker.select(:bodypart).distinct.order(:bodypart).pluck(:bodypart)      
+      if @view_all
+        @marker_filters = ['All'] + BodyMarker.select(:bodypart).distinct.order(:bodypart).pluck(:bodypart)
+      else
+        @marker_filters = ['All'] + @client.body_markers.select(:bodypart).distinct.order(:bodypart).pluck(:bodypart)
+      end
     end
 
     def body_marker_params
       params.require(:body_marker).permit(:bodypart, :measurement, :date, :note, :client_id)
     end
 
-    def correct_account_or_admin_or_instructor_account # correct this for when client logged in (@client already set)
+    def correct_account_or_admin_or_instructor_account
+      return if @view_all #logged_in_as?('admin', 'superadmin', 'instructor')
+
       @client = if request.post? #create
-                    Client.find(params.dig(:body_marker, :client_id).to_i)
+                  Client.find(params.dig(:body_marker, :client_id).to_i)
                 else # edit, update, destroy
                   @body_marker.client
                 end
-      return if current_account?(@client&.account) || logged_in_as?('admin', 'superadmin', 'instructor')
+      return if current_account?(@client&.account)
   
       flash_message :warning, t('.warning')
       redirect_to login_path
     end
+    
     
     def handle_index_response
       respond_to do |format|
