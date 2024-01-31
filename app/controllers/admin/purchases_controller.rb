@@ -194,7 +194,6 @@ class Admin::PurchasesController < Admin::BaseController
                                                      selected: @purchase_status_discount_id || @discount_none.id),
                    oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, @oneoff_discounts, :id, :name,
                                                      selected: @purchase_oneoff_discount_id || @discount_none.id) }
-    # render 'discounts_after_dop_change.js'
   end
 
   private
@@ -323,6 +322,7 @@ class Admin::PurchasesController < Admin::BaseController
       # params[:fitternity_id] = Fitternity.ongoing.first&.id if params[:payment_mode] == 'Fitternity'
       # prevent ar_date becoming not nil after an update
       # checkbox values in form are strings
+      # adjust and restart checkbox on form hides/displays a&r payment/date but doesn't itself set their values to nil/zero. Don't want to potentially have unwanted entries saved to the database.  
       if params[:adjust_restart] == '0'
         params['ar_date(1i)'] = ''
         params['ar_date(2i)'] = ''

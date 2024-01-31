@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static values = { url: String, dateurl: String, clientfilterurl: String }
-
+  static targets = [ "hideable" ] 
 
   clientsearch() {
     let search_client_name = document.getElementById("search_client_name").value;    
@@ -52,7 +52,6 @@ export default class extends Controller {
       selected_dop_2i: selected_dop_2i,
       selected_dop_3i: selected_dop_3i  
     }
-    console.log(this.dateurlValue)
     fetch(this.dateurlValue + '?' + new URLSearchParams(queryHash))
     .then(function(response) {
       response.text().then((s) => {
@@ -65,7 +64,6 @@ export default class extends Controller {
   }
 
   load() {
-    console.log('ready')
     let selected_renewal_discount_id = document.getElementById("purchase_renewal_discount_id").value || 0;
     let selected_status_discount_id =  document.getElementById("purchase_status_discount_id").value || 0;
     let selected_oneoff_discount_id = document.getElementById("purchase_oneoff_discount_id").value || 0;
@@ -83,7 +81,6 @@ export default class extends Controller {
       selected_discretion_discount_id: selected_discretion_discount_id,
       selected_product_id: selected_product_id
     }
-    console.log(this.urlValue)
     fetch(this.urlValue + '?' + new URLSearchParams(queryHash))
     .then(function(response) {
       response.text().then((s) => {console.log(s);
@@ -92,23 +89,29 @@ export default class extends Controller {
                                    priceIdEl.value = JSON.parse(s).base_price_id})
     });
   }
-
+  
   adjust_restart() {
-    var currentState = 'hidden';
-    if (document.getElementById("ar_payment").classList.contains("d-none")) {
-        currentState = 'visible';
-      }
-      var x = document.getElementsByClassName("ar");
-      var i;
-      for (i = 0; i < x.length; i++) {
-        x[i].classList.toggle('d-none')
-      }
-      if (currentState == 'hidden') {
-        var x = document.getElementsByClassName("arvalue");
-        var i;
-        for (i = 0; i < x.length; i++) {
-          x[i].value="";
-        }
-      }
+    this.hideableTargets.forEach((el) => {
+      el.hidden = !el.hidden
+    });    
   }
+  // adjust_restart_old() {
+  //   var currentState = 'hidden';
+  //   if (document.getElementById("ar_payment").classList.contains("d-none")) {
+  //       currentState = 'visible';
+  //     }
+  //     var x = document.getElementsByClassName("ar");
+  //     var i;
+  //     for (i = 0; i < x.length; i++) {
+  //       x[i].classList.toggle('d-none')
+  //     }
+  //     if (currentState == 'hidden') {
+  //       var x = document.getElementsByClassName("arvalue");
+  //       var i;
+  //       for (i = 0; i < x.length; i++) {
+  //         x[i].value="";
+  //       }
+  //     }
+  // }
+
 }

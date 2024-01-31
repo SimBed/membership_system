@@ -1,5 +1,5 @@
 <div class="admin_form pt-4 my-2">
-  <div class="field" data-controller = "purchase-form" data-purchase-form-clientfilterurl-value = <%= new_purchase_client_filter_path %>> 
+  <div class="field" data-controller="purchase-form" data-purchase-form-clientfilterurl-value = <%= new_purchase_client_filter_path %>> 
     <%= text_field_tag :search_client_name, nil, {class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name], "data-action": "purchase-form#clientsearch"} %>
   </div>
 
@@ -21,6 +21,7 @@
     <% end %>
 
     <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>    
+    <div><%= form.hidden_field :id_helper, value: @purchase.id %></div>
 
     <div class="field">
       <%= form.label :client_id %>
@@ -96,26 +97,25 @@
     </div>
 
     <% unless @purchase.new_record? %>
-      <div class="field" id="ar">
+      <div class="field">
         <%= form.label :adjust_restart %>
         <%= form.check_box :adjust_restart, {"data-action": "purchase-form#adjust_restart"} %>
       </div>
 
-      <%# class arvalue is for identification with javascript, not for styling %>
-      <div id="ar_payment" class="field ar <%= 'd-none' unless @purchase.adjust_restart %>">
+      <div class="field" data-purchase-form-target="hideable" <%= 'hidden' unless @purchase.adjust_restart %>>
         <%= form.label :ar_payment %>
-        <%= form.number_field :ar_payment, class: "arvalue" %>
+        <%= form.number_field :ar_payment %>
       </div>
 
-      <div class="field ar <%= 'd-none' unless @purchase.adjust_restart %>">
+      <div class="field" data-purchase-form-target="hideable" <%= 'hidden' unless @purchase.adjust_restart %>>
         <%= form.label :ar_date %>
         <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date || Time.zone.today}, {class: "arvalue"} %>
       </div>
-      <% end %>
+    <% end %>
 
-      <div class="actions">
-        <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase' %>
-      </div>
+    <div class="actions">
+      <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase' %>
+    </div>
   <% end %>
 
   <div class="cancel">
