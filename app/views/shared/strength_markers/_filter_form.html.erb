@@ -1,13 +1,13 @@
 <div id="strength_markers-filter" class="container px-1 my-3">
   <div class="container search">
-    <% if @view_all %>
+    <% unless @client_logging %>
       <%= form_with(url: strength_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
         <fieldset class="my-2">
         <label class='d-inline'>client:</label>
           <select name="client_select" class= "sort" onchange="this.form.requestSubmit()">
             <%= options_for_select @client_filters, session[:client_select] %>
           </select>
-        </fieldset>      
+        </fieldset>
       <% end %>
     <% end %>
     <%= form_with(url: strength_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>

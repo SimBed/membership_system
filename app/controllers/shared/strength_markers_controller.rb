@@ -7,11 +7,11 @@ class Shared::StrengthMarkersController < Shared::BaseController
   before_action :initialize_sort, only: :index
 
   def index
-      @strength_markers =  @view_all ?  StrengthMarker.all : @client.strength_markers
-      handle_client_filter if @view_all # admin not client
+      @strength_markers =  @client_logging ? @client.strength_markers : StrengthMarker.all
+      handle_client_filter unless @client_logging
       handle_marker_filter      
       handle_sort
-      prepare_client_filter if @view_all # admin not client
+      prepare_client_filter unless @client_logging
       prepare_marker_filter
       handle_pagination
       handle_index_response
@@ -59,7 +59,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
   
   def filter
     session[:strength_marker_select] = params[:strength_marker_select] || session[:strength_marker_select] 
-    if @view_all
+    unless @client_logging
       session[:client_select] = params[:client_select] || session[:client_select] 
     end
     redirect_to shared_strength_markers_path
@@ -99,10 +99,11 @@ class Shared::StrengthMarkersController < Shared::BaseController
       return unless logged_in_as? 'client'
 
       @client = current_account.client
+      @client_logging = true
     end
 
     def set_options
-      (@client_options = Client.order_by_first_name) if @view_all
+      (@client_options = Client.order_by_first_name) unless @client_logging
       @strength_marker_options = Setting.strength_markers.sort
     end
 
@@ -112,10 +113,10 @@ class Shared::StrengthMarkersController < Shared::BaseController
     end
 
     def prepare_marker_filter
-      if @view_all
-        @marker_filters = ['All'] + StrengthMarker.select(:name).distinct.order(:name).pluck(:name)
-      else
+      if @client_logging
         @marker_filters = ['All'] + @client.strength_markers.select(:name).distinct.order(:name).pluck(:name)
+      else
+        @marker_filters = ['All'] + StrengthMarker.select(:name).distinct.order(:name).pluck(:name)
       end
     end
 
@@ -124,7 +125,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
     end
 
     def correct_account_or_admin_or_instructor_account
-      return if @view_all #logged_in_as?('admin', 'superadmin', 'instructor')
+      return if logged_in_as?('admin', 'superadmin', 'instructor')
 
       @client = if request.post? #create
                   Client.find(params.dig(:strength_marker, :client_id).to_i)

@@ -7,12 +7,12 @@ class Shared::BodyMarkersController < Shared::BaseController
   before_action :initialize_sort, only: :index  
 
   def index
-      @body_markers =  @view_all ?  BodyMarker.all : @client.body_markers
-      handle_client_filter if @view_all # admin not client
+      @body_markers =  @client_logging ?  @client.body_markers : BodyMarker.all
+      handle_client_filter unless @client_logging
       handle_marker_filter
       handle_sort
-      @hide_chart = @body_markers.empty? || @view_all && session[:client_select] == 'All' ? true : false
-      unless @body_markers.empty?
+      @hide_chart = @body_markers.empty? || !@client_logging && session[:client_select] == 'All' ? true : false
+      unless @hide_chart
         BodyMarker.default_timezone = :utc
         # HACK: hash returned has a key:value pair at each date, but the line_chart doesnt join dots when there are nil values in between, so remove nil values with #compact        
         @all_markers_grouped = @body_markers.unscope(:order)&.group(:bodypart)&.group_by_day(:date)&.average(:measurement)&.compact
@@ -21,13 +21,11 @@ class Shared::BodyMarkersController < Shared::BaseController
         # @all_markers_grouped.transform_keys!{ |key| [key[0],key[1].strftime("%d %b")] }
         BodyMarker.default_timezone = :local
       end
-      prepare_client_filter if @view_all # admin not client
+      prepare_client_filter unless @client_logging
       prepare_marker_filter
       handle_pagination
       handle_index_response
   end
-
-  def show; end
 
   def new
     @body_marker = BodyMarker.new
@@ -71,7 +69,7 @@ class Shared::BodyMarkersController < Shared::BaseController
   
   def filter
     session[:body_marker_select] = params[:body_marker_select] || session[:body_marker_select] 
-    if @view_all
+    unless @client_logging
       session[:client_select] = params[:client_select] || session[:client_select] 
     end
     redirect_to shared_body_markers_path
@@ -116,20 +114,20 @@ class Shared::BodyMarkersController < Shared::BaseController
     end
 
     def set_options
-      (@clients = Client.order_by_first_name) unless @client_logging
+      (@client_options = Client.order_by_first_name) unless @client_logging
       @body_markers = Setting.body_markers.sort
     end
 
     def prepare_client_filter
       clients_with_body_markers = Client.has_body_marker.order_by_first_name.map { |c| [c.name, c.id] }
-      @clients = ['All'] + clients_with_body_markers
+      @client_filters = ['All'] + clients_with_body_markers
     end
 
     def prepare_marker_filter
-      if @view_all
-        @marker_filters = ['All'] + BodyMarker.select(:bodypart).distinct.order(:bodypart).pluck(:bodypart)
-      else
+      if @client_logging
         @marker_filters = ['All'] + @client.body_markers.select(:bodypart).distinct.order(:bodypart).pluck(:bodypart)
+      else
+        @marker_filters = ['All'] + BodyMarker.select(:bodypart).distinct.order(:bodypart).pluck(:bodypart)
       end
     end
 
@@ -138,7 +136,7 @@ class Shared::BodyMarkersController < Shared::BaseController
     end
 
     def correct_account_or_admin_or_instructor_account
-      return if @view_all #logged_in_as?('admin', 'superadmin', 'instructor')
+      return if logged_in_as?('admin', 'superadmin', 'instructor')
 
       @client = if request.post? #create
                   Client.find(params.dig(:body_marker, :client_id).to_i)

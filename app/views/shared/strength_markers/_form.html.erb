@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-  <% if @client %>
+  <% if @client_logging %>
     <%= form.hidden_field :client_id, value: @client.id %>
   <% else %>
     <div class="field">
       <%= form.label :client_id %>
-      <%= form.collection_select :client_id, @clients, :id, :name  %>
+      <%= form.collection_select :client_id, @client_options, :id, :name  %>
     </div>
   <% end %>
 
