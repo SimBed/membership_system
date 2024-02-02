@@ -36,10 +36,6 @@ class Admin::ProductsController < Admin::BaseController
     # NOTE: Date object cant directly be converted to integer for reverse ordering
     # https://stackoverflow.com/questions/4492557/convert-ruby-date-to-integer
     @prices = @product.prices.sort_by { |p| [p.current? ? 0 : 1, -p.date_from.to_time.to_i] }
-    respond_to do |format|
-      format.html
-      format.js { render 'show.js.erb' }
-    end
   end
 
   def new

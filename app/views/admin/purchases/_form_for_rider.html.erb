@@ -1,0 +1,28 @@
+<div class="admin_form pt-4 my-2">
+
+  <%= form_with(model: [:admin, purchase]) do |form| %>
+    <% if purchase.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(purchase.errors.count, "error") %> prohibited this purchase from being saved:</h2>
+        <ul>
+          <% purchase.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :note %>
+      <%= form.text_area :note, cols: 40, rows: 5 %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Update Rider' %>
+    </div>
+  <% end %>
+
+  <div class="cancel">
+    <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
+  </div>    
+</div>

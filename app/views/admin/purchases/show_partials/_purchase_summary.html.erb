@@ -12,9 +12,7 @@
     <div class="column col-1x"><%= rupees(@purchase.price.price) %></div>
   </div>
   <% unless @purchase.discounts.empty? %>
-
-      <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
-
+    <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
   <% end %>  
   <div class="row">
     <div class="column col-1x">Paid on</div>

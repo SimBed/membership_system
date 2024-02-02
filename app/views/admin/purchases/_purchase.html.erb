@@ -11,7 +11,8 @@
     <div class="column col-2x"><%= purchase.status %></div>
     <div class="column col-2x nomobile"><%= purchase.dop.strftime('%d %b %y') %></div>
     <div class="column col-2x nomobile"><%= purchase.start_to_expiry %></div>
-    <div class="column nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase) %></div>
+    <div class="column nomobile">
+    <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_purchase_path(purchase) %></div>
     <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
       <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase), data: { "turbo-method": :delete, turbo_confirm: 'Purchase can be deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></div>
     <% else %>

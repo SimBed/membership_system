@@ -42,6 +42,7 @@ class Product < ApplicationRecord
                                    left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)')
                                  }
   scope :current, -> { where(current: true) }
+  scope :not_rider, -> { where(rider: false) }
 
   def self.online_order_by_wg_classes_days
     # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id

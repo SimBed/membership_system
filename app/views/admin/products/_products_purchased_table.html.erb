@@ -1,22 +1,21 @@
-<div id="products-purchased-table" class="container px-1 mb-3">
-  <table class="table table-secondary table-striped caption-top">
-    <caption>Purchases of Product Made <small><%="(#{@purchases.size})"%></small>
-    </caption>
-      <thead>
-        <tr>
-          <th scope="col">Date of Purchase</th>
-          <th scope="col">Client</th>
-          <th scope="col">Payment</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @purchases.each do |purchase| %>
-        <tr>
-          <td><%= purchase.dop.strftime('%d %b %y') %></td>
-          <td><%= purchase.client.name %></td>
-          <td><%= rupees(purchase.payment) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<table class="table table-secondary table-striped caption-top">
+  <caption>Purchases of Product Made <small><%="(#{@purchases.size})"%></small>
+  </caption>
+    <thead>
+      <tr>
+        <th scope="col">Date of Purchase</th>
+        <th scope="col">Client</th>
+        <th scope="col">Payment</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @purchases.each do |purchase| %>
+      <tr>
+        <td><%= purchase.dop.strftime('%d %b %y') %></td>
+        <td><%= purchase.client.name %></td>
+        <td><%= rupees(purchase.payment) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

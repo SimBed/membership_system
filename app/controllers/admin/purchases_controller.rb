@@ -9,7 +9,7 @@ class Admin::PurchasesController < Admin::BaseController
   # before_action :already_had_trial?, only: [:create, :update]
   before_action :changing_main_purchase_product?, only: :update
   before_action :changing_main_purchase_name?, only: :update
-  before_action :changing_rider?, only: :update
+  # before_action :changing_rider?, only: :update
   before_action :adjust_and_restarting?, only: :update
   before_action :set_admin_status, only: [:index]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
@@ -282,12 +282,12 @@ class Admin::PurchasesController < Admin::BaseController
     redirect_to edit_admin_purchase_path(@purchase)
   end
 
-  def changing_rider?
-    return false if @purchase.main_purchase.nil?
+  # def changing_rider?
+  #   return false if @purchase.main_purchase.nil?
 
-    flash[:warning] = "Purchase not updated. Can't change details of a purchase that is a rider"
-    redirect_to admin_purchase_path(@purchase)
-  end
+  #   flash[:warning] = "Purchase not updated. Can't change details of a purchase that is a rider"
+  #   redirect_to admin_purchase_path(@purchase)
+  # end
 
   def adjust_and_restarting?
     @adjust_and_restarting = !@purchase.adjust_restart && purchase_params[:adjust_restart] == '1'
@@ -405,8 +405,9 @@ class Admin::PurchasesController < Admin::BaseController
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     # @products = Product.order_by_name_max_classes.includes(:workout_group, :current_price_objects)
-    # params[:id] existence implies edit rather than new (problematic if editing a purchase and the product that was previously current no longer is)
-    @products = params[:id] ? Product.order_by_name_max_classes : Product.current.order_by_name_max_classes
+    # params[:id] existence implies edit rather than new (without the discrepancy it would be problematic when editing a purchase if a product that was previously current had been retired)
+    # preventing admin setting a new purchase with a rider product (which would not be associated with a main purchase). On edit this is more complicated, becasue it would be reasonable for example admin to add a note to a rider purchase
+    @products = params[:id] ? Product.order_by_name_max_classes : Product.current.not_rider.order_by_name_max_classes
     @payment_methods = Setting.payment_methods
     # @renewal_discounts = Discount.with_rationale_at('renewal, @purchase.dop || Time.zone.now)
     @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
