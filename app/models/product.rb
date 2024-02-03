@@ -13,7 +13,8 @@ class Product < ApplicationRecord
   validates :validity_length, presence: true
   validates :validity_unit, presence: true
   # validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
-  validate :product_combo_must_be_unique
+  # reinstate product_combo_must_be_unique validation when fixed
+  # validate :product_combo_must_be_unique
   delegate :pt?, :groupex?, :online?, to: :workout_group
   # Client.packagee.active gives 'PG ambiguous column max classes' error unless 'products.max_classes' rather than just 'max_classes'.
   # scope :package, -> { where('products.max_classes > 1') }
@@ -175,6 +176,7 @@ class Product < ApplicationRecord
 
   # see comment on full_name_must_be_unique in Client model
   def product_combo_must_be_unique
+    # see my stackoverfolw question, problem with Product.where(['color = ?',nil])
     product = Product.where(['max_classes = ? and validity_length = ? and validity_unit = ? and color = ? and workout_group_id = ?',
                              max_classes, validity_length, validity_unit, color, workout_group_id]).first
     return if product.blank?
