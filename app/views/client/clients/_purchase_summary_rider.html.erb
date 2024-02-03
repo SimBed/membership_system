@@ -1,5 +1,5 @@
   <caption class="ps-1">
-    <%= @purchase.formal_name %> <%= "(PT Rider)" if @purchase.rider?%> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%>
+    <%= @purchase.name(verbose: true) %> <%= "(PT Rider)" if @purchase.rider?%> <%=image_tag('cold.png') if (!@purchase.expired? && @purchase.freezed?(Time.zone.now))%>
   </caption>
   <tbody>
     <tr>

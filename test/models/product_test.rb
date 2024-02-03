@@ -9,6 +9,7 @@ class ProductTest < ActiveSupport::TestCase
                            workout_group_id: workout_groups(:space).id)
     @product_without_purchase = products(:spaceothers)
     @client = clients(:aparna)
+    @product_pt = products(:pt_head_coach)
   end
 
   test 'should be valid' do
@@ -63,5 +64,15 @@ class ProductTest < ActiveSupport::TestCase
     Purchase.last.destroy
 
     assert @product_without_purchase.deletable?
+  end
+
+  test '#name' do
+    assert_equal 'Space PT 8C:7W (head coach)', @product_pt.name
+    assert_equal 'Space PT - 8 Classes 7 Weeks (head coach)', @product_pt.name(verbose: true)
+    assert_equal 'Space PT - 8 Classes 7 Weeks', @product_pt.name(verbose: true, color_show: false)
+    assert_equal 'Space PT - 8 Classes 7 Weeks (+Rider)', @product_pt.name(verbose: true, color_show: false, rider_show: true)
+    assert_equal 'Space PT 8C:7W+R', @product_pt.name(verbose: false, color_show: false, rider_show: true)
+    assert_equal 'Space PT 8C:7W+R (head coach)', @product_pt.name(rider_show: true)
+    assert_equal 'Space PT 8C:7W (head coach)', @product_pt.name
   end
 end

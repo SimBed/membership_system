@@ -4,7 +4,7 @@
 		data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
 		data-amount="<%= "#{@renewal.price(@renewal.product) * 100}" %>"
 		data-name="<%= "The Space" %>"
-		data-description="<%= "#{@renewal.product.formal_name}" %>"
+		data-description="<%= "#{@renewal.product.name(verbose: true)}" %>"
 		data-image="<%= asset_path 'favicon.ico' %>"
 		data-prefill.email="<%= "#{current_account.email}" %>"
 		data-theme.color="#1a2b3c"

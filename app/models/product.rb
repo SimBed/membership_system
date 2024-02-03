@@ -71,18 +71,34 @@ class Product < ApplicationRecord
     max_classes < 1000 ? 'fixed' : 'unlimited'
   end
 
-  def name
-    "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}#{' ('.concat(color, ')') unless color.nil?}"
+  Formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
+  def name(verbose: false, color_show: true, rider_show: false)
+    name_part = []
+    name_part[0] = workout_group.name
+    name_part[1] = verbose ? ' - ' : ' '
+    name_part[2] = if verbose
+      "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} " \
+      "#{ActionController::Base.helpers.pluralize(validity_length, Formal_unit[validity_unit.to_sym])}"
+    else
+      "#{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}"
+    end
+    name_part[3] = rider_show && has_rider? ? (verbose ? ' (+Rider)' : '+R') : ''
+    name_part[4] = color_show && color ? "#{' ('.concat(color, ')')}" : ''
+    name_part.join
   end
 
-  # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
-  # https://stackoverflow.com/questions/10522414/breaking-up-long-strings-on-multiple-lines-in-ruby-without-stripping-newlines
-  def formal_name
-    formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
-    "#{workout_group.name} - " \
-      "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} " \
-      "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}#{' ('.concat(color, ')') unless color.nil?}"
-  end
+  # def name
+  #   "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}#{' ('.concat(color, ')') unless color.nil?}"
+  # end
+
+  # # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
+  # # https://stackoverflow.com/questions/10522414/breaking-up-long-strings-on-multiple-lines-in-ruby-without-stripping-newlines
+  # def formal_name
+  #   formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
+  #   "#{workout_group.name} - " \
+  #     "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} " \
+  #     "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}#{' ('.concat(color, ')') unless color.nil?}"
+  # end
 
   def shop_name_classes
     (max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited').to_s

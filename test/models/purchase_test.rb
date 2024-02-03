@@ -70,12 +70,9 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 'Group UC:3M', @purchase_package.name
     assert_equal 'Group 1C:1D', @purchase_dropin.name
     assert_equal 'Pilates 8C:5W', @purchase_fixed.name
-  end
-
-  test 'delegated formal_name method' do
-    assert_equal 'Group - Unlimited Classes 3 Months', @purchase_package.formal_name
-    assert_equal 'Group - 1 Class 1 Day', @purchase_dropin.formal_name
-    assert_equal 'Pilates - 8 Classes 5 Weeks', @purchase_fixed.formal_name
+    assert_equal 'Group - Unlimited Classes 3 Months', @purchase_package.name(verbose: true)
+    assert_equal 'Group - 1 Class 1 Day', @purchase_dropin.name(verbose: true)
+    assert_equal 'Pilates - 8 Classes 5 Weeks', @purchase_fixed.name(verbose: true)
   end
 
   test 'delegated dropin? method' do

@@ -1,9 +1,10 @@
 <div class="row">
   <% if logged_in_as?('admin', 'superadmin') %>        
-    <div class="column col-2x fw-light"><%= link_to product.name, admin_product_path(product), class: 'like_button', data: { turbo: false } %></div>
+    <div class="column col-2x fw-light"><%= link_to product.name(color_show: false), admin_product_path(product), class: 'like_button', data: { turbo: false } %></div>
   <% else %>
-    <div class="column col-2x fw-light"><%= product.name %></div>
+    <div class="column col-2x fw-light"><%= product.name(color_show: false) %></div>
   <% end %>
+  <div class="column col-1x fw-light"><%= product.color %></div>
   <% if logged_in_as?('superadmin') %>          
     <div class="column col-1x nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", "link", ("sellonline" unless product.sellonline?)]), admin_product_path(product, sellonline: !product.sellonline?), data: { "turbo-method": :patch } %></div>
   <% else %>

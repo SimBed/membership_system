@@ -2,7 +2,7 @@
   <% provide(:greeting, "Book a Class") %>
   <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?)) %>
   <% provide(:visit_shop_statement, visit_shop_statement(@renewal.product.rider?)) %>
-  <% provide(:renewal_product, @renewal.product&.formal_name) %>
+  <% provide(:renewal_product, @renewal.product&.name(verbose: true)) %>
   <% provide(:renewal_price, @renewal.price(@renewal.product).to_s) %>
   <% provide(:base_price, @renewal.base_price(@renewal.product).price.to_s) %>
   <% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?)) %>

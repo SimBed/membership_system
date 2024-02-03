@@ -28,9 +28,11 @@
       <%= form.collection_select :client_id, @clients, :id, :name, include_blank: true %>
     </div>
 
+    <%# reverted to select rather than collection_select due to argument in product#name, which collection_select I think does not provide for %>
     <div class="field">
       <%= form.label :product_id, 'Product' %>
-      <%= form.collection_select :product_id, @products, :id, :name, {include_blank: true}, {"data-action": "purchase-form#change"} %>
+      <%#= form.collection_select :product_id, @products, :id, :name, {include_blank: true}, {"data-action": "purchase-form#change"} %>
+      <%= form.select :product_id, @products.map { |p| [p.name(rider_show: true), p.id] }, {include_blank: true}, {"data-action": "purchase-form#change"} %>
     </div>
 
     <div class="field">
