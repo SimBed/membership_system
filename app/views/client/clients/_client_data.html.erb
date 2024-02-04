@@ -1,26 +1,24 @@
-<table class="table table-secondary table-striped caption-top">
-  <tbody>
-    <tr>
-      <th scope="row">Email</th>
-      <td><%= @client.email %></td>
-    </tr>
-    <% unless @client.phone.blank? %>    
-      <tr>
-        <th scope="row">Phone</th>
-        <td><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></td>
-      </tr>
-    <% end %>    
-    <% unless @client.whatsapp.blank? %>
-      <tr>
-        <th scope="row">Whatsapp</th>
-        <td><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></td>
-      </tr>
-    <% end %>
-    <% unless @client.instagram.blank? %>
-      <tr>
-        <th scope="row">Instagram</th>
-        <td><%= @client.instagram %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="admin-table striped mt-2">
+  <div class="row">
+    <div class="column col-1x">Email</div>
+    <div class="column col-1x"><%= @client.email %></div>
+  </div>
+  <% unless @client.phone.blank? %>
+    <div class="row">
+      <div class="column col-1x">Phone</div>
+      <div class="column col-1x"><%= @client.phone&.phony_formatted(format: :international, spaces: '-') %></div>
+    </div>  
+  <% end %>    
+  <% unless @client.whatsapp.blank? %>
+    <div class="row">
+      <div class="column col-1x">Whatsapp</div>
+      <div class="column col-1x"><%= @client.whatsapp&.phony_formatted(format: :international, spaces: '-') %></div>
+    </div>  
+  <% end %>    
+  <% unless @client.instagram.blank? %>
+    <div class="row">
+      <div class="column col-1x">Instagram</div>
+      <div class="column col-1x">><%= @client.instagram %></div>
+    </div>  
+  <% end %>    
+</div>
