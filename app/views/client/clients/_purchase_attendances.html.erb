@@ -1,15 +1,16 @@
 <% attendances = @purchase.attendances.no_amnesty.order_by_date %>
 <% unless attendances.empty? %>
-  <table class="table table-secondary table-striped caption-top ">
-    <caption class="ps-1">Attendances</caption>    
-    <tbody>
-      <% attendances.each_with_index do |attendance, index| %>
-        <tr>
-          <th scope="row"><%= attendances.size - index %></th>
-          <td><%= attendance.wkclass.summary %></td>
-          <td><%= attendance.status %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="mt-3">Attendances</div>
+  <div class="admin-table striped mt-2">
+    <% attendances.each_with_index do |attendance, index| %>
+      <div class="row">
+        <div class="column"><%= attendances.size - index %></div>
+        <div class="column col-1x"><%= attendance.wkclass.name %></div>
+        <div class="column col-05x"><%= attendance.wkclass.time %></div>
+        <div class="column col-05x"><%= attendance.wkclass.start_time.strftime('%a') %></div>
+        <div class="column col-05x"><%= attendance.wkclass.start_time.strftime('%d %b %y') %></div>
+        <div class="column col-1x"><%= attendance.status %></div>
+      </div>
+    <% end %>
+  </div>
 <% end %>

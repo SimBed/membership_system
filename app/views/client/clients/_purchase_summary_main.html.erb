@@ -1,77 +1,64 @@
-<caption class="ps-1">
-  <%= @purchase.name(verbose: true) %> <%=image_tag('cold.png') if @purchase.display_frozen?(Time.zone.now)%>
-</caption>
-<tbody>
-  <tr>
-    <th scope="row" >Payment</th>
-    <td><%= rupees(@purchase.payment) %></td>
-  </tr>
-  <% unless @purchase.discounts.empty? %>
+<div class="mt-2"><%= @purchase.name(verbose: true) %> <%=image_tag('cold.png') if @purchase.display_frozen?(Time.zone.now)%></div>
+<div class="admin-table striped mt-2">
+  <div class="row">
+    <div class="column col-1x">Payment</div>
+    <div class="column col-1x"><%= rupees(@purchase.payment) %></div>
+  </div>
+  <% unless @purchase.discounts.empty? %>  
     <% discount = @purchase.discounts.first %>
-    <tr>
-      <th scope="row">Discount Name</th>
-      <td><%= discount.name %></td>
-    </tr>
-    <tr>
+    <div class="row">
+      <div class="column col-1x">Discount Name</div>
+      <div class="column col-1x"><%= discount.name %></div>
+    </div>
     <% if discount.percent.zero? %>
-      <th scope="row">Fixed Discount</th>
-      <td><%= rupees(discount.fixed) %></td>
+      <div class="row">
+        <div class="column col-1x">Fixed Discount</div>
+        <div class="column col-1x"><%= rupees(discount.fixed) %></div>
+      </div>
     <% else %>
-      <th scope="row">Discount Percent</th>
-      <td><%= "#{number_with_precision(discount.percent, strip_insignificant_zeros: true)}%" %></td>    
+      <div class="row">
+        <div class="column col-1x">Discount Percent</div>
+        <div class="column col-1x"><%= "#{number_with_precision(discount.percent, strip_insignificant_zeros: true)}%" %></div>
+      </div>
     <% end %>
-    </tr>
-    <tr>
-      <th scope="row">Discount Amount</th>
-      <td><%= rupees(@purchase.price.price - @purchase.payment) %></td>
-    </tr>      
-  <% end %>  
-  <tr>
-    <th scope="row">Paid on</th>
-    <td><%= @purchase.dop.strftime('%d %b %y') %></td>
-  </tr>
-  <tr>
-    <th scope="row">Status</th>
-    <td><%= @purchase.status %></td>
-  </tr>
+    <div class="row">
+      <div class="column col-1x">Discount Amount</div>
+      <div class="column col-1x"><%= rupees(@purchase.price.price - @purchase.payment) %></div>
+    </div>
+  <% end %>
+    <div class="row">
+      <div class="column col-1x">Paid on</div>
+      <div class="column col-1x"><%= @purchase.dop.strftime('%d %b %y') %></div>
+    </div>  
+    <div class="row">
+      <div class="column col-1x">Status</div>
+      <div class="column col-1x"><%= @purchase.status %></div>
+    </div>  
   <% unless @purchase.not_started? || @purchase.expired? %>
-    <tr>
-      <th scope="row">Expiry date</th>
-      <td><%= @purchase.expiry_date.strftime('%d %b %y') %></td>
-    </tr>
-    <tr>
-      <th scope="row">Bookings left</th>
-      <td><%= @purchase.attendances_remain(provisional: true) %></td>
-    </tr>
-    <tr>
-      <th scope="row">Attendances left</th>
-      <td><%= @purchase.attendances_remain(provisional: false) %></td>
-    </tr>
-  <% end %>
+    <div class="row">
+      <div class="column col-1x">Expiry date</div>
+      <div class="column col-1x"><%= @purchase.expiry_date.strftime('%d %b %y') %></div>
+    </div>  
+    <div class="row">
+      <div class="column col-1x">Bookings left</div>
+      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: true) %></div>
+    </div>  
+    <div class="row">
+      <div class="column col-1x">Attendances left</div>
+      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: false) %></div>
+    </div>  
+  <% end %>  
   <% if @purchase.expired? %>
-    <tr>
-      <th scope="row">Expiry cause</th>
-      <td><%= @purchase.expiry_cause %></td>
-    </tr>
-    <tr>
-      <th scope="row">Expired on</th>
-      <td><%= @purchase.expired_on&.strftime('%d %b %y') %></td>
-    </tr>
+    <div class="row">
+      <div class="column col-1x">Expiry cause</div>
+      <div class="column col-1x"><%= @purchase.expiry_cause %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Expired on</div>
+      <div class="column col-1x"><%= @purchase.expired_on&.strftime('%d %b %y') %></div>
+    </div>
   <% end %>
-  <% if @purchase.provisionally_expired? %>
-    <tr>
-      <th scope="row">Last class booked for</th>
-      <td><%= @purchase.will_expire_on&.strftime('%d %b %y') %></td>
-    </tr>
-  <% end %>
-  <% if @purchase.adjust_restart %>
-    <tr>
-      <th scope="row">A&R paid</th>
-      <td><%= rupees(@purchase.ar_payment) %></td>
-    </tr>
-    <tr>
-      <th scope="row">A&R paid on</th>
-      <td><%= @purchase.ar_date.strftime('%d %b %y') %></td>
-    </tr>
-  <% end %>
-</tbody>
+</div>
+
+
+

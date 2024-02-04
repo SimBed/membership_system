@@ -17,7 +17,7 @@ class Purchase < ApplicationRecord
   before_save :set_sunset_date
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
-  delegate :name, :formal_name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
+  delegate :name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
            :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, :rider?, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true

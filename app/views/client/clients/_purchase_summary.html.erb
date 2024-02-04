@@ -1,4 +1,2 @@
-<table id='purchase_summary' class="table table-secondary table-striped caption-top mb-0">
-  <%= render partial: 'purchase_summary_rider' if @purchase.rider? %>
-  <%= render partial: 'purchase_summary_main' if !@purchase.rider? %>
-</table>
+<%= render partial: 'purchase_summary_rider' if @purchase.rider? %>
+<%= render partial: 'purchase_summary_main' if !@purchase.rider? %>
