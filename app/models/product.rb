@@ -13,8 +13,7 @@ class Product < ApplicationRecord
   validates :validity_length, presence: true
   validates :validity_unit, presence: true
   # validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
-  # reinstate product_combo_must_be_unique validation when fixed
-  # validate :product_combo_must_be_unique
+  validate :product_combo_must_be_unique
   delegate :pt?, :groupex?, :online?, to: :workout_group
   # Client.packagee.active gives 'PG ambiguous column max classes' error unless 'products.max_classes' rather than just 'max_classes'.
   # scope :package, -> { where('products.max_classes > 1') }
@@ -192,9 +191,10 @@ class Product < ApplicationRecord
 
   # see comment on full_name_must_be_unique in Client model
   def product_combo_must_be_unique
-    # see my stackoverfolw question, problem with Product.where(['color = ?',nil])
-    product = Product.where(['max_classes = ? and validity_length = ? and validity_unit = ? and color = ? and workout_group_id = ?',
-                             max_classes, validity_length, validity_unit, color, workout_group_id]).first
+    # https://stackoverflow.com/questions/77931145/how-to-use-activerecord-where-method-with-an-array-argument-and-nil-condition
+    # product = Product.where(['max_classes = ? and validity_length = ? and validity_unit = ? and color = ? and workout_group_id = ?',
+    #                          max_classes, validity_length, validity_unit, color, workout_group_id]).first
+    product = Product.where(max_classes: max_classes, validity_length: validity_length, color: color, workout_group_id: workout_group_id, has_rider: has_rider).first
     return if product.blank?
 
     # relevant for updates, new products won't have an id before save

@@ -6,7 +6,9 @@ class ProductTest < ActiveSupport::TestCase
                            validity_length: 3,
                            validity_unit: 'M',
                            color: 'none',
-                           workout_group_id: workout_groups(:space).id)
+                           workout_group_id: workout_groups(:space).id,
+                           rider: false,
+                           has_rider: false)
     @product_without_purchase = products(:spaceothers)
     @client = clients(:aparna)
     @product_pt = products(:pt_head_coach)
@@ -34,17 +36,24 @@ class ProductTest < ActiveSupport::TestCase
     refute_predicate @product, :valid?
   end
 
-  # reinstate when product_combo_must_be_unique validation corrected
-  # test 'product should be unique' do
-  #   duplicate_product = @product.dup
-  #   @product.save
+  test 'product should be unique' do
+    duplicate_product = @product.dup
+    @product.save
 
-  #   refute_predicate duplicate_product, :valid?
-  # end
+    refute_predicate duplicate_product, :valid?
+  end
 
   test 'similar product for different workout group should be valid' do
     similar_product = @product.dup
     similar_product.workout_group_id = workout_groups(:pilates).id
+    @product.save
+
+    assert_predicate similar_product, :valid?
+  end
+
+  test 'same product, but with with rider should be valid' do
+    similar_product = @product.dup
+    similar_product.has_rider = true
     @product.save
 
     assert_predicate similar_product, :valid?
