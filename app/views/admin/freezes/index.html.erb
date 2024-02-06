@@ -1,0 +1,14 @@
+<div id="freezes_table" class="container px-0 mb-5">
+  <div class="text-uppercase fst-italic">Freezes<small><%= "(#{@freezes.size})" %> </small></div>
+  <div class="admin-table striped mt-2">
+    <% @freezes.each do |freeze| %>
+      <div class="row">
+        <div class="column col-1x "><%= link_to freeze.purchase.name, admin_purchase_path(freeze.purchase), class: 'like_button'  %></div>
+        <div class="column col-1x "><%= link_to freeze.purchase.client.name, admin_client_path(freeze.purchase.client), class: 'like_button' %></div>
+        <div class="column col-1x "><%= freeze.start_date.strftime('%d %b %y') %></div>
+        <div class="column col-1x "><%= freeze.end_date.strftime('%d %b %y') %></div>
+        <div class="column col-1x "><%= freeze.note %></div>
+      </div>
+    <% end %>
+  </div>
+</div>

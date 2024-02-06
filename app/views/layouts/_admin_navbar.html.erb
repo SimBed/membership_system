@@ -52,6 +52,7 @@
                   <span class="dropdown-label">JUNIORADMIN</span>
                 <% end %>  
                   <%#= link_to 'Fitternity', admin_fitternities_path, class: "dropdown-item" %>
+                  <%= link_to 'Freezes', admin_freezes_path, class: "dropdown-item" %>
                   <%= link_to 'Products', admin_products_path, class: "dropdown-item" %>
                 <% unless logged_in_as?('junioradmin') %>                     
                   <span class="dropdown-label">ADMIN</span>

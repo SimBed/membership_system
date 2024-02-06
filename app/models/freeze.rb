@@ -4,6 +4,7 @@ class Freeze < ApplicationRecord
   validates :end_date, presence: true
   validate :duration_length
   # validate :no_attendance_during
+  scope :order_by_start_date, -> {order(start_date: :desc)}
 
   def duration
     # (end_date - start_date + 1.days).to_i #Date - Date returns a rational

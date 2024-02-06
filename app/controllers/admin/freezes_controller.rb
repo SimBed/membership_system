@@ -3,6 +3,11 @@ class Admin::FreezesController < Admin::BaseController
   before_action :junioradmin_account
   before_action :set_freeze, only: [:edit, :update, :destroy]
 
+
+  def index
+    @freezes = Freeze.order_by_start_date
+  end
+
   def new
     start_date = Time.zone.now
     end_date = start_date.advance(days: (14 - 1))
