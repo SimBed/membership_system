@@ -6,11 +6,10 @@
   </h4>
 </div>
 <turbo-frame id="product-frame">
-  <div id="products-filter" class="container px-1 mb-3">
-    <%= render partial: 'filter_form' %>
-  </div>  
+  <%= render partial: 'filter_form' %>
   <% if logged_in_as?('superadmin') %>
     <%= render partial: 'download' %>
   <% end %>
   <%= render partial: 'products_table' %>
+  <%#= render partial: 'products_table', locals: {products: @products_not_current} %>
 </turbo-frame>

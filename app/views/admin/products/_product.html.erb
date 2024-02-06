@@ -17,7 +17,7 @@
   <% end %>
   <div class="column nomobile col-1x"><%= product.rider? ? raw("&check;") : "-" %></div>
   <div class="column nomobile col-1x"><%= product.has_rider? ? raw("&check;") : "-" %></div>
-  <% product_data = @products_data[product.name.to_sym] %>
+  <% product_data = @products_data[product.name(rider_show: true).to_sym] %>
   <% if logged_in_as?('admin', 'superadmin') %>
     <div class="column col-1x"><%= product_data[:total_count] %></div>
     <div class="column col-1x"><%= product_data[:ongoing_count] %></div>

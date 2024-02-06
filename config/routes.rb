@@ -11,11 +11,13 @@ Rails.application.routes.draw do
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
   get '/wkclasses/clear_filters', to: 'admin/wkclasses#clear_filters', as: 'clear_wkclass_filters'
+  get '/product/clear_filters', to: 'admin/products#clear_filters', as: 'clear_product_filters'
   # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
   get '/purchases/filter', to: 'admin/purchases#filter', as: 'purchase_filter'
   get '/wkclasses/filter', to: 'admin/wkclasses#filter', as: 'wkclass_filter'
   get '/clients/filter', to: 'admin/clients#filter', as: 'client_filter'
   get '/workouts/filter', to: 'admin/workouts#filter', as: 'workout_filter'
+  get '/products/filter', to: 'admin/products#filter', as: 'product_filter'
   get '/strength_markers/filter', to: 'shared/strength_markers#filter', as: 'strength_marker_filter'
   get '/body_markers/filter', to: 'shared/body_markers#filter', as: 'body_marker_filter'
   get '/workout_group/:id/instructor_expense_filter', to: 'admin/workout_groups#instructor_expense_filter'

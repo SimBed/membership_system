@@ -1,25 +1,20 @@
 class Admin::ProductsController < Admin::BaseController
-  skip_before_action :admin_account, only: [:payment, :index]
-  before_action :junioradmin_account, only: [:payment, :index]
+  skip_before_action :admin_account, only: [:payment, :index, :filter, :clear_filters]
+  before_action :junioradmin_account, only: [:payment, :index, :filter, :clear_filters]
   before_action :initialize_sort, only: :index
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   # don't do as callback because only on successful update not failed update
   # after_action -> { update_purchase_status(@purchases) }, only: [:update]
 
   def index
+    @products = Product.all
+    # @products_not_current = Product.not_current
+    handle_filter
     handle_sort
+    @workout_groups = WorkoutGroup.order_by_name
     # reinstate this once sorted out the sorting (sorting by price returns an array)
     # @products = @products.space_group if logged_in_as?('junioradmin')
-    ongoing_purchases = Purchase.not_fully_expired
-    @products_data = {}
-    @product_ongoing_count = {}
-    @product_total_count = {}
-    @product_base_price = {}
-    @products.each do |product|
-      @products_data[product.name.to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
-                                              total_count: Purchase.where(product_id: product.id).size,
-                                              base_price: product.base_price_at(Time.zone.now)&.price }
-    end
+    set_data
     respond_to do |format|
       format.html
       format.csv { send_data @products.to_csv }
@@ -77,6 +72,31 @@ class Admin::ProductsController < Admin::BaseController
     flash[:success] = t('.success')
   end
 
+  def clear_filters
+    clear_session(*session_filter_list)
+    redirect_to admin_products_path
+  end
+
+  def filter
+    clear_session(*session_filter_list)
+    params_filter_list.each do |item|
+      session["filter_#{item}".to_sym] = params[item]
+    end
+    redirect_to admin_products_path
+  end
+
+
+  # def clear_filters
+  #   clear_session(:filter_any_workout_group_of)
+  #   redirect_to admin_products_path
+  # end
+
+  # def filter
+  #   clear_session(:filter_any_workout_group_of)
+  #   session["filter_any_workout_group_of".to_sym] = params[:any_workout_group_of]
+  #   redirect_to admin_products_path
+  # end  
+
   # def payment
   #   @payment_for_price = Price.find(params[:selected_price]).discounted_price
   #   # @base_payment = Price.find(params[:selected_price]).price
@@ -91,37 +111,62 @@ class Admin::ProductsController < Admin::BaseController
     session[:product_sort_option] = params[:product_sort_option] || session[:product_sort_option] || 'product_name'
   end
 
-  def handle_sort
-    # reformat
-    @products = case session[:product_sort_option]
-                when 'product_name'
-                  Product.order_by_name_max_classes
-                when 'total_count'
-                  Product.order_by_total_count
-                when 'ongoing_count'
-                  Product.order_by_ongoing_count
-                when 'sell_online'
-                  Product.online_order_by_wg_classes_days
-                when 'price'
-                  Product.order_by_base_price
-                else
-                  # just for now
-                  Product.order_by_name_max_classes
-                end
+  def handle_filter
+    %w[any_workout_group_of].each do |key|
+      @products = @products.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
+      # @products_not_current = @products_not_current.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
+    end
+    %w[sell_online current not_current rider has_rider].each do |key|
+      @products = @products.send(key) if session["filter_#{key}"].present?
+      # @products_not_current = @products_not_current.send(key) if session["filter_#{key}"].present?
+    end    
   end
 
-  def sort_on_object
-    @purchases = @purchases.package_started_not_expired.select(&:fixed_package?).to_a.sort_by do |p|
-      p.attendances_remain(provisional: true, unlimited_text: false)
+  def handle_sort
+    case session[:product_sort_option]
+    when 'total_count', 'ongoing_count'
+      # https://stackoverflow.com/questions/20014292/chain-an-additional-order-on-a-rails-activerecord-query 'using a subquery'. @products_current.order_by_total_count fails
+      @products = Product.send("order_by_#{session[:product_sort_option]}").where(id: @products)
+      # @products_not_current = Product.send("order_by_#{session[:product_sort_option]}").where(id: @products_not_current)
+    when 'price'
+      @products = @products.order_by_base_price
+      # @products_not_current = @products_not_current.order_by_base_price
+    else # includes 'product_name'
+      # just for now
+      # @products_current = @products_current.order_by_name_max_classes
+      # @products_not_current = @products_not_current.order_by_name_max_classes
+      @products = Product.order_by_name_max_classes.where(id: @products)
+      # @products_not_current = Product.order_by_name_max_classes.where(id: @products_not_current)
     end
-    # restore to ActiveRecord and recover order.
-    ids = @purchases.map(&:id)
-    @purchases_all_pages = Purchase.recover_order(ids)
-    @purchases = @purchases_all_pages.page params[:page]
-    # @purchases = Purchase.where(id: @purchases.map(&:id)).page params[:page]
-    # 'where' method does not retain the order of the items searched for, hence the more complicated approach
-    # Detailed explanation in comments under 'recover_order' scope
   end
+
+  # # reformat - see purchases controller
+  # def handle_sort
+  #   # reformat
+  #   @products_current = @products_current.send("order_by_#{session[:client_sort_option]}") # .page params[:page]
+
+  #   case session[:product_sort_option]
+  #               when 'product_name'
+  #                 @products_current = Product.current.order_by_name_max_classes
+  #                 @products_not_current = Product.not_current.order_by_name_max_classes
+  #               when 'total_count'
+  #                 @products_current = Product.current.order_by_total_count
+  #                 @products_not_current = Product.not_current.order_by_total_count
+  #               when 'ongoing_count'
+  #                 @products_current = Product.current.order_by_ongoing_count
+  #                 @products_not_current = Product.not_current.order_by_ongoing_count
+  #               when 'sell_online'
+  #                 @products_current = Product.current.online_order_by_wg_classes_days
+  #                 @products_not_current = Product.not_current.online_order_by_wg_classes_days
+  #               when 'price'
+  #                 @products_current = Product.current.order_by_base_price
+  #                 @products_not_current = Product.not_current.order_by_base_price
+  #               else
+  #                 # just for now
+  #                 @products_current = Product.current.order_by_name_max_classes
+  #                 @products_not_current = Product.not_current.order_by_name_max_classes
+  #               end
+  # end
 
   def set_product
     @product = Product.find(params[:id])
@@ -139,13 +184,36 @@ class Admin::ProductsController < Admin::BaseController
     @colors = Setting.product_colors
   end
 
+  def set_data
+    ongoing_purchases = Purchase.not_fully_expired
+    @products_data = {}
+    @product_ongoing_count = {}
+    @product_total_count = {}
+    @product_base_price = {}
+    @products.each do |product|
+      @products_data[product.name(rider_show: true).to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
+      total_count: Purchase.where(product_id: product.id).size,
+      base_price: product.base_price_at(Time.zone.now)&.price }
+    end
+  end
+
+  def params_filter_list
+    [:any_workout_group_of, :sell_online, :current, :not_current, :rider, :has_rider]
+  end
+
+  def session_filter_list
+    params_filter_list.map { |i| "filter_#{i}" }
+  end
+
   def product_params
     # the update method (and therefore the product_params method) is used through a form but also clicking on a link on the products page
     return { sellonline: params[:sellonline] } if params[:sellonline].present?
     return { current: params[:current] } if params[:current].present?
 
-    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :rider, :has_rider).reject do |_, v|
+    params.require(:product).permit(:max_classes, :validity_length, :validity_unit, :color, :workout_group_id, :sellonline, :current, :not_current, :rider, :has_rider).reject do |_, v|
       v == 'none'
     end
   end
+
+
 end

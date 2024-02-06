@@ -29,7 +29,7 @@ class Product < ApplicationRecord
   scope :not_trial, -> { trial.invert_where }
   # not because of implementation of invert_where in not_trial scope, reverse thae chaningin order here will give wrong result
   scope :package_not_trial, -> { not_trial.package }
-  scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', 'workout_groups.name', :max_classes) }
+  scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', 'workout_groups.name', 'products.max_classes') }
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
   # scope :order_by_total_count, -> { left_joins(:purchases).group(:id).order('COUNT(purchases.id) DESC') }
@@ -42,7 +42,12 @@ class Product < ApplicationRecord
                                    left_joins(:purchases, :workout_group).merge(Purchase.not_fully_expired).group(:id, :current).order('products.current desc, COUNT(purchases.id) DESC, max(workout_groups.id)')
                                  }
   scope :current, -> { where(current: true) }
+  scope :not_current, -> { where.not(current: true) }
+  scope :rider, -> { where(rider: true) }
   scope :not_rider, -> { where(rider: false) }
+  scope :has_rider, -> { where(has_rider: true) }
+  scope :sell_online, -> { where(sellonline: true) }
+  scope :any_workout_group_of, ->(wgs) { joins(:workout_group).where(workout_group: { name: wgs }) }
 
   def self.online_order_by_wg_classes_days
     # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id

@@ -1,6 +1,53 @@
 <div id="products-filter" class="container px-1">
   <div class="container search">
     <%= render partial: 'sort_selection' %>
+    <hr class = "search mb-3"></hr>
+    <%= form_with(url: product_filter_path, method: "get", class: "form-class", data: {turbo_frame: "products"}) do %>
+      <div class="container mb-1">
+        <div class="row">
+          <div class="col-6 px-0">
+            <fieldset>
+              <legend>WORKOUT GROUP</legend>
+              <% @workout_groups.each do |wg| %>
+                <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                  <%= check_box_tag 'any_workout_group_of[]', wg.name, session[:filter_any_workout_group_of].present? ? session[:filter_any_workout_group_of].include?(wg.name) : false, id: "chbox#{wg.id}", onchange: "this.form.requestSubmit()" %>
+                  <%= wg.name %>
+                <% end %>
+              <% end %>
+            </fieldset>
+          </div>
+          <div class="col-6 px-0">
+            <fieldset>
+              <legend>ATTRIBUTE</legend>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'sell_online', 'sell_online', session[:filter_sell_online].present? ? true : false, class: "checkbox-class", id: "chbox_sell_online", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Sell Online' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'current', 'current', session[:filter_current].present? ? true : false, class: "checkbox-class", id: "chbox_current", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Active' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'not_current', 'not_current', session[:filter_not_current].present? ? true : false, class: "checkbox-class", id: "chbox_not_current", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Inactive' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'rider', 'rider', session[:filter_rider].present? ? true : false, class: "checkbox-class", id: "chbox_rider", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Rider' %>
+              <% end %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'has_rider', 'has_rider', session[:filter_has_rider].present? ? true : false, class: "checkbox-class", id: "chbox_has_rider", onchange: "this.form.requestSubmit()"  %>
+                <%= 'Has Rider' %>
+              <% end %>
+            </fieldset>
+          </div>          
+
+          <div class="container d-flex">
+            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_product_filters_path, {class: "search searchdelete icon-container"} %>
+          </div>
+        </div>
+      </div>
+    <% end %>    
   </div>
   <hr class = "search mb-3"></hr>
 </div>
