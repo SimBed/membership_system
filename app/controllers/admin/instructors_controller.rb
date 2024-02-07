@@ -1,13 +1,14 @@
 class Admin::InstructorsController < Admin::BaseController
   skip_before_action :admin_account, only: :show
   before_action :set_instructor, only: [:show, :edit, :update, :destroy]
-  before_action :correct_instructor, only: :show
+  before_action :correct_instructor_or_superadmin, only: :show
   before_action :initialize_sort, only: :show
   before_action :set_raw_numbers, only: :edit
 
   def index
     @current_instructors = Instructor.current.order_by_name
     @not_current_instructors = Instructor.not_current.order_by_name
+    @superadmin = logged_in_as?('superadmin') ? true : false    
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -18,11 +19,13 @@ class Admin::InstructorsController < Admin::BaseController
     set_period
     @wkclasses = Wkclass.during(@period).with_instructor(@instructor.id)
     @wkclasses_with_instructor_expense = @wkclasses.unscope(:order).has_instructor_cost.includes(:workout, :attendances, instructor: [:instructor_rates])
+    @wkclasses_with_no_instructor_expense = @wkclasses.unscope(:order).has_no_instructor_cost.includes(:workout, :attendances, instructor: [:instructor_rates])
     # this double counts and I cant find a way to prevent it (tried with distinct and group) so fallen back on ruby object
     # @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.sum(:rate)
     @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.map(&:rate).inject(0, :+)
     handle_sort
     @months = months_logged
+    @show_classes_with_no_expense = logged_in_as?('superadmin') ? true : false
   end
 
   def new
@@ -90,7 +93,9 @@ class Admin::InstructorsController < Admin::BaseController
     @instructor = Instructor.find(params[:id])
   end
 
-  def correct_instructor
+  def correct_instructor_or_superadmin
+    return if logged_in_as?('superadmin')
+
     redirect_to login_path unless current_account?(@instructor.account)
   end
 

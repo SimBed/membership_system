@@ -1,30 +1,46 @@
 <%= turbo_frame_tag 'commissions' do %>
-  <div class="container px-1 col-md-6">
+  <div class="container px-1">
     <h4><%="Instructor #{@instructor.name}" %></h4>
     <%= render 'sort_months' %> 
   </div>
 
-  <div class="col-md-6">
-    <table class="table table-secondary table-striped caption-top">
-      <caption class="ps-1">Class Payments
-        <%= render 'sort_options' %> 
-      </caption>
-      <tbody>
-        <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
-          <tr>
-            <% wkclass_size = wkclass.attendances.size %>
-            <th scope="row"><%= index + 1 %></th>
-            <td><%= wkclass.summary %></td>
-            <td><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></td>
-            <td><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></td>
-            <td><%= number_with_delimiter(wkclass.rate) %></td>
-          </tr>
-        <% end %>
-        <tr>
-          <th scope="row">Total</th>
-          <td><%= rupees(@total_instructor_cost_for_period) %></td>
-        </tr>
-      </tbody>
-    </table>
+  <div id="instructor-class-with-payments" class="container px-0">
+    <div class="mb-1">Class Payments
+      <%= render 'sort_options' %>
+    </div>
+    <div class="admin-table striped">
+      <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
+        <% wkclass_size = wkclass.attendances.size %>
+        <div class="row">
+          <div class="column"><%= index + 1 %></div>
+          <div class="column col-2x"><%= wkclass.summary %></div>
+          <div class="column col-2x"><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></div>
+          <div class="column col-1x"><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></div>
+          <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
+        </div>
+      <% end %>
+        <div class="row">
+          <div class="column">Total</div>
+          <div class="column col-1x"><%= rupees(@total_instructor_cost_for_period) %></div>
+          </div>   
+    </div>
   </div>
+
+  <% if @show_classes_with_no_expense %>
+    <div id="instructor-class-without-payments" class="container px-0 mt-5">
+      <div class="mb-1">Classes (with no additional payment)</div>
+      <div class="admin-table striped">
+        <% @wkclasses_with_no_instructor_expense.each_with_index do |wkclass, index| %>
+          <% wkclass_size = wkclass.attendances.size %>
+          <div class="row">
+            <div class="column"><%= index + 1 %></div>
+            <div class="column col-2x"><%= wkclass.summary %></div>
+            <div class="column col-2x"><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></div>
+            <div class="column col-1x"><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></div>
+            <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 <% end %>
