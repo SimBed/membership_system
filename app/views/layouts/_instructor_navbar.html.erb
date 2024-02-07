@@ -16,21 +16,24 @@
 
     <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
       <ul class="navbar-nav">
+      <% if current_account.instructor.employee? %>
         <li class="nav-item">
           <%= link_to admin_wkclasses_path, class: "nav-link" do %>
             <i class="fa fa-dumbbell"></i>
           <% end %>
         </li>
-        <% if current_account.instructor.commission? %>
-          <li class="nav-item">
-            <%= link_to admin_instructor_path(current_account.instructor), class: "nav-link" do %>
-              <i class="fa fa-calendar"></i>
-            <% end %>
-          </li>
-        <% end %>
+      <% end %>        
+      <% if current_account.instructor.commission? %>
+        <li class="nav-item">
+          <%= link_to admin_instructor_path(current_account.instructor), class: "nav-link" do %>
+            <i class="fa fa-calendar"></i>
+          <% end %>
+        </li>
+      <% end %>
       </ul>  
 
       <ul class="navbar-nav" >
+      <% if current_account.instructor.employee? %>
         <li id="" class="nav-item dropdown dropdown-hover">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -56,6 +59,7 @@
             </div>
           </div>
         </li>
+      <% end %>
 
         <li class="nav-item">
           <%= button_to logout_path, method: :delete, class: "nav-link active", data: {turbo: false} do %>

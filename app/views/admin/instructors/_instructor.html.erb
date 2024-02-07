@@ -12,6 +12,12 @@
   <div class="column col-1x nomobile"><%= instructor.email %></div>
   <div class="column col-1x"><%= number(instructor.whatsapp, instructor.whatsapp) %></div>        
   <div class="column"><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless instructor.current?)].compact.join(' ')), admin_instructor_path(instructor, current: !instructor.current?), data: {turbo_method: :patch} %></div>
+  <div class="column" data-toggle="tooltip" data-placement="top" title="commission: the instructor can see a log of classes on their dashboard for which they receive a payment">
+    <%= link_to image_tag('commission.png', class: ["table_icon",("active-workout" unless instructor.commission?)].compact.join(' ')), admin_instructor_path(instructor, commission: !instructor.commission?), data: {turbo_method: :patch} %>
+  </div>
+  <div class="column" data-toggle="tooltip" data-placement="top" title="employee: the instructor can see the group classes log and record attendance">
+    <%= link_to image_tag('employee.png', class: ["table_icon",("active-workout" unless instructor.employee?)].compact.join(' ')), admin_instructor_path(instructor, employee: !instructor.employee?), data: {turbo_method: :patch} %>
+  </div>
   <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_instructor_path(instructor), data: {turbo: false} %></div>
   <% if logged_in_as?('superadmin') %>   
     <div class="column">

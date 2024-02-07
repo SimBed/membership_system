@@ -36,7 +36,21 @@
   <div class="field mb-3">
     <%= form.label :current do %>
       <%= form.check_box :current, { checked: @instructor.new_record? || form.object.current? } %>
-      Instructor is Active
+      Current
+    <% end %>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :commission do %>
+      <%= form.check_box :commission, { checked: @instructor.new_record? || form.object.commission? } %>
+      Commission
+    <% end %>
+  </div>
+
+  <div class="field mb-3">
+    <%= form.label :employee do %>
+      <%= form.check_box :employee, { checked: @instructor.new_record? || form.object.employee? } %>
+      Employee
     <% end %>
   </div>  
 

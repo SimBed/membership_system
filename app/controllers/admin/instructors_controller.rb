@@ -112,6 +112,10 @@ class Admin::InstructorsController < Admin::BaseController
     # the update method (and therefore the instructor_params method) is used through a form but also clicking on a link on the instructors page
     return { current: params[:current] } if params[:current].present?
 
-    params.require(:instructor).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :current)
+    return { commission: params[:commission] } if params[:commission].present?
+    
+    return { employee: params[:employee] } if params[:employee].present?
+
+    params.require(:instructor).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :current, :commission, :employee)
   end
 end
