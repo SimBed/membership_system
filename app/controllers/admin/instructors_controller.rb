@@ -70,6 +70,7 @@ class Admin::InstructorsController < Admin::BaseController
     case session[:instructor_expense_sort_option]
     when 'wkclass_date'
       @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.order_by_date
+      @wkclasses_with_no_instructor_expense = @wkclasses_with_no_instructor_expense.order_by_date
     when 'client_name'
       sort_on_object
     end
@@ -78,6 +79,9 @@ class Admin::InstructorsController < Admin::BaseController
   def sort_on_object
     @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.to_a.sort_by do |w|
       # this seems to be the way to use sort_by with a secondary order (but fails when attendance is nil for some reason "|| 'Z'" mitigates this)
+      [w.attendances&.first&.client&.name || 'Z', -w.start_time.to_i]
+    end
+    @wkclasses_with_no_instructor_expense = @wkclasses_with_no_instructor_expense.to_a.sort_by do |w|
       [w.attendances&.first&.client&.name || 'Z', -w.start_time.to_i]
     end
   end
