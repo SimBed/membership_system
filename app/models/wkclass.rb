@@ -27,6 +27,7 @@ class Wkclass < ApplicationRecord
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
   # deprecate instructor_cost as an attribute of wkclass in due course and reference instructor_rate.rate instead (as below)
   scope :has_instructor_cost, -> { joins(:instructor_rate).where.not(instructor_rate: { rate: 0 }) }
+  scope :has_no_instructor_cost, -> { joins(:instructor_rate).where(instructor_rate: { rate: 0 }) }
   # wg is an array of instructor ids
   scope :with_instructor, ->(i) { joins(:instructor).where(instructor: { id: i }) }
   scope :group_by_instructor_cost, -> { joins(:instructor).group("first_name || ' ' || last_name").sum(:instructor_cost) }
@@ -59,6 +60,7 @@ class Wkclass < ApplicationRecord
   cancellation_window = Setting.cancellation_window.hours
   scope :in_cancellation_window, -> { where('start_time > ?', Time.zone.now + cancellation_window) }
   scope :future_and_recent, -> { where('start_time > ?', Time.zone.now - cancellation_window) }
+  scope :of_service, ->(service) { joins(workout: [:workout_groups]).where(workout_groups: {service: })}
   #  see explantion in Purchase model (not essential right now - could be used in show method of instructors constroller)
   # scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   # paginates_per Setting.wkclasses_pagination

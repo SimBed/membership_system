@@ -1,5 +1,11 @@
 <div class="row">
-  <%=content_tag(:div, instructor.name, class: ["column col-1x",("fw-light" unless instructor.current?)].compact.join(' '))%>
+  <%= content_tag(:div, class: ["column col-1x",("fw-light" unless instructor.current?)].compact.join(' ')) do %>
+    <% if @superadmin %>
+      <%= link_to instructor.name, admin_instructor_path(instructor), class: 'like_button', data: {turbo: false}%>
+    <% else %>
+      <%= instructor.name %>
+    <% end %>            
+  <% end %>            
   <% if logged_in_as?('superadmin') %>
     <div class="column col-0.5x"><%= instructor.wkclasses.size %></div>
   <% end %>            
