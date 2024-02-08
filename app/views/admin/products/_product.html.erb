@@ -1,8 +1,8 @@
 <div class="row">
   <% if logged_in_as?('admin', 'superadmin') %>        
-    <div class="column col-2x fw-light"><%= link_to product.name(color_show: false), admin_product_path(product), class: 'like_button', data: { turbo: false } %></div>
+    <div class="column col-2x fw-light"><%= link_to product.name(color_show: false, rider_show: true), admin_product_path(product), class: 'like_button', data: { turbo: false } %></div>
   <% else %>
-    <div class="column col-2x fw-light"><%= product.name(color_show: false) %></div>
+    <div class="column col-2x fw-light"><%= product.name(color_show: false, rider_show: true) %></div>
   <% end %>
   <div class="column col-1x fw-light"><%= product.color %></div>
   <% if logged_in_as?('superadmin') %>          

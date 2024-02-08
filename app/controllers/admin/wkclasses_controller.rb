@@ -167,6 +167,10 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def attendance_remain_check
+    attendances_remain = @attendances.first.purchase.attendances_remain
+
+    return if attendances_remain == 'unlimited' # nutrition?
+    
     return if @attendances.first.purchase.attendances_remain >= @weeks_to_repeat
 
     flash[:warning] = 'No classes created. Number of repeats exceeds the number of bookings that remain on the Package' # t('.repeats_too_high')
