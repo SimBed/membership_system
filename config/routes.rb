@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   patch '/purchases/:id/expire', to: 'admin/purchases#expire', as: 'expire_purchase'
   get '/purchases/discount', to: 'admin/purchases#discount'
   get '/purchases/dop_change', to: 'admin/purchases#dop_change'
+  get '/purchases/adjust_restart_index', to: 'admin/purchases#adjust_restart_index'
   get '/superadmin/expenses/filter', to: 'superadmin/expenses#filter'
   get '/products/payment', to: 'admin/products#payment'
   get '/wkclasses/instructor_select', to: 'admin/wkclasses#instructor_select'

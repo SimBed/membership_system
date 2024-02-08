@@ -99,6 +99,10 @@ class Purchase < ApplicationRecord
 
   attr_accessor :renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id, :base_price
 
+  def self.next(purchase, key = :created_at)
+    self.where("#{key} > ?", purchase.send(key)).first
+  end
+
   def discount(base_price, *discounts)
     discounts.each do |discount|
       base_price = (base_price * (1 - (discount.percent.to_f / 100))) - discount.fixed

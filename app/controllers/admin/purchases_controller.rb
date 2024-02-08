@@ -196,6 +196,10 @@ class Admin::PurchasesController < Admin::BaseController
                                                      selected: @purchase_oneoff_discount_id || @discount_none.id) }
   end
 
+  def adjust_restart_index
+    @adjust_restart_purchases = Purchase.where(adjust_restart: true).order(dop: :desc).includes(:client)
+  end
+
   private
 
   def create_rider
