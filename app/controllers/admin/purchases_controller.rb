@@ -21,17 +21,11 @@ class Admin::PurchasesController < Admin::BaseController
     # @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
     # associations referrred to in view - attendances, product in start_to_expiry method, client directly in purchase.client.name
     @purchases = Purchase.includes(:attendances, :freezes, :adjustments, :penalties, :client, product: [:workout_group])
+    @superadmin = logged_in_as?('superadmin')
     handle_search
     handle_filter
     handle_period
-    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
-    Purchase.default_timezone = :utc
-    # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
-    # Bullet.enable = false if Rails.env == 'development'
-    @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
-    @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
-    # Bullet.enable = true if Rails.env == 'development'
-    Purchase.default_timezone = :local
+    handle_charting if @superadmin
     # Purchase.includes(:attendances, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
     # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
     # much slower if unneccessarily done after sort
@@ -365,6 +359,17 @@ class Admin::PurchasesController < Admin::BaseController
 
     @purchases = @purchases.during(month_period(session[:purchases_period]))
   end
+
+  def handle_charting
+    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+    Purchase.default_timezone = :utc
+    # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
+    # Bullet.enable = false if Rails.env == 'development'
+    @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
+    @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
+    # Bullet.enable = true if Rails.env == 'development'
+    Purchase.default_timezone = :local
+  end  
 
   def prepare_items_for_filters
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!

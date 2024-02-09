@@ -7,12 +7,12 @@
 </div>
 <%= turbo_frame_tag 'purchases-and-filter' do %>
   <%= render partial: 'filter_form' %>
-  <% if logged_in_as?('superadmin') %>
+  <% if @superadmin %>
     <%= render partial: 'download' %>
   <% end %>
     <%= turbo_frame_tag 'purchases' do %>
       <%= render partial: 'purchases_table' %>
-      <% if logged_in_as?('superadmin') %>
+      <% if @superadmin %>
         <%= line_chart @purchase_count_for_chart, ytitle: "Count" %>
         <%= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>
       <% end %>
