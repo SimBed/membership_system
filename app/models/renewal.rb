@@ -123,4 +123,10 @@ class Renewal
 
     @last_product
   end
+
+  # note there is product.css_class which will return the same
+  def default_product_type
+    product.fixed_package? ? 'fixed' : 'unlimited'
+  end
+
 end

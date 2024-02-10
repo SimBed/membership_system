@@ -47,9 +47,8 @@ class Client::ClientsController < ApplicationController
       associations: :workout_group
     ).call
     @renewal = Renewal.new(@client)
-    # to update razorpay button from default 'Pay Now'
     @trial_price = Product.trial.space_group.first.base_price_at(Time.zone.now).price
-    @last_product_fixed = @renewal.product.fixed_package?
+    @default_product_type = @renewal.default_product_type
   end
 
   def book

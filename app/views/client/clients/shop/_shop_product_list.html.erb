@@ -1,5 +1,6 @@
 <% @products.each_with_index do |product, index| %>
-  <div class="accordion-item product <%=product.css_class%>">
+  <% product_css_class = product.css_class %>
+  <div <%= "hidden" unless product_css_class == @default_product_type %> class="accordion-item <%= product_css_class %>" data-shop-menu-target=<%= "#{product_css_class}Product" %> >
     <div class="accordion-header" id=<%="heading-1-#{index}"%>>
       <div class="accordion-button collapsed justify-content-around py-2 py-md-3" role="button" data-bs-toggle="collapse"
         data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>

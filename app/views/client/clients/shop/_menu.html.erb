@@ -1,10 +1,10 @@
 <div class="text-center">
   <div class="package_type_btns">
-    <button id="Unlimited_btn" class="btn_product_type btn btn-filter current" onclick="showProduct(event, 'unlimited')">Unlimited</button>
-    <button id="Flex_btn" class="btn_product_type btn btn-filter" onclick="showProduct(event, 'fixed')">Flex</button>
+    <button class="btn_product_type btn btn-filter" data-action="shop-menu#showUnlimited" data-shop-menu-target="unlimitedBtn">Unlimited</button>
+    <button class="btn_product_type btn btn-filter" data-action="shop-menu#showFixed" data-shop-menu-target="fixedBtn">Flex</button>
   </div>
-  <div class="px-2 my-3 value-statement product unlimited">Our best value memberships for training regularly. The more you train, the better the value!</div>        
-  <div class="px-2 my-3 value-statement product fixed">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
+  <div <%= "hidden" unless @default_product_type == 'unlimited' %> class="px-2 my-3 value-statement unlimited" data-shop-menu-target="unlimitedStatement">Our best value memberships for training regularly. The more you train, the better the value!</div>        
+  <div <%= "hidden" unless @default_product_type == 'fixed' %> class="px-2 my-3 value-statement fixed" data-shop-menu-target="fixedStatement">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
 </div>
 
 <div class="container px-1 ps-sm-10">
@@ -14,45 +14,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  function showProduct(evt, productType) {
-
-    var i, product, product_type_btns, display_var;
-
-    display_var = "none";
-    if (productType == 'all') {
-      display_var = "block";
-    }
-
-    // Get all elements with class= "product" and hide them 
-    product = document.getElementsByClassName("product");
-    for (i = 0; i < product.length; i++) {
-    product[i].style.display = display_var;
-    }
-
-    // Get all elements with class="btn_product_type" and remove the class "active"
-    product_type_btns = document.getElementsByClassName("btn_product_type");
-    for (i = 0; i < product_type_btns.length; i++) {
-    product_type_btns[i].className = product_type_btns[i].className.replace(" current", "");
-    }
-
-    // Get all elements with class= "productType" and show them
-    selected_products = document.getElementsByClassName(productType);
-    for (i = 0; i < selected_products.length; i++) {
-    selected_products[i].style.display = "block";
-    }  
-
-    // add an "active" class to the button that opened the tab
-      evt.currentTarget.className += " current";
-  }
-  // set text of razorpay button, which by default razorpay forces to be 'Pay Now'
-  var trialbtn = document.getElementById("trial-btn")
-  if (trialbtn) { document.getElementById("trial-btn").getElementsByClassName("razorpay-payment-button")[0].value= '<%= rupees(@trial_price) %>' }
-  // Click on option wanted to be visible as default
-  <% if @last_product_fixed %>
-    document.getElementById("Flex_btn").click();
-  <% else %>
-    document.getElementById("Unlimited_btn").click();
-  <% end %>
-</script>
