@@ -1,38 +1,37 @@
 <div class="accordion">
-<% @products.each_with_index do |product, index| %>
-  <div class="accordion-item product <%=product.css_class%>">
-    <div class="accordion-header" id=<%="heading-1-#{index}"%>>
-      <div class="accordion-button collapsed justify-content-around py-2 py-md-3" role="button" data-bs-toggle="collapse"
-        data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>
-        <div class="d-flex g-1 g-xl-5 align-items-center pe-3">
-          <div class="d-flex flex-column align-items-start pe-3" style="height: 3.5rem;">
-            <div class="mb-auto pe-md-5 name"><%= product.workout_group.name %></div>
-            <div class="pe-md-5 classes"><%= product.shop_name_classes%></div>
-            <div class="pe-md-5 duration"><%= pluralize(product.validity_length, product.formal_unit) %></div>
-            <%# if product.trial? %>
-              <%# <div class="pe-md-5 duration">trial</div> %>
-            <%# end %>
-          </div>
-          <div class="d-flex flex-column justify-content-center">
-            <div class="pe2 base-price"><%= rupees(@menu.base_price(product)) %></div>
-            <div class="pe2 discount-price"><%= rupees(@menu.price(product)) %></div>
+  <% @products.each_with_index do |product, index| %>
+    <% product_css_class = product.css_class %>
+    <div <%= "hidden" unless product_css_class == @default_product_type %> class="accordion-item <%= product_css_class %>" data-shop-menu-target=<%= "#{product_css_class}Product" %>>
+      <div class="accordion-header" id=<%="heading-1-#{index}"%>>
+        <div class="accordion-button collapsed justify-content-around py-2 py-md-3" role="button" data-bs-toggle="collapse"
+          data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>
+          <div class="d-flex g-1 g-xl-5 align-items-center pe-3">
+            <div class="d-flex flex-column align-items-start pe-3" style="height: 3.5rem;">
+              <div class="mb-auto pe-md-5 name"><%= product.workout_group.name %></div>
+              <div class="pe-md-5 classes"><%= product.shop_name_classes%></div>
+              <div class="pe-md-5 duration"><%= pluralize(product.validity_length, product.formal_unit) %></div>
+            </div>
+            <div class="d-flex flex-column justify-content-center">
+              <div class="pe2 base-price"><%= rupees(@menu.base_price(product)) %></div>
+              <div class="pe2 discount-price"><%= rupees(@menu.price(product)) %></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div id=<%="collapse-1-#{index}"%> class="accordion-collapse collapse" aria-labelledby=<%="heading-1-#{index}"%>
-      data-bs-parent="#accordion-1">
-      <div class="accordion-body">
-        <ul class="text-secondary product-notes">
-          <% saving = @menu.discount(product) %>
-          <% unless saving == 0 %>
-            <li>Save <%= rupees(saving) %></li>
-          <% end %>
-          <li>Unlimited Packages allow attendance at a maximum of 1 class per day.</li>
-          <li>Freeze anytime. Freeze charges <%= link_to 'here', '/charges&deductions', class: "fw-bolder text-decoration-underline" %>. Freeze terms under 'Modifications' <%= link_to 'here', '/terms&conditions', class: "fw-bolder text-decoration-underline" %></li>
-        </ul>
+      <div id=<%="collapse-1-#{index}"%> class="accordion-collapse collapse" aria-labelledby=<%="heading-1-#{index}"%>
+        data-bs-parent="#accordion-1">
+        <div class="accordion-body">
+          <ul class="text-secondary product-notes">
+            <% saving = @menu.discount(product) %>
+            <% unless saving == 0 %>
+              <li>Save <%= rupees(saving) %></li>
+            <% end %>
+            <li>Unlimited Packages allow attendance at a maximum of 1 class per day.</li>
+            <li>Freeze anytime. Freeze charges <%= link_to 'here', '/charges&deductions', class: "fw-bolder text-decoration-underline" %>. Freeze terms under 'Modifications' <%= link_to 'here', '/terms&conditions', class: "fw-bolder text-decoration-underline" %></li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 </div>
+

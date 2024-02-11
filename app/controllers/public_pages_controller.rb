@@ -14,6 +14,7 @@ class PublicPagesController < ApplicationController
     @products = Product.online_order_by_wg_classes_days.reject { |p| p.base_price_at(Time.zone.now).nil? }.reject(&:trial?)
     @menu = PackageMenu.new
     @group = true
+    @default_product_type = "unlimited"
   end
 
   def signup
