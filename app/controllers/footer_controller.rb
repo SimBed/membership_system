@@ -7,7 +7,9 @@ class FooterController < ApplicationController
 
   def charges; end
 
-  def package_policy; end
+  def package_policy
+    @default_policy = logged_in_as?('client') ? current_account.client.default_policy : 'group' 
+  end
 
   def privacy_policy; end
 

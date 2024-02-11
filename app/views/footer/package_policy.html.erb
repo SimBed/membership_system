@@ -1,49 +1,19 @@
 <section class="mb-5" id="policy">
-	<div class="container">
+	<div class="container" data-controller='package-policy' data-package-policy-default-policy-value="<%= @default_policy %>">
   <h3 class="mb-4 fw-bolder text-center text-uppercase">policies</h3>
         <div class="text-center">
-          <button id="group_btn" class="btn_policy_type btn btn-filter rounded-pill current" onclick="showPolicy(event, 'group_content')">Group</button>
-          <button id="pt_btn" class="btn_policy_type btn btn-filter rounded-pill px-4" onclick="showPolicy(event, 'pt_content')">PT</button>     
+          <button class="btn_policy_type btn btn-filter rounded-pill" data-package-policy-target='btnGroup' data-action="package-policy#showGroup">Group</button>
+          <button class="btn_policy_type btn btn-filter rounded-pill px-4" data-package-policy-target='btnPt' data-action="package-policy#showPt">PT</button>     
         </div>
-        <div id='group_content' class = 'policy_content' >
+        <div <%= "hidden" unless @default_policy =='group' %> class="policy_content" data-package-policy-target="contentGroup">
           <%= render 'group_package_policy' %>
         </div>
-        <div id='pt_content' class = 'policy_content' >
+        <div <%= "hidden" unless @default_policy =='pt' %> class = "policy_content" data-package-policy-target="contentPt">
           <%= render 'pt_package_policy' %>
         </div>
 			</div>
 		</div>
 	</div>
 </section>
-
-<script>
-
-  function showPolicy(evt, policyType) {
-
-    var i, policy_content, policy_type_btns, selected_policy;
-
-    // Get all elements with class= "policy_content" and hide them 
-    policy_content = document.getElementsByClassName("policy_content");
-    for (i = 0; i < policy_content.length; i++) {
-    policy_content[i].style.display = "none";
-    }
-
-    // Get all elements with class="btn_policy_type" and remove the class "active"
-    policy_type_btns = document.getElementsByClassName("btn_policy_type");
-    for (i = 0; i < policy_type_btns.length; i++) {
-    policy_type_btns[i].className = policy_type_btns[i].className.replace(" current", "");
-    }
-
-    // Get element with id= "policyType" and show it
-    selected_policy = document.getElementById(policyType);
-    selected_policy.style.display = "block";
-
-    // add an "active" class to the button that opened the tab
-    evt.currentTarget.className += " current";
-  }
-
-  // Click on option wanted to be visible as default
-  document.getElementById("group_btn").click();
-</script>
 
 

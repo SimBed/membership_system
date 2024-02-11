@@ -242,6 +242,12 @@ class Client < ApplicationRecord
     waitings.where(wkclass_id: wkclass.id)&.first
   end
 
+  def default_policy
+    return 'group' unless has_purchased?
+
+    purchases.main_purchase.last.pt? ? 'pt' : 'group'
+  end
+
   private
 
   def downcase_email
