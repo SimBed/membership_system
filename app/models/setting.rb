@@ -75,6 +75,7 @@ class Setting < RailsSettings::Base
     field :payment_methods, type: :array,
                             default: ['A&R conversion', 'Card-Credit', 'Card-Debit', 'Cash', 'Cheque', 'ClassPass', 'Fitternity', 'Google Pay', 'Instamojo', 'NEFT', 'Not applicable', 'Not paid', 'Paid to instructor', 'PayTM', 'Razorpay']
     field :freeze_min_duration, type: :integer, default: 3
+    field :freeze_charge, type: :integer, default: 100
     field :sunset_limit_days, type: :hash, default: {
       'week_or_less' => 30,
       'month_or_more' => 180

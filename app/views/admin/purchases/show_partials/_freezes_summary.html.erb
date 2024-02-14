@@ -1,4 +1,4 @@
-<% freezes = @purchase.freezes %>
+<% freezes = @purchase.freezes.order_by_start_date %>
 <% unless freezes.empty? %>
   <div class="fst-italic ps-2"><%= "#{pluralize(freezes.size, 'Freeze')} (#{pluralize(freezes.map(&:duration).inject(&:+), 'day')})" %></div>
   <div class="admin-table striped mt-2 mb-4">
@@ -10,6 +10,7 @@
       <div class="column col-1x">Note</div>
       <div class="column"></div>
       <div class="column"></div>
+      <div class="column"></div>
     </div>
     <% freezes.each_with_index do |freeze, index| %>
       <div class="row">
@@ -18,6 +19,7 @@
         <div class="column col-1x"><%= freeze.end_date.strftime('%d %b %y') %></div>
         <div class="column col-1x"><%= "#{pluralize(freeze.duration, 'day')}" %></div>
         <div class="column col-1x"><%= freeze.note %></div>
+        <div class="column"><%= image_tag('medical.png', class: ["table_icon",("non-medical" unless freeze.medical?)].compact.join(' ')) %></div>        
         <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(freeze), class: "icon-container", data: { turbo_frame: 'freeze_edit' } %></div>
         <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(freeze), data: { turbo_method: :delete, turbo_confirm: 'Freeze will be deleted Are you sure?' } %></div>
       </div>

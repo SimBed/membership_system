@@ -1,4 +1,4 @@
-<% freezes = @purchase.freezes %>
+<% freezes = @purchase.freezes.order_by_start_date %>
 <% unless freezes.count.zero? %>
   <div class="mt-3 ps-1"><%= "#{pluralize(freezes.size, 'Freeze')} (#{pluralize(freezes.map(&:duration).inject(&:+), 'day')})" %></div>
   <div class="admin-table striped mt-2">

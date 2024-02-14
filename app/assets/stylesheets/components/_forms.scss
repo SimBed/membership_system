@@ -76,6 +76,11 @@ input[type="checkbox"] {
 
 div.field, div.actions {
   margin-bottom: 0.4rem;
+  .confirmation {
+  font-size: 80%;
+  padding-left :1rem;
+  margin-bottom :0;
+  }
 }
 
 div.actions input {

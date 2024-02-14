@@ -76,3 +76,9 @@ img.filter-white {
 a i.bi-sunset:hover, a i.bi-sunrise:hover {
   transform: scale(1.2);
   }
+
+  img.table_icon {
+    &.non-medical {
+      opacity: 0.1;
+    }
+  }

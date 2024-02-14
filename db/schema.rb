@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_06_115508) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_12_112116) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -230,6 +230,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_06_115508) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "medical", default: false
+    t.boolean "doctor_note", default: false
+    t.string "added_by"
+    t.index ["doctor_note"], name: "index_freezes_on_doctor_note"
+    t.index ["medical"], name: "index_freezes_on_medical"
     t.index ["purchase_id"], name: "index_freezes_on_purchase_id"
   end
 
@@ -294,6 +299,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_06_115508) do
     t.string "whatsapp"
     t.string "instagram"
     t.index ["account_id"], name: "index_partners_on_account_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "amount"
+    t.date "dop"
+    t.string "payment_mode"
+    t.boolean "online"
+    t.string "invoice"
+    t.text "note"
+    t.integer "payable_id"
+    t.string "payable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dop"], name: "index_payments_on_dop"
+    t.index ["online"], name: "index_payments_on_online"
+    t.index ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type"
+    t.index ["payment_mode"], name: "index_payments_on_payment_mode"
   end
 
   create_table "penalties", force: :cascade do |t|

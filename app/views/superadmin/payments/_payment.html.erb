@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="column col-1x"><%= payment.payable.purchase.client.name %></div>
+  <div class="column col-1x"><%= payment.dop.strftime('%d %b %y') %></div>
+  <div class="column col-1x"><%= link_to payment.payable_type, admin_purchase_path(payment.payable.purchase) %></div>
+  <div class="column col-1x"><%= rupees(payment.amount) %></div>
+  <div class="column col-1x"><%= payment.payment_mode %></div>
+  <div class="column"><%= payment.online? ? raw("&check;") : "-" %></div>
+  <div class="column col-1x"><%= payment.note %></div>
+</div>
+

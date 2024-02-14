@@ -1,10 +1,12 @@
 class Freeze < ApplicationRecord
   belongs_to :purchase
+  has_one :payment, as: :payable, dependent: :destroy
+  accepts_nested_attributes_for :payment, reject_if: :non_chargeable?
   validates :start_date, presence: true
   validates :end_date, presence: true
   validate :duration_length
   # validate :no_attendance_during
-  scope :order_by_start_date, -> {order(start_date: :desc)}
+  scope :order_by_start_date, -> {order(start_date: :asc)}
 
   def duration
     # (end_date - start_date + 1.days).to_i #Date - Date returns a rational
@@ -30,6 +32,10 @@ class Freeze < ApplicationRecord
   def duration_length
     errors.add(:base, 'must be 3 days or more') if duration < Setting.freeze_min_duration
   end
+
+  def non_chargeable?(att)
+    att[:amount].nil? || att[:amount].to_i.zero? 
+  end  
 
   # def no_attendance_during
   #   # purchases is only nil when we force it to be during tests

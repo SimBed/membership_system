@@ -225,7 +225,7 @@ class Purchase < ApplicationRecord
   end
 
   # for new freeze form in client booking page
-  def default_new_freeze_start_dates
+  def default_new_freeze_period_dates
     earliest = Time.zone.today.advance(days: 1)
     if freezed?(Time.zone.now)
       current_freeze = freezes_cover(Time.zone.now).first # shouldn't be more than 1 so reasonable to take first

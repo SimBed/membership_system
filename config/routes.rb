@@ -81,7 +81,9 @@ Rails.application.routes.draw do
     resources :workout_groups
   end
   namespace :superadmin do
+    get 'payments/index'
     resources :discounts
+    resources :payments, only: [:index]
     resources :discount_reasons
     resources :expenses, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :other_services, only: [:index, :new, :edit, :create, :update, :destroy]

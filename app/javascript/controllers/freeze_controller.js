@@ -1,7 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "source" ]
+  static targets = [ "source", "hideable", "doctorNote" ]
+  static values = { medical: Boolean, price: Number }  
+
+  // connect() {
+  //   console.log(this.priceValue)
+  // }
+
   copy_to_razorpay_form() {
     const dateInput = document.getElementById("start_date");
     dateInput.setAttribute("value", this.sourceTarget.value);
@@ -22,4 +28,26 @@ export default class extends Controller {
     let end_date_string = start_date.toISOString().slice(0,10); // only need the first ten characters '01-05-2023', not the subsequent time details
     document.getElementById("freeze_end_date").value = end_date_string;
   }
+  
+  toggle_medical() {
+      this.medicalValue = !this.medicalValue
+      this.doctorNoteTarget.hidden = !this.medicalValue;
+      this.doctorNoteValue = false;
+      document.getElementById('freeze_doctor_note').checked = false;
+      if (this.doctorNoteValue != true) {
+        document.getElementById('freeze_payment_attributes_amount').value = this.priceValue;
+        }      
+      this.hideableTarget.hidden = false;
+    }
+    
+    toggle_doctor_note() {
+      this.doctorNoteValue = !this.doctorNoteValue;
+      this.hideableTarget.hidden = this.doctorNoteValue;
+      if (this.doctorNoteValue == true) {
+        document.getElementById('freeze_payment_attributes_amount').value = 0;
+      } else {
+        document.getElementById('freeze_payment_attributes_amount').value = this.priceValue;
+      }
+    }
+
 }

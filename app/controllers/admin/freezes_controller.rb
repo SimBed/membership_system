@@ -12,9 +12,13 @@ class Admin::FreezesController < Admin::BaseController
     start_date = Time.zone.now
     end_date = start_date.advance(days: (14 - 1))
     @freeze = Freeze.new(start_date:, end_date:)
+    payment = @freeze.build_payment 
+    @payment_methods = Setting.payment_methods
   end
 
-  def edit; end
+  def edit
+    @payment_methods = Setting.payment_methods
+  end
 
   def create
     @freeze = Freeze.new(freeze_params)
@@ -25,6 +29,7 @@ class Admin::FreezesController < Admin::BaseController
       cancel_bookings_during_freeze(@freeze)
       update_purchase_status([@purchase])
     else
+      @payment_methods = Setting.payment_methods
       render :new, status: :unprocessable_entity
     end
   end
@@ -36,6 +41,7 @@ class Admin::FreezesController < Admin::BaseController
       flash[:success] = t('.success')
       update_purchase_status([@purchase])
     else
+      @payment_methods = Setting.payment_methods
       render :edit, status: :unprocessable_entity
     end
   end
@@ -55,6 +61,6 @@ class Admin::FreezesController < Admin::BaseController
   end
 
   def freeze_params
-    params.require(:freeze).permit(:purchase_id, :start_date, :end_date, :note)
+    params.require(:freeze).permit(:purchase_id, :start_date, :end_date, :note, :medical, :doctor_note, :added_by, payment_attributes: [:dop, :amount, :payment_mode, :note])
   end
 end

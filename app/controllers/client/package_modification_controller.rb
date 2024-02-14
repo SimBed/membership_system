@@ -5,18 +5,17 @@ class Client::PackageModificationController < ApplicationController
 
   def new_freeze
     @purchase = Purchase.find(params[:purchase_id])
-    @default_start_dates = @purchase.default_new_freeze_start_dates
+    @default_start_dates = @purchase.default_new_freeze_period_dates
   end
 
   def buy_freeze
     # order = Order.create(Order.process_razorpayment(order_params.except(:purchase_id)))
     # if order.status == 'captured'
-
+    # see orders controller create method for some explanation
     if Order.process_razorpayment(order_params)[:status] == 'captured'
       account = Account.find(order_params[:account_id])
       # rearchitect orders and non-package products/purchases
-      Order.create(price: 650, status: 'captured', payment_id: order_params[:payment_id], account_id: account.id, client_ui: 'booking page freeze')
-      freeze_params = { purchase_id: order_params[:purchase_id], start_date: order_params[:start_date], end_date: Date.parse(order_params[:start_date]).advance(days: 13) }
+      Order.create(price: Setting.freeze_charge, status: 'captured', payment_id: order_params[:payment_id], account_id: account.id, client_ui: 'booking page freeze')
       @freeze = Freeze.new(freeze_params)
       if @freeze.save
         # flash_message :success, t('.success', name: @client.name)
@@ -64,9 +63,25 @@ class Client::PackageModificationController < ApplicationController
     redirect_to login_path unless current_account?(@client.account)
   end
 
+  def freeze_params
+    { purchase_id: order_params[:purchase_id],
+      start_date: order_params[:start_date],
+      end_date: Date.parse(order_params[:start_date]).advance(days: 13),
+      note: nil,
+      medical: false,
+      doctor_note: false,
+      added_by: 'client',
+      payment_attributes: {dop: Time.zone.today, amount: order_params[:price].to_i, payment_mode: 'Razorpay', online: true, note: nil}
+     }
+  end
+
   def order_params
-    p = params.permit(:purchase_id, :start_date, :razorpay_payment_id, :payment_id, :account_id, :client_ui, :price)
+    # see orders controller order_params method for some explanation
+    p = params.permit(:purchase_id, :account_id, :start_date, :client_ui, :price, :razorpay_payment_id, :payment_id)
     p.merge!({ payment_id: p.delete(:razorpay_payment_id) || p[:payment_id] })
     p
+   # delete(key) → value. Deletes the key-value pair and returns the value from hsh whose key is equal to key
+   # so the :razorpay_payment_id is switched to :payment_id key
+   # #<ActionController::Parameters {"purchase_id"=>"821", "start_date"=>"2024-02-15", "account_id"=>"3", "client_ui"=>"shop page", "price"=>"650", "payment_id"=>"pay_Nah0Nx1uFw5rta"} permitted: true>
   end
 end

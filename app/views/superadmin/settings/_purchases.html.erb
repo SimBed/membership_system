@@ -13,6 +13,11 @@
         <%= f.number_field :freeze_min_duration, value: Setting.freeze_min_duration, class: "form-control", style: "width: 5rem;" %>
       </div>      
 
+      <div class="form-group">
+        <label class="control-label">Charge for a freeze</label>
+        <%= f.number_field :freeze_charge, value: Setting.freeze_charge, class: "form-control", style: "width: 5rem;" %>
+      </div>      
+
     </div>
   </div>
 </section>

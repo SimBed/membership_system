@@ -7,6 +7,7 @@
         <div class="column col-1x "><%= link_to freeze.purchase.client.name, admin_client_path(freeze.purchase.client), class: 'like_button' %></div>
         <div class="column col-1x "><%= freeze.start_date.strftime('%d %b %y') %></div>
         <div class="column col-1x "><%= freeze.end_date.strftime('%d %b %y') %></div>
+        <div class="column"><%= image_tag('medical.png', class: ["table_icon",("non-medical" unless freeze.medical?)].compact.join(' ')) %></div>
         <div class="column col-1x "><%= freeze.note %></div>
       </div>
     <% end %>
