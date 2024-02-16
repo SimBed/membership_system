@@ -22,6 +22,12 @@
     <div class="column col-1x">Status</div>
     <div class="column col-1x"><%= @purchase.status %></div>
   </div>
+  <% if @purchase.can_restart? %>
+    <div class="row">
+      <div class="column col-1x">Restart Charge</div>
+      <div class="column col-1x"><%= rupees(@purchase.restart_payment) %></div>
+    </div>
+  <% end %>
   <% unless @purchase.not_started? %>
     <div class="row">
       <div class="column col-1x">Expiry date</div>

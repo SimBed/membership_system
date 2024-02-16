@@ -4,7 +4,7 @@
     <%= turbo_frame_tag 'errors' do %>  
       <% if freeze.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(freeze.errors.count, "error") %> prohibited this adjustment from being saved:</h2>
+          <h2><%= pluralize(freeze.errors.count, "error") %> prohibited this freeze from being saved:</h2>
           <ul>
             <% freeze.errors.each do |error| %>
               <li><%= error.full_message %></li>

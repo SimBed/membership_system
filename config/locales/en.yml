@@ -104,6 +104,9 @@ en:
       expire:
         success: "%{name}'s purchase was successfully expired"
         unexpired: "%{name}'s purchase has been brought back to life"
+    restarts:
+      create:
+        success: Restart was successfully made. The original purchase has been expired by A&R and a new purchase with no attendances has been created
     timetables:
       create:
         success: Timetable was successfully added

@@ -30,7 +30,9 @@ class Product < ApplicationRecord
   # not because of implementation of invert_where in not_trial scope, reverse thae chaningin order here will give wrong result
   scope :package_not_trial, -> { not_trial.package }
   scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', 'workout_groups.name', 'products.max_classes') }
-  scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
+  # scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
+  # keep 'space group' instead of just 'group' because of complications with using a special word like 'group'
+  scope :space_group, -> { joins(:workout_group).where(workout_group: {service: 'group'}) }
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
   # scope :order_by_total_count, -> { left_joins(:purchases).group(:id).order('COUNT(purchases.id) DESC') }
   scope :order_by_total_count, lambda {

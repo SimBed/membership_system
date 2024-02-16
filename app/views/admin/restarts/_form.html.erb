@@ -1,0 +1,57 @@
+<div class="field"> 
+  <%= form_with(model: [:admin, restart], class: 'admin_form mb-2') do |form| %>
+    <% purchase = params[:purchase_id] || @restart.purchase.id %>
+    <%= turbo_frame_tag 'errors' do %>  
+      <% if restart.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(restart.errors.count, "error") %> prohibited this restart from being saved:</h2>
+          <ul>
+            <% freeze.restart.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div><%= form.hidden_field :purchase_id, value: purchase || restart.purchase_id %></div>
+    <div><%= form.hidden_field :added_by, value: restart.added_by || @current_account.email %></div>
+
+    <div class="field">
+      <%= form.label :note, 'Restart Note' %>
+      <%= form.text_area :note, cols: 40, rows: 5 %>
+    </div>
+    
+      <%= form.fields_for :payment do |payment_fields| %>
+
+        <div class="field">
+          <%= payment_fields.label :amount %>
+          <%= payment_fields.number_field :amount %>
+          <%#= payment_fields.number_field :amount, value: @restart.payment&.amount || @restart_payment %>
+        </div>
+
+        <div class="field">
+          <%= payment_fields.label :dop, 'Date of purchase' %>
+          <%= payment_fields.date_select :dop %>
+        </div>
+
+        <div class="field">
+          <%= payment_fields.label :payment_mode %>
+          <%= payment_fields.select :payment_mode, options_for_select(@payment_methods, @restart.payment.payment_mode), include_blank: true %>
+        </div>
+
+        <div class="field">
+          <%= payment_fields.label :note, 'Payment Note' %>
+          <%= payment_fields.text_area :note, cols: 40, rows: 5 %>
+        </div>  
+      <% end %>
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase) %>
+    </div>  
+  <% end %>
+</div>

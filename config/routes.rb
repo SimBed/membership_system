@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   patch '/purchases/:id/expire', to: 'admin/purchases#expire', as: 'expire_purchase'
   get '/purchases/discount', to: 'admin/purchases#discount'
   get '/purchases/dop_change', to: 'admin/purchases#dop_change'
+  # NOTE: delete once abstraction fully implemented  
   get '/purchases/adjust_restart_index', to: 'admin/purchases#adjust_restart_index'
   get '/superadmin/expenses/filter', to: 'superadmin/expenses#filter'
   get '/products/payment', to: 'admin/products#payment'
@@ -76,6 +77,7 @@ Rails.application.routes.draw do
     resources :prices, only: [:new, :edit, :create, :update, :destroy]
     resources :products
     resources :purchases
+    resources :restarts, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :wkclasses
     resources :workouts, only: [:index, :new, :edit, :create, :update, :destroy]
     resources :workout_groups

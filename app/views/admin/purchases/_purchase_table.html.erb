@@ -13,16 +13,20 @@
                   new_admin_adjustment_path(purchase: @purchase.id),
                   class: "icon-container",
                   data: { turbo_frame: dom_id(Adjustment.new) } %> |
+      <% if @purchase.can_restart? %>
+        <%= link_to image_tag('restart.png', class: "table_icon" ),
+                    new_admin_restart_path(purchase_id: @purchase.id),
+                    class: "icon-container",
+                    data: { turbo_frame: dom_id(Restart.new) } %> |
+      <% end %>
       <%= link_to image_tag('edit.png', class: "table_icon" ),
                   edit_admin_purchase_path(@purchase, link_from: 'show'),
                   class: "icon-container",
                   data: {turbo_frame: dom_id(@purchase)} %>
     </div>
-    <!--div class="me-3 ms-auto">
-      <%#= link_to image_tag('back.png', class: "back_icon"), admin_purchases_path, class: "icon-container" %>
-    </div-->
   </div>
   <%= turbo_frame_tag Freeze.new %>      
-  <%= turbo_frame_tag Adjustment.new %>      
+  <%= turbo_frame_tag Adjustment.new %>
+  <%= turbo_frame_tag Restart.new %>
   <%= turbo_frame_tag @purchase %>      
 </div>

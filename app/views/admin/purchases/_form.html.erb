@@ -98,7 +98,7 @@
       <%= form.text_area :note, cols: 40, rows: 5 %>
     </div>
 
-    <% unless @purchase.new_record? %>
+    <% unless @purchase.new_record? || true %>
       <div class="field">
         <%= form.label :adjust_restart %>
         <%= form.check_box :adjust_restart, {"data-action": "purchase-form#adjust_restart"} %>

@@ -5,6 +5,7 @@ class Purchase < ApplicationRecord
   belongs_to :fitternity, optional: true
   belongs_to :price
   has_many :attendances, dependent: :destroy
+  has_one :restart, dependent: :destroy
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
   has_many :penalties, dependent: :destroy
@@ -23,6 +24,7 @@ class Purchase < ApplicationRecord
   validates :payment_mode, presence: true
   validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 }
   # validates :ar_payment, presence: true, if: :adjust_restart?
+  # NOTE: delete once abstraction fully implemented
   with_options if: :adjust_restart? do
     validates :ar_payment, presence: true
     validates :ar_date, presence: true
@@ -63,6 +65,7 @@ class Purchase < ApplicationRecord
   # alternative 'mixes concerns and logic'
   # scope :package, -> { joins(:product).where("max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
+  # NOTE: update 2nd order term  to created_at: :desc should work with new implementation 
   scope :order_by_dop, -> { order(dop: :desc, adjust_restart: :asc) }
   scope :order_by_expiry_date, -> { order(expiry_date: :desc) }
   # scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
@@ -101,6 +104,20 @@ class Purchase < ApplicationRecord
 
   def self.next(purchase, key = :created_at)
     self.where("#{key} > ?", purchase.send(key)).first
+  end
+
+  def restart_payment
+    group_drop_in_price = Product.current.dropin.space_group.first.base_price_at(Time.zone.now).price
+    [attendances.no_amnesty.size * group_drop_in_price, Setting.restart_min_charge].max
+  end
+
+  def can_restart?
+    return false unless groupex? && ongoing? && !dropin? && !trial? && !rider?
+
+    # NOTE: the new restarted package can itself be restarted (but obviously the original package can only be restarted once) 
+    return false if restart || restart_payment > payment
+
+    true
   end
 
   def discount(base_price, *discounts)
@@ -196,7 +213,10 @@ class Purchase < ApplicationRecord
   end
 
   def status_calc
+    # NOTE: delete once abstraction fully implemented
     return 'expired' if adjust_restart?
+    # NOTE: retain once abstraction fully implemented
+    return 'expired' if restart
 
     return 'expired' if rider? && main_purchase.expired?
 
@@ -263,7 +283,10 @@ class Purchase < ApplicationRecord
 
   def expiry_cause
     return unless expired?
+    # NOTE: delete once abstraction fully implemented
     return 'adjust & restart' if adjust_restart
+    # NOTE: retain once abstraction fully implemented    
+    return 'adjust & restart' if restart
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
     return 'PT Package expired' if rider?
     return 'sunset' if expired_on == sunset_date
@@ -273,7 +296,10 @@ class Purchase < ApplicationRecord
 
   def expired_on
     return unless expired?
+    # NOTE: delete once abstraction fully implemented
     return ar_date if adjust_restart
+    # NOTE: retain once abstraction fully implemented
+    return restart.payment.dop if restart
     return max_class_expiry_date if attendances.no_amnesty.confirmed.size == max_classes
     return main_purchase.expired_on if rider?
 
@@ -295,7 +321,11 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_date_calc
+    # NOTE: delete once abstraction fully implemented
     return ar_date if adjust_restart?
+    # NOTE: retain once abstraction fully implemented
+    return restart.payment.dop if restart
+
     return if attendances.no_amnesty.empty?
 
     # end_date formulae above overstate by 1 day so deduct 1
@@ -328,9 +358,12 @@ class Purchase < ApplicationRecord
 
     attendance_revenue = attendances.includes(purchase: [:product]).confirmed.no_amnesty.map(&:revenue).inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
-    return payment - attendance_revenue unless adjust_restart?
+    # NOTE: amend once abstraction fully implemented
+    return (payment - attendance_revenue) unless (adjust_restart? || restart)
+        
+    retrun ar_payment - attendance_revenue if adjust_restart?
 
-    ar_payment - attendance_revenue
+    restart.payment.amount - attendance_revenue
   end
 
   def start_to_expiry

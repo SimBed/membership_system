@@ -18,6 +18,11 @@
         <%= f.number_field :freeze_charge, value: Setting.freeze_charge, class: "form-control", style: "width: 5rem;" %>
       </div>      
 
+      <div class="form-group">
+        <label class="control-label">Minimum charge for a restart</label>
+        <%= f.number_field :restart_min_charge, value: Setting.restart_min_charge, class: "form-control", style: "width: 5rem;" %>
+      </div>      
+
     </div>
   </div>
 </section>

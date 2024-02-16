@@ -10,7 +10,7 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :changing_main_purchase_product?, only: :update
   before_action :changing_main_purchase_name?, only: :update
   # before_action :changing_rider?, only: :update
-  before_action :adjust_and_restarting?, only: :update
+  # before_action :adjust_and_restarting?, only: :update
   before_action :set_admin_status, only: [:index]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
@@ -95,7 +95,7 @@ class Admin::PurchasesController < Admin::BaseController
           DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
         end
       end
-      adjust_and_restart and return if @adjust_and_restarting
+      # adjust_and_restart and return if @adjust_and_restarting
 
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
@@ -190,6 +190,7 @@ class Admin::PurchasesController < Admin::BaseController
                                                      selected: @purchase_oneoff_discount_id || @discount_none.id) }
   end
 
+  # NOTE: delete once abstraction fully implemented (handle in restarts controller)
   def adjust_restart_index
     @adjust_restart_purchases = Purchase.where(adjust_restart: true).order(dop: :desc).includes(:client)
   end
@@ -287,9 +288,9 @@ class Admin::PurchasesController < Admin::BaseController
   #   redirect_to admin_purchase_path(@purchase)
   # end
 
-  def adjust_and_restarting?
-    @adjust_and_restarting = !@purchase.adjust_restart && purchase_params[:adjust_restart] == '1'
-  end
+  # def adjust_and_restarting?
+  #   @adjust_and_restarting = !@purchase.adjust_restart && purchase_params[:adjust_restart] == '1'
+  # end
 
   def adjust_and_restart
     new_purchase = @purchase.dup
@@ -305,9 +306,9 @@ class Admin::PurchasesController < Admin::BaseController
   def purchase_params
     params.require(:purchase)
           .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
-                  :invoice, :note, :adjust_restart, :ar_payment, :ar_date,
-                  :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
+                  :invoice, :note, :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
                   :commercial_discount_id, :discretion_discount_id, :base_price)
+                  # :adjust_restart, :ar_payment, :ar_date,
   end
 
   def sanitize_params
@@ -315,19 +316,19 @@ class Admin::PurchasesController < Admin::BaseController
     [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
       params[:purchase][discount] = nil if params[:purchase][discount].nil? || Discount.find(params[:purchase][discount]).discount_reason.rationale == 'Base'
     end
-    params[:purchase].tap do |params|
-      # Fitternity is redundant
-      # params[:fitternity_id] = Fitternity.ongoing.first&.id if params[:payment_mode] == 'Fitternity'
-      # prevent ar_date becoming not nil after an update
-      # checkbox values in form are strings
-      # adjust and restart checkbox on form hides/displays a&r payment/date but doesn't itself set their values to nil/zero. Don't want to potentially have unwanted entries saved to the database.  
-      if params[:adjust_restart] == '0'
-        params['ar_date(1i)'] = ''
-        params['ar_date(2i)'] = ''
-        params['ar_date(3i)'] = ''
-        params['ar_payment'] = 0
-      end
-    end
+    # params[:purchase].tap do |params|
+    #   # Fitternity is redundant
+    #   # params[:fitternity_id] = Fitternity.ongoing.first&.id if params[:payment_mode] == 'Fitternity'
+    #   # prevent ar_date becoming not nil after an update
+    #   # checkbox values in form are strings
+    #   # adjust and restart checkbox on form hides/displays a&r payment/date but doesn't itself set their values to nil/zero. Don't want to potentially have unwanted entries saved to the database.  
+    #   if params[:adjust_restart] == '0'
+    #     params['ar_date(1i)'] = ''
+    #     params['ar_date(2i)'] = ''
+    #     params['ar_date(3i)'] = ''
+    #     params['ar_payment'] = 0
+    #   end
+    # end
   end
 
   def initialize_sort

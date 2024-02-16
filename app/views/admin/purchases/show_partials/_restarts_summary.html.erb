@@ -1,0 +1,21 @@
+<% restart = @purchase.restart %>
+<% if restart %>
+  <div class="fst-italic ps-2">Adjust & Restart</div>
+  <div class="admin-table striped mt-2 mb-4">
+    <div class="row thead">
+      <div class="column col-1x">Date</div>
+      <div class="column col-1x">Amount</div>
+      <div class="column col-1x">Note</div>
+      <div class="column"></div>
+      <div class="column"></div>
+    </div>
+      <div class="row">
+        <div class="column col-1x"><%= restart.payment.dop.strftime('%d %b %y') %></div>
+        <div class="column col-1x"><%= rupees(restart.payment.amount) %></div>
+        <div class="column col-1x"><%= restart.note %></div>
+        <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_restart_path(restart), class: "icon-container", data: { turbo_frame: 'restart_edit' } %></div>
+        <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), admin_restart_path(restart), data: { turbo_method: :delete, turbo_confirm: 'Restart will be deleted. Are you sure?' } %></div>
+      </div>
+  </div>
+  <%= turbo_frame_tag 'restart_edit' %>  
+<% end %>

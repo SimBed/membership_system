@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static values = { url: String, dateurl: String, clientfilterurl: String }
-  static targets = [ "hideable" ] 
+  // static targets = [ "hideable" ] 
 
   clientsearch() {
     let search_client_name = document.getElementById("search_client_name").value;    
@@ -15,7 +15,6 @@ export default class extends Controller {
         client_select.selectedIndex = JSON.parse(s).clientindex;
       })
     });    
-
   }
 
   // when the date changes we need the date_change action to complete in its entirety (which finishes with populating the discount dropdowns)
@@ -90,28 +89,10 @@ export default class extends Controller {
     });
   }
   
-  adjust_restart() {
-    this.hideableTargets.forEach((el) => {
-      el.hidden = !el.hidden
-    });    
-  }
-  // adjust_restart_old() {
-  //   var currentState = 'hidden';
-  //   if (document.getElementById("ar_payment").classList.contains("d-none")) {
-  //       currentState = 'visible';
-  //     }
-  //     var x = document.getElementsByClassName("ar");
-  //     var i;
-  //     for (i = 0; i < x.length; i++) {
-  //       x[i].classList.toggle('d-none')
-  //     }
-  //     if (currentState == 'hidden') {
-  //       var x = document.getElementsByClassName("arvalue");
-  //       var i;
-  //       for (i = 0; i < x.length; i++) {
-  //         x[i].value="";
-  //       }
-  //     }
+  // adjust_restart() {
+  //   this.hideableTargets.forEach((el) => {
+  //     el.hidden = !el.hidden
+  //   });    
   // }
 
 }
