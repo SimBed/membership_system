@@ -5,7 +5,7 @@ class Admin::FreezesController < Admin::BaseController
 
 
   def index
-    @freezes = Freeze.order_by_start_date
+    @freezes = Freeze.order_by_start_date_desc
   end
 
   def new

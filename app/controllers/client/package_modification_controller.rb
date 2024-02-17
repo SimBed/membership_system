@@ -15,7 +15,7 @@ class Client::PackageModificationController < ApplicationController
     if Order.process_razorpayment(order_params)[:status] == 'captured'
       account = Account.find(order_params[:account_id])
       # rearchitect orders and non-package products/purchases
-      Order.create(price: Setting.freeze_charge, status: 'captured', payment_id: order_params[:payment_id], account_id: account.id, client_ui: 'booking page freeze')
+      Order.create(price: 650, status: 'captured', payment_id: order_params[:payment_id], account_id: account.id, client_ui: 'booking page freeze')
       @freeze = Freeze.new(freeze_params)
       if @freeze.save
         # flash_message :success, t('.success', name: @client.name)
