@@ -1,6 +1,7 @@
 <div class="field"> 
-  <%= form_with(model: [:admin, restart], class: 'admin_form mb-2') do |form| %>
-    <% purchase = params[:purchase_id] || @restart.purchase.id %>
+<%# when a new A&R is created we want to redirect ot the page of the new purchases (full reload) but not sya on an update (then turbo is wanted) %>
+  <%= form_with(model: [:admin, restart], class: 'admin_form mb-2', data: {turbo: (false if restart.new_record?)}) do |form| %>
+    <% purchase = params[:purchase_id] || @restart.parent.id %>
     <%= turbo_frame_tag 'errors' do %>  
       <% if restart.errors.any? %>
         <div id="error_explanation">
@@ -14,7 +15,7 @@
       <% end %>
     <% end %>
 
-    <div><%= form.hidden_field :purchase_id, value: purchase || restart.purchase_id %></div>
+    <div><%= form.hidden_field :parent_id, value: purchase || restart.parent_id %></div>
     <div><%= form.hidden_field :added_by, value: restart.added_by || @current_account.email %></div>
 
     <div class="field">

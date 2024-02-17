@@ -5,7 +5,11 @@ class Purchase < ApplicationRecord
   belongs_to :fitternity, optional: true
   belongs_to :price
   has_many :attendances, dependent: :destroy
-  has_one :restart, dependent: :destroy
+  # has_one :restart, dependent: :destroy
+  has_one :restart_as_child, class_name: "Restart", foreign_key: "child_id", dependent: :destroy
+  has_one :restart_as_parent, class_name: "Restart", foreign_key: "parent_id"
+  has_one :child_purchase, through: :restart_as_parent, source: :child
+  has_one :parent_purchase, through: :restart_as_child, source: :parent
   has_many :adjustments, dependent: :destroy
   has_many :freezes, dependent: :destroy
   has_many :penalties, dependent: :destroy
@@ -15,6 +19,8 @@ class Purchase < ApplicationRecord
   # some pts are given a rider benefit of group classes
   has_one :rider_purchase, class_name: 'Purchase', dependent: :destroy # , foreign_key: "purchase_id"
   belongs_to :main_purchase, class_name: 'Purchase', foreign_key: 'purchase_id', optional: true
+  # has_one :restart_child, class_name: 'Purchase', dependent: :destroy
+  # belongs_to :restart_parent, class_name: 'Purchase', foreign_key: 'restart_parent_id', optional: true
   before_save :set_sunset_date
   # this defines the name method on an instance of a Purchase
   # so @purchase.name equals Product.find(@purchase.id).name
@@ -115,7 +121,7 @@ class Purchase < ApplicationRecord
     return false unless groupex? && ongoing? && !dropin? && !trial? && !rider?
 
     # NOTE: the new restarted package can itself be restarted (but obviously the original package can only be restarted once) 
-    return false if restart || restart_payment > payment
+    return false if restart_as_parent || restart_payment > payment
 
     true
   end
@@ -216,7 +222,7 @@ class Purchase < ApplicationRecord
     # NOTE: delete once abstraction fully implemented
     return 'expired' if adjust_restart?
     # NOTE: retain once abstraction fully implemented
-    return 'expired' if restart
+    return 'expired' if restart_as_parent
 
     return 'expired' if rider? && main_purchase.expired?
 
@@ -286,7 +292,7 @@ class Purchase < ApplicationRecord
     # NOTE: delete once abstraction fully implemented
     return 'adjust & restart' if adjust_restart
     # NOTE: retain once abstraction fully implemented    
-    return 'adjust & restart' if restart
+    return 'adjust & restart' if restart_as_parent
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
     return 'PT Package expired' if rider?
     return 'sunset' if expired_on == sunset_date
@@ -299,7 +305,7 @@ class Purchase < ApplicationRecord
     # NOTE: delete once abstraction fully implemented
     return ar_date if adjust_restart
     # NOTE: retain once abstraction fully implemented
-    return restart.payment.dop if restart
+    return restart_as_parent.payment.dop if restart_as_parent
     return max_class_expiry_date if attendances.no_amnesty.confirmed.size == max_classes
     return main_purchase.expired_on if rider?
 
@@ -324,7 +330,7 @@ class Purchase < ApplicationRecord
     # NOTE: delete once abstraction fully implemented
     return ar_date if adjust_restart?
     # NOTE: retain once abstraction fully implemented
-    return restart.payment.dop if restart
+    return restart_as_parent.payment.dop if restart_as_parent
 
     return if attendances.no_amnesty.empty?
 

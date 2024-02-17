@@ -2,9 +2,10 @@
   <div class="text-uppercase fst-italic">Restarts<small><%= "(#{@restarts.size})" %> </small></div>
   <div class="admin-table striped mt-2">
     <% @restarts.each do |restart| %>
+    <% parent = restart.parent %>
       <div class="row">
-        <div class="column col-1x "><%= link_to restart.purchase.name, admin_purchase_path(restart.purchase), class: 'like_button'  %></div>
-        <div class="column col-1x "><%= link_to restart.purchase.client.name, admin_client_path(restart.purchase.client), class: 'like_button' %></div>
+        <div class="column col-1x "><%= link_to parent.name, admin_purchase_path(parent), class: 'like_button'  %></div>
+        <div class="column col-1x "><%= link_to parent.client.name, admin_client_path(parent.client), class: 'like_button' %></div>
         <div class="column col-1x "><%= restart.payment.dop.strftime('%d %b %y') %></div>
         <div class="column col-1x "><%= rupees(restart.payment.amount) %></div>
         <div class="column col-1x "><%= restart.note %></div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_15_094620) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_16_074850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -412,10 +412,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_15_094620) do
   create_table "restarts", force: :cascade do |t|
     t.text "note"
     t.string "added_by"
-    t.bigint "purchase_id", null: false
+    t.bigint "parent_id"
+    t.bigint "child_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["purchase_id"], name: "index_restarts_on_purchase_id"
+    t.index ["child_id"], name: "index_restarts_on_child_id"
+    t.index ["parent_id"], name: "index_restarts_on_parent_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -544,7 +546,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_15_094620) do
   add_foreign_key "penalties", "purchases"
   add_foreign_key "purchases", "purchases"
   add_foreign_key "regular_expenses", "workout_groups"
-  add_foreign_key "restarts", "purchases"
+  add_foreign_key "restarts", "purchases", column: "child_id"
+  add_foreign_key "restarts", "purchases", column: "parent_id"
   add_foreign_key "strength_markers", "clients"
   add_foreign_key "waitings", "purchases"
   add_foreign_key "waitings", "wkclasses"
