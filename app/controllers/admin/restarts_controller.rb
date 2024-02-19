@@ -22,7 +22,7 @@ class Admin::RestartsController < Admin::BaseController
     @restart = Restart.new(restart_params)
     if @restart.save
       # NOTE: update_purchase_status cancels any post expiry bookings (as well as updating the status )
-      update_purchase_status([@parent_purchase])      
+      update_purchase_status([@parent_purchase])
       restart_purchase = @parent_purchase.dup
       # NOTE: update once abstraction fully implemented
       restart_purchase.update(invoice: nil, note: nil, adjust_restart: false, ar_payment: 0, status: 'not started' )  

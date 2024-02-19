@@ -115,18 +115,6 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 8, @purchase_fixed.attendance_estimate
   end
 
-  # test 'revenue_for_class method' do
-  #   assert_equal 12_750 / 60, @purchase_package.revenue_for_class(@purchase_package.attendances.first.wkclass)
-  #   assert_equal 0, @purchase_dropin.revenue_for_class(@wkclass1)
-  #   assert_equal 6000 / 8, @purchase_fixed.revenue_for_class(@purchase_fixed.attendances.last.wkclass)
-  # end
-
-  # test 'qualifying_for method' do
-  #   assert_equal [374, 201, 212, 4, 335, 312, 368, 229, 200, 441, 99, 198, 120, 224, 360, 125, 341, 119, 90],
-  #                Purchase.qualifying_for(@wkclass1).pluck(:id)
-  # end
-  # 90 are frozen, but correctly still appears
-
   test 'available_for_booking method (no client)' do
     assert_equal [374, 201, 212, 4, 335, 312, 368, 229, 200, 441, 99, 198, 120, 224, 360, 125, 341, 119, 90],
                  Purchase.available_for_booking(@wkclass1).pluck(:id)
@@ -303,24 +291,29 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal @purchases.unexpired_rider_without_ongoing_main, [@purchase_ptrider]
   end
 
-  # test 'associated fitternity (if there is one) should exist' do
-  #   @purchase.fitternity_id = 21
-  #   refute_predicate @purchase, :valid?
-  # end
+  test '#restart_payment' do
+    travel_to Date.parse('10 Jan 2024')  # discount system has not been implemented into test fixture so price data is still based around a price rather than base price * discount. I've retired old prices like ClassPass
+    # from 1/1/2023 (which should now be base_price X clsspass discount. Before doing this Product.current.dropin.space_group.first.base_price_at(Time.zone.now) might pickup the wrong dropin price
+    assert_equal 1000, Product.current.dropin.space_group.first.base_price_at(Time.zone.now).price
+    assert_equal 5000, @purchase_package.restart_payment
+    assert_equal 6000, @purchase_fixed.restart_payment
+    assert_equal 24000, @purchase_with_freeze.restart_payment
+    assert_equal 5000, @purchase_package.restart_payment
+  end
 
-  # test 'if payment_method is Fitternity then a Fitternity should be ongoing' do
-  #   @purchase.payment_mode = 'Fitternity'
-  #   @fitternity.update(max_classes: @fitternity.purchases.size)
-  #   refute_predicate @purchase, :valid?
-  # end
-
-  # test 'A Fitternity price must have a Fitternity payment mode' do
-  #   @purchase.price = @price_fitternity
-  #   refute_predicate @purchase, :valid?
-  # end
-
-  # test 'A price that is not Fitternity can not have a Fitternity payment mode' do
-  #   @purchase.payment_mode = 'Fitternity'
-  #   refute_predicate @purchase, :valid?
-  # end
+  test '#can_restart?' do
+    travel_to Date.parse('10 Jan 2024')
+    assert_equal 1000, Product.current.dropin.space_group.first.base_price_at(Time.zone.now).price    
+    assert @purchase_package.can_restart?
+    refute @purchase_dropin.can_restart?
+    assert @purchase_fixed.can_restart?
+    refute @purchase_trial.can_restart?
+    refute @purchase_with_freeze.can_restart? # not because frozen, but becasue restart payment > purchase payment
+    @purchase_with_freeze.update(payment: 100000)
+    assert @purchase_with_freeze.can_restart?
+    refute @purchase_pt.can_restart?
+    refute @purchase_ptrider.can_restart?
+    Restart.create(parent_id: @purchase_package.id) # Restart the package
+    refute @purchase_package.reload.can_restart? # cant restart the same purchase more than once
+  end
 end

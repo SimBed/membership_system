@@ -2,16 +2,12 @@ class Admin::FreezesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
   before_action :set_freeze, only: [:edit, :update, :destroy]
-<<<<<<< HEAD
 
 
   def index
     @freezes = Freeze.order_by_start_date_desc
   end
 
-=======
-  
->>>>>>> implement restart model
   def new
     start_date = Time.zone.now
     end_date = start_date.advance(days: (14 - 1))
