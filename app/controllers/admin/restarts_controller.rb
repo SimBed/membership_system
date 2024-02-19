@@ -12,7 +12,7 @@ class Admin::RestartsController < Admin::BaseController
   end
 
   def index
-    @restarts = Restart.order_by_dop.includes(:payment) 
+    @restarts = Restart.order_by_dop.includes(:parent, :child) 
   end
 
   def edit
@@ -25,7 +25,7 @@ class Admin::RestartsController < Admin::BaseController
       update_purchase_status([@parent_purchase])
       restart_purchase = @parent_purchase.dup
       # NOTE: update once abstraction fully implemented
-      restart_purchase.update(invoice: nil, note: nil, adjust_restart: false, ar_payment: 0, status: 'not started' )  
+      restart_purchase.update(payment_mode: 'A&R conversion', invoice: nil, note: nil, adjust_restart: false, ar_payment: 0, status: 'not started' )  
       @restart.update(child_id: restart_purchase.id)
       redirect_to admin_purchase_path(restart_purchase)
       flash[:success] = t('.success')    

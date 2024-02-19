@@ -1,0 +1,36 @@
+<div class="admin-table striped mt-2 mb-4">
+  <div class="row">
+    <div class="column col-1x">Amount</div>
+    <div class="column col-2x"><%= rupees(@payment.amount) %></div>
+  </div>
+  <div class="row">
+      <div class="column col-1x">Date of Payment</div>
+      <div class="column col-2x"><%= @payment.dop.strftime('%d %b %y') %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Payment mode</div>
+      <div class="column col-2x"><%= @payment.payment_mode %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Paid Online</div>
+      <div class="column col-2x"><%= @payment.online? ? raw("&check;") : "-" %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Invoice</div>
+      <div class="column col-2x"><%= @payment.invoice %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Payable</div>
+      <div class="column col-2x"><%= @payment.payable_type %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Client</div>
+      <div class="column col-2x"><%= @payment.payable.try(:client).try(:name) || @payment.payable.try(:purchase).try(:client).try(:name) || @payment.payable.try(:parent).try(:client).try(:name)  %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Associated Purchase</div>
+      <div class="column col-2x"><%= link_to @payment.payable.parent.product.name, admin_purchase_path(@payment.payable.parent), class: "like_button" %></div>
+    </div>
+</div>
+
+

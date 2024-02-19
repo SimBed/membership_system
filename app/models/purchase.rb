@@ -72,7 +72,8 @@ class Purchase < ApplicationRecord
   # scope :package, -> { joins(:product).where("max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
   # NOTE: update 2nd order term  to created_at: :desc should work with new implementation 
-  scope :order_by_dop, -> { order(dop: :desc, adjust_restart: :asc) }
+  scope :order_by_dop, -> { order(dop: :desc, created_at: :desc) }
+  # scope :order_by_dop, -> { order(dop: :desc, adjust_restart: :asc) }
   scope :order_by_expiry_date, -> { order(expiry_date: :desc) }
   # scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }

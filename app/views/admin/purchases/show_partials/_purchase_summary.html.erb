@@ -13,7 +13,7 @@
   </div>
   <% unless @purchase.discounts.empty? %>
     <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
-  <% end %>  
+  <% end %>
   <div class="row">
     <div class="column col-1x">Paid on</div>
     <div class="column col-1x"><%= @purchase.dop.strftime('%d %b %y') %></div>
@@ -77,7 +77,11 @@
     <div class="column col-1x"><%= @purchase.payment_mode %></div>
   </div>
   <% if @purchase.restart_as_child %>
-  <% parent_purchase = @purchase.parent_purchase %>
+    <% parent_purchase = @purchase.parent_purchase %>
+    <div class="row">
+      <div class="column col-1x">Converted on</div>
+      <div class="column col-1x"><%= @purchase.restart_as_child.payment.dop.strftime('%d %b %y') %></div>
+    </div>  
     <div class="row">
       <div class="column col-1x">Restart Parent</div>
       <div class="column col-1x"><%= link_to 'parent', admin_purchase_path(parent_purchase), class: "like_button", data: {turbo: false} %></div>

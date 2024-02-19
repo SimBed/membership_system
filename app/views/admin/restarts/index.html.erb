@@ -13,10 +13,11 @@
       </div>  
     <% @restarts.each do |restart| %>
       <% purchase = restart.child %>
+      <% payment = restart.payment %>
       <div class="row">
         <div class="column col-1x ">Child</div>
         <div class="column col-1x "><%= restart.payment.dop.strftime('%d %b %y') %></div>
-        <div class="column col-1x "><%= number_with_delimiter(restart.payment.amount) %></div>
+        <div class="column col-1x "><%= link_to number_with_delimiter(payment.amount), superadmin_payment_path(payment) %></div>
         <div class="column col-1x "><%= restart.note %></div>
         <div class="column col-1x "><%= purchase.dop.strftime('%d %b %y') %></div>
         <div class="column col-1x "><%= link_to purchase.client.name, admin_client_path(purchase.client), class: 'like_button' %></div>
