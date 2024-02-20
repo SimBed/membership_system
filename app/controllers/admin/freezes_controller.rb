@@ -3,7 +3,6 @@ class Admin::FreezesController < Admin::BaseController
   before_action :junioradmin_account
   before_action :set_freeze, only: [:edit, :update, :destroy]
 
-
   def index
     @freezes = Freeze.order_by_start_date_desc
   end
@@ -16,10 +15,6 @@ class Admin::FreezesController < Admin::BaseController
     @payment_methods = Setting.payment_methods
   end
   
-  def index
-    @freezes = Freeze.order_by_start_date
-  end
-
   def edit
     @payment_methods = Setting.payment_methods
   end

@@ -168,13 +168,6 @@ en:
         success: Expense was successfully updated
       destroy:
         success: Expense was successfully deleted
-    regular_expenses:
-      create:
-        success: Regular Expense was successfully added
-      update:
-        success: Regular Expense was successfully updated
-      destroy:
-        success: Regular Expense was successfully deleted
     instructor_rates:
       create:
         success: Instructor rate was successfully added
@@ -182,6 +175,16 @@ en:
         success: Instructor rate was successfully updated
       destroy:
         success: Instructor rate was successfully deleted
+    payments:
+      update:
+        success: Payment was successfully updated
+    regular_expenses:
+      create:
+        success: Regular Expense was successfully added
+      update:
+        success: Regular Expense was successfully updated
+      destroy:
+        success: Regular Expense was successfully deleted
     other_services:
       create:
         success: Service was successfully added

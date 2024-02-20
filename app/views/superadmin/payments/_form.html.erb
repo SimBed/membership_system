@@ -1,0 +1,44 @@
+<div class="field"> 
+  <%= form_with(model: [:superadmin, payment], class: 'admin_form my-2', data: {turbo: false}) do |form| %>
+    <%= turbo_frame_tag 'errors' do %>  
+      <% if payment.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
+          <ul>
+            <% payment.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :amount %>
+      <%= form.number_field :amount %>
+    </div>
+
+    <div class="field">
+      <%= form.label :dop, 'Date of purchase' %>
+      <%= form.date_select :dop %>
+    </div>
+
+    <div class="field">
+      <%= form.label :payment_mode %>
+      <%= form.select :payment_mode, options_for_select(@payment_methods, @payment.payment_mode), include_blank: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :note %>
+      <%= form.text_area :note, cols: 40, rows: 5 %>
+    </div>  
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), superadmin_payments_path %>
+    </div>  
+  <% end %>
+</div>

@@ -8,6 +8,8 @@
       <div class="column col-1x">End</div>
       <div class="column col-1x">Days</div>
       <div class="column col-1x">Note</div>
+      <div class="column col-1x">Payment</div>
+      <div class="column"></div>
       <div class="column"></div>
       <div class="column"></div>
       <div class="column"></div>
@@ -19,7 +21,13 @@
         <div class="column col-1x"><%= freeze.end_date.strftime('%d %b %y') %></div>
         <div class="column col-1x"><%= "#{pluralize(freeze.duration, 'day')}" %></div>
         <div class="column col-1x"><%= freeze.note %></div>
-        <div class="column"><%= image_tag('medical.png', class: ["table_icon",("non-medical" unless freeze.medical?)].compact.join(' ')) %></div>        
+        <% if logged_in_as?('superadmin') %>
+          <div class="column col-1x"><%= freeze.payment ? link_to(rupees(freeze.payment.amount), superadmin_payment_path(freeze.payment), class: 'like_button', data: {turbo: false}) : '-' %></div>
+        <% else %>
+          <div class="column col-1x"><%= freeze.payment ? rupees(freeze.payment.amount) : '-' %></div>
+        <% end %>
+        <div class="column"><%= image_tag('medical.png', class: ["table_icon",("dull" unless freeze.medical?)].compact.join(' ')) %></div>        
+        <div class="column"><%= image_tag('doctor_note.png', class: ["table_icon",("dull" unless freeze.doctor_note?)].compact.join(' ')) %></div>        
         <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(freeze), class: "icon-container", data: { turbo_frame: 'freeze_edit' } %></div>
         <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), admin_freeze_path(freeze), data: { turbo_method: :delete, turbo_confirm: 'Freeze will be deleted Are you sure?' } %></div>
       </div>

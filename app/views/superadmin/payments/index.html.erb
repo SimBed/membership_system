@@ -1,6 +1,6 @@
 <div class="container px-1 mb-1">
   <h4>Payments</h4>
 </div>
-<!--turbo-frame id="payment-frame"-->
+<%= turbo_frame_tag 'clients' do %>
   <%= render partial: 'payments_table' %>
-<!--/turbo-frame-->
+<% end %>
