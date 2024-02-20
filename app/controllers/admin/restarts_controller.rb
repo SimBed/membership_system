@@ -2,7 +2,7 @@ class Admin::RestartsController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
   before_action :set_restart, only: [:edit, :update, :destroy]
-  before_action :set_parent_purchase, only: [:create]
+  before_action :set_parent_purchase, only: [:create, :update]
 
   def new
     @restart = Restart.new
@@ -16,6 +16,7 @@ class Admin::RestartsController < Admin::BaseController
   end
 
   def edit
+    @payment_methods = Setting.payment_methods
   end
 
   def create
@@ -36,10 +37,17 @@ class Admin::RestartsController < Admin::BaseController
   end
 
   def update
+    if @restart.update(restart_params)
+      redirect_to admin_purchase_path(@parent_purchase)
+      flash[:success] = t('.success')
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
-  def destroy
-  end
+  # no delete restarts through UI for now
+  # def destroy
+  # end
 
   private
 

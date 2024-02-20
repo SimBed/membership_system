@@ -107,6 +107,8 @@ en:
     restarts:
       create:
         success: Restart was successfully made. The original purchase has been expired by A&R and a new purchase with no attendances has been created
+      update:
+        success: Restart was successfully updated
     timetables:
       create:
         success: Timetable was successfully added

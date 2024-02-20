@@ -1,2 +1,3 @@
-<h1>Admin::Restarts#edit</h1>
-<p>Find me in app/views/admin/restarts/edit.html.erb</p>
+<%= turbo_frame_tag 'restart_edit' do %>
+  <%= render 'form', restart: @restart %>
+<% end %>
