@@ -3,9 +3,9 @@ task yml_quickfix: :environment do
   open(Rails.root.join('test/fixtures/purchases.yml'), 'r') do |f|
     open(Rails.root.join('test/fixtures/purchases_dup.yml'), 'w') do |f2|
       f.each_line do |line|
-        f2.write(line) unless line.start_with? '  expired:'
+        #NOTE: the blank spaces at the start of each line in yml
+        f2.write(line) unless line.start_with?('  adjust_restart', '  ar_date', '  ar_payment', '  invoice')
       end
     end
   end
-  # FileUtils.mv 'file.txt.tmp', 'file.txt'
 end

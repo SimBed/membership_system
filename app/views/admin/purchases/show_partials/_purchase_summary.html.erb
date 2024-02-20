@@ -95,21 +95,7 @@
     </div>  
   <% end %>  
   <div class="row">
-    <div class="column col-1x">Invoice</div>
-    <div class="column col-1x"><%= @purchase.invoice %></div>
-  </div>  
-  <div class="row">
     <div class="column col-1x">Note</div>
     <div class="column col-1x"><%= @purchase.note %></div>
   </div>
-  <% if @purchase.adjust_restart %>
-    <div class="row">
-      <div class="column col-1x">A&R paid</div>
-      <div class="column col-1x"><%= rupees(@purchase.ar_payment) %></div>
-    </div> 
-    <div class="row">
-      <div class="column col-1x">A&R paid on</div>
-      <div class="column col-1x"><%= @purchase.ar_date.strftime('%d %b %y') %></div>
-    </div> 
-  <% end %> 
 </div>

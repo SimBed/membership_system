@@ -16,10 +16,6 @@
       <div class="column col-2x"><%= @payment.online? ? raw("&check;") : "-" %></div>
     </div>
     <div class="row">
-      <div class="column col-1x">Invoice</div>
-      <div class="column col-2x"><%= @payment.invoice %></div>
-    </div>
-    <div class="row">
       <div class="column col-1x">Payable</div>
       <div class="column col-2x"><%= @payment.payable_type %></div>
     </div>

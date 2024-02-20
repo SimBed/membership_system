@@ -12,13 +12,10 @@
         <Cell><Data ss:Type="String">Last name</Data></Cell>
         <Cell><Data ss:Type="String">Date of Purchase</Data></Cell>
         <Cell><Data ss:Type="String">Payment Mode</Data></Cell>
-        <Cell><Data ss:Type="String">Invoice</Data></Cell>
         <Cell><Data ss:Type="String">Base Price</Data></Cell>
         <Cell><Data ss:Type="String">Payment Made</Data></Cell>
         <Cell><Data ss:Type="String">Discount</Data></Cell>
         <Cell><Data ss:Type="String">Note</Data></Cell>
-        <Cell><Data ss:Type="String">Adjust & Restart Payment</Data></Cell>
-        <Cell><Data ss:Type="String">A&R date</Data></Cell>
       </Row>
     <% @purchases.each do |purchase| %>
       <Row>
@@ -26,15 +23,10 @@
         <Cell><Data ss:Type="String"><%= purchase.client.last_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.dop %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.payment_mode %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= purchase.invoice %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.price.price %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.payment %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.price.price - purchase.payment %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.note %></Data></Cell>
-        <% if purchase.adjust_restart? %>
-          <Cell><Data ss:Type="String"><%= purchase.ar_payment %></Data></Cell>
-          <Cell><Data ss:Type="String"><%= purchase.ar_date %></Data></Cell>
-        <% end%>
       </Row>
     <% end %>
     </Table>

@@ -38,34 +38,6 @@ class PurchaseTest < ActiveSupport::TestCase
     refute_predicate @purchase, :valid?
   end
 
-  test 'invoice should not be too short' do
-    @purchase.invoice = 'a' * 4
-
-    refute_predicate @purchase, :valid?
-  end
-
-  test 'invoice does not need to be unique' do
-    @purchase.invoice = 'a' * 6
-    @duplicate_purchase = @purchase.dup
-    @purchase.save
-
-    assert_predicate @duplicate_purchase, :valid?
-  end
-
-  test 'if A&R then A&R date should be present' do
-    @purchase.adjust_restart = true
-    @purchase.ar_payment = 1000
-
-    refute_predicate @purchase, :valid?
-  end
-
-  test 'if A&R then A&R payment should be present' do
-    @purchase.adjust_restart = true
-    @purchase.ar_date = '2022-02-01'
-
-    refute_predicate @purchase, :valid?
-  end
-
   test 'delegated name method' do
     assert_equal 'Group UC:3M', @purchase_package.name
     assert_equal 'Group 1C:1D', @purchase_dropin.name

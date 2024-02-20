@@ -1,0 +1,7416 @@
+---
+ekta_unlimited:
+  id: 459
+  client_id: 4
+  product_id: 5
+  payment: 25500
+  dop: '2022-03-21'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-21 03:18:26.332775000 Z
+  updated_at: 2022-03-22 19:08:17.774968000 Z
+  fitternity_id:
+  price: Uc3mbase
+  status: ongoing
+  expiry_date: '2022-06-20'
+  start_date: '2022-03-21'
+  tax_included: true
+ekta_nutrition:
+  id: 416
+  client_id: 4
+  product_id: 8
+  payment: 30000
+  dop: '2022-03-07'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 13:38:15.930564000 Z
+  updated_at: 2022-03-22 19:08:17.040672000 Z
+  fitternity_id:
+  price: nutrition_pink
+  status: not started
+  expiry_date:
+  start_date:
+  tax_included: true  
+purchase_trial:
+  id: 368
+  client_id: 196
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-25'
+  payment_mode: Cash
+  invoice: 2022M197.
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-03'
+  created_at: 2022-02-25 05:15:58.593442000 Z
+  updated_at: 2022-02-25 05:15:58.593442000 Z
+  fitternity_id:
+  price: trial
+  status: not started
+  expiry_date:
+  start_date:
+  tax_included: true
+AparnaUC1Mong:
+  id: 343
+  client_id: 1
+  product_id: 4
+  payment: 9500
+  dop: '2022-02-21'
+  payment_mode: Cash
+  invoice: 2022M196
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-21 06:51:13.138969000 Z
+  updated_at: 2022-03-22 19:08:24.710610000 Z
+  fitternity_id:
+  price: Uc1mbase
+  status: ongoing
+  expiry_date: '2022-03-20'
+  start_date: '2022-02-21'
+  tax_included: true
+Neelu8C5Wexp:
+  id: 19
+  client_id: 17
+  product_id: 7
+  payment: 6000
+  dop: '2021-09-23'
+  payment_mode: Cash
+  invoice: 2022M082
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-24 19:37:42.131768000 Z
+  updated_at: 2022-03-22 19:08:16.371174000 Z
+  fitternity_id:
+  price: 8C5W
+  status: expired
+  expiry_date: '2021-11-08'
+  start_date: '2021-09-23'
+  tax_included: true
+tina8c5wong:
+  id: 290
+  client_id: 161
+  product_id: 7
+  payment: 6000
+  dop: '2022-02-15'
+  payment_mode: Cash
+  invoice: 2022M181
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-15'
+  created_at: 2022-02-15 05:11:50.871249000 Z
+  updated_at: 2022-03-22 19:08:18.500033000 Z
+  fitternity_id:
+  price: 8C5W
+  status: ongoing
+  expiry_date: '2022-03-25'
+  start_date: '2022-02-15'
+  tax_included: true
+purchase_for_freeze:
+  id: 20
+  client_id: 16
+  product_id: 7
+  payment: 6000
+  dop: '2021-10-07'
+  payment_mode: Cash
+  invoice: 2022M097
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-24 19:39:39.834326000 Z
+  updated_at: 2022-03-22 19:08:15.988262000 Z
+  fitternity_id:
+  price: 8C5W
+  status: expired
+  expiry_date: '2021-11-20'
+  start_date: '2021-10-07'
+  tax_included: true
+kiran1c1d_notstarted:
+  id: 229
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-03'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-21'
+  created_at: 2022-02-03 09:20:01.734052000 Z
+  updated_at: 2022-02-26 04:20:00.720060000 Z
+  fitternity_id:
+  price: classpass 
+  status: not started
+  expiry_date:
+  start_date:
+  tax_included: true
+priya1c1d:
+  id: 373
+  client_id: 198
+  product_id: 1
+  payment: 550
+  dop: '2022-02-26'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-26 04:46:33.652114000 Z
+  updated_at: 2022-03-22 19:08:15.905608000 Z
+  fitternity_id: 3
+  price: fitternity
+  status: expired
+  expiry_date: '2022-02-25'
+  start_date: '2022-02-25'
+  tax_included: true
+purchase_with_freeze:
+  id: 4
+  client_id: 3
+  product_id: 5
+  payment: 20000
+  dop: '2021-11-09'
+  payment_mode: Cash
+  invoice: 2022M123
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2021-12-20 00:44:20.231815000 Z
+  updated_at: 2022-03-22 19:08:16.114353000 Z
+  fitternity_id:
+  price: Uc3mbase
+  status: ongoing
+  expiry_date: '2022-05-06'
+  start_date: '2021-11-11'
+  tax_included: true
+purchase_12C5WPT:
+  id: 115
+  client_id: 33
+  product_id: 12
+  payment: 21000
+  dop: '2022-01-05'
+  payment_mode: Cash
+  invoice: 2022M145
+  note: Foundation PT Package with Amit
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-05 12:21:49.814116000 Z
+  updated_at: 2022-03-22 19:08:19.764426000 Z
+  fitternity_id:
+  price: PT12C5W
+  status: ongoing
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-05'
+  tax_included: true
+purchase_ptrider:
+  id: 441
+  client_id: 33
+  product_id: 62
+  payment: 0
+  dop: '2022-01-05'
+  payment_mode: Not applicable
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-14 04:06:19.658315000 Z
+  updated_at: 2022-03-22 19:08:15.625163000 Z
+  fitternity_id:
+  price: price_rider
+  status: not started
+  expiry_date: nil
+  start_date: nil
+  tax_included: true
+  purchase_id: 115
+gurbani_ongoingtrial:
+  id: 437
+  client_id: 213
+  product_id: 6
+  payment: 1500
+  dop: '2022-03-13'
+  payment_mode: Instamojo
+  invoice: 2022M212
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-14'
+  created_at: 2022-03-13 16:39:25.647869000 Z
+  updated_at: 2022-03-22 19:08:17.736229000 Z
+  fitternity_id:
+  price: trial
+  status: ongoing
+  expiry_date: '2022-03-20'
+  start_date: '2022-03-14'
+  tax_included: true
+busy_class_attendee1:
+  id: 36
+  client_id: 27
+  product_id: 4
+  payment: 9500
+  dop: '2021-12-06'
+  payment_mode: Google Pay
+  invoice: 2022M130
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2021-12-29'
+  created_at: 2021-12-29 10:53:19.522430000 Z
+  updated_at: 2022-03-22 19:08:16.327773000 Z
+  fitternity_id:
+  price_id: 7
+  status: expired
+  expiry_date: '2022-02-12'
+  start_date: '2021-12-06'
+  tax_included: true
+purchase_12:
+  id: 12
+  client_id: 10
+  product_id: 1
+  payment: 500
+  dop: '2021-11-18'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-20 00:44:20.332698000 Z
+  updated_at: 2022-03-22 19:08:15.577060000 Z
+  fitternity_id:
+  price: classpass
+  status: expired
+  expiry_date: '2021-11-18'
+  start_date: '2021-11-18'
+  tax_included: true
+AnushkaUC3Mong:
+  id: 201
+  client_id: 36
+  product_id: 5
+  payment: 12750
+  dop: '2022-01-24'
+  payment_mode: Google Pay
+  invoice: 2022M160
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-25 07:29:57.039663000 Z
+  updated_at: 2022-03-22 19:08:31.735108000 Z
+  fitternity_id:
+  price_id: 14
+  status: ongoing
+  expiry_date: '2022-04-27'
+  start_date: '2022-01-25'
+  tax_included: true  
+purchase_fitternity:
+  id: 406
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-04'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 05:18:44.512675000 Z
+  updated_at: 2022-03-08 03:25:02.336782000 Z
+  fitternity_id: 4
+  price: fitternity
+  status: expired
+  expiry_date:
+  start_date:
+  tax_included: true
+package_not_started:
+  id: 382
+  client_id: 187
+  product_id: 4
+  payment: 9500
+  dop: '2022-03-01'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-01 10:18:36.003053000 Z
+  updated_at: 2022-03-22 19:08:22.119865000 Z
+  fitternity_id:
+  price_id: 7
+  status: not started
+  expiry_date:
+  start_date:
+  tax_included: true  
+purchase_282:
+  id: 282
+  client_id: 9
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-14'
+  payment_mode: Cash
+  invoice: 2022M177
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-14 03:43:35.495346000 Z
+  updated_at: 2022-03-22 19:08:15.761191000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-20'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_289:
+  id: 289
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-15'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 03:55:23.631296000 Z
+  updated_at: 2022-03-22 19:08:15.712409000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-15'
+  start_date: '2022-02-15'
+  tax_included: true
+purchase_372:
+  id: 372
+  client_id: 197
+  product_id: 1
+  payment: 550
+  dop: '2022-02-26'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-26 04:46:02.286874000 Z
+  updated_at: 2022-03-22 19:08:15.822269000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-25'
+  start_date: '2022-02-25'
+  tax_included: true
+purchase_9:
+  id: 9
+  client_id: 7
+  product_id: 1
+  payment: 1000
+  dop: '2021-11-16'
+  payment_mode: cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-20 00:44:20.294031000 Z
+  updated_at: 2022-03-22 19:08:15.857525000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2021-11-16'
+  start_date: '2021-11-16'
+  tax_included: true
+purchase_380:
+  id: 380
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-01'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-01 03:13:09.614861000 Z
+  updated_at: 2022-03-22 19:08:16.165139000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-01'
+  start_date: '2022-03-01'
+  tax_included: true
+purchase_447:
+  id: 447
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-03-16'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 04:33:27.537337000 Z
+  updated_at: 2022-03-22 19:08:17.596963000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-03-17'
+  start_date: '2022-03-17'
+  tax_included: true
+purchase_444:
+  id: 444
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-15'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-15 02:02:58.336111000 Z
+  updated_at: 2022-03-22 19:08:17.516498000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-03-15'
+  tax_included: true
+purchase_221:
+  id: 221
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-02'
+  payment_mode: Fitternity
+  invoice: ''
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-02 04:23:22.073432000 Z
+  updated_at: 2022-03-22 19:08:16.050955000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-02'
+  start_date: '2022-02-02'
+  tax_included: true
+purchase_398:
+  id: 398
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-04'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-04 02:21:54.998999000 Z
+  updated_at: 2022-03-22 19:08:16.909187000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-04'
+  start_date: '2022-03-04'
+  tax_included: true
+purchase_364:
+  id: 364
+  client_id: 17
+  product_id: 7
+  payment: 6000
+  dop: '2022-02-21'
+  payment_mode: Cash
+  invoice: 2022M198
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-23 09:24:55.189466000 Z
+  updated_at: 2022-03-22 19:08:16.216426000 Z
+  fitternity_id:
+  price_id: 15
+  status: ongoing
+  expiry_date: '2022-04-05'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_1:
+  id: 1
+  client_id: 1
+  product_id: 4
+  payment: 7000
+  dop: '2021-11-13'
+  payment_mode: Cash
+  invoice: 2022M111
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-08'
+  created_at: 2021-12-20 00:44:20.191841000 Z
+  updated_at: 2022-03-22 19:08:16.270612000 Z
+  fitternity_id:
+  price_id: 69
+  status: expired
+  expiry_date: '2021-12-12'
+  start_date: '2021-11-13'
+  tax_included: true
+purchase_44:
+  id: 44
+  client_id: 31
+  product_id: 4
+  payment: 6650
+  dop: '2021-12-04'
+  payment_mode: Cash
+  invoice: 2022M129
+  note: 30% Buddy Discount with Shibani
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 06:12:58.700605000 Z
+  updated_at: 2022-03-22 19:08:16.503052000 Z
+  fitternity_id:
+  price_id: 8
+  status: expired
+  expiry_date: '2022-02-06'
+  start_date: '2021-12-04'
+  tax_included: true
+purchase_21:
+  id: 21
+  client_id: 18
+  product_id: 7
+  payment: 6000
+  dop: '2021-10-07'
+  payment_mode: Google Pay
+  invoice: 2022M096
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-25 21:56:50.052046000 Z
+  updated_at: 2022-03-22 19:08:16.421378000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2021-11-17'
+  start_date: '2021-10-07'
+  tax_included: true
+purchase_37:
+  id: 37
+  client_id: 27
+  product_id: 3
+  payment: 6500
+  dop: '2021-10-19'
+  payment_mode: Google Pay
+  invoice: 2022M105
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2021-12-29'
+  created_at: 2021-12-29 11:30:49.064088000 Z
+  updated_at: 2022-03-22 19:08:16.462380000 Z
+  fitternity_id:
+  price_id: 5
+  status: expired
+  expiry_date: '2021-12-05'
+  start_date: '2021-10-12'
+  tax_included: true
+purchase_42:
+  id: 42
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-04'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 05:58:21.701611000 Z
+  updated_at: 2022-03-22 19:08:16.635877000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-04'
+  start_date: '2021-12-04'
+  tax_included: true
+purchase_51:
+  id: 51
+  client_id: 33
+  product_id: 6
+  payment: 1500
+  dop: '2021-12-08'
+  payment_mode: Cash
+  invoice: 2022M127
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 06:56:36.115576000 Z
+  updated_at: 2022-03-22 19:08:16.542653000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2021-12-14'
+  start_date: '2021-12-08'
+  tax_included: true
+purchase_43:
+  id: 43
+  client_id: 30
+  product_id: 4
+  payment: 6650
+  dop: '2021-12-04'
+  payment_mode: Google Pay
+  invoice: 2022M128
+  note: 30% Buddy Discount + Sikha
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 06:10:03.894500000 Z
+  updated_at: 2022-03-22 19:08:16.586944000 Z
+  fitternity_id:
+  price_id: 8
+  status: expired
+  expiry_date: '2022-01-10'
+  start_date: '2021-12-04'
+  tax_included: true
+purchase_396:
+  id: 396
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-04'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-04 02:18:15.424259000 Z
+  updated_at: 2022-03-22 19:08:16.815275000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-04'
+  start_date: '2022-03-04'
+  tax_included: true
+purchase_438:
+  id: 438
+  client_id: 207
+  product_id: 4
+  payment: 9500
+  dop: '2022-03-13'
+  payment_mode: Instamojo
+  invoice: 2022M213
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-14'
+  created_at: 2022-03-13 16:42:54.475242000 Z
+  updated_at: 2022-03-22 19:08:16.683913000 Z
+  fitternity_id:
+  price_id: 7
+  status: ongoing
+  expiry_date: '2022-04-15'
+  start_date: '2022-03-14'
+  tax_included: true
+purchase_390:
+  id: 390
+  client_id: 165
+  product_id: 4
+  payment: 6650
+  dop: '2022-03-02'
+  payment_mode: Cash
+  invoice: 2022M205
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-03'
+  created_at: 2022-03-02 06:32:03.895457000 Z
+  updated_at: 2022-03-22 19:08:16.729105000 Z
+  fitternity_id:
+  price_id: 125
+  status: ongoing
+  expiry_date: '2022-04-03'
+  start_date: '2022-03-02'
+  tax_included: true
+purchase_397:
+  id: 397
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-03-04'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-04 02:18:46.025291000 Z
+  updated_at: 2022-03-22 19:08:16.862767000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-04'
+  start_date: '2022-03-04'
+  tax_included: true
+purchase_430:
+  id: 430
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2022-01-20'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 19:50:02.590136000 Z
+  updated_at: 2022-03-22 19:08:17.201007000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2022-01-20'
+  start_date: '2022-01-20'
+  tax_included: true
+purchase_388:
+  id: 388
+  client_id: 119
+  product_id: 61
+  payment: 36000
+  dop: '2022-03-02'
+  payment_mode: NEFT
+  invoice: 2022M202
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-05'
+  created_at: 2022-03-02 06:26:07.044196000 Z
+  updated_at: 2022-03-22 19:08:16.961480000 Z
+  fitternity_id:
+  price_id: 124
+  status: ongoing
+  expiry_date: '2022-05-31'
+  start_date: '2022-03-03'
+  tax_included: true
+purchase_405:
+  id: 405
+  client_id: 206
+  product_id: 8
+  payment: 550
+  dop: '2022-03-03'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 05:15:21.608830000 Z
+  updated_at: 2022-03-22 19:08:17.122433000 Z
+  fitternity_id: 4
+  price_id: 109
+  status: expired
+  expiry_date: '2022-03-08'
+  start_date: '2022-03-08'
+  tax_included: true
+purchase_410:
+  id: 410
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-03-07'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 04:15:23.744360000 Z
+  updated_at: 2022-03-22 19:08:16.999855000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_424:
+  id: 424
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-03-09'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-09 07:55:59.626211000 Z
+  updated_at: 2022-03-22 19:08:17.167194000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-09'
+  start_date: '2022-03-09'
+  tax_included: true
+purchase_433:
+  id: 433
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2022-01-24'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 19:55:28.876298000 Z
+  updated_at: 2022-03-22 19:08:17.316406000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2022-01-24'
+  start_date: '2022-01-24'
+  tax_included: true
+purchase_431:
+  id: 431
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2022-01-21'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 19:51:09.499843000 Z
+  updated_at: 2022-03-22 19:08:17.244306000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2022-01-21'
+  start_date: '2022-01-21'
+  tax_included: true
+purchase_432:
+  id: 432
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2022-01-31'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 19:53:41.234392000 Z
+  updated_at: 2022-03-22 19:08:17.280395000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2022-01-31'
+  start_date: '2022-01-31'
+  tax_included: true
+purchase_417:
+  id: 417
+  client_id: 211
+  product_id: 6
+  payment: 1500
+  dop: '2022-03-07'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 13:40:15.447552000 Z
+  updated_at: 2022-03-22 19:08:17.350725000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-03-13'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_75:
+  id: 75
+  client_id: 40
+  product_id: 6
+  payment: 1500
+  dop: '2021-12-23'
+  payment_mode: Cash
+  invoice: 02022M197
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-14'
+  created_at: 2021-12-31 11:13:37.289129000 Z
+  updated_at: 2022-03-22 19:08:17.426994000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-01-02'
+  start_date: '2021-12-20'
+  tax_included: true
+purchase_418:
+  id: 418
+  client_id: 210
+  product_id: 6
+  payment: 1500
+  dop: '2022-03-07'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 13:41:09.640672000 Z
+  updated_at: 2022-03-22 19:08:17.387812000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-03-13'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_389:
+  id: 389
+  client_id: 167
+  product_id: 4
+  payment: 6650
+  dop: '2022-03-02'
+  payment_mode: Cash
+  invoice: 2022M206
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-14'
+  created_at: 2022-03-02 06:31:27.329888000 Z
+  updated_at: 2022-03-22 19:08:17.469847000 Z
+  fitternity_id:
+  price_id: 125
+  status: ongoing
+  expiry_date: '2022-04-03'
+  start_date: '2022-03-02'
+  tax_included: true
+purchase_451:
+  id: 451
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-11'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 05:24:45.696940000 Z
+  updated_at: 2022-03-22 19:08:17.562898000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-11'
+  start_date: '2022-03-11'
+  tax_included: true
+purchase_453:
+  id: 453
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-16'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 05:46:18.559156000 Z
+  updated_at: 2022-03-22 19:08:17.645512000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-17'
+  start_date: '2022-03-17'
+  tax_included: true
+purchase_456:
+  id: 456
+  client_id: 216
+  product_id: 1
+  payment: 1000
+  dop: '2022-03-17'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-17 10:59:29.499642000 Z
+  updated_at: 2022-03-22 19:08:17.696320000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-03-17'
+  start_date: '2022-03-17'
+  tax_included: true
+purchase_87:
+  id: 87
+  client_id: 13
+  product_id: 1
+  payment: 0
+  dop: '2021-12-24'
+  payment_mode: Not applicable
+  invoice:
+  note: Gigi invited for free
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-31 11:46:20.297221000 Z
+  updated_at: 2022-03-22 19:08:25.177597000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-24'
+  start_date: '2021-12-24'
+  tax_included: true
+purchase_452:
+  id: 452
+  client_id: 215
+  product_id: 1
+  payment: 550
+  dop: '2022-03-13'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 05:39:23.335255000 Z
+  updated_at: 2022-03-22 19:08:17.840790000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-21'
+  start_date: '2022-03-21'
+  tax_included: true
+purchase_84:
+  id: 84
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-23'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:35:03.310020000 Z
+  updated_at: 2022-03-22 19:08:25.525359000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-23'
+  start_date: '2021-12-23'
+  tax_included: true
+purchase_126:
+  id: 126
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-01-11'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-11 04:40:06.768032000 Z
+  updated_at: 2022-03-22 19:08:25.775943000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-11'
+  start_date: '2022-01-11'
+  tax_included: true
+purchase_123:
+  id: 123
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-08'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-08 03:37:58.230033000 Z
+  updated_at: 2022-03-22 19:08:26.069657000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-08'
+  start_date: '2022-01-08'
+  tax_included: true
+purchase_139:
+  id: 139
+  client_id: 68
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:50:52.516118000 Z
+  updated_at: 2022-03-22 19:08:26.325873000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_137:
+  id: 137
+  client_id: 66
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:48:46.747820000 Z
+  updated_at: 2022-03-22 19:08:26.543497000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_143:
+  id: 143
+  client_id: 72
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 05:33:08.305145000 Z
+  updated_at: 2022-03-22 19:08:26.715601000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_179:
+  id: 179
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-14'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-14 06:03:01.662902000 Z
+  updated_at: 2022-03-22 19:08:26.982920000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-14'
+  start_date: '2022-01-14'
+  tax_included: true
+purchase_187:
+  id: 187
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-01-19'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-19 05:16:45.024266000 Z
+  updated_at: 2022-03-22 19:08:27.246478000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-19'
+  start_date: '2022-01-19'
+  tax_included: true
+purchase_197:
+  id: 197
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-01-24'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-24 03:34:20.193968000 Z
+  updated_at: 2022-03-22 19:08:27.477740000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-24'
+  start_date: '2022-01-24'
+  tax_included: true
+purchase_71:
+  id: 71
+  client_id: 38
+  product_id: 6
+  payment: 1500
+  dop: '2021-12-16'
+  payment_mode: NEFT
+  invoice: "-2022M164"
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2021-12-31'
+  created_at: 2021-12-31 10:41:17.832857000 Z
+  updated_at: 2022-03-22 19:08:27.531841000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-01-30'
+  start_date: '2021-12-16'
+  tax_included: true
+purchase_293:
+  id: 293
+  client_id: 68
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 05:39:09.142214000 Z
+  updated_at: 2022-03-22 19:08:17.931643000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_344:
+  id: 344
+  client_id: 185
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-21'
+  payment_mode: Google Pay
+  invoice: 2022M197
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-21 15:17:05.883908000 Z
+  updated_at: 2022-03-22 19:08:18.022533000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-27'
+  start_date: '2022-02-21'
+  tax_included: true
+purchase_381:
+  id: 381
+  client_id: 5
+  product_id: 4
+  payment: 9500
+  dop: '2022-02-28'
+  payment_mode: Cheque
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-01'
+  created_at: 2022-03-01 07:15:06.706963000 Z
+  updated_at: 2022-03-22 19:08:18.063345000 Z
+  fitternity_id:
+  price_id: 7
+  status: expired
+  expiry_date: '2022-03-29'
+  start_date: '2022-02-28'
+  tax_included: true
+purchase_359:
+  id: 359
+  client_id: 33
+  product_id: 57
+  payment: 24000
+  dop: '2022-02-23'
+  payment_mode: Cash
+  invoice: 2022M194
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-23'
+  created_at: 2022-02-23 07:01:57.228628000 Z
+  updated_at: 2022-03-22 19:08:18.113017000 Z
+  fitternity_id:
+  price_id: 113
+  status: ongoing
+  expiry_date: '2022-04-09'
+  start_date: '2022-02-11'
+  tax_included: true
+purchase_29:
+  id: 29
+  client_id: 22
+  product_id: 5
+  payment: 17850
+  dop: '2021-12-27'
+  payment_mode: Google Pay
+  invoice: 2022M136
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-27 00:43:45.435538000 Z
+  updated_at: 2022-03-22 19:08:18.167384000 Z
+  fitternity_id:
+  price_id: 12
+  status: frozen
+  expiry_date: '2022-04-23'
+  start_date: '2021-12-06'
+  tax_included: true
+purchase_399:
+  id: 399
+  client_id: 184
+  product_id: 62
+  payment: 21000
+  dop: '2022-03-04'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-04 08:37:55.729073000 Z
+  updated_at: 2022-03-22 19:08:18.204775000 Z
+  fitternity_id:
+  price_id: 127
+  status: ongoing
+  expiry_date: '2022-09-11'
+  start_date: '2022-03-14'
+  tax_included: true
+purchase_228:
+  id: 228
+  client_id: 123
+  product_id: 8
+  payment: 650
+  dop: '2022-02-03'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-03 06:37:40.940230000 Z
+  updated_at: 2022-03-22 19:08:18.251316000 Z
+  fitternity_id:
+  price_id: 56
+  status: expired
+  expiry_date: '2022-02-03'
+  start_date: '2022-02-03'
+  tax_included: true
+purchase_392:
+  id: 392
+  client_id: 108
+  product_id: 7
+  payment: 6000
+  dop: '2022-03-02'
+  payment_mode: PayTM
+  invoice: 2022M207
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-05'
+  created_at: 2022-03-02 08:29:17.634961000 Z
+  updated_at: 2022-03-22 19:08:18.368532000 Z
+  fitternity_id:
+  price_id: 15
+  status: ongoing
+  expiry_date: '2022-04-15'
+  start_date: '2022-03-08'
+  tax_included: true
+purchase_461:
+  id: 461
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-03-21'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-21 13:52:09.060458000 Z
+  updated_at: 2022-03-22 19:08:18.416942000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-21'
+  start_date: '2022-03-21'
+  tax_included: true
+purchase_277:
+  id: 277
+  client_id: 51
+  product_id: 22
+  payment: 48000
+  dop: '2022-02-12'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-21'
+  created_at: 2022-02-12 05:29:42.676246000 Z
+  updated_at: 2022-03-22 19:08:18.457421000 Z
+  fitternity_id:
+  price_id: 72
+  status: expired
+  expiry_date: '2022-03-28'
+  start_date: '2022-02-12'
+  tax_included: true
+purchase_391:
+  id: 391
+  client_id: 202
+  product_id: 57
+  payment: 21240
+  dop: '2022-03-02'
+  payment_mode: Cash
+  invoice: UB 01
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-15'
+  created_at: 2022-03-02 07:17:30.155059000 Z
+  updated_at: 2022-03-22 19:08:18.544622000 Z
+  fitternity_id:
+  price_id: 128
+  status: ongoing
+  expiry_date: '2022-04-17'
+  start_date: '2022-03-04'
+  tax_included: true
+purchase_233:
+  id: 233
+  client_id: 126
+  product_id: 22
+  payment: 48000
+  dop: '2022-02-04'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-02-04 11:11:39.423364000 Z
+  updated_at: 2022-03-22 19:08:18.583414000 Z
+  fitternity_id:
+  price_id: 72
+  status: expired
+  expiry_date: '2022-03-20'
+  start_date: '2022-02-04'
+  tax_included: true
+purchase_312:
+  id: 312
+  client_id: 163
+  product_id: 4
+  payment: 9500
+  dop: '2022-02-15'
+  payment_mode: Instamojo
+  invoice: 2022M190
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-22'
+  created_at: 2022-02-15 10:14:26.229393000 Z
+  updated_at: 2022-03-22 19:08:18.636448000 Z
+  fitternity_id:
+  price_id: 7
+  status: frozen
+  expiry_date: '2022-04-05'
+  start_date: '2022-02-21'
+  tax_included: true
+purchase_238:
+  id: 238
+  client_id: 127
+  product_id: 8
+  payment: 650
+  dop: '2022-02-08'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-08 05:29:35.557453000 Z
+  updated_at: 2022-03-22 19:08:18.670943000 Z
+  fitternity_id:
+  price_id: 56
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-02-08'
+  tax_included: true
+purchase_274:
+  id: 274
+  client_id: 161
+  product_id: 8
+  payment: 650
+  dop: '2022-02-10'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-10 07:55:44.495312000 Z
+  updated_at: 2022-03-22 19:08:18.711241000 Z
+  fitternity_id:
+  price_id: 56
+  status: expired
+  expiry_date: '2022-02-10'
+  start_date: '2022-02-10'
+  tax_included: true
+purchase_353:
+  id: 353
+  client_id: 189
+  product_id: 1
+  payment: 0
+  dop: '2022-02-22'
+  payment_mode: Cash
+  invoice:
+  note: 'Gigi gave her free class. '
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-22 12:34:16.946394000 Z
+  updated_at: 2022-03-22 19:08:18.754405000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2022-02-22'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_104:
+  id: 104
+  client_id: 47
+  product_id: 9
+  payment: 30000
+  dop: '2021-10-28'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 13:08:57.371903000 Z
+  updated_at: 2022-03-22 19:08:18.811351000 Z
+  fitternity_id:
+  price_id: 74
+  status: expired
+  expiry_date: '2022-01-27'
+  start_date: '2021-10-28'
+  tax_included: true
+purchase_110:
+  id: 110
+  client_id: 50
+  product_id: 9
+  payment: 48000
+  dop: '2021-11-13'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-01-04 14:43:39.735273000 Z
+  updated_at: 2022-03-22 19:08:18.858385000 Z
+  fitternity_id:
+  price_id: 114
+  status: ongoing
+  expiry_date: '2023-01-19'
+  start_date: '2021-10-29'
+  tax_included: true
+purchase_112:
+  id: 112
+  client_id: 51
+  product_id: 9
+  payment: 48000
+  dop: '2021-12-09'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-01-04 15:11:15.394240000 Z
+  updated_at: 2022-03-22 19:08:18.899147000 Z
+  fitternity_id:
+  price_id: 114
+  status: expired
+  expiry_date: '2022-03-08'
+  start_date: '2021-12-09'
+  tax_included: true
+purchase_107:
+  id: 107
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2021-12-12'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 13:57:28.498941000 Z
+  updated_at: 2022-03-22 19:08:18.934761000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2021-12-10'
+  start_date: '2021-12-10'
+  tax_included: true
+purchase_81:
+  id: 81
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2021-12-22'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:29:21.587124000 Z
+  updated_at: 2022-03-22 19:08:18.984841000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-22'
+  start_date: '2021-12-22'
+  tax_included: true
+purchase_101:
+  id: 101
+  client_id: 17
+  product_id: 7
+  payment: 6000
+  dop: '2021-12-09'
+  payment_mode: Cash
+  invoice: 2022M126
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-04 07:55:53.626056000 Z
+  updated_at: 2022-03-22 19:08:19.028192000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2022-03-14'
+  start_date: '2021-12-09'
+  tax_included: true
+purchase_125:
+  id: 125
+  client_id: 55
+  product_id: 5
+  payment: 12750
+  dop: '2022-01-08'
+  payment_mode: Instamojo
+  invoice: 2022M142
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-11'
+  created_at: 2022-01-10 15:05:44.278665000 Z
+  updated_at: 2022-03-22 19:08:19.080181000 Z
+  fitternity_id:
+  price_id: 14
+  status: ongoing
+  expiry_date: '2022-04-12'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_360:
+  id: 360
+  client_id: 186
+  product_id: 4
+  payment: 9500
+  dop: '2022-02-23'
+  payment_mode: Cash
+  invoice: 2022M199
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-23 07:09:16.463647000 Z
+  updated_at: 2022-03-22 19:08:19.124064000 Z
+  fitternity_id:
+  price_id: 7
+  status: ongoing
+  expiry_date: '2022-03-24'
+  start_date: '2022-02-23'
+  tax_included: true
+purchase_82:
+  id: 82
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-22'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:29:51.626494000 Z
+  updated_at: 2022-03-22 19:08:19.168189000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-22'
+  start_date: '2021-12-22'
+  tax_included: true
+purchase_40:
+  id: 40
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-01'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 05:41:31.193703000 Z
+  updated_at: 2022-03-22 19:08:19.259212000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-01'
+  start_date: '2021-12-01'
+  tax_included: true
+purchase_41:
+  id: 41
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-02'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 05:49:27.853892000 Z
+  updated_at: 2022-03-22 19:08:19.306560000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-02'
+  start_date: '2021-12-02'
+  tax_included: true
+purchase_45:
+  id: 45
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-06'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 06:23:00.110829000 Z
+  updated_at: 2022-03-22 19:08:19.352409000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-06'
+  start_date: '2021-12-06'
+  tax_included: true
+purchase_46:
+  id: 46
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-07'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 06:29:41.206112000 Z
+  updated_at: 2022-03-22 19:08:19.404427000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-07'
+  start_date: '2021-12-07'
+  tax_included: true
+purchase_47:
+  id: 47
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-07'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 06:34:15.478255000 Z
+  updated_at: 2022-03-22 19:08:19.460708000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-07'
+  start_date: '2021-12-07'
+  tax_included: true
+purchase_50:
+  id: 50
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-08'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 06:53:08.294523000 Z
+  updated_at: 2022-03-22 19:08:19.517831000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-08'
+  start_date: '2021-12-08'
+  tax_included: true
+purchase_52:
+  id: 52
+  client_id: 34
+  product_id: 1
+  payment: 1000
+  dop: '2021-12-08'
+  payment_mode: Cash
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 07:01:09.363932000 Z
+  updated_at: 2022-03-22 19:08:19.553146000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2021-12-08'
+  start_date: '2021-12-08'
+  tax_included: true
+purchase_90:
+  id: 90
+  client_id: 13
+  product_id: 4
+  payment: 9500
+  dop: '2022-01-02'
+  payment_mode: Instamojo
+  invoice: 2022M138
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-03'
+  created_at: 2022-01-02 11:31:55.000064000 Z
+  updated_at: 2022-03-22 19:08:19.596238000 Z
+  fitternity_id:
+  price_id: 7
+  status: ongoing
+  expiry_date: '2022-04-18'
+  start_date: '2022-01-03'
+  tax_included: true
+purchase_53:
+  id: 53
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-09'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 07:07:01.074625000 Z
+  updated_at: 2022-03-22 19:08:19.642047000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-09'
+  start_date: '2021-12-09'
+  tax_included: true
+purchase_54:
+  id: 54
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-09'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 07:08:03.609513000 Z
+  updated_at: 2022-03-22 19:08:19.688755000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-09'
+  start_date: '2021-12-09'
+  tax_included: true
+purchase_55:
+  id: 55
+  client_id: 7
+  product_id: 1
+  payment: 1000
+  dop: '2021-12-09'
+  payment_mode: Cash
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 07:12:11.065497000 Z
+  updated_at: 2022-03-22 19:08:19.722564000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2021-12-09'
+  start_date: '2021-12-09'
+  tax_included: true
+purchase_345:
+  id: 345
+  client_id: 186
+  product_id: 1
+  payment: 1000
+  dop: '2022-02-21'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-21'
+  created_at: 2022-02-21 15:22:13.117997000 Z
+  updated_at: 2022-03-22 19:08:19.797731000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-02-21'
+  start_date: '2022-02-21'
+  tax_included: true
+purchase_92:
+  id: 92
+  client_id: 11
+  product_id: 4
+  payment: 9500
+  dop: '2022-01-03'
+  payment_mode: Cash
+  invoice: 2022M137
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-03'
+  created_at: 2022-01-03 09:43:00.983024000 Z
+  updated_at: 2022-03-22 19:08:19.840035000 Z
+  fitternity_id:
+  price_id: 7
+  status: expired
+  expiry_date: '2022-02-02'
+  start_date: '2022-01-03'
+  tax_included: true
+purchase_95:
+  id: 95
+  client_id: 42
+  product_id: 4
+  payment: 9500
+  dop: '2022-01-02'
+  payment_mode: Instamojo
+  invoice: 2022M139
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-03'
+  created_at: 2022-01-03 10:02:32.895389000 Z
+  updated_at: 2022-03-22 19:08:19.883363000 Z
+  fitternity_id:
+  price_id: 7
+  status: expired
+  expiry_date: '2022-02-02'
+  start_date: '2022-01-03'
+  tax_included: true
+purchase_284:
+  id: 284
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-14 03:50:53.368880000 Z
+  updated_at: 2022-03-22 19:08:19.977288000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-14'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_285:
+  id: 285
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-14 03:51:26.198765000 Z
+  updated_at: 2022-03-22 19:08:20.033551000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-14'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_292:
+  id: 292
+  client_id: 168
+  product_id: 15
+  payment: 2350
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:38:10.250924000 Z
+  updated_at: 2022-03-22 19:08:20.071130000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_291:
+  id: 291
+  client_id: 16
+  product_id: 7
+  payment: 6000
+  dop: '2022-02-15'
+  payment_mode: Cash
+  invoice: 2022M182
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-15'
+  created_at: 2022-02-15 05:12:27.191844000 Z
+  updated_at: 2022-03-22 19:08:20.120972000 Z
+  fitternity_id:
+  price_id: 15
+  status: ongoing
+  expiry_date: '2022-03-29'
+  start_date: '2022-02-15'
+  tax_included: true
+purchase_322:
+  id: 322
+  client_id: 125
+  product_id: 1
+  payment: 550
+  dop: '2022-02-05'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 08:30:51.220258000 Z
+  updated_at: 2022-03-22 19:08:20.169989000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-05'
+  start_date: '2022-02-05'
+  tax_included: true
+purchase_323:
+  id: 323
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-15'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 08:35:37.058159000 Z
+  updated_at: 2022-03-22 19:08:20.225799000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-15'
+  start_date: '2022-02-15'
+  tax_included: true
+purchase_120:
+  id: 120
+  client_id: 53
+  product_id: 5
+  payment: 12750
+  dop: '2021-12-02'
+  payment_mode: Instamojo
+  invoice: 2022M159
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-06'
+  created_at: 2022-01-06 08:19:57.368939000 Z
+  updated_at: 2022-03-22 19:08:20.277115000 Z
+  fitternity_id:
+  price_id: 14
+  status: frozen
+  expiry_date: '2022-05-26'
+  start_date: '2022-01-25'
+  tax_included: true
+purchase_324:
+  id: 324
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-16'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 08:50:43.826416000 Z
+  updated_at: 2022-03-22 19:08:20.330173000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-17'
+  start_date: '2022-02-17'
+  tax_included: true
+purchase_332:
+  id: 332
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-18'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-19 02:06:32.105368000 Z
+  updated_at: 2022-03-22 19:08:20.427309000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-19'
+  start_date: '2022-02-19'
+  tax_included: true
+purchase_333:
+  id: 333
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-02-18'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-19 02:07:33.661185000 Z
+  updated_at: 2022-03-22 19:08:20.476238000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-19'
+  start_date: '2022-02-19'
+  tax_included: true
+purchase_56:
+  id: 56
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-11'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 08:39:48.409218000 Z
+  updated_at: 2022-03-22 19:08:20.525773000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-11'
+  start_date: '2021-12-11'
+  tax_included: true
+purchase_57:
+  id: 57
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-11'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 08:40:40.536929000 Z
+  updated_at: 2022-03-22 19:08:20.574342000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-11'
+  start_date: '2021-12-11'
+  tax_included: true
+purchase_58:
+  id: 58
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2021-12-11'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 08:42:07.962263000 Z
+  updated_at: 2022-03-22 19:08:20.832116000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-11'
+  start_date: '2021-12-11'
+  tax_included: true
+purchase_60:
+  id: 60
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-13'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 08:50:46.396511000 Z
+  updated_at: 2022-03-22 19:08:20.879119000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-13'
+  start_date: '2021-12-13'
+  tax_included: true
+purchase_61:
+  id: 61
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-14'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 09:54:37.707462000 Z
+  updated_at: 2022-03-22 19:08:20.929125000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-14'
+  start_date: '2021-12-14'
+  tax_included: true
+purchase_66:
+  id: 66
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-15'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 10:29:32.834651000 Z
+  updated_at: 2022-03-22 19:08:21.052749000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-15'
+  start_date: '2021-12-15'
+  tax_included: true
+purchase_68:
+  id: 68
+  client_id: 37
+  product_id: 1
+  payment: 550
+  dop: '2021-12-15'
+  payment_mode: Fitternity
+  invoice:
+  note: 'Late Cancelled class counted '
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 10:36:08.362674000 Z
+  updated_at: 2022-03-22 19:08:21.105753000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-15'
+  start_date: '2021-12-15'
+  tax_included: true
+purchase_69:
+  id: 69
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-16'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 10:37:36.569532000 Z
+  updated_at: 2022-03-22 19:08:21.156575000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-16'
+  start_date: '2021-12-16'
+  tax_included: true
+purchase_59:
+  id: 59
+  client_id: 8
+  product_id: 5
+  payment: 20000
+  dop: '2021-11-06'
+  payment_mode: Cash
+  invoice: 2022M133
+  note: 'Diwali Discount '
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 08:49:40.834375000 Z
+  updated_at: 2022-03-22 19:08:21.317961000 Z
+  fitternity_id:
+  price_id: 13
+  status: expired
+  expiry_date: '2022-03-21'
+  start_date: '2021-12-13'
+  tax_included: true
+purchase_236:
+  id: 236
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-08'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-08 04:37:50.452167000 Z
+  updated_at: 2022-03-22 19:08:21.371308000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-02-08'
+  tax_included: true
+purchase_24:
+  id: 24
+  client_id: 19
+  product_id: 8
+  payment: 950
+  dop: '2021-11-16'
+  payment_mode: Instamojo
+  invoice:
+  note: shown on spreeadsheet as 1000 without explanantion (expenses?)
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-25 22:07:53.937109000 Z
+  updated_at: 2022-03-22 19:08:21.407118000 Z
+  fitternity_id:
+  price_id: 16
+  status: expired
+  expiry_date: '2021-11-16'
+  start_date: '2021-11-16'
+  tax_included: true
+purchase_298:
+  id: 298
+  client_id: 73
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 05:47:15.754271000 Z
+  updated_at: 2022-03-22 19:08:21.442444000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_237:
+  id: 237
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-08'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-08 04:38:08.547302000 Z
+  updated_at: 2022-03-22 19:08:21.491274000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-02-08'
+  tax_included: true
+purchase_35:
+  id: 35
+  client_id: 26
+  product_id: 6
+  payment: 1500
+  dop: '2021-11-30'
+  payment_mode: PayTM
+  invoice: 2022M121
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-29 10:51:22.353584000 Z
+  updated_at: 2022-03-22 19:08:21.534123000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2021-12-06'
+  start_date: '2021-11-30'
+  tax_included: true
+purchase_299:
+  id: 299
+  client_id: 71
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 05:48:27.246607000 Z
+  updated_at: 2022-03-22 19:08:21.568740000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_13:
+  id: 13
+  client_id: 11
+  product_id: 4
+  payment: 8000
+  dop: '2021-11-23'
+  payment_mode: Cash
+  invoice: 2022M116
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-08'
+  created_at: 2021-12-20 00:44:20.345369000 Z
+  updated_at: 2022-03-22 19:08:21.612079000 Z
+  fitternity_id:
+  price_id: 68
+  status: expired
+  expiry_date: '2021-12-22'
+  start_date: '2021-11-23'
+  tax_included: true
+purchase_317:
+  id: 317
+  client_id: 161
+  product_id: 8
+  payment: 550
+  dop: '2021-12-13'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-16'
+  created_at: 2022-02-16 07:56:44.744520000 Z
+  updated_at: 2022-03-22 19:08:21.657802000 Z
+  fitternity_id: 3
+  price_id: 109
+  status: expired
+  expiry_date: '2021-12-13'
+  start_date: '2021-12-13'
+  tax_included: true
+purchase_305:
+  id: 305
+  client_id: 59
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 05:54:24.226729000 Z
+  updated_at: 2022-03-22 19:08:21.707429000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_294:
+  id: 294
+  client_id: 70
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 05:40:05.503784000 Z
+  updated_at: 2022-03-22 19:08:21.742754000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_16:
+  id: 16
+  client_id: 13
+  product_id: 4
+  payment: 7000
+  dop: '2021-11-07'
+  payment_mode: Instamojo
+  invoice: 2022M114
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-08'
+  created_at: 2021-12-20 00:44:20.382510000 Z
+  updated_at: 2022-03-22 19:08:21.788295000 Z
+  fitternity_id:
+  price_id: 69
+  status: expired
+  expiry_date: '2021-12-18'
+  start_date: '2021-11-19'
+  tax_included: true
+purchase_297:
+  id: 297
+  client_id: 72
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:45:53.600369000 Z
+  updated_at: 2022-03-22 19:08:21.825849000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_273:
+  id: 273
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-10'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-10 04:11:04.847297000 Z
+  updated_at: 2022-03-22 19:08:21.876757000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-10'
+  start_date: '2022-02-10'
+  tax_included: true
+purchase_211:
+  id: 211
+  client_id: 5
+  product_id: 4
+  payment: 9500
+  dop: '2022-01-29'
+  payment_mode: Google Pay
+  invoice: 2022M153
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-01'
+  created_at: 2022-01-29 06:10:34.840187000 Z
+  updated_at: 2022-03-22 19:08:21.962738000 Z
+  fitternity_id:
+  price_id: 7
+  status: expired
+  expiry_date: '2022-02-27'
+  start_date: '2022-01-27'
+  tax_included: true
+purchase_219:
+  id: 219
+  client_id: 108
+  product_id: 7
+  payment: 6000
+  dop: '2022-02-01'
+  payment_mode: Google Pay
+  invoice: 2022M158
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-01'
+  created_at: 2022-02-01 05:15:11.629194000 Z
+  updated_at: 2022-03-22 19:08:22.019426000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-02-01'
+  tax_included: true
+purchase_346:
+  id: 346
+  client_id: 109
+  product_id: 7
+  payment: 6000
+  dop: '2022-02-21'
+  payment_mode: Google Pay
+  invoice: 2022M191
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-22'
+  created_at: 2022-02-21 15:44:51.565496000 Z
+  updated_at: 2022-03-22 19:08:22.077112000 Z
+  fitternity_id:
+  price_id: 15
+  status: ongoing
+  expiry_date: '2022-04-05'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_234:
+  id: 234
+  client_id: 11
+  product_id: 4
+  payment: 9500
+  dop: '2022-02-05'
+  payment_mode: Cash
+  invoice: 2022M172
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-08'
+  created_at: 2022-02-05 03:59:03.595963000 Z
+  updated_at: 2022-03-22 19:08:22.165021000 Z
+  fitternity_id:
+  price_id: 7
+  status: expired
+  expiry_date: '2022-03-05'
+  start_date: '2022-02-05'
+  tax_included: true
+purchase_39:
+  id: 39
+  client_id: 26
+  product_id: 5
+  payment: 17850
+  dop: '2021-12-06'
+  payment_mode: Google Pay
+  invoice: 2022M124
+  note: 30% Diwali Discount
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-30 15:58:45.851282000 Z
+  updated_at: 2022-03-22 19:08:22.257409000 Z
+  fitternity_id:
+  price_id: 12
+  status: expired
+  expiry_date: '2022-03-14'
+  start_date: '2021-12-07'
+  tax_included: true
+purchase_375:
+  id: 375
+  client_id: 71
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-25'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-26 12:00:02.776470000 Z
+  updated_at: 2022-03-22 19:08:22.296418000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-03-17'
+  start_date: '2022-03-11'
+  tax_included: true
+purchase_15:
+  id: 15
+  client_id: 13
+  product_id: 2
+  payment: 3900
+  dop: '2021-10-26'
+  payment_mode: Instamojo
+  invoice: 2022M106
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-11'
+  created_at: 2021-12-20 00:44:20.369722000 Z
+  updated_at: 2022-03-22 19:08:22.381355000 Z
+  fitternity_id:
+  price_id: 67
+  status: expired
+  expiry_date: '2021-11-29'
+  start_date: '2021-10-26'
+  tax_included: true
+purchase_276:
+  id: 276
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-12'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-12 03:55:00.981615000 Z
+  updated_at: 2022-03-22 19:08:22.436971000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-12'
+  start_date: '2022-02-12'
+  tax_included: true
+purchase_295:
+  id: 295
+  client_id: 169
+  product_id: 15
+  payment: 2350
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:40:54.165588000 Z
+  updated_at: 2022-03-22 19:08:22.474286000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_89:
+  id: 89
+  client_id: 12
+  product_id: 4
+  payment: 7000
+  dop: '2021-12-23'
+  payment_mode: Google Pay
+  invoice: 2022M140
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-02 09:29:37.585585000 Z
+  updated_at: 2022-03-22 19:08:22.521784000 Z
+  fitternity_id:
+  price_id: 69
+  status: expired
+  expiry_date: '2022-02-02'
+  start_date: '2022-01-03'
+  tax_included: true
+purchase_358:
+  id: 358
+  client_id: 121
+  product_id: 21
+  payment: 24000
+  dop: '2022-02-23'
+  payment_mode: NEFT
+  invoice: 2022M193
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-23 05:33:16.419790000 Z
+  updated_at: 2022-03-22 19:08:22.605287000 Z
+  fitternity_id:
+  price_id: 120
+  status: frozen
+  expiry_date: '2022-04-17'
+  start_date: '2022-01-31'
+  tax_included: true
+purchase_316:
+  id: 316
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-01'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 07:53:15.078915000 Z
+  updated_at: 2022-03-22 19:08:22.654322000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-01'
+  start_date: '2021-12-01'
+  tax_included: true
+purchase_10:
+  id: 10
+  client_id: 8
+  product_id: 3
+  payment: 5200
+  dop: '2021-10-07'
+  payment_mode: Google Pay
+  invoice: 2022M078
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-12'
+  created_at: 2021-12-20 00:44:20.307046000 Z
+  updated_at: 2022-03-22 19:08:22.701680000 Z
+  fitternity_id:
+  price_id: 107
+  status: expired
+  expiry_date: '2021-12-07'
+  start_date: '2021-10-07'
+  tax_included: true
+purchase_17:
+  id: 17
+  client_id: 14
+  product_id: 6
+  payment: 1000
+  dop: '2021-11-08'
+  payment_mode: NEFT
+  invoice: 2022M108
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-12'
+  created_at: 2021-12-20 00:44:20.404544000 Z
+  updated_at: 2022-03-22 19:08:22.746431000 Z
+  fitternity_id:
+  price_id: 108
+  status: expired
+  expiry_date: '2021-11-14'
+  start_date: '2021-11-08'
+  tax_included: true
+purchase_2:
+  id: 2
+  client_id: 2
+  product_id: 6
+  payment: 1000
+  dop: '2021-11-06'
+  payment_mode: Google Pay
+  invoice: 2022M107
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-12'
+  created_at: 2021-12-20 00:44:20.206413000 Z
+  updated_at: 2022-03-22 19:08:22.790948000 Z
+  fitternity_id:
+  price_id: 108
+  status: expired
+  expiry_date: '2021-11-14'
+  start_date: '2021-11-08'
+  tax_included: true
+purchase_318:
+  id: 318
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-10'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 08:15:13.137076000 Z
+  updated_at: 2022-03-22 19:08:22.843775000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-10'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_319:
+  id: 319
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-01-13'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 08:16:58.537028000 Z
+  updated_at: 2022-03-22 19:08:22.894690000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-13'
+  start_date: '2022-01-13'
+  tax_included: true
+purchase_321:
+  id: 321
+  client_id: 125
+  product_id: 8
+  payment: 550
+  dop: '2022-02-01'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-16'
+  created_at: 2022-02-16 08:23:34.510064000 Z
+  updated_at: 2022-03-22 19:08:22.999926000 Z
+  fitternity_id: 3
+  price_id: 109
+  status: expired
+  expiry_date: '2022-02-01'
+  start_date: '2022-02-01'
+  tax_included: true
+purchase_337:
+  id: 337
+  client_id: 114
+  product_id: 1
+  payment: 0
+  dop: '2022-02-19'
+  payment_mode: Cash
+  invoice:
+  note: 'Apoorv''s PT member '
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-19 08:03:32.410628000 Z
+  updated_at: 2022-03-22 19:08:23.043130000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2022-02-19'
+  start_date: '2022-02-19'
+  tax_included: true
+purchase_348:
+  id: 348
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-21'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-21 18:40:03.833591000 Z
+  updated_at: 2022-03-22 19:08:23.101556000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-22'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_25:
+  id: 25
+  client_id: 16
+  product_id: 7
+  payment: 6000
+  dop: '2021-11-25'
+  payment_mode: Cash
+  invoice: 2022M118
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-26 17:11:41.947859000 Z
+  updated_at: 2022-03-22 19:08:23.259875000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2022-01-23'
+  start_date: '2021-11-25'
+  tax_included: true
+purchase_18:
+  id: 18
+  client_id: 15
+  product_id: 7
+  payment: 6000
+  dop: '2021-09-30'
+  payment_mode: Cash
+  invoice: 2022M095
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-20 11:21:49.948848000 Z
+  updated_at: 2022-03-22 19:08:23.350669000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2021-11-03'
+  start_date: '2021-09-30'
+  tax_included: true
+purchase_62:
+  id: 62
+  client_id: 29
+  product_id: 6
+  payment: 1500
+  dop: '2021-12-13'
+  payment_mode: Google Pay
+  invoice: 2022M135
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 09:57:23.007343000 Z
+  updated_at: 2022-03-22 19:08:23.391460000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2021-12-20'
+  start_date: '2021-12-14'
+  tax_included: true
+purchase_283:
+  id: 283
+  client_id: 167
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-14'
+  payment_mode: Google Pay
+  invoice: 2022M185
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-14'
+  created_at: 2022-02-14 03:44:12.659162000 Z
+  updated_at: 2022-03-22 19:08:23.434008000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-20'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_341:
+  id: 341
+  client_id: 31
+  product_id: 4
+  payment: 7600
+  dop: '2022-02-21'
+  payment_mode: Google Pay
+  invoice: 2022M195
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-21 06:37:02.822419000 Z
+  updated_at: 2022-03-22 19:08:23.480022000 Z
+  fitternity_id:
+  price_id: 117
+  status: ongoing
+  expiry_date: '2022-03-29'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_225:
+  id: 225
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-03'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-03 04:28:55.440161000 Z
+  updated_at: 2022-03-22 19:08:23.537075000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-03'
+  start_date: '2022-02-03'
+  tax_included: true
+purchase_230:
+  id: 230
+  client_id: 12
+  product_id: 4
+  payment: 7000
+  dop: '2021-12-22'
+  payment_mode: Google Pay
+  invoice: 2022M168
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-03 09:25:32.957904000 Z
+  updated_at: 2022-03-22 19:08:23.643035000 Z
+  fitternity_id:
+  price_id: 69
+  status: ongoing
+  expiry_date: '2022-03-24'
+  start_date: '2022-02-04'
+  tax_included: true
+purchase_214:
+  id: 214
+  client_id: 117
+  product_id: 6
+  payment: 1500
+  dop: '2022-01-28'
+  payment_mode: Cash
+  invoice: 2022M155
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-31'
+  created_at: 2022-01-31 06:51:39.143227000 Z
+  updated_at: 2022-03-22 19:08:23.684386000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-06'
+  start_date: '2022-01-31'
+  tax_included: true
+purchase_239:
+  id: 239
+  client_id: 128
+  product_id: 23
+  payment: 144000
+  dop: '2022-02-09'
+  payment_mode: NEFT
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-09 09:55:50.598531000 Z
+  updated_at: 2022-03-22 19:08:23.725493000 Z
+  fitternity_id:
+  price_id: 73
+  status: ongoing
+  expiry_date: '2022-08-08'
+  start_date: '2022-02-09'
+  tax_included: true
+purchase_28:
+  id: 28
+  client_id: 5
+  product_id: 2
+  payment: 3900
+  dop: '2021-09-20'
+  payment_mode: PayTM
+  invoice: 2022M086
+  note: A&R conversion
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2021-12-27 00:31:59.183497000 Z
+  updated_at: 2022-03-22 19:08:23.815008000 Z
+  fitternity_id:
+  price_id: 67
+  status: expired
+  expiry_date: '2022-01-02'
+  start_date: '2021-11-22'
+  tax_included: true
+purchase_278:
+  id: 278
+  client_id: 162
+  product_id: 1
+  payment: 1000
+  dop: '2022-02-12'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-12 06:56:34.234014000 Z
+  updated_at: 2022-03-22 19:08:23.850842000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-02-12'
+  start_date: '2022-02-12'
+  tax_included: true
+purchase_30:
+  id: 30
+  client_id: 22
+  product_id: 6
+  payment: 1500
+  dop: '2021-11-25'
+  payment_mode: Instamojo
+  invoice: 00000 n/a
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-12'
+  created_at: 2021-12-27 00:57:16.704961000 Z
+  updated_at: 2022-03-22 19:08:23.892043000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2021-12-01'
+  start_date: '2021-11-25'
+  tax_included: true
+purchase_301:
+  id: 301
+  client_id: 170
+  product_id: 15
+  payment: 2350
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:50:41.464752000 Z
+  updated_at: 2022-03-22 19:08:23.928469000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_302:
+  id: 302
+  client_id: 171
+  product_id: 15
+  payment: 2350
+  dop: '2022-02-14'
+  payment_mode: NEFT
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:51:33.104345000 Z
+  updated_at: 2022-03-22 19:08:23.965256000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_196:
+  id: 196
+  client_id: 30
+  product_id: 4
+  payment: 6650
+  dop: '2022-01-22'
+  payment_mode: Cash
+  invoice: 2022M150
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-24 03:30:08.003249000 Z
+  updated_at: 2022-03-22 19:08:24.053280000 Z
+  fitternity_id:
+  price_id: 8
+  status: expired
+  expiry_date: '2022-02-24'
+  start_date: '2022-01-24'
+  tax_included: true
+purchase_306:
+  id: 306
+  client_id: 174
+  product_id: 15
+  payment: 2850
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:55:36.349856000 Z
+  updated_at: 2022-03-22 19:08:24.092325000 Z
+  fitternity_id:
+  price_id: 61
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_313:
+  id: 313
+  client_id: 180
+  product_id: 1
+  payment: 1000
+  dop: '2022-02-16'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 03:35:45.716636000 Z
+  updated_at: 2022-03-22 19:08:24.129088000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-02-16'
+  start_date: '2022-02-16'
+  tax_included: true
+purchase_314:
+  id: 314
+  client_id: 181
+  product_id: 1
+  payment: 650
+  dop: '2022-02-16'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 03:39:08.641453000 Z
+  updated_at: 2022-03-22 19:08:24.163410000 Z
+  fitternity_id:
+  price_id: 6
+  status: expired
+  expiry_date: '2022-02-16'
+  start_date: '2022-02-16'
+  tax_included: true
+purchase_33:
+  id: 33
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-11-30'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-16'
+  created_at: 2021-12-27 14:04:40.275483000 Z
+  updated_at: 2022-03-22 19:08:24.274538000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-11-30'
+  start_date: '2021-11-30'
+  tax_included: true
+purchase_326:
+  id: 326
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 09:14:54.352565000 Z
+  updated_at: 2022-03-22 19:08:24.340629000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-14'
+  start_date: '2021-12-14'
+  tax_included: true
+purchase_327:
+  id: 327
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-23'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 09:16:16.240695000 Z
+  updated_at: 2022-03-22 19:08:24.406900000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-23'
+  start_date: '2021-12-23'
+  tax_included: true
+purchase_64:
+  id: 64
+  client_id: 36
+  product_id: 6
+  payment: 1500
+  dop: '2021-12-15'
+  payment_mode: Google Pay
+  invoice: "-2022M160"
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2021-12-31 10:14:46.665671000 Z
+  updated_at: 2022-03-22 19:08:24.492069000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2021-12-21'
+  start_date: '2021-12-15'
+  tax_included: true
+purchase_223:
+  id: 223
+  client_id: 122
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-02'
+  payment_mode: Cash
+  invoice: ''
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-02 04:56:20.550140000 Z
+  updated_at: 2022-03-22 19:08:24.533642000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-09'
+  start_date: '2022-02-02'
+  tax_included: true
+purchase_86:
+  id: 86
+  client_id: 39
+  product_id: 1
+  payment: 0
+  dop: '2021-12-24'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2021-12-31'
+  created_at: 2021-12-31 11:43:22.070708000 Z
+  updated_at: 2022-03-22 19:08:27.572226000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-24'
+  start_date: '2021-12-24'
+  tax_included: true
+purchase_34:
+  id: 34
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-11-30'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-29 10:48:09.800476000 Z
+  updated_at: 2022-03-22 19:08:24.580677000 Z
+  fitternity_id:
+  price_id: 2
+  status: expired
+  expiry_date: '2021-11-30'
+  start_date: '2021-11-30'
+  tax_included: true
+purchase_83:
+  id: 83
+  client_id: 23
+  product_id: 1
+  payment: 0
+  dop: '2021-12-22'
+  payment_mode: Not applicable
+  invoice:
+  note: Free
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:32:43.497518000 Z
+  updated_at: 2022-03-22 19:08:24.747423000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-22'
+  start_date: '2021-12-22'
+  tax_included: true
+purchase_99:
+  id: 99
+  client_id: 44
+  product_id: 5
+  payment: 12750
+  dop: '2021-12-28'
+  payment_mode: Instamojo
+  invoice: 2022M165
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-04 06:41:23.121136000 Z
+  updated_at: 2022-03-22 19:08:24.848094000 Z
+  fitternity_id:
+  price_id: 14
+  status: ongoing
+  expiry_date: '2022-04-06'
+  start_date: '2022-01-04'
+  tax_included: true
+purchase_177:
+  id: 177
+  client_id: 16
+  product_id: 7
+  payment: 6000
+  dop: '2022-01-13'
+  payment_mode: Cash
+  invoice: 2022M143
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-13 05:22:14.439157000 Z
+  updated_at: 2022-03-22 19:08:24.889460000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2022-02-16'
+  start_date: '2022-01-13'
+  tax_included: true
+purchase_109:
+  id: 109
+  client_id: 49
+  product_id: 9
+  payment: 48000
+  dop: '2021-11-22'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-01-04 14:39:01.673116000 Z
+  updated_at: 2022-03-22 19:08:24.929612000 Z
+  fitternity_id:
+  price_id: 114
+  status: ongoing
+  expiry_date: '2023-02-21'
+  start_date: '2021-11-22'
+  tax_included: true
+purchase_108:
+  id: 108
+  client_id: 48
+  product_id: 9
+  payment: 33000
+  dop: '2021-09-24'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 14:01:30.101991000 Z
+  updated_at: 2022-03-22 19:08:24.970853000 Z
+  fitternity_id:
+  price_id: 115
+  status: expired
+  expiry_date: '2021-12-23'
+  start_date: '2021-09-24'
+  tax_included: true
+purchase_94:
+  id: 94
+  client_id: 11
+  product_id: 1
+  payment: 0
+  dop: '2021-12-24'
+  payment_mode: Not applicable
+  invoice:
+  note: Gigi invited for free
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-01-03 09:55:09.587560000 Z
+  updated_at: 2022-03-22 19:08:25.009912000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-24'
+  start_date: '2021-12-24'
+  tax_included: true
+purchase_74:
+  id: 74
+  client_id: 39
+  product_id: 1
+  payment: 0
+  dop: '2021-12-18'
+  payment_mode: Not applicable
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-31 11:01:28.285319000 Z
+  updated_at: 2022-03-22 19:08:25.047775000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-18'
+  start_date: '2021-12-18'
+  tax_included: true
+purchase_77:
+  id: 77
+  client_id: 23
+  product_id: 1
+  payment: 0
+  dop: '2021-12-20'
+  payment_mode: Not applicable
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-31 11:19:45.033180000 Z
+  updated_at: 2022-03-22 19:08:25.099216000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-20'
+  start_date: '2021-12-20'
+  tax_included: true
+purchase_80:
+  id: 80
+  client_id: 39
+  product_id: 1
+  payment: 0
+  dop: '2021-12-21'
+  payment_mode: Not applicable
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-31 11:26:19.103405000 Z
+  updated_at: 2022-03-22 19:08:25.136193000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-21'
+  start_date: '2021-12-21'
+  tax_included: true
+purchase_103:
+  id: 103
+  client_id: 46
+  product_id: 9
+  payment: 48000
+  dop: '2021-09-22'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 12:27:33.610361000 Z
+  updated_at: 2022-03-22 19:08:25.218833000 Z
+  fitternity_id:
+  price_id: 114
+  status: ongoing
+  expiry_date: '2022-12-21'
+  start_date: '2021-09-22'
+  tax_included: true
+purchase_102:
+  id: 102
+  client_id: 161
+  product_id: 8
+  payment: 550
+  dop: '2021-12-09'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 09:06:54.662356000 Z
+  updated_at: 2022-03-22 19:08:25.266301000 Z
+  fitternity_id: 3
+  price_id: 109
+  status: expired
+  expiry_date: '2021-12-09'
+  start_date: '2021-12-09'
+  tax_included: true
+purchase_70:
+  id: 70
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-16'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 10:38:05.494841000 Z
+  updated_at: 2022-03-22 19:08:25.316749000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-16'
+  start_date: '2021-12-16'
+  tax_included: true
+purchase_73:
+  id: 73
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-18'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 10:59:28.261257000 Z
+  updated_at: 2022-03-22 19:08:25.366050000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-18'
+  start_date: '2021-12-18'
+  tax_included: true
+purchase_76:
+  id: 76
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-20'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:16:48.682812000 Z
+  updated_at: 2022-03-22 19:08:25.419459000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-20'
+  start_date: '2021-12-20'
+  tax_included: true
+purchase_78:
+  id: 78
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2021-12-21'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:22:32.787228000 Z
+  updated_at: 2022-03-22 19:08:25.477458000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-21'
+  start_date: '2021-12-21'
+  tax_included: true
+purchase_85:
+  id: 85
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2021-12-24'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:41:48.203929000 Z
+  updated_at: 2022-03-22 19:08:25.571938000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-24'
+  start_date: '2021-12-24'
+  tax_included: true
+purchase_96:
+  id: 96
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-01-04'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-04 05:59:44.782951000 Z
+  updated_at: 2022-03-22 19:08:25.628021000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-04'
+  start_date: '2022-01-04'
+  tax_included: true
+purchase_97:
+  id: 97
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-04'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-04 06:00:25.556826000 Z
+  updated_at: 2022-03-22 19:08:25.681380000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-04'
+  start_date: '2022-01-04'
+  tax_included: true
+purchase_98:
+  id: 98
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-01-04'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-04 06:06:36.833047000 Z
+  updated_at: 2022-03-22 19:08:25.729216000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-04'
+  start_date: '2022-01-04'
+  tax_included: true
+purchase_113:
+  id: 113
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-01-05'
+  payment_mode: Fitternity
+  invoice:
+  note: Late Cancel
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-05 04:28:00.522635000 Z
+  updated_at: 2022-03-22 19:08:25.822564000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-05'
+  start_date: '2022-01-05'
+  tax_included: true
+purchase_114:
+  id: 114
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-05'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-05 04:29:10.946168000 Z
+  updated_at: 2022-03-22 19:08:25.873674000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-05'
+  start_date: '2022-01-05'
+  tax_included: true
+purchase_117:
+  id: 117
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-01-06'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-06 07:41:16.131337000 Z
+  updated_at: 2022-03-22 19:08:25.920375000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-06'
+  start_date: '2022-01-06'
+  tax_included: true
+purchase_118:
+  id: 118
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-06'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-06 07:41:44.520010000 Z
+  updated_at: 2022-03-22 19:08:25.967684000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-06'
+  start_date: '2022-01-06'
+  tax_included: true
+purchase_121:
+  id: 121
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-01-07'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-07 04:33:20.682847000 Z
+  updated_at: 2022-03-22 19:08:26.019465000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-07'
+  start_date: '2022-01-07'
+  tax_included: true
+purchase_127:
+  id: 127
+  client_id: 57
+  product_id: 14
+  payment: 2500
+  dop: '2022-01-11'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-11 06:04:50.609865000 Z
+  updated_at: 2022-03-22 19:08:26.107361000 Z
+  fitternity_id:
+  price_id: 20
+  status: expired
+  expiry_date: '2022-01-11'
+  start_date: '2022-01-11'
+  tax_included: true
+purchase_128:
+  id: 128
+  client_id: 58
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-11 09:12:37.082672000 Z
+  updated_at: 2022-03-22 19:08:26.146451000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_129:
+  id: 129
+  client_id: 59
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-11 09:15:37.358569000 Z
+  updated_at: 2022-03-22 19:08:26.193765000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_130:
+  id: 130
+  client_id: 60
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-11 09:18:25.595597000 Z
+  updated_at: 2022-03-22 19:08:26.239279000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_131:
+  id: 131
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-01-12'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:29:43.192933000 Z
+  updated_at: 2022-03-22 19:08:26.291183000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-12'
+  start_date: '2022-01-12'
+  tax_included: true
+purchase_132:
+  id: 132
+  client_id: 61
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:42:02.015535000 Z
+  updated_at: 2022-03-22 19:08:26.364533000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_133:
+  id: 133
+  client_id: 62
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:42:41.112114000 Z
+  updated_at: 2022-03-22 19:08:26.399108000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_134:
+  id: 134
+  client_id: 63
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:45:47.346992000 Z
+  updated_at: 2022-03-22 19:08:26.440531000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_135:
+  id: 135
+  client_id: 64
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:47:18.889756000 Z
+  updated_at: 2022-03-22 19:08:26.476554000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_136:
+  id: 136
+  client_id: 65
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 04:47:53.750256000 Z
+  updated_at: 2022-03-22 19:08:26.510087000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_138:
+  id: 138
+  client_id: 67
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-12'
+  created_at: 2022-01-12 04:49:39.238901000 Z
+  updated_at: 2022-03-22 19:08:26.578583000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_140:
+  id: 140
+  client_id: 69
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 05:30:39.595206000 Z
+  updated_at: 2022-03-22 19:08:26.614558000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_141:
+  id: 141
+  client_id: 70
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 05:31:17.037662000 Z
+  updated_at: 2022-03-22 19:08:26.648477000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_142:
+  id: 142
+  client_id: 71
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 05:31:52.993284000 Z
+  updated_at: 2022-03-22 19:08:26.681807000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_144:
+  id: 144
+  client_id: 74
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 05:59:28.613064000 Z
+  updated_at: 2022-03-22 19:08:26.757980000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_145:
+  id: 145
+  client_id: 75
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 06:00:07.188336000 Z
+  updated_at: 2022-03-22 19:08:26.795878000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_146:
+  id: 146
+  client_id: 7
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 06:00:44.660552000 Z
+  updated_at: 2022-03-22 19:08:26.835464000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_148:
+  id: 148
+  client_id: 77
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Google Pay
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 06:02:51.794848000 Z
+  updated_at: 2022-03-22 19:08:26.890777000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_182:
+  id: 182
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-01-15'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-15 05:51:39.252208000 Z
+  updated_at: 2022-03-22 19:08:27.078038000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-15'
+  start_date: '2022-01-15'
+  tax_included: true
+purchase_183:
+  id: 183
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-17'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-17 05:18:49.922510000 Z
+  updated_at: 2022-03-22 19:08:27.131567000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-17'
+  start_date: '2022-01-17'
+  tax_included: true
+purchase_186:
+  id: 186
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-19'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-19 05:12:46.604351000 Z
+  updated_at: 2022-03-22 19:08:27.183022000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-19'
+  start_date: '2022-01-19'
+  tax_included: true
+purchase_190:
+  id: 190
+  client_id: 108
+  product_id: 8
+  payment: 650
+  dop: '2022-01-20'
+  payment_mode: Google Pay
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-20'
+  created_at: 2022-01-20 05:49:14.924456000 Z
+  updated_at: 2022-03-22 19:08:27.286833000 Z
+  fitternity_id:
+  price_id: 56
+  status: expired
+  expiry_date: '2022-01-20'
+  start_date: '2022-01-20'
+  tax_included: true
+purchase_191:
+  id: 191
+  client_id: 109
+  product_id: 8
+  payment: 650
+  dop: '2022-01-20'
+  payment_mode: Google Pay
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-20'
+  created_at: 2022-01-20 05:50:12.393760000 Z
+  updated_at: 2022-03-22 19:08:27.323375000 Z
+  fitternity_id:
+  price_id: 56
+  status: expired
+  expiry_date: '2022-01-20'
+  start_date: '2022-01-20'
+  tax_included: true
+purchase_194:
+  id: 194
+  client_id: 110
+  product_id: 1
+  payment: 1000
+  dop: '2022-01-22'
+  payment_mode: Google Pay
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-22 07:38:31.739505000 Z
+  updated_at: 2022-03-22 19:08:27.368638000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-01-22'
+  start_date: '2022-01-22'
+  tax_included: true
+purchase_220:
+  id: 220
+  client_id: 120
+  product_id: 8
+  payment: 650
+  dop: '2022-02-01'
+  payment_mode: Cash
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-01 06:26:01.849962000 Z
+  updated_at: 2022-03-22 19:08:27.414231000 Z
+  fitternity_id:
+  price_id: 56
+  status: expired
+  expiry_date: '2022-02-01'
+  start_date: '2022-02-01'
+  tax_included: true
+purchase_88:
+  id: 88
+  client_id: 1
+  product_id: 4
+  payment: 9500
+  dop: '2021-12-15'
+  payment_mode: Cash
+  invoice: 2022M162
+  note: 'Paid in part payment 1st payment was on 15/12/2021 Rs. 7,000 and the Balance
+    Rs. 2,500 paid on 31/12/2021 '
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-03'
+  created_at: 2022-01-02 05:15:46.699421000 Z
+  updated_at: 2022-03-22 19:08:19.926138000 Z
+  fitternity_id:
+  price_id: 7
+  status: expired
+  expiry_date: '2022-02-19'
+  start_date: '2021-12-15'
+  tax_included: true
+purchase_325:
+  id: 325
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-16'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 08:53:51.482316000 Z
+  updated_at: 2022-03-22 19:08:17.897348000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-18'
+  start_date: '2022-02-18'
+  tax_included: true
+purchase_184:
+  id: 184
+  client_id: 57
+  product_id: 16
+  payment: 16000
+  dop: '2022-01-13'
+  payment_mode: Instamojo
+  invoice: "-2022M144"
+  note: "customized package where he gets 8PT session & 4 Group session total 12 sessions.
+    The package cost was Rs. 19,400. \r\nSo Gigi added 2 packages \r\nPackage 1: 8
+    PT session - Rs. 16,000\r\nPackage 2: 4 Group Session - Rs. 3,400"
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-22'
+  created_at: 2022-01-18 05:40:19.975412000 Z
+  updated_at: 2022-03-22 19:08:19.209462000 Z
+  fitternity_id:
+  price_id: 57
+  status: expired
+  expiry_date: '2022-03-02'
+  start_date: '2022-01-13'
+  tax_included: true
+purchase_374:
+  id: 374
+  client_id: 41
+  product_id: 59
+  payment: 12350
+  dop: '2022-02-26'
+  payment_mode: Google Pay
+  invoice: 2021M548
+  note: 'Paid Rs. 15,200 for 16 class 4 Months drop in on 13/3/2021... attended 3
+    classes until 27/3. Then froze due to Covid etc.).. Resumed on 3/1/2022 with 13
+    classes remaining. Expiry date should have been April 20 but wrongly informed
+    May 3, 2022 (so stick with May 3). '
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-26'
+  created_at: 2022-02-26 06:21:05.984670000 Z
+  updated_at: 2022-03-22 19:08:17.978448000 Z
+  fitternity_id:
+  price_id: 122
+  status: ongoing
+  expiry_date: '2022-05-04'
+  start_date: '2022-01-03'
+  tax_included: true
+purchase_65:
+  id: 65
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2021-12-15'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 10:28:53.486739000 Z
+  updated_at: 2022-03-22 19:08:20.984691000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-15'
+  start_date: '2021-12-15'
+  tax_included: true
+purchase_119:
+  id: 119
+  client_id: 54
+  product_id: 5
+  payment: 12750
+  dop: '2022-01-02'
+  payment_mode: Google Pay
+  invoice: 2022M141
+  note: 1 Month additional from previous package will be added once this package gets
+    over
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-11'
+  created_at: 2022-01-06 08:15:49.601202000 Z
+  updated_at: 2022-03-22 19:08:20.379703000 Z
+  fitternity_id:
+  price_id: 14
+  status: ongoing
+  expiry_date: '2022-04-09'
+  start_date: '2022-01-07'
+  tax_included: true
+purchase_178:
+  id: 178
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-01-14'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-14 06:02:28.289853000 Z
+  updated_at: 2022-03-22 19:08:21.220519000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-14'
+  start_date: '2022-01-14'
+  tax_included: true
+purchase_22:
+  id: 22
+  client_id: 19
+  product_id: 8
+  payment: 425
+  dop: '2021-11-11'
+  payment_mode: Instamojo
+  invoice:
+  note: 650 payment shown on spreadsheet - no explanation
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-25 22:03:26.218262000 Z
+  updated_at: 2022-03-22 19:08:21.265510000 Z
+  fitternity_id:
+  price_id: 56
+  status: expired
+  expiry_date: '2021-11-11'
+  start_date: '2021-11-11'
+  tax_included: true
+purchase_342:
+  id: 342
+  client_id: 184
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-21'
+  payment_mode: Cash
+  invoice: 2022M189
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-21'
+  created_at: 2022-02-21 06:41:49.640191000 Z
+  updated_at: 2022-03-22 19:08:21.916552000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-27'
+  start_date: '2022-02-21'
+  tax_included: true
+purchase_49:
+  id: 49
+  client_id: 32
+  product_id: 4
+  payment: 8550
+  dop: '2021-12-07'
+  payment_mode: NEFT
+  invoice: 2022M131
+  note: '10% Discount '
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-09'
+  created_at: 2021-12-31 06:50:06.958379000 Z
+  updated_at: 2022-03-22 19:08:22.207594000 Z
+  fitternity_id:
+  price_id: 9
+  status: expired
+  expiry_date: '2022-03-11'
+  start_date: '2021-12-07'
+  tax_included: true
+purchase_320:
+  id: 320
+  client_id: 182
+  product_id: 1
+  payment: 550
+  dop: '2022-01-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-16 08:20:51.813525000 Z
+  updated_at: 2022-03-22 19:08:22.945232000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-14'
+  start_date: '2022-01-14'
+  tax_included: true
+purchase_232:
+  id: 232
+  client_id: 33
+  product_id: 14
+  payment: 0
+  dop: '2022-02-04'
+  payment_mode: Cash
+  invoice:
+  note: 'Complimentary class given to her because of mess-up on the shooting day around
+    31/1. '
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-04'
+  created_at: 2022-02-04 06:28:49.532399000 Z
+  updated_at: 2022-03-22 19:08:22.557576000 Z
+  fitternity_id:
+  price_id: 71
+  status: expired
+  expiry_date: '2022-02-04'
+  start_date: '2022-02-04'
+  tax_included: true
+purchase_281:
+  id: 281
+  client_id: 165
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-14'
+  payment_mode: Google Pay
+  invoice: 2022M179
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-14'
+  created_at: 2022-02-14 03:41:33.806026000 Z
+  updated_at: 2022-03-22 19:08:23.306930000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-20'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_226:
+  id: 226
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-03'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-03 04:29:37.108805000 Z
+  updated_at: 2022-03-22 19:08:23.583853000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-03'
+  start_date: '2022-02-03'
+  tax_included: true
+purchase_411:
+  id: 411
+  client_id: 207
+  product_id: 6
+  payment: 1500
+  dop: '2022-03-07'
+  payment_mode: Google Pay
+  invoice: 2022M215
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-17'
+  created_at: 2022-03-07 04:48:59.320877000 Z
+  updated_at: 2022-03-22 19:08:30.347068000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-03-13'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_275:
+  id: 275
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-11'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-11 03:42:03.346539000 Z
+  updated_at: 2022-03-22 19:08:23.771907000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-11'
+  start_date: '2022-02-11'
+  tax_included: true
+purchase_303:
+  id: 303
+  client_id: 172
+  product_id: 15
+  payment: 2350
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:52:07.822508000 Z
+  updated_at: 2022-03-22 19:08:24.005526000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_198:
+  id: 198
+  client_id: 56
+  product_id: 6
+  payment: 1500
+  dop: '2022-01-03'
+  payment_mode: Google Pay
+  invoice: ".2022M197"
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-01-25 07:18:55.846597000 Z
+  updated_at: 2022-02-26 04:00:43.647114000 Z
+  fitternity_id:
+  price_id: 10
+  status: not started
+  expiry_date:
+  start_date:
+  tax_included: true
+purchase_32:
+  id: 32
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-11-27'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-16'
+  created_at: 2021-12-27 14:01:24.822774000 Z
+  updated_at: 2022-03-22 19:08:24.212098000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-11-27'
+  start_date: '2021-11-27'
+  tax_included: true
+purchase_67:
+  id: 67
+  client_id: 23
+  product_id: 1
+  payment: 0
+  dop: '2021-12-15'
+  payment_mode: Not applicable
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2021-12-31'
+  created_at: 2021-12-31 10:33:43.165692000 Z
+  updated_at: 2022-03-22 19:08:24.446435000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-15'
+  start_date: '2021-12-15'
+  tax_included: true
+purchase_462:
+  id: 462
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-22'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-22 03:13:17.494240000 Z
+  updated_at: 2022-03-22 19:08:24.647869000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-22'
+  start_date: '2022-03-22'
+  tax_included: true
+purchase_72:
+  id: 72
+  client_id: 23
+  product_id: 1
+  payment: 0
+  dop: '2021-12-17'
+  payment_mode: Not applicable
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-31 10:57:08.742701000 Z
+  updated_at: 2022-03-22 19:08:24.789132000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-17'
+  start_date: '2021-12-17'
+  tax_included: true
+purchase_31:
+  id: 31
+  client_id: 23
+  product_id: 1
+  payment: 0
+  dop: '2021-11-26'
+  payment_mode: Not applicable
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-27 13:47:25.004961000 Z
+  updated_at: 2022-03-22 19:08:30.382382000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-11-26'
+  start_date: '2021-11-26'
+  tax_included: true
+purchase_188:
+  id: 188
+  client_id: 107
+  product_id: 4
+  payment: 6650
+  dop: '2022-01-19'
+  payment_mode: Google Pay
+  invoice: 2022M148
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-20'
+  created_at: 2022-01-20 05:13:44.608747000 Z
+  updated_at: 2022-03-22 19:08:30.426288000 Z
+  fitternity_id:
+  price_id: 8
+  status: expired
+  expiry_date: '2022-02-19'
+  start_date: '2022-01-19'
+  tax_included: true
+purchase_111:
+  id: 111
+  client_id: 51
+  product_id: 9
+  payment: 48000
+  dop: '2021-10-14'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 15:00:29.852128000 Z
+  updated_at: 2022-03-22 19:08:30.521919000 Z
+  fitternity_id:
+  price_id: 114
+  status: expired
+  expiry_date: '2022-01-13'
+  start_date: '2021-10-14'
+  tax_included: true
+purchase_106:
+  id: 106
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2021-12-08'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 13:56:33.883694000 Z
+  updated_at: 2022-03-22 19:08:30.565380000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2021-12-08'
+  start_date: '2021-12-08'
+  tax_included: true
+purchase_355:
+  id: 355
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-02-23'
+  payment_mode: Fitternity
+  invoice:
+  note: 'Fitternity Error... Booked for 10.30am but attended for 7.30am class. '
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-23'
+  created_at: 2022-02-23 03:07:47.230778000 Z
+  updated_at: 2022-03-22 19:08:30.623780000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-23'
+  start_date: '2022-02-23'
+  tax_included: true
+purchase_361:
+  id: 361
+  client_id: 43
+  product_id: 1
+  payment: 550
+  dop: '2022-02-23'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-23 07:28:31.173385000 Z
+  updated_at: 2022-03-22 19:08:30.678119000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-23'
+  start_date: '2022-02-23'
+  tax_included: true
+purchase_362:
+  id: 362
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-23'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-23 08:33:41.073819000 Z
+  updated_at: 2022-03-22 19:08:30.735233000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-23'
+  start_date: '2022-02-23'
+  tax_included: true
+purchase_366:
+  id: 366
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-02-23'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-24 03:18:09.144488000 Z
+  updated_at: 2022-03-22 19:08:30.793692000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-24'
+  start_date: '2022-02-24'
+  tax_included: true
+purchase_304:
+  id: 304
+  client_id: 173
+  product_id: 15
+  payment: 2350
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-15 05:53:30.426184000 Z
+  updated_at: 2022-03-22 19:08:30.828535000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_280:
+  id: 280
+  client_id: 163
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-07'
+  payment_mode: Instamojo
+  invoice: 2022M176
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-12 10:02:47.231223000 Z
+  updated_at: 2022-03-22 19:08:30.870914000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-20'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_203:
+  id: 203
+  client_id: 108
+  product_id: 8
+  payment: 1000
+  dop: '2022-01-24'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-01-25 07:36:25.271570000 Z
+  updated_at: 2022-03-22 19:08:30.936542000 Z
+  fitternity_id:
+  price_id: 16
+  status: expired
+  expiry_date: '2022-01-25'
+  start_date: '2022-01-25'
+  tax_included: true
+purchase_79:
+  id: 79
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2021-12-21'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-31 11:23:04.638043000 Z
+  updated_at: 2022-03-22 19:08:30.993141000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2021-12-21'
+  start_date: '2021-12-21'
+  tax_included: true
+purchase_63:
+  id: 63
+  client_id: 23
+  product_id: 1
+  payment: 0
+  dop: '2021-12-14'
+  payment_mode: Not applicable
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-31 10:02:25.813725000 Z
+  updated_at: 2022-03-22 19:08:31.093505000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2021-12-14'
+  start_date: '2021-12-14'
+  tax_included: true
+purchase_38:
+  id: 38
+  client_id: 28
+  product_id: 9
+  payment: 48000
+  dop: '2021-11-18'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2021-12-29 12:23:32.877684000 Z
+  updated_at: 2022-03-22 19:08:31.134439000 Z
+  fitternity_id:
+  price_id: 114
+  status: ongoing
+  expiry_date: '2023-02-17'
+  start_date: '2021-11-18'
+  tax_included: true
+purchase_185:
+  id: 185
+  client_id: 106
+  product_id: 4
+  payment: 6650
+  dop: '2022-01-16'
+  payment_mode: Google Pay
+  invoice: 2022M149
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-20'
+  created_at: 2022-01-19 05:12:25.364252000 Z
+  updated_at: 2022-03-22 19:08:31.180757000 Z
+  fitternity_id:
+  price_id: 8
+  status: expired
+  expiry_date: '2022-02-19'
+  start_date: '2022-01-19'
+  tax_included: true
+purchase_338:
+  id: 338
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-19'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-19 10:46:24.528770000 Z
+  updated_at: 2022-03-22 19:08:31.233473000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-21'
+  start_date: '2022-02-21'
+  tax_included: true
+purchase_147:
+  id: 147
+  client_id: 76
+  product_id: 15
+  payment: 1999
+  dop: '2022-01-10'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-12 06:01:36.002490000 Z
+  updated_at: 2022-03-22 19:08:31.310497000 Z
+  fitternity_id:
+  price_id: 21
+  status: expired
+  expiry_date: '2022-02-08'
+  start_date: '2022-01-10'
+  tax_included: true
+purchase_189:
+  id: 189
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-01-20'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-20 05:14:11.283807000 Z
+  updated_at: 2022-03-22 19:08:31.360539000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-20'
+  start_date: '2022-01-20'
+  tax_included: true
+purchase_205:
+  id: 205
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-01-27'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-28 03:27:01.626655000 Z
+  updated_at: 2022-03-22 19:08:31.420441000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-27'
+  start_date: '2022-01-27'
+  tax_included: true
+purchase_206:
+  id: 206
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-01-28'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-28 03:45:29.962195000 Z
+  updated_at: 2022-03-22 19:08:31.470003000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-28'
+  start_date: '2022-01-28'
+  tax_included: true
+purchase_207:
+  id: 207
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-29'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-29 03:33:51.117531000 Z
+  updated_at: 2022-03-22 19:08:31.518050000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-29'
+  start_date: '2022-01-29'
+  tax_included: true
+purchase_209:
+  id: 209
+  client_id: 114
+  product_id: 1
+  payment: 1000
+  dop: '2022-01-29'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-29 05:56:50.707314000 Z
+  updated_at: 2022-03-22 19:08:31.553621000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-01-29'
+  start_date: '2022-01-29'
+  tax_included: true
+purchase_213:
+  id: 213
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-31'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-31 03:39:05.624708000 Z
+  updated_at: 2022-03-22 19:08:31.634020000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-31'
+  start_date: '2022-01-31'
+  tax_included: true
+purchase_216:
+  id: 216
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-01'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-01 04:04:22.038381000 Z
+  updated_at: 2022-03-22 19:08:31.682027000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-01'
+  start_date: '2022-02-01'
+  tax_included: true
+purchase_200:
+  id: 200
+  client_id: 29
+  product_id: 5
+  payment: 12750
+  dop: '2022-01-24'
+  payment_mode: Google Pay
+  invoice: 2022M161
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-25 07:29:24.003835000 Z
+  updated_at: 2022-03-22 19:08:31.786826000 Z
+  fitternity_id:
+  price_id: 14
+  status: ongoing
+  expiry_date: '2022-05-04'
+  start_date: '2022-01-25'
+  tax_included: true
+purchase_287:
+  id: 287
+  client_id: 166
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-14'
+  payment_mode: Google Pay
+  invoice: 2022M180
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-02-14 10:05:13.429202000 Z
+  updated_at: 2022-03-22 19:08:31.826127000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-21'
+  start_date: '2022-02-15'
+  tax_included: true
+purchase_193:
+  id: 193
+  client_id: 111
+  product_id: 6
+  payment: 1500
+  dop: '2022-01-22'
+  payment_mode: Cash
+  invoice: 2022M170
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-22 07:37:07.925218000 Z
+  updated_at: 2022-03-22 19:08:31.863759000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-01-28'
+  start_date: '2022-01-22'
+  tax_included: true
+purchase_328:
+  id: 328
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-18'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-17 10:55:45.388375000 Z
+  updated_at: 2022-03-22 19:08:31.912417000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-18'
+  start_date: '2022-02-18'
+  tax_included: true
+purchase_315:
+  id: 315
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-16'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-16'
+  created_at: 2022-02-16 07:20:29.361872000 Z
+  updated_at: 2022-03-22 19:08:31.951734000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-17'
+  start_date: '2022-02-17'
+  tax_included: true
+purchase_296:
+  id: 296
+  client_id: 75
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 05:41:38.449123000 Z
+  updated_at: 2022-03-22 19:08:32.037006000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_307:
+  id: 307
+  client_id: 10
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 05:57:05.343244000 Z
+  updated_at: 2022-03-22 19:08:32.072711000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_279:
+  id: 279
+  client_id: 164
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-12'
+  payment_mode: Instamojo
+  invoice: 2022M178
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-12 10:01:07.561360000 Z
+  updated_at: 2022-03-22 19:08:32.114398000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-02-27'
+  start_date: '2022-02-21'
+  tax_included: true
+purchase_387:
+  id: 387
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-03-01'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-02 02:13:11.464239000 Z
+  updated_at: 2022-03-22 19:08:32.187683000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-03-02'
+  start_date: '2022-03-02'
+  tax_included: true
+purchase_404:
+  id: 404
+  client_id: 205
+  product_id: 1
+  payment: 550
+  dop: '2022-03-05'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 04:45:41.442627000 Z
+  updated_at: 2022-03-22 19:08:32.247021000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-05'
+  start_date: '2022-03-05'
+  tax_included: true
+purchase_367:
+  id: 367
+  client_id: 192
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-24'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-25 04:47:26.674058000 Z
+  updated_at: 2022-03-22 19:08:32.284350000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-03-06'
+  start_date: '2022-02-28'
+  tax_included: true
+ChintanUC1Wexp:
+  id: 379
+  client_id: 200
+  product_id: 6
+  payment: 1500
+  dop: '2022-02-26'
+  payment_mode: Cash
+  invoice: 2022M197..
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-28 10:06:03.467058000 Z
+  updated_at: 2022-03-22 19:08:32.324792000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-03-06'
+  start_date: '2022-02-28'
+  tax_included: true
+purchase_409:
+  id: 409
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-03-06'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 02:12:07.877841000 Z
+  updated_at: 2022-03-22 19:08:32.371072000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_415:
+  id: 415
+  client_id: 209
+  product_id: 1
+  payment: 550
+  dop: '2022-03-07'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 11:10:59.675340000 Z
+  updated_at: 2022-03-22 19:08:32.418713000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_421:
+  id: 421
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-03-09'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-09 04:41:25.163548000 Z
+  updated_at: 2022-03-22 19:08:32.468321000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-09'
+  start_date: '2022-03-09'
+  tax_included: true
+purchase_422:
+  id: 422
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-09'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-09 04:41:57.076521000 Z
+  updated_at: 2022-03-22 19:08:32.515466000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-09'
+  start_date: '2022-03-09'
+  tax_included: true
+purchase_423:
+  id: 423
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-03-09'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-09 04:42:38.347565000 Z
+  updated_at: 2022-03-22 19:08:32.549149000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-03-09'
+  start_date: '2022-03-09'
+  tax_included: true
+purchase_427:
+  id: 427
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2021-12-20'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 19:28:47.089208000 Z
+  updated_at: 2022-03-22 19:08:32.638409000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2021-12-20'
+  start_date: '2021-12-20'
+  tax_included: true
+purchase_428:
+  id: 428
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2021-12-21'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 19:29:42.590843000 Z
+  updated_at: 2022-03-22 19:08:32.676797000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2021-12-22'
+  start_date: '2021-12-22'
+  tax_included: true
+purchase_429:
+  id: 429
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2021-12-24'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 19:30:42.833423000 Z
+  updated_at: 2022-03-22 19:08:32.726700000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2021-12-24'
+  start_date: '2021-12-24'
+  tax_included: true
+purchase_435:
+  id: 435
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-12'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-12 15:49:40.700514000 Z
+  updated_at: 2022-03-22 19:08:32.780551000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-12'
+  start_date: '2022-03-12'
+  tax_included: true
+purchase_439:
+  id: 439
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-14 03:10:49.273883000 Z
+  updated_at: 2022-03-22 19:08:32.877252000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-14'
+  start_date: '2022-03-14'
+  tax_included: true
+purchase_440:
+  id: 440
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-14 03:11:12.280507000 Z
+  updated_at: 2022-03-22 19:08:32.927790000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-14'
+  start_date: '2022-03-14'
+  tax_included: true
+purchase_443:
+  id: 443
+  client_id: 209
+  product_id: 1
+  payment: 550
+  dop: '2022-03-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-14 13:41:24.094065000 Z
+  updated_at: 2022-03-22 19:08:33.067115000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-14'
+  start_date: '2022-03-14'
+  tax_included: true
+purchase_446:
+  id: 446
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-03-15'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-15 12:43:01.120037000 Z
+  updated_at: 2022-03-22 19:08:33.127013000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-03-15'
+  tax_included: true
+purchase_450:
+  id: 450
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-08'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 05:17:19.843691000 Z
+  updated_at: 2022-03-22 19:08:33.179923000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-08'
+  start_date: '2022-03-08'
+  tax_included: true
+purchase_455:
+  id: 455
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-03-17'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-17 02:18:14.837633000 Z
+  updated_at: 2022-03-22 19:08:33.226664000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-17'
+  start_date: '2022-03-17'
+  tax_included: true
+purchase_458:
+  id: 458
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-19'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-19 10:42:28.100317000 Z
+  updated_at: 2022-03-22 19:08:33.275024000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-21'
+  start_date: '2022-03-21'
+  tax_included: true
+purchase_376:
+  id: 376
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-02-25'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-28 02:23:31.099549000 Z
+  updated_at: 2022-03-22 19:08:27.633234000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-28'
+  start_date: '2022-02-28'
+  tax_included: true
+purchase_383:
+  id: 383
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-02-27'
+  payment_mode: Google Pay
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-01 11:32:36.913496000 Z
+  updated_at: 2022-03-22 19:08:27.674067000 Z
+  fitternity_id:
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-02'
+  start_date: '2022-03-02'
+  tax_included: true
+purchase_384:
+  id: 384
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-03-01'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-01 11:34:20.560125000 Z
+  updated_at: 2022-03-22 19:08:27.726902000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-02'
+  start_date: '2022-03-02'
+  tax_included: true
+purchase_377:
+  id: 377
+  client_id: 27
+  product_id: 4
+  payment: 9500
+  dop: '2022-02-28'
+  payment_mode: Google Pay
+  invoice: 2022M204
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-03-03'
+  created_at: 2022-02-28 02:25:30.663405000 Z
+  updated_at: 2022-03-22 19:08:27.790252000 Z
+  fitternity_id:
+  price_id: 7
+  status: ongoing
+  expiry_date: '2022-03-29'
+  start_date: '2022-02-28'
+  tax_included: true
+purchase_393:
+  id: 393
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-03-02'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-02 10:51:43.179642000 Z
+  updated_at: 2022-03-22 19:08:27.832139000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-03-03'
+  start_date: '2022-03-03'
+  tax_included: true
+purchase_401:
+  id: 401
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-03-05'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 02:11:30.956858000 Z
+  updated_at: 2022-03-22 19:08:27.866710000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-03-05'
+  start_date: '2022-03-05'
+  tax_included: true
+purchase_407:
+  id: 407
+  client_id: 26
+  product_id: 5
+  payment: 25500
+  dop: '2022-03-03'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 08:36:49.512285000 Z
+  updated_at: 2022-03-22 19:08:27.904386000 Z
+  fitternity_id:
+  price_id: 11
+  status: ongoing
+  expiry_date: '2022-06-16'
+  start_date: '2022-03-15'
+  tax_included: true
+purchase_412:
+  id: 412
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-03-07'
+  payment_mode: Fitternity
+  invoice:
+  note: Booked for 7.30am but came for the 10.30am
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 06:26:32.325461000 Z
+  updated_at: 2022-03-22 19:08:27.952778000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_413:
+  id: 413
+  client_id: 10
+  product_id: 1
+  payment: 650
+  dop: '2022-03-07'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 06:29:51.526121000 Z
+  updated_at: 2022-03-22 19:08:28.004928000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_419:
+  id: 419
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-03-08'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-08 03:25:40.610967000 Z
+  updated_at: 2022-03-22 19:08:28.063609000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-08'
+  start_date: '2022-03-08'
+  tax_included: true
+purchase_105:
+  id: 105
+  client_id: 48
+  product_id: 9
+  payment: 33000
+  dop: '2021-12-13'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 13:50:14.223759000 Z
+  updated_at: 2022-03-22 19:08:28.105698000 Z
+  fitternity_id:
+  price_id: 115
+  status: expired
+  expiry_date: '2022-04-01'
+  start_date: '2021-12-13'
+  tax_included: true
+purchase_356:
+  id: 356
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-23'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-23'
+  created_at: 2022-02-23 03:31:32.686928000 Z
+  updated_at: 2022-03-22 19:08:28.142552000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-24'
+  start_date: '2022-02-24'
+  tax_included: true
+purchase_310:
+  id: 310
+  client_id: 67
+  product_id: 15
+  payment: 1999
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-25'
+  created_at: 2022-02-15 06:01:42.073286000 Z
+  updated_at: 2022-03-22 19:08:28.178189000 Z
+  fitternity_id:
+  price_id: 60
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_330:
+  id: 330
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-17'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-17 10:57:37.756515000 Z
+  updated_at: 2022-03-22 19:08:28.232391000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-28'
+  start_date: '2022-02-28'
+  tax_included: true
+purchase_3:
+  id: 3
+  client_id: 3
+  product_id: 2
+  payment: 3900
+  dop: '2021-10-05'
+  payment_mode: Cash
+  invoice: 2022M100
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2021-12-20 00:44:20.218743000 Z
+  updated_at: 2022-03-22 19:08:28.275262000 Z
+  fitternity_id:
+  price_id: 67
+  status: expired
+  expiry_date: '2021-11-08'
+  start_date: '2021-10-05'
+  tax_included: true
+purchase_23:
+  id: 23
+  client_id: 17
+  product_id: 7
+  payment: 6000
+  dop: '2021-11-11'
+  payment_mode: Cash
+  invoice: 2022M119
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-25 22:04:50.103567000 Z
+  updated_at: 2022-03-22 19:08:28.325309000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2021-12-15'
+  start_date: '2021-11-11'
+  tax_included: true
+purchase_5:
+  id: 5
+  client_id: 4
+  product_id: 2
+  payment: 3900
+  dop: '2021-10-13'
+  payment_mode: Google Pay
+  invoice: 2022M104
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2021-12-20 00:44:20.243444000 Z
+  updated_at: 2022-03-22 19:08:28.369969000 Z
+  fitternity_id:
+  price_id: 67
+  status: expired
+  expiry_date: '2021-11-15'
+  start_date: '2021-10-12'
+  tax_included: true
+purchase_27:
+  id: 27
+  client_id: 21
+  product_id: 7
+  payment: 6000
+  dop: '2021-09-27'
+  payment_mode: Cash
+  invoice: 2022M094
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-27 00:10:50.194272000 Z
+  updated_at: 2022-03-22 19:08:28.416454000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2021-11-03'
+  start_date: '2021-09-23'
+  tax_included: true
+purchase_26:
+  id: 26
+  client_id: 20
+  product_id: 7
+  payment: 6000
+  dop: '2021-09-27'
+  payment_mode: Google Pay
+  invoice: 2022M093
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2021-12-27 00:08:58.207144000 Z
+  updated_at: 2022-03-22 19:08:28.465642000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2021-11-14'
+  start_date: '2021-10-04'
+  tax_included: true
+purchase_7:
+  id: 7
+  client_id: 5
+  product_id: 2
+  payment: 3900
+  dop: '2021-09-17'
+  payment_mode: Google Pay
+  invoice: 2022M091
+  note: Paid 1000 by Gpay for A&R. Date not shown in spsheet
+  adjust_restart: true
+  ar_payment: 1000
+  ar_date: '2021-09-19'
+  created_at: 2021-12-20 00:44:20.268361000 Z
+  updated_at: 2022-03-22 19:08:28.488615000 Z
+  fitternity_id:
+  price_id: 67
+  status: expired
+  expiry_date: '2021-09-19'
+  start_date: '2021-09-21'
+  tax_included: true
+purchase_212:
+  id: 212
+  client_id: 38
+  product_id: 5
+  payment: 12750
+  dop: '2022-01-07'
+  payment_mode: Instamojo
+  invoice: 2022M164
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-29 06:46:01.779772000 Z
+  updated_at: 2022-03-22 19:08:28.532977000 Z
+  fitternity_id:
+  price_id: 14
+  status: ongoing
+  expiry_date: '2022-05-17'
+  start_date: '2022-02-16'
+  tax_included: true
+purchase_100:
+  id: 100
+  client_id: 5
+  product_id: 2
+  payment: 5100
+  dop: '2021-12-16'
+  payment_mode: Google Pay
+  invoice: 2022M152
+  note: "Paid Rs. 10,000      \r\n\r\n*10,000- 5,100(6C:5W)= 4,900\r\nWe have credit
+    of 4,900 with us for the next package     "
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-04'
+  created_at: 2022-01-04 07:04:44.878250000 Z
+  updated_at: 2022-03-22 19:08:28.576157000 Z
+  fitternity_id:
+  price_id: 4
+  status: expired
+  expiry_date: '2022-01-26'
+  start_date: '2021-12-16'
+  tax_included: true
+purchase_224:
+  id: 224
+  client_id: 42
+  product_id: 5
+  payment: 25500
+  dop: '2022-02-01'
+  payment_mode: Instamojo
+  invoice: 2022M167
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-02-02 07:55:42.060261000 Z
+  updated_at: 2022-03-22 19:08:28.626732000 Z
+  fitternity_id:
+  price_id: 11
+  status: frozen
+  expiry_date: '2022-05-18'
+  start_date: '2022-02-03'
+  tax_included: true
+purchase_199:
+  id: 199
+  client_id: 112
+  product_id: 6
+  payment: 1500
+  dop: '2022-01-20'
+  payment_mode: Instamojo
+  invoice: 2022M171
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-25 07:23:09.425120000 Z
+  updated_at: 2022-03-22 19:08:28.664489000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-01-30'
+  start_date: '2022-01-24'
+  tax_included: true
+purchase_231:
+  id: 231
+  client_id: 125
+  product_id: 1
+  payment: 550
+  dop: '2022-02-04'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-04 06:02:36.144802000 Z
+  updated_at: 2022-03-22 19:08:28.711560000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-04'
+  start_date: '2022-02-04'
+  tax_included: true
+purchase_217:
+  id: 217
+  client_id: 119
+  product_id: 57
+  payment: 24000
+  dop: '2022-01-28'
+  payment_mode: NEFT
+  invoice: 2022M156
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-02'
+  created_at: 2022-02-01 04:22:04.376266000 Z
+  updated_at: 2022-03-22 19:08:28.752215000 Z
+  fitternity_id:
+  price_id: 113
+  status: expired
+  expiry_date: '2022-03-17'
+  start_date: '2022-02-01'
+  tax_included: true
+purchase_378:
+  id: 378
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-28'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-28 02:34:57.011244000 Z
+  updated_at: 2022-03-22 19:08:28.786131000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-10'
+  start_date: '2022-02-10'
+  tax_included: true
+purchase_336:
+  id: 336
+  client_id: 57
+  product_id: 57
+  payment: 24000
+  dop: '2022-02-19'
+  payment_mode: Instamojo
+  invoice: 2022M187
+  note: He had a (bespoke) group package (now deleted) for 3,400 which he didn't use.
+    Gigi agreed to let him offset the cost of this against more PT. So extra payment
+    was 20,600 (=24,000 - 3,400)
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-02-19 05:50:06.956257000 Z
+  updated_at: 2022-03-22 19:08:28.833534000 Z
+  fitternity_id:
+  price_id: 113
+  status: ongoing
+  expiry_date: '2022-04-04'
+  start_date: '2022-02-19'
+  tax_included: true
+purchase_240:
+  id: 240
+  client_id: 47
+  product_id: 9
+  payment: 30000
+  dop: '2022-02-09'
+  payment_mode: NEFT
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-09 10:06:17.049717000 Z
+  updated_at: 2022-03-22 19:08:28.872988000 Z
+  fitternity_id:
+  price_id: 74
+  status: ongoing
+  expiry_date: '2022-05-11'
+  start_date: '2022-02-12'
+  tax_included: true
+purchase_385:
+  id: 385
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-12'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-01 12:01:57.771055000 Z
+  updated_at: 2022-03-22 19:08:28.906756000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-14'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_386:
+  id: 386
+  client_id: 201
+  product_id: 1
+  payment: 650
+  dop: '2022-02-12'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-01 12:04:36.314035000 Z
+  updated_at: 2022-03-22 19:08:28.941258000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-12'
+  start_date: '2022-02-12'
+  tax_included: true
+purchase_215:
+  id: 215
+  client_id: 114
+  product_id: 60
+  payment: 20000
+  dop: '2022-01-31'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-01-31 10:53:31.533725000 Z
+  updated_at: 2022-03-22 19:08:28.993056000 Z
+  fitternity_id:
+  price_id: 123
+  status: expired
+  expiry_date: '2023-01-30'
+  start_date: '2022-01-31'
+  tax_included: true
+purchase_208:
+  id: 208
+  client_id: 113
+  product_id: 15
+  payment: 2350
+  dop: '2022-01-25'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-29 05:24:35.962417000 Z
+  updated_at: 2022-03-22 19:08:29.250608000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_354:
+  id: 354
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-23'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-23 03:06:59.124755000 Z
+  updated_at: 2022-03-22 19:08:29.298531000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-23'
+  start_date: '2022-02-23'
+  tax_included: true
+purchase_394:
+  id: 394
+  client_id: 203
+  product_id: 1
+  payment: 0
+  dop: '2022-03-02'
+  payment_mode: Not applicable
+  invoice:
+  note: "Amit's Friend 1 complimentary class... Approved by Gigi\r\n"
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-02 13:34:40.011484000 Z
+  updated_at: 2022-03-22 19:08:29.334241000 Z
+  fitternity_id:
+  price_id: 3
+  status: expired
+  expiry_date: '2022-03-02'
+  start_date: '2022-03-02'
+  tax_included: true
+purchase_308:
+  id: 308
+  client_id: 175
+  product_id: 15
+  payment: 2850
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 05:59:28.193544000 Z
+  updated_at: 2022-03-22 19:08:29.371088000 Z
+  fitternity_id:
+  price_id: 61
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_400:
+  id: 400
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-05'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 02:10:50.033990000 Z
+  updated_at: 2022-03-22 19:08:29.417594000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-05'
+  start_date: '2022-03-05'
+  tax_included: true
+purchase_309:
+  id: 309
+  client_id: 176
+  product_id: 15
+  payment: 2350
+  dop: '2022-02-14'
+  payment_mode: Instamojo
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-15 06:00:23.639883000 Z
+  updated_at: 2022-03-22 19:08:29.451499000 Z
+  fitternity_id:
+  price_id: 59
+  status: expired
+  expiry_date: '2022-03-15'
+  start_date: '2022-02-14'
+  tax_included: true
+purchase_340:
+  id: 340
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-02-21'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-21 04:43:02.175548000 Z
+  updated_at: 2022-03-22 19:08:29.497427000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-22'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_204:
+  id: 204
+  client_id: 109
+  product_id: 7
+  payment: 6000
+  dop: '2022-01-25'
+  payment_mode: Google Pay
+  invoice: 2022M151
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-01-25 07:37:33.499779000 Z
+  updated_at: 2022-03-22 19:08:29.546940000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2022-02-28'
+  start_date: '2022-01-25'
+  tax_included: true
+purchase_329:
+  id: 329
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-02-18'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-17 10:56:33.694507000 Z
+  updated_at: 2022-03-22 19:08:29.593348000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-02-18'
+  start_date: '2022-02-18'
+  tax_included: true
+purchase_339:
+  id: 339
+  client_id: 107
+  product_id: 4
+  payment: 7600
+  dop: '2022-02-21'
+  payment_mode: Google Pay
+  invoice: 2022M188
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-21'
+  created_at: 2022-02-21 04:42:14.693383000 Z
+  updated_at: 2022-03-22 19:08:29.641236000 Z
+  fitternity_id:
+  price_id: 117
+  status: ongoing
+  expiry_date: '2022-03-22'
+  start_date: '2022-02-21'
+  tax_included: true
+purchase_402:
+  id: 402
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-02'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 04:23:42.433116000 Z
+  updated_at: 2022-03-22 19:08:29.694780000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-02'
+  start_date: '2022-03-02'
+  tax_included: true
+purchase_350:
+  id: 350
+  client_id: 124
+  product_id: 1
+  payment: 650
+  dop: '2022-02-22'
+  payment_mode: ClassPass
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-02-22 04:07:22.627754000 Z
+  updated_at: 2022-03-22 19:08:31.993445000 Z
+  fitternity_id:
+  price_id: 70
+  status: expired
+  expiry_date: '2022-02-22'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_403:
+  id: 403
+  client_id: 205
+  product_id: 1
+  payment: 550
+  dop: '2022-03-04'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 04:29:41.367963000 Z
+  updated_at: 2022-03-22 19:08:29.745188000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-05'
+  start_date: '2022-03-05'
+  tax_included: true
+purchase_408:
+  id: 408
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-05'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-05 08:52:56.449185000 Z
+  updated_at: 2022-03-22 19:08:29.794505000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_414:
+  id: 414
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-07'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-07 10:24:54.921555000 Z
+  updated_at: 2022-03-22 19:08:29.840768000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-08'
+  start_date: '2022-03-08'
+  tax_included: true
+purchase_365:
+  id: 365
+  client_id: 187
+  product_id: 6
+  payment: 0
+  dop: '2022-02-24'
+  payment_mode: Not applicable
+  invoice:
+  note: 'Gigi & Apoorv offered free 1 week trial between 22 Feb to 28 Feb. She had
+    lost her previse package because of COVID  '
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-02-24 02:18:17.399292000 Z
+  updated_at: 2022-03-22 19:08:32.149963000 Z
+  fitternity_id:
+  price_id: 121
+  status: expired
+  expiry_date: '2022-02-28'
+  start_date: '2022-02-22'
+  tax_included: true
+purchase_420:
+  id: 420
+  client_id: 212
+  product_id: 1
+  payment: 1000
+  dop: '2022-03-08'
+  payment_mode: Cash
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-08 10:11:22.921815000 Z
+  updated_at: 2022-03-22 19:08:29.875822000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-03-08'
+  start_date: '2022-03-08'
+  tax_included: true
+purchase_425:
+  id: 425
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-10'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 04:21:01.082094000 Z
+  updated_at: 2022-03-22 19:08:32.596953000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-10'
+  start_date: '2022-03-10'
+  tax_included: true
+purchase_426:
+  id: 426
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-10'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 04:21:37.022761000 Z
+  updated_at: 2022-03-22 19:08:29.922570000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-10'
+  start_date: '2022-03-10'
+  tax_included: true
+purchase_434:
+  id: 434
+  client_id: 48
+  product_id: 10
+  payment: 2500
+  dop: '2022-02-25'
+  payment_mode: Paid to instructor
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-10 20:08:24.046609000 Z
+  updated_at: 2022-03-22 19:08:29.957647000 Z
+  fitternity_id:
+  price_id: 116
+  status: expired
+  expiry_date: '2022-02-25'
+  start_date: '2022-02-25'
+  tax_included: true
+purchase_436:
+  id: 436
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-12'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-12 15:50:01.560656000 Z
+  updated_at: 2022-03-22 19:08:32.827802000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-12'
+  start_date: '2022-03-12'
+  tax_included: true
+purchase_6:
+  id: 6
+  client_id: 4
+  product_id: 5
+  payment: 20000
+  dop: '2021-11-11'
+  payment_mode: Google Pay
+  invoice: 2022M122
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2021-12-20 00:44:20.256065000 Z
+  updated_at: 2022-03-22 19:08:30.015665000 Z
+  fitternity_id:
+  price_id: 13
+  status: expired
+  expiry_date: '2022-03-12'
+  start_date: '2021-11-11'
+  tax_included: true
+purchase_227:
+  id: 227
+  client_id: 120
+  product_id: 7
+  payment: 6000
+  dop: '2022-02-03'
+  payment_mode: Cash
+  invoice: 2022M166
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-03'
+  created_at: 2022-02-03 06:01:10.657785000 Z
+  updated_at: 2022-03-22 19:08:30.058408000 Z
+  fitternity_id:
+  price_id: 15
+  status: expired
+  expiry_date: '2022-03-13'
+  start_date: '2022-02-03'
+  tax_included: true
+purchase_442:
+  id: 442
+  client_id: 25
+  product_id: 1
+  payment: 550
+  dop: '2022-03-14'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-14 07:49:36.330175000 Z
+  updated_at: 2022-03-22 19:08:30.106365000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-14'
+  start_date: '2022-03-14'
+  tax_included: true
+purchase_116:
+  id: 116
+  client_id: 52
+  product_id: 6
+  payment: 1500
+  dop: '2022-01-05'
+  payment_mode: Not paid
+  invoice: ".2022M197."
+  note: "Paid only Rs. 1,400 and Rs.100 Balance she paid wrong amount online. Will
+    collect the payment then I (Raki) will update her purchase. \r\n- Payment is not
+    been collected and she never came back after her 1st class."
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-24'
+  created_at: 2022-01-05 12:24:03.336658000 Z
+  updated_at: 2022-03-22 19:08:33.005338000 Z
+  fitternity_id:
+  price_id: 10
+  status: expired
+  expiry_date: '2022-01-11'
+  start_date: '2022-01-05'
+  tax_included: true
+purchase_445:
+  id: 445
+  client_id: 164
+  product_id: 1
+  payment: 550
+  dop: '2022-03-15'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-15 10:20:59.218080000 Z
+  updated_at: 2022-03-22 19:08:30.153665000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-16'
+  start_date: '2022-03-16'
+  tax_included: true
+purchase_448:
+  id: 448
+  client_id: 208
+  product_id: 1
+  payment: 550
+  dop: '2022-03-07'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 05:10:11.992891000 Z
+  updated_at: 2022-03-22 19:08:30.201852000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-07'
+  start_date: '2022-03-07'
+  tax_included: true
+purchase_449:
+  id: 449
+  client_id: 208
+  product_id: 1
+  payment: 550
+  dop: '2022-03-12'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 05:12:01.805150000 Z
+  updated_at: 2022-03-22 19:08:30.254783000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-12'
+  start_date: '2022-03-12'
+  tax_included: true
+purchase_454:
+  id: 454
+  client_id: 35
+  product_id: 1
+  payment: 550
+  dop: '2022-03-16'
+  payment_mode: Fitternity
+  invoice:
+  note:
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-03-16 08:04:57.624084000 Z
+  updated_at: 2022-03-22 19:08:30.301760000 Z
+  fitternity_id: 4
+  price_id: 2
+  status: expired
+  expiry_date: '2022-03-17'
+  start_date: '2022-03-17'
+  tax_included: true
+purchase_14:
+  id: 14
+  client_id: 12
+  product_id: 4
+  payment: 7000
+  dop: '2021-11-10'
+  payment_mode: Google Pay
+  invoice: 2022M109
+  note: 'Rs. 1,500 Diwali Discount + Rs.1,000 Members discount '
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-01-02'
+  created_at: 2021-12-20 00:44:20.357805000 Z
+  updated_at: 2022-03-22 19:08:30.470922000 Z
+  fitternity_id:
+  price_id: 69
+  status: expired
+  expiry_date: '2022-01-01'
+  start_date: '2021-11-10'
+  tax_included: true
+purchase_181:
+  id: 181
+  client_id: 24
+  product_id: 1
+  payment: 550
+  dop: '2022-01-15'
+  payment_mode: Fitternity
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-15 05:51:09.774770000 Z
+  updated_at: 2022-03-22 19:08:31.056647000 Z
+  fitternity_id: 3
+  price_id: 2
+  status: expired
+  expiry_date: '2022-01-15'
+  start_date: '2022-01-15'
+  tax_included: true
+purchase_335:
+  id: 335
+  client_id: 183
+  product_id: 56
+  payment: 6400
+  dop: '2022-02-19'
+  payment_mode: Cash
+  invoice: 2022M192
+  note: Paid Rs. 5400 in cash and Rs. 1,000 by Instamojo
+  adjust_restart: false
+  ar_payment:
+  ar_date: '2022-02-19'
+  created_at: 2022-02-19 02:32:13.003204000 Z
+  updated_at: 2022-03-22 19:08:31.277224000 Z
+  fitternity_id:
+  price_id: 112
+  status: ongoing
+  expiry_date: '2022-05-21'
+  start_date: '2022-02-19'
+  tax_included: true
+purchase_210:
+  id: 210
+  client_id: 115
+  product_id: 1
+  payment: 1000
+  dop: '2022-01-29'
+  payment_mode: Instamojo
+  invoice:
+  note: ''
+  adjust_restart: false
+  ar_payment:
+  ar_date:
+  created_at: 2022-01-29 05:57:19.687673000 Z
+  updated_at: 2022-03-22 19:08:31.587356000 Z
+  fitternity_id:
+  price_id: 1
+  status: expired
+  expiry_date: '2022-01-29'
+  start_date: '2022-01-29'
+  tax_included: true

@@ -95,7 +95,6 @@ class Admin::PurchasesController < Admin::BaseController
           DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
         end
       end
-      # adjust_and_restart and return if @adjust_and_restarting
 
       redirect_to [:admin, @purchase]
       flash_message :success, t('.success')
@@ -190,11 +189,6 @@ class Admin::PurchasesController < Admin::BaseController
                                                      selected: @purchase_oneoff_discount_id || @discount_none.id) }
   end
 
-  # NOTE: delete once abstraction fully implemented (handle in restarts controller)
-  def adjust_restart_index
-    @adjust_restart_purchases = Purchase.where(adjust_restart: true).order(dop: :desc).includes(:client)
-  end
-
   private
 
   def create_rider
@@ -204,7 +198,6 @@ class Admin::PurchasesController < Admin::BaseController
     if @rider_purchase.update({ product_id: rider_product.id,
                                 payment: 0,
                                 payment_mode: 'Not applicable',
-                                invoice: nil,
                                 note: nil,
                                 price_id: rider_product_price.id,
                                 purchase_id: @purchase.id })
@@ -288,13 +281,10 @@ class Admin::PurchasesController < Admin::BaseController
   #   redirect_to admin_purchase_path(@purchase)
   # end
 
-  # def adjust_and_restarting?
-  #   @adjust_and_restarting = !@purchase.adjust_restart && purchase_params[:adjust_restart] == '1'
-  # end
-
   def adjust_and_restart
     new_purchase = @purchase.dup
-    new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )
+    # new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )
+    new_purchase.update(status: 'not started' )
     flash_message :warning, t('.adjust_and_restart')
     redirect_to admin_purchases_path
   end
@@ -306,13 +296,12 @@ class Admin::PurchasesController < Admin::BaseController
   def purchase_params
     params.require(:purchase)
           .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
-                  :invoice, :note, :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
+                  :note, :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
                   :commercial_discount_id, :discretion_discount_id, :base_price)
-                  # :adjust_restart, :ar_payment, :ar_date,
   end
 
   def sanitize_params
-    nillify_when_blank(params[:purchase], :invoice, :note)
+    nillify_when_blank(params[:purchase], :note)
     [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
       params[:purchase][discount] = nil if params[:purchase][discount].nil? || Discount.find(params[:purchase][discount]).discount_reason.rationale == 'Base'
     end
@@ -343,7 +332,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def handle_filter
     # arity doesn't work with scopes so struggled to reformat this further. eg Purchase.method(:classpass).arity returns -1 not zero.
-    %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid
+    %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial unlimited unpaid
        written_off].each do |key|
       @purchases = @purchases.send(key) if session["filter_#{key}"].present?
       # some scopes will return an array (not an ActiveRecord) eg close_to_expiry so
@@ -376,7 +365,7 @@ class Admin::PurchasesController < Admin::BaseController
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
     # ['expired', 'frozen', 'not started', 'ongoing']
-    @other_attributes = %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid
+    @other_attributes = %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial unlimited unpaid
                            written_off]
     @months = ['All'] + months_logged
   end
@@ -430,10 +419,10 @@ class Admin::PurchasesController < Admin::BaseController
 
   def params_filter_list
     [:workout_group, :statuses, :search_name, :purchases_period] \
-    + %i[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial uninvoiced unlimited unpaid written_off]
+    + %i[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial unlimited unpaid written_off]
   end
 
-  # ['workout_group_filter',...'invoice_filter',...:search_name]
+  # ['workout_group_filter',...'sunsetted_filter',...:search_name]
   def session_filter_list
     params_filter_list.map { |i| [:search_name, :purchases_period].include?(i) ? i : "filter_#{i}" }
   end

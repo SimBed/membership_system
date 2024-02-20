@@ -19,22 +19,16 @@ class Purchase < ApplicationRecord
   # some pts are given a rider benefit of group classes
   has_one :rider_purchase, class_name: 'Purchase', dependent: :destroy # , foreign_key: "purchase_id"
   belongs_to :main_purchase, class_name: 'Purchase', foreign_key: 'purchase_id', optional: true
-  # has_one :restart_child, class_name: 'Purchase', dependent: :destroy
-  # belongs_to :restart_parent, class_name: 'Purchase', foreign_key: 'restart_parent_id', optional: true
   before_save :set_sunset_date
-  # this defines the name method on an instance of a Purchase
-  # so @purchase.name equals Product.find(@purchase.id).name
   delegate :name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
            :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, :rider?, to: :product
   validates :payment, presence: true
   validates :payment_mode, presence: true
-  validates :invoice, allow_blank: true, length: { minimum: 5, maximum: 10 }
   # validates :ar_payment, presence: true, if: :adjust_restart?
-  # NOTE: delete once abstraction fully implemented
-  with_options if: :adjust_restart? do
-    validates :ar_payment, presence: true
-    validates :ar_date, presence: true
-  end
+  # with_options if: :adjust_restart? do
+  #   validates :ar_payment, presence: true
+  #   validates :ar_date, presence: true
+  # end
   validate :check_if_already_had_trial
   # Fitternity redundant now
   # validates :fitternity, presence: true, if: :fitternity_id
@@ -71,20 +65,15 @@ class Purchase < ApplicationRecord
   # alternative 'mixes concerns and logic'
   # scope :package, -> { joins(:product).where("max_classes > 1") }
   scope :order_by_client_dop, -> { joins(:client).order(:first_name, dop: :desc) }
-  # NOTE: update 2nd order term  to created_at: :desc should work with new implementation 
   scope :order_by_dop, -> { order(dop: :desc, created_at: :desc) }
-  # scope :order_by_dop, -> { order(dop: :desc, adjust_restart: :asc) }
   scope :order_by_expiry_date, -> { order(expiry_date: :desc) }
   # scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
-  # scope :client_name_like, ->(name) { joins(:client).where("first_name ILIKE ? OR last_name ILIKE ?", "%#{name}%", "%#{name}%") }
-  # scope :uninvoiced, -> { where(invoice: nil) }
-  scope :uninvoiced, lambda {
-                       package.where(invoice: nil).joins(product: [:workout_group])
-                              .where(workout_groups: { requires_invoice: true })
-                     }
+  # scope :uninvoiced, lambda {
+  #                      package.where(invoice: nil).joins(product: [:workout_group])
+  #                             .where(workout_groups: { requires_invoice: true })
+  #                    }
   scope :service_type, ->(service) { joins(product: [:workout_group]).where(workout_groups: { service: }) }
-  scope :invoiced, -> { where.not(invoice: nil) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :written_off, -> { where(payment_mode: 'Write Off') }
   scope :classpass, -> { where(payment_mode: 'ClassPass') }
@@ -220,9 +209,6 @@ class Purchase < ApplicationRecord
   end
 
   def status_calc
-    # NOTE: delete once abstraction fully implemented
-    return 'expired' if adjust_restart?
-    # NOTE: retain once abstraction fully implemented
     return 'expired' if restart_as_parent
 
     return 'expired' if rider? && main_purchase.expired?
@@ -290,9 +276,6 @@ class Purchase < ApplicationRecord
 
   def expiry_cause
     return unless expired?
-    # NOTE: delete once abstraction fully implemented
-    return 'adjust & restart' if adjust_restart
-    # NOTE: retain once abstraction fully implemented    
     return 'adjust & restart' if restart_as_parent
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
     return 'PT Package expired' if rider?
@@ -303,9 +286,6 @@ class Purchase < ApplicationRecord
 
   def expired_on
     return unless expired?
-    # NOTE: delete once abstraction fully implemented
-    return ar_date if adjust_restart
-    # NOTE: retain once abstraction fully implemented
     return restart_as_parent.payment.dop if restart_as_parent
     return max_class_expiry_date if attendances.no_amnesty.confirmed.size == max_classes
     return main_purchase.expired_on if rider?
@@ -328,9 +308,6 @@ class Purchase < ApplicationRecord
   end
 
   def expiry_date_calc
-    # NOTE: delete once abstraction fully implemented
-    return ar_date if adjust_restart?
-    # NOTE: retain once abstraction fully implemented
     return restart_as_parent.payment.dop if restart_as_parent
 
     return if attendances.no_amnesty.empty?
@@ -365,11 +342,8 @@ class Purchase < ApplicationRecord
 
     attendance_revenue = attendances.includes(purchase: [:product]).confirmed.no_amnesty.map(&:revenue).inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
-    # NOTE: amend once abstraction fully implemented
-    return (payment - attendance_revenue) unless (adjust_restart? || restart)
+    return (payment - attendance_revenue) unless restart_as_parent
         
-    retrun ar_payment - attendance_revenue if adjust_restart?
-
     restart.payment.amount - attendance_revenue
   end
 

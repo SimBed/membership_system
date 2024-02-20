@@ -52,9 +52,9 @@
                   <span class="dropdown-label">JUNIORADMIN</span>
                 <% end %>  
                   <%#= link_to 'Fitternity', admin_fitternities_path, class: "dropdown-item" %>
-                  <%= link_to 'Restarts', '/purchases/adjust_restart_index', class: "dropdown-item" %>
                   <%= link_to 'Freezes', admin_freezes_path, class: "dropdown-item" %>
                   <%= link_to 'Products', admin_products_path, class: "dropdown-item" %>
+                  <%= link_to 'Restarts', admin_restarts_path, class: "dropdown-item" %>
                 <% unless logged_in_as?('junioradmin') %>                     
                   <span class="dropdown-label">ADMIN</span>
                   <%= link_to 'Achievements', shared_achievements_path, class: "dropdown-item" %>
@@ -62,7 +62,6 @@
                   <%= link_to 'Instructors', admin_instructors_path, class: "dropdown-item" %>
                   <%= link_to 'Markers', shared_strength_markers_path, class: "dropdown-item" %>
                   <%= link_to 'Partners', admin_partners_path, class: "dropdown-item" %>
-                  <%= link_to 'Restarts', admin_restarts_path, class: "dropdown-item" %>
                   <%= link_to 'Timetables', admin_timetables_path, class: "dropdown-item" %>                           
                   <%= link_to 'Workouts', admin_workouts_path, class: "dropdown-item" %>
                   <%= link_to 'Workout Groups', admin_workout_groups_path, class: "dropdown-item" %>
