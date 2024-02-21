@@ -3,7 +3,7 @@
     <% purchase = payment.payable.try(:purchase) || payment.payable.parent %>
     <div class="column col-1x"><%= purchase.client.name || purchase.client.name%></div>
     <div class="column col-1x"><%= payment.dop.strftime('%d %b %y') %></div>
-    <div class="column col-1x"><%= link_to payment.payable_type, admin_purchase_path(purchase) %></div>
+    <div class="column col-1x"><%= link_to payment.payable_type, admin_purchase_path(purchase), class: "like_button", data: {turbo: false} %></div>
     <div class="column col-1x"><%= rupees(payment.amount) %></div>
     <div class="column col-1x nomobile"><%= payment.payment_mode %></div>
     <div class="column nomobile"><%= payment.online? ? raw("&check;") : "-" %></div>
@@ -11,4 +11,3 @@
     <div class="column nomobile"><%= link_to image_tag('edit.png', class: 'table_icon'), edit_superadmin_payment_path(payment) %></div>
   </div>
 <% end %>
-

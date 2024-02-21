@@ -1,4 +1,16 @@
 <div class="admin-table striped mt-2 mb-4">
+    <div class="row">
+      <div class="column col-1x">Payable</div>
+      <div class="column col-2x"><%= @payment.payable_type %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Client</div>
+      <div class="column col-2x"><%= @payment.payable.try(:client).try(:name) || @payment.payable.try(:purchase).try(:client).try(:name) || @payment.payable.try(:parent).try(:client).try(:name)  %></div>
+    </div>
+    <div class="row">
+      <div class="column col-1x">Associated Purchase</div>
+      <div class="column col-2x"><%= link_to @purchase.product.name, admin_purchase_path(@purchase), class: "like_button" %></div>
+    </div>
   <div class="row">
     <div class="column col-1x">Amount</div>
     <div class="column col-2x"><%= rupees(@payment.amount) %></div>
@@ -16,16 +28,8 @@
       <div class="column col-2x"><%= @payment.online? ? raw("&check;") : "-" %></div>
     </div>
     <div class="row">
-      <div class="column col-1x">Payable</div>
-      <div class="column col-2x"><%= @payment.payable_type %></div>
-    </div>
-    <div class="row">
-      <div class="column col-1x">Client</div>
-      <div class="column col-2x"><%= @payment.payable.try(:client).try(:name) || @payment.payable.try(:purchase).try(:client).try(:name) || @payment.payable.try(:parent).try(:client).try(:name)  %></div>
-    </div>
-    <div class="row">
-      <div class="column col-1x">Associated Purchase</div>
-      <div class="column col-2x"><%= link_to @purchase.product.name, admin_purchase_path(@purchase), class: "like_button" %></div>
+      <div class="column col-1x">Note</div>
+      <div class="column col-2x"><%= @payment.note %></div>
     </div>
 </div>
 

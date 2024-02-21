@@ -36,8 +36,9 @@ class Admin::FreezesController < Admin::BaseController
   def update
     if @freeze.update(freeze_params)
       @purchase = @freeze.purchase
-      redirect_to admin_purchase_path(Purchase.find(freeze_params[:purchase_id]))
+      redirect_to admin_purchase_path(@purchase)
       flash[:success] = t('.success')
+      cancel_bookings_during_freeze(@freeze)      
       update_purchase_status([@purchase])
     else
       @payment_methods = Setting.payment_methods

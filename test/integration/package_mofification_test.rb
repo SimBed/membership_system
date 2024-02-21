@@ -5,6 +5,9 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @purchase = purchases(:ekta_unlimited)
     @wkclass = wkclasses(:wkclass_for_booking_early)
+    # @purchase_with_freeze = purchases(:purchase_for_freeze)
+    @freeze = freezes(:freeze_test)
+    @payment = payments(:payment1)
     travel_to(Date.parse('21 March 2022')) # day after class attended on this package
   end  
 
@@ -110,4 +113,31 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     assert_equal restart.child, restarted_purchase
     assert_equal 'not started', restarted_purchase.status
   end  
+
+  test 'admin updates freeze payment amount' do
+    assert_equal 650, @payment.amount
+    assert_equal @freeze.payment, @payment
+    freeze = @freeze
+    log_in_as(@admin)
+      patch admin_freeze_path(@freeze), params:
+      { freeze:
+        { purchase_id: @freeze.purchase_id,
+          start_date: @freeze.start_date,
+          end_date: @freeze.end_date.advance(days:2),
+          note: @freeze.note,
+          medical: @freeze.medical,
+          doctor_note: @freeze.doctor_note,
+          added_by: @freeze.added_by,
+          payment_attributes:
+            { dop: @payment.dop,
+              amount: 300,
+              payment_mode: 'Google Pay',
+              note: @payment.note
+            }
+        }
+      }
+    assert_equal 300, @freeze.reload.payment.amount
+    assert_equal 'Google Pay', @freeze.payment.payment_mode
+    assert_equal Date.parse('2021-10-19'), @freeze.end_date
+  end
 end
