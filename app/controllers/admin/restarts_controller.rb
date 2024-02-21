@@ -12,7 +12,8 @@ class Admin::RestartsController < Admin::BaseController
   end
 
   def index
-    @restarts = Restart.order_by_dop.includes(:parent, :child) 
+    @restarts = Restart.order_by_dop.includes(:parent, :child)
+    # @restarts = Restart.order_by_dop.includes(parent: [:client], child: [:client])
   end
 
   def edit

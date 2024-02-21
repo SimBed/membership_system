@@ -1,41 +1,33 @@
 <div id="restart-table" class="container px-0 mb-5">
-  <div class="text-uppercase fst-italic">Adjust & Restarts<small><%= "(#{@restarts.size})" %> </small></div>
+  <div class="text-uppercase fst-italic">Restarts<small><%=" (#{@restarts.size})"%></small></div>
   <div class="admin-table striped mt-2">
       <div class="row fw-bolder">
-        <div class="column col-1x ">A&R</div>
-        <div class="column col-1x ">A&R date</div>
-        <div class="column col-1x ">A&R Payment</div>
-        <div class="column col-1x ">Restart note</div>
-        <div class="column col-1x ">Date of Package Purchase</div>
-        <div class="column col-1x ">Client</div>
-        <div class="column col-1x ">Purchase</div>
-        <div class="column col-1x ">Status</div>
+        <div class="column col-1x">Client</div>
+        <div class="column col-1x">Main Purchase</div>
+        <div class="column col-1x">Main Payment Date</div>
+        <div class="column col-1x">Status</div>
+        <div class="column col-1x">Restart</div>
+        <div class="column col-1x">Restart date</div>
+        <div class="column col-1x">Restart Status</div>
+        <div class="column col-1x">Restart Payment</div>
+        <div class="column col-1x">Restart Note</div>
       </div>  
     <% @restarts.each do |restart| %>
-      <% purchase = restart.child %>
+      <% purchase_parent = restart.parent %> 
+      <% purchase_child = restart.child %>
+      <% client = purchase_child.client %> 
       <% payment = restart.payment %>
       <div class="row">
-        <div class="column col-1x ">Child</div>
-        <div class="column col-1x "><%= restart.payment.dop.strftime('%d %b %y') %></div>
-        <div class="column col-1x "><%= link_to number_with_delimiter(payment.amount), superadmin_payment_path(payment) %></div>
-        <div class="column col-1x "><%= restart.note %></div>
-        <div class="column col-1x "><%= purchase.dop.strftime('%d %b %y') %></div>
-        <div class="column col-1x "><%= link_to purchase.client.name, admin_client_path(purchase.client), class: 'like_button' %></div>
-        <div class="column col-1x "><%= link_to purchase.name, admin_purchase_path(purchase), class: 'like_button'  %></div>
-        <div class="column col-1x "><%= purchase.status %></div>
-      </div>
-      <% purchase = restart.parent %>      
-      <div class="row">
-        <div class="column col-1x ">Parent</div>      
-        <div class="column col-1x "></div>
-        <div class="column col-1x "></div>
-        <div class="column col-1x "></div>
-        <div class="column col-1x "><%= purchase.dop.strftime('%d %b %y') %></div>
-        <div class="column col-1x "><%= link_to purchase.client.name, admin_client_path(purchase.client), class: 'like_button' %></div>
-        <div class="column col-1x "><%= link_to purchase.name, admin_purchase_path(purchase), class: 'like_button'  %></div>
-        <div class="column col-1x "><%= purchase.status %></div>
+        <div class="column col-1x"><%= link_to client.name, admin_client_path(client), class: 'like_button' %></div>
+        <div class="column col-1x"><%= link_to purchase_parent.name, admin_purchase_path(purchase_parent), class: 'like_button'  %></div>
+        <div class="column col-1x"><%= purchase_parent.dop.strftime('%d %b %y') %></div>
+        <div class="column col-1x"><%= purchase_parent.status %></div>
+        <div class="column col-1x"><%= link_to purchase_child.name, admin_purchase_path(purchase_child), class: 'like_button'  %></div>
+        <div class="column col-1x"><%= restart.payment.dop.strftime('%d %b %y') %></div>
+        <div class="column col-1x"><%= purchase_child.status %></div>
+        <div class="column col-1x"><%= link_to number_with_delimiter(payment.amount), superadmin_payment_path(payment), class: "like_button" %></div>
+        <div class="column col-1x"><%= restart.note %></div>
       </div>
     <% end %>
-    <hr>
   </div>
 </div>
