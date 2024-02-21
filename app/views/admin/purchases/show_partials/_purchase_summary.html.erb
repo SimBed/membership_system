@@ -23,7 +23,7 @@
     <div class="column col-1x"><%= @purchase.status %></div>
   </div>
   <% if @purchase.can_restart? %>
-    <div class="row">
+    <div class="row <%= 'text-danger' if @purchase.restart_warning? %>">
       <div class="column col-1x">Restart Charge</div>
       <div class="column col-1x"><%= rupees(@purchase.restart_payment) %></div>
     </div>

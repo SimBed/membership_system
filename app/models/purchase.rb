@@ -116,6 +116,16 @@ class Purchase < ApplicationRecord
     true
   end
 
+  def restart_warning?
+    return false unless can_restart?
+
+    days_until_sunset = (Time.zone.today.beginning_of_day.to_date..sunset_date.end_of_day).count
+    product_duration_days = product.duration_days.in_days
+    return true if product_duration_days > days_until_sunset
+
+    false
+  end
+
   def discount(base_price, *discounts)
     discounts.each do |discount|
       base_price = (base_price * (1 - (discount.percent.to_f / 100))) - discount.fixed
