@@ -2,9 +2,13 @@ class Admin::FreezesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
   before_action :set_freeze, only: [:edit, :update, :destroy]
+  before_action :set_admin_status, only: [:index]  
 
   def index
     @freezes = Freeze.order_by_start_date_desc
+    @months = ['All'] + months_logged
+    handle_period
+    handle_pagination    
   end
 
   def new
@@ -54,7 +58,36 @@ class Admin::FreezesController < Admin::BaseController
     update_purchase_status([@purchase])
   end
 
+  def filter
+    session[:freezes_period] = params[:freezes_period]
+    redirect_to admin_freezes_path
+  end  
+
   private
+
+  def handle_period
+    if session[:freezes_period].present? && session[:freezes_period] != 'All'
+      freezes_paid = @freezes.paid_during(month_period(session[:freezes_period]))
+      @freezes_payment_amount_sum = freezes_paid.sum(:amount) if @admin_plus
+      freezes_started = @freezes.start_during(month_period(session[:freezes_period]))
+
+      ids = (freezes_paid.pluck(:id) + freezes_started.pluck(:id)).uniq
+      @freezes = Freeze.recover_order(ids)
+    else
+      @freezes_payment_amount_sum = Freeze.joins(:payment).sum(:amount) if @admin_plus
+    end
+  end
+  
+  def handle_pagination
+    # when exporting data, want it all not just the page of pagination
+    if params[:export_all]
+      #  @purchases.page(params[:page]).per(100_000)
+      @pagy, @freezes = pagy(@freezes, items: 100_000)
+    else
+      #  @purchases.page params[:page]
+      @pagy, @freezes = pagy(@freezes)
+    end
+  end
 
   def set_freeze
     @freeze = Freeze.find(params[:id])

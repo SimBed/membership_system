@@ -8,6 +8,10 @@ class Freeze < ApplicationRecord
   # validate :no_attendance_during
   scope :order_by_start_date, -> {order(start_date: :asc)}
   scope :order_by_start_date_desc, -> {order(start_date: :desc)}
+  scope :paid_during, ->(period) { joins(:payment).where(payments: {dop: period}) }
+  scope :payment_sum, ->(period) { paid_during(period).sum(:amount)}
+  scope :start_during, ->(period) { where(start_date: period) }
+  scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
 
   def duration
     # (end_date - start_date + 1.days).to_i #Date - Date returns a rational
