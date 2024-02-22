@@ -73,7 +73,7 @@ class Setting < RailsSettings::Base
   # https://github.com/huacnlee/rails-settings-cached/issues/231
   scope :purchase do
     field :payment_methods, type: :array,
-                            default: ['A&R conversion', 'Card-Credit', 'Card-Debit', 'Cash', 'Cheque', 'ClassPass', 'Fitternity', 'Google Pay', 'Instamojo', 'NEFT', 'Not applicable', 'Not paid', 'Paid to instructor', 'PayTM', 'Razorpay']
+                            default: ['Card-Credit', 'Card-Debit', 'Cash', 'Cheque', 'ClassPass', 'Fitternity', 'Google Pay', 'Instamojo', 'NEFT', 'Not applicable', 'Not paid', 'Paid to instructor', 'PayTM', 'Razorpay', 'Restart']
     field :freeze_min_duration, type: :integer, default: 3
     field :freeze_charge, type: :integer, default: 650
     field :restart_min_charge, type: :integer, default: 1000

@@ -286,7 +286,7 @@ class Purchase < ApplicationRecord
 
   def expiry_cause
     return unless expired?
-    return 'adjust & restart' if restart_as_parent
+    return 'restart' if restart_as_parent
     return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
     return 'PT Package expired' if rider?
     return 'sunset' if expired_on == sunset_date
@@ -354,7 +354,7 @@ class Purchase < ApplicationRecord
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
     return (payment - attendance_revenue) unless restart_as_parent
         
-    restart.payment.amount - attendance_revenue
+    restart_as_parent.payment.amount - attendance_revenue
   end
 
   def start_to_expiry

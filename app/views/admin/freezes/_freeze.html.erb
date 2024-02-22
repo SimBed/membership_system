@@ -1,17 +1,12 @@
-<div id="freezes-table" class="container px-0 mb-5">
-  <div class="text-uppercase fst-italic">Freezes<small><%= "(#{@freezes.size})" %> </small></div>
-  <div class="admin-table striped mt-2">
-    <% @freezes.each do |freeze| %>
-      <div class="row">
-        <div class="column col-1x "><%= link_to freeze.purchase.name, admin_purchase_path(freeze.purchase), class: 'like_button'  %></div>
-        <div class="column col-1x "><%= link_to freeze.purchase.client.name, admin_client_path(freeze.purchase.client), class: 'like_button' %></div>
-        <div class="column col-1x "><%= freeze.start_date.strftime('%d %b %y') %></div>
-        <div class="column col-1x "><%= freeze.end_date.strftime('%d %b %y') %></div>
-        <div class="column col-1x "><%= rupees(freeze.payment.try(:amount)) %></div>
-        <div class="column"><%= image_tag('medical.png', class: ["table_icon",("dull" unless freeze.medical?)].compact.join(' ')) %></div>
-        <div class="column"><%= image_tag('doctor_note.png', class: ["table_icon",("dull" unless freeze.doctor_note?)].compact.join(' ')) %></div>
-        <div class="column col-1x "><%= freeze.note %></div>
-      </div>
-    <% end %>
-  </div>
+<% has_payment = freeze.payment && true %>
+<% payment = freeze.payment if has_payment %>
+<div class="row">
+  <div class="column col-1x "><%= link_to freeze.purchase.name, admin_purchase_path(freeze.purchase), class: 'like_button', data: {turbo: false}  %></div>
+  <div class="column col-1x "><%= link_to freeze.purchase.client.name, admin_client_path(freeze.purchase.client), class: 'like_button', data: {turbo: false} %></div>
+  <div class="column col-1x "><%= freeze.start_date.strftime('%d %b %y') %></div>
+  <div class="column col-1x "><%= freeze.end_date.strftime('%d %b %y') %></div>
+  <div class="column col-1x "><%= has_payment ? link_to(rupees(payment.amount), superadmin_payment_path(payment), class: "like_button", data: {turbo: false}) : '-' %></div>
+  <div class="column"><%= image_tag('medical.png', class: ["table_icon",("dull" unless freeze.medical?)].compact.join(' ')) %></div>
+  <div class="column"><%= image_tag('doctor_note.png', class: ["table_icon",("dull" unless freeze.doctor_note?)].compact.join(' ')) %></div>
+  <div class="column col-1x "><%= freeze.note %></div>
 </div>
