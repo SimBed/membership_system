@@ -21,11 +21,7 @@
         <div class="column col-1x"><%= freeze.end_date.strftime('%d %b %y') %></div>
         <div class="column col-1x"><%= "#{pluralize(freeze.duration, 'day')}" %></div>
         <div class="column col-1x"><%= freeze.note %></div>
-        <% if logged_in_as?('superadmin') %>
-          <div class="column col-1x"><%= freeze.payment ? link_to(rupees(freeze.payment.amount), superadmin_payment_path(freeze.payment), class: 'like_button', data: {turbo: false}) : '-' %></div>
-        <% else %>
-          <div class="column col-1x"><%= freeze.payment ? rupees(freeze.payment.amount) : '-' %></div>
-        <% end %>
+        <div class="column col-1x"><%= freeze.payment ? link_to(rupees(freeze.payment.amount), superadmin_payment_path(freeze.payment), class: 'like_button', data: {turbo: false}) : '-' %></div>
         <div class="column"><%= image_tag('medical.png', class: ["table_icon",("dull" unless freeze.medical?)].compact.join(' ')) %></div>        
         <div class="column"><%= image_tag('doctor_note.png', class: ["table_icon",("dull" unless freeze.doctor_note?)].compact.join(' ')) %></div>        
         <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_freeze_path(freeze), class: "icon-container", data: { turbo_frame: 'freeze_edit' } %></div>
