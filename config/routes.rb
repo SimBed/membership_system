@@ -10,11 +10,13 @@ Rails.application.routes.draw do
   post '/signup',  to: 'public_pages#create_account'
   get '/clients/clear_filters', to: 'admin/clients#clear_filters', as: 'clear_client_filters'
   get '/purchases/clear_filters', to: 'admin/purchases#clear_filters', as: 'clear_purchase_filters'
+  get '/payments/clear_filters', to: 'superadmin/payments#clear_filters', as: 'clear_payments_filters'
   get '/wkclasses/clear_filters', to: 'admin/wkclasses#clear_filters', as: 'clear_wkclass_filters'
   get '/product/clear_filters', to: 'admin/products#clear_filters', as: 'clear_product_filters'
   # note (check this is true) if the 'get' is not before the 'resources', the get purchases/search will be handled by the show method (with params[:id] = 'search')
   get '/purchases/filter', to: 'admin/purchases#filter', as: 'purchase_filter'
   get '/freezes/filter', to: 'admin/freezes#filter', as: 'freeze_filter'
+  get '/payments/filter', to: 'superadmin/payments#filter', as: 'payment_filter'
   get '/wkclasses/filter', to: 'admin/wkclasses#filter', as: 'wkclass_filter'
   get '/clients/filter', to: 'admin/clients#filter', as: 'client_filter'
   get '/workouts/filter', to: 'admin/workouts#filter', as: 'workout_filter'

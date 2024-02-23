@@ -1,6 +1,12 @@
-<div class="container px-1 mb-1">
+<div class="container px-1">
   <h4>Payments</h4>
 </div>
-<%= turbo_frame_tag 'clients' do %>
-  <%= render partial: 'payments_table' %>
+<%= turbo_frame_tag 'payments-and-filter' do %>
+  <%= render partial: 'filter_form' %>
+  <% if @superadmin %>
+    <%#= render partial: 'download' %>
+  <% end %>
+    <%= turbo_frame_tag 'payments' do %>
+      <%= render partial: 'payments_table' %>
+    <% end %>
 <% end %>

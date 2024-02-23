@@ -1,4 +1,19 @@
 <div id="payments-table" class="container px-0 mb-5">
+  <div class="page_entries_info px-1">
+    <% if @superadmin_plus %>
+      <div class="record-count mb-1">
+        <%= "showing #{@payments&.length} of #{@pagy&.count}" %>
+      </div>
+    <% end %>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>   
+  </div>
+
+    <% if @superadmin_plus %>
+      <div class="mt-2 px-1"><%= rupees(@payments_amount_sum) %><small> (all pages)</small></div>
+    <% end %>  
+    <div class="text-uppercase fst-italic">Payments<small><%= "(#{@payments.size})" %> </small></div>
   <div class="admin-table mt-2">
     <div class="row fw-bolder">
       <div class="column col-1x">Client</div>

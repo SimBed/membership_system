@@ -1,0 +1,34 @@
+<div id="payments-filter" class="container px-1 mb-5">
+  <div class="container search">
+    <%= render partial: 'sort_selection' %>
+    <hr class = "search mb-3"></hr>
+    <%= form_with(url: payment_filter_path, method: "get", class: "form-class", data: {turbo_frame: "payments"}) do %>
+      <div class="container mb-1">
+        <div class="row">
+          <div class="col-4 px-0">
+            <fieldset>
+              <legend>TYPE</legend>
+              <% @payable_types.each do |payable_type| %>
+                <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                  <%= check_box_tag 'payable_types[]', payable_type, session[:filter_payable_types].present? ? session[:filter_payable_types].include?(payable_type) : false, class: "checkbox-class", id: "chbox#{payable_type}", onchange: "this.form.requestSubmit()"  %>
+                  <%= payable_type %>
+                <% end %>
+              <% end %>
+            </fieldset>
+          </div>
+
+          <div class="container d-flex">
+            <%#= link_to image_tag('clear_filter.png', class: "button_icon"), clear_payment_filters_path, {class: "search searchdelete icon-container"} %>
+          </div>
+
+          <fieldset class="mt-2" style="margin-left:-1.3rem">
+            <select name="payments_period" class= "sort" onchange="this.form.requestSubmit()">
+              <%= options_for_select @months, session[:payments_period] %>
+            </select>
+          </fieldset>
+        </div>
+      </div>
+    <% end %>
+    <hr class = "search mb-3"></hr>
+  </div>
+</div>

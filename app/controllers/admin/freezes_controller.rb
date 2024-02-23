@@ -2,7 +2,7 @@ class Admin::FreezesController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
   before_action :set_freeze, only: [:edit, :update, :destroy]
-  before_action :set_admin_status, only: [:index]  
+  before_action :set_admin_status, only: [:index]
 
   def index
     @freezes = Freeze.order_by_start_date_desc
