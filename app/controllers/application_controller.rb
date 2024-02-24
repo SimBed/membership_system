@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
       # NOTE: rider = nil would return false, so this means if p has a rider then set rider as p's rider and carry out the conditional, otherwise dont
       # NOTE: sage rubocop advice, Use == if you meant to do a comparison or wrap the expression in parentheses to indicate you meant to assign in a condition
       if (rider = p.rider_purchase)
-        # the rider cant continue once the main has expired
+        # the rider cant continue once the main has expired [presumed for now, policy not explicit]
         rider.update(status: 'expired', expiry_date: p.expiry_date) if p.expired? && !rider.expired?
         # conceivably the rider can be reactivated from expired if a change is made to the main that brings the main back from expired. (This is benign when main purchase changes to 'classes all booked')
         rider.update(status: rider.status_calc) if !p.expired? && status_changed

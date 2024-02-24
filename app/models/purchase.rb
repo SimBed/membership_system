@@ -298,7 +298,7 @@ class Purchase < ApplicationRecord
     return unless expired?
     return restart_as_parent.payment.dop if restart_as_parent
     return max_class_expiry_date if attendances.no_amnesty.confirmed.size == max_classes
-    return main_purchase.expired_on if rider?
+    # return main_purchase.expired_on if rider?
 
     expiry_date
   end
