@@ -21,6 +21,7 @@ class Admin::FreezesController < Admin::BaseController
   
   def edit
     @payment_methods = Setting.payment_methods
+    payment = @freeze.build_payment(amount: 0) if @freeze.payment.nil?
   end
 
   def create
