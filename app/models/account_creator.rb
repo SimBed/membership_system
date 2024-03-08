@@ -1,7 +1,7 @@
 class AccountCreator
   include PasswordWizard
   # Style Guide discourages the simpler OpenStruct
-  # set Struct to constant in class not in method. COnstants can't be set in methods 'dynamic-constant-assignment error'
+  # set Struct to constant in class not in method. Constants can't be set in methods 'dynamic-constant-assignment error'
   Outcome = Struct.new(:success?, :password, :account)
 
   def initialize(attributes = {})

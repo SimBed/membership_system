@@ -1,0 +1,15 @@
+<div id="clients-table" class="container px-0 mb-5 admin_form">
+  <div class="page_entries_info px-1">
+    <div class="record-count mb-1">
+      <%= "showing #{@recipients&.length} of #{@pagy&.count}" %>
+    </div>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>    
+  </div>
+
+  <div class="admin-table mt-3">
+    <%= render partial: 'superadmin/blasts/client', collection: @recipients %>
+  </div>
+
+</div>

@@ -1,0 +1,7 @@
+<%= form_with(url: superadmin_add_client_path, method: "get") do |form| %>
+  <label class="text-uppercase">Additional Recipient:</label>
+  <%= form.select :client_id, options_for_select(@clients_to_add.map {|c| [c.name, c.id]}), {}, { class: "sort" } %>
+  <div class="d-inline image_actions">
+    <%= form.submit 'add' %>
+  </div>
+<% end %>

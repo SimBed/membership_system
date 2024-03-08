@@ -1,0 +1,11 @@
+<div class="admin_form mb-3"> 
+  <form>
+    <label class= 'fw-bolder ps-1 mb-1' >Message as it will be received:</label>
+      <div class="field">
+    <textarea cols='40' rows='8' class="form-control border p-2" readonly><%= @final_message %></textarea>
+    </div>
+  </form>
+  <%= link_to 'send test', superadmin_test_blast_path, class:'btn btn-dark mb-2' %>
+</div>
+
+

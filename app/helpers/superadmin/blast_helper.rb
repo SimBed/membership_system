@@ -1,0 +1,2 @@
+module Superadmin::BlastHelper
+end

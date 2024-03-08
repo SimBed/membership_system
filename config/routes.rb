@@ -84,6 +84,14 @@ Rails.application.routes.draw do
     resources :workout_groups
   end
   namespace :superadmin do
+    get 'blasts/new'
+    get 'blasts/filter', to: 'blasts#filter', as: 'blast_filter'    
+    get 'blasts/clear_filters', to: 'blasts#clear_filters', as: 'clear_blast_filters'
+    post 'message/add_message', to: 'blasts#add_message', as: 'add_message'
+    get 'blast/test_blast', to: 'blasts#test_blast', as: 'test_blast'
+    get 'blast/blast_off', to: 'blasts#blast_off', as: 'blast_off'
+    get 'blast/remove_client/:id', to: 'blasts#remove_client', as: 'remove_client'
+    get 'blast/add_client', to: 'blasts#add_client', as: 'add_client'
     resources :discounts
     resources :payments, only: [:index, :show, :edit, :update, :destroy]
     resources :discount_reasons

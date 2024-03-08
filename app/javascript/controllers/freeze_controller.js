@@ -30,24 +30,24 @@ export default class extends Controller {
   }
   
   toggle_medical() {
-      this.medicalValue = !this.medicalValue
-      this.doctorNoteTarget.hidden = !this.medicalValue;
-      this.doctorNoteValue = false;
-      document.getElementById('freeze_doctor_note').checked = false;
-      if (this.doctorNoteValue != true) {
-        document.getElementById('freeze_payment_attributes_amount').value = this.priceValue;
-        }      
-      this.hideableTarget.hidden = false;
-    }
+    this.medicalValue = !this.medicalValue
+    this.doctorNoteTarget.hidden = !this.medicalValue;
+    this.doctorNoteValue = false;
+    document.getElementById('freeze_doctor_note').checked = false;
+    if (this.doctorNoteValue != true) {
+      document.getElementById('freeze_payment_attributes_amount').value = this.priceValue;
+      }      
+    this.hideableTarget.hidden = false;
+  }
     
-    toggle_doctor_note() {
-      this.doctorNoteValue = !this.doctorNoteValue;
-      this.hideableTarget.hidden = this.doctorNoteValue;
-      if (this.doctorNoteValue == true) {
-        document.getElementById('freeze_payment_attributes_amount').value = 0;
-      } else {
-        document.getElementById('freeze_payment_attributes_amount').value = this.priceValue;
-      }
+  toggle_doctor_note() {
+    this.doctorNoteValue = !this.doctorNoteValue;
+    this.hideableTarget.hidden = this.doctorNoteValue;
+    if (this.doctorNoteValue == true) {
+      document.getElementById('freeze_payment_attributes_amount').value = 0;
+    } else {
+      document.getElementById('freeze_payment_attributes_amount').value = this.priceValue;
     }
+  }
 
 }

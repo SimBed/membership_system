@@ -97,6 +97,20 @@ div.actions input {
   }
 }
 
+div.image_actions input {
+  vertical-align:middle;
+  border-radius: 0.5rem;
+  box-shadow: 0.3rem 0.3rem 0.6rem $gray-800;
+  font-size: 0.8em;
+  transform: scale(0.8);
+  &:hover {
+    opacity: 0.8;
+    box-shadow: none;    
+  }
+}
+
+
+
 form {
   &.admin_form {
     position: relative; //for benefit of cancel button

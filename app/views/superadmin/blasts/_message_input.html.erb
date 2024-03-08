@@ -1,0 +1,17 @@
+<div class="admin_form mb-3"> 
+  <%= form_with url: superadmin_add_message_path, class: '' do |form| %>
+    <div class="field">
+      <%= form.label :message, class: 'fw-bolder ps-1 mb-1' %>
+      <%= form.text_area :message, cols: 40, rows: 8, value: @message, class: 'form-control' %>
+    </div>
+    <div class="field">
+      <%= form.label :greeting, style: 'font-size: 0.9em;' do %>
+        <%= form.check_box :greeting, {checked: session[:greeting].present? && session[:greeting] == '1'} %>
+        Personalised Greeting?
+      <% end %>
+    </div>
+    <div class="actions">
+      <%= form.submit 'process', style: 'font-size: 0.8em;' %>
+    </div>
+  <% end %>
+</div>

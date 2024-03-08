@@ -2,6 +2,7 @@ default: &default
 
  timetable_id: 8
  window_capacity: 8
+ recipient_pagination: 200
 
  attendance_statuses:
   - booked

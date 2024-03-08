@@ -147,6 +147,9 @@ en:
       destroy:
         success: Workout was successfully deleted
   superadmin:
+    blasts:
+      blast_off:
+        success: "Messages all sent. %{passes} sent. %{errors} failed. Check Twilio logs to confirm deliveries."
     discounts:
       create:
         success: Discount was successfully added
