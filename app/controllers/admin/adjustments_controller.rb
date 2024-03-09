@@ -2,7 +2,7 @@ class Admin::AdjustmentsController < Admin::BaseController
   skip_before_action :admin_account
   before_action :junioradmin_account
   before_action :set_adjustment, only: [:edit, :update, :destroy]
-  after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy]
+  after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update, :destroy], unless: -> { @purchase.nil? }
 
   def new
     @adjustment = Adjustment.new
