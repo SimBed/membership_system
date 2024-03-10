@@ -35,7 +35,7 @@ class Admin::PurchasesController < Admin::BaseController
     # ActiveRecord::StatementInvalid Exception: PG::SyntaxError: ERROR:  subquery has too many columns
     # so reverted to previous less efficent 2 query approach
     # @purchases_all_pages_sum = Purchase.where("id IN (#{@purchases.select(:id).to_sql})").sum(:payment) if logged_in_as?('superadmin')
-    @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:payment) if logged_in_as?('admin', 'superadmin')
+    @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:charge) if logged_in_as?('admin', 'superadmin')
     handle_sort
     prepare_items_for_filters
     handle_pagination
@@ -196,7 +196,7 @@ class Admin::PurchasesController < Admin::BaseController
     rider_product_price = rider_product.base_price_at(Time.zone.now)
     @rider_purchase = @purchase.dup
     if @rider_purchase.update({ product_id: rider_product.id,
-                                payment: 0,
+                                charge: 0,
                                 payment_mode: 'Not applicable',
                                 note: nil,
                                 price_id: rider_product_price.id,
@@ -295,7 +295,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def purchase_params
     params.require(:purchase)
-          .permit(:client_id, :product_id, :price_id, :payment, :dop, :payment_mode,
+          .permit(:client_id, :product_id, :price_id, :charge, :dop, :payment_mode,
                   :note, :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
                   :commercial_discount_id, :discretion_discount_id, :base_price)
   end
@@ -356,7 +356,7 @@ class Admin::PurchasesController < Admin::BaseController
     # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
     # Bullet.enable = false if Rails.env == 'development'
     @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
-    @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:payment)
+    @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:charge)
     # Bullet.enable = true if Rails.env == 'development'
     Purchase.default_timezone = :local
   end  

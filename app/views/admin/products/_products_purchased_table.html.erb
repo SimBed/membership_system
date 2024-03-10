@@ -9,7 +9,7 @@
     <div class="row">
       <div class="column col-1x"><%= purchase.dop.strftime('%d %b %y') %></div>
       <div class="column col-1x"><%= link_to purchase.client.name, admin_client_path(purchase.client), class: 'like_button', data: {turbo: false} %></div>
-      <div class="column col-1x"><%= rupees(purchase.payment) %></div>
+      <div class="column col-1x"><%= rupees(purchase.charge) %></div>
     </div>
   <% end %>      
 </div>

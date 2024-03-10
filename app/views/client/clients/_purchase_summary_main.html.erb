@@ -2,7 +2,7 @@
 <div class="admin-table striped mt-2">
   <div class="row">
     <div class="column col-1x">Payment</div>
-    <div class="column col-1x"><%= rupees(@purchase.payment) %></div>
+    <div class="column col-1x"><%= rupees(@purchase.charge) %></div>
   </div>
   <% unless @purchase.discounts.empty? %>  
     <% discount = @purchase.discounts.first %>
@@ -23,7 +23,7 @@
     <% end %>
     <div class="row">
       <div class="column col-1x">Discount Amount</div>
-      <div class="column col-1x"><%= rupees(@purchase.price.price - @purchase.payment) %></div>
+      <div class="column col-1x"><%= rupees(@purchase.price.price - @purchase.charge) %></div>
     </div>
   <% end %>
     <div class="row">

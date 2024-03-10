@@ -24,8 +24,8 @@
         <Cell><Data ss:Type="String"><%= purchase.dop %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.payment_mode %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.price.price %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= purchase.payment %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= purchase.price.price - purchase.payment %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.charge %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.price.price - purchase.charge %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.note %></Data></Cell>
       </Row>
     <% end %>

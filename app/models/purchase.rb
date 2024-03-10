@@ -22,7 +22,7 @@ class Purchase < ApplicationRecord
   before_save :set_sunset_date
   delegate :name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
            :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, :rider?, to: :product
-  validates :payment, presence: true
+  validates :charge, presence: true
   validates :payment_mode, presence: true
   # validates :ar_payment, presence: true, if: :adjust_restart?
   # with_options if: :adjust_restart? do
@@ -111,7 +111,7 @@ class Purchase < ApplicationRecord
     return false unless groupex? && ongoing? && !dropin? && !trial? && !rider?
 
     # NOTE: the new restarted package can itself be restarted (but obviously the original package can only be restarted once) 
-    return false if restart_as_parent || restart_payment > payment
+    return false if restart_as_parent || restart_payment > charge
 
     true
   end
@@ -352,7 +352,7 @@ class Purchase < ApplicationRecord
 
     attendance_revenue = attendances.includes(purchase: [:product]).confirmed.no_amnesty.map(&:revenue).inject(0, :+)
     # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
-    return (payment - attendance_revenue) unless restart_as_parent
+    return (charge - attendance_revenue) unless restart_as_parent
         
     restart_as_parent.payment.amount - attendance_revenue
   end

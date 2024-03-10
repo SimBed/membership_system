@@ -64,7 +64,7 @@ class Admin::RestartsController < Admin::BaseController
     params.require(:restart).permit(:parent_id, :added_by, :note, payment_attributes: [:dop, :amount, :payment_mode, :note])
   end
 
-  # taken from purchases_controller
+  #TODO: delete? taken from purchases_controller
   def adjust_and_restart
     new_purchase = @purchase.dup
     new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )

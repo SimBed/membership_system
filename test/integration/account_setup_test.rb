@@ -18,7 +18,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
     assert_difference -> { Account.count } => 1, -> { Assignment.count } => 1 do
       post admin_purchases_path, params: { purchase: { client_id: @client.id,
                                                        product_id: @product.id, price_id: @price.id,
-                                                       payment: 22_950, dop: '2022-02-15', payment_mode: 'Cash' } }
+                                                       charge: 22_950, dop: '2022-02-15', payment_mode: 'Cash' } }
     end
     new_account = Account.last
     # the new account has been given a random password, so lets reset it so we can login easily
@@ -31,7 +31,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
     assert_difference -> { Account.count } => 0, -> { Assignment.count } => 0 do
       post admin_purchases_path, params: { purchase: { client_id: @client.id,
                                                        product_id: @product.id, price_id: @price.id,
-                                                       payment: 22_950, dop: '2022-05-15', payment_mode: 'Cash' } }
+                                                       charge: 22_950, dop: '2022-05-15', payment_mode: 'Cash' } }
     end
   end
 

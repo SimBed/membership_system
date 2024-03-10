@@ -61,7 +61,7 @@ class Admin::AttendancesController < Admin::BaseController
     purchase_hash = { client_id: @client.id,
                       product_id: 1,
                       price_id: 2,
-                      payment: 550,
+                      charge: 550,
                       dop: Time.zone.today,
                       payment_mode: 'Fitternity',
                       fitternity_id: Fitternity.ongoing.first&.id }

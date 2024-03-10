@@ -40,6 +40,6 @@ class ClientAnalyzer
   end
 
   def total_spend
-    @group_packages.map(&:payment).inject(0, :+)
+    @group_packages.map(&:charge).inject(0, :+)
   end
 end

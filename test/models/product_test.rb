@@ -64,7 +64,7 @@ class ProductTest < ActiveSupport::TestCase
     price = @product_without_purchase.base_price_at(Time.zone.now)
     Purchase.create(client_id: @client.id,
                     product_id: @product_without_purchase.id,
-                    payment: price.price, dop: '2022-02-15', payment_mode: 'Cash',
+                    charge: price.price, dop: '2022-02-15', payment_mode: 'Cash',
                     price_id: price.id,
                     purchase_id: nil)
     price.destroy

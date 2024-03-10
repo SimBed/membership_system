@@ -162,7 +162,7 @@ class Client < ApplicationRecord
   end
 
   def total_spend
-    purchases.map(&:payment).inject(0, :+)
+    purchases.map(&:charge).inject(0, :+)
   end
 
   def last_purchase

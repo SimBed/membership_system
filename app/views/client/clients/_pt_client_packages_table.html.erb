@@ -3,7 +3,7 @@
     <tbody>
    <tr>
       <th scope="row" >Payment</th>
-      <td><%= rupees(purchase.payment) %></td>
+      <td><%= rupees(purchase.charge) %></td>
     </tr>
     <% unless purchase.discounts.empty? %>
       <% discount = purchase.discounts.first %>

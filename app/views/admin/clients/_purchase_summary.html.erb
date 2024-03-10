@@ -6,7 +6,7 @@
   <% unless @purchase.expired? %>
     <div class="row">    
       <div class="column col-1x">Payment</div>
-      <div class="column col-1x"><%= rupees(@purchase.payment) %></div>
+      <div class="column col-1x"><%= rupees(@purchase.charge) %></div>
     </div>
   <% end %>
   <% unless @purchase.discounts.empty? %>

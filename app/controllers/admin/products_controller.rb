@@ -1,6 +1,6 @@
 class Admin::ProductsController < Admin::BaseController
-  skip_before_action :admin_account, only: [:payment, :index, :filter, :clear_filters]
-  before_action :junioradmin_account, only: [:payment, :index, :filter, :clear_filters]
+  skip_before_action :admin_account, only: [:index, :filter, :clear_filters]
+  before_action :junioradmin_account, only: [:index, :filter, :clear_filters]
   before_action :initialize_sort, only: :index
   before_action :set_product, only: [:show, :edit, :update, :destroy]
   # don't do as callback because only on successful update not failed update

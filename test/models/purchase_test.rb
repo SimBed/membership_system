@@ -9,7 +9,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase =
       Purchase.new(client_id: @client.id,
                    product_id: @product.id,
-                   payment: 10_000, dop: '2022-02-15', payment_mode: 'Cash',
+                   charge: 10_000, dop: '2022-02-15', payment_mode: 'Cash',
                    price_id: @price.id,
                    purchase_id: nil)
     @purchase_package = purchases(:AnushkaUC3Mong)
@@ -32,8 +32,8 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_predicate @purchase, :valid?
   end
 
-  test 'payment should be present' do
-    @purchase.payment = '     '
+  test 'charge should be present' do
+    @purchase.charge = '     '
 
     refute_predicate @purchase, :valid?
   end
@@ -281,7 +281,7 @@ class PurchaseTest < ActiveSupport::TestCase
     assert @purchase_fixed.can_restart?
     refute @purchase_trial.can_restart?
     refute @purchase_with_freeze.can_restart? # not because frozen, but becasue restart payment > purchase payment
-    @purchase_with_freeze.update(payment: 100000)
+    @purchase_with_freeze.update(charge: 100000)
     assert @purchase_with_freeze.can_restart?
     refute @purchase_pt.can_restart?
     refute @purchase_ptrider.can_restart?

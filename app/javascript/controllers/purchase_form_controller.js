@@ -70,7 +70,7 @@ export default class extends Controller {
     let selected_discretion_discount_id = document.getElementById("purchase_discretion_discount_id").value || 0;
     let selected_product_id = document.getElementById("purchase_product_id").value || 0;
     let basePriceEl = document.getElementById('purchase_base_price');
-    let paymentEl = document.getElementById('purchase_payment');
+    let paymentEl = document.getElementById('purchase_charge');
     let priceIdEl = document.getElementById('purchase_price_id');
     let queryHash = {
       selected_renewal_discount_id: selected_renewal_discount_id,
