@@ -56,6 +56,7 @@ class Admin::PurchasesController < Admin::BaseController
     @purchase = Purchase.new
     prepare_items_for_dropdowns
     @form_cancel_link = admin_purchases_path
+    payment = @purchase.build_payment    
   end
 
   def edit
@@ -294,10 +295,12 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def purchase_params
-    params.require(:purchase)
-          .permit(:client_id, :product_id, :price_id, :charge, :dop, :payment_mode,
-                  :note, :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
-                  :commercial_discount_id, :discretion_discount_id, :base_price)
+    p = params.require(:purchase)
+    .permit(:client_id, :product_id, :price_id, :charge, :dop, :note, :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
+    :commercial_discount_id, :discretion_discount_id, payment_attributes: [:dop, :amount, :payment_mode, :note])
+    # temporarily retain payment_method in Purchase model
+    p.merge!(payment_mode: params[:purchase][:payment_attributes][:payment_mode])  if params[:purchase][:payment_attributes]
+    p
   end
 
   def sanitize_params

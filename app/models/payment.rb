@@ -6,5 +6,16 @@ class Payment < ApplicationRecord
   scope :during, ->(period) { where(dop: period) }
   # try https://stackoverflow.com/questions/6399058/order-by-polymorphic-belongs-to-attribute
   # scope :order_by_client_name, -> { }
-  scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }  
+  scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
+
+  def purchase
+    case payable_type
+    when 'Purchase'
+      payable
+    when 'Freeze'
+      payable.purchase
+    when 'Restart'
+      payable.parent
+    end
+  end
 end

@@ -1,6 +1,6 @@
 <%= turbo_frame_tag payment do %>
   <div class="row">
-    <% purchase = payment.payable.try(:purchase) || payment.payable.parent %>
+    <% purchase = payment.purchase %>
     <div class="column col-1x"><%= purchase.client.name || purchase.client.name%></div>
     <div class="column col-1x"><%= payment.dop.strftime('%d %b %y') %></div>
     <div class="column col-1x"><%= link_to payment.payable_type, admin_purchase_path(purchase), class: "like_button", data: {turbo: false} %></div>

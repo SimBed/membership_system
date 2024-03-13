@@ -22,7 +22,9 @@
 
     <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>    
     <div><%= form.hidden_field :id_helper, value: @purchase.id %></div>
-
+    
+    <hr>
+    <h6 class='text-uppercase fw-bolder'>membership</h6>
     <div class="field">
       <%= form.label :client_id %>
       <%= form.collection_select :client_id, @clients, :id, :name, include_blank: true %>
@@ -79,18 +81,48 @@
     </div>
 
     <div class="field">
-      <%= form.label :payment_mode %>
-      <%= form.select :payment_mode, options_for_select(@payment_methods, @purchase.payment_mode), include_blank: true %>
+      <%= form.label :note, 'Membership Note' %>
+      <%= form.text_area :note, cols: 40, rows: 5 %>
     </div>
+    <!--div class="field">
+      <%#= form.label :payment_mode %>
+      <%#= form.select :payment_mode, options_for_select(@payment_methods, @purchase.payment_mode), include_blank: true %>
+    </div-->
     <!-- collection_select helper only simplifies when the the collection is a an array of activerecord instances -->
     <!-- <div class="field">
       <%#= form.label :payment_mode %>
       <%#= form.collection_select :payment_mode, @payment_methods, :itself, :itself, include_blank: true %>
     </div> -->
 
-    <div class="field">
-      <%= form.label :note %>
-      <%= form.text_area :note, cols: 40, rows: 5 %>
+    <hr>
+    <h6 class='text-uppercase fw-bolder'>payment</h6>
+    <div>
+      <%= form.fields_for :payment do |payment_fields| %>
+          <div class="field">
+            <%= payment_fields.label :amount, 'Amount received' %>
+            <%= payment_fields.number_field :amount %>
+          </div>
+
+          <div class="field">
+            <%= payment_fields.label :dop, 'Date of payment' %>
+            <%= payment_fields.date_select :dop %>
+          </div>
+
+          <div class="field">
+            <%= payment_fields.label :payment_mode %>
+            <%= payment_fields.select :payment_mode, options_for_select(@payment_methods, @purchase.payment.payment_mode), include_blank: true %>
+          </div>
+
+          <div class="field">
+            <%= payment_fields.label :note, 'Payment Note' %>
+            <%= payment_fields.text_area :note, cols: 40, rows: 5 %>
+          </div>
+
+      <% end %>
+    </div>
+
+    <div>
+
     </div>
 
     <% unless @purchase.new_record? || true %>

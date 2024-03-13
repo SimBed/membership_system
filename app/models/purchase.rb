@@ -19,6 +19,8 @@ class Purchase < ApplicationRecord
   # some pts are given a rider benefit of group classes
   has_one :rider_purchase, class_name: 'Purchase', dependent: :destroy # , foreign_key: "purchase_id"
   belongs_to :main_purchase, class_name: 'Purchase', foreign_key: 'purchase_id', optional: true
+  has_one :payment, as: :payable, dependent: :destroy
+	accepts_nested_attributes_for :payment
   before_save :set_sunset_date
   delegate :name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
            :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, :rider?, to: :product
@@ -30,6 +32,7 @@ class Purchase < ApplicationRecord
   #   validates :ar_date, presence: true
   # end
   validate :check_if_already_had_trial
+  validate :payment_amount_equals_charge
   # Fitternity redundant now
   # validates :fitternity, presence: true, if: :fitternity_id
   # validate :fitternity_payment
@@ -442,12 +445,22 @@ class Purchase < ApplicationRecord
   def check_if_already_had_trial
     already_had_trial = if persisted?
                           # editing from non-trial to trial. Note Self is the new intended purchase, not the same as the original Purchase.find(id) purchase
+                          # if the original purchase is not a trial and product of the edited purchase is a trial and the client has had a trial...
                           !Purchase.find(id).trial? && product.trial? && client.has_had_trial?
                         else
                           product&.trial? && client&.has_had_trial?
                         end
 
     errors.add(:base, 'Client has already had a trial') if already_had_trial
+  end
+
+  def payment_amount_equals_charge
+    # NOTE: 'retun if restart_as_child' would be semantcally clearer but the Restart only gets associated with the Purchase after the Purchase has been saved, so self.restart_as_child is nil at this point 
+    return if payment.nil? # this is the case if a restart as the payment is associated with the Restart not the purchase
+
+    mismatch = charge != payment.amount && payment.payment_mode != 'Not paid'
+
+    errors.add(:base, 'The payment amount does not equal the charge, but the payment mode is not shown as Not paid') if mismatch
   end
 
   def attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true)

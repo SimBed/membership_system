@@ -106,7 +106,8 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
             price: prices(:trial),
             renewal_discount_id: @discount.id,
             status_discount_id: @discount.id,
-            oneoff_discount_id: @discount.id } }
+            oneoff_discount_id: @discount.id,
+            payment_attributes: {amount: 1500, payment_mode: 'Cash'} } }
     end
   end
 end
