@@ -55,6 +55,9 @@ class Superadmin::PaymentsController < Superadmin::BaseController
     end
 
     def handle_filter
+      %w[non_zero unpaid written_off].each do |key|
+        @payments = @payments.send(key) if session["filter_#{key}"].present?
+      end
       %w[payable_types].each do |key|
         @payments = @payments.send(key, session["filter_#{key}"]) if session["filter_#{key}"].present?
       end
@@ -68,6 +71,7 @@ class Superadmin::PaymentsController < Superadmin::BaseController
 
     def prepare_items_for_filters
       @payable_types = Payment.distinct.pluck(:payable_type).sort!
+      @other_attributes = %w[non_zero unpaid written_off]      
       @months = ['All'] + months_logged
     end
   
@@ -100,9 +104,10 @@ class Superadmin::PaymentsController < Superadmin::BaseController
     end
   
     def params_filter_list
-      [:payable_types, :payments_period]
+      [:payable_types, :payments_period] \
+      + %i[non_zero unpaid written_off]
     end
-  
+
     def session_filter_list
       params_filter_list.map { |i| "filter_#{i}" }
     end

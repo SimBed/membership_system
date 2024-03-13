@@ -16,6 +16,17 @@
               <% end %>
             </fieldset>
           </div>
+          <div class="col-4 px-0">   
+            <fieldset>       
+              <legend>ATTRIBUTE</legend>
+                <% @other_attributes.each do |attribute| %>
+                  <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                    <%= check_box_tag attribute, attribute, session["filter_#{attribute}"].present? ? true : false, class: "checkbox-class", id: "chbox#{attribute}", onchange: "this.form.requestSubmit()"  %>
+                    <%= attribute.split('_').join(' ') %>
+                  <% end %>
+                <% end %>
+            </fieldset>
+          </div>
 
           <div class="container d-flex">
             <%#= link_to image_tag('clear_filter.png', class: "button_icon"), clear_payment_filters_path, {class: "search searchdelete icon-container"} %>
