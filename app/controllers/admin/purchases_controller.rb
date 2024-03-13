@@ -463,7 +463,6 @@ class Admin::PurchasesController < Admin::BaseController
   def handle_index_response
     respond_to do |format|
       format.html
-      format.js { render 'index.js.erb' }
       # Railscasts #362 Exporting Csv And Excel
       # https://www.youtube.com/watch?v=SelheZSdZj8
       format.csv { send_data @purchases.to_csv, filename: "purchases-#{Time.zone.today.strftime('%e %b %Y')}.csv" }

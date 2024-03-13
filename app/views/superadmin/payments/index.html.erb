@@ -3,10 +3,8 @@
 </div>
 <%= turbo_frame_tag 'payments-and-filter' do %>
   <%= render partial: 'filter_form' %>
-  <% if @superadmin %>
-    <%#= render partial: 'download' %>
+  <%= render partial: 'download' %>
+  <%= turbo_frame_tag 'payments' do %>
+    <%= render partial: 'payments_table' %>
   <% end %>
-    <%= turbo_frame_tag 'payments' do %>
-      <%= render partial: 'payments_table' %>
-    <% end %>
 <% end %>

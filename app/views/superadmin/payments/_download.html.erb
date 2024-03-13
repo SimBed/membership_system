@@ -1,0 +1,7 @@
+<div class="container px-1">  
+  <p>
+    Download:
+    <%#= link_to "Full Data", superadmin_payments_path(format: "csv", export_all: true) %> |
+    <%= link_to "Accountant Data", superadmin_payments_path(format: "xls", export_all: true) %>
+  </p>
+</div>

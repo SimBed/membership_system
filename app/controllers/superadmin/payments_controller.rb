@@ -13,7 +13,7 @@ class Superadmin::PaymentsController < Superadmin::BaseController
     handle_sort
     prepare_items_for_filters
     handle_pagination
-    # handle_index_response 
+    handle_index_response 
   end
 
   def show
@@ -122,6 +122,14 @@ class Superadmin::PaymentsController < Superadmin::BaseController
         @pagy, @payments = pagy(@payments, item: 100)
       end
     end
+
+    def handle_index_response
+      respond_to do |format|
+        format.html
+        format.csv { send_data @payments.to_csv, filename: "payments-#{Time.zone.today.strftime('%e %b %Y')}.csv" }
+        format.xls { response.headers['Content-Disposition'] = "attachment; filename=\"payments-#{Time.zone.today.strftime('%e %b %Y')}.xls\"" }
+      end
+    end    
       
     def set_admin_status
       @superadmin_plus = logged_in_as?('superadmin')
