@@ -31,6 +31,7 @@ class Superadmin::BlastsController < Superadmin::BaseController
 
   def test_blast
     Blast.new(receiver: 'me', message: session[:final_message]).send_whatsapp
+    Blast.new(receiver: 'boss', message: session[:final_message]).send_whatsapp
     redirect_to superadmin_blasts_new_path
   end
 

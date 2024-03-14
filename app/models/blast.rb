@@ -30,6 +30,8 @@ class Blast
 
     return Rails.configuration.twilio[:me] if @receiver == 'me'
 
+    return Rails.configuration.twilio[:boss] if @receiver == 'boss'
+
     nil
   end
     
