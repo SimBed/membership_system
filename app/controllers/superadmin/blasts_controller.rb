@@ -4,17 +4,18 @@ class Superadmin::BlastsController < Superadmin::BaseController
     handle_filter
     @clients_to_add = Client.exclude(@recipients).order_by_first_name
     @message = session[:message]
-    @final_message = session[:final_message]
+    # @template_message = session[:template_message]
+    @template_message = session[:greeting] == '1' ? "Hi [client name]\n" + session[:message] : session[:message]
     @recipient_list_size = @recipients.size
     @pagy, @recipients = pagy(@recipients, items: Rails.application.config_for(:constants)['recipient_pagination'])
   end
 
   # if i name the method create_message it cannot be found!!??
   def add_message
-    greeting = "Hi [client name]\n"
+    # greeting = "Hi [client name]\n"
     session[:message] = params[:message]
     session[:greeting] = params[:greeting]
-    session[:final_message] = params[:greeting] == '1' ? greeting + params[:message] : params[:message]
+    # session[:template_message] = params[:greeting] == '1' ? greeting + params[:message] : params[:message]
     redirect_to superadmin_blasts_new_path
   end
 
@@ -30,23 +31,25 @@ class Superadmin::BlastsController < Superadmin::BaseController
   end
 
   def test_blast
-    Blast.new(receiver: 'me', message: session[:final_message]).send_whatsapp
-    Blast.new(receiver: 'boss', message: session[:final_message]).send_whatsapp
+    recipient = Rails.env.development? ? 'me' : 'boss'
+    Blast.new(receiver: recipient, message: session[:template_message]).send_whatsapp
     redirect_to superadmin_blasts_new_path
   end
 
   def blast_off
     @recipients = Client.all
     handle_filter
-    if @recipients.size > 2
+    if @recipients.size > 100
       flash[:success] = 'too many'
       redirect_to superadmin_blasts_new_path and return
     end
     # recipients = Client.where(whatsapp:'+4479405734').limit(2)
     passes = 0
     errors = 0
+    add_greeting = session[:greeting] == '1' ? true : false 
     @recipients.each do |recipient|
-      Blast.new(receiver: recipient, message: session[:final_message]).send_whatsapp
+      client_message = add_greeting ? "Hi #{recipient.first_name}\n" + session[:message] : session[:message]
+      Blast.new(receiver: recipient, message: client_message).send_whatsapp
       passes += 1
     rescue
       next
