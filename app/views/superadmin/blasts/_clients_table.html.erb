@@ -1,7 +1,8 @@
 <div id="clients-table" class="container px-0 mb-5 admin_form">
   <div class="page_entries_info px-1">
     <div class="record-count mb-1">
-      <%= "showing #{@recipients&.length} of #{@pagy&.count}" %>
+      <div> <%= "showing #{@recipients&.length} of #{@pagy&.count}" %> </div>
+      <div> <%= "NOTE: The maximum recipient limit is 100." if @recipients&.length > Setting.max_recipient_blast_limit %> </div>
     </div>
     <div data-controller="pagy-initializer">
       <%== pagy_bootstrap_combo_nav_js(@pagy) %>

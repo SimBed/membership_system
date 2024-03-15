@@ -32,12 +32,12 @@
         <label class="control-label">Daily account limit</label>
         <%= f.number_field :daily_account_limit, value: Setting.daily_account_limit, class: "form-control", style: "width: 5rem;" %>
       </div>
-      
-      <div class="form-group">
-        <label class="control-label">Quotation</label>
-        <%= f.text_area :quotation, value: Setting.quotation, class: "form-control", style: "height: 10rem;" %>
-      </div>
 
+      <div class="form-group mb-2">
+        <label class="control-label">Maximum recipient number in one blast</label>
+        <%= f.number_field :max_recipient_blast_limit, value: Setting.max_recipient_blast_limit, class: "form-control", style: "width: 5rem;" %>
+      </div>
+      
     </div>
   </div>
 </section>    

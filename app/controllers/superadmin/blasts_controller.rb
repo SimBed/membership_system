@@ -39,8 +39,10 @@ class Superadmin::BlastsController < Superadmin::BaseController
   def blast_off
     @recipients = Client.all
     handle_filter
-    if @recipients.size > 100
-      flash[:success] = 'too many'
+    byebug
+    max_recipient_blast_limit = Setting.max_recipient_blast_limit
+    if @recipients.size > max_recipient_blast_limit
+      flash[:warning] = t('.warning', max_recipient_blast_limit:)
       redirect_to superadmin_blasts_new_path and return
     end
     # recipients = Client.where(whatsapp:'+4479405734').limit(2)

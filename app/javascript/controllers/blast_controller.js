@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = [ "blastButton" ]
   static classes = [ "toggle" ]
   connect() {
-    console.log('hih')
+    // console.log('hih')
   }
 
   toggle_blast_ready() {

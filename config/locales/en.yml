@@ -150,6 +150,7 @@ en:
     blasts:
       blast_off:
         success: "Messages all sent. %{passes} sent. %{errors} failed. Check Twilio logs to confirm deliveries."
+        warning: "Messages not sent. The number of recipients exceeds the limit of %{max_recipient_blast_limit}. The limit can be increased in Settings if necessary."
     discounts:
       create:
         success: Discount was successfully added

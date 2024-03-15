@@ -12,6 +12,10 @@ class Setting < RailsSettings::Base
     field :daily_account_limit_triggered, type: :boolean, default: false
   end
 
+  scope :blast do
+    field :max_recipient_blast_limit, type: :integer, default: 100
+  end
+
   scope :timetable do
     field :timetable, type: :integer, default: 1
     field :studios, type: :array, default: %w[Cellar Window Den]
