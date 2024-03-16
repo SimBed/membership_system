@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = [ "source", "hideable", "doctorNote" ]
-  static values = { medical: Boolean, price: Number }  
+  static values = { medical: Boolean, price: Number }
 
   // connect() {
   //   console.log(this.priceValue)

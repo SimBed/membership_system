@@ -1,12 +1,11 @@
-<div class="admin_form mb-3" data-controller="blast" data-blast-toggle-class="disabled"> 
+<div class="admin_form mb-3" data-controller="blast" data-blast-toggle-class="disabled" data-blast-recipient-number-value=<%= @recipients.size %>> 
   <%= label_tag nil, class: "" do %>
     <%= check_box_tag 'blast_ready', 'no', false,  data: {"action": "blast#toggle_blast_ready"} %>
     <span style= 'font-size: 0.9em; font-weight: bolder;'>The message has been reviewed. The test message has been sent and received. The recipient list has been double-checked.</span>
   <% end %>
-  <%#= NOTE: confirmation message not triggered when turbo set to false. Not yet reolved%>
+  <%#= NOTE: confirmation message will not be triggered when turbo set to false. Solution with stimulus https://discuss.hotwired.dev/t/disable-turbo-but-retain-confirmation-popup-for-link-in-turbo-frame/5697/2%>
   <%= link_to "blast to all #{@recipient_list_size}", superadmin_blast_off_path, class:'btn btn-dark mt-2 disabled',
-              data: { "turbo-method": :get,
+              data: { "action": "click->blast#confirm",
                       "turbo": false,
-                      "turbo-confirm": "The message will be sent to all #{@recipients.size} recipients. You may experience a lag if the recipient size is large. Are you sure?",
                       "blast-target": "blastButton" } %>
 </div>

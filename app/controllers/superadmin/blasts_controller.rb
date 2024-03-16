@@ -39,7 +39,6 @@ class Superadmin::BlastsController < Superadmin::BaseController
   def blast_off
     @recipients = Client.all
     handle_filter
-    byebug
     max_recipient_blast_limit = Setting.max_recipient_blast_limit
     if @recipients.size > max_recipient_blast_limit
       flash[:warning] = t('.warning', max_recipient_blast_limit:)
