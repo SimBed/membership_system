@@ -9,6 +9,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     @junioradmin = accounts(:junioradmin)
     @client_without_account = clients(:client_without_account)
     @partner_without_account = partners(:bibi)
+    @instructor_account = accounts(:head_coach)
   end
 
   # the accounts controller only has a create method.
@@ -89,4 +90,26 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to login_path
   end
+
+  test 'should redirect destroy account for admin when not logged in as superadmin' do
+    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+      log_in_as(account_holder)
+      assert_no_difference 'Account.count' do
+        delete admin_account_path(@admin)
+      end
+
+      assert_redirected_to login_path
+    end
+  end  
+
+  test 'should redirect destroy account for instructor   when not logged in as superadmin' do
+    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+      log_in_as(account_holder)
+      assert_no_difference 'Account.count' do
+        delete admin_account_path(@instructor_account)
+      end
+
+      assert_redirected_to login_path
+    end
+  end  
 end

@@ -45,6 +45,9 @@ latest.dump.1
 latest.dump.2
 latest.dump*
 /app/models/#unused_code.rb
+erd.pdf
 
 # file for testing Delayed Job
 /app/delayed.txt
+
+

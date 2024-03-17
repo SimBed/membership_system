@@ -1,12 +1,12 @@
 class Admin::AccountsController < Admin::BaseController
   before_action :correct_credentials, only: [:create]
   before_action :set_account_holder, only: [:create]
-  before_action :set_account, only: [:update]
-  skip_before_action :admin_account, only: [:index, :update]
+  before_action :set_account, only: [:update, :destroy]
+  skip_before_action :admin_account, only: [:index, :update, :destroy]
   before_action :correct_account_or_junioradmin, only: [:update]
-  before_action :superadmin_account, only: [:index]
-  # accounts can't be updated/destroyed through the app
-  # admin accounts cant be created through the app
+  before_action :superadmin_account, only: [:index, :destroy]
+
+  # admin/instructor accounts cant be created through the app
 
   def index
     # @accounts = Account.where(ac_type: %w[junioradmin admin superadmin]).order_by_ac_type
@@ -40,6 +40,12 @@ class Admin::AccountsController < Admin::BaseController
     else
       password_reset_client_of_client
     end
+  end
+
+  def destroy
+    @account.clean_up
+    redirect_to admin_accounts_path
+    flash_message :success, t('.success')    
   end
 
   private

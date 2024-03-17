@@ -35,6 +35,10 @@
         <%= form.submit 'Update Password' %>
       </div>
     <% end %>
+    <% unless account.has_role?('superadmin') %>
+      <% confirm_message = "The account will be deleted. No data will be deleted, however the account holder will no longer be able to log in. Are you sure?" %>
+      <div class="text-capitalize"><%= link_to 'delete account', admin_account_path(account), class: 'like_button', data: {turbo_method: :delete, turbo_confirm: confirm_message} %></div>
+    <% end %>
   </div>
 </div>
 
