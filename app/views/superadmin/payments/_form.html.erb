@@ -1,5 +1,5 @@
 <div class="field"> 
-  <%= form_with(model: [:superadmin, payment], class: 'admin_form my-2', data: {turbo: false}) do |form| %>
+  <%= form_with(model: payment, class: 'admin_form my-2', data: {turbo: false}) do |form| %>
     <%= turbo_frame_tag 'errors' do %>  
       <% if payment.errors.any? %>
         <div id="error_explanation">

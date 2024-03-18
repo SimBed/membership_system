@@ -10,6 +10,10 @@ class DiscountReason < ApplicationRecord
   scope :unused, -> { left_joins(discounts: [:purchases]).where(purchases: { id: nil }).where.not(rationale: 'Base') }
   scope :current, -> { where(current: true) }
   scope :not_current, -> { where.not(current: true) }
+  
+  def name_with_rationale
+    "#{name} (#{rationale[0]})"
+  end
 
   private
 

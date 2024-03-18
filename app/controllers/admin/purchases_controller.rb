@@ -97,7 +97,7 @@ class Admin::PurchasesController < Admin::BaseController
         end
       end
 
-      redirect_to [:admin, @purchase]
+      redirect_to @purchase
       flash_message :success, t('.success')
       update_purchase_status([@purchase])
     else
@@ -149,7 +149,7 @@ class Admin::PurchasesController < Admin::BaseController
       @purchase.update(status: 'expired', expiry_date: @purchase.sunset_date)
       flash_message :success, t('.success', name: @purchase.client.name)
     end
-    redirect_to [:admin, @purchase]
+    redirect_to @purchase
   end
 
   def discount
