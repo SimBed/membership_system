@@ -28,7 +28,7 @@ class Superadmin::PaymentsController < Superadmin::BaseController
 
   def update
     if @payment.update(payment_params)
-      redirect_to superadmin_payments_path
+      redirect_to payments_path
       flash[:success] = t('.success')
     else
       @payment_methods = Setting.payment_methods
@@ -39,13 +39,18 @@ class Superadmin::PaymentsController < Superadmin::BaseController
   def destroy
   end
 
+  def clear_filters
+    clear_session(*session_filter_list)
+    redirect_to payments_path
+  end
+
   def filter
     clear_session(*session_filter_list)
     session[:payments_period] = params[:payments_period]
     (params_filter_list - [:payments_period]).each do |item|
       session["filter_#{item}".to_sym] = params[item]
     end
-    redirect_to superadmin_payments_path
+    redirect_to payments_path
   end  
 
   private

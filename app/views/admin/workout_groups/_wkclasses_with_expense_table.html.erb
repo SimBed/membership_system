@@ -6,7 +6,7 @@
       <% wkclass_size = wkclass.attendances.size %>      
       <div class="column"><%= index + 1 %></div>
       <% if logged_in_as?('superadmin') %>
-        <div class="column col-2x"><%= link_to wkclass.summary, admin_wkclass_path(wkclass, link_from: 'workout_group_show'), class: "like_button", data:{ turbo: false } %></div>
+        <div class="column col-2x"><%= link_to wkclass.summary, wkclass_path(wkclass, link_from: 'workout_group_show'), class: "like_button", data:{ turbo: false } %></div>
       <% else %>
         <div class="column col-2x"><%= wkclass.summary %></div>
       <% end %>

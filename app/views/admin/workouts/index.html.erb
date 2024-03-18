@@ -1,5 +1,5 @@
 <div class="container px-1">
-  <h4>Workouts <%= link_to image_tag('add.png', class: "button_icon"), new_admin_workout_path %></h4>
+  <h4>Workouts <%= link_to image_tag('add.png', class: "button_icon"), new_workout_path %></h4>
 </div>
 <%= render partial: 'filter_form' %>
 <%= turbo_frame_tag 'workouts' do %>

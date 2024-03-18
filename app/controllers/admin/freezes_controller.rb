@@ -28,7 +28,7 @@ class Admin::FreezesController < Admin::BaseController
     @freeze = Freeze.new(freeze_params)
     if @freeze.save
       @purchase = @freeze.purchase
-      redirect_to admin_purchase_path(Purchase.find(freeze_params[:purchase_id]))
+      redirect_to purchase_path(Purchase.find(freeze_params[:purchase_id]))
       flash[:success] = t('.success')
       cancel_bookings_during_freeze(@freeze)
       update_purchase_status([@purchase])
@@ -41,7 +41,7 @@ class Admin::FreezesController < Admin::BaseController
   def update
     if @freeze.update(freeze_params)
       @purchase = @freeze.purchase
-      redirect_to admin_purchase_path(@purchase)
+      redirect_to purchase_path(@purchase)
       flash[:success] = t('.success')
       cancel_bookings_during_freeze(@freeze)      
       update_purchase_status([@purchase])
@@ -54,14 +54,14 @@ class Admin::FreezesController < Admin::BaseController
   def destroy
     @purchase = @freeze.purchase
     @freeze.destroy
-    redirect_to admin_purchase_path(@purchase)
+    redirect_to purchase_path(@purchase)
     flash[:success] = t('.success')
     update_purchase_status([@purchase])
   end
 
   def filter
     session[:freezes_period] = params[:freezes_period]
-    redirect_to admin_freezes_path
+    redirect_to freezes_path
   end  
 
   private

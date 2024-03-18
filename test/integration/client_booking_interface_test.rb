@@ -29,7 +29,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     # follow_redirect!
     # add an extra wkclass within the visibility and booking window
-    post admin_wkclasses_path, params:
+    post wkclasses_path, params:
      { wkclass:
         { workout_id: @workout.id,
           start_time: @time,
@@ -45,7 +45,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     @wkclass = Wkclass.last
     # push the date outside of the booking window (no test yet for whether it is visible (which it should be) just not bookable)
     # wkclass_params expects to find a params[:wkclass][:instructor_rate_id] to set cost, hence the inclusion of instructor_rate_id in the patch)
-    patch admin_wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.day, instructor_rate_id: @wkclass.instructor_rate_id } } # 25/4 (booking starts on 23/4)
+    patch wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.day, instructor_rate_id: @wkclass.instructor_rate_id } } # 25/4 (booking starts on 23/4)
     log_in_as(@account_client)
     follow_redirect!
     # no booking link for the later dated wkclass

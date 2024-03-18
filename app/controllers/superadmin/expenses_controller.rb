@@ -25,7 +25,7 @@ class Superadmin::ExpensesController < Superadmin::BaseController
   def create
     @expense = Expense.new(expense_params)
     if @expense.save
-      redirect_to superadmin_expenses_path
+      redirect_to expenses_path
       flash[:success] = t('.success')
     else
       @workout_groups = WorkoutGroup.all.map { |w| [w.name, w.id] }
@@ -35,7 +35,7 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
   def update
     if @expense.update(expense_params)
-      redirect_to superadmin_expenses_path
+      redirect_to expenses_path
       flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
@@ -44,13 +44,13 @@ class Superadmin::ExpensesController < Superadmin::BaseController
 
   def destroy
     @expense.destroy
-    redirect_to superadmin_expenses_path
+    redirect_to expenses_path
     flash[:success] = t('.success')
   end
 
   def filter
     session[:revenue_month] = params[:revenue_month]
-    redirect_to superadmin_expenses_path
+    redirect_to expenses_path
   end
 
   private

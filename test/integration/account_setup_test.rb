@@ -16,7 +16,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
     log_in_as(@superadmin)
     @client.save
     assert_difference -> { Account.count } => 1, -> { Assignment.count } => 1 do
-      post admin_purchases_path, params: { purchase: { client_id: @client.id,
+      post purchases_path, params: { purchase: { client_id: @client.id,
                                                        product_id: @product.id, price_id: @price.id,
                                                        charge: 22_950, dop: '2022-02-15', payment_mode: 'Cash',
                                                        payment_attributes: {amount: 22_950, payment_mode: 'Cash'} } }
@@ -30,7 +30,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
     assert_equal('client', current_role)
     # account shouldnt be created on 2nd purchase
     assert_difference -> { Account.count } => 0, -> { Assignment.count } => 0 do
-      post admin_purchases_path, params: { purchase: { client_id: @client.id,
+      post purchases_path, params: { purchase: { client_id: @client.id,
                                                        product_id: @product.id, price_id: @price.id,
                                                        charge: 22_950, dop: '2022-05-15', payment_mode: 'Cash' },
                                                        payment_attributes: {amount: 22_950, payment_mode: 'Cash'} }

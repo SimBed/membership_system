@@ -10,13 +10,13 @@
     <% unless @client %>
       <div class="column col-2x">
         <% if admin_plus %>
-          <%= link_to strength_marker.client.name, admin_client_path(strength_marker.client), class: 'like_button', data: {turbo: false} %>
+          <%= link_to strength_marker.client.name, client_path(strength_marker.client), class: 'like_button', data: {turbo: false} %>
         <% else %>
           <div class="column col-2x"><%= strength_marker.client.name %></div>
         <% end %>
       </div>
     <% end %>
-    <div class="column nomobile"><%= link_to image_tag("edit.png", class: "table_icon"), edit_shared_strength_marker_path(strength_marker) %></div>
-    <div class="column nomobile"><%= link_to image_tag("delete.png", class: "table_icon"), shared_strength_marker_path(strength_marker), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Marker will be deleted. Are you sure?' } %></div>
+    <div class="column nomobile"><%= link_to image_tag("edit.png", class: "table_icon"), edit_strength_marker_path(strength_marker) %></div>
+    <div class="column nomobile"><%= link_to image_tag("delete.png", class: "table_icon"), strength_marker_path(strength_marker), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Marker will be deleted. Are you sure?' } %></div>
   </div>
 <% end %>

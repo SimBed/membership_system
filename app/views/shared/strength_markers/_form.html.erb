@@ -1,4 +1,4 @@
-<%= form_with(model: [:shared, strength_marker], class: 'admin_form pt-4 my-2') do |form| %>
+<%= form_with(model: strength_marker, class: 'admin_form pt-4 my-2') do |form| %>
   <% if strength_marker.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(strength_marker.errors.count, "error") %> prohibited this strength marker from being saved:</h2>

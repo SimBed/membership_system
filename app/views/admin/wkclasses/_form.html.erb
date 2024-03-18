@@ -1,5 +1,5 @@
 <%#= javascript_import_module_tag "custom/dropdown_populate" %>
-<%= form_with(model: [:admin, wkclass], class: 'admin_form') do |form| %>
+<%= form_with(model: wkclass, class: 'admin_form') do |form| %>
   <%= turbo_frame_tag 'errors' do %>
     <% if wkclass.errors.any? %>
       <div id="error_explanation">

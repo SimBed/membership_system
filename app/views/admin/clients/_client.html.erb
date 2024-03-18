@@ -3,7 +3,7 @@
   <div class="row">
     <div class="column col-2x">
       <% if @junioradmin_plus %>
-        <%= link_to client.name, admin_client_path(client, link_from: 'clients_index'), class: "like_button" %>
+        <%= link_to client.name, client_path(client, link_from: 'clients_index'), class: "like_button" %>
       <% else %>
         <%= client.name %>
       <% end %>
@@ -26,10 +26,10 @@
       </turbo-frame>
     </div>
     <div class="column">
-      <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_client_path(client) %>
+      <%= link_to image_tag('edit.png', class: "table_icon"), edit_client_path(client) %>
     </div>
     <% if @admin_plus && client.deletable? %> 
-      <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), admin_client_path(client), data: { "turbo-method": :delete, turbo_confirm: 'Client has no purchases so can be deleted. But are you sure?' } %></div>
+      <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), client_path(client), data: { "turbo-method": :delete, turbo_confirm: 'Client has no purchases so can be deleted. But are you sure?' } %></div>
     <% else %>
       <div class="column nomobile"></div>
     <% end %>

@@ -45,7 +45,7 @@ class Admin::ProductsController < Admin::BaseController
   def create
     @product = Product.new(product_params)
     if @product.save
-      redirect_to admin_products_path
+      redirect_to products_path
       flash[:success] = t('.success')
     else
       prepare_items_for_dropdowns
@@ -56,7 +56,7 @@ class Admin::ProductsController < Admin::BaseController
   def update
     if @product.update(product_params)
       @purchases = @product.purchases
-      redirect_to admin_products_path
+      redirect_to products_path
       flash[:success] = t('.success')
       update_purchase_status(@purchases)
       update_sunset_date(@purchases)
@@ -68,13 +68,13 @@ class Admin::ProductsController < Admin::BaseController
 
   def destroy
     @product.destroy
-    redirect_to admin_products_path
+    redirect_to products_path
     flash[:success] = t('.success')
   end
 
   def clear_filters
     clear_session(*session_filter_list)
-    redirect_to admin_products_path
+    redirect_to products_path
   end
 
   def filter
@@ -82,19 +82,19 @@ class Admin::ProductsController < Admin::BaseController
     params_filter_list.each do |item|
       session["filter_#{item}".to_sym] = params[item]
     end
-    redirect_to admin_products_path
+    redirect_to products_path
   end
 
 
   # def clear_filters
   #   clear_session(:filter_any_workout_group_of)
-  #   redirect_to admin_products_path
+  #   redirect_to products_path
   # end
 
   # def filter
   #   clear_session(:filter_any_workout_group_of)
   #   session["filter_any_workout_group_of".to_sym] = params[:any_workout_group_of]
-  #   redirect_to admin_products_path
+  #   redirect_to products_path
   # end  
 
   # def payment

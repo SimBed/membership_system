@@ -30,22 +30,22 @@ class Shared::BodyMarkersController < Shared::BaseController
   def new
     @body_marker = BodyMarker.new
     set_options
-    @form_cancel_link = shared_body_markers_path
+    @form_cancel_link = body_markers_path
   end
 
   def edit
     set_options
-    @form_cancel_link = shared_body_markers_path
+    @form_cancel_link = body_markers_path
   end
 
   def create
     @body_marker = BodyMarker.new(body_marker_params)
     if @body_marker.save
       flash_message :success, t('.success')
-      redirect_to shared_body_markers_path
+      redirect_to body_markers_path
     else
       set_options
-      @form_cancel_link = shared_body_markers_path
+      @form_cancel_link = body_markers_path
       render :new, status: :unprocessable_entity
     end
   end
@@ -53,10 +53,10 @@ class Shared::BodyMarkersController < Shared::BaseController
   def update
     if @body_marker.update(body_marker_params)
       flash_message :success, t('.success')
-      redirect_to shared_body_markers_path
+      redirect_to body_markers_path
     else
       set_options
-      @form_cancel_link = shared_body_markers_path
+      @form_cancel_link = body_markers_path
       render :edit, status: :unprocessable_entity
     end
   end  
@@ -64,7 +64,7 @@ class Shared::BodyMarkersController < Shared::BaseController
   def destroy
     @body_marker.destroy
     flash_message :success, t('.success')
-    redirect_to shared_body_markers_path
+    redirect_to body_markers_path
   end
   
   def filter
@@ -72,7 +72,7 @@ class Shared::BodyMarkersController < Shared::BaseController
     unless @client_logging
       session[:client_select] = params[:client_select] || session[:client_select] 
     end
-    redirect_to shared_body_markers_path
+    redirect_to body_markers_path
   end  
 
 

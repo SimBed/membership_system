@@ -12,7 +12,7 @@ class Superadmin::PaymentsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get superadmin_payments_path
+      get payments_path
 
       assert_redirected_to login_path
     end

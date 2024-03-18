@@ -21,10 +21,10 @@ class ShopOrderTest < ActionDispatch::IntegrationTest
 
     Order.stub :process_razorpayment, order_params do
       assert_difference 'Order.count' do
-        post superadmin_orders_path, params: { product_id: @product_unlimited1m.id,
-                                               price_id: @price_uc1m_base.id,
-                                               account_id: @account_client.id,
-                                               client_ui: 'shop page' }
+        post orders_path, params: { product_id: @product_unlimited1m.id,
+                                    price_id: @price_uc1m_base.id,
+                                    account_id: @account_client.id,
+                                    client_ui: 'shop page' }
       end
     end
   end

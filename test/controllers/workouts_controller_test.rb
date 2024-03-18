@@ -14,7 +14,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_workout_path
+      get new_workout_path
 
       assert_redirected_to login_path
     end
@@ -23,7 +23,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get admin_workouts_path
+      get workouts_path
 
       assert_redirected_to login_path
     end
@@ -32,7 +32,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_workout_path(@workout)
+      get edit_workout_path(@workout)
 
       assert_redirected_to login_path
     end
@@ -42,7 +42,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Workout.count' do
-        post admin_workouts_path, params:
+        post workouts_path, params:
          { workout: { name: 'run' } }
       end
     end
@@ -52,7 +52,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
     original_name = @workout.name
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_workout_path(@workout), params:
+      patch workout_path(@workout), params:
        { workout: { name: 'newname' } }
 
       assert_equal original_name, @workout.reload.name
@@ -64,7 +64,7 @@ class WorkoutsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Workout.count' do
-        delete admin_workout_path(@workout)
+        delete workout_path(@workout)
       end
     end
   end

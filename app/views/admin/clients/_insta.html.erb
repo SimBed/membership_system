@@ -1,4 +1,4 @@
 <%= link_to image_tag('insta.png',
                       class: ["table_icon",("instawaiver" unless client.instawaiver?)].compact.join(' ')),
-                      admin_client_path(client, instawaiver: !client.instawaiver?),
+                      client_path(client, instawaiver: !client.instawaiver?),
                       data: { "turbo-method": :patch } %>

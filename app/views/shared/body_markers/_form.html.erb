@@ -1,4 +1,4 @@
-<%= form_with(model: [:shared, body_marker], class: 'admin_form pt-4 my-2') do |form| %>
+<%= form_with(model: body_marker, class: 'admin_form pt-4 my-2') do |form| %>
   <%= turbo_frame_tag 'errors' do %>
     <% if body_marker.errors.any? %>
       <div id="error_explanation">

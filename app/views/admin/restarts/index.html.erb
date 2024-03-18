@@ -18,14 +18,14 @@
       <% client = purchase_child.client %> 
       <% payment = restart.payment %>
       <div class="row">
-        <div class="column col-1x"><%= link_to client.name, admin_client_path(client), class: 'like_button' %></div>
-        <div class="column col-1x"><%= link_to purchase_parent.name, admin_purchase_path(purchase_parent), class: 'like_button'  %></div>
+        <div class="column col-1x"><%= link_to client.name, client_path(client), class: 'like_button' %></div>
+        <div class="column col-1x"><%= link_to purchase_parent.name, purchase_path(purchase_parent), class: 'like_button'  %></div>
         <div class="column col-1x"><%= purchase_parent.dop.strftime('%d %b %y') %></div>
         <div class="column col-1x"><%= purchase_parent.status %></div>
-        <div class="column col-1x"><%= link_to purchase_child.name, admin_purchase_path(purchase_child), class: 'like_button'  %></div>
+        <div class="column col-1x"><%= link_to purchase_child.name, purchase_path(purchase_child), class: 'like_button'  %></div>
         <div class="column col-1x"><%= restart.payment.dop.strftime('%d %b %y') %></div>
         <div class="column col-1x"><%= purchase_child.status %></div>
-        <div class="column col-1x"><%= link_to number_with_delimiter(payment.amount), superadmin_payment_path(payment), class: "like_button" %></div>
+        <div class="column col-1x"><%= link_to number_with_delimiter(payment.amount), payment_path(payment), class: "like_button" %></div>
         <div class="column col-1x"><%= restart.note %></div>
       </div>
     <% end %>

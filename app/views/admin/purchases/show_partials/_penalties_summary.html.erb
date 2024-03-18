@@ -13,7 +13,7 @@
       <% wkclass = pen.attendance.wkclass %>    
       <div class="row">
         <div class="column"><%= index + 1 %></div>
-        <div class="column col-1x"><%= link_to wkclass.name, admin_wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
+        <div class="column col-1x"><%= link_to wkclass.name, wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
         <div class="column col-1x"><%= link_to wkclass.date %></div>
         <div class="column col-1x"><%= "#{pluralize(pen.amount, 'day')}" %></div>
         <div class="column col-1x"><%= pen.reason %></div>

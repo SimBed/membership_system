@@ -4,8 +4,8 @@
 <% end %>
 <div class="row <%= close_to_expiry %> <%= payment_outstanding %>">
   <% if @junioradmin_plus %>
-    <div class="column col-1x "><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button", data: { turbo: false } %></div>
-    <div class="column col-1x"><%= link_to attendance.product.name, admin_purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></div>
+    <div class="column col-1x "><%= link_to attendance.client.name , client_path(attendance.client), class: "like_button", data: { turbo: false } %></div>
+    <div class="column col-1x"><%= link_to attendance.product.name, purchase_path(attendance.purchase), class: "like_button", data: { turbo: false } %></div>
   <% else %>
     <div class="column col-1x"><%= attendance.client.name %></div>
     <div class="column col-1x"><%= attendance.product.name %></div>

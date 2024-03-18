@@ -51,15 +51,15 @@ class Admin::WkclassesController < Admin::BaseController
 
   def new
     @wkclass = Wkclass.new
-    @form_cancel_link = admin_wkclasses_path
+    @form_cancel_link = wkclasses_path
     prepare_items_for_dropdowns
   end
 
   def edit
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
-    @form_cancel_link = admin_wkclasses_path(link_from: params[:link_from], page: params[:page])
-    # @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_wkclass_path(@wkclass, link_from: 'purchases_index') : admin_wkclasses_path
+    @form_cancel_link = wkclasses_path(link_from: params[:link_from], page: params[:page])
+    # @form_cancel_link = params[:link_from] == 'purchases_index' ? wkclass_path(@wkclass, link_from: 'purchases_index') : wkclasses_path
   end
 
   def create
@@ -68,7 +68,7 @@ class Admin::WkclassesController < Admin::BaseController
       start_date = construct_date(wkclass_params)
       @wkclasses = (0..@weeks_to_repeat).map { |weeks| Wkclass.create(wkclass_params.merge(deconstruct_date(start_date, weeks))) }
       if @wkclasses.all?(&:persisted?)
-        redirect_to admin_wkclasses_path
+        redirect_to wkclasses_path
         flash[:success] = t('.success', repeats: "#{@weeks_to_repeat + 1} classes were")
       else
         @wkclass = @wkclasses.select(&:invalid?).first
@@ -78,7 +78,7 @@ class Admin::WkclassesController < Admin::BaseController
     else
       @wkclass = Wkclass.new(wkclass_params)
       if @wkclass.save
-        redirect_to admin_wkclasses_path
+        redirect_to wkclasses_path
         flash[:success] = t('.success', repeats: '1 class was')
       else
         prepare_items_for_dropdowns
@@ -90,7 +90,7 @@ class Admin::WkclassesController < Admin::BaseController
   def update
     if @wkclass.update(wkclass_params)
       notify_waiting_list(@wkclass) if @affects_waiting_list
-      redirect_to admin_wkclasses_path(page: params[:wkclass][:page])
+      redirect_to wkclasses_path(page: params[:wkclass][:page])
       flash_message :success, t('.success')
     else
       prepare_items_for_dropdowns
@@ -105,7 +105,7 @@ class Admin::WkclassesController < Admin::BaseController
     @purchases = @wkclass.attendances.map(&:purchase)
     @wkclass.destroy
     update_purchase_status(@purchases)
-    redirect_to admin_wkclasses_path(page: params[:page])
+    redirect_to wkclasses_path(page: params[:page])
     flash[:success] = t('.success')
   end
 
@@ -119,7 +119,7 @@ class Admin::WkclassesController < Admin::BaseController
         wkclasses << wkclass
         attendance.dup.update(wkclass_id: wkclass.id, status: 'booked') if wkclass.persisted?
       end
-      redirect_to admin_wkclasses_path
+      redirect_to wkclasses_path
       # NOTE: the all? method returns true when called on an empty array.
       if wkclasses.all?(&:persisted?)
         flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were")
@@ -136,7 +136,7 @@ class Admin::WkclassesController < Admin::BaseController
     # *splat operator is used to turn array into an argument list
     # https://ruby-doc.org/core-2.0.0/doc/syntax/calling_methods_rdoc.html#label-Array+to+Arguments+Conversion
     clear_session(*session_filter_list)
-    redirect_to admin_wkclasses_path
+    redirect_to wkclasses_path
   end
 
   def filter
@@ -145,7 +145,7 @@ class Admin::WkclassesController < Admin::BaseController
     (params_filter_list - [:classes_period]).each do |item|
       session["filter_#{item}".to_sym] = params[item]
     end
-    redirect_to admin_wkclasses_path
+    redirect_to wkclasses_path
   end
 
   def instructor_select
@@ -163,7 +163,7 @@ class Admin::WkclassesController < Admin::BaseController
     return if @attendances.size == 1
 
     flash[:warning] = 'No classes created. There must be 1 and only 1 booking for this class.' # t('.not_one_booking')
-    redirect_to admin_wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
+    redirect_to wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
   end
 
   def attendance_remain_check
@@ -174,7 +174,7 @@ class Admin::WkclassesController < Admin::BaseController
     return if @attendances.first.purchase.attendances_remain >= @weeks_to_repeat
 
     flash[:warning] = 'No classes created. Number of repeats exceeds the number of bookings that remain on the Package' # t('.repeats_too_high')
-    redirect_to admin_wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
+    redirect_to wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
   end
 
   def set_repeats
@@ -281,14 +281,14 @@ class Admin::WkclassesController < Admin::BaseController
 
   def record_not_found
     flash[:danger] = t('.record_not_found')
-    redirect_to admin_wkclasses_path
+    redirect_to wkclasses_path
   end
 
   def check_record_returned
     return if @wkclasses.pluck(:id).include? params[:id].to_i
 
     flash[:danger] = t('.record_not_returned')
-    redirect_to admin_wkclasses_path
+    redirect_to wkclasses_path
   end
 
   # make dry - repeated in attendances controller

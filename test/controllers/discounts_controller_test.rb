@@ -14,7 +14,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as superadmin' do
     [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get new_superadmin_discount_path
+      get new_discount_path
 
       assert_redirected_to login_path
     end
@@ -23,7 +23,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as superadmin' do
     [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_superadmin_discount_path(@discount)
+      get edit_discount_path(@discount)
 
       assert_redirected_to login_path
     end
@@ -33,7 +33,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Discount.count' do
-        post superadmin_discounts_path, params:
+        post discounts_path, params:
          { discount:
             { discount_reason: @discount_reason,
               percent: 0,
@@ -51,7 +51,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
     original_discount = @discount.percent
     [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      patch superadmin_discount_path(@discount), params:
+      patch discount_path(@discount), params:
        { discount: { percent: 50 } }
 
       assert_equal original_discount, @discount.reload.percent
@@ -63,7 +63,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Discount.count' do
-        delete superadmin_discount_path(@discount)
+        delete discount_path(@discount)
       end
     end
   end

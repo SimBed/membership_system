@@ -1,6 +1,6 @@
 <% product = Product.trial.space_group.first %>
 <div id="trial-btn" data-shop-menu-target="trialBtn">
-  <form action=<%= superadmin_orders_path %> method="POST">
+  <form action=<%= orders_path %> method="POST">
     <script
         src="https://checkout.razorpay.com/v1/checkout.js"
         data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"

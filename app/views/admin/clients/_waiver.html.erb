@@ -1,4 +1,4 @@
 <%= link_to image_tag('waiver.png',
                       class: ["table_icon",("waiver" unless client.waiver?)].compact.join(' ')),
-                      admin_client_path(client, waiver: !client.waiver?),
+                      client_path(client, waiver: !client.waiver?),
                       data: { "turbo-method": :patch } %>

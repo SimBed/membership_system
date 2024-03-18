@@ -1,5 +1,5 @@
 <%= link_to image_tag('whatsapp.png',
                       class: ["table_icon",("waiver" unless client.whatsapp_group?)].compact.join(' ')),
-                      admin_client_path(client, whatsapp_group: !client.whatsapp_group?),
+                      client_path(client, whatsapp_group: !client.whatsapp_group?),
                       data: { "turbo-method": :patch } %>
 

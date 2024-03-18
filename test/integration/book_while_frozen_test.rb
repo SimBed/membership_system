@@ -20,7 +20,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
     assert_equal Date.parse('20 Jun 2022'), @purchase.expiry_date_calc
     # freeze
     assert_difference 'Freeze.count', 1 do
-      post admin_freezes_path, params:
+      post freezes_path, params:
        { freeze:
           { purchase_id: @purchase.id,
             start_date: @freeze_start_date,
@@ -74,7 +74,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #         status: 'booked' } }
   #   # freeze
   #   assert_difference 'Freeze.count', 1 do
-  #     post admin_freezes_path, params:
+  #     post freezes_path, params:
   #      { freeze:
   #         { purchase_id: @purchase.id,
   #           start_date: @freeze_start_date,
@@ -100,7 +100,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #         status: 'booked' } }
   #   # freeze
   #   assert_difference 'Freeze.count', 1 do
-  #     post admin_freezes_path, params:
+  #     post freezes_path, params:
   #      { freeze:
   #         { purchase_id: @purchase.id,
   #           start_date: @freeze_start_date,

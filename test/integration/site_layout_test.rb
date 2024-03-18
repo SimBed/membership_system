@@ -19,24 +19,25 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
     assert_template 'admin/clients/index'
     assert_select 'a[href=?]', root_path
-    assert_select 'a[href=?]', admin_clients_path
-    assert_select 'a[href=?]', admin_purchases_path
-    assert_select 'a[href=?]', admin_wkclasses_path
+    assert_select 'a[href=?]', clients_path
+    assert_select 'a[href=?]', purchases_path
+    assert_select 'a[href=?]', wkclasses_path
     assert_select 'a[href=?]', public_timetable_path
     assert_select 'a[href=?]', admin_fitternities_path, count: 0
-    assert_select 'a[href=?]', admin_products_path
+    assert_select 'a[href=?]', products_path
     assert_select 'a[href=?]', admin_instructors_path
     assert_select 'a[href=?]', admin_partners_path
     assert_select 'a[href=?]', admin_timetables_path
-    assert_select 'a[href=?]', admin_workouts_path
+    assert_select 'a[href=?]', workouts_path
     assert_select 'a[href=?]', admin_workout_groups_path
     assert_select 'a[href=?]', admin_accounts_path
-    assert_select 'a[href=?]', superadmin_discounts_path
-    assert_select 'a[href=?]', superadmin_discount_reasons_path
-    assert_select 'a[href=?]', superadmin_expenses_path
+    assert_select 'a[href=?]', discounts_path
+    assert_select 'a[href=?]', discount_reasons_path
+    assert_select 'a[href=?]', expenses_path
     assert_select 'a[href=?]', superadmin_regular_expenses_path
     assert_select 'a[href=?]', superadmin_instructor_rates_path
-    assert_select 'a[href=?]', superadmin_orders_path
+    assert_select 'a[href=?]', orders_path
+    assert_select 'a[href=?]', payments_path
     assert_select 'a[href=?]', superadmin_settings_path
     assert_select 'div.dropdown-item', '*superadmin'
     assert_select 'a[href=?]', '/switch_account_role?role=superadmin', count: 0
@@ -65,24 +66,25 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_template 'admin/clients/index'
     # puts response.body[0,5000]
     assert_select 'a[href=?]', root_path
-    assert_select 'a[href=?]', admin_clients_path
-    assert_select 'a[href=?]', admin_purchases_path
-    assert_select 'a[href=?]', admin_wkclasses_path
+    assert_select 'a[href=?]', clients_path
+    assert_select 'a[href=?]', purchases_path
+    assert_select 'a[href=?]', wkclasses_path
     assert_select 'a[href=?]', public_timetable_path
     assert_select 'a[href=?]', admin_fitternities_path, count: 0
-    assert_select 'a[href=?]', admin_products_path
+    assert_select 'a[href=?]', products_path
     assert_select 'a[href=?]', admin_instructors_path
     assert_select 'a[href=?]', admin_partners_path
     assert_select 'a[href=?]', admin_timetables_path
-    assert_select 'a[href=?]', admin_workouts_path
+    assert_select 'a[href=?]', workouts_path
     assert_select 'a[href=?]', admin_workout_groups_path
     assert_select 'a[href=?]', admin_accounts_path, count: 0
-    assert_select 'a[href=?]', superadmin_discounts_path, count: 0
-    assert_select 'a[href=?]', superadmin_discount_reasons_path, count: 0
-    assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', discounts_path, count: 0
+    assert_select 'a[href=?]', discount_reasons_path, count: 0
+    assert_select 'a[href=?]', expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
-    assert_select 'a[href=?]', superadmin_orders_path, count: 0
+    assert_select 'a[href=?]', orders_path, count: 0
+    assert_select 'a[href=?]', payments_path, count: 0
     assert_select 'a[href=?]', superadmin_settings_path, count: 0
     assert_select 'div.dropdown-item', '*admin'
     assert_select 'a[href=?]', '/switch_account_role?role=superadmin', count: 0
@@ -110,24 +112,24 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
     assert_template 'admin/clients/index'
     assert_select 'a[href=?]', root_path
-    assert_select 'a[href=?]', admin_clients_path
-    assert_select 'a[href=?]', admin_purchases_path
-    assert_select 'a[href=?]', admin_wkclasses_path
+    assert_select 'a[href=?]', clients_path
+    assert_select 'a[href=?]', purchases_path
+    assert_select 'a[href=?]', wkclasses_path
     assert_select 'a[href=?]', public_timetable_path
     assert_select 'a[href=?]', admin_fitternities_path, count: 0
-    assert_select 'a[href=?]', admin_products_path
+    assert_select 'a[href=?]', products_path
     assert_select 'a[href=?]', admin_instructors_path, count: 0
     assert_select 'a[href=?]', admin_partners_path, count: 0
     assert_select 'a[href=?]', admin_timetables_path, count: 0
-    assert_select 'a[href=?]', admin_workouts_path, count: 0
+    assert_select 'a[href=?]', workouts_path, count: 0
     assert_select 'a[href=?]', admin_workout_groups_path, count: 0
     assert_select 'a[href=?]', admin_accounts_path, count: 0
-    assert_select 'a[href=?]', superadmin_discount_reasons_path, count: 0
-    assert_select 'a[href=?]', superadmin_expenses_path, count: 0
-    assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', discount_reasons_path, count: 0
+    assert_select 'a[href=?]', expenses_path, count: 0
+    assert_select 'a[href=?]', expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
-    assert_select 'a[href=?]', superadmin_orders_path, count: 0
+    assert_select 'a[href=?]', orders_path, count: 0
     assert_select 'a[href=?]', superadmin_settings_path, count: 0
     assert_select 'a[href=?]', '/switch_account_role?role=superadmin', count: 0
     assert_select 'a[href=?]', '/switch_account_role?role=admin', count: 0
@@ -160,23 +162,23 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', client_pt_path(@client), count: 0
     assert_select 'a[href=?]', client_timetable_path
     assert_select 'a[href=?]', client_client_path(@client)
-    assert_select 'a[href=?]', admin_clients_path, count: 0
-    assert_select 'a[href=?]', admin_purchases_path, count: 0
-    assert_select 'a[href=?]', admin_wkclasses_path, count: 0
+    assert_select 'a[href=?]', clients_path, count: 0
+    assert_select 'a[href=?]', purchases_path, count: 0
+    assert_select 'a[href=?]', wkclasses_path, count: 0
     assert_select 'a[href=?]', admin_fitternities_path, count: 0
-    assert_select 'a[href=?]', admin_products_path, count: 0
+    assert_select 'a[href=?]', products_path, count: 0
     assert_select 'a[href=?]', admin_instructors_path, count: 0
     assert_select 'a[href=?]', admin_partners_path, count: 0
     assert_select 'a[href=?]', admin_timetables_path, count: 0
-    assert_select 'a[href=?]', admin_workouts_path, count: 0
+    assert_select 'a[href=?]', workouts_path, count: 0
     assert_select 'a[href=?]', admin_workout_groups_path, count: 0
     assert_select 'a[href=?]', admin_accounts_path, count: 0
-    assert_select 'a[href=?]', superadmin_expenses_path, count: 0
-    assert_select 'a[href=?]', superadmin_discount_reasons_path, count: 0
-    assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', expenses_path, count: 0
+    assert_select 'a[href=?]', discount_reasons_path, count: 0
+    assert_select 'a[href=?]', expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
-    assert_select 'a[href=?]', superadmin_orders_path, count: 0
+    assert_select 'a[href=?]', orders_path, count: 0
     assert_select 'a[href=?]', superadmin_settings_path, count: 0
     assert_select 'a[href=?]', logout_path
     # assert_select 'form.button_to[action=?]', logout_path
@@ -214,22 +216,22 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', admin_workout_groups_path
     assert_select 'a[href=?]', admin_partner_path(@partner)
-    assert_select 'a[href=?]', admin_clients_path, count: 0
-    assert_select 'a[href=?]', admin_purchases_path, count: 0
-    assert_select 'a[href=?]', admin_wkclasses_path, count: 0
+    assert_select 'a[href=?]', clients_path, count: 0
+    assert_select 'a[href=?]', purchases_path, count: 0
+    assert_select 'a[href=?]', wkclasses_path, count: 0
     assert_select 'a[href=?]', admin_fitternities_path, count: 0
-    assert_select 'a[href=?]', admin_products_path, count: 0
+    assert_select 'a[href=?]', products_path, count: 0
     assert_select 'a[href=?]', admin_instructors_path, count: 0
     assert_select 'a[href=?]', admin_partners_path, count: 0
     assert_select 'a[href=?]', admin_timetables_path, count: 0
-    assert_select 'a[href=?]', admin_workouts_path, count: 0
+    assert_select 'a[href=?]', workouts_path, count: 0
     assert_select 'a[href=?]', admin_accounts_path, count: 0
-    assert_select 'a[href=?]', superadmin_discount_reasons_path, count: 0
-    assert_select 'a[href=?]', superadmin_expenses_path, count: 0
-    assert_select 'a[href=?]', superadmin_expenses_path, count: 0
+    assert_select 'a[href=?]', discount_reasons_path, count: 0
+    assert_select 'a[href=?]', expenses_path, count: 0
+    assert_select 'a[href=?]', expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_regular_expenses_path, count: 0
     assert_select 'a[href=?]', superadmin_instructor_rates_path, count: 0
-    assert_select 'a[href=?]', superadmin_orders_path, count: 0
+    assert_select 'a[href=?]', orders_path, count: 0
     assert_select 'a[href=?]', superadmin_settings_path, count: 0
     # assert_select 'a[href=?]', logout_path
     assert_select 'form.button_to[action=?]', logout_path

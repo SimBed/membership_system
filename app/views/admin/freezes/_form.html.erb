@@ -1,5 +1,5 @@
 <div class="field" data-controller="freeze" data-freeze-medical-value=<%= freeze.medical? %> data-freeze-doctor-note-value=<%= freeze.doctor_note? %> data-freeze-price-value=<%= 650 %> > 
-  <%= form_with(model: [:admin, freeze], class: 'admin_form mb-2') do |form| %>
+  <%= form_with(model: freeze, class: 'admin_form mb-2') do |form| %>
     <% purchase = params[:purchase] || @freeze.purchase.id %>
     <%= turbo_frame_tag 'errors' do %>  
       <% if freeze.errors.any? %>
@@ -76,7 +76,7 @@
     </div>
 
     <div class="cancel">
-      <%= link_to image_tag('delete.png', class: "table_icon"), admin_purchase_path(purchase) %>
+      <%= link_to image_tag('delete.png', class: "table_icon"), purchase_path(purchase) %>
     </div>  
   <% end %>
 </div>

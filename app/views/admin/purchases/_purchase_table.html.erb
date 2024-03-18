@@ -6,7 +6,7 @@
   <div id="amendment-links" class="mb-3 d-flex">
     <div-->
       <%= link_to image_tag('freeze.png', class: "table_icon" ),
-                  new_admin_freeze_path(purchase: @purchase.id),
+                  new_freeze_path(purchase: @purchase.id),
                   class: "icon-container",
                   data: { turbo_frame: dom_id(Freeze.new) } %> |
       <%= link_to image_tag('adjust.png', class: "table_icon" ),
@@ -20,7 +20,7 @@
                     data: { turbo_frame: dom_id(Restart.new) } %> |
       <% end %>
       <%= link_to image_tag('edit.png', class: "table_icon" ),
-                  edit_admin_purchase_path(@purchase, link_from: 'show'),
+                  edit_purchase_path(@purchase, link_from: 'show'),
                   class: "icon-container",
                   data: {turbo_frame: dom_id(@purchase)} %>
     </div>

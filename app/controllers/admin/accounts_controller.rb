@@ -28,7 +28,7 @@ class Admin::AccountsController < Admin::BaseController
     else
       flash_message :warning, t('.warning')
     end
-    redirect_back fallback_location: admin_clients_path
+    redirect_back fallback_location: clients_path
   end
 
   def update
@@ -55,7 +55,7 @@ class Admin::AccountsController < Admin::BaseController
     @account.update(password:, password_confirmation: password)
     flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging, true)
     respond_to do |format|
-      format.html { redirect_back fallback_location: admin_clients_path }
+      format.html { redirect_back fallback_location: clients_path }
       format.turbo_stream
     end
   end

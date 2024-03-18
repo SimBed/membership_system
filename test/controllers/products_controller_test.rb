@@ -12,7 +12,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_product_path
+      get new_product_path
 
       assert_redirected_to login_path
     end
@@ -21,7 +21,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_products_path
+      get products_path
 
       assert_redirected_to login_path
     end
@@ -30,7 +30,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect show when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get admin_product_path(@product)
+      get product_path(@product)
 
       assert_redirected_to login_path
     end
@@ -39,7 +39,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_product_path(@product)
+      get edit_product_path(@product)
 
       assert_redirected_to login_path
     end
@@ -49,7 +49,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Product.count' do
-        post admin_products_path, params:
+        post products_path, params:
          { product:
             { max_classes: 1000,
               validity_length: 2,
@@ -63,7 +63,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     original_validity_length = @product.validity_length
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_product_path(@product), params:
+      patch product_path(@product), params:
        { product:
           { max_classes: @product.max_classes,
             validity_length: @product.validity_length - 1,
@@ -79,7 +79,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Product.count' do
-        delete admin_product_path(@product)
+        delete product_path(@product)
       end
     end
   end

@@ -17,7 +17,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_wkclass_path
+      get new_wkclass_path
 
       assert_redirected_to login_path
     end
@@ -26,7 +26,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_wkclasses_path
+      get wkclasses_path
 
       assert_redirected_to login_path
     end
@@ -35,7 +35,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect show when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_wkclass_path(@wkclass)
+      get wkclass_path(@wkclass)
 
       assert_redirected_to login_path
     end
@@ -44,7 +44,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_wkclass_path(@wkclass)
+      get edit_wkclass_path(@wkclass)
 
       assert_redirected_to login_path
     end
@@ -54,7 +54,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Wkclass.count' do
-        post admin_wkclasses_path, params:
+        post wkclasses_path, params:
          { wkclass:
             { workout_id: @workout.id,
               start_time: @time,
@@ -67,7 +67,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     original_start_time = @wkclass.start_time
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_wkclass_path(@wkclass), params:
+      patch wkclass_path(@wkclass), params:
        { wkclass:
           { workout_id: @wkclass.workout_id,
             start_time: @wkclass.start_time + 1.hour,
@@ -82,7 +82,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Wkclass.count' do
-        delete admin_wkclass_path(@wkclass)
+        delete wkclass_path(@wkclass)
       end
     end
   end
@@ -90,7 +90,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   test 'create repeat classes' do
     log_in_as(@junioradmin)
     assert_difference 'Wkclass.count', 4 do
-      post admin_wkclasses_path, params:
+      post wkclasses_path, params:
        { wkclass:
           { workout_id: @workout.id,
             'start_time(1i)': '2022',

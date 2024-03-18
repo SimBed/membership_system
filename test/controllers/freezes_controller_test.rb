@@ -18,7 +18,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_freeze_path
+      get new_freeze_path
 
       assert_redirected_to login_path
     end
@@ -27,7 +27,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_freeze_path(@freeze)
+      get edit_freeze_path(@freeze)
 
       assert_redirected_to login_path
     end
@@ -37,7 +37,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Freeze.count' do
-        post admin_freezes_path, params:
+        post freezes_path, params:
          { freeze:
             { purchase_id: @purchase.id,
               start_date: '2021-12-26',
@@ -50,7 +50,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
     original_end_date = @freeze.end_date
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_freeze_path(@freeze), params:
+      patch freeze_path(@freeze), params:
        { freeze:
           { purchase_id: @freeze.purchase.id,
             start_date: @freeze.start_date,
@@ -65,7 +65,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Freeze.count' do
-        delete admin_freeze_path(@freeze)
+        delete freeze_path(@freeze)
       end
     end
   end

@@ -35,7 +35,7 @@ class Superadmin::DiscountsController < Superadmin::BaseController
   def create
     @discount = Discount.new(discount_params)
     if @discount.save
-      redirect_to superadmin_discounts_path
+      redirect_to discounts_path
       flash[:success] = t('.success')
     else
       prepare_items_for_dropdowns
@@ -45,7 +45,7 @@ class Superadmin::DiscountsController < Superadmin::BaseController
 
   def update
     if @discount.update(discount_params)
-      redirect_to superadmin_discounts_path
+      redirect_to discounts_path
       flash[:success] = t('.success')
     else
       prepare_items_for_dropdowns
@@ -55,7 +55,7 @@ class Superadmin::DiscountsController < Superadmin::BaseController
 
   def destroy
     @discount.destroy
-    redirect_to superadmin_discounts_path
+    redirect_to discounts_path
     flash[:success] = t('.success')
   end
 

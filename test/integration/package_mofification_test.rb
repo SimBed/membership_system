@@ -21,7 +21,7 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     end
     log_in_as(@admin)
     assert_difference -> { Freeze.count } => 1, -> { Payment.count } => 1, -> { @purchase.attendances.booked.size } => -1 do
-      post admin_freezes_path, params:
+      post freezes_path, params:
        { freeze:
           { purchase_id: @purchase.id,
             start_date: Time.zone.tomorrow,
@@ -42,7 +42,7 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
   test 'admin creates medical freeze with doctors note' do
     log_in_as(@admin)
     assert_difference -> { Freeze.count } => 1, -> { Payment.count } => 0 do
-      post admin_freezes_path, params:
+      post freezes_path, params:
       { freeze:
         { purchase_id: @purchase.id,
         start_date: Time.zone.tomorrow,
@@ -63,7 +63,7 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
   test 'admin creates medical freeze without doctors note' do
     log_in_as(@admin)
     assert_difference -> { Freeze.count } => 1, -> { Payment.count } => 0 do
-      post admin_freezes_path, params:
+      post freezes_path, params:
       { freeze:
         { purchase_id: @purchase.id,
           start_date: Time.zone.tomorrow,
@@ -119,7 +119,7 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     assert_equal @freeze.payment, @payment
     freeze = @freeze
     log_in_as(@admin)
-      patch admin_freeze_path(@freeze), params:
+      patch freeze_path(@freeze), params:
       { freeze:
         { purchase_id: @freeze.purchase_id,
           start_date: @freeze.start_date,

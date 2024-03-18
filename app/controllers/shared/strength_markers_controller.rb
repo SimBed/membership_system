@@ -20,22 +20,22 @@ class Shared::StrengthMarkersController < Shared::BaseController
   def new
     @strength_marker = StrengthMarker.new
     set_options
-    @form_cancel_link = shared_strength_markers_path
+    @form_cancel_link = strength_markers_path
   end
 
   def edit
     set_options
-    @form_cancel_link = shared_strength_markers_path        
+    @form_cancel_link = strength_markers_path        
   end
 
   def create
     @strength_marker = StrengthMarker.new(strength_marker_params)
     if @strength_marker.save
       flash_message :success, t('.success')
-      redirect_to shared_strength_markers_path
+      redirect_to strength_markers_path
     else
       set_options
-      @form_cancel_link = shared_strength_markers_path
+      @form_cancel_link = strength_markers_path
       render :new, status: :unprocessable_entity
     end
   end
@@ -43,10 +43,10 @@ class Shared::StrengthMarkersController < Shared::BaseController
   def update
     if @strength_marker.update(strength_marker_params)
       flash_message :success, t('.success')
-      redirect_to shared_strength_markers_path
+      redirect_to strength_markers_path
     else
       set_options
-      @form_cancel_link = shared_strength_markers_path
+      @form_cancel_link = strength_markers_path
       render :edit, status: :unprocessable_entity
     end
   end  
@@ -54,7 +54,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
   def destroy
     @strength_marker.destroy
     flash_message :success, t('.success')
-    redirect_to shared_strength_markers_path
+    redirect_to strength_markers_path
   end
   
   def filter
@@ -62,7 +62,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
     unless @client_logging
       session[:client_select] = params[:client_select] || session[:client_select] 
     end
-    redirect_to shared_strength_markers_path
+    redirect_to strength_markers_path
   end  
 
   private

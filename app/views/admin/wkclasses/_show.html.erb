@@ -23,7 +23,7 @@
 
       <% if @cancel_button %>
         <div class="cancel">
-          <%= link_to image_tag('delete.png', class: "table_icon"), admin_wkclasses_path(page: params[:page], show_qualifying_purchases: 'no') %>
+          <%= link_to image_tag('delete.png', class: "table_icon"), wkclasses_path(page: params[:page], show_qualifying_purchases: 'no') %>
         </div>
       <% end %>
     </div>

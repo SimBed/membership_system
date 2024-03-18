@@ -1,11 +1,11 @@
 <div class="text-center mb-3 mb-md-0">
-  <%= link_to 'strength', shared_strength_markers_path, class:'option_choice current me-1' %>
-  <%= link_to 'body', shared_body_markers_path, class:'option_choice' %>
+  <%= link_to 'strength', strength_markers_path, class:'option_choice current me-1' %>
+  <%= link_to 'body', body_markers_path, class:'option_choice' %>
 </div>
 
 <div class="container px-1">
   <h4>Strength Markers <%= link_to image_tag('add.png', class: "button_icon"),
-                                   new_shared_strength_marker_path,
+                                   new_strength_marker_path,
                                    data: { turbo_frame: dom_id(StrengthMarker.new) } %>
   </h4>
   <%= turbo_frame_tag StrengthMarker.new %>  

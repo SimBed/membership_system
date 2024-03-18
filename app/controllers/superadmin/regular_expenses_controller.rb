@@ -56,7 +56,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
       rejected += 1 if new_expense.errors.present?
     end
     session[:revenue_month] = date.strftime('%b %Y')
-    redirect_to superadmin_expenses_path
+    redirect_to expenses_path
     if rejected.zero?
       flash[:success] = "All #{total} regular expenses added"
     else

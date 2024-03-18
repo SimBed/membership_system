@@ -13,8 +13,8 @@
     <% @adjust_restart_purchases.each do |purchase| %>
       <div class="row">
         <div class="column col-1x "><%= purchase.adjust_restart ? raw("&check;") : 'Next' %></div>
-        <div class="column col-1x "><%= link_to purchase.name, admin_purchase_path(purchase), class: 'like_button'  %></div>
-        <div class="column col-1x "><%= link_to purchase.client.name, admin_client_path(purchase.client), class: 'like_button' %></div>
+        <div class="column col-1x "><%= link_to purchase.name, purchase_path(purchase), class: 'like_button'  %></div>
+        <div class="column col-1x "><%= link_to purchase.client.name, client_path(purchase.client), class: 'like_button' %></div>
         <div class="column col-1x "><%= purchase.dop.strftime('%d %b %y') %></div>
         <div class="column col-1x "><%= purchase.ar_date.strftime('%d %b %y') %></div>
         <div class="column col-1x "><%= number_with_delimiter(purchase.ar_payment) %></div>
@@ -25,8 +25,8 @@
       <% unless next_purchase.nil? %>
         <div class="row">
           <div class="column col-1x "><%= next_purchase.adjust_restart ? raw("&check;") : 'Next' %></div>      
-          <div class="column col-1x "><%= link_to next_purchase.name, admin_purchase_path(next_purchase), class: 'like_button'  %></div>
-          <div class="column col-1x "><%= link_to next_purchase.client.name, admin_client_path(next_purchase.client), class: 'like_button' %></div>
+          <div class="column col-1x "><%= link_to next_purchase.name, purchase_path(next_purchase), class: 'like_button'  %></div>
+          <div class="column col-1x "><%= link_to next_purchase.client.name, client_path(next_purchase.client), class: 'like_button' %></div>
           <div class="column col-1x "><%= next_purchase.dop.strftime('%d %b %y') %></div>
           <div class="column col-1x "><%= next_purchase.adjust_restart ? next_purchase.ar_date.strftime('%d %b %y') : '-' %></div>
           <div class="column col-1x "><%= next_purchase.adjust_restart ? number_with_delimiter(next_purchase.ar_payment) : '-' %></div>

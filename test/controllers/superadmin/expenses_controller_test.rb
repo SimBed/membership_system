@@ -16,7 +16,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get new_superadmin_expense_path
+      get new_expense_path
 
       assert_redirected_to login_path
     end
@@ -25,7 +25,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get superadmin_expenses_path
+      get expenses_path
 
       assert_redirected_to login_path
     end
@@ -34,7 +34,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_superadmin_expense_path(@expense)
+      get edit_expense_path(@expense)
 
       assert_redirected_to login_path
     end
@@ -44,7 +44,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Expense.count' do
-        post superadmin_expenses_path, params:
+        post expenses_path, params:
          { expense:
             { item: 'Rope',
               amount: 2000,
@@ -58,7 +58,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
     original_amount = @expense.amount
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      patch superadmin_expense_path(@expense), params:
+      patch expense_path(@expense), params:
        { expense:
           { item: 'Rope',
             amount: 2000,
@@ -74,7 +74,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner2, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Expense.count' do
-        delete superadmin_expense_path(@expense)
+        delete expense_path(@expense)
       end
     end
   end

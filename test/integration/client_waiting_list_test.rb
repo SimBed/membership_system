@@ -215,7 +215,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     follow_redirect! # clear out flashes from these requests
 
     Whatsapp.stub_any_instance :send_whatsapp, true do
-      patch admin_wkclass_path(@tomorrows_class_early), params: { wkclass: { max_capacity: 1 } }
+      patch wkclass_path(@tomorrows_class_early), params: { wkclass: { max_capacity: 1 } }
 
       assert_equal [['waiting list blast message sent by Whatsapp to +919161131111']], flash[:warning]
       assert_equal [['Class was successfully updated']], flash[:success]

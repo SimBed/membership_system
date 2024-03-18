@@ -16,7 +16,7 @@ class UnexpirePackageTest < ActionDispatch::IntegrationTest
 
     # give long freeze
     log_in_as(@admin)
-    post admin_freezes_path, params:
+    post freezes_path, params:
      { freeze:
         { purchase_id: @purchase.id,
           start_date: '2021-11-17',

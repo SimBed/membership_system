@@ -7,7 +7,7 @@
         <% wkclass = attendance.wkclass %>
         <div class="row">
           <div class="column"><%= attendances.size - index %></div>
-          <div class="column col-2x"><%= link_to wkclass.name, admin_wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
+          <div class="column col-2x"><%= link_to wkclass.name, wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
           <div class="column col-2x"><%= link_to wkclass.date %></div>
           <div class="column col-2x"><%= attendance.status %></div>
         </div>

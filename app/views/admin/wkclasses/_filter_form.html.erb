@@ -2,7 +2,7 @@
   <div class="container search">
     <hr class = "search mb-3"></hr>
 
-    <%= form_with(url: wkclass_filter_path, method: "get", class: "form-class", data: {turbo_frame: "wkclasses"}) do %>
+    <%= form_with(url: filter_wkclasses_path, method: "get", class: "form-class", data: {turbo_frame: "wkclasses"}) do %>
       <div class="container mb-1 px-1">
         <div class="row">
           <div class="col-4 px-0">
@@ -69,7 +69,7 @@
           </div>
 
           <div class="container d-flex">
-            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_wkclass_filters_path, {class: "search searchdelete icon-container"} %>
+            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_filters_wkclasses_path, {class: "search searchdelete icon-container"} %>
           </div>
 
           <fieldset class="mt-2">

@@ -15,7 +15,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as admin or more senior, instructor or client' do
     [nil, @junioradmin, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get new_shared_body_marker_path
+      get new_body_marker_path
 
       assert_redirected_to login_path
     end
@@ -24,7 +24,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as admin or more senior, instructor or client' do
     [nil, @junioradmin, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get shared_body_markers_path
+      get body_markers_path
 
       assert_redirected_to login_path
     end
@@ -33,7 +33,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as admin or more senior, instructor or correct client' do
     [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
-      get edit_shared_body_marker_path(@bodymarker_for_client1)
+      get edit_body_marker_path(@bodymarker_for_client1)
 
       assert_redirected_to login_path
     end
@@ -43,7 +43,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
     [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'BodyMarker.count' do
-        post shared_body_markers_path, params:
+        post body_markers_path, params:
           { body_marker:
              { bodypart: 'Neck',
                measurement: 22,
@@ -57,7 +57,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
     original_measurement = @bodymarker_for_client1.measurement
     [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
-      patch shared_body_marker_path(@bodymarker_for_client1), params:
+      patch body_marker_path(@bodymarker_for_client1), params:
         { body_marker:
            { measurement: original_measurement + 5 } }
 
@@ -70,7 +70,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
     [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'BodyMarker.count' do
-        delete shared_body_marker_path(@bodymarker_for_client1)
+        delete body_marker_path(@bodymarker_for_client1)
       end
     end
   end

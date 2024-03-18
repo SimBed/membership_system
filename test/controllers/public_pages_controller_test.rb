@@ -22,7 +22,7 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
       log_in_as(account_holder)
       # get root_path
 
-      assert_redirected_to admin_clients_path
+      assert_redirected_to clients_path
     end
   end
 

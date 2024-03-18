@@ -2,7 +2,7 @@
   <div class="container search">
     <%= render partial: 'sort_selection' %>
     <hr class = "search mb-3"></hr>
-    <%= form_with(url: purchase_filter_path, method: "get", class: "form-class", data: {turbo_frame: "purchases"}) do %>
+    <%= form_with(url: filter_purchases_path, method: "get", class: "form-class", data: {turbo_frame: "purchases"}) do %>
       <div class="field">
         <%= text_field_tag :search_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_name], oninput: "this.form.requestSubmit()" %>
       </div>
@@ -47,7 +47,7 @@
           </div>
 
           <div class="container d-flex">
-            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_purchase_filters_path, {class: "search searchdelete icon-container"} %>
+            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_filters_purchases_path, {class: "search searchdelete icon-container"} %>
           </div>
 
           <fieldset class="mt-2" style="margin-left:-1.3rem">

@@ -21,7 +21,7 @@ class Admin::PricesController < Admin::BaseController
     @price = Price.new(price_params)
 
     if @price.save
-      redirect_to admin_product_path(Product.find(price_params[:product_id]))
+      redirect_to product_path(Product.find(price_params[:product_id]))
       flash[:success] = t('.success')
     else
       @product = Product.find(price_params[:product_id])
@@ -34,7 +34,7 @@ class Admin::PricesController < Admin::BaseController
 
   def update
     if @price.update(price_params)
-      redirect_to admin_product_path(Product.find(price_params[:product_id]))
+      redirect_to product_path(Product.find(price_params[:product_id]))
       flash[:success] = t('.success')
     else
       # @base_price = @price.base_price || 0
@@ -47,7 +47,7 @@ class Admin::PricesController < Admin::BaseController
   def destroy
     @product = @price.product
     @price.destroy
-    redirect_to admin_product_path(@product)
+    redirect_to product_path(@product)
     flash[:success] = t('.success')
   end
 

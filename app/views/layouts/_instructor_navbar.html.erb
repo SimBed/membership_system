@@ -18,7 +18,7 @@
       <ul class="navbar-nav">
       <% if current_account.instructor.employee? %>
         <li class="nav-item">
-          <%= link_to admin_wkclasses_path, class: "nav-link" do %>
+          <%= link_to wkclasses_path, class: "nav-link" do %>
             <i class="fa fa-dumbbell"></i>
           <% end %>
         </li>
@@ -44,7 +44,7 @@
               <div class="col-6 p-4">
                 <%= link_to 'Achievements', shared_achievements_path, class: "dropdown-item" %>
                 <%= link_to 'Challenges', shared_challenges_path, class: "dropdown-item" %>
-                <%= link_to 'Markers', shared_strength_markers_path, class: "dropdown-item" %>                
+                <%= link_to 'Markers', strength_markers_path, class: "dropdown-item" %>                
                 <%= link_to 'Timetable', public_timetable_path, class: "dropdown-item" %>
               </div>
               <% if multiple_roles? %>                  

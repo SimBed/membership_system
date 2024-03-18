@@ -1,11 +1,11 @@
 <% has_payment = freeze.payment && true %>
 <% payment = freeze.payment if has_payment %>
 <div class="row">
-  <div class="column col-1x "><%= link_to freeze.purchase.name, admin_purchase_path(freeze.purchase), class: 'like_button', data: {turbo: false}  %></div>
-  <div class="column col-1x "><%= link_to freeze.purchase.client.name, admin_client_path(freeze.purchase.client), class: 'like_button', data: {turbo: false} %></div>
+  <div class="column col-1x "><%= link_to freeze.purchase.name, purchase_path(freeze.purchase), class: 'like_button', data: {turbo: false}  %></div>
+  <div class="column col-1x "><%= link_to freeze.purchase.client.name, client_path(freeze.purchase.client), class: 'like_button', data: {turbo: false} %></div>
   <div class="column col-1x "><%= freeze.start_date.strftime('%d %b %y') %></div>
   <div class="column col-1x "><%= freeze.end_date.strftime('%d %b %y') %></div>
-  <div class="column col-1x "><%= has_payment ? link_to(rupees(payment.amount), superadmin_payment_path(payment), class: "like_button", data: {turbo: false}) : '-' %></div>
+  <div class="column col-1x "><%= has_payment ? link_to(rupees(payment.amount), payment_path(payment), class: "like_button", data: {turbo: false}) : '-' %></div>
   <div class="column"><%= image_tag('medical.png', class: ["table_icon",("dull" unless freeze.medical?)].compact.join(' ')) %></div>
   <div class="column"><%= image_tag('doctor_note.png', class: ["table_icon",("dull" unless freeze.doctor_note?)].compact.join(' ')) %></div>
   <div class="column col-1x "><%= freeze.note %></div>

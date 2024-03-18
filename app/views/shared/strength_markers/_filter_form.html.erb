@@ -1,7 +1,7 @@
 <div id="strength_markers-filter" class="container px-1 my-3">
   <div class="container search">
     <% unless @client_logging %>
-      <%= form_with(url: strength_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
+      <%= form_with(url: filter_strength_markers_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
         <fieldset class="my-2">
           <label class='d-inline'>client:</label>
           <select name="client_select" class= "sort" onchange="this.form.requestSubmit()">
@@ -10,7 +10,7 @@
         </fieldset>
       <% end %>
     <% end %>
-    <%= form_with(url: strength_marker_filter_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
+    <%= form_with(url: filter_strength_markers_path, method: "get", class: "form-class", data: {turbo_frame: "strength_markers"}) do %>
       <fieldset class="">
       <label class='d-inline'>marker:</label>
         <select name="strength_marker_select" class= "sort" onchange="this.form.requestSubmit()">

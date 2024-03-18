@@ -17,7 +17,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_purchase_path
+      get new_purchase_path
 
       assert_redirected_to login_path
     end
@@ -26,7 +26,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_purchases_path
+      get purchases_path
 
       assert_redirected_to login_path
     end
@@ -35,7 +35,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect show when not logged in as junioradmin or more senior' do
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_purchase_path(@purchase1)
+      get purchase_path(@purchase1)
 
       assert_redirected_to login_path
     end
@@ -44,7 +44,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as junioradmin or more senior' do
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_purchase_path(@purchase1)
+      get edit_purchase_path(@purchase1)
 
       assert_redirected_to login_path
     end
@@ -54,7 +54,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Purchase.count' do
-        post admin_purchases_path, params:
+        post purchases_path, params:
          { purchase:
             { client_id: @account_client1.client.id,
               product_id: @purchase1.product_id,
@@ -70,7 +70,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     original_payment = @purchase1.charge
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_purchase_path(@purchase1), params:
+      patch purchase_path(@purchase1), params:
        { purchase:
           { client_id: @purchase1.client_id,
             product_id: @purchase1.product_id,
@@ -88,7 +88,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Purchase.count' do
-        delete admin_purchase_path(@purchase1)
+        delete purchase_path(@purchase1)
       end
     end
   end
@@ -96,7 +96,7 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect create when client has already had a trial and a trial is purchased' do
     log_in_as(@admin)
     assert_no_difference 'Purchase.count' do
-      post admin_purchases_path, params:
+      post purchases_path, params:
        { purchase:
           { client_id: @client_trial_expired.id,
             product_id: @product_trial.id,

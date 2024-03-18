@@ -25,7 +25,7 @@ class Admin::WorkoutsController < Admin::BaseController
     @workout = Workout.new(workout_params)
 
     if @workout.save
-      redirect_to admin_workouts_path
+      redirect_to workouts_path
       flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
@@ -34,7 +34,7 @@ class Admin::WorkoutsController < Admin::BaseController
 
   def update
     if @workout.update(workout_params)
-      redirect_to admin_workouts_path
+      redirect_to workouts_path
       flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
@@ -43,14 +43,14 @@ class Admin::WorkoutsController < Admin::BaseController
 
   def destroy
     @workout.destroy
-    redirect_to admin_workouts_path
+    redirect_to workouts_path
     flash[:success] = t('.success')
   end
 
   def filter
     clear_session(:filter_workout_active)
     session[:filter_workout_active] = params[:active]
-    redirect_to admin_workouts_path
+    redirect_to workouts_path
   end
 
   private

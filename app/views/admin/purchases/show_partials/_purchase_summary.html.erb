@@ -1,6 +1,6 @@
 <% payment = @purchase.payment %>
 <div class="fst-italic ps-2">    
-  <%= link_to @purchase.name(rider_show: true), admin_purchase_path(@purchase), class: "like_button" if setting == 'admin_client_show' %>
+  <%= link_to @purchase.name(rider_show: true), purchase_path(@purchase), class: "like_button" if setting == 'admin_client_show' %>
   <%= 'Summary' if setting == 'admin_purchase_show' %>
 </div>
 <div class="admin-table striped mt-2 mb-4">
@@ -81,14 +81,14 @@
     </div>  
     <div class="row">
       <div class="column col-1x">Original Package</div>
-      <div class="column col-1x"><%= link_to 'original', admin_purchase_path(parent_purchase), class: "like_button", data: {turbo: false} %></div>
+      <div class="column col-1x"><%= link_to 'original', purchase_path(parent_purchase), class: "like_button", data: {turbo: false} %></div>
     </div>  
   <% end %>  
   <% if @purchase.restart_as_parent %>
   <% child_purchase = @purchase.child_purchase %>
     <div class="row">
       <div class="column col-1x">Restart</div>
-      <div class="column col-1x"><%= link_to 'restart', admin_purchase_path(child_purchase), class: "like_button", data: {turbo: false} %></div>
+      <div class="column col-1x"><%= link_to 'restart', purchase_path(child_purchase), class: "like_button", data: {turbo: false} %></div>
     </div>  
   <% end %>
   <% if @purchase.note? %>

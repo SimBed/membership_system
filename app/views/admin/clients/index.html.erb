@@ -1,10 +1,10 @@
 <div class="container px-1" data-toggle="tooltip" data-placement="top" title="click + for new client">
   <h4>Clients <%= link_to image_tag('add.png', class: "button_icon"),
-                          new_admin_client_path,
+                          new_client_path,
                           data: { turbo_frame: dom_id(Client.new) } %>
   </h4>
   <%= turbo_frame_tag Client.new %>    
-  <!--h3 style="">Clients <%#= link_to tag.i(class: %w( bi bi-plus-circle )), new_admadmin_client_path, class: "icon-container"%></h3-->
+  <!--h3 style="">Clients <%#= link_to tag.i(class: %w( bi bi-plus-circle )), new_admclient_path, class: "icon-container"%></h3-->
 </div>
 <%= turbo_frame_tag 'clients-and-filter' do %>
   <%= render partial: 'filter_form' %>

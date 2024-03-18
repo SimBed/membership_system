@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   end
 
   def deal_with_admin
-    redirect_back_or admin_clients_path if logged_in_as?('junioradmin', 'admin', 'superadmin')
+    redirect_back_or clients_path if logged_in_as?('junioradmin', 'admin', 'superadmin')
   end
 
   def deal_with_client
@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
   def deal_with_instructor
     if logged_in_as?('instructor')
       if @account.instructor.employee?
-        redirect_to admin_wkclasses_path
+        redirect_to wkclasses_path
       else
         redirect_to admin_instructor_path(@account.instructor)
       end

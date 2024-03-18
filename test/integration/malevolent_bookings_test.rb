@@ -18,11 +18,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # create 3 new classes
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
@@ -53,11 +53,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
   test 'attempt by client to update class from cancelled early with provisonally expired package should fail' do
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
@@ -97,11 +97,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # create 3 new classes
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
@@ -123,7 +123,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
 
-    assert_redirected_to admin_wkclass_path(Wkclass.last(3)[2])
+    assert_redirected_to wkclass_path(Wkclass.last(3)[2])
     assert_equal([['The maximum number of classes has already been booked']], flash[:warning])
   end
 
@@ -131,11 +131,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # create 3 new classes
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
@@ -163,8 +163,8 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     assert_difference '@attendance.reload.amendment_count', 1 do
       patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled late' } }
     end
-    assert_redirected_to admin_wkclass_path @attendance.wkclass
-    # assert_redirected_to admin_wkclasses_path
+    assert_redirected_to wkclass_path @attendance.wkclass
+    # assert_redirected_to wkclasses_path
     assert_equal([["Tina Dehal's attendance was successfully updated to cancelled late"]], flash[:success])
   end
 
@@ -172,11 +172,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # create 3 new classes
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
-      post admin_wkclasses_path,
+      post wkclasses_path,
            params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
@@ -207,7 +207,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       patch admin_attendance_path(@attendance), params: { attendance: { status: 'cancelled late' } }
     end
 
-    assert_redirected_to admin_wkclass_path @attendance.wkclass
+    assert_redirected_to wkclass_path @attendance.wkclass
     assert_equal [['The purchase has provisionally expired.',
                    'This change may not be possible without first cancelling a booking']], flash[:warning]
   end

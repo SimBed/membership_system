@@ -4,8 +4,8 @@
     <% @attendances.each_with_index do |attendance, index| %>
       <tr>
         <th scope="row"><%= @attendances.size - index %></th>
-        <td><%= link_to attendance.wkclass.summary, admin_wkclass_path(attendance.wkclass), class: "like_button" %></td>
-        <td><%= link_to attendance.client.name , admin_client_path(attendance.client), class: "like_button" %></td>
+        <td><%= link_to attendance.wkclass.summary, wkclass_path(attendance.wkclass), class: "like_button" %></td>
+        <td><%= link_to attendance.client.name , client_path(attendance.client), class: "like_button" %></td>
         <td><%= attendance.status %></td>
       </tr>
     <% end %>

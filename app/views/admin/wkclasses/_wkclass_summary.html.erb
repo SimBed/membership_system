@@ -8,7 +8,7 @@
   <% end %>
   <%# scroll: true parameter not being used. Can remove in due course if no use found %>
   <%# redundant now we are hotwired %>
-  <%#= link_to '<<', admin_wkclass_path(@wkclasses.next_item(params[:id].to_i), scroll: true), {class: "paginate_icon"} unless params[:no_scroll] %>
+  <%#= link_to '<<', wkclass_path(@wkclasses.next_item(params[:id].to_i), scroll: true), {class: "paginate_icon"} unless params[:no_scroll] %>
   <div class ="d-inline-block">
     <%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
   </div>
@@ -19,8 +19,8 @@
   <% end %>
   <%= @wkclass.instructor&.name %>
   <% unless logged_in_as?('instructor') %>
-    <%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_wkclass_path(@wkclass, link_from: @link_from) %>
+    <%= link_to image_tag('edit.png', class: "table_icon"), edit_wkclass_path(@wkclass, link_from: @link_from) %>
   <% end %>
   <%# redundant now we are hotwired %>
-  <%#= link_to '>>', admin_wkclass_path(@wkclasses.prev_item(params[:id].to_i), scroll: true), {class: "paginate_icon pl-2"} unless params[:no_scroll] %>
+  <%#= link_to '>>', wkclass_path(@wkclasses.prev_item(params[:id].to_i), scroll: true), {class: "paginate_icon pl-2"} unless params[:no_scroll] %>
 </div>

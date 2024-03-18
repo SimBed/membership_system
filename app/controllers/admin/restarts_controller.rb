@@ -29,7 +29,7 @@ class Admin::RestartsController < Admin::BaseController
       # NOTE: update once abstraction fully implemented
       restart_purchase.update(payment_mode: 'Restart', note: nil, status: 'not started' )  
       @restart.update(child_id: restart_purchase.id)
-      redirect_to admin_purchase_path(restart_purchase)
+      redirect_to purchase_path(restart_purchase)
       flash[:success] = t('.success')    
     else
       @payment_methods = Setting.payment_methods
@@ -39,7 +39,7 @@ class Admin::RestartsController < Admin::BaseController
 
   def update
     if @restart.update(restart_params)
-      redirect_to admin_purchase_path(@parent_purchase)
+      redirect_to purchase_path(@parent_purchase)
       flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
@@ -69,6 +69,6 @@ class Admin::RestartsController < Admin::BaseController
     new_purchase = @purchase.dup
     new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )
     flash_message :warning, t('.adjust_and_restart')
-    redirect_to admin_purchases_path
+    redirect_to purchases_path
   end
 end

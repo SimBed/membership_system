@@ -55,12 +55,12 @@ class Admin::PurchasesController < Admin::BaseController
   def new
     @purchase = Purchase.new
     prepare_items_for_dropdowns
-    @form_cancel_link = admin_purchases_path
+    @form_cancel_link = purchases_path
     payment = @purchase.build_payment    
   end
 
   def edit
-    @form_cancel_link = params[:link_from] == 'show' ? admin_purchase_path(@purchase) : admin_purchases_path
+    @form_cancel_link = params[:link_from] == 'show' ? purchase_path(@purchase) : purchases_path
     prepare_items_for_dropdowns
   end
 
@@ -71,9 +71,9 @@ class Admin::PurchasesController < Admin::BaseController
       [:renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id].each do |discount|
         DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
       end
-      # equivalent to redirect_to admin_purchase_path @purchase
+      # equivalent to redirect_to purchase_path @purchase
       # redirect_to [:admin, @purchase]
-      redirect_to admin_purchases_path
+      redirect_to purchases_path
       flash_message :success, t('.success')
       post_purchase_processing
       create_rider if @purchase.product.has_rider?
@@ -101,9 +101,9 @@ class Admin::PurchasesController < Admin::BaseController
       flash_message :success, t('.success')
       update_purchase_status([@purchase])
     else
-      @form_cancel_link = params[:purchase][:link_from] == 'show' ? admin_purchase_path(@purchase, link_from: 'show') : admin_purchases_path
-      # @form_cancel_link = params[:link_from] == 'show' ? admin_purchase_path(@purchase) : admin_purchases_path
-      # @form_cancel_link = params[:purchase][:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path
+      @form_cancel_link = params[:purchase][:link_from] == 'show' ? purchase_path(@purchase, link_from: 'show') : purchases_path
+      # @form_cancel_link = params[:link_from] == 'show' ? purchase_path(@purchase) : purchases_path
+      # @form_cancel_link = params[:purchase][:link_from] == 'purchases_index' ? client_path(@client, link_from: 'purchases_index') : clients_path
       prepare_items_for_dropdowns
       render :edit, status: :unprocessable_entity
     end
@@ -111,7 +111,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def destroy
     @purchase.destroy
-    redirect_to admin_purchases_path
+    redirect_to purchases_path
     flash_message :success, t('.success', name: @purchase.client.name)
   end
 
@@ -121,14 +121,14 @@ class Admin::PurchasesController < Admin::BaseController
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
     render json: { clientindex: @selected_client_index }
-    # redirect_to new_admin_purchase_path
+    # redirect_to new_purchase_path
   end
 
   def clear_filters
     # *splat operator is used to turn array into an argument list
     # https://ruby-doc.org/core-2.0.0/doc/syntax/calling_methods_rdoc.html#label-Array+to+Arguments+Conversion
     clear_session(*session_filter_list)
-    redirect_to admin_purchases_path
+    redirect_to purchases_path
   end
 
   def filter
@@ -138,7 +138,7 @@ class Admin::PurchasesController < Admin::BaseController
     (params_filter_list - [:search_name, :purchases_period]).each do |item|
       session["filter_#{item}".to_sym] = params[item]
     end
-    redirect_to admin_purchases_path
+    redirect_to purchases_path
   end
 
   def expire
@@ -241,7 +241,7 @@ class Admin::PurchasesController < Admin::BaseController
   #     return unless @product.trial? && @client.has_had_trial?
 
   #     flash[:warning] = "Purchase not created. #{@client.name} has already had a Trial"
-  #     # redirect_to new_admin_purchase_path
+  #     # redirect_to new_purchase_path
   #     @purchase = Purchase.new(purchase_params)
   #     prepare_items_for_dropdowns
   #     render :new, status: :unprocessable_entity
@@ -249,7 +249,7 @@ class Admin::PurchasesController < Admin::BaseController
   #     return unless @product.trial? && @client.has_had_trial? && !@purchase.trial?
 
   #     flash[:warning] = "Purchase not updated. #{@client.name} has already had a Trial"
-  #     redirect_to edit_admin_purchase_path(@purchase)
+  #     redirect_to edit_purchase_path(@purchase)
   #   end
   # end
 
@@ -262,7 +262,7 @@ class Admin::PurchasesController < Admin::BaseController
 
     flash[:warning] = "Purchase not updated. Can't change a purchase without a rider to one with a rider." if !original_purchase_has_rider && new_product_has_rider
     flash[:warning] = "Purchase not updated. Can't change a purchase with a rider to one without a rider." if original_purchase_has_rider && !new_product_has_rider
-    redirect_to edit_admin_purchase_path(@purchase)
+    redirect_to edit_purchase_path(@purchase)
   end
 
   def changing_main_purchase_name?
@@ -272,14 +272,14 @@ class Admin::PurchasesController < Admin::BaseController
     return false unless client_changed && original_purchase_has_rider
 
     flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
-    redirect_to edit_admin_purchase_path(@purchase)
+    redirect_to edit_purchase_path(@purchase)
   end
 
   # def changing_rider?
   #   return false if @purchase.main_purchase.nil?
 
   #   flash[:warning] = "Purchase not updated. Can't change details of a purchase that is a rider"
-  #   redirect_to admin_purchase_path(@purchase)
+  #   redirect_to purchase_path(@purchase)
   # end
 
   def adjust_and_restart
@@ -287,7 +287,7 @@ class Admin::PurchasesController < Admin::BaseController
     # new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )
     new_purchase.update(status: 'not started' )
     flash_message :warning, t('.adjust_and_restart')
-    redirect_to admin_purchases_path
+    redirect_to purchases_path
   end
 
   def set_purchase

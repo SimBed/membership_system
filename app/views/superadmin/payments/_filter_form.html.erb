@@ -2,7 +2,7 @@
   <div class="container search">
     <%= render partial: 'sort_selection' %>
     <hr class = "search mb-3"></hr>
-    <%= form_with(url: payment_filter_path, method: "get", class: "form-class", data: {turbo_frame: "payments"}) do %>
+    <%= form_with(url: filter_payments_path, method: "get", class: "form-class", data: {turbo_frame: "payments"}) do %>
       <div class="container mb-1">
         <div class="row">
           <div class="col-4 px-0">
@@ -29,7 +29,7 @@
           </div>
 
           <div class="container d-flex">
-            <%#= link_to image_tag('clear_filter.png', class: "button_icon"), clear_payment_filters_path, {class: "search searchdelete icon-container"} %>
+            <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_filters_payments_path, {class: "search searchdelete icon-container"} %>
           </div>
 
           <fieldset class="mt-2" style="margin-left:-1.3rem">

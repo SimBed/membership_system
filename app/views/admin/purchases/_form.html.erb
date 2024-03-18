@@ -5,10 +5,11 @@
 
   <%#= https://stackoverflow.com/questions/48197245/form-for-vs-form-with-in-rails-5-with-namespace
   prior to introduction of the admin folder structure/namespace the named route for the url "/purchases" was purchases_path
-  With the admin namespace, the required url is "/admin/purchase" with named route admin_purchases_path.
+  With the admin namespace, the required url is "/admin/purchase" with named route purchases_path.
   I don't see it in the documentation for form_with but the array syntax [:admin, purchase] as the model argument achieves this %>
   <%# found it https://guides.rubyonrails.org/form_helpers.html#dealing-with-namespaces %>
-  <%= form_with(model: [:admin, purchase],  data: { controller: "purchase-form", "purchase-form-url-value": purchases_discount_path, "purchase-form-dateurl-value": purchases_dop_change_path }) do |form| %>
+  <%#= form_with(model: [:admin, purchase],  data: { controller: "purchase-form", "purchase-form-url-value": purchases_discount_path, "purchase-form-dateurl-value": purchases_dop_change_path }) do |form| %>
+  <%= form_with(model: purchase,  data: { controller: "purchase-form", "purchase-form-url-value": purchases_discount_path, "purchase-form-dateurl-value": purchases_dop_change_path }) do |form| %>
     <% if purchase.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(purchase.errors.count, "error") %> prohibited this purchase from being saved:</h2>

@@ -1,5 +1,5 @@
 <div class="text-uppercase fst-italic">
-  <%= link_to @purchase.name(rider_show: true), admin_purchase_path(@purchase, link_from: @link_from), class: "like_button", data: {turbo: false} %>
+  <%= link_to @purchase.name(rider_show: true), purchase_path(@purchase, link_from: @link_from), class: "like_button", data: {turbo: false} %>
   <%= image_tag(@purchase.expired? ? 'expired.png' : 'attendances.png', class: "table_icon") %>
 </div>
 <div class="admin-table striped mt-2">

@@ -49,17 +49,17 @@ class Admin::ClientsController < Admin::BaseController
 
   def new
     @client = Client.new
-    @form_cancel_link = admin_clients_path
+    @form_cancel_link = clients_path
   end
 
   def edit
-    @form_cancel_link = params[:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path
+    @form_cancel_link = params[:link_from] == 'purchases_index' ? client_path(@client, link_from: 'purchases_index') : clients_path
   end
 
   def create
     @client = Client.new(client_params)
     if @client.save
-      redirect_to admin_clients_path
+      redirect_to clients_path
       flash_message :success, t('.success', name: @client.name)
     else
       render :new, status: :unprocessable_entity
@@ -76,29 +76,29 @@ class Admin::ClientsController < Admin::BaseController
       @quick_link = true if client_params[:email].nil? # means not the update form, but a link to update waiver\instagram\whatsapp
       if @quick_link
         respond_to do |format|
-          format.html { redirect_back fallback_location: admin_clients_path, success: t('.success', name: @client.name) }
+          format.html { redirect_back fallback_location: clients_path, success: t('.success', name: @client.name) }
           format.turbo_stream { flash_message :success, t('.success', name: @client.name), true }
         end
       else
-        # redirect_to admin_client_path(@client, link_from: params[:link_from])
-        redirect_to admin_clients_path
+        # redirect_to client_path(@client, link_from: params[:link_from])
+        redirect_to clients_path
         flash_message :success, t('.success', name: @client.name)
       end
     else
-      @form_cancel_link = params[:client][:link_from] == 'purchases_index' ? admin_client_path(@client, link_from: 'purchases_index') : admin_clients_path
+      @form_cancel_link = params[:client][:link_from] == 'purchases_index' ? client_path(@client, link_from: 'purchases_index') : clients_path
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @client.destroy
-    redirect_to admin_clients_path
+    redirect_to clients_path
     flash_message :success, t('.success', name: @client.name)
   end
 
   def clear_filters
     clear_session(:filter_cold, :filter_enquiry, :filter_packagee, :filter_active, :filter_one_time_trial, :search_client_name, :search_client_number)
-    redirect_to admin_clients_path
+    redirect_to clients_path
   end
 
   def filter
@@ -106,7 +106,7 @@ class Admin::ClientsController < Admin::BaseController
     session[:search_client_name] = params[:search_client_name] || session[:search_client_name]
     session[:search_client_number] = params[:search_client_number] || session[:search_client_number]
     set_session(:cold, :enquiry, :packagee, :active, :one_time_trial)
-    redirect_to admin_clients_path
+    redirect_to clients_path
   end
 
   private

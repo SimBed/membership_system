@@ -14,7 +14,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_client_path
+      get new_client_path
 
       assert_redirected_to login_path
     end
@@ -23,7 +23,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_clients_path
+      get clients_path
 
       assert_redirected_to login_path
     end
@@ -32,7 +32,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect show when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_client_path(@client)
+      get client_path(@client)
 
       assert_redirected_to login_path
     end
@@ -41,7 +41,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_client_path(@client)
+      get edit_client_path(@client)
 
       assert_redirected_to login_path
     end
@@ -51,7 +51,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Client.count' do
-        post admin_clients_path, params:
+        post clients_path, params:
           { client:
              { first_name: 'test',
                last_name: 'tester',
@@ -64,7 +64,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     original_email = @client.email
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_client_path(@client), params:
+      patch client_path(@client), params:
         { client:
            { first_name: @client.first_name,
              last_name: @client.last_name,
@@ -79,7 +79,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Client.count' do
-        delete admin_client_path(@client)
+        delete client_path(@client)
       end
     end
   end

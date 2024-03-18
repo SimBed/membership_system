@@ -12,19 +12,19 @@ class RoleSwitchingTest < ActionDispatch::IntegrationTest
 
   test 'orders index accessible under superadmin role but not under admin role; clients index accessible under superadmin role and admin role but not under client role' do
     log_in_as(@superadmin)
-    get admin_clients_path
+    get clients_path
 
     assert_template 'admin/clients/index'
-    assert_select 'a[href=?]', superadmin_orders_path
+    assert_select 'a[href=?]', orders_path
     switch_role_to('admin')
-    get admin_clients_path
+    get clients_path
 
     assert_template 'admin/clients/index'
-    assert_select 'a[href=?]', superadmin_orders_path, count: 0
+    assert_select 'a[href=?]', orders_path, count: 0
     switch_role_to('client')
 
-    assert_select 'a[href=?]', admin_clients_path, count: 0
-    get admin_clients_path
+    assert_select 'a[href=?]', clients_path, count: 0
+    get clients_path
 
     assert_redirected_to login_path
   end
