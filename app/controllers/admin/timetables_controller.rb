@@ -22,7 +22,8 @@ class Admin::TimetablesController < Admin::BaseController
     @days = @timetable.table_days.order_by_day
     @entries_hash = {}
     @days.each do |day|
-      @entries_hash[day.name] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
+      #NOTE: currently a hack to exclude open gym from public timetable 
+      @entries_hash[day.name] = Entry.where(table_day_id: day.id).not_open_gym.includes(:table_time, :workout).order_by_start
     end
     # used to establish whether 2nd day in the timetable slider is tomorrow or not
     @todays_day = Time.zone.today.strftime('%A')
