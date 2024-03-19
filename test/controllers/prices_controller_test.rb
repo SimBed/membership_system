@@ -17,7 +17,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_price_path(product_id: @product.id)
+      get new_price_path(product_id: @product.id)
 
       assert_redirected_to login_path
     end
@@ -26,7 +26,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_price_path(@price)
+      get edit_price_path(@price)
 
       assert_redirected_to login_path
     end
@@ -36,7 +36,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Price.count' do
-        post admin_prices_path, params:
+        post prices_path, params:
          { price:
             { price: 5000,
               date_from: '2022-01-01',
@@ -50,7 +50,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
     original_price = @price.price
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_price_path(@price), params:
+      patch price_path(@price), params:
        { price:
           { price: @price.price + 100,
             date_from: @price.date_from,
@@ -66,7 +66,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Price.count' do
-        delete admin_price_path(@price)
+        delete price_path(@price)
       end
     end
   end

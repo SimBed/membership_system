@@ -20,9 +20,9 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     follow_redirect! # logging in as client triggers redirect to booking page
 
     assert_template 'client/clients/book'
-    # assert_select 'a[href=?]', admin_attendances_path, count: 2
+    # assert_select 'a[href=?]', attendances_path, count: 2
     # i dont know where this syntax is documented, but it selects anchor elements with an href that matches the given regexs
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3 # 22/4, 22/4, 24/4
     # the path is to the create method (i.e. for a new booking, not an amendmdent to an existing booking)
     # no bookings made yet
     assert_equal 0, booking_count('booked') # test_helper.rb
@@ -40,7 +40,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     # an extra class with booking link appears
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 4 # 22/4, 22/4, 24/4, 24/4
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 4 # 22/4, 22/4, 24/4, 24/4
     log_in_as(@admin)
     @wkclass = Wkclass.last
     # push the date outside of the booking window (no test yet for whether it is visible (which it should be) just not bookable)
@@ -49,16 +49,16 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     # no booking link for the later dated wkclass
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3 # 22/4, 22/4, 24/4
   end
 
   test 'class booking links appear correctly for client after making new booking' do
     log_in_as(@account_client)
     follow_redirect!
     # There is a class on 25th but booking_window_days_before defaults to 2
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3 # 22/4, 22/4, 24/4
     assert_difference 'Attendance.count', 1 do
-      post admin_attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+      post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end
@@ -77,11 +77,11 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     # patch to "/admin/attendances/2139?booking_day=1&amp;booking_section=group"
     # find way to export response to file for easier debugging
     # not used in end - but note the addition of \/ [escape backslash] in the regexs if want to select for backslash
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}[?]/, count: 1
+    assert_select "a:match('href', ?)", /#{attendances_path}[?]/, count: 1
     attendance = Attendance.where(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id).first
 
-    assert_select "a:match('href', ?)", /#{admin_attendance_path(attendance)}/, count: 2
-    # assert_select 'a[href=?]', admin_attendance_path(attendance), count: 1
+    assert_select "a:match('href', ?)", /#{attendance_path(attendance)}/, count: 2
+    # assert_select 'a[href=?]', attendance_path(attendance), count: 1
   end
 
   test 'class booking links appear correctly when class gets full' do
@@ -89,13 +89,13 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     assert_template 'client/clients/book'
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3 # 22/4, 22/4, 24/4
     # make 1 class full
     @tomorrows_class_early.update(max_capacity: 0)
     # debugger
     get client_book_path(@client)
     # classes with a booking link reduces by 1
-    assert_select "a:match('href', ?)", /#{admin_attendances_path}/, count: 2 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 2 # 22/4, 22/4, 24/4
     # 1 class shows link for waiting list
     assert_select "a:match('href', ?)", /#{client_waitings_path}/, count: 1
     # assert_select "i.bi-battery-full", 1

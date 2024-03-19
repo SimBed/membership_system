@@ -1,4 +1,4 @@
-class FooterController < ApplicationController
+class PublicPages::FooterController < ApplicationController
   layout 'login'
 
   def about; end

@@ -38,20 +38,20 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def new
     @workout_group = WorkoutGroup.new
     prepare_items_for_dropdowns
-    @form_cancel_link = admin_workout_groups_path
+    @form_cancel_link = workout_groups_path
   end
 
   def edit
     prepare_items_for_dropdowns
     @partner = @workout_group.partner
-    @form_cancel_link = admin_workout_groups_path
+    @form_cancel_link = workout_groups_path
   end
 
   def create
     # @workout_group = WorkoutGroup.new(name: params[:workout_group][:name], workout_ids: params[:workout_ids])
     @workout_group = WorkoutGroup.new(workout_group_params)
     if @workout_group.save
-      redirect_to admin_workout_groups_path
+      redirect_to workout_groups_path
       flash[:success] = t('.success')
     else
       prepare_items_for_dropdowns
@@ -61,7 +61,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 
   def update
     if @workout_group.update(workout_group_params)
-      redirect_to admin_workout_groups_path
+      redirect_to workout_groups_path
       flash[:success] = t('.success')
     else
       prepare_items_for_dropdowns
@@ -72,7 +72,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 
   def destroy
     @workout_group.destroy
-    redirect_to admin_workout_groups_path
+    redirect_to workout_groups_path
     flash[:success] = t('.success')
   end
 

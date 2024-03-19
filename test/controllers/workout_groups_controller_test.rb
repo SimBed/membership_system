@@ -16,7 +16,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_workout_group_path
+      get new_workout_group_path
 
       assert_redirected_to login_path
     end
@@ -25,7 +25,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as partner or admin or more senior' do
     [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get admin_workout_groups_path
+      get workout_groups_path
 
       assert_redirected_to login_path
     end
@@ -34,7 +34,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect show when not logged in as correct partner or superadmin' do
     [nil, @account_client1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get admin_workout_group_path(@workout_group)
+      get workout_group_path(@workout_group)
 
       assert_redirected_to login_path
     end
@@ -43,7 +43,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_workout_group_path(@workout_group)
+      get edit_workout_group_path(@workout_group)
 
       assert_redirected_to login_path
     end
@@ -53,7 +53,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'WorkoutGroup.count' do
-        post admin_workout_groups_path, params:
+        post workout_groups_path, params:
          { workout_group:
             { name: 'PT',
               partner_id: @account_partner1.partner.id,
@@ -67,7 +67,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
     original_partner_share = @workout_group.partner_share
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_workout_group_path(@workout_group), params:
+      patch workout_group_path(@workout_group), params:
        { workout_group:
           { name: @workout_group.name,
             partner_id: @workout_group.partner_id,
@@ -83,7 +83,7 @@ class WorkoutGroupsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'WorkoutGroup.count' do
-        delete admin_workout_group_path(@workout_group)
+        delete workout_group_path(@workout_group)
       end
     end
   end

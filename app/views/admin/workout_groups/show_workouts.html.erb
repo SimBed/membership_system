@@ -6,7 +6,7 @@
           <%= render partial: 'admin/workout_groups/workout', collection: @current_workouts, as: :workout %>
         </div>
         <div class="cancel">
-          <%= link_to image_tag('delete.png', class: "table_icon"), admin_workout_groups_path %>
+          <%= link_to image_tag('delete.png', class: "table_icon"), workout_groups_path %>
         </div>        
     </div>
   <% end %>

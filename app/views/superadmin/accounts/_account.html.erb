@@ -2,7 +2,7 @@
   <div class="column col-1x"><%= account.email %></div>
   <div class="column col-1x"><%= account.priority_role.name %></div>
   <div class="column col-2x">  
-    <%= form_with(model: [:admin, account]) do |form| %>
+    <%= form_with(model: account) do |form| %>
       <% if account.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@account.errors.count, "error") %> prohibited this password from being updated:</h2>
@@ -37,7 +37,7 @@
     <% end %>
     <% unless account.has_role?('superadmin') %>
       <% confirm_message = "The account will be deleted. No data will be deleted, however the account holder will no longer be able to log in. Are you sure?" %>
-      <div class="text-capitalize"><%= link_to 'delete account', admin_account_path(account), class: 'like_button', data: {turbo_method: :delete, turbo_confirm: confirm_message} %></div>
+      <div class="text-capitalize"><%= link_to 'delete account', account_path(account), class: 'like_button', data: {turbo_method: :delete, turbo_confirm: confirm_message} %></div>
     <% end %>
   </div>
 </div>

@@ -16,7 +16,7 @@ class Admin::TableDaysController < Admin::BaseController
     @table_day = TableDay.new(table_day_params)
     if @table_day.save
       flash_message :success, "Timetable's day was successfully added"
-      redirect_to admin_timetable_path(@table_day.timetable)
+      redirect_to timetable_path(@table_day.timetable)
     else
       render :new, status: :unprocessable_entity
     end
@@ -25,7 +25,7 @@ class Admin::TableDaysController < Admin::BaseController
   def update
     if @table_day.update(table_day_params)
       flash_message :success, "Timetable's day was successfully updated"
-      redirect_to admin_timetable_path(@timetable)
+      redirect_to timetable_path(@timetable)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -34,7 +34,7 @@ class Admin::TableDaysController < Admin::BaseController
   def destroy
     @table_day.destroy
     flash_message :success, "Timetable's day was successfully deleted"
-    redirect_to admin_timetable_path(@timetable)
+    redirect_to timetable_path(@timetable)
   end
 
   private

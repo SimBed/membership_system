@@ -21,7 +21,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Attendance.count' do
-        post admin_attendances_path, params:
+        post attendances_path, params:
          { attendance:
             { wkclass_id: @wkclass.id,
               purchase_id: @purchase1.id,
@@ -34,7 +34,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     original_status = @attendance.status
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_attendance_path(@attendance), params:
+      patch attendance_path(@attendance), params:
        { attendance:
           { id: @attendance.id,
             status: 'attended' } }
@@ -48,7 +48,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Attendance.count' do
-        delete admin_attendance_path(@attendance)
+        delete attendance_path(@attendance)
       end
     end
   end

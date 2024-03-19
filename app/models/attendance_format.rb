@@ -111,7 +111,7 @@ class AttendanceFormat
       confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}" }
-      @route = 'admin_attendances_path'
+      @route = 'attendances_path'
       @route_params = { attendance: { wkclass_id: @wkclass.id, purchase_id: @purchase.id },
                         booking_day: @day,
                         booking_section: @booking_section }
@@ -121,7 +121,7 @@ class AttendanceFormat
       confirmation = I18n.t('client.clients.attendance.update.from_booked.confirm')
       @image_params = { src: 'delete.png',
                         css_class: 'table_icon mx-auto filter-red' }
-      @route = 'admin_attendance_path'
+      @route = 'attendance_path'
       @route_params = { id: @attendance.id,
                         booking_day: @day,
                         booking_section: @booking_section }
@@ -133,7 +133,7 @@ class AttendanceFormat
       confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if @attendance.purchase.freezed?(@attendance.wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: image_class }
-      @route = 'admin_attendance_path'
+      @route = 'attendance_path'
       @route_params = { id: @attendance.id,
                         booking_day: @day,
                         booking_section: @booking_section }
@@ -252,7 +252,7 @@ class AttendanceFormat
   #     confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
   #     @image_params = {src: 'add.png',
   #                      css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}"}
-  #     @route = 'admin_attendances_path'
+  #     @route = 'attendances_path'
   #     @route_params = {attendance: {wkclass_id: @wkclass.id, purchase_id: @purchase.id},
   #                      booking_day: @day,
   #                      booking_section: @booking_section}
@@ -262,7 +262,7 @@ class AttendanceFormat
   #     confirmation = I18n.t('client.clients.attendance.update.from_booked.confirm')
   #     @image_params = {src: 'delete.png',
   #                     css_class: 'table_icon mx-auto filter-red'}
-  #     @route = 'admin_attendance_path'
+  #     @route = 'attendance_path'
   #     @route_params = {id: @attendance.id,
   #                      booking_day: @day,
   #                      booking_section: @booking_section}
@@ -274,7 +274,7 @@ class AttendanceFormat
   #     confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if @attendance.purchase.freezed?(@attendance.wkclass.start_time)
   #     @image_params = {src: 'add.png',
   #                     css_class: image_class}
-  #     @route = 'admin_attendance_path'
+  #     @route = 'attendance_path'
   #     @route_params = {id: @attendance.id,
   #                     booking_day: @day,
   #                     booking_section: @booking_section}

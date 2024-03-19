@@ -15,7 +15,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   test 'should redirect new when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get new_superadmin_instructor_rate_path
+      get new_instructor_rate_path
 
       assert_redirected_to login_path
     end
@@ -24,7 +24,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   test 'should redirect index when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get superadmin_instructor_rates_path
+      get instructor_rates_path
 
       assert_redirected_to login_path
     end
@@ -33,7 +33,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   test 'should redirect edit when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_superadmin_instructor_rate_path(@instructor_rate)
+      get edit_instructor_rate_path(@instructor_rate)
 
       assert_redirected_to login_path
     end
@@ -43,7 +43,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'InstructorRate.count' do
-        post superadmin_instructor_rates_path, params:
+        post instructor_rates_path, params:
          { instructor_rate:
             { rate: 1000,
               date_from: '2022-03-01',
@@ -56,7 +56,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     original_rate = @instructor_rate.rate
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      patch superadmin_instructor_rate_path(@instructor_rate), params:
+      patch instructor_rate_path(@instructor_rate), params:
        { instructor_rate:
           { rate: @instructor_rate.rate + 500,
             date_from: @instructor_rate.date_from,
@@ -71,7 +71,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'InstructorRate.count' do
-        delete superadmin_instructor_rate_path(@instructor_rate)
+        delete instructor_rate_path(@instructor_rate)
       end
     end
   end

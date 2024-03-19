@@ -1,5 +1,5 @@
 class Superadmin::BlastsController < Superadmin::BaseController
-  def new
+  def show
     @recipients = Client.all
     handle_filter
     @clients_to_add = Client.exclude(@recipients).order_by_first_name
@@ -16,24 +16,24 @@ class Superadmin::BlastsController < Superadmin::BaseController
     session[:message] = params[:message]
     session[:greeting] = params[:greeting]
     # session[:template_message] = params[:greeting] == '1' ? greeting + params[:message] : params[:message]
-    redirect_to superadmin_blasts_new_path
+    redirect_to blast_path
   end
 
   def filter
     clear_session(:filter_blast_packagee, :filter_blast_group_packagee, :filter_blast_group_packagee_not_rider, :filter_blast_nobody)
     set_blast_session(:packagee, :group_packagee, :group_packagee_not_rider, :nobody)
-    redirect_to superadmin_blasts_new_path
+    redirect_to blast_path
   end
 
   def clear_filters
     clear_session(:filter_blast_packagee, :filter_blast_group_packagee, :filter_blast_group_packagee_not_rider, :filter_blast_nobody, :client_ids_remove, :client_ids_add)
-    redirect_to superadmin_blasts_new_path
+    redirect_to blast_path
   end
 
-  def test_blast
+  def test
     recipient = Rails.env.development? ? 'me' : 'boss'
     Blast.new(receiver: recipient, message: session[:template_message]).send_whatsapp
-    redirect_to superadmin_blasts_new_path
+    redirect_to blast_path
   end
 
   def blast_off
@@ -42,7 +42,7 @@ class Superadmin::BlastsController < Superadmin::BaseController
     max_recipient_blast_limit = Setting.max_recipient_blast_limit
     if @recipients.size > max_recipient_blast_limit
       flash[:warning] = t('.warning', max_recipient_blast_limit:)
-      redirect_to superadmin_blasts_new_path and return
+      redirect_to blast_path and return
     end
     # recipients = Client.where(whatsapp:'+4479405734').limit(2)
     passes = 0
@@ -58,19 +58,19 @@ class Superadmin::BlastsController < Superadmin::BaseController
     end
     # flash[:success] = t('.success')
     flash[:success] = t('.success', errors: ActionController::Base.helpers.pluralize(errors, "error"), passes: ActionController::Base.helpers.pluralize(passes, "pass"))
-    redirect_to superadmin_blasts_new_path
+    redirect_to blast_path
   end
 
   def remove_client
     session[:client_ids_remove] = client_ids_remove << params[:id]
     session[:client_ids_add].delete(params[:id])
-    redirect_to superadmin_blasts_new_path
+    redirect_to blast_path
   end
 
   def add_client
     session[:client_ids_add] = client_ids_add << params[:client_id]
     session[:client_ids_remove].delete(params[:client_id])
-    redirect_to superadmin_blasts_new_path
+    redirect_to blast_path
   end
 
 

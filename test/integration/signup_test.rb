@@ -17,7 +17,7 @@ class SignupTest < ActionDispatch::IntegrationTest
   test 'blank signup form' do
     get signup_path
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     post '/signup', params:
       { client:
        { first_name: '',
@@ -29,7 +29,7 @@ class SignupTest < ActionDispatch::IntegrationTest
          instagram: '',
          terms_of_service: '0' } }
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     assert_select 'h2', text: '5 errors prohibited this account from being created:'
     assert_select 'li', text: "First name can't be blank"
     assert_select 'li', text: "Last name can't be blank"
@@ -41,7 +41,7 @@ class SignupTest < ActionDispatch::IntegrationTest
   test 'invalid whatsapp' do
     get signup_path
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     post '/signup', params:
       { client:
        { first_name: 'Dani',
@@ -53,7 +53,7 @@ class SignupTest < ActionDispatch::IntegrationTest
          instagram: '',
          terms_of_service: '1' } }
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     assert_select 'h2', text: '1 error prohibited this account from being created:'
     assert_select 'li', text: 'Whatsapp is invalid'
     assert_select 'form input[type=text][value="Dani"]'
@@ -67,7 +67,7 @@ class SignupTest < ActionDispatch::IntegrationTest
   test 'invalid GB whatsapp' do
     get signup_path
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     post '/signup', params:
       { client:
        { first_name: 'Dani',
@@ -79,7 +79,7 @@ class SignupTest < ActionDispatch::IntegrationTest
          instagram: '',
          terms_of_service: '1' } }
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     assert_select 'h2', text: '1 error prohibited this account from being created:'
     assert_select 'li', text: 'Whatsapp is invalid'
     assert_select 'form input[type=text][value="Dani"]'
@@ -155,7 +155,7 @@ class SignupTest < ActionDispatch::IntegrationTest
   test 'valid signup (Indian whatsapp)' do
     get signup_path
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     # https://apidock.com/rails/v5.2.3/ActiveSupport/Testing/Assertions/assert_difference
     assert_difference -> { Account.count } => 1, -> { Client.count } => 1 do
       post '/signup', params:
@@ -206,7 +206,7 @@ class SignupTest < ActionDispatch::IntegrationTest
   test 'valid signup (GB whatsapp)' do
     get signup_path
 
-    assert_template 'public_pages/signup'
+    assert_template 'public_pages/home/signup'
     # https://apidock.com/rails/v5.2.3/ActiveSupport/Testing/Assertions/assert_difference
     assert_difference -> { Account.count } => 1, -> { Client.count } => 1, -> { Assignment.count } => 1 do
       post '/signup', params:

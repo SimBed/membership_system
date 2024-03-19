@@ -96,13 +96,13 @@ class ApplicationController < ActionController::Base
       if @account.instructor.employee?
         redirect_to wkclasses_path
       else
-        redirect_to admin_instructor_path(@account.instructor)
+        redirect_to instructor_path(@account.instructor)
       end
     end
   end
 
   def deal_with_partner
-    redirect_to admin_partner_path(@account.partner) if logged_in_as?('partner')
+    redirect_to partner_path(@account.partner) if logged_in_as?('partner')
   end
 
   def expiry_earlier?(current_expiry_date, orig_expiry_date)

@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, timetable]) do |form| %>
+<%= form_with(model: timetable) do |form| %>
   <% if timetable.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(timetable.errors.count, "error") %> prohibited this timetable from being saved:</h2>

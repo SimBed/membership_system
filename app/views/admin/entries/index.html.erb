@@ -21,7 +21,7 @@
         <td><%= entry.subheading2 %></td>
         <td><%= entry.studio %></td>
         <td><%= link_to 'Show', [:admin, entry] %></td>
-        <td><%= link_to 'Edit', edit_admin_entry_path(entry) %></td>
+        <td><%= link_to 'Edit', edit_entry_path(entry) %></td>
         <td><%= link_to 'Destroy', [:admin, entry], data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
@@ -30,4 +30,4 @@
 
 <br>
 
-<%= link_to 'New Entry', new_admin_entry_path %>
+<%= link_to 'New Entry', new_entry_path %>

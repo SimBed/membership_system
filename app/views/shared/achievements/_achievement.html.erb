@@ -2,7 +2,7 @@
   <div class="column col-1x"><%= achievement.date.strftime('%d %b %y') %></div>
   <div class="column col-1x"><%= number_with_delimiter(achievement.score) %></div>
   <div class="column col-1x"><%= link_to achievement.client.name, client_path(achievement.client), class: 'like_button', data: {turbo: false} %></div>
-  <div class="column col-1x"><%= link_to achievement.challenge.name, shared_challenge_path(achievement.challenge), class: 'like_button', data: { turbo: false } %></div>
-  <div class="column"><%= link_to image_tag("edit.png", class: "table_icon"), edit_shared_achievement_path(achievement), data: { turbo: false } %></div>
-  <div class="column"><%= link_to image_tag("delete.png", class: "table_icon"), shared_achievement_path(achievement), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Are you sure?' } %></div>
+  <div class="column col-1x"><%= link_to achievement.challenge.name, challenge_path(achievement.challenge), class: 'like_button', data: { turbo: false } %></div>
+  <div class="column"><%= link_to image_tag("edit.png", class: "table_icon"), edit_achievement_path(achievement), data: { turbo: false } %></div>
+  <div class="column"><%= link_to image_tag("delete.png", class: "table_icon"), achievement_path(achievement), data: {turbo_method: :delete, turbo_frame: "_top", turbo_confirm: 'Are you sure?' } %></div>
 </div>

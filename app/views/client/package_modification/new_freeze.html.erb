@@ -14,7 +14,7 @@
   </div>
   <%= render 'razor_form_freeze' %>
   <div class="fs-8 mt-3">
-  <p>Before paying, please read terms under 'Modifications' <%= link_to 'here', '/terms&conditions', class: "fw-bolder text-decoration-underline", target: '_blank' %></p></div>
+  <p>Before paying, please read terms under 'Modifications' <%= link_to 'here', terms_and_conditions_path, class: "fw-bolder text-decoration-underline", target: '_blank' %></p></div>
     <div class="cancel">
       <%= link_to image_tag('delete.png', class: "table_icon"), client_package_modification_cancel_freeze_path(@client, purchase_id: @purchase.id) %>
     </div>

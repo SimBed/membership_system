@@ -38,7 +38,7 @@ module Client::ClientsHelper
       { css_class: '',
         link: link_to(
           image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}"),
-          admin_attendances_path('attendance[wkclass_id]': wkclass.id,
+          attendances_path('attendance[wkclass_id]': wkclass.id,
                                  'attendance[purchase_id]': purchase.id,
                                  booking_day: day,
                                  booking_section:),
@@ -81,7 +81,7 @@ module Client::ClientsHelper
     end
     link_to(
       image_tag(image, class: image_class),
-      admin_attendance_path(attendance, booking_day: day, booking_section:),
+      attendance_path(attendance, booking_day: day, booking_section:),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )

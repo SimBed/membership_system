@@ -1,4 +1,4 @@
-<%= form_with(model: [:shared, challenge]) do |form| %>
+<%= form_with(model: challenge) do |form| %>
   <% if challenge.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(challenge.errors.count, "error") %> prohibited this challenge from being saved:</h2>

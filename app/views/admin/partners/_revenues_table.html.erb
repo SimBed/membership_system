@@ -3,7 +3,7 @@
   <div class="admin-table striped">
     <% @partner.workout_groups.each do |wg| %>
       <div class="row">
-        <div class="column col-1x"><%= link_to wg.name, admin_workout_group_path(wg), class: 'like_button' %></div>
+        <div class="column col-1x"><%= link_to wg.name, workout_group_path(wg), class: 'like_button' %></div>
         <div class="column col-1x"><%= number_to_currency(@partner_share[wg.name.to_sym], precision: 0, unit: '') %></div>
       </div>
     <% end %>

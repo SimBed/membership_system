@@ -32,7 +32,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
     assert_equal 10, @purchase.freezes.last.duration
 
     # book during freeze
-    post admin_attendances_path, params:
+    post attendances_path, params:
      { attendance:
         { wkclass_id: @tomorrows_class_early.id,
           purchase_id: @purchase.id,
@@ -54,7 +54,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
     assert_equal 'booked', future_booking.status
     log_in_as(@account_client)
     # book during freeze, triggers earlier expiry date
-    post admin_attendances_path, params:
+    post attendances_path, params:
      { attendance:
         { wkclass_id: @tomorrows_class_early.id,
           purchase_id: @purchase.id,
@@ -67,7 +67,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   # test 'update booking to booked/attended while frozen terminates freeze early' do
   #   log_in_as(@admin)
   #   # book class
-  #   post admin_attendances_path, params:
+  #   post attendances_path, params:
   #    { attendance:
   #       { wkclass_id: @tomorrows_class_early.id,
   #         purchase_id: @purchase.id,
@@ -84,7 +84,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #   # client attends booked class during freeze, attendance updated to attended
   #   @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
   #   assert_difference '@client.attendances.confirmed.no_amnesty.size', 1 do
-  #     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'attended' } }
+  #     patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'attended' } }
   #   end
   #   assert_equal Date.parse('23 Jun 2022'), @purchase.reload.expiry_date_calc
   #   assert_equal 3, @purchase.freezes.last.duration
@@ -93,7 +93,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   # test 'update booking to cancelled while frozen has no affect on freeze' do
   #   log_in_as(@admin)
   #   # book class
-  #   post admin_attendances_path, params:
+  #   post attendances_path, params:
   #    { attendance:
   #       { wkclass_id: @tomorrows_class_early.id,
   #         purchase_id: @purchase.id,
@@ -110,7 +110,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #   # cancel class during freeze
   #   @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
   #   assert_difference '@client.attendances.no_amnesty.size', -1 do
-  #     patch admin_attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
+  #     patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
   #   end
   #   assert_equal Date.parse('30 Jun 2022'), @purchase.reload.expiry_date_calc
   #   assert_equal 10, @purchase.freezes.last.duration

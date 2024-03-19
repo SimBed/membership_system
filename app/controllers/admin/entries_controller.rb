@@ -18,7 +18,7 @@ class Admin::EntriesController < Admin::BaseController
     @entry = Entry.new(entry_params)
     if @entry.save
       flash_message :success, 'Entry was successfully added.'
-      redirect_to admin_timetable_path(@entry.table_time.timetable)
+      redirect_to timetable_path(@entry.table_time.timetable)
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class Admin::EntriesController < Admin::BaseController
   def update
     if @entry.update(entry_params)
       flash_message :success, 'Entry was successfully updated.'
-      redirect_to admin_timetable_path(@entry.table_time.timetable)
+      redirect_to timetable_path(@entry.table_time.timetable)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -36,7 +36,7 @@ class Admin::EntriesController < Admin::BaseController
   def destroy
     timetable = @entry.table_time.timetable
     @entry.destroy
-    redirect_to admin_timetable_path(timetable), notice: 'Entry was successfully deleted.'
+    redirect_to timetable_path(timetable), notice: 'Entry was successfully deleted.'
   end
 
   private

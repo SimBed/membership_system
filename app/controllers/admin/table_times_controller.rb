@@ -16,7 +16,7 @@ class Admin::TableTimesController < Admin::BaseController
     @table_time = TableTime.new(table_time_params)
     if @table_time.save
       flash_message :success, "Timetable's time was successfully added"
-      redirect_to admin_timetable_path(@table_time.timetable)
+      redirect_to timetable_path(@table_time.timetable)
     else
       render :new, status: :unprocessable_entity
     end
@@ -25,7 +25,7 @@ class Admin::TableTimesController < Admin::BaseController
   def update
     if @table_time.update(table_time_params)
       flash_message :success, "Timetable's time was successfully updated"
-      redirect_to admin_timetable_path(@timetable)
+      redirect_to timetable_path(@timetable)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -34,7 +34,7 @@ class Admin::TableTimesController < Admin::BaseController
   def destroy
     @table_time.destroy
     flash_message :success, "Timetable's time was successfully deleted"
-    redirect_to admin_timetable_path(@timetable)
+    redirect_to timetable_path(@timetable)
   end
 
   private

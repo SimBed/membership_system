@@ -37,7 +37,7 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@account_partner)
     # get root_path
 
-    assert_redirected_to admin_partner_path(@partner)
+    assert_redirected_to partner_path(@partner)
   end
 
   # test "should get shop" do

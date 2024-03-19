@@ -1,5 +1,5 @@
 <div class="container px-1">
-  <h4>Achievements <%= link_to image_tag('add.png', class: "button_icon"), new_shared_achievement_path %></h4>
+  <h4>Achievements <%= link_to image_tag('add.png', class: "button_icon"), new_achievement_path %></h4>
 </div>
 <%= turbo_frame_tag 'achievements' do %>
   <%= render 'achievements_table' %>

@@ -1,5 +1,5 @@
 <div class="admin_form mb-3"> 
-  <%= form_with url: superadmin_add_message_path, class: '' do |form| %>
+  <%= form_with url: add_message_blast_path, class: '' do |form| %>
     <div class="field">
       <%= form.label :message, class: 'fw-bolder ps-1 mb-1' %>
       <%= form.text_area :message, cols: 40, rows: 8, value: @message, class: 'form-control' %>

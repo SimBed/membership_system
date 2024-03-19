@@ -16,8 +16,8 @@
         <div class="column col-1x"><%= adj.created_at.strftime('%d %b %y') %></div>
         <div class="column col-1x"><%= "#{pluralize(adj.adjustment, 'day')}" %></div>
         <div class="column col-1x"><%= adj.note %></div>
-        <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_adjustment_path(adj), class: "icon-container", data: { turbo_frame: 'adjustment_edit' } %></div>
-        <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), admin_adjustment_path(adj), data: { turbo_method: :delete, turbo_confirm: 'Adjustment will be deleted. Are you sure?' } %></div>
+        <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_adjustment_path(adj), class: "icon-container", data: { turbo_frame: 'adjustment_edit' } %></div>
+        <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), adjustment_path(adj), data: { turbo_method: :delete, turbo_confirm: 'Adjustment will be deleted. Are you sure?' } %></div>
       </div>
     <% end %>
   </div>

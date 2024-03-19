@@ -1,5 +1,5 @@
-<!--%#= form_with(url: edit_admin_attendance_path(@attendance)) do |form| %-->
-<%= form_with(model: [:admin, object], class: "form-class", data: {turbo_method: :patch}) do |form| %>
+<!--%#= form_with(url: edit_attendance_path(@attendance)) do |form| %-->
+<%= form_with(model: object, class: "form-class", data: {turbo_method: :patch}) do |form| %>
   <!--div><%#= form.hidden_field :id, :value => object.id %> </div-->
   <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>
   <div><%= form.hidden_field :page, value: params[:page] %></div>

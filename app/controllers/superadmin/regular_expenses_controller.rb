@@ -20,7 +20,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
   def create
     @regular_expense = RegularExpense.new(regular_expense_params)
     if @regular_expense.save
-      redirect_to superadmin_regular_expenses_path
+      redirect_to regular_expenses_path
       flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
@@ -29,7 +29,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
 
   def update
     if @regular_expense.update(regular_expense_params)
-      redirect_to superadmin_regular_expenses_path
+      redirect_to regular_expenses_path
       flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
@@ -38,7 +38,7 @@ class Superadmin::RegularExpensesController < Superadmin::BaseController
 
   def destroy
     @regular_expense.destroy
-    redirect_to superadmin_regular_expenses_path
+    redirect_to regular_expenses_path
     flash[:success] = t('.success')
   end
 

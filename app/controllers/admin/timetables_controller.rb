@@ -40,7 +40,7 @@ class Admin::TimetablesController < Admin::BaseController
     @timetable = Timetable.new(timetable_params)
     if @timetable.save
       flash[:success] = t('.success')
-      redirect_to admin_timetable_path(@timetable)
+      redirect_to timetable_path(@timetable)
     else
       render :new, status: :unprocessable_entity
     end
@@ -49,7 +49,7 @@ class Admin::TimetablesController < Admin::BaseController
   def update
     if @timetable.update(timetable_params)
       flash[:success] = t('.success')
-      redirect_to admin_timetable_path(@timetable)
+      redirect_to timetable_path(@timetable)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -58,14 +58,14 @@ class Admin::TimetablesController < Admin::BaseController
   def destroy
     @timetable.destroy
     flash[:success] = t('.success')
-    redirect_to admin_timetables_path
+    redirect_to timetables_path
   end
 
   def deep_copy
     t_copy = @timetable.deep_clone include: [ {table_days: :entries}, { table_times: :entries} ], use_dictionary: true
     t_copy.update(title: "#{t_copy.title} (copy)") # NOTE: update saves record
     flash[:success] = t('.success')
-    redirect_to admin_timetables_path    
+    redirect_to timetables_path    
   end
 
   private

@@ -1,4 +1,4 @@
-<%= form_with(model: [:superadmin,other_service], data: {turbo: false}) do |form| %>
+<%= form_with(model: other_service, data: {turbo: false}) do |form| %>
   <% if other_service.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(other_service.errors.count, "error") %> prohibited this other_service from being saved:</h2>

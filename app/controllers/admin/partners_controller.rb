@@ -27,7 +27,7 @@ class Admin::PartnersController < Admin::BaseController
   def create
     @partner = Partner.new(partner_params)
     if @partner.save
-      redirect_to admin_partners_path
+      redirect_to partners_path
       flash[:success] = t('.success')
     else
       format.html { render :new, status: :unprocessable_entity }
@@ -36,7 +36,7 @@ class Admin::PartnersController < Admin::BaseController
 
   def update
     if @partner.update(partner_params)
-      redirect_to admin_partners_path
+      redirect_to partners_path
       flash[:success] = t('.success')
     else
       format.html { render :edit, status: :unprocessable_entity }
@@ -45,7 +45,7 @@ class Admin::PartnersController < Admin::BaseController
 
   def destroy
     @partner.destroy
-    redirect_to admin_partners_path
+    redirect_to partners_path
     flash[:success] = t('.success')
   end
 

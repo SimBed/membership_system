@@ -11,7 +11,7 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get new' do
     log_in_as(@admin)
-    get new_admin_entry_url
+    get new_entry_url
 
     assert_response :success
   end
@@ -19,7 +19,7 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
   test 'should create entry' do
     log_in_as(@admin)
     assert_difference('Entry.count') do
-      post admin_entries_url, params: {
+      post entries_url, params: {
         entry: {
           studio: @entry.studio,
           goal: @entry.goal,
@@ -31,30 +31,30 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to admin_timetable_url(@table_day.timetable)
+    assert_redirected_to timetable_url(@table_day.timetable)
   end
 
   test 'should get edit' do
     log_in_as(@admin)
-    get edit_admin_entry_url(@entry)
+    get edit_entry_url(@entry)
 
     assert_response :success
   end
 
   test 'should update entry' do
     log_in_as(@admin)
-    patch admin_entry_url(@entry), params: { entry: { studio: @entry.studio, goal: @entry.goal, level: @entry.level, workout_id: 4 } }
+    patch entry_url(@entry), params: { entry: { studio: @entry.studio, goal: @entry.goal, level: @entry.level, workout_id: 4 } }
 
-    assert_redirected_to admin_timetable_url(@entry.table_day.timetable)
+    assert_redirected_to timetable_url(@entry.table_day.timetable)
   end
 
   test 'should destroy entry' do
     log_in_as(@admin)
     timetable = @entry.table_day.timetable
     assert_difference('Entry.count', -1) do
-      delete admin_entry_url(@entry)
+      delete entry_url(@entry)
     end
 
-    assert_redirected_to admin_timetable_url(timetable)
+    assert_redirected_to timetable_url(timetable)
   end
 end

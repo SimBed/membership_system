@@ -13,7 +13,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_fitternity_path
+      get new_fitternity_path
 
       assert_redirected_to login_path
     end
@@ -22,7 +22,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_fitternities_path
+      get fitternities_path
 
       assert_redirected_to login_path
     end
@@ -31,7 +31,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect show when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_fitternity_path(@fitternity)
+      get fitternity_path(@fitternity)
 
       assert_redirected_to login_path
     end
@@ -40,7 +40,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_fitternity_path(@fitternity)
+      get edit_fitternity_path(@fitternity)
 
       assert_redirected_to login_path
     end
@@ -50,7 +50,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Fitternity.count' do
-        post admin_fitternities_path, params:
+        post fitternities_path, params:
          { fitternity:
             { max_classes: 100,
               expiry_date: '2022-03-01' } }
@@ -62,7 +62,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     original_max_classes = @fitternity.max_classes
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_fitternity_path(@fitternity), params:
+      patch fitternity_path(@fitternity), params:
        { fitternity:
           { max_classes: @fitternity.max_classes + 100,
             expiry_date: @fitternity.expiry_date } }
@@ -76,7 +76,7 @@ class FitternitiesControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Fitternity.count' do
-        delete admin_fitternity_path(@fitternity)
+        delete fitternity_path(@fitternity)
       end
     end
   end

@@ -1,5 +1,5 @@
 <div id="blasts-filter" class="container px-1 mb-3">
-  <%= form_with(url: superadmin_blast_filter_path, method: "get", class: "form-class") do %>
+  <%= form_with(url: filter_blast_path, method: "get", class: "form-class") do %>
     <div class="admin_form mb-3">
       <div class="row mb-3 g-0">
         <div class="col-4 px-0">
@@ -48,7 +48,7 @@
   <div class="reduce80">
     <%= render 'additional_recipient_form' %>
     <div class="container d-flex">
-      <%= link_to image_tag('clear_filter.png', class: "button_icon"), superadmin_clear_blast_filters_path, {class: "search searchdelete icon-container"} %>
+      <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_filters_blast_path, {class: "search searchdelete icon-container"} %>
     </div>
   </div>
 

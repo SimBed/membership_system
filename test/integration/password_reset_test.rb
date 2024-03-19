@@ -15,7 +15,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert @account.authenticate('password')
     log_in_as(@admin)
     # admin cannot specify the actual password. The new password is randomly generated on update.
-    patch admin_account_path(@account)
+    patch account_path(@account)
 
     refute @account.reload.authenticate('password')
   end
@@ -24,7 +24,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
   test 'client resets password with valid password' do
     log_in_as(@account)
     get client_client_path @client
-    patch admin_account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar' } },
+    patch account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar' } },
                                         headers: { referer: client_client_url(@client) }
 
     refute @account.reload.authenticate('password')
@@ -34,7 +34,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'client resets password with invalid password' do
     log_in_as(@account)
-    patch admin_account_path(@account), params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba' } }
+    patch account_path(@account), params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba' } }
 
     assert @account.reload.authenticate('password')
     refute @account.reload.authenticate('fooba')
@@ -43,7 +43,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'client resets password with invalid password confirmation' do
     log_in_as(@account)
-    patch admin_account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'barfoo' } }
+    patch account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'barfoo' } }
 
     assert @account.reload.authenticate('password')
     refute @account.reload.authenticate('foobar')
@@ -52,7 +52,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'superadmin resets admin account password with valid new password (and correct admin password)' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin),
+    patch account_path(@admin),
           params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('foobar')
@@ -61,7 +61,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'superadmin resets admin account password with valid new password but incorrect admin password' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin),
+    patch account_path(@admin),
           params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'passwod' } }
 
     refute @admin.reload.authenticate('foobar')
@@ -70,17 +70,17 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'superadmin resets admin account password with invalid new password' do
     log_in_as(@superadmin)
-    patch admin_account_path(@admin),
+    patch account_path(@admin),
           params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('password')
     refute @admin.reload.authenticate('fooba')
-    assert_redirected_to admin_accounts_path
+    assert_redirected_to accounts_path
   end
 
   test 'admin resets admin account password' do
     log_in_as(@admin)
-    patch admin_account_path(@admin),
+    patch account_path(@admin),
           params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
 
     assert @admin.reload.authenticate('password')

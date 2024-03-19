@@ -8,13 +8,13 @@ class FooterControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get terms' do
-    get '/terms&conditions'
+    get terms_and_conditions_path
 
     assert_response :success
   end
 
   test 'should get charges' do
-    get '/charges&deductions'
+    get charges_and_deductions_path
 
     assert_response :success
   end

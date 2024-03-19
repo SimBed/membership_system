@@ -57,7 +57,7 @@
   <div class="field my-2">
       <%= form.label :terms_of_service do %>
     <%= form.check_box :terms_of_service %>
-    <%= "I agree to the Space's #{link_to 'Terms & Conditions', '/terms&conditions', class: "fw-bolder text-decoration-underline"} &
+    <%= "I agree to the Space's #{link_to 'Terms & Conditions', terms_and_conditions_path, class: "fw-bolder text-decoration-underline"} &
                                                     #{link_to 'Payment Policy', '/payment_policy', class: "fw-bolder text-decoration-underline"} &
                                                     #{link_to 'Privacy Policy', '/privacy_policy', class: "fw-bolder text-decoration-underline"}".html_safe%>
     <% end %>

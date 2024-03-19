@@ -15,7 +15,7 @@
   <% end %>
   <div class="column col-2x"><%= render 'admin/wkclasses/attendance_form', object: attendance %></div>
   <% unless logged_in_as?('instructor') %>
-      <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), admin_attendance_path(attendance, link_from: params[:link_from]), data: { turbo_method: :delete, turbo_confirm: 'Attendance will be deleted. Are you sure?' } %></div> 
+      <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), attendance_path(attendance, link_from: params[:link_from]), data: { turbo_method: :delete, turbo_confirm: 'Attendance will be deleted. Are you sure?' } %></div> 
   <% end %>
 </div>
 

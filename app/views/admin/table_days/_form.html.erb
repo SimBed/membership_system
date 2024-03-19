@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, table_day]) do |form| %>
+<%= form_with(model: table_day) do |form| %>
   <% if table_day.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(table_day.errors.count, "error") %> prohibited this table_day from being saved:</h2>

@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, partner]) do |form| %>
+<%= form_with(model: partner) do |form| %>
   <% if partner.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(partner.errors.count, "error") %> prohibited this partner from being saved:</h2>

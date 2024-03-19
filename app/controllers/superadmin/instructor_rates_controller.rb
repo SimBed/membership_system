@@ -24,7 +24,7 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
     @instructor_rate = InstructorRate.new(instructor_rate_params)
 
     if @instructor_rate.save
-      redirect_to superadmin_instructor_rates_path
+      redirect_to instructor_rates_path
       flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
@@ -33,7 +33,7 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
 
   def update
     if @instructor_rate.update(instructor_rate_params)
-      redirect_to superadmin_instructor_rates_path
+      redirect_to instructor_rates_path
       flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
@@ -42,7 +42,7 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
 
   def destroy
     @instructor_rate.destroy
-    redirect_to superadmin_instructor_rates_path
+    redirect_to instructor_rates_path
     flash[:success] = t('.success')
   end
 

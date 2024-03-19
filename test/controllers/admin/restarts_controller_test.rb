@@ -12,7 +12,7 @@ class Admin::RestartsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get admin_restarts_path
+      get restarts_path
 
       assert_redirected_to login_path
     end

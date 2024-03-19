@@ -1,4 +1,4 @@
-<%= form_with(model: [:superadmin, regular_expense]) do |form| %>
+<%= form_with(model: regular_expense) do |form| %>
   <% if regular_expense.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(regular_expense.errors.count, "error") %> prohibited this superadmin_regular_expense from being saved:</h2>

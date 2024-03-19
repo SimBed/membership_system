@@ -15,9 +15,9 @@
         <div class="column col-1x"><%= restart.payment.dop.strftime('%d %b %y') %></div>
         <div class="column col-1x"><%= link_to rupees(restart.payment.amount), payment_path(restart.payment), class: "like_button", data: {turbo: false} %></div>
         <div class="column col-1x"><%= restart.note %></div>
-        <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_admin_restart_path(restart), class: "icon-container", data: { turbo_frame: 'restart_edit' } %></div>
+        <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_restart_path(restart), class: "icon-container", data: { turbo_frame: 'restart_edit' } %></div>
         <% if false %>
-          <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), admin_restart_path(restart), data: { turbo_method: :delete, turbo_confirm: 'Restart will be deleted. Are you sure?' } %></div>
+          <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), restart_path(restart), data: { turbo_method: :delete, turbo_confirm: 'Restart will be deleted. Are you sure?' } %></div>
         <% end %>
       </div>
   </div>

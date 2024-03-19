@@ -1,5 +1,5 @@
 <div class="container px-1">
-  <h4>Instructor Rates <%= link_to image_tag('add.png', class: 'button_icon'), new_superadmin_instructor_rate_path %></h4>
+  <h4>Instructor Rates <%= link_to image_tag('add.png', class: 'button_icon'), new_instructor_rate_path %></h4>
 </div>
 <%= turbo_frame_tag 'instructor_rates' do %>
   <%= render 'instructor_rates_table' %>

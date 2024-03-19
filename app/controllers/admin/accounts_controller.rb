@@ -44,7 +44,7 @@ class Admin::AccountsController < Admin::BaseController
 
   def destroy
     @account.clean_up
-    redirect_to admin_accounts_path
+    redirect_to accounts_path
     flash_message :success, t('.success')    
   end
 
@@ -71,7 +71,7 @@ class Admin::AccountsController < Admin::BaseController
     else
       flash_message :warning, t('.fail')
     end
-    redirect_to admin_accounts_path
+    redirect_to accounts_path
   end
 
   def password_reset_client_of_client

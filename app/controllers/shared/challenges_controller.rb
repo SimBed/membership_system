@@ -6,7 +6,7 @@ class Shared::ChallengesController < Shared::BaseController
   end
 
   def show
-    @challenges = Challenge.order_by_name.map { |l| [l.name, l.id, { 'data-showurl' => shared_challenge_url(l.id) }] }
+    @challenges = Challenge.order_by_name.map { |l| [l.name, l.id, { 'data-showurl' => challenge_url(l.id) }] }
     @client_results = @challenge.results
   end
 
@@ -23,7 +23,7 @@ class Shared::ChallengesController < Shared::BaseController
     @challenge = Challenge.new(challenge_params)
     if @challenge.save
       flash_message :success, t('.success')
-      redirect_to shared_challenges_path
+      redirect_to challenges_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class Shared::ChallengesController < Shared::BaseController
   def update
     if @challenge.update(challenge_params)
       flash_message :success, t('.success')
-      redirect_to shared_challenges_path
+      redirect_to challenges_path
     else
       @challenges = Challenge.order_by_name.map { |c| [c.name, c.id] }
       render :edit, status: :unprocessable_entity
@@ -42,7 +42,7 @@ class Shared::ChallengesController < Shared::BaseController
   def destroy
     @challenge.destroy
     flash_message :success, t('.success')
-    redirect_to shared_challenges_path
+    redirect_to challenges_path
   end
 
   private

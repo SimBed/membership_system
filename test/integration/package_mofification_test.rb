@@ -90,7 +90,7 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     end    
     log_in_as(@admin)
     assert_difference -> { Restart.count } => 1, -> { Purchase.count } => 1, -> { Payment.count } => 1, -> { @purchase.attendances.booked.size } => -1 do
-      post admin_restarts_path, params:
+      post restarts_path, params:
        { restart:
           { parent_id: @purchase.id,
             payment_attributes:

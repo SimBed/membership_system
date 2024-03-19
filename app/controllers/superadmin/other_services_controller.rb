@@ -18,7 +18,7 @@ class Superadmin::OtherServicesController < Superadmin::BaseController
   def create
     @other_service = OtherService.new(other_service_params)
     if @other_service.save
-      redirect_to superadmin_other_services_path
+      redirect_to other_services_path
       flash[:success] = t('.success')
     else
       render :new, status: :unprocessable_entity
@@ -27,7 +27,7 @@ class Superadmin::OtherServicesController < Superadmin::BaseController
 
   def update
     if @other_service.update(other_service_params)
-      redirect_to superadmin_other_services_path
+      redirect_to other_services_path
       flash[:success] = t('.success')
     else
       render :edit, status: :unprocessable_entity
@@ -36,7 +36,7 @@ class Superadmin::OtherServicesController < Superadmin::BaseController
 
   def destroy
     @other_service.destroy
-    redirect_to superadmin_other_services_path
+    redirect_to other_services_path
     flash[:success] = t('.success')
   end
 

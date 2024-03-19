@@ -16,7 +16,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_partner_path
+      get new_partner_path
 
       assert_redirected_to login_path
     end
@@ -25,7 +25,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect index when not logged in as admin or more senior' do
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
-      get admin_partners_path
+      get partners_path
 
       assert_redirected_to login_path
     end
@@ -34,7 +34,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect show when not logged in as superadmin or correct account' do
     [nil, @account_client1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get admin_partner_path(@partner1)
+      get partner_path(@partner1)
 
       assert_redirected_to login_path
     end
@@ -43,7 +43,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_partner_path(@partner1)
+      get edit_partner_path(@partner1)
 
       assert_redirected_to login_path
     end
@@ -53,7 +53,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Partner.count' do
-        post admin_partners_path, params:
+        post partners_path, params:
          { partner:
             { first_name: 'test',
               last_name: 'testpartner' } }
@@ -65,7 +65,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     original_first_name = @partner1.first_name
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_partner_path(@partner1), params:
+      patch partner_path(@partner1), params:
        { partner:
           { first_name: 'Raymond',
             last_name: @partner1.last_name } }
@@ -79,7 +79,7 @@ class PartnersControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Partner.count' do
-        delete admin_partner_path(@partner1)
+        delete partner_path(@partner1)
       end
     end
   end

@@ -18,7 +18,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect new when not logged in as junioradmin or more senior' do
     [nil, @account_client1, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get new_admin_adjustment_path
+      get new_adjustment_path
 
       assert_redirected_to login_path
     end
@@ -27,7 +27,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as junioradmin or more senior' do
     [nil, @purchase1.client.account, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      get edit_admin_adjustment_path(@adjustment)
+      get edit_adjustment_path(@adjustment)
 
       assert_redirected_to login_path
     end
@@ -37,7 +37,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Adjustment.count' do
-        post admin_adjustments_path, params:
+        post adjustments_path, params:
          { adjustment:
             { purchase_id: @purchase1.id,
               adjustment: 10 } }
@@ -49,7 +49,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
     original_adjustment = @adjustment.adjustment
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
-      patch admin_adjustment_path(@adjustment), params:
+      patch adjustment_path(@adjustment), params:
        { adjustment:
           { purchase_id: @purchase1.id,
             adjustment: @adjustment.adjustment + 5 } }
@@ -63,7 +63,7 @@ class AdjustmentsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Adjustment.count' do
-        delete admin_adjustment_path(@adjustment)
+        delete adjustment_path(@adjustment)
       end
     end
   end

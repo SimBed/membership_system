@@ -19,7 +19,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: @client_without_account.email,
+        post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
                                             ac_type: 'client' }
       end
@@ -32,7 +32,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: @partner_without_account.email,
+        post accounts_path, params: { email: @partner_without_account.email,
                                             partner_id: @partner_without_account.id,
                                             ac_type: 'partner' }
       end
@@ -45,7 +45,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: @client_without_account.email,
+        post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
                                             ac_type: 'admin' }
       end
@@ -58,7 +58,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: @client_without_account.email,
+        post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
                                             ac_type: 'junioradmin' }
       end
@@ -71,7 +71,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        post admin_accounts_path, params: { email: @client_without_account.email,
+        post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
                                             ac_type: 'superadmin' }
       end
@@ -83,7 +83,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect create account if no associated client/partner/instructor' do
     log_in_as(@superadmin)
     assert_no_difference 'Account.count' do
-      post admin_accounts_path, params:
+      post accounts_path, params:
        { email: 'wannabe@example.com',
          ac_type: 'client' }
     end
@@ -95,7 +95,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        delete admin_account_path(@admin)
+        delete account_path(@admin)
       end
 
       assert_redirected_to login_path
@@ -106,7 +106,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do
-        delete admin_account_path(@instructor_account)
+        delete account_path(@instructor_account)
       end
 
       assert_redirected_to login_path

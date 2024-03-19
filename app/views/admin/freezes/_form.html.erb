@@ -39,7 +39,7 @@
 
     <div class="field" data-freeze-target="doctorNote" <%= 'hidden' unless freeze.medical? %>>
       <ul class="confirmation">
-        <li>I confirm the <%=link_to 'Medical Freeze Policy', '/terms&conditions', class:'like_button', data: {turbo:false}%> has been correctly followed</li>
+        <li>I confirm the <%=link_to 'Medical Freeze Policy', terms_and_conditions_path, class:'like_button', data: {turbo:false}%> has been correctly followed</li>
         <li>a doctor's note has been provided</li>
         <li>the freeze charge will be waived</li>     
       </ul>

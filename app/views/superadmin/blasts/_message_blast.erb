@@ -4,7 +4,7 @@
     <span style= 'font-size: 0.9em; font-weight: bolder;'>The message has been reviewed. The test message has been sent and received. The recipient list has been double-checked.</span>
   <% end %>
   <%#= NOTE: confirmation message will not be triggered when turbo set to false. Solution with stimulus https://discuss.hotwired.dev/t/disable-turbo-but-retain-confirmation-popup-for-link-in-turbo-frame/5697/2%>
-  <%= link_to "blast to all #{@recipient_list_size}", superadmin_blast_off_path, class:'btn btn-dark mt-2 disabled',
+  <%= link_to "blast to all #{@recipient_list_size}", blast_off_blast_path, class:'btn btn-dark mt-2 disabled',
               data: { "action": "click->blast#confirm",
                       "turbo": false,
                       "blast-target": "blastButton" } %>

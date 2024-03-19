@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, instructor]) do |form| %>
+<%= form_with(model: instructor) do |form| %>
   <% if instructor.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(instructor.errors.count, "error") %> prohibited this instructor from being saved:</h2>

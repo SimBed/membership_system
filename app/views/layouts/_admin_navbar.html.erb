@@ -51,31 +51,31 @@
                 <% unless logged_in_as?('junioradmin') %>    
                   <span class="dropdown-label">JUNIORADMIN</span>
                 <% end %>  
-                  <%#= link_to 'Fitternity', admin_fitternities_path, class: "dropdown-item" %>
+                  <%#= link_to 'Fitternity', fitternities_path, class: "dropdown-item" %>
                   <%= link_to 'Freezes', freezes_path, class: "dropdown-item" %>
                   <%= link_to 'Products', products_path, class: "dropdown-item" %>
-                  <%= link_to 'Restarts', admin_restarts_path, class: "dropdown-item" %>
+                  <%= link_to 'Restarts', restarts_path, class: "dropdown-item" %>
                 <% unless logged_in_as?('junioradmin') %>                     
                   <span class="dropdown-label">ADMIN</span>
-                  <%= link_to 'Achievements', shared_achievements_path, class: "dropdown-item" %>
-                  <%= link_to 'Challenges', shared_challenges_path, class: "dropdown-item" %>
-                  <%= link_to 'Instructors', admin_instructors_path, class: "dropdown-item" %>
+                  <%= link_to 'Achievements', achievements_path, class: "dropdown-item" %>
+                  <%= link_to 'Challenges', challenges_path, class: "dropdown-item" %>
+                  <%= link_to 'Instructors', instructors_path, class: "dropdown-item" %>
                   <%= link_to 'Markers', strength_markers_path, class: "dropdown-item" %>
-                  <%= link_to 'Partners', admin_partners_path, class: "dropdown-item" %>
-                  <%= link_to 'Timetables', admin_timetables_path, class: "dropdown-item" %>                           
+                  <%= link_to 'Partners', partners_path, class: "dropdown-item" %>
+                  <%= link_to 'Timetables', timetables_path, class: "dropdown-item" %>                           
                   <%= link_to 'Workouts', workouts_path, class: "dropdown-item" %>
-                  <%= link_to 'Workout Groups', admin_workout_groups_path, class: "dropdown-item" %>
+                  <%= link_to 'Workout Groups', workout_groups_path, class: "dropdown-item" %>
                 <% end %>  
                   <% if logged_in_as?('superadmin') %>                   
                     <span class="dropdown-label">SUPERADMIN</span>
-                    <%= link_to 'Accounts', admin_accounts_path, class: "dropdown-item" %>
-                    <%= link_to 'Blasts', superadmin_blasts_new_path, class: "dropdown-item" %>
+                    <%= link_to 'Accounts', accounts_path, class: "dropdown-item" %>
+                    <%= link_to 'Blasts', blast_path, class: "dropdown-item" %>
                     <%= link_to 'Discounts', discounts_path, class: "dropdown-item" %>
                     <%= link_to 'Discount Reasons', discount_reasons_path, class: "dropdown-item" %>
                     <%= link_to 'Expenses', expenses_path, class: "dropdown-item" %>
-                    <%= link_to 'Regular Expenses', superadmin_regular_expenses_path, class: "dropdown-item" %>
-                    <%= link_to 'Instructor rates', superadmin_instructor_rates_path, class: "dropdown-item" %>
-                    <%= link_to 'Other Services', superadmin_other_services_path, class: "dropdown-item" %>
+                    <%= link_to 'Regular Expenses', regular_expenses_path, class: "dropdown-item" %>
+                    <%= link_to 'Instructor rates', instructor_rates_path, class: "dropdown-item" %>
+                    <%= link_to 'Other Services', other_services_path, class: "dropdown-item" %>
                     <%= link_to 'Payments', payments_path, class: "dropdown-item" %>
                     <%= link_to 'Razorpay Orders', orders_path, class: "dropdown-item" %>
                     <%= link_to 'Settings', superadmin_settings_path, class: "dropdown-item" %>

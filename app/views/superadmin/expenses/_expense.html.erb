@@ -2,7 +2,7 @@
   <div class="column col-2x"><%= expense.item %></div>
   <div class="column col-1x"><%= number_with_delimiter(expense.amount) %></div>
   <div class="column col-1x"><%= expense&.date&.strftime '%b %y' %></div>
-  <div class="column col-1x"><%= link_to expense.workout_group.name, admin_workout_group_path(expense.workout_group), class: 'like_button', data: {turbo: false} %></div>
+  <div class="column col-1x"><%= link_to expense.workout_group.name, workout_group_path(expense.workout_group), class: 'like_button', data: {turbo: false} %></div>
   <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_expense_path(expense), data: {turbo: false} %></div>
   <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), expense_path(expense), data: { turbo_method: :delete, turbo_confirm: 'Expense will be deleted. Are you sure?' } %></div>
 </div>

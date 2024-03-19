@@ -20,7 +20,7 @@ class Shared::AchievementsController < Shared::BaseController
     @achievement = Achievement.new(achievement_params)
     if @achievement.save
       flash_message :success, t('.success')
-      redirect_to shared_achievements_path
+      redirect_to achievements_path
     else
       set_options
       render :new, status: :unprocessable_entity
@@ -30,7 +30,7 @@ class Shared::AchievementsController < Shared::BaseController
   def update
     if @achievement.update(achievement_params)
       flash_message :success, t('.success')
-      redirect_to shared_achievements_path
+      redirect_to achievements_path
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class Shared::AchievementsController < Shared::BaseController
   def destroy
     @achievement.destroy
     flash_message :success, t('.success')
-    redirect_to shared_achievements_path
+    redirect_to achievements_path
   end
 
   private

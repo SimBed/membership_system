@@ -1,4 +1,4 @@
-<form action=<%= "/admin/instructors/#{params[:id]}" %> method="GET">
+<form action=<%= instructor_path(@instructor) %> method="GET">
   <select name="revenue_month" onchange="this.form.requestSubmit()" class= "sort">
     <%= options_for_select @months, session[:revenue_month] %>
   </select>

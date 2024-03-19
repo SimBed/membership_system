@@ -10,12 +10,12 @@
                   class: "icon-container",
                   data: { turbo_frame: dom_id(Freeze.new) } %> |
       <%= link_to image_tag('adjust.png', class: "table_icon" ),
-                  new_admin_adjustment_path(purchase: @purchase.id),
+                  new_adjustment_path(purchase: @purchase.id),
                   class: "icon-container",
                   data: { turbo_frame: dom_id(Adjustment.new) } %> |
       <% if @purchase.can_restart? %>
         <%= link_to image_tag('restart.png', class: "table_icon" ),
-                    new_admin_restart_path(purchase_id: @purchase.id),
+                    new_restart_path(purchase_id: @purchase.id),
                     class: "icon-container",
                     data: { turbo_frame: dom_id(Restart.new) } %> |
       <% end %>
