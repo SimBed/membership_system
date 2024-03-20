@@ -166,7 +166,6 @@ class Admin::PurchasesController < Admin::BaseController
     # @payment_after_discount = [0, (@base_price.price * (1 - discount_percent.to_f / 100) - discount_fixed).round(0)].max
     # apply_discount defined in ApplyDiscount concern
     @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount, @discretion_discount, @commercial_discount)
-    # render 'payment_after_discount.js'
     render json: { base_price_price: @base_price.price,
                    payment_after_discount: @payment_after_discount,
                    base_price_id: @base_price.id }

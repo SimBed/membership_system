@@ -4,5 +4,3 @@
   <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), timetable, data: { turbo_method: :delete, turbo_confirm: 'Timetable will be deleted. Are you sure?' }%></div>
   <div class="column"><%= link_to image_tag('clipboard.png', class: "table_icon"), timetable_deep_copy_path(timetable), data: { turbo_method: :post, turbo_confirm: "A copy of this timetable, it's times, days and entries will be created. Are you sure?" }%></div>
 </div>
-
-

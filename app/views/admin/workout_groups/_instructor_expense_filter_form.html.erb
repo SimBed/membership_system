@@ -3,7 +3,8 @@
     <!-- hr class = "search mb-3"></-->
     <!--form action=<%#= "/admin/workout_groups/#{params[:id]}" %> method="GET", remote: true-->
     <%#= form_with(url: "/admin/workout_groups/#{params[:id]}", method: "get", local: false, class: "form-class") do %>
-    <%= form_with(url: "/workout_group/#{params[:id]}/instructor_expense_filter", method: "get", class: "form-class") do %>
+    <%#= form_with(url: "/workout_group/#{params[:id]}/instructor_expense_filter", method: "get", class: "form-class") do %>
+    <%= form_with(url: instructor_expense_filter_path(@workout_group), method: "get", class: "form-class") do %>
       <div class="container mb-1">
         <div class="row">
           <div class="col-12 px-0">

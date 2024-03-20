@@ -1,12 +1,12 @@
-<form action="/superadmin/regular_expenses/add" class="mb-1">
+<%= form_with url: regular_expenses_add_path, class:"mb-1" do %>
   <input type="submit" value="Add All Regular Expenses to <%= @last_month %>">
   <input type="hidden" name="date" value="<%= @last_month %>">
-</form>
-<form action="/superadmin/regular_expenses/add" class="mb-1">
+<% end %>
+<%= form_with url: regular_expenses_add_path, class:"mb-1" do %>
   <input type="submit" value="Add All Regular Expenses to <%= @this_month %>">
   <input type="hidden" name="date" value="<%= @this_month %>">
-</form>
-<form action="/superadmin/regular_expenses/add">
+<% end %>
+<%= form_with url: regular_expenses_add_path, class:"mb-1" do %>
   <input type="submit" value="Add All Regular Expenses to <%= @next_month %>">
   <input type="hidden" name="date" value="<%= @next_month %>">
-</form>
+<% end %>
