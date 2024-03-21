@@ -5,18 +5,18 @@
   <% @purchases.each do |purchase| %>
       <div class="container px-0">
         <% @purchase = purchase %>
-        <%= render partial: 'purchase_summary' %>
+        <%= render partial: 'client/data_pages/shared/purchase_summary' %>
         <%# this page is shown on the history page (where details are wanted, but options to modify not wanted) and on bookings page vice-veras.
         detailed == true means history page, otherwise booking page %>
         <% if detailed == false %>
-          <%= render partial: 'package_modifications' unless purchase.trial? %>  <%# no need for unless purchase.expired? as only unexpired purchases are shown on booking page%>
+          <%= render partial: 'client/data_pages/package_modifications' unless purchase.trial? %>  <%# no need for unless purchase.expired? as only unexpired purchases are shown on booking page%>
         <% end %>
         <% if detailed == true %>
           <%= render partial: 'purchase_attendances' %>
         <% end %>
-        <%= render partial: 'freezes_summary' %>
-        <%= render partial: 'adjustments_summary' %>
-        <%= render partial: 'penalties_summary' %>
+        <%= render partial: 'client/data_pages/freezes_summary' %>
+        <%= render partial: 'client/data_pages/adjustments_summary' %>
+        <%= render partial: 'client/data_pages/penalties_summary' %>
       </div>
       <hr class="divider thick">
   <% end %>

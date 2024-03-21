@@ -19,7 +19,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect! # logging in as client triggers redirect to booking page
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     # assert_select 'a[href=?]', attendances_path, count: 2
     # i dont know where this syntax is documented, but it selects anchor elements with an href that matches the given regexs
     assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3 # 22/4, 22/4, 24/4
@@ -64,7 +64,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     # only 1 class booked but shown twice (once in group, once in my_bookings)
     assert_equal 2, booking_count('booked')
     # after booking:
@@ -88,7 +88,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3 # 22/4, 22/4, 24/4
     # make 1 class full
     @tomorrows_class_early.update(max_capacity: 0)

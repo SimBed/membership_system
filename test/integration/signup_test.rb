@@ -176,7 +176,7 @@ class SignupTest < ActionDispatch::IntegrationTest
     assert_redirected_to client_shop_path(assigns(:client).id)
     follow_redirect!
     # same tests as for 'test shop items correct for new client' from client_renewal_test
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     assert_empty response.body.scan(/Buy your first Package/)
     assert_empty response.body.scan(/Renew your Package/)
     assert_select 'div', text: 'unlimited 1 week trial'
@@ -227,7 +227,7 @@ class SignupTest < ActionDispatch::IntegrationTest
     assert_redirected_to client_shop_path(assigns(:client).id)
     follow_redirect!
 
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     log_out
     new_account = Account.last
     # the new account has been given a random password, so lets rest it so we can login easily

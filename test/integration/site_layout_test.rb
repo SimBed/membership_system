@@ -154,14 +154,14 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', client_shop_path(@client)
     assert_select 'a[href=?]', client_history_path(@client)
     assert_select 'a[href=?]', client_book_path(@client)
     assert_select 'a[href=?]', client_pt_path(@client), count: 0
     assert_select 'a[href=?]', client_timetable_path
-    assert_select 'a[href=?]', client_client_path(@client)
+    assert_select 'a[href=?]', client_profile_path(@client)
     assert_select 'a[href=?]', clients_path, count: 0
     assert_select 'a[href=?]', purchases_path, count: 0
     assert_select 'a[href=?]', wkclasses_path, count: 0
@@ -198,14 +198,14 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_pt)
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', client_shop_path(@client_pt)
     assert_select 'a[href=?]', client_history_path(@client_pt)
     assert_select 'a[href=?]', client_book_path(@client_pt)
     assert_select 'a[href=?]', client_pt_path(@client_pt), count: 1
     assert_select 'a[href=?]', client_timetable_path
-    assert_select 'a[href=?]', client_client_path(@client_pt)
+    assert_select 'a[href=?]', client_profile_path(@client_pt)
   end
 
   test 'layout links when logged-in as partner' do

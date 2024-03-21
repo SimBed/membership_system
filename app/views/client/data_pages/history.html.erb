@@ -1,0 +1,8 @@
+<%# provide(:heading, "Package History") %>
+<% provide(:greeting, @client.name) %>
+
+<%= render partial: 'client/data_pages/shared/client_greeting' %>
+<%= turbo_frame_tag 'client_packages' do%>
+  <%= render partial: 'history_heading' %>
+  <%= render partial: 'client/data_pages/shared/client_packages_table', locals: {detailed: true}  unless @purchases.empty? %>
+<% end %>

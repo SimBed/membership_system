@@ -89,7 +89,7 @@ class Admin::AccountsController < Admin::BaseController
         date_created: @client.created_at,
         date_last_purchase_expiry: @client.last_purchase&.expiry_date
       }
-      render 'client/clients/show', layout: 'client'
+      render 'client/data_pages/profile', layout: 'client'
     end
   end
 

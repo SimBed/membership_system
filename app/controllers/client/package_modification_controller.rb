@@ -1,7 +1,5 @@
-class Client::PackageModificationController < ApplicationController
+class Client::PackageModificationController < Client::BaseController
   skip_before_action :verify_authenticity_token
-  layout 'client'
-  before_action :correct_account
 
   def new_freeze
     @purchase = Purchase.find(params[:purchase_id])
@@ -58,10 +56,10 @@ class Client::PackageModificationController < ApplicationController
 
   private
 
-  def correct_account
-    @client = Client.find(params[:id])
-    redirect_to login_path unless current_account?(@client.account)
-  end
+  # def correct_account
+  #   @client = Client.find(params[:id])
+  #   redirect_to login_path unless current_account?(@client.account)
+  # end
 
   def freeze_params
     { purchase_id: order_params[:purchase_id],

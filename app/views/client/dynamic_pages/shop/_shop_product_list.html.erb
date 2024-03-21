@@ -18,7 +18,7 @@
           </div>
           <% if logged_in? %>
             <div class="ps-3">
-              <%= render partial: 'razor_form_shop', locals: {product: product} %>
+              <%= render partial: 'client/dynamic_pages/shop/razor_form_shop', locals: {product: product} %>
             </div>
           <% end %>
         </div>

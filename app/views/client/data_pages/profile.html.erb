@@ -2,12 +2,12 @@
 <% provide(:greeting, @client.name) %>
 
 <div class="text-center mb-3">
-  <%= render partial: 'client/clients/client_heading', locals: {selection: false} %>
+  <%= render partial: 'client/data_pages/client_heading', locals: {selection: false} %>
 </div>
 
 <div id="client-data" class="">
-  <%= render partial: 'client/clients/client_data' %>
-  <%= render partial: 'client/clients/client_summary' %>
+  <%= render partial: 'client/data_pages/client_data' %>
+  <%= render partial: 'client/data_pages/client_summary' %>
 </div>
 
 <% if false %>

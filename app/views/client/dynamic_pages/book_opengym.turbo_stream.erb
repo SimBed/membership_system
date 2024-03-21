@@ -5,6 +5,6 @@
   <%= render partial: "my_bookings_table" %>
 <% end %>
 <%= turbo_stream.update "packages-table" do %>
-  <%= render partial: "client_packages_table", locals: {detailed: false} %>
+  <%= render partial: "client/data_pages/shared/client_packages_table", locals: {detailed: false} %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

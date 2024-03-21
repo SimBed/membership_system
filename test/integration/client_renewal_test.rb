@@ -24,7 +24,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     # puts @response.parsed_body
     # 1 form for razorpay
     assert_select 'form'
@@ -47,7 +47,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     assert_select 'p', text: 'Renew your Package before expiry with a 5% online discount!'
     assert_select 'p', text: 'Group - Unlimited Classes 3 Months'
     assert_select 's', text: 'Rs. 25,500'
@@ -96,7 +96,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_ongoing_trial)
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     # puts @response.parsed_body
     assert_select 'p', text: 'Buy your first Package before your trial expires with a 20% online discount!'
     assert_select 'p', text: 'Group - Unlimited Classes 3 Months'
@@ -120,7 +120,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_expired_trial)
     follow_redirect!
 
-    assert_template 'client/clients/book'
+    assert_template 'client/dynamic_pages/book'
     assert_select 'p', text: 'Your Trial has expired. Buy your first Package with a 15% online discount!'
     assert_select 'p', text: 'Group - Unlimited Classes 3 Months'
     assert_select 's', text: 'Rs. 25,500'
@@ -143,7 +143,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     get client_shop_path(@account_client.client)
 
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     # puts @response.parsed_body
     assert_select 'h3', text: 'Renew your Package before expiry with a 5% online discount!'
     assert_select 'div.base-price', text: 'Rs. 1,500', count: 0
@@ -182,7 +182,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     purchase.update_column(:status, 'expired')
     get client_shop_path(@account_client.client)
 
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     # puts @response.parsed_body
     assert_empty response.body.scan(/Renew your Package/)
     assert_select 'div.base-price', text: 'Rs. 1,500', count: 0
@@ -214,7 +214,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_ongoing_trial)
     get client_shop_path(@account_client_for_ongoing_trial.client)
 
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     assert_select 'h3', text: 'Buy your first Package before your trial expires with a 20% online discount!'
     assert_select 'div.base-price', text: 'Rs. 1,500', count: 0
     assert_select 'div.discount-price', text: 'Rs. 1,500', count: 0
@@ -247,7 +247,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_for_expired_trial)
     get client_shop_path(@account_client_for_expired_trial.client)
 
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     assert_select 'h3', text: 'Buy your first Package with a 15% online discount!'
     assert_select 'div.base-price', text: 'Rs. 1,500', count: 0
     assert_select 'div.discount-price', text: 'Rs. 1,500', count: 0
@@ -282,7 +282,7 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     log_in_as(@account_new_client)
     get client_shop_path(@account_new_client.client)
 
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     # puts @response.parsed_body
     assert_empty response.body.scan(/Buy your first Package/)
     assert_empty response.body.scan(/Renew your Package/)

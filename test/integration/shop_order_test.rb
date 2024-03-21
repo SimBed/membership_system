@@ -11,7 +11,7 @@ class ShopOrderTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     get client_shop_path(@account_client.client)
 
-    assert_template 'client/clients/shop'
+    assert_template 'client/dynamic_pages/shop'
     order_params = { product_id: @product_unlimited1m.id,
                      price: 8550,
                      status: 'captured',

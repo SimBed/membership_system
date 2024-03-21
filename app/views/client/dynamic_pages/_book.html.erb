@@ -8,7 +8,7 @@
   <% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?)) %>
 
   <div class="booking-page">
-    <%= render partial: 'client_greeting' %>
+    <%= render partial: 'client/data_pages/shared/client_greeting' %>
     <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_show.empty? %>
     <%= turbo_frame_tag 'client_bookings' do %>
       <%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_show.empty? %>
@@ -24,7 +24,7 @@
       <%= render partial: 'renewal' %>
     <% end %>
     <div id="packages-table">
-      <%= render partial: 'client_packages_table', locals: {detailed: false} %>
+      <%= render partial: 'client/data_pages/shared/client_packages_table', locals: {detailed: false} %>
     </div>
   </div>
 <% end %>

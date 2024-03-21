@@ -1,19 +1,19 @@
-require 'test_helper'
+require "test_helper"
 
-class Client::ClientsControllerTest < ActionDispatch::IntegrationTest
+class Client::DynamicPagesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
     @account_client2 = accounts(:client2)
     @account_partner1 = accounts(:partner1)
+    @junioradmin = accounts(:junioradmin)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
-    @junioradmin = accounts(:junioradmin)
   end
 
-  test 'should redirect show when not logged in as account of the client' do
+  test 'should redirect book when not logged in as account of the client' do
     [nil, @account_client2, @account_partner1, @junioradmin, @admin, @superadmin].each do |account_holder|
       log_in_as(account_holder)
-      get client_client_path(@account_client1.client)
+      get client_book_path(@account_client1.client)
 
       assert_redirected_to login_path
     end

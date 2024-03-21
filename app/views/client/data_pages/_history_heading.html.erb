@@ -3,7 +3,7 @@
   <%= yield(:classes_heading) %>
   </h6>
     <h2>
-      <form action=<%= "/client/clients/#{params[:id]}/history" %> method="GET" >
+      <form action=<%= client_history_path(@client) %> method="GET" >
         <select name="purchaseid" onchange="this.form.requestSubmit()" class= "sort">
           <%= options_for_select @products_purchased, session[:purchaseid] %>
         </select>

@@ -39,7 +39,7 @@
           <%= link_to "Timetable", client_timetable_path, class: "nav-link #{active_link_for(path: client_timetable_path)}", 'data-turbolinks': false %>
         </li>
         <li class="nav-item">
-          <%= link_to "Profile", client_client_path(client), class: "nav-link #{active_link_for(path: client_client_path(client))}" %>
+          <%= link_to "Profile", client_profile_path(client), class: "nav-link #{active_link_for(path: client_profile_path(client))}" %>
         </li>
         <% if Setting.show_challenge %>
           <li class="nav-item">
