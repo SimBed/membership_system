@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta name="turbo-visit-control" content="reload">
     <title>The Space Fitness</title>
     <%= render 'layouts/meta' %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>  <%# this loads Sprockets/Rails asset pipeline %>
     <%= javascript_importmap_tags %> <%#  this loads JS from importmaps %>
     <%= favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: "180x180" %>
     <%= favicon_link_tag 'favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: "32x32" %>
-    <%= favicon_link_tag 'favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: "16x16" %>    
+    <%= favicon_link_tag 'favicon-16x16.png', rel: 'icon', type: 'image/png', sizes: "16x16" %>
 
     <script src="https://kit.fontawesome.com/52a30c356b.js" crossorigin="anonymous"></script>
 

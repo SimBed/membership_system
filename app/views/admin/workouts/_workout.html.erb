@@ -1,6 +1,6 @@
 <div class= "row">
   <%= content_tag(:div, workout.name, class: ["column col-2x",("fw-bolder" if workout.current?)].compact.join(' ')) %>
   <div class="column col-2x"><%= workout.workout_groups.pluck(:name).join(', ') %></div>
-  <div class="column col-1x"><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless workout.current?)].compact.join(' ')), workout_path(workout, current: !workout.current?), data: {turbo_method: :patch} %></div>        
+  <div class="column col-1x"><%= link_to image_tag('attendances.png', class: ["table_icon",("greyed-out" unless workout.current?)].compact.join(' ')), workout_path(workout, current: !workout.current?), data: {turbo_method: :patch} %></div>        
   <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_workout_path(workout),data: {turbo: false} %></div>
 </div>

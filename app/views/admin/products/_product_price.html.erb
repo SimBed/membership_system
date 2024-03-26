@@ -3,7 +3,7 @@
   <div class="column col-1x"><%= price.date_from.strftime('%d %b %y') %></div>
   <div class="column col-1x"><%= ((price.date_until || Date.today) - Date.today > 3650) ? raw("&infin;") :price.date_until&.strftime('%d %b %y') %></div>
   <div class="column col-1x"><%= Purchase.where(price_id:price).size %></div>
-  <div class="column"><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless price.current?)].compact.join(' ')), price_path(price, current: !price.current?, product_id: params[:id] ), data: {turbo_method: :patch} %></div>
+  <div class="column"><%= link_to image_tag('attendances.png', class: ["table_icon",("greyed-out" unless price.current?)].compact.join(' ')), price_path(price, current: !price.current?, product_id: params[:id] ), data: {turbo_method: :patch} %></div>
   <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_price_path(price), data: {turbo: false} %></div>
   <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon").html_safe, price_path(price), {data: {turbo_method: :delete, turbo_confirm: 'Price will be deleted. Are you sure?' }} if price.deletable? %> </div>
 </div>

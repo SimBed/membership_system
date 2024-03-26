@@ -1,0 +1,6 @@
+<%# weird nuance of tooltips with spaces - https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces%>
+<% tooltip_title = "The account will be deleted. No data will be deleted, however #{client.first_name} will no longer be able to log in.".gsub(' ',"\u00a0") %>
+<% confirm_message = "The account will be deleted. No data will be deleted, however #{client.first_name} will no longer be able to log in. Are you sure?" %>
+<div class='d-inline' data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %> >
+  <%= link_to image_tag('delete-account.png', class: "table_icon"), account_path(client.account), data: { turbo_method: :delete, turbo_confirm: confirm_message }  %>
+</div>

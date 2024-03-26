@@ -1,0 +1,8 @@
+<turbo-frame id="manage-account-<%= client.id %>">
+  <% if client.account %>
+    <%= render partial: 'admin/clients/delete_account', locals: {client: } %>
+    <%= render partial: 'admin/clients/forgot_password', locals: {client: } %>
+  <% else %>
+    <%= render partial: 'admin/clients/add_account', locals: {client: } %>
+  <% end %>
+</turbo-frame> 

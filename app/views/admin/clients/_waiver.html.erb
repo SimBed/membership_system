@@ -1,4 +1,4 @@
 <%= link_to image_tag('waiver.png',
-                      class: ["table_icon",("waiver" unless client.waiver?)].compact.join(' ')),
+                      class: ["table_icon",("greyed-out" unless client.waiver?)].compact.join(' ')),
                       client_path(client, waiver: !client.waiver?),
                       data: { "turbo-method": :patch } %>

@@ -20,8 +20,8 @@
     <%= render partial: 'whatsapp_group', locals: {client: @client} %>
   </turbo-frame>
   <% if admin_plus %>
-    <turbo-frame id="forgot-password-<%= @client.id  %>">    
-      <%= render partial: 'forgot-password', locals: {client: @client} %>
+    <turbo-frame id="manage-account-<%= @client.id  %>">
+      <%= render partial: 'manage_account', locals: {client: @client} %>
     </turbo-frame> 
   <% end %>    
 </div>

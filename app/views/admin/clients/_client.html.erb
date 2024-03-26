@@ -28,34 +28,31 @@
     <div class="column">
       <%= link_to image_tag('edit.png', class: "table_icon"), edit_client_path(client) %>
     </div>
-    <% if @admin_plus && client.deletable? %> 
-      <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), client_path(client), data: { "turbo-method": :delete, turbo_confirm: 'Client has no purchases so can be deleted. But are you sure?' } %></div>
-    <% else %>
-      <div class="column nomobile"></div>
-    <% end %>
-    <% if @admin_plus %>
-      <div class="column">
+    <%= render partial: 'delete_client', locals: {client: } %>      
+
+    <%# if @admin_plus %>
+      <!--div class="column">
         <turbo-frame id="forgot-password-<%= client.id %>">
-          <% if client.account.nil? %>
-            <%= link_to image_tag('add.png', class: "table_icon"), accounts_path(email: client.email, id: client.id, ac_type: 'client'), method: :post, data: { "turbo-method": :post, turbo_confirm: 'An account for this client will be created. Are you sure?' }  %>
-          <% else %>
-            <%= link_to image_tag('forgot-password.png', class: "table_icon"), account_path(client.account, requested_by: 'admin'), method: :patch, data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } %>
-          <% end %>
+          <%# if client.account.nil? %>
+            <%#= link_to image_tag('add.png', class: "table_icon"), accounts_path(email: client.email, id: client.id, ac_type: 'client'), method: :post, data: { "turbo-method": :post, turbo_confirm: 'An account for this client will be created. Are you sure?' }  %>
+          <%# else %>
+            <%#= link_to image_tag('forgot-password.png', class: "table_icon"), account_path(client.account, requested_by: 'admin'), method: :patch, data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } %>
+          <%# end %>
         </turbo-frame>
-      </div>
-    <% end %>
-    <% if @junioradmin %>
-      <div class='column'>
-        <% if !client.account.nil? %>
-        <%= link_to image_tag('forgot-password.png', class: "table_icon"), account_path(client.account, requested_by: 'admin'), method: :patch, data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } %>
+      </div-->
+    <%# end %>
+    <%# if @junioradmin %>
+      <!--div class='column'>
+        <%# if !client.account.nil? %>
+        <%#= link_to image_tag('forgot-password.png', class: "table_icon"), account_path(client.account, requested_by: 'admin'), method: :patch, data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } %>
           <%#= button_to account_path(client.account),
                         method: :patch,
                         data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } do %>
             <%#= image_tag('forgot-password.png', class: "table_icon") %>
           <%# end %>
-        <% end %>
-      </div>
-    <% end %>  
+        <%# end %>
+      </div-->
+    <%# end %>  
   </div>
 <% end %>  
 

@@ -102,7 +102,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     end
   end  
 
-  test 'should redirect destroy account for instructor   when not logged in as superadmin' do
+  test 'should redirect destroy account for instructor when not logged in as superadmin' do
     [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Account.count' do

@@ -20,15 +20,35 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def create
+    # NOTE: reformat -consider InstructorAccountsController, ClientAccountsController etc..
     outcome = AccountCreator.new(account_params).create
     if outcome.success?
-      flash_message :success, t('.success')
-      message_type = params[:ac_type] == 'instructor' ? 'new_instructor_account' : 'new_account'
-      flash_message(*Whatsapp.new(whatsapp_params(message_type, outcome.password)).manage_messaging)
+      if %w[instructor].include?(@account_type)
+        flash_message :success, t('.success') # dont want the true for flash.now for instructor as in this case we redirect rather than render
+        flash_message(*Whatsapp.new(whatsapp_params('new_instructor_account', outcome.password)).manage_messaging)
+      else
+        flash_message :success, t('.success'), true # want the true for client as in this case we render rather than redirect
+      # message_type = params[:ac_type] == 'instructor' ? 'new_instructor_account' : 'new_account'
+        flash_message(*Whatsapp.new(whatsapp_params('new_account', outcome.password)).manage_messaging)
+      end
     else
       flash_message :warning, t('.warning')
     end
-    redirect_back fallback_location: clients_path
+    # render partial: 'admin/clients/manage_account', locals: {client: @account_holder} 
+    # redirect_back fallback_location: clients_path
+    #NOTE: update for instructor/admin - needs a different turbo update
+    if %w[client].include?(@account_type) 
+      respond_to do |format|
+        format.html { redirect_back fallback_location: clients_path }
+        format.turbo_stream {render :update}
+      end
+    else
+      # respond_to do |format|
+      #   format.html { redirect_back fallback_location: instructors_path }
+      #   format.turbo_stream {render 'admin/instructors/index'}
+      # end
+      redirect_to instructors_path
+    end
   end
 
   def update
@@ -43,9 +63,20 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def destroy
+    # redirection = @account_holder.is_a?(Client) ? client_path(@account_holder) : accounts_path
     @account.clean_up
-    redirect_to accounts_path
-    flash_message :success, t('.success')    
+    # redirect_to redirection
+    if @account_type == "client"
+      flash_message :success, t('.success'), true
+      respond_to do |format|
+        format.html { redirect_back fallback_location: clients_path }
+        format.turbo_stream {render :update}
+      end
+    else # admin or instructor
+      flash_message :success, t('.success')
+      redirect_to accounts_path
+    end
+
   end
 
   private
@@ -54,6 +85,8 @@ class Admin::AccountsController < Admin::BaseController
     password = AccountCreator.password_wizard(Setting.password_length)
     @account.update(password:, password_confirmation: password)
     flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging, true)
+    flash_message :success, 'whatsapp not sent in development (but would be in production)' if Rails.env.development?
+    # render partial: 'admin/clients/manage_account', locals: {client: @account.client}
     respond_to do |format|
       format.html { redirect_back fallback_location: clients_path }
       format.turbo_stream
@@ -114,8 +147,9 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def only_certain_account_types_can_be_made_here
+    @account_type = params[:ac_type]
     # administrator accounts cannot be created through the app
-    return if %w[client instructor partner].include?(params[:ac_type])
+    return if %w[client instructor partner].include?(@account_type)
 
     flash[:warning] = t('.warning')
     redirect_to(login_path) && return
@@ -143,11 +177,17 @@ class Admin::AccountsController < Admin::BaseController
     # @account_holder = Client.where(id: params[:client_id]).first if params[:ac_type] == 'client'
     # @account_holder = Instructor.where(id: params[:instructor_id]).first if params[:ac_type] == 'instructor'
     # @account_holder = Partner.where(id: params[:partner_id]).first if params[:ac_type] == 'partner'
+    # NOTE: this wont do whay you hope beacuse turbo demands a response with the requisite turbo_frame
+    rescue Exception
+    # log_out if logged_in?
+    flash[:danger] = "Please don't mess with the system"
+    redirect_to login_path
   end
 
   def set_account
     @account = Account.find(params[:id])
     @account_holder = @account.client
+    @account_type = @account.priority_role.name
   end
 
   def account_params

@@ -1,0 +1,14 @@
+<% if @admin_plus %>
+  <% if client.deletable? %>
+    <% tooltip_title = "The client and all their data will be deleted".gsub(' ',"\u00a0") %>
+    <% confirm_message = "Client has no purchases so can be deleted. But are you sure?" %>
+    <div class="column nomobile" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %>>
+      <%= link_to image_tag('delete.png', class: "table_icon"), client_path(client), data: { "turbo-method": :delete, turbo_confirm: confirm_message } %>
+    </div>
+  <% else %>
+    <% tooltip_title = "The client has purchases and so can not be deleted".gsub(' ',"\u00a0") %>
+    <div class="column nomobile" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %>>
+      <%= link_to image_tag('delete.png', class: "table_icon greyed-out" ), '#', class: 'disabled' %>
+    </div>
+  <% end %>
+<% end %>

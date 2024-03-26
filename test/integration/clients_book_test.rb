@@ -92,7 +92,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     opengym = Wkclass.create(
       workout_id: 8,
       start_time: '2022-04-22 21:00:00',
-      instructor_id: 4,
+      instructor: instructors(:amit),
       instructor_rate: instructor_rates(:amit_base),
       max_capacity: 12
     )
@@ -111,7 +111,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     opengym = Wkclass.create(
       workout_id: 8,
       start_time: '2022-04-22 21:00:00',
-      instructor_id: 4,
+      instructor: instructors(:amit),
       instructor_rate: instructor_rates(:amit_base),
       max_capacity: 12
     )

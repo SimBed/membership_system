@@ -9,7 +9,7 @@
   <td><%= d.renewal_post_package_expiry? ? raw("&check;") : "-" %></td>
   <td><%= d.renewal_pre_trial_expiry? ? raw("&check;") : "-" %></td>
   <td><%= d.renewal_post_trial_expiry? ? raw("&check;") : "-" %></td>
-  <td><%= link_to image_tag('attendances.png', class: ["table_icon",("active-workout" unless d.current?)].compact.join(' ')), discount_reason_path(d, 'discount_reason[current]': !d.current?), data: {turbo_method: :patch} %></td>        
+  <td><%= link_to image_tag('attendances.png', class: ["table_icon",("greyed-out" unless d.current?)].compact.join(' ')), discount_reason_path(d, 'discount_reason[current]': !d.current?), data: {turbo_method: :patch} %></td>        
   <td><%= (link_to image_tag('edit.png', class: "table_icon"), edit_discount_reason_path(d)) if unused %></td>
   <td><%= (link_to image_tag('delete.png', class: "table_icon"), discount_reason_path(d), data: { turbo_method: :delete, turbo_confirm: 'Discount Reason will be deleted. Are you sure?' }) if unused %></td>
 </tr>

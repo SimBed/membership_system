@@ -1,0 +1,6 @@
+<%# weird nuance of tooltips with spaces - https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces%>
+<% tooltip_title = "An account will be created for #{client.first_name} and a whatsapp message sent.".gsub(' ',"\u00a0") %>
+<% confirm_message = "An account will be created for #{client.first_name} and a whatsapp message sent. Are you sure?" %>
+<div class='d-inline' data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %> >
+  <%= link_to image_tag('add.png', class: "table_icon"), accounts_path(email: client.email, id: client.id, ac_type: 'client'), data: { turbo_method: :post, turbo_confirm: confirm_message }  %>
+</div>

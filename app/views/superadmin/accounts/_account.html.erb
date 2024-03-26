@@ -36,8 +36,9 @@
       </div>
     <% end %>
     <% unless account.has_role?('superadmin') %>
+      <% tooltip_title = "The account will be deleted. No data will be deleted, however the account holder will no longer be able to log in.".gsub(' ',"\u00a0") %>
       <% confirm_message = "The account will be deleted. No data will be deleted, however the account holder will no longer be able to log in. Are you sure?" %>
-      <div class="text-capitalize"><%= link_to 'delete account', account_path(account), class: 'like_button', data: {turbo_method: :delete, turbo_confirm: confirm_message} %></div>
+      <div class="text-capitalize data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %>><%= link_to 'delete account', account_path(account), class: 'like_button', data: {turbo_method: :delete, turbo_confirm: confirm_message} %></div>
     <% end %>
   </div>
 </div>

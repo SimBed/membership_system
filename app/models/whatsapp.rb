@@ -15,6 +15,7 @@ class Whatsapp
     # commented out this line for client_waiting_list test to pass. Needs reformatting.
     # return [nil] unless Rails.env.production? || @to_number == Rails.configuration.twilio[:me]
     # return [nil] if @message_type == 'early_cancels_no_penalty'
+    # return [:warning, "whatsapp only sent in production"] unless whatsapp_permitted
     return [nil] unless whatsapp_permitted
     return [:warning, "Client has no contact number. #{@message_type} details not sent"] if @to_number.nil? && @triggered_by == 'admin'
 

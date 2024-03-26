@@ -2,7 +2,10 @@ class Auth::SessionsController < Auth::BaseController
   layout 'login'
   before_action :has_role?, only: :switch_account_role
 
-  def new; end
+  def new
+    # https://www.ducktypelabs.com/turbo-break-out-and-redirect/
+    flash.keep if turbo_frame_request?
+  end
 
   def create
     # unexplained honeybug error 23/5/2023 - params {"session[email]" => "ValrieSchmitt199@aol.com"}
