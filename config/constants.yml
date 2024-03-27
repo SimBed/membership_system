@@ -1,6 +1,7 @@
 default: &default
 
- timetable_id: 8
+ display_timetable_id: 10
+ wkclass_make_timetable_id: 10
  window_capacity: 8
  recipient_pagination: 200
 
@@ -36,14 +37,14 @@ default: &default
 
 development:
   <<: *default
-  timetable_id: 1
+  display_timetable_id: 1
+  wkclass_make_timetable_id: 1
+
 
 test:
   <<: *default
-  timetable_id: 4  
+  display_timetable_id: 4
+  wkclass_make_timetable_id: 4  
 
 production:
   <<: *default
-
-#  gst_rate:
-#   - 18

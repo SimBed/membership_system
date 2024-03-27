@@ -18,7 +18,7 @@ class Admin::TimetablesController < Admin::BaseController
   end
 
   def show_public
-    @timetable = Timetable.find(Rails.application.config_for(:constants)['timetable_id'])
+    @timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
     @days = @timetable.table_days.order_by_day
     @entries_hash = {}
     @days.each do |day|
