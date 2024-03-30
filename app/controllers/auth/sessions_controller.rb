@@ -3,8 +3,8 @@ class Auth::SessionsController < Auth::BaseController
   before_action :has_role?, only: :switch_account_role
 
   def new
-    # https://www.ducktypelabs.com/turbo-break-out-and-redirect/
-    flash.keep if turbo_frame_request?
+    # https://www.ducktypelabs.com/turbo-break-out-and-redirect/ turbo_page_requires_reload
+    # flash.keep if turbo_frame_request?
   end
 
   def create

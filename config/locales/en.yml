@@ -222,6 +222,9 @@ en:
         success: Your package has been frozen  
         booking_cancelled: A booking during your freeze has been cancelled 
     password_resets:
+      create:
+        info: Email sent with password reset instructions. Please check your Spam folder.
+        danger: Your password cannot be reset. Please check your email address is the one registered with us. Contact The Space if you still receive this message.
       password_change:
         success: Your password has been changed  
     clients:

@@ -13,10 +13,10 @@ class Client::PasswordResetsController < ApplicationController
     if @account
       @account.create_reset_digest
       @account.send_password_reset_email
-      flash[:info] = 'Email sent with password reset instructions'
+      flash[:info] = t('.info')
       redirect_to login_path
     else
-      flash.now[:danger] = 'Email address not found'
+      flash.now[:danger] = t('.danger')
       # https://stackoverflow.com/questions/70400958/error-form-responses-must-redirect-to-another-location
       # render 'new'
       render 'new', status: :unprocessable_entity # 422
