@@ -1,26 +1,12 @@
 class Admin::AccountsController < Admin::BaseController
   before_action :correct_credentials, only: [:create]
   before_action :set_account_holder, only: [:create]
-  before_action :set_account, only: [:update, :destroy]
+  before_action :set_account, only: [:update, :destroy, :show]
   skip_before_action :admin_account, only: [:index, :update, :destroy]
   before_action :correct_account_or_junioradmin, only: [:update]
   before_action :superadmin_account, only: [:index, :destroy]
 
-  # admin/instructor accounts cant be created through the app
-
-  def index
-    # @accounts = Account.where(ac_type: %w[junioradmin admin superadmin]).order_by_ac_type
-    # could perhaps replace ac_type attribute with priority_role attribute (which gets updated whenever an account's roles change)
-    @accounts = Account.has_role('junioradmin',
-                                 'admin',
-                                 'superadmin',
-                                 'instructor')
-                       .sort_by { |a| [a.priority_role.view_priority, a.email] }
-    render 'superadmin/accounts/index'
-  end
-
   def create
-    # NOTE: reformat -consider InstructorAccountsController, ClientAccountsController etc..
     outcome = AccountCreator.new(account_params).create
     if outcome.success?
       if %w[instructor].include?(@account_type)
@@ -52,18 +38,19 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def update
+    # NOTE: needs cleaning up - not that it will happen but if superadmin request for admin gets routed through here, it will incorrectly land on password_reset_client_of_client
     if params[:account].nil? # means request came from admin link
       password_reset_admin_of_client
-    elsif params[:account][:requested_by] == 'superadmin_of_admin'
-      (redirect_to login_path and return) unless logged_in_as?('superadmin')
-      password_reset_superadmin_of_admin
+    # elsif params[:account][:requested_by] == 'superadmin_of_admin'
+    #   (redirect_to login_path and return) unless logged_in_as?('superadmin')
+    #   password_reset_superadmin_of_admin
     else
       password_reset_client_of_client
     end
   end
 
   def destroy
-    # redirection = @account_holder.is_a?(Client) ? client_path(@account_holder) : accounts_path
+    # redirection = @account_holder.is_a?(Client) ? client_path(@account_holder) : employee_accounts_path
     @account.clean_up
     # redirect_to redirection
     if @account_type == "client"
@@ -74,37 +61,9 @@ class Admin::AccountsController < Admin::BaseController
       end
     else # admin or instructor
       flash_message :success, t('.success')
-      redirect_to accounts_path
+      redirect_to employee_accounts_path
     end
 
-  end
-
-  private
-
-  def password_reset_admin_of_client
-    password = AccountCreator.password_wizard(Setting.password_length)
-    @account.update(password:, password_confirmation: password)
-    flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging, true)
-    flash_message :success, 'whatsapp not sent in development (but would be in production)' if Rails.env.development?
-    # render partial: 'admin/clients/manage_account', locals: {client: @account.client}
-    respond_to do |format|
-      format.html { redirect_back fallback_location: clients_path }
-      format.turbo_stream
-    end
-  end
-
-  def password_reset_superadmin_of_admin
-    passwords_the_same = (password_update_params[:new_password] == password_update_params[:new_password_confirmation])
-    @account.errors.add(:base, 'passwords not the same') unless passwords_the_same
-    admin_password_correct = admin_password_correct?
-    @account.errors.add(:base, 'admin password incorrect') unless admin_password_correct
-    if passwords_the_same && admin_password_correct && @account.update(password: password_update_params[:new_password],
-                                                                       password_confirmation: password_update_params[:new_password])
-      flash_message :success, t('.password_success')
-    else
-      flash_message :warning, t('.fail')
-    end
-    redirect_to accounts_path
   end
 
   def password_reset_client_of_client
@@ -123,6 +82,20 @@ class Admin::AccountsController < Admin::BaseController
         date_last_purchase_expiry: @client.last_purchase&.expiry_date
       }
       render 'client/data_pages/profile', layout: 'client'
+    end
+  end
+
+  private
+
+  def password_reset_admin_of_client
+    password = AccountCreator.password_wizard(Setting.password_length)
+    @account.update(password:, password_confirmation: password)
+    flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging, true)
+    flash_message :success, 'whatsapp not sent in development (but would be in production)' if Rails.env.development?
+    # render partial: 'admin/clients/manage_account', locals: {client: @account.client}
+    respond_to do |format|
+      format.html { redirect_back fallback_location: clients_path }
+      format.turbo_stream
     end
   end
 

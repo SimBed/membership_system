@@ -1,0 +1,11 @@
+<div class="container px-1 ">
+  <div class="mb-2">
+    <%= form_with(url: add_role_employee_accounts_path(@account), method: "get") do |form| %>
+      <!--label class="text-uppercase">Add Role:<label-->
+      <%= form.collection_select :role_id, addable_roles, :id, :name, { class: "sort" } %>
+      <div class="d-inline image_actions">
+        <%= form.submit 'add' %>
+      </div>
+    <% end %>          
+  </div>
+</div>

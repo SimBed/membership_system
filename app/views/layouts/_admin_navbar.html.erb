@@ -68,7 +68,7 @@
                 <% end %>  
                   <% if logged_in_as?('superadmin') %>                   
                     <span class="dropdown-label">SUPERADMIN</span>
-                    <%= link_to 'Accounts', accounts_path, class: "dropdown-item" %>
+                    <%= link_to 'Accounts', employee_accounts_path, class: "dropdown-item" %>
                     <%= link_to 'Blasts', blast_path, class: "dropdown-item" %>
                     <%= link_to 'Discounts', discounts_path, class: "dropdown-item" %>
                     <%= link_to 'Discount Reasons', discount_reasons_path, class: "dropdown-item" %>

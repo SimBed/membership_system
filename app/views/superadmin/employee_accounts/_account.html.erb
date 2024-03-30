@@ -1,0 +1,21 @@
+<%= turbo_frame_tag account do %>
+  <div class="row">
+    <div class="column col-2x"><%= link_to account.email, employee_account_path(account), class: "like_button" %></div>
+    <div class="column col-2x"><%= account.priority_role.name %></div>
+    <div class="column col-1x"><%= account.multiple_roles? ? raw("&check;") : "-" %></div>
+    <% if account.priority_role.name == 'superadmin' %>
+      <% tooltip_title = "superadmin account cannot be deleted".gsub(' ',"\u00a0") %>
+      <div class="column nomobile" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %>>
+          <%= link_to image_tag('delete.png', class: "table_icon greyed-out" ), '#', class: 'disabled' %>
+      </div>
+    <% else %>   
+      <% tooltip_title = "The account will be deleted. No data will be deleted, however the account holder will no longer be able to log in.".gsub(' ',"\u00a0") %>
+      <% confirm_message = "The account will be deleted. No data will be deleted, however the account holder will no longer be able to log in. Are you sure?" %>
+      <div class="column nomobile" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %>>
+        <%= link_to image_tag('delete.png', class: "table_icon"), employee_account_path(account), data: { "turbo-method": :delete, turbo_confirm: confirm_message } %>
+      </div>   
+    <% end %>
+  </div>
+<% end %>  
+
+

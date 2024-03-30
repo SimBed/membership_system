@@ -34,6 +34,10 @@ class Account < ApplicationRecord
     roles.order(:view_priority).first
   end
 
+  def multiple_roles?
+    roles.size > 1
+  end
+
   def without_purchase?
     client.purchases.empty? if client
   end

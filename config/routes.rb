@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       get 'filter', on: :collection
     end
     resources :adjustments, :entries, :prices, except: [:index, :show]
-    resources :accounts, only: [:index, :create, :update, :destroy]
+    resources :accounts, only: [:create, :update, :destroy]
     resources :attendances, only: [:new, :create, :update, :destroy]
     resources :fitternities, :instructors, :partners, :timetables, :workout_groups
     resources :restarts, except: [:show]
@@ -61,6 +61,13 @@ Rails.application.routes.draw do
       end
     end
     resources :discounts, :discount_reasons, :orders
+    resources :employee_accounts do
+      collection do
+        get 'add_role/:id', to: 'employee_accounts#add_role', as: 'add_role'
+        get 'remove_role/:id', to: 'employee_accounts#remove_role', as: 'remove_role'
+        patch 'password_reset_of_employee/:id', to: 'employee_accounts#password_reset_of_employee', as: 'password_reset'
+      end
+    end
     resources :instructor_rates, :other_services, :regular_expenses, except: [:show]
     resources :payments, only: [:index, :show, :edit, :update, :destroy] do
       collection do
@@ -100,7 +107,11 @@ Rails.application.routes.draw do
     get ':id/cancel_transfer', to: 'package_modification#cancel_transfer', as: 'package_modification_cancel_transfer'
     post ':id/buy_freeze', to: 'package_modification#buy_freeze', as: 'buy_freeze'
     resources :waitings, only: [:create, :destroy]
-    resources :password_resets, only: [:new, :create, :edit, :update]
+    resources :password_resets, only: [:new, :create, :edit, :update] do
+      collection do
+        get 'password_change/:id', to: 'password_resets#password_change', as: 'password_change'
+      end
+    end
   end
 
   scope module: :shared do

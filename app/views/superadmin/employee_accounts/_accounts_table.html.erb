@@ -1,0 +1,30 @@
+<% if false %>
+  <div class="container px-1">
+    <div class="admin-table striped mt-2">
+      <%#= render partial: 'superadmin/accounts/account', collection: @accounts %>
+      <%= render 'account', collection: @accounts %>
+    </div>
+  </div>
+<% end %>
+
+<div class="container px-0 mb-5">
+  <!--div class="page_entries_info px-1">
+      <div class="record-count mb-1">
+        <%#= "showing #{@clients&.length} of #{@pagy&.count}" %>
+      </div>
+    <div data-controller="pagy-initializer">
+      <%#== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>    
+  </div-->
+  <div class="text-uppercase fst-italic"><small><%=" (#{@accounts.size})"%></small> Accounts</div>
+  <div class="admin-table mt-3">
+    <div class="row fw-bolder">
+      <div class="column col-2x">Email</div>
+      <div class="column col-2x">Priority Role</div>
+      <div class="column col-1x">Other Roles</div>
+      <div class="column nomobile"></div>
+    </div>
+    <%= render partial: 'superadmin/employee_accounts/account', collection: @accounts %>
+  </div>
+
+</div>

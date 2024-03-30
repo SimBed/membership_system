@@ -166,7 +166,18 @@ en:
       update:
         success: Discount Reason was successfully updated
       destroy:
-        success: Discount Reason was successfully deleted  
+        success: Discount Reason was successfully deleted
+    employee_accounts:
+      create:
+        success: Account was successfully created
+      destroy:
+        success: Account was successfully deleted              
+      role_added:
+        success: Role was successfully added to the account              
+      role_removed:
+        success: Role was successfully removed from the account              
+      password_reset_of_employee:
+        success: Password has been changed              
     expenses:
       create:
         success: Expense was successfully added
@@ -210,6 +221,9 @@ en:
       buy_freeze:
         success: Your package has been frozen  
         booking_cancelled: A booking during your freeze has been cancelled 
+    password_resets:
+      password_change:
+        success: Your password has been changed  
     clients:
       attendance:
         create:

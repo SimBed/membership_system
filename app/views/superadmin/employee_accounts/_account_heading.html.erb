@@ -1,0 +1,11 @@
+<div class="container px-1 ">
+  <div class="mb-2">
+    <h5 class ="mb-1">  <%= "#{@account.email}" %>
+    </h5>
+    <ul>
+      <% account_roles.each do |role| %>
+        <li><%= role.name %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

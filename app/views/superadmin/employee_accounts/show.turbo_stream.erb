@@ -1,0 +1,4 @@
+<%= turbo_stream.update dom_id(@account) do %>
+  <%= render 'superadmin/employee_accounts/show_body' %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

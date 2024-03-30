@@ -8,7 +8,7 @@ class Admin::InstructorsController < Admin::BaseController
   def index
     @current_instructors = Instructor.current.order_by_name
     @not_current_instructors = Instructor.not_current.order_by_name
-    @superadmin = logged_in_as?('superadmin') ? true : false  
+    @superadmin = logged_in_as?('superadmin') ? true : false
     respond_to do |format|
       format.html
       format.turbo_stream

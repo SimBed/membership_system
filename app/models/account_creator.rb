@@ -20,7 +20,7 @@ class AccountCreator
     account = Account.new(account_params)
     if account.save
       Assignment.create(account_id: account.id, role_id: Role.find_by(name: @ac_type).id)
-      @account_holder.update(account_id: account.id)
+      @account_holder.update(account_id: account.id) unless @account_holder.nil?
       #   OpenStruct.new(success?: true, password: @password, account:)
       Outcome.new(true, @password, account)
     else

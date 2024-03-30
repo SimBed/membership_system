@@ -39,7 +39,33 @@ class Client::PasswordResetsController < ApplicationController
     end
   end
 
+  # through UI - no mailer involved
+  def password_change
+    @account = Account.find(params[:id])    
+    passwords_the_same = (password_change_params[:new_password] == password_change_params[:new_password_confirmation])
+    @account.errors.add(:base, 'passwords not the same') unless passwords_the_same
+    if passwords_the_same && @account.update(password: password_change_params[:new_password], password_confirmation: password_change_params[:new_password])
+      flash_message :success, t('.success')
+      # redirect_back fallback_location: login_path
+      redirect_to client_profile_path(@account.client)
+    else
+      # reformat - this code is reused in show method of clients controller
+      @client = @account.client
+      @client_hash = {
+        attendances: @client.attendances.attended.size,
+        last_counted_class: @client.last_counted_class,
+        date_created: @client.created_at,
+        date_last_purchase_expiry: @client.last_purchase&.expiry_date
+      }
+      render 'client/data_pages/profile', layout: 'client'
+    end
+  end  
+
   private
+
+  def password_change_params
+    params.permit(:new_password, :new_password_confirmation)
+  end
 
   def account_params
     params.require(:account).permit(:password, :password_confirmation)

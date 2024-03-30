@@ -30,7 +30,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', timetables_path
     assert_select 'a[href=?]', workouts_path
     assert_select 'a[href=?]', workout_groups_path
-    assert_select 'a[href=?]', accounts_path
+    assert_select 'a[href=?]', employee_accounts_path
     assert_select 'a[href=?]', discounts_path
     assert_select 'a[href=?]', discount_reasons_path
     assert_select 'a[href=?]', expenses_path
@@ -77,7 +77,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', timetables_path
     assert_select 'a[href=?]', workouts_path
     assert_select 'a[href=?]', workout_groups_path
-    assert_select 'a[href=?]', accounts_path, count: 0
+    assert_select 'a[href=?]', employee_accounts_path, count: 0
     assert_select 'a[href=?]', discounts_path, count: 0
     assert_select 'a[href=?]', discount_reasons_path, count: 0
     assert_select 'a[href=?]', expenses_path, count: 0
@@ -123,7 +123,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', timetables_path, count: 0
     assert_select 'a[href=?]', workouts_path, count: 0
     assert_select 'a[href=?]', workout_groups_path, count: 0
-    assert_select 'a[href=?]', accounts_path, count: 0
+    assert_select 'a[href=?]', employee_accounts_path, count: 0
     assert_select 'a[href=?]', discount_reasons_path, count: 0
     assert_select 'a[href=?]', expenses_path, count: 0
     assert_select 'a[href=?]', expenses_path, count: 0
@@ -172,7 +172,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', timetables_path, count: 0
     assert_select 'a[href=?]', workouts_path, count: 0
     assert_select 'a[href=?]', workout_groups_path, count: 0
-    assert_select 'a[href=?]', accounts_path, count: 0
+    assert_select 'a[href=?]', employee_accounts_path, count: 0
     assert_select 'a[href=?]', expenses_path, count: 0
     assert_select 'a[href=?]', discount_reasons_path, count: 0
     assert_select 'a[href=?]', expenses_path, count: 0
@@ -225,7 +225,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', partners_path, count: 0
     assert_select 'a[href=?]', timetables_path, count: 0
     assert_select 'a[href=?]', workouts_path, count: 0
-    assert_select 'a[href=?]', accounts_path, count: 0
+    assert_select 'a[href=?]', employee_accounts_path, count: 0
     assert_select 'a[href=?]', discount_reasons_path, count: 0
     assert_select 'a[href=?]', expenses_path, count: 0
     assert_select 'a[href=?]', expenses_path, count: 0

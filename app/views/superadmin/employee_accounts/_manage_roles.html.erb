@@ -1,0 +1,17 @@
+<h5>Manage Roles</h5>
+<% if @addable_roles %>
+  <%= render partial: 'superadmin/employee_accounts/add_role_form', locals: {addable_roles: @addable_roles} %>
+<% else %>
+  <% tooltip_title = "An instructor with the same email must first be created before an account can be associated with it. Superadmin role can not be added through UI.".gsub(' ',"\u00a0") %>
+  <div class="tagline" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %> >
+    <p class='tagline-sm'>no role can be added to this account</p>
+  </div>  
+<% end %>
+<% if @removable_roles %>
+  <%= render partial: 'superadmin/employee_accounts/remove_role_form', locals: {removable_roles: @removable_roles} %>
+<% else %>
+  <% tooltip_title = "An account must have at least 1 role. Superadmin role cannnot be removed through UI.".gsub(' ',"\u00a0") %>
+  <div class="tagline" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %> >
+    <p class='tagline-sm'>no role can be removed from this account</p>
+  </div>
+<% end %>
