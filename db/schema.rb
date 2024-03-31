@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_10_042745) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_31_112212) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,7 +23,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_042745) do
     t.datetime "reset_sent_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "ac_type"
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
 
