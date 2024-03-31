@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def send_to_correct_page_for_ac_type
+  def send_to_correct_page_for_role
     deal_with_admin && return
     deal_with_client && return
     deal_with_instructor && return

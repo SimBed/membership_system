@@ -14,7 +14,6 @@ class Admin::AccountsController < Admin::BaseController
         flash_message(*Whatsapp.new(whatsapp_params('new_instructor_account', outcome.password)).manage_messaging)
       else
         flash_message :success, t('.success'), true # want the true for client as in this case we render rather than redirect
-      # message_type = params[:ac_type] == 'instructor' ? 'new_instructor_account' : 'new_account'
         flash_message(*Whatsapp.new(whatsapp_params('new_account', outcome.password)).manage_messaging)
       end
     else
@@ -120,36 +119,25 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def only_certain_account_types_can_be_made_here
-    @account_type = params[:ac_type]
+    @role_name = params[:role_name]
     # administrator accounts cannot be created through the app
-    return if %w[client instructor partner].include?(@account_type)
-
+    return if %w[client instructor partner].include?(@role_name)
     flash[:warning] = t('.warning')
     redirect_to(login_path) && return
   end
 
   def only_superadmin_makes_partner_accounts
     # admin can create client's account, but only superadmin can create partner's account
-    return unless params[:ac_type] == 'partner' && !logged_in_as?('superadmin')
+    return unless params[:role_name] == 'partner' && !logged_in_as?('superadmin')
 
     flash[:warning] = t('.warning')
     redirect_to login_path
   end
 
   def set_account_holder
-    role_classs = account_params[:ac_type].camelcase.constantize
+    role_classs = account_params[:role_name].camelcase.constantize
     @account_holder = role_classs.where(id: account_params[:id]).first
     (redirect_to(login_path) && return) if @account_holder.nil?
-
-    # %w[client instructor partner].each { |role|
-    # role_id = (role + '_id').to_sym
-    # role_classs = role.camelcase.constantize
-    # # used 'where' rather than 'find' as find returns an error (rather than nil or empty object) when record not found
-    # (@account_holder = role_classs.where(id: params[role_id]).first) && break if params[:ac_type] == role
-    # }
-    # @account_holder = Client.where(id: params[:client_id]).first if params[:ac_type] == 'client'
-    # @account_holder = Instructor.where(id: params[:instructor_id]).first if params[:ac_type] == 'instructor'
-    # @account_holder = Partner.where(id: params[:partner_id]).first if params[:ac_type] == 'partner'
     # NOTE: this wont do whay you hope beacuse turbo demands a response with the requisite turbo_frame
     rescue Exception
     # log_out if logged_in?
@@ -164,7 +152,7 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def account_params
-    params.permit(:email, :id, :ac_type).merge(account_holder: @account_holder)
+    params.permit(:email, :id, :role_name).merge(account_holder: @account_holder)
   end
 
   def password_update_params

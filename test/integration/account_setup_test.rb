@@ -43,7 +43,7 @@ class AccountSetupTest < ActionDispatch::IntegrationTest
     assert_difference -> { Account.count } => 1, -> { Assignment.count } => 1 do
       post accounts_path, params: { email: @client.email,
                                           id: @client.id,
-                                          ac_type: 'client' }
+                                          role_name: 'client' }
     end
     new_account = Account.last
     # the new account has been given a random password, so lets reset it so we can login easily

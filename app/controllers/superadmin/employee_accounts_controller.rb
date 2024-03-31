@@ -151,7 +151,7 @@ class Superadmin::EmployeeAccountsController < Superadmin::BaseController
     end
     
     def set_account_holder
-      role_classs = employee_account_params[:ac_type].camelcase.constantize #Instructor
+      role_classs = employee_account_params[:role_name].camelcase.constantize #Instructor
       @account_holder = role_classs.where(id: employee_account_params[:id]).first
       (redirect_to(login_path) && return) if @account_holder.nil?
     rescue Exception
@@ -159,15 +159,13 @@ class Superadmin::EmployeeAccountsController < Superadmin::BaseController
       flash[:danger] = "Please don't mess with the system"
       redirect_to login_path
     end
-
-
    
     def password_update_params
       params.permit(:new_password, :new_password_confirmation, :admin_password)
     end
 
     def employee_account_params
-      params.permit(:email, :id, :role_id, :linked_from).merge(ac_type: Role.find(params[:role_id]).name, account_holder: @account_holder)
+      params.permit(:email, :id, :role_id, :linked_from).merge(role_name: Role.find(params[:role_id]).name, account_holder: @account_holder)
     end
   end
   

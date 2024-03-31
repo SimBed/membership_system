@@ -6,20 +6,19 @@ class AccountCreator
 
   def initialize(attributes = {})
     @email = attributes[:email]
-    @ac_type = attributes[:ac_type]
+    @role_name = attributes[:role_name]
     @account_holder = attributes[:account_holder]
     @password = AccountCreator.password_wizard(Setting.password_length)
   end
 
   def create
     account_params = { email: @email,
-                       ac_type: @ac_type,
                        activated: true,
                        password: @password,
                        password_confirmation: @password }
     account = Account.new(account_params)
     if account.save
-      Assignment.create(account_id: account.id, role_id: Role.find_by(name: @ac_type).id)
+      Assignment.create(account_id: account.id, role_id: Role.find_by(name: @role_name).id)
       @account_holder.update(account_id: account.id) unless @account_holder.nil?
       #   OpenStruct.new(success?: true, password: @password, account:)
       Outcome.new(true, @password, account)

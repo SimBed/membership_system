@@ -33,7 +33,7 @@ class Client::PasswordResetsController < ApplicationController
       # guard against public computer situation where pressing the back button on the browser gives access to the same password reset form (containing the reset_token )
       @account.update_column(:reset_digest, nil)
       flash[:success] = 'Password has been reset.'
-      send_to_correct_page_for_ac_type
+      send_to_correct_page_for_role
     else
       render 'edit'
     end

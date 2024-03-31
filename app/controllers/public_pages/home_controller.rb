@@ -96,7 +96,7 @@ class PublicPages::HomeController < ApplicationController
   end
 
   def account_params
-    params.require(:client).permit(:email).merge(account_holder: @client, ac_type: 'client')
+    params.require(:client).permit(:email).merge(account_holder: @client, role_name: 'client')
   end
 
   def whatsapp_params(message_type, password)

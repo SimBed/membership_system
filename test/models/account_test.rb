@@ -6,8 +6,7 @@ class AccountTest < ActiveSupport::TestCase
   def setup
     @account = Account.new(email: 'user@example.com',
                            password: 'foobar',
-                           password_confirmation: 'foobar',
-                           ac_type: 'client')
+                           password_confirmation: 'foobar')
     @client_no_account = clients(:bhavik)
   end
 
@@ -17,12 +16,6 @@ class AccountTest < ActiveSupport::TestCase
 
   test 'email should be present' do
     @account.email = '     '
-
-    refute_predicate @account, :valid?
-  end
-
-  test 'ac_type should be present' do
-    @account.ac_type = '     '
 
     refute_predicate @account, :valid?
   end

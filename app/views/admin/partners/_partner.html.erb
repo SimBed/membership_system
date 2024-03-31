@@ -15,7 +15,7 @@
     <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_partner_path(partner)%></div>
     <div class="column"><% unless Account.find_by(email: partner.email&.downcase)&.activated? %>
       <%= link_to image_tag('add.png', class: "table_icon"),
-                              accounts_path(email: partner.email, id: partner.id, ac_type: 'partner'),
+                              accounts_path(email: partner.email, id: partner.id, role_name: 'partner'),
                               data: { turbo_method: :post, confirm: 'An account for this partner will be created. Are you sure?' }%>
       <% end %>
     </div>

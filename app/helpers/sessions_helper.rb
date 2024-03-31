@@ -169,10 +169,7 @@ module SessionsHelper
     end
   end
 
-  def logged_in_as?(*ac_types)
-    # logged_in? && ac_types.any? { |ac_type| current_account.ac_type == ac_type }
-    # logged_in? && ac_types.map { |ac_type| current_account.ac_type == ac_type }.include?(true)
-
-    logged_in? && ac_types.any? { |ac_type| current_role == ac_type }
+  def logged_in_as?(*roles)
+    logged_in? && roles.any? { |role| current_role == role }
   end
 end

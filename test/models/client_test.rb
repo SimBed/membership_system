@@ -160,8 +160,7 @@ class ClientTest < ActiveSupport::TestCase
 
     @account = Account.create(email: @client.email,
                               password: 'foobar',
-                              password_confirmation: 'foobar',
-                              ac_type: 'client')
+                              password_confirmation: 'foobar')
     @client.update(account_id: @account.id)
     # has account but no purchase
     refute @client.deletable?

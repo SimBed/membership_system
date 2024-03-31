@@ -57,7 +57,7 @@ class Auth::SessionsController < Auth::BaseController
     # params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
     remember(@account) if @account.remember_digest.nil?
     # switch_role(@account.roles.first.name)
-    send_to_correct_page_for_ac_type
+    send_to_correct_page_for_role
   end
 
   def action_when_not_activated

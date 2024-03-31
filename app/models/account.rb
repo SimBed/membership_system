@@ -14,20 +14,18 @@ class Account < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }
-  validates :ac_type, presence: true
   has_secure_password
   scope :has_role, ->(*role) { joins(assignments: [:role]).where(role: { name: [role] }).distinct }
-  # scope :order_by_ac_type, -> { order(:ac_type, :email) }
 
   # not yet used
-  def has_role?(*role)
+  def has_role?(*role_name)
     # #& is Array class's intersection method
     # to_a won't convert string to array, but can achieve the same with splat operator or Array.wrap()
     # https://medium.com/rubycademy/3-safe-ways-to-convert-values-into-array-in-ruby-c3990a5223ef
     # splat in argument and to_s in method means argument can be a single symbol/string or a comma separted list of symbols/strings
     # (roles.pluck(:name) & role.map(&:to_s)).any?
     # and Style Guide preference
-    roles.pluck(:name).intersect?(role.map(&:to_s))
+    roles.pluck(:name).intersect?(role_name.map(&:to_s))
   end
 
   def priority_role
@@ -43,14 +41,9 @@ class Account < ApplicationRecord
   end
 
   def clean_up
-    # reformat
-    case ac_type
-    when 'client'
-      client.update(account_id: nil)
-    when 'instructor'
-      instructor.update(account_id: nil)
-    when 'partner'
-      partner.update(account_id: nil)
+    Role.not_including('client', 'superadmin', 'admin').each  do |role| # As there is an Admin:Module (not Admin Model), Active.exists? would give NoMethodError: undefined method `exists?' for Admin:Module
+      model_name = role.name.camelcase.safe_constantize # so nil for 'junioradmin' (as no Junioradmin model) and Instructor for 'instructor'
+      model_name.update(account_id: nil) if model_name&.exists? && has_role?(role.name) 
     end
     destroy
   end
@@ -92,7 +85,7 @@ class Account < ApplicationRecord
 
   def self.setup_for(client)
     account_params = { email: client.email,
-                       ac_type: 'client',
+                       role_name: 'client',
                        account_holder: client }
     outcome = AccountCreator.new(account_params).create
     if outcome.success?

@@ -21,7 +21,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Account.count' do
         post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
-                                            ac_type: 'client' }
+                                            role_name: 'client' }
       end
 
       assert_redirected_to login_path
@@ -34,7 +34,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Account.count' do
         post accounts_path, params: { email: @partner_without_account.email,
                                             partner_id: @partner_without_account.id,
-                                            ac_type: 'partner' }
+                                            role_name: 'partner' }
       end
 
       assert_redirected_to login_path
@@ -47,7 +47,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Account.count' do
         post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
-                                            ac_type: 'admin' }
+                                            role_name: 'admin' }
       end
 
       assert_redirected_to login_path
@@ -60,7 +60,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Account.count' do
         post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
-                                            ac_type: 'junioradmin' }
+                                            role_name: 'junioradmin' }
       end
 
       assert_redirected_to login_path
@@ -73,7 +73,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Account.count' do
         post accounts_path, params: { email: @client_without_account.email,
                                             client_id: @client_without_account.id,
-                                            ac_type: 'superadmin' }
+                                            role_name: 'superadmin' }
       end
 
       assert_redirected_to login_path
@@ -85,7 +85,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Account.count' do
       post accounts_path, params:
        { email: 'wannabe@example.com',
-         ac_type: 'client' }
+         role_name: 'client' }
     end
 
     assert_redirected_to login_path
