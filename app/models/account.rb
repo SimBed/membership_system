@@ -36,6 +36,11 @@ class Account < ApplicationRecord
     roles.size > 1
   end
 
+  def client_only?
+    # avoid anyone messing with triggering password resets for non-client emails
+    has_role?('client') && !multiple_roles?
+  end
+
   def without_purchase?
     client.purchases.empty? if client
   end

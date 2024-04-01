@@ -11,5 +11,6 @@ class AccountMailerTest < ActionMailer::TestCase
     assert_equal ['members@thespacejuhu.in'], mail.from
     assert_match account.reset_token, mail.body.encoded
     assert_match CGI.escape(account.email), mail.body.encoded
+    assert_match CGI.escape(account.client.first_name), mail.body.encoded
   end
 end

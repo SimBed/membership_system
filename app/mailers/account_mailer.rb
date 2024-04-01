@@ -8,6 +8,7 @@ class AccountMailer < ApplicationMailer
   #
   def password_reset(account)
     @account = account
+    @client_first_name = account.client.first_name
     mail to: account.email, subject: 'Password reset'
   end
 end

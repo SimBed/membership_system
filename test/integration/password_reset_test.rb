@@ -103,7 +103,6 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     # Valid email
     post client_password_resets_path,
          params: { password_reset: { email: @account.email } }
-
     refute_equal @account.reset_digest, @account.reload.reset_digest
     assert_equal 1, ActionMailer::Base.deliveries.size
     refute_empty flash

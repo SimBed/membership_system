@@ -10,7 +10,8 @@ class Client::PasswordResetsController < ApplicationController
 
   def create
     @account = Account.find_by(email: params[:password_reset][:email].downcase)
-    if @account
+    # avoid anyone messing with triggering password resets for non-client emails
+    if @account && @account.client_only?
       @account.create_reset_digest
       @account.send_password_reset_email
       flash[:info] = t('.info')

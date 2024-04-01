@@ -109,6 +109,7 @@ Rails.application.routes.draw do
     resources :waitings, only: [:create, :destroy]
     resources :password_resets, only: [:new, :create, :edit, :update] do
       collection do
+        # TODO: should be patch
         get 'password_change/:id', to: 'password_resets#password_change', as: 'password_change'
       end
     end
