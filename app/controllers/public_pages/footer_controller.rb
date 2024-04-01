@@ -1,5 +1,5 @@
 class PublicPages::FooterController < ApplicationController
-  layout 'login'
+  layout 'admin'
 
   def about; end
 
