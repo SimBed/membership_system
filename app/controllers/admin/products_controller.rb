@@ -3,6 +3,7 @@ class Admin::ProductsController < Admin::BaseController
   before_action :junioradmin_account, only: [:index, :filter, :clear_filters]
   before_action :initialize_sort, only: :index
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_admin_status, only: [:index]
   # don't do as callback because only on successful update not failed update
   # after_action -> { update_purchase_status(@purchases) }, only: [:update]
 
@@ -15,10 +16,7 @@ class Admin::ProductsController < Admin::BaseController
     # reinstate this once sorted out the sorting (sorting by price returns an array)
     # @products = @products.space_group if logged_in_as?('junioradmin')
     set_data
-    respond_to do |format|
-      format.html
-      format.csv { send_data @products.to_csv }
-    end
+    handle_index_response
   end
 
   def show
@@ -36,10 +34,12 @@ class Admin::ProductsController < Admin::BaseController
   def new
     @product = Product.new
     prepare_items_for_dropdowns
+    @form_cancel_link = products_path
   end
 
   def edit
     prepare_items_for_dropdowns
+    @form_cancel_link = products_path
   end
 
   def create
@@ -62,6 +62,7 @@ class Admin::ProductsController < Admin::BaseController
       update_sunset_date(@purchases)
     else
       prepare_items_for_dropdowns
+      @form_cancel_link = products_path 
       render :edit, status: :unprocessable_entity
     end
   end
@@ -194,6 +195,14 @@ class Admin::ProductsController < Admin::BaseController
       @products_data[product.name(rider_show: true).to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
       total_count: Purchase.where(product_id: product.id).size,
       base_price: product.base_price_at(Time.zone.now)&.price }
+    end
+  end
+
+  def handle_index_response
+    respond_to do |format|
+      format.html
+      format.csv { send_data @products.to_csv }
+      format.turbo_stream
     end
   end
 

@@ -10,6 +10,7 @@ class Admin::BaseController < ApplicationController
   end
 
   def set_admin_status
+    @superadmin = logged_in_as?('superadmin')
     @admin_plus = logged_in_as?('admin', 'superadmin')
     @junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin')
     @junioradmin = logged_in_as?('junioradmin')

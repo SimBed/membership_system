@@ -1,4 +1,4 @@
-<%= form_with(model: product) do |form| %>
+<%= form_with(model: product, class: 'admin_form pt-4 my-2') do |form| %>
   <% if product.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
@@ -59,4 +59,8 @@
   <div class="actions">
     <%= form.submit %>
   </div>
+
+  <div class="cancel">
+    <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
+  </div>  
 <% end %>

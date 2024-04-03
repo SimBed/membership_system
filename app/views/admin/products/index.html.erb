@@ -1,15 +1,20 @@
 <div class="container px-1 mb-1">
   <h4>Products
-    <% if logged_in_as?('admin', 'superadmin') %>
-      <%= link_to image_tag('add.png', class: "button_icon"), new_product_path, class: "icon-container" %>
+    <% if @admin_plus %>
+      <%= link_to image_tag('add.png', class: "button_icon"),
+                  new_product_path,
+                  data: { turbo_frame: dom_id(Product.new) } %>
     <% end %>
   </h4>
+  <%= turbo_frame_tag Product.new %>   
 </div>
-<turbo-frame id="product-frame">
+<%= turbo_frame_tag 'products-and-filter' do %>
   <%= render partial: 'filter_form' %>
   <% if logged_in_as?('superadmin') %>
     <%= render partial: 'download' %>
   <% end %>
-  <%= render partial: 'products_table' %>
-  <%#= render partial: 'products_table', locals: {products: @products_not_current} %>
-</turbo-frame>
+  <%= turbo_frame_tag 'products' do %>  
+    <%= render partial: 'products_table' %>
+    <%#= render partial: 'products_table', locals: {products: @products_not_current} %>
+  <% end %>
+<% end %>

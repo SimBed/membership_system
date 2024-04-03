@@ -1,3 +1,5 @@
-<h4>New Product</h4>
-<%= render 'form', product: @product %>
-<%= link_to 'back to products', products_path %>
+<%= turbo_frame_tag @product do %>
+  <div class="col-md-6 mb-4">
+    <%= render 'form', product: @product %>
+  </div>
+<% end %>
