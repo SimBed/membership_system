@@ -37,6 +37,7 @@ module SessionsHelper
       account = Account.find_by(id: account_id)
       if account&.authenticated?(:remember, cookies[:remember_token])
         log_in account
+        account.logins.create(by_cookie: true)
         @current_account = account
       end
     end
@@ -83,6 +84,14 @@ module SessionsHelper
 
   def log_out
     forget(current_account)
+    close_browser
+    # session.delete(:account_id)
+    # session.delete(:role_name)
+    # @current_account = nil
+    # @current_role = nil
+  end
+
+  def close_browser
     session.delete(:account_id)
     session.delete(:role_name)
     @current_account = nil

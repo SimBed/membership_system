@@ -38,9 +38,15 @@ class Auth::SessionsController < Auth::BaseController
     deal_with_partner
   end
 
+  def close_the_browser
+    close_browser
+    redirect_to root_path
+  end
+
   private
 
   def has_role?
+    # NOTE: should be return not return false??
     return false if logged_in? && current_account_role_names.any?(params[:role])
 
     flash[:warning] = 'unauthorised role'
@@ -54,9 +60,9 @@ class Auth::SessionsController < Auth::BaseController
 
   def action_when_activated
     log_in @account
+    @account.logins.create
     # params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
-    remember(@account) if @account.remember_digest.nil?
-    # switch_role(@account.roles.first.name)
+    remember(@account) #unless cookies.signed[:account_id] #if @account.remember_digest.nil?
     send_to_correct_page_for_role
   end
 

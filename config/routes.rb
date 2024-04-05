@@ -85,6 +85,8 @@ Rails.application.routes.draw do
     post   '/login',   to: 'sessions#create'
     delete '/logout',  to: 'sessions#destroy'
     get '/switch_account_role', to: 'sessions#switch_account_role'
+    # hack to simulate closing a browser used only for integration testing (as sessions can't be directly amended in integration tests)
+    get '/close_the_browser',  to: 'sessions#close_the_browser'
   end
 
   scope module: :client do

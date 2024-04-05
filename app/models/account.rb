@@ -5,6 +5,7 @@ class Account < ApplicationRecord
   has_one :instructor, dependent: nil
   has_many :orders, dependent: :destroy
   has_many :assignments, dependent: :destroy
+  has_many :logins, dependent: :destroy
   has_many :roles, through: :assignments
   attr_accessor :remember_token, :reset_token, :current_role
 
@@ -68,7 +69,6 @@ class Account < ApplicationRecord
 
   def remember
     self.remember_token = Account.new_token
-    # update(remember_digest: Account.digest(remember_token))
     update_column(:remember_digest, Account.digest(remember_token))
   end
 
@@ -80,7 +80,6 @@ class Account < ApplicationRecord
   end
 
   def forget
-    # update(remember_digest: nil)
     update_column(:remember_digest, nil)
   end
 
