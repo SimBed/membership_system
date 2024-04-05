@@ -28,6 +28,7 @@ class Wkclass < ApplicationRecord
   # deprecate instructor_cost as an attribute of wkclass in due course and reference instructor_rate.rate instead (as below)
   scope :has_instructor_cost, -> { joins(:instructor_rate).where.not(instructor_rate: { rate: 0 }) }
   scope :has_no_instructor_cost, -> { joins(:instructor_rate).where(instructor_rate: { rate: 0 }) }
+  scope :has_instructor_rate, ->(instructor_rate) { joins(:instructor_rate).where(instructor_rate_id: instructor_rate.id) }
   # wg is an array of instructor ids
   scope :with_instructor, ->(i) { joins(:instructor).where(instructor: { id: i }) }
   scope :group_by_instructor_cost, -> { joins(:instructor).group("first_name || ' ' || last_name").sum(:instructor_cost) }

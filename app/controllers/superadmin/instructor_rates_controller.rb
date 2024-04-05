@@ -12,21 +12,20 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
 
   def new
     @instructor_rate = InstructorRate.new
-    @instructors = Instructor.all.map { |i| [i.name, i.id] }
+    prepare_items_for_form
   end
 
   def edit
-    @instructors = Instructor.all.map { |i| [i.name, i.id] }
-    @instructor = @instructor_rate.instructor.id
+    prepare_items_for_form 
   end
 
   def create
     @instructor_rate = InstructorRate.new(instructor_rate_params)
-
     if @instructor_rate.save
       redirect_to instructor_rates_path
       flash[:success] = t('.success')
     else
+      prepare_items_for_form
       render :new, status: :unprocessable_entity
     end
   end
@@ -36,7 +35,9 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
       redirect_to instructor_rates_path
       flash[:success] = t('.success')
     else
+      prepare_items_for_form    
       render :edit, status: :unprocessable_entity
+      @form_cancel_link = instructor_rates_path      
     end
   end
 
@@ -47,6 +48,12 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   end
 
   private
+
+  def prepare_items_for_form
+    @instructors = Instructor.all.map { |i| [i.name, i.id] }
+    @instructor = @instructor_rate&.instructor&.id
+    @form_cancel_link = instructor_rates_path
+  end
 
   def set_instructor_rate
     @instructor_rate = InstructorRate.find(params[:id])

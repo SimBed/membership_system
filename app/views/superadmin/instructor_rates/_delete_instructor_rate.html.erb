@@ -1,0 +1,12 @@
+<% if rate.deletable? %>
+  <% tooltip_title = "The instructor rate has not been used, so can be deleted.".gsub(' ',"\u00a0") %>
+  <% confirm_message = "The instructor rate has not been used so can be deleted. But are you sure?" %>
+  <div class="column nomobile" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %>>
+    <%= link_to image_tag('delete.png', class: "table_icon"), instructor_rate_path(rate), data: { "turbo-method": :delete, turbo_confirm: confirm_message } %>
+  </div>
+<% else %>
+  <% tooltip_title = "The instructor rate has been used for a class, so can not be deleted".gsub(' ',"\u00a0") %>
+  <div class="column nomobile" data-toggle="tooltip" data-placement="top" title = <%= tooltip_title %>>
+    <%= link_to image_tag('delete.png', class: "table_icon greyed-out" ), '#', class: 'disabled' %>
+  </div>
+<% end %>

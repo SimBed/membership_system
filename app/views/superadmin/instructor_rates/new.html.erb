@@ -1,3 +1,5 @@
-<h4>New Instructor Rate</h4>
-<%= render 'form', instructor_rate: @instructor_rate %>
-<%= link_to 'Back', instructor_rates_path %>
+<%= turbo_frame_tag @instructor_rate do %>
+  <div class="col-md-6 mb-4">
+    <%= render 'form', instructor_rate: @instructor_rate %>
+  </div>
+<% end %>

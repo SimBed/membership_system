@@ -1,4 +1,7 @@
 <%= turbo_stream.update "instructor_rates" do %>
   <%= render partial: "instructor_rates_table" %>
 <% end %>
+<%= turbo_stream.update "new_instructor_rate" do %>
+  <%= render inline:'' %>
+<% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>
