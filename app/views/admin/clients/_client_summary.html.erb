@@ -67,6 +67,10 @@
     <div class="column col-1x"><%= @client_hash[:last_counted_class].nil? ? "not yet attended" : "#{time_ago_in_words(@client_hash[:last_counted_class])} ago" %></div>
   </div>
   <div class="row">
+    <div class="column col-1x">Last Login</div>
+    <div class="column col-1x"><%= "#{time_ago_in_words(@client_hash[:last_login])} ago" unless @client_hash[:last_login].nil?  %></div>
+  </div>
+  <div class="row">
     <div class="column col-1x">First contact</div>
     <div class="column col-1x"><%= "#{time_ago_in_words(@client_hash[:date_created])} ago" %></div>
   </div>

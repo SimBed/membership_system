@@ -117,6 +117,12 @@ class Account < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
+  def last_login_date
+    return nil if logins.empty?
+
+    logins.order_by_recent_first.first.created_at
+  end  
+
   private
 
   def downcase_email

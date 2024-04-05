@@ -198,6 +198,7 @@ class Admin::ClientsController < Admin::BaseController
       spend: @client.total_spend,
       last_counted_class: @client.last_counted_class,
       date_created: @client.created_at,
+      last_login: @client.last_login_date,
       date_last_purchase_expiry: @client.last_purchase&.expiry_date
     }
   end

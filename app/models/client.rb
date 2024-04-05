@@ -169,6 +169,12 @@ class Client < ApplicationRecord
     purchases.order_by_dop.first
   end
 
+  def last_login_date
+    return nil if account.nil?
+    
+    account.last_login_date
+  end
+
   def pt?
     # last_purchase.pt?
     purchases.map(&:pt?).any?
