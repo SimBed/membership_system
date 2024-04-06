@@ -49,6 +49,8 @@ class Admin::InstructorsController < Admin::BaseController
     if @instructor.update(instructor_params)
       redirect_to instructors_path
       flash[:success] = t('.success')
+      # Once an instructor is retired, their rates should be too. False means image link clicekd, 0 meand edited by form
+      retire_instructors_rates if ['false', '0'].include? instructor_params[:current]
     else
       render :edit, status: :unprocessable_entity
     end
@@ -61,6 +63,12 @@ class Admin::InstructorsController < Admin::BaseController
   end
 
   private
+
+  def retire_instructors_rates
+    current_instructor_rates = @instructor.instructor_rates.current
+    flash[:warning] = t('.instructor_rates_upadted') unless current_instructor_rates.empty?
+    current_instructor_rates.update_all(current: false)
+  end
 
   def initialize_sort
     session[:instructor_expense_sort_option] = params[:instructor_expense_sort_option] || session[:instructor_expense_sort_option] || 'wkclass_date'

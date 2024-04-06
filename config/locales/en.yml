@@ -69,6 +69,7 @@ en:
         success: Instructor was successfully added
       update:
         success: Instructor was successfully updated
+        instructor_rates_upadted: Instructor's rates have beeen made inactive
       destroy:
         success: Instructor was successfully deleted
     partners:

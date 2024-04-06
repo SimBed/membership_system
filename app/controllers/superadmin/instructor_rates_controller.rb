@@ -50,8 +50,10 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   private
 
   def prepare_items_for_form
-    @instructors = Instructor.all.map { |i| [i.name, i.id] }
-    @instructor = @instructor_rate&.instructor&.id
+    @instructors = Instructor.current.order_by_name.map { |i| [i.name, i.id] }
+    @instructor = @instructor_rate&.instructor
+    # allow for the case of editing the rate of a no longer active instructor 
+    @instructors.unshift([@instructor.name, @instructor.id]) if @instructor && !@instructor.current?
     @form_cancel_link = instructor_rates_path
   end
 

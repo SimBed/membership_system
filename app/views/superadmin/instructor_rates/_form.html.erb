@@ -12,7 +12,7 @@
 
   <div class="field">
     <%= form.label :instructor_id %>
-    <%= form.select :instructor_id, options_for_select(@instructors, @instructor), include_blank: false %>
+    <%= form.select :instructor_id, options_for_select(@instructors, @instructor_id), include_blank: false %>
   </div>
      
   <div class="field">
@@ -22,7 +22,7 @@
 
   <div class="field mb-2">
     <%= form.label :group do %>
-      <%= form.check_box :group, { checked: @instructor_rate.new_record? || form.object.group? } %>
+      <%= form.check_box :group, { checked: form.object.new_record? || form.object.group? } %>
       Group Class Rate?
     <% end %>
   </div>
@@ -39,7 +39,7 @@
 
   <div class="field mb-3">
     <%= form.label :current do %>
-      <%= form.check_box :current, { checked: @instructor_rate.new_record? || form.object.current? } %>
+      <%= form.check_box :current, { checked: form.object.new_record? || form.object.current? } %>
       Instructor Rate is Current
     <% end %>
   </div>    
