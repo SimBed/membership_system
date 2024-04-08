@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
       status_changed = orig_status != p.status
       expiry_earlier = expiry_earlier?(p.expiry_date, orig_expiry_date)
       # expiry_earlier = p.expiry_date.nil? ? false : orig_expiry_date > p.expiry_date
-      @major_change = status_changed || expiry_earlier # if there is a major change then we will do full page reload rsther than discrete turbo-frames update
+      @major_change = status_changed || expiry_earlier # if there is a major change then we will do full page reload rather than discrete turbo-frames update
       # NOTE: rider = nil would return false, so this means if p has a rider then set rider as p's rider and carry out the conditional, otherwise dont
       # NOTE: sage rubocop advice, Use == if you meant to do a comparison or wrap the expression in parentheses to indicate you meant to assign in a condition
       if (rider = p.rider_purchase)
@@ -38,11 +38,10 @@ class ApplicationController < ActionController::Base
       # cancel any bookings that are now outside new expiry date
       # could also cancel any pt rider bookings post main expiry, but this may cause undisproportionate business problems
       next unless expiry_earlier
-
       period = (p.expiry_date.advance(days: 1)..Float::INFINITY)
       post_expiry_attendances = p.attendances.during(period).booked
       post_expiry_attendances.each do |a|
-        a.update(status: 'cancelled early')
+        a.update(status: 'cancelled early', amnesty: true)
         flash_message :danger, t('.booking_cancelled')
       end
     end

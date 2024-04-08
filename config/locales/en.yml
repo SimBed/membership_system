@@ -6,14 +6,14 @@ en:
         warning: Attendance was not updated
       create:
         warning: Forbidden
-        booking_cancelled: A booking made for after the new expiry date has been cancelled        
+        booking_cancelled: A booking made for after the new expiry date has been cancelled
       destroy:
         success: Attendance was successfully deleted
         warning: Forbidden
       update:
         success: "%{name}'s attendance was successfully updated to %{status}"
         warning: Forbidden
-        booking_cancelled: A booking made for after the new expiry date has been cancelled            
+        booking_cancelled: A booking made for after the new expiry date has been cancelled
       action_new_booking_when_prov_expired:
         admin:
           warning: The maximum number of classes has already been booked
@@ -34,10 +34,10 @@ en:
     adjustments:
       create:
         success: Adjustment was successfully added
-        booking_cancelled: A booking made for after the new expiry date has been cancelled  
+        booking_cancelled: A booking made for after the new expiry date has been cancelled
       update:
         success: Adjustment was successfully updated
-        booking_cancelled: A booking made for after the new expiry date has been cancelled        
+        booking_cancelled: A booking made for after the new expiry date has been cancelled
       destroy:
         success: Adjustment was successfully deleted
     clients:
@@ -59,7 +59,7 @@ en:
     freezes:
       create:
         success: Freeze was successfully added
-        booking_cancelled: A booking during the freeze has been cancelled 
+        booking_cancelled: A booking during the freeze has been cancelled
       update:
         success: Freeze was successfully updated
       destroy:
@@ -126,6 +126,7 @@ en:
         success: "%{repeats} successfully added"
       update:
         success: Class was successfully updated
+        booking_cancelled: The date change caused a cancellation of a future booking 
       destroy:
         success: Class was successfully deleted
       repeat:

@@ -45,7 +45,8 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     @wkclass = Wkclass.last
     # push the date outside of the booking window (no test yet for whether it is visible (which it should be) just not bookable)
     # wkclass_params expects to find a params[:wkclass][:instructor_rate_id] to set cost, hence the inclusion of instructor_rate_id in the patch)
-    patch wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.day, instructor_rate_id: @wkclass.instructor_rate_id } } # 25/4 (booking starts on 23/4)
+    patch wkclass_path(@wkclass), params: { wkclass: deconstruct_date(@wkclass.start_time + 1.day).merge({ instructor_rate_id: @wkclass.instructor_rate_id }) } # 25/4 (booking starts on 23/4)
+    # patch wkclass_path(@wkclass), params: { wkclass: { start_time: @wkclass.start_time + 1.day, instructor_rate_id: @wkclass.instructor_rate_id } } # 25/4 (booking starts on 23/4)
     log_in_as(@account_client)
     follow_redirect!
     # no booking link for the later dated wkclass

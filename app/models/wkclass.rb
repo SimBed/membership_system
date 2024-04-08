@@ -240,4 +240,5 @@ class Wkclass < ApplicationRecord
 
     errors.add(:base, 'A class for this workout, instructor and time already exists') unless id == wkclass.id
   end
+
 end

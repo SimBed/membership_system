@@ -50,4 +50,10 @@ class ActiveSupport::TestCase
     (css_select 'div.status').each { |div| booked_count += 1 if div.text == booking_type }
     booked_count
   end
+
+  def deconstruct_date(date)
+    { 'start_time(1i)': date.year.to_s,
+      'start_time(2i)': date.month.to_s,
+      'start_time(3i)': date.day.to_s }
+  end  
 end

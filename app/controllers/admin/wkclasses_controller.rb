@@ -1,4 +1,5 @@
 class Admin::WkclassesController < Admin::BaseController
+  include ParamsDateConstructor
   skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :repeat, :filter, :instructor_select]
   before_action :junioradmin_account, only: [:new, :edit, :create, :update, :destroy, :repeat, :instructor_select]
   before_action :junioradmin_or_instructor_account, only: [:show, :index]
@@ -8,6 +9,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :attendance_check, only: :repeat
   before_action :attendance_remain_check, only: :repeat
   before_action :affects_waiting_list, only: :update
+  before_action :date_change, only: :update
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   # callback failed. don't know why. called update_purchase_status method explicitly in destroy method instead
   # resolution i think? @purchases is an active record collection so already array like so try update_purchase_status(@purchases) - no square brackets
@@ -88,8 +90,14 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def update
+    # if date_change_after_attendance
+    #   flash_message :warning, t('.date_change_after_attendance')
+    #   redirect_to wkclasses_path(page: params[:wkclass][:page]) and return
+    # end
     if @wkclass.update(wkclass_params)
+      update_purchase_status(@wkclass.purchases) if @wkclass.attendances.no_amnesty.present? && @date_change
       notify_waiting_list(@wkclass) if @affects_waiting_list
+
       redirect_to wkclasses_path(page: params[:wkclass][:page])
       flash_message :success, t('.success')
     else
@@ -188,17 +196,24 @@ class Admin::WkclassesController < Admin::BaseController
     end
   end
 
-  def construct_date(hash)
-    DateTime.new(hash['start_time(1i)'].to_i,
-                 hash['start_time(2i)'].to_i,
-                 hash['start_time(3i)'].to_i)
-  end
+  # def construct_date(hash)
+  #   DateTime.new(hash['start_time(1i)'].to_i,
+  #                hash['start_time(2i)'].to_i,
+  #                hash['start_time(3i)'].to_i)
+  # end
 
-  def deconstruct_date(date, n)
-    advanced_date = date.advance(weeks: n)
-    { 'start_time(1i)': advanced_date.year.to_s,
-      'start_time(2i)': advanced_date.month.to_s,
-      'start_time(3i)': advanced_date.day.to_s }
+  # def deconstruct_date(date, n)
+  #   advanced_date = date.advance(weeks: n)
+  #   { 'start_time(1i)': advanced_date.year.to_s,
+  #     'start_time(2i)': advanced_date.month.to_s,
+  #     'start_time(3i)': advanced_date.day.to_s }
+  # end
+
+  def date_change
+    @date_change = false
+    start_date = @wkclass.start_time.to_date
+    proposed_start_date = construct_date(wkclass_params)
+    @date_change = true if proposed_start_date != start_date
   end
 
   def affects_waiting_list
