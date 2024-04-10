@@ -221,7 +221,7 @@ en:
   client:
     package_modification:
       buy_freeze:
-        success: Your package has been frozen  
+        success: A freeze has been successfully applied to your Package  
         booking_cancelled: A booking during your freeze has been cancelled 
     password_resets:
       create:
