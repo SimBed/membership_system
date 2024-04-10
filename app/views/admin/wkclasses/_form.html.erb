@@ -1,4 +1,4 @@
-<div data-controller="wkclass-form" data-wkclass-form-url-value = <%= wkclasses_instructor_select_path %> data-wkclass-form-capacity-value = 'yes'
+<div data-controller="wkclass-form" data-wkclass-form-url-value = <%= wkclasses_instructor_select_path %> data-wkclass-form-capacity-value = 'yes'>
   <%= form_with(model: wkclass, class: 'admin_form') do |form| %>
     <%= turbo_frame_tag 'errors' do %>
       <% if wkclass.errors.any? %>

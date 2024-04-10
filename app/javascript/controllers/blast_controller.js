@@ -7,7 +7,6 @@ export default class extends Controller {
   static values = { recipientNumber: Number }
   
   connect() {
-    // console.log('hih')
   }
 
   toggle_blast_ready() {

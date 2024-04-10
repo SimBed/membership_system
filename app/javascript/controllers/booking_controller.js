@@ -1,46 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  
-  connect() {
-    const buttonContainerEl = document.querySelector(".button-container-full-width");
-    const btns = document.querySelectorAll('button');
-    buttonContainerEl.addEventListener('click', (event) => {
-      const daycols = document.querySelectorAll('.booking-day');
-      const day = event.target.dataset.day;
-      if(day) {
-        btns.forEach((btn)=> {
-          btn.classList.remove('live')
-        })
-        event.target.classList.add('live')
-        daycols.forEach((daycol)=> {
-          daycol.classList.remove('live')
-        })
-        // const element = document.getElementById(day)
-        // element.classList.add('live')
-        const elements = document.querySelectorAll(`.booking-day${day}`);
-        elements.forEach((element)=> {
-          element.classList.add('live');
-        })
-      }      
-      // this.updateDay(event);
+  static targets = [ "bookingDay", "dayButton" ]
+  static values = { day: String }
+
+  // https://stimulus.hotwired.dev/reference/actions action parameters
+  change_day( event ) {
+    console.log(this.bookingDayTargets.length)
+    this.dayButtonTargets.forEach((btn)=> {
+      btn.classList.remove('live')
+    })
+    event.target.classList.add('live')
+    this.bookingDayTargets.forEach((day)=> {
+      day.classList.remove('live')
+    })
+    let selected_day = event.params['day'];
+    // doesn't seem to be a nice stimulus-style way of doing this (would have to rigidly pre-define a fixed load of static targets)
+    let bookables = document.querySelectorAll(`.booking-day${selected_day}`);
+    bookables.forEach((bookable)=> {
+      bookable.classList.add('live');
     })    
   }
-
-  // updateDay(event) {
-  //   console.log('dandan');
-  //   const day = event.target.dataset.day;
-  //   if(day) {
-  //     btns.forEach((btn)=> {
-  //       btn.classList.remove('live')
-  //     })
-  //     event.target.classList.add('live')
-  //     daycols.forEach((daycol)=> {
-  //       daycol.classList.remove('live')
-  //     })
-  //     const element = document.getElementById(day)
-  //     element.classList.add('live')
-  //   }
-  // }  
-
 }

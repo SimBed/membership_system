@@ -10,12 +10,14 @@
   <div class="booking-page">
     <%= render partial: 'client/data_pages/shared/client_greeting' %>
     <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_show.empty? %>
-    <%= turbo_frame_tag 'client_bookings' do %>
-      <%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_show.empty? %>
-    <% end %>
-    <%= turbo_frame_tag 'opengym_bookings' do %>
-      <%= render partial: 'opengym_bookings_table' if @renewal.package_ongoing? && !@open_gym_wkclasses.empty? %>
-    <% end %>
+    <div data-controller="booking">
+      <%= turbo_frame_tag 'client_bookings' do %>
+        <%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_show.empty? %>
+      <% end %>
+      <%= turbo_frame_tag 'opengym_bookings' do %>
+        <%= render partial: 'opengym_bookings_table' if @renewal.package_ongoing? && !@open_gym_wkclasses.empty? %>
+      <% end %>
+    </div >
     <%= render partial: 'other_services' unless @other_services.empty? %>
     <%= turbo_frame_tag 'my_bookings' do %>
       <%= render partial: 'my_bookings_table' if @renewal.package_ongoing? %>
