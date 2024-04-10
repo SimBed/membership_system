@@ -7,7 +7,7 @@
   <% provide(:base_price, @renewal.base_price(@renewal.product).price.to_s) %>
   <% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?)) %>
 
-  <div class="booking-page">
+  <div class="booking-section">
     <%= render partial: 'client/data_pages/shared/client_greeting' %>
     <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_show.empty? %>
     <div data-controller="booking">
@@ -25,8 +25,8 @@
     <% if Setting.renew_online && @renewal.alert_to_renew? %>
       <%= render partial: 'renewal' %>
     <% end %>
-    <div id="packages-table">
-      <%= render partial: 'client/data_pages/shared/client_packages_table', locals: {detailed: false} %>
-    </div>
+  </div>
+  <div id="packages-table">
+    <%= render partial: 'client/data_pages/shared/client_packages_table', locals: {detailed: false} %>
   </div>
 <% end %>

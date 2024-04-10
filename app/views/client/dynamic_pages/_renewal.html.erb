@@ -1,4 +1,4 @@
-<div id="renewal" class="container px-1 fw-bolder fst-italic mb-5 text-center">
+<div id="renewal" class="container px-1 fw-bolder fst-italic my-5 text-center">
   <% unless @renewal.product.rider? %>
     <p class="mb-1"><%= yield(:renewal_statement) %></p>
   <% end %>
@@ -19,3 +19,4 @@
     <p class="bolditalics mb-0"><%= yield(:visit_shop_statement) %></p>
   <% end %>
 </div>
+<hr class="divider thick">

@@ -5,12 +5,12 @@
   <% @purchases.each do |purchase| %>
       <div class="container px-0">
         <% @purchase = purchase %>
-        <%= render partial: 'client/data_pages/shared/purchase_summary' %>
         <%# this page is shown on the history page (where details are wanted, but options to modify not wanted) and on bookings page vice-veras.
         detailed == true means history page, otherwise booking page %>
         <% if detailed == false %>
           <%= render partial: 'client/data_pages/package_modifications' unless purchase.trial? %>  <%# no need for unless purchase.expired? as only unexpired purchases are shown on booking page%>
         <% end %>
+        <%= render partial: 'client/data_pages/shared/purchase_summary' %>
         <% if detailed == true %>
           <%= render partial: 'purchase_attendances' %>
         <% end %>
