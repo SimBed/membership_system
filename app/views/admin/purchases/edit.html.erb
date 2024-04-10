@@ -1,9 +1,1 @@
-<%= turbo_frame_tag @purchase do %>
-  <div class="container mb-4">
-    <% if @purchase.rider? %> 
-      <%= render 'form_for_rider', purchase: @purchase, class: 'mb-4' %>
-    <% else %>
-      <%= render 'form', purchase: @purchase, class: 'mb-4' %>
-    <% end %>
-  </div>
-<% end %>
+<%= render partial: 'edit_body' %>

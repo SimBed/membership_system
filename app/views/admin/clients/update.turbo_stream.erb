@@ -1,4 +1,3 @@
-<%#= turbo_stream.prepend "flash", partial: "layouts/flashhot" %>
 <%= turbo_stream.update "insta-#{@client.id}" do %>
   <%= render partial: "insta", locals: { client: @client } %>
 <% end %>

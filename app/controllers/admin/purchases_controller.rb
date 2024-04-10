@@ -62,6 +62,7 @@ class Admin::PurchasesController < Admin::BaseController
   def edit
     @form_cancel_link = params[:link_from] == 'show' ? purchase_path(@purchase) : purchases_path
     prepare_items_for_dropdowns
+    handle_show_response    
   end
 
   def create
@@ -96,7 +97,6 @@ class Admin::PurchasesController < Admin::BaseController
           DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[:purchase][discount].to_i) if params[:purchase][discount]
         end
       end
-
       redirect_to @purchase
       flash_message :success, t('.success')
       update_purchase_status([@purchase])
@@ -255,7 +255,9 @@ class Admin::PurchasesController < Admin::BaseController
   def changing_main_purchase_product?
     return false if params[:purchase][:product_id].blank?
 
-    original_purchase_has_rider = @purchase.rider_purchase.present?
+    # this line isn't robust. If the rider is deleted then there won't be a rider present, but the product hasn't necessarily changed 
+    # original_purchase_has_rider = @purchase.rider_purchase.present?
+    original_purchase_has_rider = @purchase.product.has_rider?
     new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
     return false if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
 
