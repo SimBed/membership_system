@@ -1,5 +1,7 @@
 class Admin::PurchasesController < Admin::BaseController
   include ApplyDiscount
+  # reinclude once refactoring done, then replace dop = DateTime.new.. code in dop_change
+  # include ParamsDateConstructor  
   skip_before_action :admin_account
   before_action :junioradmin_account
   before_action :initialize_sort, only: :index
@@ -115,12 +117,12 @@ class Admin::PurchasesController < Admin::BaseController
     flash_message :success, t('.success', name: @purchase.client.name)
   end
 
-  def new_purchase_client_filter
+  def client_filter
     clear_session(:select_client_name)
     session[:select_client_name] = params[:select_client_name] || session[:select_client_name]
     @clients = Client.order_by_first_name
     @selected_client_index = (@clients.index(@clients.first_name_like(session[:select_client_name]).first) || 0) + 1
-    render json: { clientindex: @selected_client_index }
+    render json: { selected_client_index: @selected_client_index }
     # redirect_to new_purchase_path
   end
 
@@ -153,43 +155,41 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def discount
-    @renewal_discount = Discount.find_by(id: params[:selected_renewal_discount_id].to_i)
-    @status_discount = Discount.find_by(id: params[:selected_status_discount_id].to_i)
-    @oneoff_discount = Discount.find_by(id: params[:selected_oneoff_discount_id].to_i)
-    @commercial_discount = Discount.find_by(id: params[:selected_commercial_discount_id].to_i)
-    @discretion_discount = Discount.find_by(id: params[:selected_discretion_discount_id].to_i)
-    @base_price = Price.base_at(Time.zone.now).where(product_id: params[:selected_product_id].to_i).first
-    # NOTE: variety of ways of adding things together while avoiding error of using add method on nil eg. 1 + nil.to_i = 1
-    # https://stackoverflow.com/questions/20205535/add-if-not-nil
-    # discount_percent = [@renewal_discount&.percent, @status_discount&.percent, @oneoff_discount&.percent].compact.inject(:+)
-    # discount_fixed = [@renewal_discount&.fixed, @status_discount&.fixed, @oneoff_discount&.fixed].compact.inject(:+)
-    # @payment_after_discount = [0, (@base_price.price * (1 - discount_percent.to_f / 100) - discount_fixed).round(0)].max
-    # apply_discount defined in ApplyDiscount concern
-    @payment_after_discount = apply_discount(@base_price, @renewal_discount, @status_discount, @oneoff_discount, @discretion_discount, @commercial_discount)
-    render json: { base_price_price: @base_price.price,
-                   payment_after_discount: @payment_after_discount,
-                   base_price_id: @base_price.id }
+    renewal_discount = Discount.find(params[:renewal_discount_id])
+    status_discount = Discount.find(params[:status_discount_id])
+    commercial_discount = Discount.find(params[:commercial_discount_id])
+    discretion_discount = Discount.find(params[:discretion_discount_id])
+    oneoff_discount = Discount.find(params[:oneoff_discount_id])
+    base_price = Price.base_at(Time.zone.now).find_by(product_id: params[:product_id])
+    payment_after_discount = apply_discount(base_price, renewal_discount, status_discount, oneoff_discount, discretion_discount, commercial_discount)
+    render json: { base_price_id: base_price&.id,
+                   base_price_price: base_price&.price,
+                   payment_after_discount: payment_after_discount }
   end
 
   def dop_change
-    @purchase_renewal_discount_id = params[:selected_renewal_discount_id]
-    @purchase_status_discount_id = params[:selected_status_discount_id]
-    @purchase_oneoff_discount_id = params[:selected_oneoff_discount_id]
-    dop = DateTime.new(params[:selected_dop_1i].to_i,
-                       params[:selected_dop_2i].to_i,
-                       params[:selected_dop_3i].to_i)
-    @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
-    @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', dop)
-    @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', dop)
-    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', dop)
-    render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, @renewal_discounts, :id, :name, selected: @purchase_renewal_discount_id || @discount_none.id),
-                   status: helpers.collection_select(:purchase, :status_discount_id, @status_discounts, :id, :name,
-                                                     selected: @purchase_status_discount_id || @discount_none.id),
-                   oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, @oneoff_discounts, :id, :name,
-                                                     selected: @purchase_oneoff_discount_id || @discount_none.id) }
+    # dop = construct_date(params, 'dop')
+    dop = DateTime.new(params[:dop_1i].to_i,
+                       params[:dop_2i].to_i,
+                       params[:dop_3i].to_i)
+    discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
+    render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, discount_options('renewal', dop, discount_none), :id, :name,
+                                                      selected: params[:renewal_discount_id] || discount_none.id),
+                   status: helpers.collection_select(:purchase, :status_discount_id, discount_options('status', dop, discount_none), :id, :name,
+                                                     selected: params[:status_discount_id] || discount_none.id),
+                   commercial: helpers.collection_select(:purchase, :commercial_discount_id, discount_options('commercial', dop, discount_none), :id, :name,
+                                                     selected: params[:commercial_discount_id] || discount_none.id),
+                   discretion: helpers.collection_select(:purchase, :discretion_discount_id, discount_options('discretion', dop, discount_none), :id, :name,
+                                                     selected: params[:discretion_discount_id] || discount_none.id),
+                   oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, discount_options('oneoff', dop, discount_none), :id, :name,
+                                                     selected: params[:oneoff_discount_id] || discount_none.id) }
   end
 
   private
+
+  def discount_options(discount_type, date, discount_none)
+    [discount_none] + Discount.with_rationale_at(discount_type.capitalize, date)
+  end
 
   def create_rider
     rider_product = Product.where(rider: true).first
@@ -205,13 +205,6 @@ class Admin::PurchasesController < Admin::BaseController
     else
       flash_message :warning, t('.rider_fail')
     end
-  end
-
-  # similar used in wkclass controller, move to a helper
-  def construct_date(hash)
-    DateTime.new(hash['start_time(1i)'].to_i,
-                 hash['start_time(2i)'].to_i,
-                 hash['start_time(3i)'].to_i)
   end
 
   def sunset_hash
@@ -413,12 +406,19 @@ class Admin::PurchasesController < Admin::BaseController
     @products = params[:id] ? Product.order_by_name_max_classes : Product.current.not_rider.order_by_name_max_classes
     @payment_methods = Setting.payment_methods
     # @renewal_discounts = Discount.with_rationale_at('renewal, @purchase.dop || Time.zone.now)
+    # @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', @purchase.dop || Time.zone.now)
+    # @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', @purchase.dop || Time.zone.now)
+    # @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', @purchase.dop || Time.zone.now)
+    # @commercial_discounts = [@discount_none] + Discount.with_rationale_at('Commercial', @purchase.dop || Time.zone.now)
+    # @discretion_discounts = [@discount_none] + Discount.with_rationale_at('Discretion', @purchase.dop || Time.zone.now)
+    # dynamically set instance variables with instance_variable_set method
     @discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
-    @renewal_discounts = [@discount_none] + Discount.with_rationale_at('Renewal', @purchase.dop || Time.zone.now)
-    @status_discounts = [@discount_none] + Discount.with_rationale_at('Status', @purchase.dop || Time.zone.now)
-    @oneoff_discounts = [@discount_none] + Discount.with_rationale_at('Oneoff', @purchase.dop || Time.zone.now)
-    @commercial_discounts = [@discount_none] + Discount.with_rationale_at('Commercial', @purchase.dop || Time.zone.now)
-    @discretion_discounts = [@discount_none] + Discount.with_rationale_at('Discretion', @purchase.dop || Time.zone.now)
+    discount_types = %w[renewal status commercial discretion oneoff]
+    discount_types.each do |discount_type|
+       instance_variable_set("@#{discount_type}_discounts", [@discount_none] + Discount.with_rationale_at(discount_type.capitalize, @purchase.dop || Time.zone.now))
+       instance_variable_set("@selected_#{discount_type}_discount", @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale: discount_type.capitalize})&.first&.id)
+    end
+    # @selected_discount_renewal = @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Renewal'})&.first&.id
   end
 
   def params_filter_list

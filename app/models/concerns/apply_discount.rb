@@ -3,6 +3,8 @@ module ApplyDiscount
 
   included do
     def apply_discount(base_price, *discounts)
+      return nil if base_price.nil?
+      
       discount = { percent: 0, fixed: 0 }
       unless discounts.empty?
         discount[:percent] = discounts.map { |d| d&.percent }.compact.inject(:+)

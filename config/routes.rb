@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     # if say get 'admin/purchases/filter' was after the (admin namespaced) resources :purchases, a request to admin/purchases/filter would be handled by the show method of the purchases controller (with params[:id] = 'filter')
     # and an error would arise 'ActiveRecord::RecordNotFound (Couldn't find Purchase with 'id'=filter):'. This happens due to https://guides.rubyonrails.org/routing.html section 2.2
     # the first match of the url 'admin/purchases/filter' would be /admin/purchases/:id(.:format), handled by the show method. The admin/purchases/filter(.:format) would be ignored as it comes later.
-    get '/purchases/client_filter', to: 'purchases#new_purchase_client_filter', as: 'new_purchase_client_filter'
+    get '/purchases/client_filter', to: 'purchases#client_filter', as: 'client_filter'
     patch '/purchases/:id/expire', to: 'purchases#expire', as: 'expire_purchase'
     get '/purchases/discount'
     get '/purchases/dop_change'

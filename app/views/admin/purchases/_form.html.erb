@@ -1,15 +1,16 @@
-<div class="admin_form pt-4 my-2">
-  <div class="field" data-controller="purchase-form" data-purchase-form-clientfilterurl-value = <%= new_purchase_client_filter_path %>> 
-    <%= text_field_tag :search_client_name, nil, {class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name], "data-action": "purchase-form#clientsearch"} %>
+<div class="admin_form pt-4 my-2" data-controller="purchase-form"
+                                  data-purchase-form-client-filter-url-value = <%= client_filter_path %>
+                                  data-purchase-form-discount-url-value = <%= purchases_discount_path %>
+                                  data-purchase-form-dop-change-url-value = <%= purchases_dop_change_path %>>
+  <div class="field" > 
+    <%= text_field_tag :search_client_name, nil, {class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name],
+                                                  "data-action": "purchase-form#client_search",
+                                                  "data-purchase-form-target": "clientSearch"} %>
   </div>
 
-  <%#= https://stackoverflow.com/questions/48197245/form-for-vs-form-with-in-rails-5-with-namespace
-  prior to introduction of the admin folder structure/namespace the named route for the url "/purchases" was purchases_path
-  With the admin namespace, the required url is "/admin/purchase" with named route purchases_path.
-  I don't see it in the documentation for form_with but the array syntax [:admin, purchase] as the model argument achieves this %>
-  <%# found it https://guides.rubyonrails.org/form_helpers.html#dealing-with-namespaces %>
-  <%#= form_with(model: [:admin, purchase],  data: { controller: "purchase-form", "purchase-form-url-value": purchases_discount_path, "purchase-form-dateurl-value": purchases_dop_change_path }) do |form| %>
-  <%= form_with(model: purchase,  data: { controller: "purchase-form", "purchase-form-url-value": purchases_discount_path, "purchase-form-dateurl-value": purchases_dop_change_path }) do |form| %>
+  <%#= Previously had an admin namespace for the purchases index route and used the array syntax form_with(model: [:admin, purchase]... for a url of form "/admin/purchase" %>
+  <%# https://guides.rubyonrails.org/form_helpers.html#dealing-with-namespaces %>
+  <%= form_with(model: purchase) do |form| %>
     <% if purchase.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(purchase.errors.count, "error") %> prohibited this purchase from being saved:</h2>
@@ -28,35 +29,45 @@
     <h6 class='text-uppercase fw-bolder'>membership</h6>
     <div class="field">
       <%= form.label :client_id %>
-      <%= form.collection_select :client_id, @clients, :id, :name, include_blank: true %>
+      <%= form.collection_select :client_id, @clients, :id, :name, {include_blank: true},
+                                  data: {"purchase-form-target": "clientSelect"} %>
+
     </div>
 
     <%# reverted to select rather than collection_select due to argument in product#name, which collection_select I think does not provide for %>
     <div class="field">
       <%= form.label :product_id, 'Product' %>
       <%#= form.collection_select :product_id, @products, :id, :name, {include_blank: true}, {"data-action": "purchase-form#change"} %>
-      <%= form.select :product_id, @products.map { |p| [p.name(rider_show: true), p.id] }, {include_blank: true}, {"data-action": "purchase-form#change"} %>
+      <%= form.select :product_id, @products.map { |p| [p.name(rider_show: true), p.id] }, {include_blank: true},
+                      data: {"purchase-form-target": "product", "action": "purchase-form#change"} %>
     </div>
 
     <div class="field">
       <%= form.label :renewal_discount_id, 'Renewal Discount' %>
-      <%= form.collection_select :renewal_discount_id, @renewal_discounts, :id, :name, {selected: @purchase.renewal_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Renewal'})&.first&.id || @discount_none.id}, {"data-action": "purchase-form#change"} %>
+      <%# on create/update fail, we want to retain the selected discounts chosen in the form. We have a virtual attribute not a database backed attribute for the purchase's discount, hence the attr_accessor :renewal_discount_id etc.. in the purchase model %>
+      <%= form.collection_select :renewal_discount_id, @renewal_discounts, :id, :name, {selected: @purchase.renewal_discount_id || @selected_renewal_discount || @discount_none.id},
+                                  data: {"purchase-form-target": "renewalDiscount", "action": "purchase-form#change"} %>
     </div>
+
     <div class="field"> 
       <%= form.label :status_discount_id, 'Status Discount' %>
-      <%= form.collection_select :status_discount_id, @status_discounts, :id, :name, {selected: @purchase.status_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Status'})&.first&.id || @discount_none.id}, {"data-action": "purchase-form#change"} %>
+      <%= form.collection_select :status_discount_id, @status_discounts, :id, :name, {selected: @purchase.status_discount_id || @selected_status_discount || @discount_none.id},
+                                  data: {"purchase-form-target": "statusDiscount", "action": "purchase-form#change"} %>
     </div>
     <div class="field">
       <%= form.label :commercial_discount_id, 'Commercial Discount' %>
-      <%= form.collection_select :commercial_discount_id, @commercial_discounts, :id, :name, {selected: @purchase.commercial_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Commercial'})&.first&.id || @discount_none.id}, {"data-action": "purchase-form#change"} %>
+      <%= form.collection_select :commercial_discount_id, @commercial_discounts, :id, :name, {selected: @purchase.commercial_discount_id || @selected_commercial_discount || @discount_none.id},
+                                  data: {"purchase-form-target": "commercialDiscount", "action": "purchase-form#change"} %>
     </div>
     <div class="field">
       <%= form.label :discretion_discount_id, 'Discretionary Discount' %>
-      <%= form.collection_select :discretion_discount_id, @discretion_discounts, :id, :name, {selected: @purchase.discretion_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Discretion'})&.first&.id || @discount_none.id}, {"data-action": "purchase-form#change"} %>
+      <%= form.collection_select :discretion_discount_id, @discretion_discounts, :id, :name, {selected: @purchase.discretion_discount_id || @selected_discretion_discount || @discount_none.id},
+                                  data: {"purchase-form-target": "discretionDiscount", "action": "purchase-form#change"} %>
     </div>
     <div class="field">
       <%= form.label :oneoff_discount_id, 'Oneoff Discount' %>
-      <%= form.collection_select :oneoff_discount_id, @oneoff_discounts, :id, :name, {selected: @purchase.oneoff_discount_id || @purchase.discounts.joins(:discount_reason).where(discount_reason: {rationale:'Oneoff'})&.first&.id || @discount_none.id}, {"data-action": "purchase-form#change"} %>
+      <%= form.collection_select :oneoff_discount_id, @oneoff_discounts, :id, :name, {selected: @purchase.oneoff_discount_id || @selected_oneoff_discount || @discount_none.id},
+                                  data: {"purchase-form-target": "oneOffDiscount", "action": "purchase-form#change"} %>
     </div>
 
     <!--div class="field">
@@ -64,21 +75,21 @@
       <%#= form.grouped_collection_select :price_id, @products, :current_price_objects, :name, :id, :name, include_blank: true %>
     </div-->
 
-    <div><%= form.hidden_field :price_id, value: @purchase.price&.id %></div>
+    <div><%= form.hidden_field :price_id, value: @purchase.price&.id, data: {"purchase-form-target": "priceId"} %></div>
 
     <div class="field">
       <%= form.label :base_price %>
-      <%= form.number_field :base_price, value: @purchase.price&.price, readonly: true %>
+      <%= form.number_field :base_price, value: @purchase.price&.price, readonly: true, data: {"purchase-form-target": "basePrice"} %>
     </div>
 
     <div class="field">
       <%= form.label :charge %>
-      <%= form.number_field :charge, readonly: true %>
+      <%= form.number_field :charge, readonly: true, data: {"purchase-form-target": "charge"} %>
     </div>
 
     <div class="field">
       <%= form.label :dop, 'Date of purchase' %>
-      <%= form.date_select :dop, {}, {"data-action": "purchase-form#date_change purchase-form#change"} %>
+      <%= form.date_select :dop, {}, data: {"purchase-form-target": "dop", "action": "purchase-form#date_change purchase-form#change"} %>
     </div>
 
     <div class="field">
