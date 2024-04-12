@@ -1,0 +1,70 @@
+<section class="mb-5">
+	<div class="container">
+  	<h4>Contact</h4>
+    <hr>	
+    <div class="row">
+      <div class="col-md-6">
+          <%= link_to "https://wa.me/919619348427", target: "_blank", class: "position-fixed float" do %>
+            <%= image_tag('whatsapp-50.png', alt: "Whatsapp call", class: "button_icon") %>
+          <% end %>
+          <ul class='nav flex-column'>
+            <li class='mb-2'><%= image_tag('phone.png', alt: "phone icon", class: "table_icon") %> <span>9619348427</span></li>
+            <li class='mb-2'><%= link_to "https://wa.me/919619348427", target: "_blank" do %>
+                  <%= image_tag('whatsapp.png', alt: "whatsapp call", class: "contact_icon") %>
+                <% end %> <span>whatsapp</span>
+            </li>
+            <li class='mb-2'><%= image_tag('email.png', alt: "Email icon", class: "contact_icon") %> <span>studio@thespacejuhu.in</span></li>
+            <li class='mb-2'><%= link_to "https://www.instagram.com/thespace.juhu/", target: "_blank" do %>
+                  <%= image_tag('instagram.png', alt: "instagram logo & link", class: "contact_icon") %>
+                <% end %> <span>follow us on Intagram</span>
+            </li>
+            <li class='mb-2'><%= link_to "https://www.youtube.com/@TheSpace.Fitness", target: "_blank" do %>
+                  <%= image_tag('youtube.png', alt: "youtube logo & link", class: "contact_icon") %>
+                <% end %> <span>follow us on Youtube</span>
+            </li>
+            <li class='mb-2'><%= link_to "https://whatsapp.com/channel/0029VaaTjg79mrGgPmnQID0F", target: "_blank" do %>
+                  <%= image_tag('whatsapp.png', alt: "whatsapp logo & channel link", class: "contact_icon") %>
+                <% end %> <span>follow our Whatsapp Channel for weekly fitness tips & workouts</span>
+            </li>
+          </ul>
+      </div>
+    </div>
+			<!--p class="GeneralText">		
+        <strong><i>Find Us:</i></strong><br>
+        A.B. Nair Rd, Juhu<br>
+        (Next to Bayroute, Opp. Chin Chin Chu)<br>
+        Mumbai, Maharashtra 400049
+			</p-->
+			
+			<div id='gmap_canvas' style='overflow:hidden;height:19em;width:35em;margin-top:2em;'></div>
+  </div>
+</section>
+
+<script src='https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA3IJxO6VIROiyu-EJ-4lTvJ6Loom-2t5k'></script>
+<script>
+  var myCenter=new google.maps.LatLng(19.112355,72.827235);
+  var mySpaceTag=new google.maps.LatLng(19.110677,72.825229);
+
+  function init_map()
+  {
+  var myOptions = {
+    center:myCenter,
+    zoom:16,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
+
+  marker = new google.maps.Marker({
+    map: map,
+    position: mySpaceTag,
+  });
+
+  infowindow = new google.maps.InfoWindow({
+    content:"<b>The Space</b><br><br>AB Nair Rd<br>Juhu, Mumbai <br> Maharashtra 400049<br><br>(directly opposite Chin Chin Chu)"
+  });
+
+  google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}
+
+  google.maps.event.addDomListener(window, 'load', init_map);
+</script>

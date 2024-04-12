@@ -7,7 +7,9 @@
     <li> <%= link_to 'Terms & Conditions', terms_and_conditions_path %> </li>
     <li> <%= link_to 'Charges & Deductions', charges_and_deductions_path %> </li>
     <li> <%= link_to 'Privacy Policy', privacy_policy_path %> </li>    
-    <li> <%= link_to 'Payment Policy', payment_policy_path %> </li>    
+    <li> <%= link_to 'Payment Policy', payment_policy_path %> </li>
+    <%# without turbo set to false the map does not load %>
+    <li> <%= link_to 'Contact', contact_path, data: {turbo: false} %> </li>    
     <%# <li> <a href="https://thespacejuhu.in/blog/">Blog</a></li> %>
   </ul>
 

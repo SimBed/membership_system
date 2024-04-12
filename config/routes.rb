@@ -132,6 +132,7 @@ Rails.application.routes.draw do
     get '/charges_and_deductions', to: 'footer#charges'
     get '/privacy_policy',  to: 'footer#privacy_policy'
     get '/payment_policy',  to: 'footer#payment_policy'
+    get '/contact',  to: 'footer#contact'
     get '/group_classes', to: 'home#group_classes'
     get '/signup', to: 'home#signup'
     post '/signup',  to: 'home#create_account'
