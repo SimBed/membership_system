@@ -1,3 +1,5 @@
+<%= javascript_import_module_tag "custom/google-map" %>
+<script src=<%="https://maps.googleapis.com/maps/api/js?v=3.exp&key=#{Rails.configuration.google[:map_key]}"%>></script>
 <section class="mb-5">
 	<div class="container">
   	<h4>Contact</h4>
@@ -40,31 +42,4 @@
   </div>
 </section>
 
-<script src='https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA3IJxO6VIROiyu-EJ-4lTvJ6Loom-2t5k'></script>
-<script>
-  var myCenter=new google.maps.LatLng(19.112355,72.827235);
-  var mySpaceTag=new google.maps.LatLng(19.110677,72.825229);
 
-  function init_map()
-  {
-  var myOptions = {
-    center:myCenter,
-    zoom:16,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-
-  map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
-
-  marker = new google.maps.Marker({
-    map: map,
-    position: mySpaceTag,
-  });
-
-  infowindow = new google.maps.InfoWindow({
-    content:"<b>The Space</b><br><br>AB Nair Rd<br>Juhu, Mumbai <br> Maharashtra 400049<br><br>(directly opposite Chin Chin Chu)"
-  });
-
-  google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}
-
-  google.maps.event.addDomListener(window, 'load', init_map);
-</script>
