@@ -34,15 +34,15 @@
       </div>
       <div class="row">
         <div class="column col-1x">Freeze</div>
-        <div class="column col-2x">650</div>
+        <div class="column col-2x"><%=number_with_delimiter(Setting.freeze_charge)%></div>
       </div>
       <div class="row">
         <div class="column col-1x">Transfer</div>
-        <div class="column col-2x">2,500</div>
+        <div class="column col-2x"><%=number_with_delimiter(Setting.transfer_charge)%></div>
       </div>
       <div class="row">
         <div class="column col-1x">Restart <br><small>(Minimum Payment)</small></div>
-        <div class="column col-2x">1,500</div>
+        <div class="column col-2x"><%=number_with_delimiter(Setting.restart_min_charge)%></div>
       </div>
     </div>
   </div>

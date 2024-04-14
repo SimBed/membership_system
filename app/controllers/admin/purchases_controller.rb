@@ -457,7 +457,7 @@ class Admin::PurchasesController < Admin::BaseController
       @pagy, @purchases = pagy(@purchases, items: 100_000)
     else
       #  @purchases.page params[:page]
-      @pagy, @purchases = pagy(@purchases)
+      @pagy, @purchases = pagy(@purchases, items: Setting.purchases_pagination)
     end
   end
 

@@ -98,8 +98,6 @@ class Client < ApplicationRecord
   # scope :has_strength_marker, -> { left_joins(:strength_markers).where.not(strength_markers: {client_id: nil}).distinct}
   # scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
 
-  # paginates_per Setting.clients_pagination
-
   # see client_params in ClientsController
   attr_accessor :modifier_is_client, :phone_country_code, :whatsapp_country_code, :phone_raw, :whatsapp_raw, :terms_of_service
 

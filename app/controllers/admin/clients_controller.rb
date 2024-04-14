@@ -175,7 +175,7 @@ class Admin::ClientsController < Admin::BaseController
       @pagy, @clients = pagy(@clients, items: 100_000)
     else
       #  @clients.page params[:page]
-      @pagy, @clients = pagy(@clients)
+      @pagy, @clients = pagy(@clients, items: Setting.clients_pagination)
     end
   end
 

@@ -1,7 +1,7 @@
 <%= turbo_frame_tag 'freeze_new' do %>
 <div class="pseudo-form text-center mx-2 mb-3" data-controller="freeze">
   <div class="mb-2">
-    <label for="start">Freeze this Package for 14 days starting on:</label>
+    <label for="start"><%="Freeze this Package for #{Setting.freeze_duration_days} days starting on:"%></label>
     <input type="date"
            name="start"
            class="freeze-start"

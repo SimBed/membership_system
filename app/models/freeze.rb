@@ -35,19 +35,11 @@ class Freeze < ApplicationRecord
   private
 
   def duration_length
-    errors.add(:base, 'must be 3 days or more') if duration < Setting.freeze_min_duration
+    errors.add(:base, "must be #{Setting.freeze_min_duration} days or more") if duration < Setting.freeze_min_duration
   end
 
   def non_chargeable?(att)
     att[:amount].nil? || att[:amount].to_i.zero? 
   end  
 
-  # def no_attendance_during
-  #   # purchases is only nil when we force it to be during tests
-  #   return if purchase.nil?
-
-  #   purchase.attendances.each do |a|
-  #     errors.add(:base, 'bookings already during freeze period') and break if (start_date..end_date).cover?(a.wkclass.start_time)
-  #   end
-  # end
 end

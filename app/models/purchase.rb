@@ -97,7 +97,6 @@ class Purchase < ApplicationRecord
   # 'id:: text' is equivalent to 'CAST (id AS TEXT)' see https://www.postgresqltutorial.com/postgresql-cast/
   # position is a Postgresql string function, see https://www.postgresqltutorial.com/postgresql-position/
   scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
-  # paginates_per Setting.purchases_pagination
 
   attr_accessor :renewal_discount_id, :status_discount_id, :oneoff_discount_id, :commercial_discount_id, :discretion_discount_id, :base_price
 
@@ -251,15 +250,21 @@ class Purchase < ApplicationRecord
   end
 
   # for new freeze form in client booking page
-  def default_new_freeze_period_dates
-    earliest = Time.zone.today.advance(days: 1)
-    if freezed?(Time.zone.now)
-      current_freeze = freezes_cover(Time.zone.now).first # shouldn't be more than 1 so reasonable to take first
-      earliest = [earliest, current_freeze.end_date.advance(days: 1)].max
-    end
-    # freeze option will be restricted from being shown on expiry date so no possibility of default_start_date being later than latest_start_date
-    latest = [earliest.advance(days: 30), expiry_date].min
+  def new_freeze_dates
+    next_month = Time.zone.tomorrow..Time.zone.today.advance(months: 1)
+    next_month_restricted = next_month.to_a
+    freezes.each { |freeze|
+      next_month_restricted = next_month_restricted.without((freeze.start_date..freeze.end_date).to_a) if freeze.applies_during(next_month)
+    }
+    earliest = [next_month_restricted.first, expiry_date].min unless next_month_restricted.first.nil? # comparing nil directly against a date fails
+    latest = [next_month_restricted.last, expiry_date].min unless next_month_restricted.last.nil?
     { earliest:, latest: }
+  end
+
+  def freeze_permitted?
+    return false if expired? || not_started? || trial? || rider? || expiry_date&.today? || new_freeze_dates[:earliest].nil?
+
+    true
   end
 
   # use for manually automating bulk freezes over holidays

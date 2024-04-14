@@ -14,6 +14,11 @@
       </div>      
 
       <div class="form-group">
+        <label class="control-label">Minimum duration of a freeze</label>
+        <%= f.number_field :freeze_duration_days, value: Setting.freeze_duration_days, class: "form-control", style: "width: 5rem;" %>
+      </div>      
+
+      <div class="form-group">
         <label class="control-label">Charge for a freeze</label>
         <%= f.number_field :freeze_charge, value: Setting.freeze_charge, class: "form-control", style: "width: 5rem;" %>
       </div>      
@@ -21,6 +26,11 @@
       <div class="form-group">
         <label class="control-label">Minimum charge for a restart</label>
         <%= f.number_field :restart_min_charge, value: Setting.restart_min_charge, class: "form-control", style: "width: 5rem;" %>
+      </div>      
+
+      <div class="form-group">
+        <label class="control-label">Transfer Charge</label>
+        <%= f.number_field :transfer_charge, value: Setting.transfer_charge, class: "form-control", style: "width: 5rem;" %>
       </div>      
 
     </div>

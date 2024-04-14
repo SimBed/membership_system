@@ -3,7 +3,7 @@ class Client::PackageModificationController < Client::BaseController
 
   def new_freeze
     @purchase = Purchase.find(params[:purchase_id])
-    @default_start_dates = @purchase.default_new_freeze_period_dates
+    @default_start_dates = @purchase.new_freeze_dates
   end
 
   def buy_freeze
@@ -13,7 +13,7 @@ class Client::PackageModificationController < Client::BaseController
     if Order.process_razorpayment(order_params)[:status] == 'captured'
       account = Account.find(order_params[:account_id])
       # rearchitect orders and non-package products/purchases
-      Order.create(price: 650, status: 'captured', payment_id: order_params[:payment_id], account_id: account.id, client_ui: 'booking page freeze')
+      Order.create(price: Setting.freeze_charge, status: 'captured', payment_id: order_params[:payment_id], account_id: account.id, client_ui: 'booking page freeze')
       @freeze = Freeze.new(freeze_params)
       if @freeze.save
         # flash_message :success, t('.success', name: @client.name)

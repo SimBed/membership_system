@@ -64,7 +64,6 @@ class Wkclass < ApplicationRecord
   scope :of_service, ->(service) { joins(workout: [:workout_groups]).where(workout_groups: {service: })}
   #  see explantion in Purchase model (not essential right now - could be used in show method of instructors constroller)
   # scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
-  # paginates_per Setting.wkclasses_pagination
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}

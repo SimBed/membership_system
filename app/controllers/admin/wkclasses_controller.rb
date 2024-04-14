@@ -280,7 +280,7 @@ class Admin::WkclassesController < Admin::BaseController
     if params[:export_all]
       @pagy, @wkclasses = pagy(@wkclasses, items: 100_000)
     else
-      @pagy, @wkclasses = pagy(@wkclasses)
+      @pagy, @wkclasses = pagy(@wkclasses, items: Setting.wkclasses_pagination)
     end
   end
 

@@ -274,7 +274,7 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 1000, Product.current.dropin.space_group.first.base_price_at(Time.zone.now).price
     assert_equal 5000, @purchase_package.restart_payment
     assert_equal 6000, @purchase_fixed.restart_payment
-    assert_equal 1000, @purchase_with_freeze.restart_payment
+    assert_equal 1500, @purchase_with_freeze.restart_payment
   end
 
   test '#can_restart?' do
@@ -294,4 +294,24 @@ class PurchaseTest < ActiveSupport::TestCase
     Restart.create(parent_id: @purchase_package.id) # Restart the package
     refute @purchase_package.reload.can_restart? # cant restart the same purchase more than once
   end
+
+  test '#new_freeze_dates' do
+    # already travelled to 18/3/2022
+    # no freeze
+    assert_equal({ earliest: Date.parse('19 Mar 2022'), latest: Date.parse('18 Apr 2022') }, @purchase_package.new_freeze_dates)
+    # currently frozen until 28/3/22 (expiry date 6/May 2022)
+    assert_equal({ earliest: Date.parse('29 Mar 2022'), latest: Date.parse('18 Apr 2022') }, @purchase_with_freeze.new_freeze_dates)
+    # currently not frozen, a purchased freeze, which has not yet started will end after more than a month from now
+    @purchase_package.freezes.create(start_date: Date.parse('15 April 2022'), end_date: Date.parse('29 April 2022'))
+    # puts @purchase_package.expiry_date
+    ApplicationController.new().update_purchase_status([@purchase_package])
+    # puts @purchase_package.expiry_date
+    assert_equal({ earliest: Date.parse('19 Mar 2022'), latest: Date.parse('14 Apr 2022') }, @purchase_package.new_freeze_dates)
+    Freeze.last.destroy
+    # package frozen now and for the next month
+    @purchase_package.freezes.create(start_date: Date.parse('15 March 2022'), end_date: Date.parse('29 April 2022'))
+    ApplicationController.new().update_purchase_status([@purchase_package])
+    assert_equal({ earliest: nil, latest: nil }, @purchase_package.new_freeze_dates)
+  end
+
 end

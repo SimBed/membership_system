@@ -39,13 +39,13 @@
       <div class="accordion-body">
         <h5 class="mb-2"><strong>Freezing</strong></h5>
         <p class="text-secondary">
-          Packages cannot be cancelled or refunded, however if after starting your Package you decide you do not wish to use your Package for some time, you may (at any time before the normal expiry of your Package, but not after expiry) freeze your package for a maximum of 14 days per freeze. The expiry date of your Package will be extended by the duration of the freeze. Freezes may only be made through the online membership system booking page by making the associated payment (as set out under <%= link_to 'charges', charges_and_deductions_path, class: "text-decoration-underline" %> on the website).  
+          Packages cannot be cancelled or refunded, however if after starting your Package you decide you do not wish to use your Package for some time, you may (at any time before the normal expiry of your Package, but not after expiry) freeze your package for a maximum of <%=Setting.freeze_duration_days%> days per freeze. The expiry date of your Package will be extended by the duration of the freeze. Freezes may only be made through the online membership system booking page by making the associated payment (as set out under <%= link_to 'charges', charges_and_deductions_path, class: "text-decoration-underline" %> on the website).  
         </p>
         <ul class="ps-2">
           <li>You may set your freeze to start on a specified day, which can be no earlier than the following day and no later than 1 month ahead.</li>
           <li>Once the freeze start date has been set, it cannot be changed.</li>
-          <li>Attendance at (or booking of) a class during the 14 day period of a freeze is perfectly acceptable, however it will cause the freeze to end immediately and the end date of the freeze will be treated as the day before the attendance (or booking). If you wish to freeze your Package again after that class, you would need to purchase a new freeze. The same applies if you only attend part of a class or if you book a class, which you subsequently cancel or don't attend.</li>
-          <li>The maximum period for one freeze is 14 days.</li>
+          <li>Attendance at (or booking of) a class during the <%=Setting.freeze_duration_days%> day period of a freeze is perfectly acceptable, however it will cause the freeze to end immediately and the end date of the freeze will be treated as the day before the attendance (or booking). If you wish to freeze your Package again after that class, you would need to purchase a new freeze. The same applies if you only attend part of a class or if you book a class, which you subsequently cancel or don't attend.</li>
+          <li>The maximum period for one freeze is <%=Setting.freeze_duration_days%> days.</li>
           <li>If you wish to freeze for an extended period of time, you will need to purchase multiple freezes. For example if you wish to freeze for 20 days, you will need to purchase 2 freezes, which can be used back-to-back.</li>
           <li>There is no limit to the number of freezes you may purchase, however Packages do have a Sunset Date (see below).</li>
           <li>Once a freeze has been paid for, it cannot be cancelled or refunded.</li>
@@ -117,7 +117,7 @@
         </ol>
         <ul class="ps-2">
           <li>The freeze will start no earlier than the date The Space receives the corroborating doctor’s note.</li>
-          <li>If the doctor does not provide a date when exercise can resume or a time period for which rest is necessary, a freeze will be applied for a maximum of 14 days. If you need longer to recover, you will need to repeat this process, requesting a further freeze and providing another doctor’s letter. Your Package will not be frozen for any period where a corroborating doctor’s letter has not been provided in the correct timeframe.</li>
+          <li>If the doctor does not provide a date when exercise can resume or a time period for which rest is necessary, a freeze will be applied for a maximum of <%=Setting.freeze_duration_days%> days. If you need longer to recover, you will need to repeat this process, requesting a further freeze and providing another doctor’s letter. Your Package will not be frozen for any period where a corroborating doctor’s letter has not been provided in the correct timeframe.</li>
           <li>If you attend a class during the period of your freeze, your freeze will end on the day before your attendance. If you wish to freeze your Package again after the attendance, you will need to complete the process again for a new freeze and either purchase a freeze or provide another doctor’s letter in the manner described above. Your package will not be frozen in the meantime.</li>
         </ul>
       </div>

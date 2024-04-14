@@ -2,7 +2,7 @@
   <script
     src="https://checkout.razorpay.com/v1/checkout.js"
     data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-    data-amount="<%= 650.to_s + "00" %>"
+    data-amount="<%= Setting.freeze_charge.to_s + "00" %>"
     data-name="<%= "The Space" %>"
     data-description="<%= "Package Freeze" %>"
     data-image="<%= asset_path 'favicon.ico' %>"
@@ -14,5 +14,5 @@
   <input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
   <input type="hidden" value="<%= "#{Time.zone.today.advance(days: 1)}" %>" name="start_date" data-freeze-target= "razStartDate">
 	<input type="hidden" value="shop page" name="client_ui">
-	<input type="hidden" value="<%= 650.to_s %>" name="price">
+	<input type="hidden" value="<%= Setting.freeze_charge.to_s %>" name="price">
 </form>

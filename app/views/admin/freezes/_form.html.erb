@@ -1,4 +1,4 @@
-<div class="field" data-controller="freeze" data-freeze-medical-value=<%= freeze.medical? %> data-freeze-doctor-note-value=<%= freeze.doctor_note? %> data-freeze-price-value=<%= 650 %> > 
+<div class="field" data-controller="freeze" data-freeze-medical-value=<%= freeze.medical? %> data-freeze-doctor-note-value=<%= freeze.doctor_note? %> data-freeze-price-value=<%= Setting.freeze_charge %> > 
   <%= form_with(model: freeze, class: 'admin_form mb-2') do |form| %>
     <% purchase = params[:purchase] || @freeze.purchase.id %>
     <%= turbo_frame_tag 'errors' do %>  
@@ -51,7 +51,7 @@
 
         <div class="field">
           <%= payment_fields.label :amount %>
-          <%= payment_fields.number_field :amount, value: freeze.payment.amount || 650, data: {"freeze-target": "paymentAmount"} %>
+          <%= payment_fields.number_field :amount, value: freeze.payment.amount || Setting.freeze_charge, data: {"freeze-target": "paymentAmount"} %>
         </div>
 
         <div class="field">
