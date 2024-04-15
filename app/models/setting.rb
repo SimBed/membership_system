@@ -41,14 +41,6 @@ class Setting < RailsSettings::Base
     field :problematic_duration, type: :integer, default: 2
   end
 
-  scope :renewal do
-    # field :pre_expiry_package_renewal, type: :integer, default: 0
-    # field :post_expiry_trial_renewal, type: :integer, default: 0
-    # field :pre_expiry_trial_renewal, type: :integer, default: 0
-    field :days_remain, type: :integer, default: 14
-    field :attendances_remain, type: :integer, default: 4
-  end
-
   scope :client do
     field :cold, type: :integer, default: 3
     field :recently_attended, type: :integer, default: 3
@@ -78,20 +70,21 @@ class Setting < RailsSettings::Base
   scope :purchase do
     field :payment_methods, type: :array,
                             default: ['Card-Credit', 'Card-Debit', 'Cash', 'Cheque', 'ClassPass', 'Fitternity', 'Google Pay', 'Instamojo', 'NEFT', 'Not applicable', 'Not paid', 'Paid to instructor', 'PayTM', 'Razorpay', 'Restart']
-    field :freeze_min_duration, type: :integer, default: 3
-    field :freeze_duration_days, type: :integer, default: 14
-    field :freeze_charge, type: :integer, default: 650
-    field :restart_min_charge, type: :integer, default: 1500
-    field :transfer_charge, type: :integer, default: 2500
     field :sunset_limit_days, type: :hash, default: {
       'week_or_less' => 30,
       'month_or_more' => 180
     }
   end
 
+  scope :modification do
+    field :freeze_min_duration, type: :integer, default: 3
+    field :freeze_duration_days, type: :integer, default: 14
+    field :freeze_charge, type: :integer, default: 650
+    field :restart_min_charge, type: :integer, default: 1500
+    field :transfer_charge, type: :integer, default: 2500
+  end
+
   scope :booking do
-    field :quotation, default: "Exercise is King. Nutrition is Queen. Put them together & you've got a Kingdom.",
-                      validates: { presence: true, length: { in: 2..200 } }
     field :package_expiry_message_days, default: 3, validates: { presence: true, numericality: { only_integer: true } }
     field :trial_expiry_message_days, default: 2, validates: { presence: true, numericality: { only_integer: true } }
     field :amnesty_limit, type: :hash, default: {

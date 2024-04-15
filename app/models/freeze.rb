@@ -1,7 +1,7 @@
 class Freeze < ApplicationRecord
   belongs_to :purchase
   has_one :payment, as: :payable, dependent: :destroy
-  accepts_nested_attributes_for :payment, reject_if: :non_chargeable?
+  accepts_nested_attributes_for :payment, reject_if: :new_and_non_chargeable?
   validates :start_date, presence: true
   validates :end_date, presence: true
   validate :duration_length
@@ -38,7 +38,11 @@ class Freeze < ApplicationRecord
     errors.add(:base, "must be #{Setting.freeze_min_duration} days or more") if duration < Setting.freeze_min_duration
   end
 
-  def non_chargeable?(att)
+  def new_and_non_chargeable?(att)
+    # on update of chargeable to non-chargeable, there will already be a paymnet created, which we want to be updated to zero. (We could also delete the payment in the controller if we wished)
+    # for a new freeze, if it is non-chargeable, don't creaate a payment
+    return false unless new_record? 
+
     att[:amount].nil? || att[:amount].to_i.zero? 
   end  
 

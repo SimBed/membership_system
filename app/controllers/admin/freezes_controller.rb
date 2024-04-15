@@ -13,7 +13,7 @@ class Admin::FreezesController < Admin::BaseController
 
   def new
     start_date = Time.zone.now
-    end_date = start_date.advance(days: (14 - 1))
+    end_date = start_date.advance(days: (Setting.freeze_duration_days - 1))
     @freeze = Freeze.new(start_date:, end_date:)
     payment = @freeze.build_payment 
     @payment_methods = Setting.payment_methods

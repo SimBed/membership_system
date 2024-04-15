@@ -7,9 +7,6 @@ class Client::PackageModificationController < Client::BaseController
   end
 
   def buy_freeze
-    # order = Order.create(Order.process_razorpayment(order_params.except(:purchase_id)))
-    # if order.status == 'captured'
-    # see orders controller create method for some explanation
     if Order.process_razorpayment(order_params)[:status] == 'captured'
       account = Account.find(order_params[:account_id])
       # rearchitect orders and non-package products/purchases
@@ -56,15 +53,10 @@ class Client::PackageModificationController < Client::BaseController
 
   private
 
-  # def correct_account
-  #   @client = Client.find(params[:id])
-  #   redirect_to login_path unless current_account?(@client.account)
-  # end
-
   def freeze_params
     { purchase_id: order_params[:purchase_id],
       start_date: order_params[:start_date],
-      end_date: Date.parse(order_params[:start_date]).advance(days: 13),
+      end_date: Date.parse(order_params[:start_date]).advance(days: Setting.freeze_duration_days - 1),
       note: nil,
       medical: false,
       doctor_note: false,

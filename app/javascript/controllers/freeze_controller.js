@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = [ "hideable", "doctorNote", 'startDate', 'endDate', 'paymentAmount', 'razStartDate' ]
-  static values = { medical: Boolean, price: Number }
+  static values = { medical: Boolean, price: Number, durationDays: Number }
 
   // connect() {
   //   console.log(this.paymentAmountTarget)
@@ -19,7 +19,7 @@ export default class extends Controller {
     // getDate gets the day of the month of the date.
     // setDate knows to add to the month of the date if the number of days being set goes over the end of the month.
     // this mutates start_date
-    start_date.setDate(start_date.getDate() + (14-1));
+    start_date.setDate(start_date.getDate() + (this.durationDaysValue - 1));
     let end_date_string = start_date.toISOString().slice(0,10); // only need the first ten characters '01-05-2023', not the subsequent time details
     this.endDateTarget.value = end_date_string;
   }
