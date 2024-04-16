@@ -22,7 +22,7 @@
     <%= turbo_frame_tag 'my_bookings' do %>
       <%= render partial: 'my_bookings_table' if @renewal.package_ongoing? %>
     <% end %>
-    <% if Setting.renew_online && @renewal.alert_to_renew? %>
+    <% if @renewal.alert_to_renew? %>
       <%= render partial: 'renewal' %>
     <% end %>
   </div>

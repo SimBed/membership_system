@@ -1,0 +1,17 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeAccount">
+  <div class="admin_form">
+    <div class="form-group mb-2">
+      <label class="control-label">Client inital password length</label>
+      <%= f.number_field :password_length, value: Setting.password_length, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Daily account limit</label>
+      <%= f.number_field :daily_account_limit, value: Setting.daily_account_limit, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Daily account limit triggered</label>
+      <%= f.check_box :daily_account_limit_triggered, value: Setting.daily_account_limit_triggered, disabled: true %>
+    </div>
+  </div>
+</section>

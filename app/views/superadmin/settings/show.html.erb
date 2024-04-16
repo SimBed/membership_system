@@ -1,7 +1,7 @@
  <div class="container px-1" data-controller='settings'>
     <%= label_tag 'selected_scopes' do %>
       Selected Scope:
-      <%= select_tag :selected_scopes, options_for_select(@scope_options), class: 'sort', data: {'settings-target': 'scopeSelector', action:"settings#change"}  %>
+      <%= select_tag :selected_scopes, options_for_select(@scope_options, 'Discount'), class: 'sort', data: {'settings-target': 'scopeSelector', action:"settings#change"}  %>
     <% end%>
     <div class="col-lg-6">
       <%= form_for(Setting.new, url: superadmin_settings_path) do |f| %>
@@ -16,16 +16,21 @@
         <% end %>
         <div class="actions mt-2 bm-3">
         </div>
-        <%= render partial: 'attendance', locals: { f: f } %>
+        <%= render partial: 'account', locals: { f: f } %>
+        <%= render partial: 'booking', locals: { f: f } %>
+        <%= render partial: 'blast', locals: { f: f } %>
         <%= render partial: 'client', locals: { f: f } %>
         <%= render partial: 'discount', locals: { f: f } %>
-        <%= render partial: 'limits', locals: { f: f } %>
-        <%= render partial: 'messaging_timing', locals: { f: f } %>
-        <%= render partial: 'miscellaneous', locals: { f: f } %>
+        <%= render partial: 'marker', locals: { f: f } %>
+        <%# <%= render partial: 'messaging_timing', locals: { f: f } %>
+        <%= render partial: 'modification', locals: { f: f } %>
+        <%#= render partial: 'miscellaneous', locals: { f: f } %>
         <%= render partial: 'pagination', locals: { f: f } %>
-        <%= render partial: 'product_colors', locals: { f: f } %>
+        <%= render partial: 'product', locals: { f: f } %>
         <%= render partial: 'purchase', locals: { f: f } %>
+        <%= render partial: 'renewal', locals: { f: f } %>
         <%= render partial: 'timetable', locals: { f: f } %>
+        <%= render partial: 'wkclass', locals: { f: f } %>
         <%= f.submit 'Update Settings', class: "btn btn-black" %>
       <% end %>        
     </div>

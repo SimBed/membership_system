@@ -7,8 +7,7 @@
     <p class="mb-2"> <small> <%= "normal price: #{rupees(yield(:base_price))}" %> </small> </p>
   <% end %>
 
-  <%# if Setting.whitelist.include?(@client.email.slice(0,7)) && @renewal[:valid] %>
-  <% if Setting.renew_online && @renewal.valid? %>
+  <% if @renewal.valid? %>
     <%= render partial: 'razor_form' %>
   <% else %>
     <p class="bolditalics mb-0"> <%= link_to 'Contact The Space & Renew Now!','#', class: "like_button" %></p>

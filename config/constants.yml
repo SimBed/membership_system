@@ -4,6 +4,10 @@ default: &default
  wkclass_make_timetable_id: 10
  window_capacity: 8
  recipient_pagination: 200
+ wkclassmaker_advance: 4
+ gst_rate: 18
+ package_expiry_message_days: 3
+ trial_expiry_message_days: 2
 
  attendance_statuses:
   - booked
@@ -39,7 +43,6 @@ development:
   <<: *default
   display_timetable_id: 1
   wkclass_make_timetable_id: 1
-
 
 test:
   <<: *default

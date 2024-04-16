@@ -1,0 +1,9 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeWkclass">
+  <div class="admin_form">
+    <div class="form-group mb-2">
+      <label class="control-label">Search only on this many past months for problematic classes</label>
+      <%= f.number_field :problematic_duration, value: Setting.problematic_duration, class: "form-control number-field" %>
+    </div>
+  </div>
+</section>

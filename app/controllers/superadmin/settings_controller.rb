@@ -1,6 +1,6 @@
 class Superadmin::SettingsController < Superadmin::BaseController
   def show
-    @scope_options = Setting.defined_fields.group_by { |field| field[:scope] }.keys.sort.map {|s| [s.capitalize] } + ['Messaging']
+    @scope_options = Setting.defined_fields.group_by { |field| field[:scope] }.keys.sort.map {|s| [s.capitalize] }
     @errors = []
     @amnesties = YAML.dump(Setting.amnesty_limit).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess', '')
     @sunsets = YAML.dump(Setting.sunset_limit_days).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess', '')
@@ -30,7 +30,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
   # dont need strong parameters. Requests can only come from superadmin
   # attempt to tidy up strong parameters with *Setting.all.map { |s| s.var } failed because the Setting with the relevant var only exists after first being set
   # def setting_params
-  # params.require(:setting).permit(:whitelist, :renew_online, :password_length, :timetable, :goals, :levels, :studios, :classmaker_advance, :sunset_limit_days, :package_expiry_message_days, :trial_expiry_message_days, :amnesty_limit,
+  # params.require(:setting).permit(:whitelist, :renew_online, :password_length, :timetable, :goals, :levels, :studios, :sunset_limit_days, :amnesty_limit,
   #                                 :pre_expiry_package_renewal, :post_expiry_trial_renewal, :pre_expiry_trial_renewal, :attendances_remain, :days_remain)
   #   params.require(:setting).permit(*Setting.all.map { |s| s.var })
   # end

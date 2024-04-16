@@ -28,11 +28,11 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     # puts @response.parsed_body
     # 1 form for razorpay
     assert_select 'form'
-    Setting.renew_online = false
+    # Setting.renew_online = false
     get client_book_path(@account_client.client)
 
-    assert_select 'form', false
-    Setting.renew_online = true
+    # assert_select 'form', false
+    # Setting.renew_online = true
     Setting.days_remain = 60
     get client_book_path(@account_client.client)
 

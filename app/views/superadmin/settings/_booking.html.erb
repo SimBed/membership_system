@@ -1,5 +1,5 @@
 <section class="mb-3 settings-scope"
-         data-settings-target="settingsScope settingsScopeAttendance">
+         data-settings-target="settingsScope settingsScopeBooking">
   <div class="admin_form">               
     <div class="form-group mb-2">
       <label class="control-label">Maximum number of times a client can amend an attendance</label>
@@ -25,5 +25,12 @@
       <label class="control-label">Hours before class from which a cancellaion is treated as late</label>
       <%= f.number_field :cancellation_window, value: Setting.cancellation_window, class: "form-control number-field" %>
     </div>
+    <div class="form-text alert alert-primary mb-2">
+      Be careful. Don't change layout or App will break.
+    </div>          
+    <div class="form-group">
+      <label class="control-label">Amnesty Options</label>
+      <%= f.text_area :amnesty_limit, value: @amnesties, class: "form-control", style: "height: 50rem;"  %>
+    </div>    
   </div>
 </section>

@@ -1,0 +1,9 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeBlast">
+  <div class="admin_form">
+    <div class="field">
+      <label class="control-label">Maximum recipient number in one blast</label>
+      <%= f.number_field :max_recipient_blast_limit, value: Setting.max_recipient_blast_limit, class: "form-control number-field" %>
+    </div>
+  </div>
+</section>    

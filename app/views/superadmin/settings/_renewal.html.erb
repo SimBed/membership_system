@@ -1,0 +1,13 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeRenewal">
+  <div class="admin_form">            
+    <div class="form-group mb-2">
+      <label class="control-label">A client is considered close to expiry (and so shown renewal messaging) if they have fewer than this many days left in their Package</label>
+      <%= f.number_field :days_remain, value: Setting.days_remain, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">A client is considered close to expiry (and so shown renewal messaging) if they have fewer than this many classes left in their Package</label>
+      <%= f.number_field :attendances_remain, value: Setting.attendances_remain, class: "form-control number-field" %>
+    </div>
+  </div>
+</section>

@@ -93,7 +93,8 @@ class WorkoutGroup < ApplicationRecord
   def gst_rate
     return 0 unless gst_applies
 
-    Setting.gst_rate.to_f / 100
+    # Setting.gst_rate.to_f / 100
+    Rails.application.config_for(:constants)['gst_rate'].to_f / 100
   end
 
   def expiry_revenue(period)

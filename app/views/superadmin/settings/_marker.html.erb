@@ -1,0 +1,13 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeMarker">
+  <div class="admin_form">            
+    <div class="form-group mb-2">
+      <label class="control-label">Activities</label>        
+      <%= f.text_area :strength_markers, value: Setting.strength_markers.join("\n"), class: "form-control", style: "height: 15rem;" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Bodyparts</label>        
+      <%= f.text_area :body_markers, value: Setting.body_markers.join("\n"), class: "form-control", style: "height: 15rem;" %>
+    </div>
+  </div>
+</section>
