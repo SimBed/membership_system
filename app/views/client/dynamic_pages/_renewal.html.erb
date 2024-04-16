@@ -12,7 +12,7 @@
     </p>
       <%= render partial: 'razor_form' %>
       <div class="mt-3">
-        <%= link_to 'or visit shop', client_shop_path(@client), class: 'like_button text-uppercase' %>
+        <%= link_to 'or visit shop', client_shop_path(@client), class: 'like_button text-uppercase', data: {turbo: false} %>
       </div>
     <%#= "or visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'}".html_safe %>
   <% else %>

@@ -40,6 +40,7 @@ en:
         booking_cancelled: A booking made for after the new expiry date has been cancelled
       destroy:
         success: Adjustment was successfully deleted
+        booking_cancelled: A booking made for after the new expiry date has been cancelled        
     clients:
       index:
         password_reset: This client's password will be reset. Are you sure?
