@@ -119,6 +119,7 @@ button.slider_btn {
 
 .button-container {
   display: flex;
+  overflow:scroll;
 }
 
 .button-container button {
@@ -130,7 +131,7 @@ button.slider_btn {
 }
 
 @media (min-width: 768px) {
-  .button-container {
+  .slider .button-container {
     display: none
   }
 }

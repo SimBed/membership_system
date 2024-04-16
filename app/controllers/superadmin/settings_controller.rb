@@ -1,5 +1,6 @@
 class Superadmin::SettingsController < Superadmin::BaseController
   def show
+    @scope_options = Setting.defined_fields.group_by { |field| field[:scope] }.keys.sort.map {|s| [s.capitalize] } + ['Messaging']
     @errors = []
     @amnesties = YAML.dump(Setting.amnesty_limit).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess', '')
     @sunsets = YAML.dump(Setting.sunset_limit_days).gsub('!ruby/hash:ActiveSupport::HashWithIndifferentAccess', '')

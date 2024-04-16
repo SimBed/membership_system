@@ -1,23 +1,17 @@
-<section class="mb-5">   
-  <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Pagination</h5>
-  <div class="card bg-opaque-white">
-    <div class="card-body bg-light">               
-      
-      <div class="form-group mb-2">
-        <label class="control-label">List this many clients per page on the clients index page</label>
-        <%= f.number_field :clients_pagination, value: Setting.clients_pagination, class: "form-control", style: "width: 5rem;" %>
-      </div>
-
-      <div class="form-group mb-2">
-        <label class="control-label">List this many purchases per page on the purchases index page</label>
-        <%= f.number_field :purchases_pagination, value: Setting.purchases_pagination, class: "form-control", style: "width: 5rem;" %>
-      </div>
-
-      <div class="form-group mb-2">
-        <label class="control-label">List this many classes per page on the classes index page</label>
-        <%= f.number_field :wkclasses_pagination, value: Setting.wkclasses_pagination, class: "form-control", style: "width: 5rem;" %>
-      </div>
-
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopePagination"> 
+  <div class="admin_form">              
+    <div class="form-group mb-2">
+      <label class="control-label">List this many clients per page on the clients index page</label>
+      <%= f.number_field :clients_pagination, value: Setting.clients_pagination, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">List this many purchases per page on the purchases index page</label>
+      <%= f.number_field :purchases_pagination, value: Setting.purchases_pagination, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">List this many classes per page on the classes index page</label>
+      <%= f.number_field :wkclasses_pagination, value: Setting.wkclasses_pagination, class: "form-control number-field" %>
     </div>
   </div>
 </section>

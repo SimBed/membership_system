@@ -1,4 +1,9 @@
-  <div class="col-lg-6">
+ <div class="container px-1" data-controller='settings'>
+    <%= label_tag 'selected_scopes' do %>
+      Selected Scope:
+      <%= select_tag :selected_scopes, options_for_select(@scope_options), class: 'sort', data: {'settings-target': 'scopeSelector', action:"settings#change"}  %>
+    <% end%>
+    <div class="col-lg-6">
       <%= form_for(Setting.new, url: superadmin_settings_path) do |f| %>
         <% if @errors.any? %>
           <div class="alert alert-block alert-danger">
@@ -9,21 +14,19 @@
             </ul>
           </div>
         <% end %>
-        <h5 class="mb-3 ms-1"><%= f.submit 'Update Settings' %></h5>  
-        <%= render partial: 'timetable', locals: { f: f } %>
-        <%= render partial: 'purchases', locals: { f: f } %>
-        <%= render partial: 'clients', locals: { f: f } %>
-        <%= render partial: 'product_colors', locals: { f: f } %>
-        <%= render partial: 'discount_reason_names', locals: { f: f } %>
+        <div class="actions mt-2 bm-3">
+        </div>
+        <%= render partial: 'attendance', locals: { f: f } %>
+        <%= render partial: 'client', locals: { f: f } %>
+        <%= render partial: 'discount', locals: { f: f } %>
+        <%= render partial: 'limits', locals: { f: f } %>
         <%= render partial: 'messaging_timing', locals: { f: f } %>
-        <%= render partial: 'attendances', locals: { f: f } %>
         <%= render partial: 'miscellaneous', locals: { f: f } %>
         <%= render partial: 'pagination', locals: { f: f } %>
-        <%= render partial: 'limits', locals: { f: f } %>
-    <% end %>        
-  </div>
-
-    <!-- <div class="form-group">
-    <label class="control-label">Whitelist</label>
-    <%#= f.text_area :whitelist, value: Setting.whitelist.join("\n"), class: "form-control", style: "height: 10rem; width: 20rem;" %>
-  </div> -->
+        <%= render partial: 'product_colors', locals: { f: f } %>
+        <%= render partial: 'purchase', locals: { f: f } %>
+        <%= render partial: 'timetable', locals: { f: f } %>
+        <%= f.submit 'Update Settings', class: "btn btn-black" %>
+      <% end %>        
+    </div>
+  </div> 

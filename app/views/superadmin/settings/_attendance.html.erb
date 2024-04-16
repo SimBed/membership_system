@@ -1,0 +1,29 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeAttendance">
+  <div class="admin_form">               
+    <div class="form-group mb-2">
+      <label class="control-label">Maximum number of times a client can amend an attendance</label>
+      <%= f.number_field :amendment_count, value: Setting.amendment_count, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Continue to show class in booking page for this many hours after class has started</label>
+      <%= f.number_field :visibility_window_hours_before, value: Setting.visibility_window_hours_before, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Start showing class in booking page this number of days before date of class</label>
+      <%= f.number_field :visibility_window_days_ahead, value: Setting.visibility_window_days_ahead, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Allow booking of class this number of days before date of class</label>
+      <%= f.number_field :booking_window_days_before, value: Setting.booking_window_days_before, class: "form-control number-field" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Stop allowing booking of class this number of minutes before class starts</label>
+      <%= f.number_field :booking_window_minutes_before, value: Setting.booking_window_minutes_before, class: "form-control number-field" %>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Hours before class from which a cancellaion is treated as late</label>
+      <%= f.number_field :cancellation_window, value: Setting.cancellation_window, class: "form-control number-field" %>
+    </div>
+  </div>
+</section>

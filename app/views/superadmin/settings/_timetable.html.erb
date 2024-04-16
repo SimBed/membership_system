@@ -1,28 +1,21 @@
-<section class="mb-5">   
-  <h5 class="fs-5 ms-4 mb-0 fw-bolder text-uppercase">Timetable</h5>
-  <div class="card bg-opaque-white">
-    <div class="card-body bg-light">               
-      
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeTimetable">
+  <div class="admin_form">
       <div class="form-group mb-2">
         <label class="control-label">Goals</label>
         <%= f.text_area :goals, value: Setting.goals.join("\n"), class: "form-control", style: "height: 10rem;" %>
       </div>
-      
       <div class="form-group mb-2">
         <label class="control-label">Levels</label>
         <%= f.text_area :levels, value: Setting.levels.join("\n"), class: "form-control", style: "height: 10rem;" %>
       </div>    
-      
       <div class="form-group">
         <label class="control-label">Studios</label>
         <%= f.text_area :studios, value: Setting.studios.join("\n"), class: "form-control", style: "height: 10rem;" %>
       </div>
-
       <div class="form-group">
         <label class="control-label">Duration</label>
         <%= f.text_area :durations, value: Setting.durations.join("\n"), class: "form-control", style: "height: 10rem;" %>
       </div>
-
-    </div>
   </div>
 </section>

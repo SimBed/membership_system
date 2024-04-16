@@ -120,3 +120,14 @@ div.booking-section {
     }
   }
 }
+
+// settings visibility
+
+.settings-scope {
+  display: none;
+  animation: fadeIn 0.7s;
+  &.live {
+    display: flex;
+    flex-direction: column;
+  }
+}

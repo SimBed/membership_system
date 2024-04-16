@@ -1,0 +1,29 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopePurchase">
+  <div class="admin_form">                
+    <div class="form-group">
+      <label class="control-label">Minimum duration of a freeze</label>
+      <%= f.number_field :freeze_min_duration, value: Setting.freeze_min_duration, class: "form-control number-field" %>
+    </div>      
+    <div class="form-group">
+      <label class="control-label">Default duration of a freeze</label>
+      <%= f.number_field :freeze_duration_days, value: Setting.freeze_duration_days, class: "form-control number-field" %>
+    </div>      
+    <div class="form-group">
+      <label class="control-label">Charge for a freeze</label>
+      <%= f.number_field :freeze_charge, value: Setting.freeze_charge, class: "form-control number-field" %>
+    </div>      
+    <div class="form-group">
+      <label class="control-label">Minimum charge for a restart</label>
+      <%= f.number_field :restart_min_charge, value: Setting.restart_min_charge, class: "form-control number-field" %>
+    </div>      
+    <div class="form-group">
+      <label class="control-label">Transfer Charge</label>
+      <%= f.number_field :transfer_charge, value: Setting.transfer_charge, class: "form-control number-field" %>
+    </div>      
+    <div class="form-group mb-2">
+      <label class="control-label">Payment methods</label>
+      <%= f.text_area :payment_methods, value: Setting.payment_methods.join("\n"), class: "form-control", style: "height: 30rem;" %>
+    </div>
+  </div>
+</section>
