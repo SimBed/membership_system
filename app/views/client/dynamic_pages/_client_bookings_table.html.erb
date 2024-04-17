@@ -12,12 +12,13 @@
     <% end %>
 
   </div>    
-  <div class="d-md-flex justify-content-center canvas gray100-canvas">
+  <div class="canvas gray100-canvas">
+    <div class="bookings-notice" data-booking-target="bookingsOpen"><%= "bookings open #{Setting.booking_window_days_before} days before" %></div>
     <% @wkclasses_show_by_day.each_with_index do |day, index| %>
       <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
            data-booking-target="bookingDay">
         <% if day.empty? %>
-          <div class= 'mx-auto' >no group classes to book</div>
+          <div class="bookings-notice live">no group classes to book</div>
         <% else %>
           <%= render partial: 'wkclass_booking', collection: day, as: :wkclass, locals: {index: index} %>                  
         <% end %>

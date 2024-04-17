@@ -15,7 +15,6 @@
   </div>
   <div class="book-item">
     <div class="details">
-      <!--div class="date"><%= wkclass.start_time.strftime("%b %-d") %></div-->
       <div class="time"><%=wkclass.time%></div>
       <div class="duration"><%=wkclass.duration%></div>
     </div>
@@ -30,7 +29,6 @@
     </div>
   </div>
   <div class="book-item">
-    <!--div <%#=booking_link_and_class[:data_attributes]%> <%#= booking_link_and_class[:tooltip_title] %>><%#= booking_link_and_class[:link] %></div-->
     <div <%= attendance_format.data_attributes %> <%= attendance_format.tooltip_title %>><%= attendance_format.booking_link %></div>
   </div>
 </div>

@@ -153,12 +153,6 @@ class AttendanceFormat
   private
 
   def link_for_new_booking
-    # if unbookable?
-    #   return '' unless @on_waiting_list
-
-    #   get_params('at_capacity_on_waiting_list')
-    #   return link_maker(@image_params, @route, @route_params, @turbo_params)
-    # end
     return '' if unbookable?(restricted: false)
 
     return '' if !@on_waiting_list && unbookable?(restricted: true)
@@ -199,19 +193,6 @@ class AttendanceFormat
     end
   end
 
-  # def unbookable?(waiting: false)
-  #   return true if @purchase.nil? || !@wkclass.booking_window.cover?(@time)
-
-  #   return true if @purchase.restricted_on?(@wkclass) unless waiting 
-
-  #   false
-  # end
-  # def unbookable?
-  #   return true if @purchase.nil? || @purchase.restricted_on?(@wkclass) || !@wkclass.booking_window.cover?(@time)
-
-  #   false
-  # end
-
   # ActionController::Base.helpers.link_to '#', class: 'icon-container disable-link' do ActionController::Base.helpers.tag.i class: ["bi bi-battery-full"] end
 
   def link_maker(image_params, route, route_params, turbo_params)
@@ -225,62 +206,4 @@ class AttendanceFormat
     )
   end
 
-  # def get_params(booking_situation)
-  #   case booking_situation
-  #   when 'at_capacity_not_on_waiting_list'
-  #     @image_params = {src: 'waiting.png',
-  #                      css_class: 'table_icon mx-auto'}
-  #     @route = 'client_waitings_path'
-  #     @route_params = {wkclass_id: @wkclass.id,
-  #                     purchase_id: @purchase.id,
-  #                     booking_day: @day,
-  #                     booking_section: @booking_section}
-  #     @turbo_params = {method: :post,
-  #                     confirmation: "You'll be added to the waiting list"}
-  #   when 'at_capacity_on_waiting_list'
-  #     waiting = @client.waiting_list_for(@wkclass)
-  #     @image_params = {src: 'remove.png',
-  #                      css_class: 'table_icon mx-auto'}
-  #     @route = 'client_waiting_path'
-  #     @route_params = {id: waiting.id,
-  #                      booking_day: @day,
-  #                      booking_section: @booking_section}
-  #     @turbo_params = {method: :delete,
-  #                      confirmation: "You'll be removed from the waiting list"}
-  #   when 'new_booking'
-  #     confirmation = I18n.t('client.clients.attendance.create.confirm')
-  #     confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
-  #     @image_params = {src: 'add.png',
-  #                      css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}"}
-  #     @route = 'attendances_path'
-  #     @route_params = {attendance: {wkclass_id: @wkclass.id, purchase_id: @purchase.id},
-  #                      booking_day: @day,
-  #                      booking_section: @booking_section}
-  #     @turbo_params = {method: :post,
-  #                      confirmation: confirmation}
-  #   when 'update_from_booked'
-  #     confirmation = I18n.t('client.clients.attendance.update.from_booked.confirm')
-  #     @image_params = {src: 'delete.png',
-  #                     css_class: 'table_icon mx-auto filter-red'}
-  #     @route = 'attendance_path'
-  #     @route_params = {id: @attendance.id,
-  #                      booking_day: @day,
-  #                      booking_section: @booking_section}
-  #     @turbo_params = {method: :patch,
-  #                      confirmation: confirmation}
-  #   when 'rebook'
-  #     image_class = "table_icon mx-auto #{'filter-white' unless @attendance.wkclass.workout.limited?}"
-  #     confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm')
-  #     confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if @attendance.purchase.freezed?(@attendance.wkclass.start_time)
-  #     @image_params = {src: 'add.png',
-  #                     css_class: image_class}
-  #     @route = 'attendance_path'
-  #     @route_params = {id: @attendance.id,
-  #                     booking_day: @day,
-  #                     booking_section: @booking_section}
-  #     @turbo_params = {method: :patch,
-  #                     confirmation: confirmation}
-  #   end
-
-  # end
 end
