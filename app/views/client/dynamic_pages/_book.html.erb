@@ -7,7 +7,7 @@
   <% provide(:base_price, @renewal.base_price(@renewal.product).price.to_s) %>
   <% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?)) %>
 
-  <div class="booking-section">
+  <div class="booking-section mb-3">
     <%= render partial: 'client/data_pages/shared/client_greeting' %>
     <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_show.empty? %>
     <div data-controller="booking" data-booking-bookings-open-value = <%= Setting.booking_window_days_before %>>
