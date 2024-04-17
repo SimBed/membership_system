@@ -11,6 +11,7 @@ class Workout < ApplicationRecord
   scope :order_by_current, -> { order(current: :desc, name: :asc) }
   scope :current, -> { where(current: true) }
   scope :not_current, -> { where(current: false) }
+  # scope :client_bookable, -> { where}
 
   # Helps in #instructor method in wkclass controller prevent a PT instructor rate get selected wrongly for a Space Group class (and vice-versa)
   def group_workout?

@@ -102,13 +102,14 @@ class Wkclass < ApplicationRecord
     end
 
     # only space group should be client bookable (dont want eg nutrition appearing in client booking table)
-    # need a client_bookable attribute in workout_group
+    # need a client_bookable attribute in workout_group [default_capacity of workout > 1 is a proxy for this]
     def show_in_bookings_for(client)
       # distinct is needed in case of more than 1 purchase in which case the wkclasses returned will duplicate
       Wkclass.in_booking_visibility_window
              .joins(workout: [rel_workout_group_workouts: [workout_group: [products: [purchases: [:client]]]]])
              .where('clients.id': client.id)
              .where('workout_group.renewable': true)
+             .where('workouts.default_capacity > 1')
              .merge(Purchase.not_fully_expired.exclude(Purchase.unexpired_rider_without_ongoing_main))
              .distinct
     end

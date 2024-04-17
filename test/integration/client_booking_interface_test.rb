@@ -10,6 +10,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @time = @tomorrows_class_early.start_time.advance(days: 2)
     @workout = workouts(:hiit)
+    @inbody = workouts(:inbody)
     @instructor = instructors(:amit)
     @instructor_rate = instructor_rates(:amit_base)
     travel_to(@tomorrows_class_early.start_time.beginning_of_day) # 22/4
@@ -101,4 +102,29 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     assert_select "a:match('href', ?)", /#{client_waitings_path}/, count: 1
     # assert_select "i.bi-battery-full", 1
   end
+
+  test 'class booking links do not include an unbookable class' do
+    log_in_as(@account_client)
+    follow_redirect!
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3
+    log_in_as(@admin)
+    # admin adds an unbookable class
+    post wkclasses_path, params:
+     { wkclass:
+        { workout_id: @inbody.id,
+          start_time: @time,
+          instructor_id: @instructor.id,
+          instructor_rate_id: @instructor_rate.id,
+          max_capacity: 1 } } # 24/4
+    follow_redirect!
+    log_in_as(@account_client)
+    follow_redirect!
+    # the count of classes with booking links remains unchanged
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 3 # 22/4, 22/4, 24/4
+    # change the workout to a bookable one
+    Wkclass.last.update(workout_id: @workout.id) # note there is no need to update the wkclasses max_capacity, the workouts default capacity is the relevant attribute that affects bookability
+    get client_book_path(@client)
+    # an extra class with booking link appears
+    assert_select "a:match('href', ?)", /#{attendances_path}/, count: 4
+  end  
 end

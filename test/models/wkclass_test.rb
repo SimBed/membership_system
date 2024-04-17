@@ -4,6 +4,7 @@ class WkclassTest < ActiveSupport::TestCase
   def setup
     @workout = workouts(:hiit)
     @workout_pt = workouts(:pt_regular)
+    @inbody = workouts(:inbody)    
     @instructor = instructors(:amit)
     @instructor_rate = instructor_rates(:amit_base)
     @instructor_pt_rate = instructor_rates(:amit_pt)
@@ -47,6 +48,11 @@ class WkclassTest < ActiveSupport::TestCase
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
 
     assert_equal [548, 568, 569, 570], Wkclass.show_in_bookings_for(@client).pluck(:id)
+    # add a new class with an unbookable workout
+    @new_class = @tomorrows_class_early.dup
+    @new_class.update(workout_id: @inbody.id)
+    # no change
+    assert_equal [548, 568, 569, 570], Wkclass.show_in_bookings_for(@client).pluck(:id) 
   end
 
   test 'booked_for' do
