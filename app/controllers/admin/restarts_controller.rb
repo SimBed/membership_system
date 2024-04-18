@@ -27,7 +27,7 @@ class Admin::RestartsController < Admin::BaseController
       update_purchase_status([@parent_purchase])
       restart_purchase = @parent_purchase.dup
       # NOTE: update once abstraction fully implemented
-      restart_purchase.update(payment_mode: 'Restart', note: nil, status: 'not started' )  
+      restart_purchase.update(payment_mode: 'Restart', note: nil, status: 'not started', start_date: nil, expiry_date: nil )  
       @restart.update(child_id: restart_purchase.id)
       redirect_to purchase_path(restart_purchase)
       flash[:success] = t('.success')    

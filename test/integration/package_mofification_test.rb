@@ -112,6 +112,8 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     assert_equal restart.parent, @purchase 
     assert_equal restart.child, restarted_purchase
     assert_equal 'not started', restarted_purchase.status
+    assert_nil restarted_purchase.start_date
+    assert_nil restarted_purchase.expiry_date
   end  
 
   test 'admin updates freeze payment amount' do
