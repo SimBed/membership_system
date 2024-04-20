@@ -1,3 +1,5 @@
-<h3>New Workout</h3>
-<%= render 'form', workout: @workout %>
-<%= link_to 'back to workouts', workouts_path %>
+<%= turbo_frame_tag @workout do %>
+  <div class="col-md-6 mb-4">
+    <%= render 'form', workout: @workout %>
+  </div>  
+<% end %>

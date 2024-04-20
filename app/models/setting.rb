@@ -117,14 +117,9 @@ class Setting < RailsSettings::Base
     field :problematic_duration, type: :integer, default: 2
   end
   
-  # scope :application do
-  #   field :show_challenge, type: :boolean, default: false
-  #   field :renew_online, type: :boolean, default: false
-  #   field :gst_rate, type: :integer, default: 18
-  #   field :max_recipient_blast_limit, type: :integer, default: 100    
-  # end
-  # scope :wkclassmaker do
-  #   field :classmaker_advance, type: :integer, default: 4
-  # end
+  scope :workout do
+    field :styles, type: :array, default: ['Progressive Strength Training']
+    field :warnings, type: :array, default: ['No teaching or coach supervision']
+  end  
   
 end

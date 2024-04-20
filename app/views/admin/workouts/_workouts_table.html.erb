@@ -1,13 +1,5 @@
 <div class="container px-0 mb-5">
   <div>Workout List <small><%="(#{@workouts.size})"%></small></div>
-  <div class="admin-table mt-2">
-    <div class="row thead">
-      <div class="column col-2x extra-small">Workout</div>
-      <div class="column col-2x extra-small">Workout Group</div>
-      <div class="column col-1x extra-small">Active</div>
-      <div class="column"></div>
-    </div>
-  </div>
   <div class="admin-table">
     <%= render @workouts %>
   </div>

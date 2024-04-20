@@ -1,0 +1,41 @@
+<%= turbo_frame_tag dom_id(@workout) do %>
+  <div class="admin_form my-2">
+    <h5><span class='fw-bolder text-uppercase'><%=@workout.name%></span></h5>
+    <div>
+      <h6 class='fst-italic mb-1'>Description:</h6>
+      <p class=""><%= @workout.description %></p>
+    </div>
+    <div>
+    <h6 class='fst-italic mb-1'><%="#{pluralize(@workout.styles.count, 'Style')}"%>:</h6>
+      <ul style="list-style: none; padding-left: 0.25rem;">
+        <% @workout.styles.each do |style| %>
+          <li> <%= style %> </li>
+        <% end %>
+      </ul>
+    </div>    
+    <div>
+      <h6 class='fst-italic mb-1'>Level:</h6>
+      <p class=""><%= @workout.level %></p>
+    </div>
+    <div>
+      <h6 class='fst-italic mb-1'>Warning:</h6>
+      <p class=""><%= @workout.warning.blank? ? 'none' : @workout.warning %></p>
+    </div>
+    <div>
+      <h6 class='fst-italic mb-1'><%="#{pluralize(@workout.workout_groups.size, 'Workout Group')}"%></h6>
+      <ul style="list-style: none; padding-left: 0.25rem;">
+        <% @workout.workout_groups.each do |workout_group| %>
+          <li> <%= workout_group.name %> </li>
+        <% end %>
+      </ul>
+    </div>
+    <div>
+      <h6 class='fst-italic mb-1'>Photo:</h6>    
+      <input type="checkbox" id="photo"  <%= 'checked' if image_exists?(@workout.name)%> disabled=true>
+      <label for="photo" class='d-inline'><%= "the file #{@workout.name.downcase}.jpg exists?" %></label>
+    </div>
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), workouts_path %>
+    </div>        
+  </div>
+<% end %>

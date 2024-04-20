@@ -1,0 +1,7 @@
+<%= turbo_stream.update "workouts" do %>
+  <%= render partial: "workouts_table" %>
+<% end %>
+<%= turbo_stream.update "new_workout" do %>
+  <%= render inline:'' %>
+<% end %>
+<%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

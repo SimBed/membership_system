@@ -1,12 +1,35 @@
 <%# booking_link_and_class = booking_link_and_class_for(wkclass, @client, index, 'group') %>
 <% attendance_format = AttendanceFormat.new(wkclass, @client, index, 'group') %>
+    <!-- Modal -->
+    <% workout = wkclass.workout %>
+    <div class="modal fade" id=<%="exampleModal#{wkclass.id}"%> tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><%= workout.name %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <%= workout.description.blank? ? 'Description pending...' : workout.description %>        
+          </div>
+          <div class="modal-footer">        
+            <%= workout.level.blank? ? 'Level pending...' : workout.level %>        
+          </div>
+          <% unless workout.warning.blank? %>
+            <div class="modal-footer">        
+              <%= workout.warning %>        
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
 <div class="booking">
   <%# note on precompilation all assets are put into /public/assets accessed by using /assets (the images bit is redundant, the intuitive
   "/images/group/afterburn.jpg") or suchlike won't work. "/assets/group/afterburn.jpg" will work
   https://stackoverflow.com/questions/15827763/rails-why-images-are-not-showing-in-my-rails-basic-app %>
   <!--div class="book-item"><%#= image_tag booking_image(wkclass.name.delete(' ').downcase)  %></div-->
-  <div class="book-item image"> <img src=<%= asset_path booking_image(wkclass.name.delete(' ').downcase) %>></div>
- 
+  <div class="book-item image" data-bs-toggle="modal" data-bs-target=<%="#exampleModal#{wkclass.id}"%>> <img src=<%= asset_path booking_image(wkclass.name.delete(' ').downcase) %>></div>
+
   <div class="book-item">
     <div class="details">
       <div class="wkclass-name"><%=wkclass.name%></div>

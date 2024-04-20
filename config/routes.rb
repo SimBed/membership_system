@@ -23,14 +23,14 @@ Rails.application.routes.draw do
     get 'workout_groups/:id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
     post '/timetable/:id/copy', to: 'timetables#deep_copy', as: 'timetable_deep_copy'
     post '/wkclasses/:id/repeat', to: 'wkclasses#repeat', as: 'wkclass_repeat'
-    resources :clients, :products, :purchases, :wkclasses do
+    resources :clients, :products, :purchases, :wkclasses, :workouts do
       # get 'filter', on: :collection
       collection do
         get 'filter'
         get 'clear_filters'
       end
     end
-    resources :freezes, :workouts, except: [:show] do
+    resources :freezes, except: [:show] do
       get 'filter', on: :collection
     end
     resources :adjustments, :entries, :prices, except: [:index, :show]
