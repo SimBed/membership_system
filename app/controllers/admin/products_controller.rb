@@ -188,13 +188,17 @@ class Admin::ProductsController < Admin::BaseController
   def set_data
     ongoing_purchases = Purchase.not_fully_expired
     @products_data = {}
-    @product_ongoing_count = {}
-    @product_total_count = {}
-    @product_base_price = {}
+    # @product_ongoing_count = {}
+    # @product_total_count = {}
+    # @product_base_price = {}
     @products.each do |product|
-      @products_data[product.name(rider_show: true).to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
-      total_count: Purchase.where(product_id: product.id).size,
-      base_price: product.base_price_at(Time.zone.now)&.price }
+      @products_data[product.id] =
+       { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
+         total_count: Purchase.where(product_id: product.id).size,
+         base_price: product.base_price_at(Time.zone.now)&.price }
+      # @products_data[product.name(rider_show: true).to_sym] = { ongoing_count: ongoing_purchases.where(product_id: product.id).size,
+      # total_count: Purchase.where(product_id: product.id).size,
+      # base_price: product.base_price_at(Time.zone.now)&.price }
     end
   end
 

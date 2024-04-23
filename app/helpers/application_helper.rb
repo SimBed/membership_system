@@ -1,6 +1,10 @@
 module ApplicationHelper
   include Pagy::Frontend
 
+  def decorate(model_name, decorator_class = nil)
+    (decorator_class || "#{model_name.class}Decorator".constantize).new(model_name) 
+  end 
+
   def flash_message(type, text = nil, now = nil)
     return if type.nil?
 

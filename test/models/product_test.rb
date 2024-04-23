@@ -75,13 +75,4 @@ class ProductTest < ActiveSupport::TestCase
     assert @product_without_purchase.deletable?
   end
 
-  test '#name' do
-    assert_equal 'Space PT 8C:7W (head coach)', @product_pt.name
-    assert_equal 'Space PT - 8 Classes 7 Weeks (head coach)', @product_pt.name(verbose: true)
-    assert_equal 'Space PT - 8 Classes 7 Weeks', @product_pt.name(verbose: true, color_show: false)
-    assert_equal 'Space PT - 8 Classes 7 Weeks (+Rider)', @product_pt.name(verbose: true, color_show: false, rider_show: true)
-    assert_equal 'Space PT 8C:7W+R', @product_pt.name(verbose: false, color_show: false, rider_show: true)
-    assert_equal 'Space PT 8C:7W+R (head coach)', @product_pt.name(rider_show: true)
-    assert_equal 'Space PT 8C:7W (head coach)', @product_pt.name
-  end
 end

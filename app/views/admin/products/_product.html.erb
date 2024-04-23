@@ -1,33 +1,20 @@
+<% product_decorator = decorate(product) %>
 <%= turbo_frame_tag product do %>
   <div class="row">
-    <% if @admin_plus %>        
-      <div class="column col-2x fw-light"><%= link_to product.name(color_show: false, rider_show: true), product_path(product), class: 'like_button', data: { turbo: false } %></div>
-    <% else %>
-      <div class="column col-2x fw-light"><%= product.name(color_show: false, rider_show: true) %></div>
-    <% end %>
+    <div class="column col-2x fw-light"><%= product_decorator.name_link(@admin_plus) %></div>
     <div class="column col-1x fw-light"><%= product.color %></div>
-    <% if @superadmin %>          
-      <div class="column col-1x nomobile"><%= link_to (tag.i class: ["bi", "bi-basket", "link", ("sellonline" unless product.sellonline?)]), product_path(product, sellonline: !product.sellonline?), data: { "turbo-method": :patch } %></div>
-    <% else %>
-      <div class="column col-1x nomobile"><%= tag.i class: ["bi", "bi-basket", ("sellonline" unless product.sellonline?)] %></div>
-    <% end %>
-    <% if @admin_plus %>
-      <div class="column nomobile col-1x"><%= link_to image_tag('attendances.png', class: ["table_icon",("greyed-out" unless product.current?)].compact.join(' ')), product_path(product, current: !product.current?), data: { "turbo-method": :patch } %></div>        
-    <% else %>
-      <div class="column nomobile col-1x"><%= image_tag('attendances.png', class: ["table_icon",("greyed-out" unless product.current?)].compact.join(' ')) %></div>        
-    <% end %>
-    <div class="column nomobile col-1x"><%= product.rider? ? raw("&check;") : "-" %></div>
-    <div class="column nomobile col-1x"><%= product.has_rider? ? raw("&check;") : "-" %></div>
-    <% product_data = @products_data[product.name(rider_show: true).to_sym] %>
+    <div class="column col-1x nomobile"><%= product_decorator.sell_online(link: @superadmin) %></div>
+    <div class="column col-1x nomobile"><%= product_decorator.current(link: @admin_plus) %></div>
+    <div class="column col-1x nomobile"><%= product.rider? ? raw("&check;") : "-" %></div>
+    <div class="column col-1x nomobile"><%= product.has_rider? ? raw("&check;") : "-" %></div>
+    <% product_data = @products_data[product.id] %>
     <% if @admin_plus %>
       <div class="column col-1x"><%= product_data[:total_count] %></div>
       <div class="column col-1x"><%= product_data[:ongoing_count] %></div>
     <% end %>
     <div class="column col-1x"><%= number_with_delimiter(product_data[:base_price]) %></div>
-    <% if @admin_plus %>
-      <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_product_path(product) %></div>
-    <% end %>
-    <%= render partial: 'delete_product', locals: {product: } %>       
+    <%= product_decorator.edit(@admin_plus) %>     
+    <%= product_decorator.delete(@superadmin, product.deletable?) %>     
   </div>
 <% end %>
 
