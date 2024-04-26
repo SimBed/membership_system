@@ -80,6 +80,10 @@ div.field, div.actions {
   font-size: 80%;
   padding-left :1rem;
   margin-bottom :0;
+}
+input.disabled {
+  pointer-events: none;
+  opacity: 30%;
   }
 }
 

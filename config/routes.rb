@@ -13,21 +13,36 @@ Rails.application.routes.draw do
     # the first match of the url 'admin/purchases/filter' would be /admin/purchases/:id(.:format), handled by the show method. The admin/purchases/filter(.:format) would be ignored as it comes later.
     get '/purchases/client_filter', to: 'purchases#client_filter', as: 'client_filter'
     patch '/purchases/:id/expire', to: 'purchases#expire', as: 'expire_purchase'
-    get '/purchases/discount'
-    get '/purchases/dop_change'
+    # get '/purchases/discount'
+    # get '/purchases/dop_change'
     get '/workout_groups/:id/instructor_expense_filter', to: 'workout_groups#instructor_expense_filter', as: 'instructor_expense_filter'
     get '/wkclasses/instructor_select'
     get '/footfall', to: 'attendances#footfall'
     get '/timetable', to: 'timetables#show_public', as: 'public_timetable'
-    get 'client_analyze', to: 'clients#analyze', as: 'client_analyze'
+    # get 'client_analyze', to: 'clients#analyze', as: 'client_analyze'
     get 'workout_groups/:id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
     post '/timetable/:id/copy', to: 'timetables#deep_copy', as: 'timetable_deep_copy'
     post '/wkclasses/:id/repeat', to: 'wkclasses#repeat', as: 'wkclass_repeat'
-    resources :clients, :products, :purchases, :wkclasses, :workouts do
+    resources :products, :wkclasses, :workouts do
       # get 'filter', on: :collection
       collection do
         get 'filter'
         get 'clear_filters'
+      end
+    end
+    resources :purchases do
+      collection do
+        get 'filter'
+        get 'clear_filters'
+        get 'discount'
+        get 'dop_change'        
+      end
+    end
+    resources :clients do
+      collection do
+        get 'filter'
+        get 'clear_filters'
+        get 'analyze'        
       end
     end
     resources :freezes, except: [:show] do
@@ -123,6 +138,10 @@ Rails.application.routes.draw do
       get 'filter', on: :collection
     end
     resources :challenges
+    resources :client, only: [] do # already have the client resource routes in the admin module, dont want an extra set handled by a shared/clients controller
+      resource :waiver
+    end
+    resources :waivers, only: [:index] # we want an index of all waivers (not an index of each clients waivers)  
   end
 
   scope module: :public_pages do

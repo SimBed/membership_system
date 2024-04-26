@@ -8,6 +8,7 @@ class Client < ApplicationRecord
   has_many :achievements, dependent: :destroy
   has_many :challenges, through: :achievements
   has_many :waitings, through: :purchases
+  has_one :waiver
   belongs_to :account, optional: true
   before_save :downcase_email
   before_save :uppercase_names

@@ -27,7 +27,7 @@ export default class extends Controller {
   toggle_medical() {
     this.medicalValue = !this.medicalValue
     this.doctorNoteTarget.hidden = !this.medicalValue;
-    // always start with doctor's not unchecked. Either 1) medical has just been unchecked, (in which case doctors note must be unchecked), or
+    // always start with doctor's note unchecked. Either 1) medical has just been unchecked, (in which case doctors note must be unchecked), or
     // 2) medical has just been checked, unhiding a medical checkbox in its (unchecked) starting position
     this.doctorNoteValue = false;
     this.doctorNoteTarget.children[2].checked = false; // targets the input checkbox of the explicitly targeted div

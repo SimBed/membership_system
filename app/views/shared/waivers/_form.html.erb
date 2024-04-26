@@ -1,0 +1,109 @@
+<div class="field" data-controller="waiver"
+                   data-waiver-injury-value=<%= waiver.injury? %>
+                   data-waiver-toggle-class="disabled"> 
+  <%= form_with(model: waiver, url: client_waiver_path, class: 'admin_form pt-4 my-2') do |form| %>
+    <% if waiver.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(waiver.errors.count, "error") %> prohibited this waiver from being saved:</h2>
+        <ul>
+          <% @waiver.errors.each do |error| %>
+            <li><%= (error.attribute.to_s.include? 'raw') ? error.message : error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <h5 class='text-uppercase'>health issues</h5>
+    <%= form.hidden_field :client_id, value: @client.id %>
+    <h6 class='fst-italic mb-1'>Tick if you are currently suffering or you have suffered from the following</h6>
+    <div class="field">
+      <%= form.label :tear do %>
+        <%= form.check_box :tear %>
+        Muscle Tear
+      <% end %>
+    </div>
+    <div class="field">
+      <%= form.label :pcos do %>
+        <%= form.check_box :pcos %>
+        PCOS
+      <% end %>
+    </div>
+
+    <div class="field mt-2">
+      <%= form.label :none do %>
+        <%= form.check_box :none %>
+        I have no known health issues
+      <% end %>
+    </div>
+
+    <h5 class='text-uppercase'>personal issues</h5>
+
+    <h6 class='fst-italic mb-1'>Tick if any of these statements apply to you</h6>
+    <div class="field">
+      <%= form.label :menopausal do %>
+        <%= form.check_box :menopausal %>
+        I am menopausal
+      <% end %>
+    </div>  
+    <div class="field">
+      <%= form.label :fertility do %>
+        <%= form.check_box :fertility %>
+        I am currently undergoing fertility treatment
+      <% end %>
+    </div>  
+
+    <div class="field">
+      <%= form.label :injury do %>
+        <%= form.check_box :injury, data: {"action": "waiver#toggle_injury"} %>
+        Have you had any injuries/operations within the last 2 years?
+      <% end %>
+    </div>
+
+    <div class="field" data-waiver-target="injuryNote" <%= 'hidden' unless waiver.injury? %>>
+      <%= form.label :injury_note, 'Details of injury/operation' %>
+      <%= form.text_area :injury_note, cols: 40, rows: 5, class: 'form-control' %>
+    </div>
+
+    <h5 class='text-uppercase'>physical activity readiness questionnaire (PAR-Q)</h5>
+    <p>The questions below are to identify anyone for whom physical activity might be inappropriate or should have medical advice concerning the type of activity most suitable for them.</p>
+    <p>Please read the questions carefully and answer each one honestly.</p>
+    <div class="field">
+      <%= form.label :heart_trouble do %>
+        <%= form.check_box :heart_trouble %>
+        Has your doctor ever said you have heart trouble?
+      <% end %>
+    </div>
+    <div class="field">
+      <%= form.label :chest_pain do %>
+        <%= form.check_box :chest_pain %>
+        Do you feel pain in your chest when you do physical activity?
+      <% end %>
+    </div>
+
+    <p>If you answered YES to one or more PAR-Q questions, seek your Doctor's advice and obtain clearance BEFORE participating in physical activity.</p>
+    <p>Do you have a doctor’s permit to participate in physical activities? (Applicable if you have answered YES to one or more PAR-Q questions)</p>
+    <div class="field">    
+      <%= form.label :doctors_permit do %>
+        <%= form.check_box :doctors_permit %>
+        Do you have a doctor’s permit to participate in physical activities?
+      <% end %>
+    </div>
+
+    <div class="field">    
+      <%= form.label :signed do %>
+        <%= form.check_box :signed, data: {"action": "waiver#toggle_submit"} %>
+        The information that I have provided here is, to the best of my knowledge both true and accurate.
+      <% end %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit @waiver.new_record? ? 'submit' : 'update waiver',
+                      class: ('disabled' unless @waiver.signed?),
+                      data: { "waiver-target": "submitButton", turbo: false } %>
+    </div>
+
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
+    </div>  
+  <% end %>
+</div>

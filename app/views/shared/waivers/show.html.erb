@@ -1,0 +1,67 @@
+  <div class="admin_form my-2">
+    <h5><span class='fw-bolder text-uppercase'><%=@client.name%></span></h5>
+    
+    <h5 class='text-uppercase'>health issues</h5>
+    <div>
+      <!--h6 class='fst-italic mb-1'>Muscle Tear</h6-->    
+      <input type="checkbox" id="tear" <%= 'checked' if @waiver.tear? %> disabled=true>
+      <label for="tear" class='d-inline'>Muscle Tear</label>
+    </div>
+
+    <div>
+      <input type="checkbox" id="pcos" <%= 'checked' if @waiver.pcos? %> disabled=true>
+      <label for="pcos" class='d-inline'>PCOS</label>
+    </div>
+
+    <div>
+      <input type="checkbox" id="none" <%= 'checked' if @waiver.none? %> disabled=true>
+      <label for="none" class='d-inline'>I have no known health issues</label>
+    </div>
+
+    <h5 class='text-uppercase'>personal issues</h5>
+
+    <div>
+      <input type="checkbox" id="menopausal" <%= 'checked' if @waiver.menopausal? %> disabled=true>
+      <label for="menopausal" class='d-inline'>I am menopausal</label>
+    </div>    
+
+    <div>
+      <input type="checkbox" id="fertility" <%= 'checked' if @waiver.fertility? %> disabled=true>
+      <label for="fertility" class='d-inline'>I am currently undergoing fertility treatment</label>
+    </div>
+
+    <div>
+      <input type="checkbox" id="injury" <%= 'checked' if @waiver.injury? %> disabled=true>
+      <label for="injury" class='d-inline'>Have you had any injuries/operations within the last 2 years?</label>
+    </div>
+
+    <% if @waiver.injury? %>
+      <div>
+        <label for="injury_note" class=''>Details of injury/operation</label>
+        <textarea id="injury_note" disabled=true></textarea>
+      </div>
+    <% end %>
+
+    <h5 class='text-uppercase'>physical activity readiness questionnaire (PAR-Q)</h5>
+
+    <div>
+      <input type="checkbox" id="heart_trouble" <%= 'checked' if @waiver.heart_trouble? %> disabled=true>
+      <label for="heart_trouble" class='d-inline'>Has your doctor ever said you have heart trouble?</label>
+    </div>    
+    <div>
+      <input type="checkbox" id="chest_pain" <%= 'checked' if @waiver.chest_pain? %> disabled=true>
+      <label for="chest_pain" class='d-inline'>Do you feel pain in your chest when you do physical activity?</label>
+    </div>
+    <div>
+      <input type="checkbox" id="doctors_permit" <%= 'checked' if @waiver.doctors_permit? %> disabled=true>
+      <label for="doctors_permit" class='d-inline'>Do you have a doctor’s permit to participate in physical activities?</label>
+    </div>
+    <div>
+      <input type="checkbox" id="signed" <%= 'checked' if @waiver.signed? %> disabled=true>
+      <label for="signed" class='d-inline'>The information that I have provided here is, to the best of my knowledge both true and accurate.</label>
+    </div>
+
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), waivers_path %>
+    </div>        
+  </div>

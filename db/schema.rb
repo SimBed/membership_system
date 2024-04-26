@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_20_025006) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_23_140733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -488,6 +488,24 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_20_025006) do
     t.index ["wkclass_id"], name: "index_waitings_on_wkclass_id"
   end
 
+  create_table "waivers", force: :cascade do |t|
+    t.boolean "tear"
+    t.boolean "pcos"
+    t.boolean "none"
+    t.boolean "menopausal"
+    t.boolean "fertility"
+    t.boolean "injury"
+    t.text "injury_note"
+    t.boolean "heart_trouble"
+    t.boolean "chest_pain"
+    t.boolean "doctors_permit"
+    t.boolean "signed"
+    t.bigint "client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_waivers_on_client_id"
+  end
+
   create_table "wkclasses", force: :cascade do |t|
     t.integer "workout_id"
     t.datetime "start_time", precision: nil
@@ -559,4 +577,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_20_025006) do
   add_foreign_key "strength_markers", "clients"
   add_foreign_key "waitings", "purchases"
   add_foreign_key "waitings", "wkclasses"
+  add_foreign_key "waivers", "clients"
 end

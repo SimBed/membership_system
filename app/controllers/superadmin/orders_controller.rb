@@ -28,7 +28,8 @@ class Superadmin::OrdersController < Superadmin::BaseController
         flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
         # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
         if logged_in_as?('client')
-          redirect_to client_history_path account.client
+          client = account.client
+          client.waiver ? redirect_to(client_history_path(client)) : redirect_to(new_client_waiver_path(client))
         else
           flash[:warning] = 'Your browser may have logged you out of the system. Please login again to see your purchase and book your classes'
           redirect_to login_path

@@ -1,7 +1,7 @@
 <div class="admin_form pt-4 my-2" data-controller="purchase-form"
                                   data-purchase-form-client-filter-url-value = <%= client_filter_path %>
-                                  data-purchase-form-discount-url-value = <%= purchases_discount_path %>
-                                  data-purchase-form-dop-change-url-value = <%= purchases_dop_change_path %>>
+                                  data-purchase-form-discount-url-value = <%= discount_purchases_path %>
+                                  data-purchase-form-dop-change-url-value = <%= dop_change_purchases_path %>>
   <div class="field" > 
     <%= text_field_tag :search_client_name, nil, {class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name],
                                                   "data-action": "purchase-form#client_search",
