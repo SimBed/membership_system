@@ -1,0 +1,25 @@
+<h5 class='text-uppercase mt-4'>agreement to policy and acceptance of risk</h5>
+<div>
+  <%= render 'public_pages/home/terms' %>
+  <input type="checkbox" id="terms_and_conditions" <%= 'checked' if @declaration.terms_and_conditions? %> disabled=true>
+  <label for="terms_and_conditions" class='d-inline'>I agree to the Space's Terms & Conditions</label>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#termsModal"} %>
+</div>
+<div>
+  <%= render 'public_pages/home/payment_policy' %>
+  <input type="checkbox" id="payment_policy" <%= 'checked' if @declaration.payment_policy? %> disabled=true>
+  <label for="payment_policy" class='d-inline'>I agree to the Space's Payment Policy</label>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#paymentModal"} %>
+</div>
+<div>
+  <%= render 'public_pages/home/privacy_policy' %>
+  <input type="checkbox" id="privacy_policy" <%= 'checked' if @declaration.privacy_policy? %> disabled=true>
+  <label for="privacy_policy" class='d-inline'>I agree to the Space's Privacy Policy</label>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#privacyModal"} %>
+</div>
+<div>
+  <%= render 'public_pages/home/indemnity_modal' %>
+  <input type="checkbox" id="indemnity" <%= 'checked' if @declaration.indemnity? %> disabled=true>
+  <label for="indemnity" class='d-inline'>I acknowledge that I have carefully read this linked document and fully understand that it represents a release of liability, an express assumption of risk and agreement to indemnity.</label>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#indemnityModal"} %>
+</div>

@@ -39,6 +39,12 @@ default: &default
   - Status
   - Renewal
 
+ genders:
+  - female
+  - male
+  - other
+  - prefer not to say
+
 development:
   <<: *default
   display_timetable_id: 1

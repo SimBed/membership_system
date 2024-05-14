@@ -139,9 +139,12 @@ Rails.application.routes.draw do
     end
     resources :challenges
     resources :client, only: [] do # already have the client resource routes in the admin module, dont want an extra set handled by a shared/clients controller
-      resource :waiver
+      # the declaration is created from a form scoped to an exisiting client, so the form defaults to a patch (update request) (with nested attributes for  the new declaration)
+      # so we only have an update route, not a create route
+      # we cannot edit or destroy declarations through the UI
+      resource :declaration, only: [:new, :show, :update]
     end
-    resources :waivers, only: [:index] # we want an index of all waivers (not an index of each clients waivers)  
+    resources :declarations, only: [:index] # we want an index of all declarations (not an index of each clients declarations)  
   end
 
   scope module: :public_pages do

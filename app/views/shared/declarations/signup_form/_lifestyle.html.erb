@@ -1,0 +1,38 @@
+<h6 class='text-uppercase'>lifestyle</h6>
+<div class="field">
+  <%= declaration_fields.label :fertility do %>
+    <%= declaration_fields.check_box :fertility, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Undergoing fertility treatment
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :pregnant do %>
+    <%= declaration_fields.check_box :pregnant, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Pregnant
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :birth do %>
+    <%= declaration_fields.check_box :birth, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Given birth in the past year
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :smoker do %>
+    <%= declaration_fields.check_box :smoker, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Smoker
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :alcohol do %>
+    <%= declaration_fields.check_box :alcohol, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Heavy, frequent alcohol consumption
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :drug do %>
+    <%= declaration_fields.check_box :drug, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Heavy, frequent, recreational drug consumption
+  <% end %>
+</div>
+<hr>

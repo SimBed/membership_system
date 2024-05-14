@@ -34,6 +34,14 @@
       <div class="column col-2x"><%= raw("&check;") %></div>
     </div>
   <% end %>
+  <div class="row">
+    <div class="column col-1x">Dob</div>
+    <div class="column col-2x"><%= @client.dob&.strftime("%d %B %Y") %></div>
+  </div>  
+  <div class="row">
+    <div class="column col-1x">Gender</div>
+    <div class="column col-2x"><%= @client.gender %></div>
+  </div>  
   <% unless @client.note.blank? %>
     <div class="row">
       <div class="column col-1x">Note</div>

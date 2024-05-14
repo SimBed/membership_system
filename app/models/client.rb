@@ -8,7 +8,8 @@ class Client < ApplicationRecord
   has_many :achievements, dependent: :destroy
   has_many :challenges, through: :achievements
   has_many :waitings, through: :purchases
-  has_one :waiver
+  has_one :declaration, dependent: :destroy
+  accepts_nested_attributes_for :declaration
   belongs_to :account, optional: true
   before_save :downcase_email
   before_save :uppercase_names
@@ -54,7 +55,7 @@ class Client < ApplicationRecord
   validates :account, presence: true, if: :account_id
   # NOTE: default accept options are ['1', true] https://guides.rubyonrails.org/active_record_validations.html#acceptance
   # This check is performed only if terms_of_service is not nil (so when admin creates a client this validation does not occur)
-  validates :terms_of_service, acceptance: true
+  # validates :terms_of_service, acceptance: true
   scope :order_by_first_name, -> { order(:first_name, :last_name) }
   scope :order_by_last_name, -> { order(:last_name, :first_name) }
   scope :order_by_created_at, -> { order(created_at: :desc) }

@@ -1,0 +1,22 @@
+<h6 class='text-uppercase'>injury & medication</h6>
+<div>
+  <input type="checkbox" id="injury" <%= 'checked' if @declaration.injury? %> disabled=true>
+  <label for="injury" class='d-inline'>Have you had any injuries/operations within the last 2 years that may be affected by exercise?</label>
+</div>
+<% if @declaration.injury? %>
+  <div>
+    <label for="injury_note" class=''>Details of injury/operation</label>
+    <textarea id="injury_note" cols=40, rows=5, disabled=true> <%= @declaration.injury_note %> </textarea>
+  </div>
+<% end %>
+<div>
+  <input type="checkbox" id="medication" <%= 'checked' if @declaration.medication? %> disabled=true>
+  <label for="medication" class='d-inline'>Are you currently taking any medication that may affect you when you exercise?</label>
+</div>
+<% if @declaration.medication? %>
+  <div>
+    <label for="medication_note" class=''>Details of medication</label>
+    <textarea id="medication_note" cols=40, rows=5, disabled=true><%= @declaration.medication_note %></textarea>
+  </div>
+<% end %>
+<hr>

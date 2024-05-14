@@ -1,0 +1,42 @@
+<div data-controller="signup"
+     data-signup-disabled-class="disabled"> 
+  <%= form_with(model: client, url: client_declaration_path, class: 'admin_form pt-4 my-2') do |form| %>
+    <% if client.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>
+        <ul>
+          <% @client.errors.each do |error| %>
+            <li><%= (error.attribute.to_s.include? 'raw') ? error.message : error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <hr>
+    <h5 class='text-uppercase text-center mt-4'>personal details</h5>
+    <div class="field">
+      <%= form.label :dob, 'Date of birth', class: "fw-bolder text-uppercase form-mandatory" %>
+      <%= form.date_field :dob, {value: "1980-01-01", min: "1940-01-01", max: Time.zone.today.advance(years:-18), data: {"signup-target": "dob", "action": "signup#dob_change"}} %>
+    </div>
+
+    <div class="field">
+      <%= label_tag :age %>
+      <%= number_field_tag :age, 30, {class: '', disabled: true, data: {"signup-target": "age"}, value:30} %>
+    </div>
+
+    <div class="field">
+      <%= form.label :gender, class: "fw-bolder text-uppercase form-mandatory" %>
+      <%= form.select :gender, @gender_options, {}, {class: 'form-control form-select'} %>
+    </div>
+
+    <hr>
+    <%= render partial: 'shared/declarations/signup_form/declaration_details', locals: {form: form} %>
+
+    <div class="actions">
+      <%= form.submit 'submit',
+                      class: "btn btn-black disabled",
+                      data: { "signup-target": "submitButton", turbo: false } %>
+    </div>
+
+
+  <% end %>
+</div>

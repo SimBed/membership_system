@@ -1,0 +1,30 @@
+<h6 class='text-uppercase'>psychological</h6>
+<div>
+  <input type="checkbox" id="eating" <%= 'checked' if @declaration.eating? %> disabled=true>
+  <label for="eating" class='d-inline'>Eating Disorder</label>
+</div>
+<div>
+  <input type="checkbox" id="depression" <%= 'checked' if @declaration.depression? %> disabled=true>
+  <label for="depression" class='d-inline'>Depression</label>
+</div>
+<div>
+  <input type="checkbox" id="anxiety" <%= 'checked' if @declaration.anxiety? %> disabled=true>
+  <label for="anxiety" class='d-inline'>Anxiety</label>
+</div>
+<div>
+  <input type="checkbox" id="ptsd" <%= 'checked' if @declaration.ptsd? %> disabled=true>
+  <label for="ptsd" class='d-inline'>PTSD</label>
+</div>
+<div>
+  <input type="checkbox" id="eating" <%= 'checked' if @declaration.eating? %> disabled=true>
+  <label for="eating" class='d-inline'>Eating Disorder</label>
+</div>
+<div>
+  <input type="checkbox" id="neurodevelopmental" <%= 'checked' if @declaration.neurodevelopmental? %> disabled=true>
+  <label for="neurodevelopmental" class='d-inline'>Neurodevelopmental Disorder</label>
+</div>
+<div>
+  <input type="checkbox" id="psychiatric" <%= 'checked' if @declaration.psychiatric? %> disabled=true>
+  <label for="psychiatric" class='d-inline'>Other psychiatric disorder</label>
+</div>
+<hr>

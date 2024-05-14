@@ -1,0 +1,74 @@
+<h6 class='text-uppercase'>systemic</h6>
+<div>
+  <input type="checkbox" id="diabetes" <%= 'checked' if @declaration.diabetes? %> disabled=true>
+  <label for="diabetes" class='d-inline'>Diabetes</label>
+</div>
+<div>
+  <input type="checkbox" id="cardiovascular" <%= 'checked' if @declaration.cardiovascular? %> disabled=true>
+  <label for="cardiovascular" class='d-inline'>Cardiovascular Disease</label>
+</div>
+<div>
+  <input type="checkbox" id="respiratory" <%= 'checked' if @declaration.respiratory? %> disabled=true>
+  <label for="respiratory" class='d-inline'>Respiratory Disease</label>
+</div>
+<div>
+  <input type="checkbox" id="digestive" <%= 'checked' if @declaration.digestive? %> disabled=true>
+  <label for="digestive" class='d-inline'>Digestive Disease</label>
+</div>
+<div>
+  <input type="checkbox" id="blood" <%= 'checked' if @declaration.blood? %> disabled=true>
+  <label for="blood" class='d-inline'>Abnormal Blood Pressure</label>
+</div>
+<div>
+  <input type="checkbox" id="autoimmune" <%= 'checked' if @declaration.autoimmune? %> disabled=true>
+  <label for="autoimmune" class='d-inline'>Autoimmune Disorder</label>
+</div>
+<div>
+  <input type="checkbox" id="nutrient" <%= 'checked' if @declaration.nutrient? %> disabled=true>
+  <label for="nutrient" class='d-inline'>Severe Nutrient Deficiency</label>
+</div>
+<div>
+  <input type="checkbox" id="hormonal" <%= 'checked' if @declaration.hormonal? %> disabled=true>
+  <label for="hormonal" class='d-inline'>Hormonal Imbalance</label>
+</div>
+<div>
+  <input type="checkbox" id="endocrine" <%= 'checked' if @declaration.endocrine? %> disabled=true>
+  <label for="endocrine" class='d-inline'>Endocrine Disorder</label>
+</div>
+<div>
+  <input type="checkbox" id="migraine" <%= 'checked' if @declaration.migraine? %> disabled=true>
+  <label for="migraine" class='d-inline'>Chronic Migraine</label>
+</div>
+<div>
+  <input type="checkbox" id="allergies" <%= 'checked' if @declaration.allergies? %> disabled=true>
+  <label for="allergies" class='d-inline'>Allergies</label>
+</div>
+<div>
+  <input type="checkbox" id="pcos" <%= 'checked' if @declaration.pcos? %> disabled=true>
+  <label for="pcos" class='d-inline'>PCOS / PCOD</label>
+</div>
+<div>
+  <input type="checkbox" id="menopause" <%= 'checked' if @declaration.menopause? %> disabled=true>
+  <label for="menopause" class='d-inline'>Perimenopause / Menopause</label>
+</div>
+<div>
+  <input type="checkbox" id="gynaecological" <%= 'checked' if @declaration.gynaecological? %> disabled=true>
+  <label for="gynaecological" class='d-inline'>Gynaecological Disease</label>
+</div>
+<div>
+  <input type="checkbox" id="epilepsy" <%= 'checked' if @declaration.epilepsy? %> disabled=true>
+  <label for="epilepsy" class='d-inline'>Epilepsy / Seizures</label>
+</div>
+<div>
+  <input type="checkbox" id="sight" <%= 'checked' if @declaration.sight? %> disabled=true>
+  <label for="sight" class='d-inline'>Hearing/Sight Problems</label>
+</div>
+<div>
+  <input type="checkbox" id="kidney" <%= 'checked' if @declaration.kidney? %> disabled=true>
+  <label for="kidney" class='d-inline'>Kidney/Urinary/Liver Disease</label>
+</div>
+<div>
+  <input type="checkbox" id="cancer" <%= 'checked' if @declaration.cancer? %> disabled=true>
+  <label for="cancer" class='d-inline'>Cancer</label>
+</div>
+<hr>

@@ -1,0 +1,47 @@
+<div>
+  <h5 class='text-uppercase text-center mt-4'>physical activity readiness</h5>
+  <p>These questions aim to identify people for whom it may not be safe to exercise without professional medical advice.<p>
+  <p>Tick all that apply to you. If any of these apply to you, you must seek your Doctor's advice and obtain your Doctor's clearance
+    <span class="fst-italic">before</span> participating in any physical activity at The Space.
+  </p>
+  <div class="field">
+    <%= declaration_fields.label :heart_trouble do %>
+      <%= declaration_fields.check_box :heart_trouble, data: {"signup-target": "parq", "action": "signup#toggle_medical_warning signup#toggle_submit"} %>
+      Has your doctor ever said you have heart trouble?
+    <% end %>
+  </div>
+  <div class="field">
+    <%= declaration_fields.label :chest_pain_activity do %>
+      <%= declaration_fields.check_box :chest_pain_activity, data: {"signup-target": "parq", "action": "signup#toggle_medical_warning signup#toggle_submit"} %>
+      Do you feel pain in your chest when you do physical activity?
+    <% end %>
+  </div>
+  <div class="field">
+    <%= declaration_fields.label :chest_pain_no_activity do %>
+      <%= declaration_fields.check_box :chest_pain_no_activity, data: {"signup-target": "parq", "action": "signup#toggle_medical_warning signup#toggle_submit"} %>
+      In the past month, have you had chest pain when you are not performing any physical activity?
+    <% end %>
+  </div>
+  <div class="field">
+    <%= declaration_fields.label :dizziness do %>
+      <%= declaration_fields.check_box :dizziness, data: {"signup-target": "parq", "action": "signup#toggle_medical_warning signup#toggle_submit"} %>
+      Do you lose your balance because of dizziness or do you ever lose consciousness?
+    <% end %>
+  </div>
+  <div class="field">
+    <%= declaration_fields.label :drugs do %>
+      <%= declaration_fields.check_box :drugs, data: {"signup-target": "parq", "action": "signup#toggle_medical_warning signup#toggle_submit"} %>
+      Is your doctor currently prescribing drugs for your blood pressure or heart condition?
+    <% end %>
+  </div>
+  <div hidden data-signup-target='medicalWarning'>
+    <p class='text-uppercase fw-bolder my-3'>Please seek your Doctor's advice and obtain your Doctor's clearance BEFORE participating in any physical activity at The Space.</p>
+    <div class="field border border-5 border-danger">    
+      <%= declaration_fields.label :doctors_permit do %>
+        <%= declaration_fields.check_box :doctors_permit, required: true, data: {"signup-target": "doctorsClearance", "action": "signup#toggle_submit"} %>
+        Do you have your doctor’s clearance to participate in physical activities?
+      <% end %>
+    </div>
+  </div>
+</div>
+<hr>

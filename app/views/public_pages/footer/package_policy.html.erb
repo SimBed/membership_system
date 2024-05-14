@@ -6,7 +6,8 @@
           <button class="btn_policy_type btn btn-filter rounded-pill px-4" data-package-policy-target='btnPt' data-action="package-policy#showPt">PT</button>     
         </div>
         <div <%= "hidden" unless @default_policy =='group' %> class="policy_content" data-package-policy-target="contentGroup">
-          <%= render 'group_package_policy' %>
+          <h3 class="mt-4 text-center fw-bolder">Group Training at The Space</h3>
+          <%= render partial: 'group_package_policy', locals: {prevent_link: false} %>
         </div>
         <div <%= "hidden" unless @default_policy =='pt' %> class = "policy_content" data-package-policy-target="contentPt">
           <%= render 'pt_package_policy' %>

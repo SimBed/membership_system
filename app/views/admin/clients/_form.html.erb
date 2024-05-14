@@ -28,6 +28,18 @@
     <%= form.text_field :email, class: 'form-control' %>
   </div>
 
+  <!--div class="field">
+    <%#= form.label :dob, 'Date of birth', class: "form-mandatory" %>
+    <%#= form.date_select :dob, {default: Date.parse('May 1 1980'),   start_year: 1940, end_year: Time.zone.today.year - 15}, data: {"client-target": "dob", "action": "client#dob_change"} %>
+  </div>
+  <%# TODO warning if under 18/16 %>
+  <%# TODO checkbox dont know dob (thatther than dfault to 1 May 1980 when unknown) %>
+    
+  <div class="field">
+    <%#= form.label :gender, class: "form-mandatory" %>
+    <%#= form.select :gender, @gender_options, {}, {class: 'form-select'} %>
+  </div-->
+
   <div class="field">
     <%= form.label :whatsapp_raw, 'Whatsapp', class: "form-mandatory" %>
     <div class="d-flex field">

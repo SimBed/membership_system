@@ -9,7 +9,7 @@ export default class extends Controller {
   connect() {
   }
 
-  change( event) {
+  change(event) {
     console.log(this.settingsScopeClient);
     console.log(event.target.value);
     this.settingsScopeTargets.forEach((settingScope)=> {

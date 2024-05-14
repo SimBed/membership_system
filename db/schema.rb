@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_23_140733) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_27_064703) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -114,10 +114,82 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_140733) do
     t.boolean "whatsapp_group", default: false
     t.boolean "student", default: false
     t.boolean "friends_and_family", default: false
+    t.date "dob"
+    t.string "gender"
     t.index ["account_id"], name: "index_clients_on_account_id"
+    t.index ["dob"], name: "index_clients_on_dob"
     t.index ["first_name", "last_name"], name: "index_clients_on_first_name_and_last_name"
     t.index ["friends_and_family"], name: "index_clients_on_friends_and_family"
+    t.index ["gender"], name: "index_clients_on_gender"
     t.index ["student"], name: "index_clients_on_student"
+  end
+
+  create_table "declarations", force: :cascade do |t|
+    t.boolean "pain"
+    t.boolean "fracture"
+    t.boolean "joint"
+    t.boolean "ligament"
+    t.boolean "tendon"
+    t.boolean "muscle"
+    t.boolean "skeletal"
+    t.boolean "osteoarthritis"
+    t.boolean "prolapse"
+    t.boolean "hernia"
+    t.boolean "postnatal"
+    t.boolean "diabetes"
+    t.boolean "cardiovascular"
+    t.boolean "respiratory"
+    t.boolean "digestive"
+    t.boolean "blood"
+    t.boolean "autoimmune"
+    t.boolean "nutrient"
+    t.boolean "hormonal"
+    t.boolean "endocrine"
+    t.boolean "migraine"
+    t.boolean "allergies"
+    t.boolean "pcos"
+    t.boolean "menopause"
+    t.boolean "gynaecological"
+    t.boolean "epilepsy"
+    t.boolean "sight"
+    t.boolean "kidney"
+    t.boolean "cancer"
+    t.boolean "eating"
+    t.boolean "depression"
+    t.boolean "anxiety"
+    t.boolean "ptsd"
+    t.boolean "neurodevelopmental"
+    t.boolean "psychiatric"
+    t.boolean "fertility"
+    t.boolean "pregnant"
+    t.boolean "birth"
+    t.boolean "smoker"
+    t.boolean "alcohol"
+    t.boolean "drug"
+    t.boolean "injury"
+    t.text "injury_note"
+    t.boolean "medication"
+    t.text "medication_note"
+    t.boolean "none"
+    t.string "contact_first_name"
+    t.string "contact_last_name"
+    t.string "contact_relationship"
+    t.string "contact_phone"
+    t.boolean "heart_trouble"
+    t.boolean "chest_pain_activity"
+    t.boolean "chest_pain_no_activity"
+    t.boolean "dizziness"
+    t.boolean "drugs"
+    t.boolean "doctors_permit"
+    t.boolean "signed"
+    t.boolean "terms_and_conditions"
+    t.boolean "payment_policy"
+    t.boolean "privacy_policy"
+    t.boolean "indemnity"
+    t.bigint "client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_declarations_on_client_id"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -488,24 +560,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_140733) do
     t.index ["wkclass_id"], name: "index_waitings_on_wkclass_id"
   end
 
-  create_table "waivers", force: :cascade do |t|
-    t.boolean "tear"
-    t.boolean "pcos"
-    t.boolean "none"
-    t.boolean "menopausal"
-    t.boolean "fertility"
-    t.boolean "injury"
-    t.text "injury_note"
-    t.boolean "heart_trouble"
-    t.boolean "chest_pain"
-    t.boolean "doctors_permit"
-    t.boolean "signed"
-    t.bigint "client_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_waivers_on_client_id"
-  end
-
   create_table "wkclasses", force: :cascade do |t|
     t.integer "workout_id"
     t.datetime "start_time", precision: nil
@@ -560,6 +614,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_140733) do
   add_foreign_key "assignments", "roles"
   add_foreign_key "body_markers", "clients"
   add_foreign_key "challenges", "challenges"
+  add_foreign_key "declarations", "clients"
   add_foreign_key "discount_assignments", "discounts"
   add_foreign_key "discount_assignments", "purchases"
   add_foreign_key "discounts", "discount_reasons"
@@ -577,5 +632,4 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_140733) do
   add_foreign_key "strength_markers", "clients"
   add_foreign_key "waitings", "purchases"
   add_foreign_key "waitings", "wkclasses"
-  add_foreign_key "waivers", "clients"
 end

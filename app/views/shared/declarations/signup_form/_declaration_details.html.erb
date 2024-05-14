@@ -1,0 +1,14 @@
+<%= form.fields_for :declaration do |declaration_fields| %>
+  <%= render partial: 'shared/declarations/signup_form/activity_ready', locals: {declaration_fields: declaration_fields} %>
+  <h5 class='text-uppercase text-center mt-4'>health issues</h5>
+  <p>This information will only be used for the purpose of helping you to modify or avoid exercises that might not be suitable or safe for you. If any of the below applies to you please consult your healthcare provider prior to participating in activities at The Space.<p>
+  <p class='fst-italic mb-3'>Tick all that apply to you:</p>
+  <%= render partial: 'shared/declarations/signup_form/musculoskeletal', locals: {declaration_fields: declaration_fields} %>
+  <%= render partial: 'shared/declarations/signup_form/systemic', locals: {declaration_fields: declaration_fields} %>
+  <%= render partial: 'shared/declarations/signup_form/psychological', locals: {declaration_fields: declaration_fields} %>
+  <%= render partial: 'shared/declarations/signup_form/lifestyle', locals: {declaration_fields: declaration_fields} %>
+  <%= render partial: 'shared/declarations/signup_form/medication', locals: {declaration_fields: declaration_fields} %>
+  <%= render partial: 'shared/declarations/signup_form/none_apply', locals: {declaration_fields: declaration_fields} %>
+  <%= render partial: 'shared/declarations/signup_form/emergency_contact', locals: {declaration_fields: declaration_fields} %>
+  <%= render partial: 'shared/declarations/signup_form/agreement', locals: {declaration_fields: declaration_fields} %>
+<% end %>

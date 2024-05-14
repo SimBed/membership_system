@@ -1,0 +1,21 @@
+<h5 class='text-uppercase text-center mt-4'>emergency contact</h5>
+<div class="field">
+  <%= declaration_fields.label :contact_first_name %>
+  <%= declaration_fields.text_field :contact_first_name, class: 'form-control' %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :contact_last_name %>
+  <%= declaration_fields.text_field :contact_last_name, class: 'form-control' %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :contact_relationship %>
+  <%= declaration_fields.text_field :contact_relationship, class: 'form-control' %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :contact_phone_raw, 'Phone' %>
+  <div class="d-flex field">    
+    <%= declaration_fields.country_select(:contact_phone_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
+    <%= declaration_fields.text_field :contact_phone_raw, class: 'form-control' %>
+  </div>
+</div>
+<hr>

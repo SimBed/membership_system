@@ -1,0 +1,78 @@
+<h6 class='text-uppercase'>musculoskeletal</h6>
+<%= declaration_fields.hidden_field :client_id, value: @client.id %>
+<div class="field">
+  <%= declaration_fields.label :pain do %>
+    <%= declaration_fields.check_box :pain, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Chronic Pain
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :fracture do %>
+    <%= declaration_fields.check_box :fracture, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Fracture
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :joint do %>
+    <%= declaration_fields.check_box :joint, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Joint Injury / Dislocation
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :ligament do %>
+    <%= declaration_fields.check_box :ligament, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Ligament Tear
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :tendon do %>
+    <%= declaration_fields.check_box :tendon, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Tendon Injury
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :muscle do %>
+    <%= declaration_fields.check_box :muscle, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Acute Muscle Strain
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :skeletal do %>
+    <%= declaration_fields.check_box :skeletal, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Skeletal Malformation
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :osteoarthritis do %>
+    <%= declaration_fields.check_box :osteoarthritis, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Osteoarthritis
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :prolapse do %>
+    <%= declaration_fields.check_box :prolapse, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Pelvic Organ Prolapse
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :hernia do %>
+    <%= declaration_fields.check_box :hernia, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Hernia / Rupture
+  <% end %>
+</div>
+
+<div class="field mt-2">
+  <%= declaration_fields.label :postnatal do %>
+    <%= declaration_fields.check_box :postnatal, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Postnatal Injury
+  <% end %>
+</div>
+<hr>

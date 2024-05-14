@@ -25,13 +25,13 @@
         <li class="nav-item">
           <%= link_to "History", client_history_path(client), class: "nav-link #{active_link_for(path: client_history_path(client))}" %>
         </li>
-        <% if Rails.env.development? && client.waiver%>        
+        <%# if Rails.env.development? && client.declaration%>        
           <% unless current_account.without_purchase? %>
             <li class="nav-item">
               <%= link_to "Book", client_book_path(client), class: "nav-link #{active_link_for(path: client_book_path(client))}" %>
             </li>
           <% end %>
-        <% end %>
+        <%# end %>
         <% if current_account.client.pt? %>
           <li class="nav-item">
             <%= link_to "PT", client_pt_path(client), class: "nav-link #{active_link_for(path: client_pt_path(client))}" %>
@@ -51,16 +51,13 @@
         <li class="nav-item">
           <%= link_to "Markers", strength_markers_path, class: "nav-link #{active_link_for(path: strength_markers_path)}" %>
         </li>
-        <% if Rails.env.development? %>
-        
         <li class="nav-item">
-          <% if !client.waiver %>
-            <%= link_to "Waiver", new_client_waiver_path(client), class: "nav-link #{active_link_for(path: new_client_waiver_path(client))}" %>
+          <% if !client.declaration %>
+            <%= link_to "Declaration", new_client_declaration_path(client), class: "nav-link #{active_link_for(path: new_client_declaration_path(client))}" %>
           <% else %>
-            <%= link_to "Waiver", client_waiver_path(client), class: "nav-link #{active_link_for(path: client_waiver_path(client))}" %>
+            <%= link_to "Declaration", client_declaration_path(client), class: "nav-link #{active_link_for(path: client_declaration_path(client))}" %>
           <% end %>
         </li>
-        <% end %>
       </ul>
 
       <ul class="navbar-nav">

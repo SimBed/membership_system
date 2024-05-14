@@ -1,0 +1,10 @@
+<div data-signup-target="noHealthIssues">
+  <h6 class='text-uppercase'>no health issues apply</h6>
+  <div class="field border border-5 border-danger">
+    <%= declaration_fields.label :none do %>
+      <%= declaration_fields.check_box :none, required: true, data: {"signup-target": "noHealthIssuesChbox", "action": "signup#toggle_submit"} %>
+      None of these issues apply to me
+    <% end %>
+  </div>
+<hr>
+</div>

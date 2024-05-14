@@ -136,6 +136,11 @@ form {
   span.sub-label {
     font-size: 0.7rem;
   }
+
+  &.signup .form-control {
+    padding-top:0;
+    padding-bottom:0;
+  }
 }
 
 h2 form {

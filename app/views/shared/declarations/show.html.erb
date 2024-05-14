@@ -1,0 +1,30 @@
+  <div class="container my-2">
+    <div class="admin_form">
+      <% if @client.declaration%>
+        <h5 class='fw-bolder text-uppercase mb-1'><%=@client.name%></h5>
+        <p class='fst-italic'>submitted on <%=@declaration.created_at.strftime('%d %b %Y')%></p>
+        <p class='fst-italic'>you have agreed to inform the Space of any changes in these circumstance before participating in further activities at The Space</p>
+        <hr>
+        <%= render 'shared/declarations/show_partials/personal_details' %>
+        <%= render 'shared/declarations/show_partials/activity_ready' %>
+        <h5 class='text-uppercase'>health issues</h5>
+        <p>This information will only be used for the purpose of helping you to modify or avoid exercises that might not be suitable or safe for you. If any of the below applies to you please consult your healthcare provider prior to participating in activities at The Space.<p>
+        <p class='fst-italic mb-1'>Tick if any of the following apply to you:</p>
+        <%= render 'shared/declarations/show_partials/musculoskeletal' %>
+        <%= render 'shared/declarations/show_partials/systemic' %>
+        <%= render 'shared/declarations/show_partials/psychological' %>
+        <%= render 'shared/declarations/show_partials/lifestyle' %>
+        <%= render 'shared/declarations/show_partials/medication' %>
+        <%= render 'shared/declarations/show_partials/none_apply' %>
+        <%= render 'shared/declarations/show_partials/emergency_contact' %>
+        <%= render 'shared/declarations/show_partials/agreement' %>
+      <% else %>
+        <p>not yet declared</p>
+      <% end %>        
+    <div>
+  <div>
+
+  That I shall inform the Studio in case of any change in the same from at the time of signing this Form and shall obtain a fresh clearance from my doctor.
+
+
+

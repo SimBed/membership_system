@@ -1,0 +1,38 @@
+<h6 class='text-uppercase'>psychological</h6>
+<div class="field">
+  <%= declaration_fields.label :eating do %>
+    <%= declaration_fields.check_box :eating, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Eating Disorder
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :depression do %>
+    <%= declaration_fields.check_box :depression, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Depression
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :anxiety do %>
+    <%= declaration_fields.check_box :anxiety, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Anxiety
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :ptsd do %>
+    <%= declaration_fields.check_box :ptsd, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    PTSD
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :neurodevelopmental do %>
+    <%= declaration_fields.check_box :neurodevelopmental, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Neurodevelopmental disorder
+  <% end %>
+</div>
+<div class="field">
+  <%= declaration_fields.label :psychiatric do %>
+    <%= declaration_fields.check_box :psychiatric, data: {"signup-target": "healthIssue", "action": "signup#toggle_no_health_issues"} %>
+    Other psychiatric disorder
+  <% end %>
+</div>
+<hr>

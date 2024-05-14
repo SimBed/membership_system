@@ -1,4 +1,6 @@
-<h3 class="mt-4 text-center fw-bolder">Group Training at The Space</h3>
+<% charges_link = link_to 'charges', charges_and_deductions_path, class: "text-decoration-underline" %>
+<% charges_text = "as set out under charges on the website" if prevent_link %>
+<% charges_text = "as set out under #{charges_link} on the website".html_safe unless prevent_link %>
 <div class="accordion accordion-highlight" id="accordion-1">
   <div class="accordion-item">
     <h2 class="accordion-header" id="heading-1-1">
@@ -39,7 +41,7 @@
       <div class="accordion-body">
         <h5 class="mb-2"><strong>Freezing</strong></h5>
         <p class="text-secondary">
-          Packages cannot be cancelled or refunded, however if after starting your Package you decide you do not wish to use your Package for some time, you may (at any time before the normal expiry of your Package, but not after expiry) freeze your package for a maximum of <%=Setting.freeze_duration_days%> days per freeze. The expiry date of your Package will be extended by the duration of the freeze. Freezes may only be made through the online membership system booking page by making the associated payment (as set out under <%= link_to 'charges', charges_and_deductions_path, class: "text-decoration-underline" %> on the website).  
+          Packages cannot be cancelled or refunded, however if after starting your Package you decide you do not wish to use your Package for some time, you may (at any time before the normal expiry of your Package, but not after expiry) freeze your package for a maximum of <%=Setting.freeze_duration_days%> days per freeze. The expiry date of your Package will be extended by the duration of the freeze. Freezes may only be made through the online membership system booking page by making the associated payment <%= charges_text %>.  
         </p>
         <ul class="ps-2">
           <li>You may set your freeze to start on a specified day, which can be no earlier than the following day and no later than 1 month ahead.</li>

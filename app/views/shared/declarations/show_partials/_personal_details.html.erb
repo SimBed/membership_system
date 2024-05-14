@@ -1,0 +1,15 @@
+<h5 class='text-uppercase'>personal details</h5>
+<div>
+  <label for="dob" class=''>date of birth</label>
+  <input type="date" id="dob" value=<%=@client.dob%> disabled=true>
+</div>
+<div>
+  <label for="age" class=''>age</label>
+  <input type="number" id="dob" value=<%=((Time.zone.now - @client.dob.to_time) / 1.year.seconds).floor%> disabled=true>
+</div>
+
+<div>
+  <label for="gender" class=''>gender</label>
+  <input type="text" id="gender" value=<%=@client.gender%> disabled=true>
+</div>
+<hr>

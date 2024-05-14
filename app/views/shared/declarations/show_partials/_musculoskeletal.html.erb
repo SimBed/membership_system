@@ -1,0 +1,46 @@
+<h6 class='text-uppercase'>musculoskeletal</h6>
+<div>
+  <input type="checkbox" id="pain" <%= 'checked' if @declaration.pain? %> disabled=true>
+  <label for="pain" class='d-inline'>Chronic Pain</label>
+</div>
+<div>
+  <input type="checkbox" id="fracture" <%= 'checked' if @declaration.fracture? %> disabled=true>
+  <label for="fracture" class='d-inline'>Fracture</label>
+</div>
+<div>
+  <input type="checkbox" id="joint" <%= 'checked' if @declaration.joint? %> disabled=true>
+  <label for="joint" class='d-inline'>Joint Injury / Dislocation</label>
+</div>
+<div>
+  <input type="checkbox" id="ligament" <%= 'checked' if @declaration.ligament? %> disabled=true>
+  <label for="ligament" class='d-inline'>Ligament Tear</label>
+</div>
+<div>
+  <input type="checkbox" id="muscle" <%= 'checked' if @declaration.muscle? %> disabled=true>
+  <label for="muscle" class='d-inline'>Acute Muscle Strain</label>
+</div>
+<div>
+  <input type="checkbox" id="tendon" <%= 'checked' if @declaration.tendon? %> disabled=true>
+  <label for="tendon" class='d-inline'>Tendon Injury</label>
+</div>
+<div>
+  <input type="checkbox" id="skeletal" <%= 'checked' if @declaration.skeletal? %> disabled=true>
+  <label for="skeletal" class='d-inline'>Skeletal Malformation</label>
+</div>
+<div>
+  <input type="checkbox" id="osteoarthritis" <%= 'checked' if @declaration.osteoarthritis? %> disabled=true>
+  <label for="osteoarthritis" class='d-inline'>Osteoarthritis</label>
+</div>
+<div>
+  <input type="checkbox" id="prolapse" <%= 'checked' if @declaration.prolapse? %> disabled=true>
+  <label for="prolapse" class='d-inline'>Pelvic Organ Prolapse</label>
+</div>
+<div>
+  <input type="checkbox" id="hernia" <%= 'checked' if @declaration.hernia? %> disabled=true>
+  <label for="hernia" class='d-inline'>Hernia / Rupture</label>
+</div>
+<div>
+  <input type="checkbox" id="postnatal" <%= 'checked' if @declaration.postnatal? %> disabled=true>
+  <label for="postnatal" class='d-inline'>Postnatal Injury</label>
+</div>
+<hr>

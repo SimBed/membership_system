@@ -44,15 +44,17 @@ class Admin::ClientsController < Admin::BaseController
     @link_from = params[:link_from]
     @cancel_button = true if @link_from == 'clients_index'
     prepare_data_for_view
-    set_show_dropdown_items
+    # set_show_dropdown_items
   end
 
   def new
     @client = Client.new
+    prepare_items_for_dropdowns
     @form_cancel_link = clients_path
   end
 
   def edit
+    prepare_items_for_dropdowns
     @form_cancel_link = params[:link_from] == 'purchases_index' ? client_path(@client, link_from: 'purchases_index') : clients_path
   end
 
@@ -62,6 +64,7 @@ class Admin::ClientsController < Admin::BaseController
       redirect_to clients_path
       flash_message :success, t('.success', name: @client.name)
     else
+      prepare_items_for_dropdowns
       render :new, status: :unprocessable_entity
     end
   end
@@ -85,6 +88,7 @@ class Admin::ClientsController < Admin::BaseController
         flash_message :success, t('.success', name: @client.name)
       end
     else
+      prepare_items_for_dropdowns
       @form_cancel_link = params[:client][:link_from] == 'purchases_index' ? client_path(@client, link_from: 'purchases_index') : clients_path
       render :edit, status: :unprocessable_entity
     end
@@ -115,6 +119,10 @@ class Admin::ClientsController < Admin::BaseController
     @client = Client.find(params[:id])
   end
 
+  def prepare_items_for_dropdowns
+    @gender_options = Rails.application.config_for(:constants)['genders']    
+  end
+
   def set_raw_numbers
     @client.phone_country_code = @client.country_code
     @client.whatsapp_country_code = @client.country(:whatsapp)
@@ -130,7 +138,7 @@ class Admin::ClientsController < Admin::BaseController
     return { whatsapp_group: params[:whatsapp_group] } if params[:whatsapp_group].present?
 
     # modifier_is_client is necessary so validation of Client model can vary from admin to client (ie new signups through the web must provide more robust data)
-    params.require(:client).permit(:first_name, :last_name, :email, :whatsapp_country_code, :whatsapp_raw, :phone_raw, :instagram, :hotlead, :student, :friends_and_family,
+    params.require(:client).permit(:first_name, :last_name, :email, :dob, :gender, :whatsapp_country_code, :whatsapp_raw, :phone_raw, :instagram, :hotlead, :student, :friends_and_family,
                                    :note)
           .merge(phone_country_code: 'IN')
           .merge(modifier_is_client: false)
@@ -203,9 +211,10 @@ class Admin::ClientsController < Admin::BaseController
     }
   end
 
-  def set_show_dropdown_items
-    @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id] }
-  end
+  # def set_show_dropdown_items
+  #   @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id] }
+  # end
+
   # def layout_set
   #   if logged_in_as?('admin')
   #     self.class.layout 'admin'

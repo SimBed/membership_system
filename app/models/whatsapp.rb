@@ -60,8 +60,9 @@ class Whatsapp
   def post_send_whatsapp_flash
     return [nil] unless @apply_flash
     # TODO: clean, method new_purchase to new_purchase_by_client. if triggered by client ...[:success, I18n.t(:message_sent)]
-    return [:success, I18n.t(:new_purchase_by_client)] if @message_type == 'new_purchase' && @triggered_by == 'client' && @receiver.waiver
-    return [:success, I18n.t(:new_purchase_by_new_client)] if @message_type == 'new_purchase' && @triggered_by == 'client'
+    return [:success, I18n.t(:new_purchase_by_client)] if @message_type == 'new_purchase' && @triggered_by == 'client'
+    # return [:success, I18n.t(:new_purchase_by_client)] if @message_type == 'new_purchase' && @triggered_by == 'client' && @receiver.declaration
+    # return [:success, I18n.t(:new_purchase_by_new_client)] if @message_type == 'new_purchase' && @triggered_by == 'client'
 
     return [:success, I18n.t(:new_signup, name: @receiver.first_name)] if @message_type == 'new_signup'
 

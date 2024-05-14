@@ -1,0 +1,43 @@
+<h5 class='text-uppercase text-center mt-4'>agreement to policy and acceptance of risk</h5>
+<div class="field my-2 border border-5 border-danger">
+  <%= render 'public_pages/home/terms' %>
+  <%= declaration_fields.label :terms_and_conditions, class: "d-inline" do %>
+    <%= declaration_fields.check_box :terms_and_conditions, required: true, data: {"signup-target": "terms", "action": "signup#toggle_submit"} %>
+    I agree to the Space's Terms & Conditions
+  <% end %>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#termsModal"} %>
+</div>
+<div class="field my-2 border border-5 border-danger">
+  <%= render 'public_pages/home/payment_policy' %>
+  <%= declaration_fields.label :payment_policy, class: "d-inline" do %>
+    <%= declaration_fields.check_box :payment_policy, required: true, data: {"signup-target": "paymentPolicy", "action": "signup#toggle_submit"} %>
+    I agree to the Space's Payment Policy
+  <% end %>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#paymentModal"} %>
+</div>
+<div class="field my-2 border border-5 border-danger">
+  <%= render 'public_pages/home/privacy_policy' %>
+  <%= declaration_fields.label :privacy_policy, class: "d-inline" do %>
+    <%= declaration_fields.check_box :privacy_policy, required: true, data: {"signup-target": "privacyPolicy", "action": "signup#toggle_submit"} %>
+    I agree to the Space's Privacy Policy
+  <% end %>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#privacyModal"} %>
+</div>
+<div class="field my-2 border border-5 border-danger">
+  <%= render 'public_pages/home/indemnity_modal' %>
+  <%= declaration_fields.label :indemnity, class: "d-inline" do %>
+    <%= declaration_fields.check_box :indemnity, required: false, data: {"signup-target": "indemnity", "action": "signup#toggle_submit"} %>
+    I acknowledge that I have carefully read this linked document and fully understand that it represents a release of liability, an express assumption of risk and agreement to indemnity.
+  <% end %>
+  <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#indemnityModal"} %>
+</div>
+<hr>
+
+<!--div class="field my-2">
+  <%#= declaration_fields.label :terms_of_service do %>
+    <%#= declaration_fields.check_box :terms_of_service, data: {"signup-target": "termsOfService", "action": "signup#toggle_submit"} %>
+    <%#= "I agree to the Space's #{link_to 'Terms & Conditions', terms_and_conditions_path, class: "fw-bolder text-decoration-underline"} &
+                                                  #{link_to 'Payment Policy', '/payment_policy', class: "fw-bolder text-decoration-underline"} &
+                                                  #{link_to 'Privacy Policy', '/privacy_policy', class: "fw-bolder text-decoration-underline"}".html_safe%>
+  <%# end %>
+</div-->

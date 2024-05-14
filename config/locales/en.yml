@@ -280,13 +280,11 @@ en:
         success: Strength Marker was successfully updated
       destroy:
         success: Strength Marker was successfully deleted
-    waivers:
-      create:
-        success: Waiver was successfully added
+    declarations:
       update:
-        success: Waiver was successfully updated
+        success: Declaration was successfully made
   forbidden: Forbidden
   new_purchase_by_client: Thank you for your purchase. You can see details of your purchase on this page. Go to the Book page to book your classes
-  new_purchase_by_new_client: Thank you for your purchase. Please complete the health declaration before booking your first class
+  # new_purchase_by_new_client: Thank you for your purchase. Please complete the health declaration before booking your first class
   new_signup: "Welcome to The Space %{name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."
   message_sent: "%{message_type} message sent by Whatsapp to %{to_number}"

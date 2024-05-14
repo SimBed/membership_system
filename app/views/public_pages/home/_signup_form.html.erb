@@ -1,71 +1,29 @@
-<%= form_with(scope: :client, url: signup_path, class: "px-1" ) do |form| %>
-  <% if @client.errors.any? || @account.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@client.errors.count + @account.errors.count, "error") %> prohibited this account from being created:</h2>
-      <ul>
-        <% @account.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-      <ul>
-        <% @client.errors.each do |error| %>
-          <li><%= (error.attribute.to_s.include? 'raw') ? error.message : error.full_message %></li>
-        <% end %>
-      </ul>
+<div data-controller="signup"                 
+     data-signup-disabled-class="disabled"> 
+  <%= form_with(model: client, url: signup_path, class: "signup" ) do |form| %>
+    <% if @client.errors.any? || @account.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@client.errors.count + @account.errors.count, "error") %> prohibited this account from being created:</h2>
+        <ul>
+          <% @account.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+        <ul>
+          <% @client.errors.each do |error| %>
+            <li><%= (error.attribute.to_s.include? 'raw') ? error.message : error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <hr>
+    <%= render partial: 'shared/declarations/signup_form/personal_details', locals: {form: form} %>
+    <hr>
+    <%= render partial: 'shared/declarations/signup_form/declaration_details', locals: {form: form} %>
+    <div class="actions">
+      <%= form.submit 'Create Account',
+                      class: "btn btn-black disabled",
+                      data: { "signup-target": "submitButton", turbo: false } %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :first_name, class: "text-uppercase fw-bolder form-mandatory" %>
-    <%= form.text_field :first_name, class: 'form-control' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :last_name, class: "text-uppercase fw-bolder form-mandatory" %>
-    <%= form.text_field :last_name, class: 'form-control' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email, class: "text-uppercase fw-bolder form-mandatory" %>
-    <%= form.text_field :email, class: 'form-control' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :whatsapp_raw, 'Whatsapp', class: "text-uppercase fw-bolder form-mandatory" %>
-    <span class="sub-label">(you will be sent your account password on this number. Only used for important updates on your account, never spam)</span>  
-    <div class="d-flex field">
-      <%= form.country_select(:whatsapp_country_code, {priority_countries: ["IN", "US", "GB"], sort_provided: false, format: :with_data_attrs}, {class: ' me-2'} ) %>
-      <%= form.text_field :whatsapp_raw, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="field">
-    <%= form.label :phone_raw, 'Phone', class: "fw-bolder text-uppercase" %>
-    <span class="sub-label">helpful if you have a different number for calls than for whatsapp (Indian only)</span>
-    <div class="d-flex field">    
-      <%= form.country_select(:phone_country_code, {selected: "IN", format: :with_data_attrs}, {class: ' me-2', disabled: true} ) %>    
-      <%= form.text_field :phone_raw, class: 'form-control' %>
-    </div>    
-  </div>
-
-  <div class="field">
-    <%= form.label :instagram, class: "fw-bolder text-uppercase" %>
-    <span class="sub-label">if you are ok with the occasional #hashtag</span>    
-    <%= form.text_field :instagram, class: 'form-control' %>
-  </div>
-
-  <div class="field my-2">
-      <%= form.label :terms_of_service do %>
-    <%= form.check_box :terms_of_service %>
-    <%= "I agree to the Space's #{link_to 'Terms & Conditions', terms_and_conditions_path, class: "fw-bolder text-decoration-underline"} &
-                                                    #{link_to 'Payment Policy', '/payment_policy', class: "fw-bolder text-decoration-underline"} &
-                                                    #{link_to 'Privacy Policy', '/privacy_policy', class: "fw-bolder text-decoration-underline"}".html_safe%>
-    <% end %>
-
-  </div>
-
-  <div class="actions">
-    <%= form.submit 'Create Account', class: "btn btn-black" %>
-  </div>
-<% end %>
-
+</div>

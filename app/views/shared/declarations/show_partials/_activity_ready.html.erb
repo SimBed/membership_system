@@ -1,0 +1,29 @@
+<h5 class='text-uppercase'>physical activity readiness</h5>
+<p>These questions aim to identify people for whom it may not be safe to exercise without professional medical advice.<p>
+<p>Tick those that apply to you. If any of these apply to you, you must seek your Doctor's advice and obtain your Doctor's clearance BEFORE participating in any physical activity at The Space.</p>
+<div>
+  <input type="checkbox" id="heart_trouble" <%= 'checked' if @declaration.heart_trouble? %> disabled=true>
+  <label for="heart_trouble" class='d-inline'>Has your doctor ever said you have heart trouble?</label>
+</div>
+<div>
+  <input type="checkbox" id="chest_pain_activity" <%= 'checked' if @declaration.chest_pain_activity? %> disabled=true>
+  <label for="chest_pain_activity" class='d-inline'>Do you feel pain in your chest when you do physical activity?</label>
+</div>
+<div>
+  <input type="checkbox" id="chest_pain_no_activity" <%= 'checked' if @declaration.chest_pain_no_activity? %> disabled=true>
+  <label for="chest_pain_no_activity" class='d-inline'>In the past month, have you had chest pain when you are not performing any physical activity?</label>
+</div>
+<div>
+  <input type="checkbox" id="dizziness" <%= 'checked' if @declaration.dizziness? %> disabled=true>
+  <label for="dizziness" class='d-inline'>Do you lose your balance because of dizziness or do you ever lose consciousness?</label>
+</div>
+<div>
+  <input type="checkbox" id="drugs" <%= 'checked' if @declaration.drugs? %> disabled=true>
+  <label for="drugs" class='d-inline'>Is your doctor currently prescribing drugs for your blood pressure or heart condition?</label>
+</div>
+<p class='text-uppercase fw-bolder my-3'>Please seek your Doctor's advice and obtain your Doctor's clearance BEFORE participating in any physical activity at The Space.</p>
+<div>
+  <input type="checkbox" id="doctors_permit" <%= 'checked' if @declaration.doctors_permit? %> disabled=true>
+  <label for="doctors_permit" class='d-inline'>Do you have your doctor’s clearance to participate in physical activities?</label>
+</div>
+<hr>

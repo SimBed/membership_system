@@ -1,0 +1,25 @@
+<h6 class='text-uppercase'>injury & medication</h6>
+<div class="field">
+  <%= declaration_fields.label :injury do %>
+    <%= declaration_fields.check_box :injury, data: {"signup-target":"injury healthIssue", "action": "signup#toggle_injury_note signup#toggle_no_health_issues"} %>
+    Have you had any injuries/operations within the last 2 years that may be affected by exercise?
+  <% end %>
+</div>
+
+<div class="field" id='dan' data-signup-target="injuryNote" hidden %>
+  <%= declaration_fields.label :injury_note, 'Details of injury/operation' %>
+  <%= declaration_fields.text_area :injury_note, cols: 40, rows: 5, class: 'form-control' %>
+</div>
+
+<div class="field">
+  <%= declaration_fields.label :medication do %>
+    <%= declaration_fields.check_box :medication, data: {"signup-target":"medication healthIssue", "action": "signup#toggle_medication_note signup#toggle_no_health_issues"} %>
+    Are you currently taking any medication that may affect you when you exercise?
+  <% end %>
+</div>
+
+<div class="field" data-signup-target="medicationNote" hidden %>
+  <%= declaration_fields.label :medication_note, 'Details of medication' %>
+  <%= declaration_fields.text_area :medication_note, cols: 40, rows: 5, class: 'form-control' %>
+</div>
+<hr>

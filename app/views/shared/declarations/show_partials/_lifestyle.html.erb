@@ -1,0 +1,26 @@
+<h6 class='text-uppercase'>lifestyle</h6>
+<div>
+  <input type="checkbox" id="fertility" <%= 'checked' if @declaration.fertility? %> disabled=true>
+  <label for="fertility" class='d-inline'>Undergoing fertility treatment</label>
+</div>
+<div>
+  <input type="checkbox" id="pregnant" <%= 'checked' if @declaration.pregnant? %> disabled=true>
+  <label for="pregnant" class='d-inline'>Pregnant</label>
+</div>
+<div>
+  <input type="checkbox" id="birth" <%= 'checked' if @declaration.birth? %> disabled=true>
+  <label for="birth" class='d-inline'>Given birth in the past year</label>
+</div>
+<div>
+  <input type="checkbox" id="smoker" <%= 'checked' if @declaration.smoker? %> disabled=true>
+  <label for="smoker" class='d-inline'>Smoker</label>
+</div>
+<div>
+  <input type="checkbox" id="alcohol" <%= 'checked' if @declaration.alcohol? %> disabled=true>
+  <label for="alcohol" class='d-inline'>Heavy, frequent alcohol consumption</label>
+</div>
+<div>
+  <input type="checkbox" id="drug" <%= 'checked' if @declaration.drug? %> disabled=true>
+  <label for="drug" class='d-inline'>Heavy, frequent, recreational drug consumption</label>
+</div>
+<hr>

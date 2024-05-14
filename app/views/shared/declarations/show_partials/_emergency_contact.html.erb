@@ -1,0 +1,19 @@
+<h6 class='text-uppercase'>emergency contact</h6>
+<div>
+  <label for="contact_first_name" class=''>First name</label>
+  <input type="text" id="contact_first_name" disabled=true value=<%=@declaration.contact_first_name%> >
+</div>    
+<div>
+  <label for="contact_last_name" class=''>Last name</label>
+  <input type="text" id="contact_last_name" disabled=true value=<%=@declaration.contact_last_name%>>
+</div>    
+<div>
+  <label for="contact_relationship" class=''>Relationship</label>
+  <input type="text" id="contact_relationship" disabled=true value=<%=@declaration.contact_relationship%>>
+</div>    
+<div>
+  <label for="contact_phone" class=''>Phone</label>
+  <select disabled=true><option>+91</option></select>
+  <input type="tel" id="contact_phone" disabled=true value=<%=@declaration.contact_phone%>>
+</div>
+<hr>
