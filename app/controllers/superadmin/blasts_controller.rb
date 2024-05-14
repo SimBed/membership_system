@@ -32,7 +32,8 @@ class Superadmin::BlastsController < Superadmin::BaseController
 
   def test
     recipient = Rails.env.development? ? 'me' : 'boss'
-    Blast.new(receiver: recipient, message: session[:template_message]).send_whatsapp
+    recipient_name = session[:greeting] == '1' ? 'blast tester' : nil
+    Blast.new(receiver: recipient, message: template_message(session[:message], recipient_name)).send_whatsapp
     redirect_to blast_path
   end
 
@@ -44,13 +45,14 @@ class Superadmin::BlastsController < Superadmin::BaseController
       flash[:warning] = t('.warning', max_recipient_blast_limit:)
       redirect_to blast_path and return
     end
-    # recipients = Client.where(whatsapp:'+4479405734').limit(2)
     passes = 0
     errors = 0
     add_greeting = session[:greeting] == '1' ? true : false 
     @recipients.each do |recipient|
-      client_message = add_greeting ? "Hi #{recipient.first_name}\n" + session[:message] : session[:message]
-      Blast.new(receiver: recipient, message: client_message).send_whatsapp
+      recipient_name = add_greeting ? recipient.first_name : nil
+      Blast.new(receiver: recipient, message: template_message(session[:message], recipient_name)).send_whatsapp
+      # client_message = add_greeting ? "Hi #{recipient.first_name}\n" + session[:message] : session[:message]
+      # Blast.new(receiver: recipient, message: client_message).send_whatsapp
       passes += 1
     rescue
       next
@@ -75,6 +77,12 @@ class Superadmin::BlastsController < Superadmin::BaseController
 
 
   private
+
+    def template_message(message_body, recipient_name)
+      return "Hi #{recipient_name}\n" + session[:message] if recipient_name
+
+      message_body
+    end
 
     def client_ids_remove
       session[:client_ids_remove] ||= []
