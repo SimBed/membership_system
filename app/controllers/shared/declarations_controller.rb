@@ -3,9 +3,9 @@ class Shared::DeclarationsController < Shared::BaseController
   before_action :set_client, except: :index
   before_action :correct_account, only: [:new, :update] 
   before_action :already_declared, only: [:new, :update] 
-  before_action :correct_account_or_admin_or_instructor_account, only: :show
+  before_action :correct_account_or_junioradmin_or_instructor_account, only: :show
   before_action :set_declaration, only: [:show, :update] 
-  before_action :admin_or_instructor_account, only: :index
+  before_action :junioradmin_or_instructor_account, only: :index
 
   def index
     @declarations = Declaration.order_by_date
@@ -47,8 +47,8 @@ class Shared::DeclarationsController < Shared::BaseController
     redirect_to login_path
   end
 
-  def correct_account_or_admin_or_instructor_account
-    return if logged_in_as?('admin', 'superadmin', 'instructor')
+  def correct_account_or_junioradmin_or_instructor_account
+    return if logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
 
     return if current_account?(@client&.account)
 
