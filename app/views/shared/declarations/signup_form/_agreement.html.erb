@@ -1,6 +1,6 @@
 <h5 class='text-uppercase text-center mt-4'>agreement to policy and acceptance of risk</h5>
 <div class="field my-2 border border-5 border-danger">
-  <%= render 'public_pages/home/terms' %>
+  <%= render 'public_pages/home/terms_modal' %>
   <%= declaration_fields.label :terms_and_conditions, class: "d-inline" do %>
     <%= declaration_fields.check_box :terms_and_conditions, required: true, data: {"signup-target": "terms", "action": "signup#toggle_submit"} %>
     I agree to the Space's Terms & Conditions
@@ -8,7 +8,7 @@
   <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#termsModal"} %>
 </div>
 <div class="field my-2 border border-5 border-danger">
-  <%= render 'public_pages/home/payment_policy' %>
+  <%= render 'public_pages/home/payment_policy_modal' %>
   <%= declaration_fields.label :payment_policy, class: "d-inline" do %>
     <%= declaration_fields.check_box :payment_policy, required: true, data: {"signup-target": "paymentPolicy", "action": "signup#toggle_submit"} %>
     I agree to the Space's Payment Policy
@@ -16,7 +16,7 @@
   <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#paymentModal"} %>
 </div>
 <div class="field my-2 border border-5 border-danger">
-  <%= render 'public_pages/home/privacy_policy' %>
+  <%= render 'public_pages/home/privacy_policy_modal' %>
   <%= declaration_fields.label :privacy_policy, class: "d-inline" do %>
     <%= declaration_fields.check_box :privacy_policy, required: true, data: {"signup-target": "privacyPolicy", "action": "signup#toggle_submit"} %>
     I agree to the Space's Privacy Policy

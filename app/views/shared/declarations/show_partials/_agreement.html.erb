@@ -1,18 +1,18 @@
 <h5 class='text-uppercase mt-4'>agreement to policy and acceptance of risk</h5>
 <div>
-  <%= render 'public_pages/home/terms' %>
+  <%= render 'public_pages/home/terms_modal' %>
   <input type="checkbox" id="terms_and_conditions" <%= 'checked' if @declaration.terms_and_conditions? %> disabled=true>
   <label for="terms_and_conditions" class='d-inline'>I agree to the Space's Terms & Conditions</label>
   <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#termsModal"} %>
 </div>
 <div>
-  <%= render 'public_pages/home/payment_policy' %>
+  <%= render 'public_pages/home/payment_policy_modal' %>
   <input type="checkbox" id="payment_policy" <%= 'checked' if @declaration.payment_policy? %> disabled=true>
   <label for="payment_policy" class='d-inline'>I agree to the Space's Payment Policy</label>
   <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#paymentModal"} %>
 </div>
 <div>
-  <%= render 'public_pages/home/privacy_policy' %>
+  <%= render 'public_pages/home/privacy_policy_modal' %>
   <input type="checkbox" id="privacy_policy" <%= 'checked' if @declaration.privacy_policy? %> disabled=true>
   <label for="privacy_policy" class='d-inline'>I agree to the Space's Privacy Policy</label>
   <%= image_tag 'view.png', class: 'table_icon', data: {"bs-toggle":"modal", "bs-target":"#privacyModal"} %>
