@@ -16,6 +16,12 @@
         <Cell><Data ss:Type="String">Payment Made</Data></Cell>
         <Cell><Data ss:Type="String">Discount</Data></Cell>
         <Cell><Data ss:Type="String">Note</Data></Cell>
+        <Cell><Data ss:Type="String">Product</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+        <Cell><Data ss:Type="String">Start Date</Data></Cell>
+        <Cell><Data ss:Type="String">Expiry Date</Data></Cell>
+        <Cell><Data ss:Type="String">Sunset Date</Data></Cell>
+        <Cell><Data ss:Type="String">Frozen</Data></Cell>
       </Row>
     <% @purchases.each do |purchase| %>
       <Row>
@@ -27,6 +33,12 @@
         <Cell><Data ss:Type="String"><%= purchase.charge %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.price.price - purchase.charge %></Data></Cell>
         <Cell><Data ss:Type="String"><%= purchase.note %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.product.name(verbose: false, color_show: true, rider_show: true) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.status %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.start_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.expiry_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.sunset_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= purchase.freezed?(Time.zone.now) %></Data></Cell>
       </Row>
     <% end %>
     </Table>
