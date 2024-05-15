@@ -14,7 +14,7 @@
 
 <div class="field">
   <%= form.label :dob, 'Date of birth', class: "fw-bolder text-uppercase form-mandatory" %>
-  <%= form.date_field :dob, {default: "1980-01-01", min: "1940-01-01", max: Time.zone.today.advance(years: -18), data: {"signup-target": "dob", "action": "signup#dob_change"}} %>
+  <%= form.date_field :dob, {value: @client.dob || "1980-01-01", min: "1940-01-01", max: Time.zone.today.advance(years: -18), data: {"signup-target": "dob", "action": "signup#dob_change"}} %>
 </div>
 
 <div class="field">
