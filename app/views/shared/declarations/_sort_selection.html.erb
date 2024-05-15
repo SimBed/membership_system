@@ -1,0 +1,11 @@
+<form action="/declarations" method="GET">
+  <div class="mt-0">
+    <i class="fas fa-sort-alpha-down"></i>
+    <select class="form-control-sm mb-2 sort" name="declaration_sort_option" onchange="this.form.requestSubmit()">
+      <option disabled="disabled" selected="selected" value="">Sort by</option>
+      <option value="first_name" <%="selected" if session[:declaration_sort_option] == "first_name"%> >first name</option>
+      <option value="last_name" <%="selected" if session[:declaration_sort_option] == "last_name"%> >last name</option>
+      <option value="submitted" <%="selected" if session[:declaration_sort_option] == "submitted"%> >date submitted</option>
+    </select>
+  </div>
+</form>

@@ -1,14 +1,20 @@
 class Shared::DeclarationsController < Shared::BaseController
   skip_before_action :admin_or_instructor_account
-  before_action :set_client, except: :index
+  before_action :set_client, only: [:new, :update, :show] 
   before_action :correct_account, only: [:new, :update] 
   before_action :already_declared, only: [:new, :update] 
   before_action :correct_account_or_junioradmin_or_instructor_account, only: :show
   before_action :set_declaration, only: [:show, :update] 
   before_action :junioradmin_or_instructor_account, only: :index
+  before_action :initialize_sort, only: :index
 
   def index
-    @declarations = Declaration.order_by_date
+    @declarations = Declaration.includes(:client)
+    handle_filter
+    handle_search
+    handle_sort
+    handle_pagination
+    # handle_index_response    
   end
 
   def new
@@ -29,6 +35,19 @@ class Shared::DeclarationsController < Shared::BaseController
   end  
 
   def show; end
+
+  def clear_filters
+    clear_session(:filter_has_health_issue, :search_declaration_client_name)
+    redirect_to declarations_path
+  end  
+
+  def filter
+    clear_session(:filter_has_health_issue)
+    session[:search_declaration_client_name] = params[:search_declaration_client_name] || session[:search_declaration_client_name]
+    # set_session(:has_health_issue)
+    session["filter_has_health_issue"] = params[:has_health_issue] || session["filter_has_health_issue"]
+    redirect_to declarations_path
+  end
 
   private
 
@@ -79,5 +98,33 @@ class Shared::DeclarationsController < Shared::BaseController
                                     # no anwers here particulary satisfactory https://stackoverflow.com/questions/40981206/how-to-merge-nested-attributes-in-permit-rails                                 )
                             
   end
+
+  def initialize_sort
+    session[:declaration_sort_option] = params[:declaration_sort_option] || session[:declaration_sort_option] || 'submitted'
+  end
+
+  def handle_search
+    handle_name_search
+  end
+
+  def handle_name_search
+    return if session[:search_declaration_client_name].blank?
+
+    @declarations = @declarations.name_like(session[:search_declaration_client_name])
+  end
+
+  def handle_filter
+    %w[has_health_issue].each do |key|
+      @declarations = @declarations.send(key) if session["filter_#{key}"].present?
+    end
+  end
+
+  def handle_sort
+    @declarations = @declarations.send("order_by_#{session[:declaration_sort_option]}")
+  end
+
+  def handle_pagination
+      @pagy, @declarations = pagy(@declarations, items: 100)
+  end  
 
 end

@@ -144,8 +144,13 @@ Rails.application.routes.draw do
       # we cannot edit or destroy declarations through the UI
       resource :declaration, only: [:new, :show, :update]
     end
-    resources :declarations, only: [:index] # we want an index of all declarations (not an index of each clients declarations)  
-  end
+    resources :declarations, only: [:index] do # we want an index of all declarations (not an index of each clients declarations)  
+      collection do
+        get 'filter'
+        get 'clear_filters'        
+      end
+    end
+    end
 
   scope module: :public_pages do
     root 'home#welcome'

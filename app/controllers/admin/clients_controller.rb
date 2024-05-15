@@ -146,7 +146,7 @@ class Admin::ClientsController < Admin::BaseController
 
   def initialize_sort
     session[:client_sort_option] = params[:client_sort_option] || session[:client_sort_option] || 'first_name'
-    session[:client_sort_option] = params[:client_sort_option] || session[:client_sort_option] || 'first_name'
+    # session[:client_sort_option] = params[:client_sort_option] || session[:client_sort_option] || 'first_name'
   end
 
   def handle_search
