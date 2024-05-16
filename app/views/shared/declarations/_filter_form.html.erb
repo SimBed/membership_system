@@ -2,7 +2,7 @@
   <div class="container search">
     <%= render partial: 'sort_selection' %>
     <hr class = "search mb-3"></hr>
-    <%= form_with(url: filter_declarations_path, method: "get", class: "form-class") do %>
+    <%= form_with(url: filter_declarations_path, method: "get", class: "form-class", data: {turbo_frame: "declarations"}) do %>
       <div class="field">
         <%= text_field_tag :search_declaration_client_name, nil, class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:search_declaration_client_name], oninput: "this.form.requestSubmit()" %>
       </div>

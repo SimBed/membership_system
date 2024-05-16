@@ -7,6 +7,7 @@ class Shared::DeclarationsController < Shared::BaseController
   before_action :set_declaration, only: [:show, :update] 
   before_action :junioradmin_or_instructor_account, only: :index
   before_action :initialize_sort, only: :index
+  before_action :set_admin_status, only: :index
 
   def index
     @declarations = Declaration.includes(:client)
@@ -34,7 +35,9 @@ class Shared::DeclarationsController < Shared::BaseController
     end
   end  
 
-  def show; end
+  def show
+    @cancel_button = true unless logged_in_as?('client')
+  end
 
   def clear_filters
     clear_session(:filter_has_health_issue, :search_declaration_client_name)

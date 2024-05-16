@@ -1,3 +1,4 @@
+<%= turbo_frame_tag dom_id(@declaration) do %>
   <div class="container my-2">
     <div class="admin_form">
       <% if @client.declaration%>
@@ -22,9 +23,13 @@
         <p>not yet declared</p>
       <% end %>        
     <div>
+    <% if @cancel_button %>
+      <div class="cancel">
+        <%= link_to image_tag('delete.png', class: "table_icon"), declarations_path %>
+      </div>
+    <% end %>
   <div>
-
-  That I shall inform the Studio in case of any change in the same from at the time of signing this Form and shall obtain a fresh clearance from my doctor.
+<% end %>
 
 
 

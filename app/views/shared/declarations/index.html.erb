@@ -1,5 +1,9 @@
 <div class="container px-1 mb-1">
   <h4>Declarations</h4>
-    <%= render partial: 'filter_form' %>
 </div>
-<%= render partial: 'declarations_table' %>
+<%= turbo_frame_tag 'declarations-and-filter' do %>
+  <%= render partial: 'filter_form' %>
+  <%= turbo_frame_tag 'declarations' do %>  
+    <%= render partial: 'declarations_table' %>
+  <% end %>
+<% end %>

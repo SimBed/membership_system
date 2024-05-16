@@ -104,6 +104,13 @@ class ApplicationController < ActionController::Base
     redirect_to partner_path(@account.partner) if logged_in_as?('partner')
   end
 
+  def set_admin_status
+    @superadmin = logged_in_as?('superadmin')
+    @admin_plus = logged_in_as?('admin', 'superadmin')
+    @junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin')
+    @junioradmin = logged_in_as?('junioradmin')
+  end
+
   def expiry_earlier?(current_expiry_date, orig_expiry_date)
     return false if current_expiry_date.nil? || orig_expiry_date.nil?
 

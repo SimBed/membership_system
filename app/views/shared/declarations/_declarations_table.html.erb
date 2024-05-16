@@ -1,5 +1,15 @@
 <div id="declarations-table" class="container px-0 mb-5">
-  <div class="admin-table mt-2">
+  <div class="page_entries_info px-1">
+    <% if @admin_plus %>
+      <div class="record-count mb-1">
+        <%= "showing #{@declarations&.length} of #{@declarations&.count}" %>
+      </div>
+    <% end %>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>    
+  </div>
+  <div class="admin-table mt-3">
     <div class="row fw-bolder">
       <div class="column col-1x">Client</div>
       <div class="column col-1x">Date</div>        
