@@ -58,7 +58,7 @@ class WkclassTest < ActiveSupport::TestCase
   test 'booked_for' do
     assert_empty Wkclass.booked_for(@client).pluck(:id)
     Attendance.create(wkclass_id: @tomorrows_class_early.id,
-                      purchase_id: @client.purchases.last.id,
+                      purchase_id: @client.purchases.first.id,
                       status: 'booked')
 
     assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).pluck(:id)
@@ -69,10 +69,9 @@ class WkclassTest < ActiveSupport::TestCase
 
   test 'chaining of booked_for and show_in_bookings_for' do # these are chained to display my_bookings to client
     Attendance.create(wkclass_id: @tomorrows_class_early.id,
-                      purchase_id: @client.purchases.last.id,
+                      purchase_id: @client.purchases.first.id,
                       status: 'booked')
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
-
     assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)
     # check a different client making a booking doesn't have any impact
     assert_difference 'Attendance.count', 1 do

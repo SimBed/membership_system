@@ -7,13 +7,13 @@ class Shared::DeclarationsControllerTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @instructor = instructors(:amit)
+    @instructor_account = accounts(:head_coach)
     @client = clients(:client_ekta_unlimited)
     @client1 = @account_client1.client
   end
 
   test 'should redirect new when not logged in as correct client' do
-    [nil, @instructor,  @superadmin, @account_client2].each do |account_holder|
+    [nil, @instructor, @superadmin, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       get new_client_declaration_path(@client1)
 
@@ -22,7 +22,7 @@ class Shared::DeclarationsControllerTest < ActionDispatch::IntegrationTest
   end  
 
   test 'should redirect update when not logged in as correct client' do
-    [nil, @instructor,  @superadmin, @account_client2].each do |account_holder|
+    [nil, @instructor_account, @superadmin, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       patch client_declaration_path(@client1), params:
         { client:

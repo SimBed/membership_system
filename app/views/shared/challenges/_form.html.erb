@@ -2,7 +2,6 @@
   <% if challenge.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(challenge.errors.count, "error") %> prohibited this challenge from being saved:</h2>
-
       <ul>
         <% challenge.errors.each do |error| %>
           <li><%= error.full_message %></li>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_27_064703) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_16_101157) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -122,6 +122,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_27_064703) do
     t.index ["friends_and_family"], name: "index_clients_on_friends_and_family"
     t.index ["gender"], name: "index_clients_on_gender"
     t.index ["student"], name: "index_clients_on_student"
+  end
+
+  create_table "declaration_updates", force: :cascade do |t|
+    t.date "date"
+    t.text "note"
+    t.bigint "declaration_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_declaration_updates_on_date"
+    t.index ["declaration_id"], name: "index_declaration_updates_on_declaration_id"
   end
 
   create_table "declarations", force: :cascade do |t|
@@ -614,6 +624,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_27_064703) do
   add_foreign_key "assignments", "roles"
   add_foreign_key "body_markers", "clients"
   add_foreign_key "challenges", "challenges"
+  add_foreign_key "declaration_updates", "declarations"
   add_foreign_key "declarations", "clients"
   add_foreign_key "discount_assignments", "discounts"
   add_foreign_key "discount_assignments", "purchases"

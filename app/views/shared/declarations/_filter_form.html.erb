@@ -12,7 +12,7 @@
             <fieldset>
               <legend>ATTRIBUTE</legend>
               <%= label_tag nil, class: "chbox-lbl-filters" do %>
-                <%= check_box_tag 'has_health_issue', 'has_health_issue', session[:filter_has_health_issue].present? ? true : false, class: "checkbox-class", id: "chbox_has_health_issue", onchange: "this.form.requestSubmit()" %>
+                <%= check_box_tag 'initial_health_issue', 'initial_health_issue', session[:filter_initial_health_issue].present? ? true : false, class: "checkbox-class", id: "chbox_initial_health_issue", onchange: "this.form.requestSubmit()" %>
                 <%= 'has health issue' %>
               <% end %>
             </fieldset>

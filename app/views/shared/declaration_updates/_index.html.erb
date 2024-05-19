@@ -1,0 +1,5 @@
+<div class="mt-4">
+  <%= turbo_frame_tag "declaration_#{@declaration.id}_updates" do %>
+    <%= render @declaration_updates %>
+  <% end %>
+</div>

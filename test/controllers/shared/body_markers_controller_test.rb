@@ -9,6 +9,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
     @client = clients(:client_ekta_unlimited)
+    @client1 = @account_client1.client
     @bodymarker_for_client1 = body_markers(:one)
   end
 
@@ -48,7 +49,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
              { bodypart: 'Neck',
                measurement: 22,
                date: '2024-01-15',
-               client_id: 1} }
+               client_id: @client1.id} }
       end
     end
   end

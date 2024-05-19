@@ -89,9 +89,9 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'available_for_booking method (no client)' do
-    assert_equal [purchases(:purchase_374),purchases(:AnushkaUC3Mong), purchases(:purchase_212), @purchase_with_freeze, purchases(:purchase_335), purchases(:purchase_312), @purchase_trial, @purchase_dropin2, purchases(:purchase_200),
-                  @purchase_ptrider, purchases(:purchase_99), purchases(:purchase_198), purchases(:purchase_120), purchases(:purchase_224), purchases(:purchase_360), purchases(:purchase_125), purchases(:purchase_341),
-                  purchases(:purchase_119), purchases(:purchase_90)],
+    assert_equal [purchases(:purchase_374), purchases(:AnushkaUC3Mong), purchases(:AparnaUC1Mong), purchases(:purchase_212), @purchase_with_freeze, purchases(:purchase_335), purchases(:purchase_312),
+                  @purchase_trial, @purchase_dropin2, purchases(:purchase_200), @purchase_ptrider, purchases(:purchase_99), purchases(:purchase_198), purchases(:purchase_120), purchases(:purchase_224),
+                  purchases(:purchase_360), purchases(:purchase_125), purchases(:purchase_341), purchases(:purchase_119), purchases(:purchase_90)],
                  Purchase.available_for_booking(@wkclass1)
     # assert_equal [374, 201, 212, 4, 335, 312, 368, 229, 200, 441, 99, 198, 120, 224, 360, 125, 341, 119, 90],
     #              Purchase.available_for_booking(@wkclass1).pluck(:id)

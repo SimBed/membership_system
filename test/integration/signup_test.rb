@@ -298,7 +298,7 @@ class SignupTest < ActionDispatch::IntegrationTest
 
   test 'public should not be able to create more than daily limit accounts on any one day' do
     Setting.daily_account_limit.times do |n|
-      name = Faker::Name.name
+      name = Faker::Name.unique.name
       joe_public = { first_name: name.split[0],
                      last_name: name.split[1],
                      email: "#{name.split.join}@gmail.com",
@@ -315,7 +315,7 @@ class SignupTest < ActionDispatch::IntegrationTest
       end
     end
 
-    name = Faker::Name.name
+    name = Faker::Name.unique.name
     joe_public = { first_name: name.split[0],
                    last_name: name.split[1],
                    email: "#{name.split.join}@gmail.com",

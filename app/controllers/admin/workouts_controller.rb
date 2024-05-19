@@ -27,7 +27,6 @@ class Admin::WorkoutsController < Admin::BaseController
   end
 
   def create
-    byebug
     @workout = Workout.new(workout_params)
 
     if @workout.save

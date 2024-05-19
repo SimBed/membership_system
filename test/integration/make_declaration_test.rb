@@ -2,18 +2,18 @@ require "test_helper"
 
 class MakeDeclarationTest < ActionDispatch::IntegrationTest
   setup do
-    @account_client1 = accounts(:client1)
-    @client1 = @account_client1.client
+    @account_client = accounts(:client2)
+    @client = @account_client.client
   end
 
   test 'existing client (without declaration) making declaration (full range of health issues apply)' do
 
-      log_in_as(@account_client1)
-      get new_client_declaration_path(@client1)
+      log_in_as(@account_client)
+      get new_client_declaration_path(@client)
       assert_template 'shared/declarations/new'
 
       assert_difference 'Declaration.count' do
-        patch client_declaration_path(@client1), params:
+        patch client_declaration_path(@client), params:
           { client:
            { dob: "1985-02-17",
              gender: 'female',           
@@ -33,11 +33,11 @@ class MakeDeclarationTest < ActionDispatch::IntegrationTest
               indemnity: true
              } } }
       end
-      assert_redirected_to client_book_path(@client1.id)
-      declaration = @client1.declaration
+      assert_redirected_to client_book_path(@client.id)
+      declaration = @client.declaration
 
-      assert_equal Date.parse('17 Feb 1985'), @client1.reload.dob
-      assert_equal 'female', @client1.reload.gender
+      assert_equal Date.parse('17 Feb 1985'), @client.reload.dob
+      assert_equal 'female', @client.reload.gender
       assert declaration.heart_trouble
       assert declaration.chest_pain_activity
       assert declaration.chest_pain_no_activity

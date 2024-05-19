@@ -142,12 +142,14 @@ Rails.application.routes.draw do
       # the declaration is created from a form scoped to an exisiting client, so the form defaults to a patch (update request) (with nested attributes for  the new declaration)
       # so we only have an update route, not a create route
       # we cannot edit or destroy declarations through the UI
-      resource :declaration, only: [:new, :show, :update]
+      resource :declaration, only: [:new, :show, :update] do
+        resources :declaration_updates, except: [:index] 
+      end
     end
     resources :declarations, only: [:index] do # we want an index of all declarations (not an index of each clients declarations)  
       collection do
         get 'filter'
-        get 'clear_filters'        
+        get 'clear_filters'
       end
     end
     end

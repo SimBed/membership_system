@@ -36,19 +36,21 @@ class Shared::DeclarationsController < Shared::BaseController
   end  
 
   def show
-    @cancel_button = true unless logged_in_as?('client')
+    @declaration_updates = @declaration.declaration_updates.order_by_submitted
+    @client_view = true if logged_in_as?('client')
+    @cancel_button = true unless @client_view
   end
 
   def clear_filters
-    clear_session(:filter_has_health_issue, :search_declaration_client_name)
+    clear_session(:filter_initial_health_issue, :search_declaration_client_name)
     redirect_to declarations_path
   end  
 
   def filter
-    clear_session(:filter_has_health_issue)
+    clear_session(:filter_initial_health_issue)
     session[:search_declaration_client_name] = params[:search_declaration_client_name] || session[:search_declaration_client_name]
     # set_session(:has_health_issue)
-    session["filter_has_health_issue"] = params[:has_health_issue] || session["filter_has_health_issue"]
+    session["filter_initial_health_issue"] = params[:initial_health_issue] || session["filter_initial_health_issue"]
     redirect_to declarations_path
   end
 
@@ -117,7 +119,7 @@ class Shared::DeclarationsController < Shared::BaseController
   end
 
   def handle_filter
-    %w[has_health_issue].each do |key|
+    %w[initial_health_issue].each do |key|
       @declarations = @declarations.send(key) if session["filter_#{key}"].present?
     end
   end

@@ -1,0 +1,39 @@
+<%= form_with(model: [:client_declaration, declaration_update], class: 'admin_form pt-4 my-2') do |form| %>
+  <% if declaration_update.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(declaration_update.errors.count, "error") %> prohibited this declaration update from being saved:</h2>
+      <ul>
+        <% declaration_update.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.hidden_field :declaration_id, value: @declaration.id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date, style: "display: block" %>
+    <%= form.date_field :date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :note, style: "display: block" %>
+    <%= form.text_area :note, rows: 5, class: 'form-control' %>
+  </div>
+
+  <!--div class="field">
+    <%#= form.label :notification_medium, class: "fw-bolder text-uppercase" %>
+    <%#= form.select :notification_medium, @notification_options, {}, {class: 'form-control form-select'} %>
+  </div-->  
+
+  <div class="actions">
+    <%= form.submit declaration_update.persisted? ? 'update' : 'add update' %>
+  </div>
+
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), client_declaration_path(@declaration.client) %>
+    </div>
+<% end %>

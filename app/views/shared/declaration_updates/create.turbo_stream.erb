@@ -1,0 +1,2 @@
+<%= turbo_stream.prepend "declaration_#{@declaration_update.declaration.id}_updates", @declaration_update %>
+<%= turbo_stream.update "new_declaration_update_#{@declaration_update.declaration.id}", "" %>
