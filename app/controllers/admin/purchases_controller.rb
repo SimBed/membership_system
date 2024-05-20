@@ -13,7 +13,6 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :changing_main_purchase_name?, only: :update
   # before_action :changing_rider?, only: :update
   # before_action :adjust_and_restarting?, only: :update
-  before_action :set_admin_status, only: [:index]
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
   # this approach is no good as the callback should be after a successful create not a failed create

@@ -17,21 +17,17 @@
     <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
       <ul class="navbar-nav">
       <% client = current_account.client %>
-        <%# if current_account.without_purchase? %>        
-          <li class="nav-item">
-            <%= link_to "Shop", client_shop_path(client), class: "nav-link #{active_link_for(path: client_shop_path(client))}", 'data-turbolinks': false %>
-          </li>
-        <%# end %>
+        <li class="nav-item">
+          <%= link_to "Shop", client_shop_path(client), class: "nav-link #{active_link_for(path: client_shop_path(client))}", 'data-turbolinks': false %>
+        </li>
         <li class="nav-item">
           <%= link_to "History", client_history_path(client), class: "nav-link #{active_link_for(path: client_history_path(client))}" %>
         </li>
-        <%# if Rails.env.development? && client.declaration%>        
-          <% unless current_account.without_purchase? %>
-            <li class="nav-item">
-              <%= link_to "Book", client_book_path(client), class: "nav-link #{active_link_for(path: client_book_path(client))}" %>
-            </li>
-          <% end %>
-        <%# end %>
+        <% unless current_account.without_purchase? %>
+          <li class="nav-item">
+            <%= link_to "Book", client_book_path(client), class: "nav-link #{active_link_for(path: client_book_path(client))}" %>
+          </li>
+        <% end %>
         <% if current_account.client.pt? %>
           <li class="nav-item">
             <%= link_to "PT", client_pt_path(client), class: "nav-link #{active_link_for(path: client_pt_path(client))}" %>

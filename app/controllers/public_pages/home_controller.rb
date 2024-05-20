@@ -1,6 +1,7 @@
 class PublicPages::HomeController < ApplicationController
   before_action :set_timetable, only: [:welcome, :group_classes, :space_home]
   before_action :daily_account_limit, only: [:create_account]
+  before_action :set_admin_status
   layout 'public'
 
   def welcome

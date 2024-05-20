@@ -10,17 +10,17 @@ class RoleSwitchingTest < ActionDispatch::IntegrationTest
     @role_client = roles(:client)
   end
 
-  test 'orders index accessible under superadmin role but not under admin role; clients index accessible under superadmin role and admin role but not under client role' do
+  test 'payments index accessible under superadmin role but not under admin role; clients index accessible under superadmin role and admin role but not under client role' do
     log_in_as(@superadmin)
     get clients_path
 
     assert_template 'admin/clients/index'
-    assert_select 'a[href=?]', orders_path
+    assert_select 'a[href=?]', payments_path
     switch_role_to('admin')
     get clients_path
 
     assert_template 'admin/clients/index'
-    assert_select 'a[href=?]', orders_path, count: 0
+    assert_select 'a[href=?]', payments_path, count: 0
     switch_role_to('client')
 
     assert_select 'a[href=?]', clients_path, count: 0
@@ -29,7 +29,7 @@ class RoleSwitchingTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test 'client without admin role attempts to switches role to admin' do
+  test 'client without admin role attempts to switch role to admin' do
     log_in_as(@account_client)
     switch_role_to('admin')
 

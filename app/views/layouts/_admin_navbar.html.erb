@@ -47,49 +47,37 @@
           </a>
           <div class="highnavbar dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">
             <div class="row g-0">
-              <div class="col-6 p-4">
-                <% unless logged_in_as?('junioradmin') %>    
-                  <span class="dropdown-label">JUNIORADMIN</span>
-                <% end %>  
-                  <%= link_to 'Declarations', declarations_path, class: "dropdown-item" %>                  
-                  <%= link_to 'Freezes', freezes_path, class: "dropdown-item" %>
-                  <%= link_to 'Products', products_path, class: "dropdown-item" %>
-                  <%= link_to 'Restarts', restarts_path, class: "dropdown-item" %>
-                <% unless logged_in_as?('junioradmin') %>                     
-                  <span class="dropdown-label">ADMIN</span>
-                  <%= link_to 'Achievements', achievements_path, class: "dropdown-item" %>
-                  <%= link_to 'Challenges', challenges_path, class: "dropdown-item" %>
-                  <%= link_to 'Instructors', instructors_path, class: "dropdown-item" %>
-                  <%= link_to 'Markers', strength_markers_path, class: "dropdown-item" %>
-                  <%= link_to 'Partners', partners_path, class: "dropdown-item" %>
-                  <%= link_to 'Timetables', timetables_path, class: "dropdown-item" %>                           
-                  <%= link_to 'Workouts', workouts_path, class: "dropdown-item" %>
-                  <%= link_to 'Workout Groups', workout_groups_path, class: "dropdown-item" %>
-                <% end %>  
-                  <% if logged_in_as?('superadmin') %>                   
-                    <span class="dropdown-label">SUPERADMIN</span>
-                    <%= link_to 'Accounts', employee_accounts_path, class: "dropdown-item" %>
-                    <%= link_to 'Blasts', blast_path, class: "dropdown-item" %>
-                    <%= link_to 'Discounts', discounts_path, class: "dropdown-item" %>
-                    <%= link_to 'Discount Reasons', discount_reasons_path, class: "dropdown-item" %>
-                    <%= link_to 'Expenses', expenses_path, class: "dropdown-item" %>
-                    <%= link_to 'Regular Expenses', regular_expenses_path, class: "dropdown-item" %>
-                    <%= link_to 'Instructor rates', instructor_rates_path, class: "dropdown-item" %>
-                    <%= link_to 'Other Services', other_services_path, class: "dropdown-item" %>
-                    <%= link_to 'Payments', payments_path, class: "dropdown-item" %>
-                    <%= link_to 'Razorpay Orders', orders_path, class: "dropdown-item" %>
-                    <%= link_to 'Settings', superadmin_settings_path, class: "dropdown-item" %>
-                  <% end %>                                                                      
+              <div class="col-6 p-1 p-md-4">
+              <% navbarPresenter = NavbarPresenter.new %>
+                  <%= navbarPresenter.dropdown_item('Accounts', employee_accounts_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Achievements', achievements_path, @admin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Blasts', blast_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Challenges', challenges_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Declarations', declarations_path, @junioradmin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Discounts', discounts_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Discount Reasons', discount_reasons_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Freezes', freezes_path, @junioradmin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Instructors', instructors_path, @admin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Instructor rates', instructor_rates_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Markers', strength_markers_path, @admin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Other Services', other_services_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Payments', payments_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Products', products_path, @junioradmin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Restarts', restarts_path, @junioradmin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Settings', superadmin_settings_path, @superadmin) %>
+                  <%= navbarPresenter.dropdown_item('Timetables', timetables_path, @admin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Workouts', workouts_path, @admin_plus) %>
+                  <%= navbarPresenter.dropdown_item('Workout Groups', workout_groups_path, @admin_plus) %>
               </div>
               <% if multiple_roles? %>                  
-                <div class="col-6 p-4">
+                <div class="col-6 p-1 p-md-4">
                   <span class="dropdown-label">ROLE</span>
                   <%= content_tag :div, "*#{current_role}", class: "dropdown-item text-uppercase" %>                
                   <% navbar_roles.each do |role| %>
                     <%= link_to role.name, "/switch_account_role?role=#{role.name}", class: "dropdown-item" %>
                   <% end %>
                 </div>  
-              <% end %>                
+              <% end %>             
             </div>
           </div>
         </li>

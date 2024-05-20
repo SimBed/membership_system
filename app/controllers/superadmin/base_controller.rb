@@ -2,6 +2,7 @@ class Superadmin::BaseController < ApplicationController
   layout 'admin'
   before_action :superadmin_account
   before_action :set_public_timetable # for navigation bar
+  before_action :set_admin_status
 
   private
 

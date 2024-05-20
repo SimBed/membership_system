@@ -3,7 +3,6 @@ class Admin::WkclassesController < Admin::BaseController
   skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :repeat, :filter, :instructor_select]
   before_action :junioradmin_account, only: [:new, :edit, :create, :update, :destroy, :repeat, :instructor_select]
   before_action :junioradmin_or_instructor_account, only: [:show, :index]
-  before_action :set_admin_status, only: [:show]
   before_action :set_wkclass, only: [:show, :edit, :update, :destroy, :repeat]
   before_action :set_repeats, only: [:create, :repeat]
   before_action :attendance_check, only: :repeat

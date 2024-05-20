@@ -11,10 +11,12 @@
   </div>
 
   <div class="container px-0 mb-5">
-    <% if @admin_plus %>
-      <div class="mt-2 px-1"><%= rupees(@freezes_payment_amount_sum) %><small> (all pages)</small></div>
-    <% end %>  
-    <div class="text-uppercase fst-italic">Freezes<small><%= "(#{@freezes.size})" %> </small></div>
+    <div class="mt-2">
+      <% if @admin_plus %>
+        <div class="px-1 mb-1"><%= rupees(@freezes_payment_amount_sum) %><small> (all pages)</small></div>
+      <% end %>  
+      <div class="text-uppercase fst-italic">Freezes<small><%= "(#{@freezes.size})" %> </small></div>
+    </div>
     <div class="admin-table striped mt-2">
       <%= render @freezes %>
     </div>

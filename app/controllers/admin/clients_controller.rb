@@ -6,7 +6,6 @@ class Admin::ClientsController < Admin::BaseController
   # before_action :layout_set, only: [:show]
   before_action :set_client, only: [:show, :edit, :update, :destroy]
   before_action :set_raw_numbers, only: :edit
-  before_action :set_admin_status, only: [:index, :update]
 
   def index
     # this must be inefficient, loading all clients and their associations into memory

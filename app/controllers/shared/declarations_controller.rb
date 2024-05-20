@@ -7,7 +7,6 @@ class Shared::DeclarationsController < Shared::BaseController
   before_action :set_declaration, only: [:show, :update] 
   before_action :junioradmin_or_instructor_account, only: :index
   before_action :initialize_sort, only: :index
-  before_action :set_admin_status, only: :index
 
   def index
     @declarations = Declaration.includes(:client)

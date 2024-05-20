@@ -1,4 +1,5 @@
 class PublicPages::FooterController < ApplicationController
+  before_action :set_admin_status  
   layout 'admin'
 
   def about; end

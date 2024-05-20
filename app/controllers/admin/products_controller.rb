@@ -3,7 +3,6 @@ class Admin::ProductsController < Admin::BaseController
   before_action :junioradmin_account, only: [:index, :filter, :clear_filters]
   before_action :initialize_sort, only: :index
   before_action :set_product, only: [:show, :edit, :update, :destroy]
-  before_action :set_admin_status, only: [:index]
   # don't do as callback because only on successful update not failed update
   # after_action -> { update_purchase_status(@purchases) }, only: [:update]
 

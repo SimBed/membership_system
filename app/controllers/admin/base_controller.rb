@@ -2,6 +2,7 @@ class Admin::BaseController < ApplicationController
   layout :determine_layout
   before_action :admin_account
   before_action :set_public_timetable # for navigation bar
+  before_action :set_admin_status
 
   def update_sunset_date(purchases)
     purchases.each do |p|
