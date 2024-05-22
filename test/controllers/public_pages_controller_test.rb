@@ -7,8 +7,6 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     @junioradmin = accounts(:junioradmin)
     @account_client = accounts(:client_for_unlimited)
     @client = @account_client.client
-    @account_partner = accounts(:partner1)
-    @partner = @account_partner.partner
   end
 
   test 'should get login page if not logged in' do
@@ -33,15 +31,4 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to client_book_path(@client)
   end
 
-  test 'should get partners profile if logged in as partner' do
-    log_in_as(@account_partner)
-    # get root_path
-
-    assert_redirected_to partner_path(@partner)
-  end
-
-  # test "should get shop" do
-  #   get '/shop'
-  #   assert_response :success
-  # end
 end

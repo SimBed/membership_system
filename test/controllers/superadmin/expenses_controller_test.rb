@@ -3,8 +3,6 @@ require 'test_helper'
 class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
-    @account_partner1 = accounts(:partner1)
-    @account_partner2 = accounts(:partner2)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -14,7 +12,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   # no show method for expenses controller
 
   test 'should redirect new when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get new_expense_path
 
@@ -23,7 +21,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect index when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get expenses_path
 
@@ -32,7 +30,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get edit_expense_path(@expense)
 
@@ -41,7 +39,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Expense.count' do
         post expenses_path, params:
@@ -56,7 +54,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as superadmin' do
     original_amount = @expense.amount
-    [nil, @account_client1, @account_partner1, @account_partner2, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       patch expense_path(@expense), params:
        { expense:
@@ -71,7 +69,7 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner2, @account_partner2, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Expense.count' do
         delete expense_path(@expense)

@@ -5,14 +5,13 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
     @discount = discounts(:none)
     @discount_reason = discount_reasons(:firstpackage)
     @account_client = clients(:client_ekta_unlimited)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
   end
 
   test 'should redirect new when not logged in as superadmin' do
-    [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
+    [nil, @account_client, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_discount_path
 
@@ -21,7 +20,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as superadmin' do
-    [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
+    [nil, @account_client, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_discount_path(@discount)
 
@@ -30,7 +29,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as superadmin' do
-    [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
+    [nil, @account_client, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Discount.count' do
         post discounts_path, params:
@@ -49,7 +48,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as superadmin' do
     original_discount = @discount.percent
-    [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
+    [nil, @account_client, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       patch discount_path(@discount), params:
        { discount: { percent: 50 } }
@@ -60,7 +59,7 @@ class DiscountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as junioradmin or more senior' do
-    [nil, @account_client, @account_partner1, @admin, @junioradmin].each do |account_holder|
+    [nil, @account_client, @admin, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Discount.count' do
         delete discount_path(@discount)

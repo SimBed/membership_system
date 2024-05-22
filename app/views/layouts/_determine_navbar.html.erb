@@ -1,6 +1,5 @@
     <%= render 'layouts/admin_navbar' if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
     <%= render 'layouts/client_navbar' if logged_in_as?('client') %>
-    <%= render 'layouts/partner_navbar' if logged_in_as?('partner') %>
     <%= render 'layouts/instructor_navbar' if logged_in_as?('instructor') %>
     <%= render 'layouts/public_navbar' if !logged_in? && @home %> 
     <%= render 'layouts/public_navbar_black' if !logged_in? && !@home %>

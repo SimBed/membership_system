@@ -4,7 +4,6 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
     @account_client2 = accounts(:client2)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -12,7 +11,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect new when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get new_client_path
 
@@ -21,7 +20,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect index when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get clients_path
 
@@ -30,7 +29,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect show when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       get client_path(@client)
 
@@ -39,7 +38,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       get edit_client_path(@client)
 
@@ -48,7 +47,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Client.count' do
         post clients_path, params:
@@ -62,7 +61,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as junioradmin or more senior' do
     original_email = @client.email
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       patch client_path(@client), params:
         { client:
@@ -76,7 +75,7 @@ class ClientsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @account_client2, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Client.count' do
         delete client_path(@client)

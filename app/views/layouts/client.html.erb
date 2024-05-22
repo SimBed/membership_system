@@ -13,7 +13,6 @@
   <body>
     <%= render 'layouts/admin_navbar' if logged_in_as?('junioradmin', 'admin', 'superadmin') %>
     <%= render 'layouts/client_navbar' if logged_in_as?('client') %>
-    <%= render 'layouts/partner_navbar' if logged_in_as?('partner') %>
     <main id="white-canvas">
       <!--section class="overflow-hidden"-->
       <section class="navbar-space">

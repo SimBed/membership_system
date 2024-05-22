@@ -20,16 +20,6 @@
     <%= form.select :service, options_for_select(@services, @workout_group.service) %>
   </div>
 
-  <div class="field">
-    <%= form.label :partner_id %>
-    <%= form.collection_select :partner_id, @partners, :id, :first_name, selected: @partner&.id, include_blank: (true unless @partner&.id)  %>
-  </div>
-
-  <div class="field">
-    <%= form.label :partner_share %>
-    <%= form.number_field :partner_share %>
-  </div>
-
   <div class="field mb-3">
     <%= form.label :requires_account do %>
       <%= form.check_box :requires_account, { checked: @workout_group.new_record? || form.object.requires_account? } %>

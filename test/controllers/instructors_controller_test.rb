@@ -3,7 +3,6 @@ require 'test_helper'
 class InstructorsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -13,7 +12,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
   # no show method for instructors controller
 
   test 'should redirect new when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_instructor_path
 
@@ -22,7 +21,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect index when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get instructors_path
 
@@ -31,7 +30,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_instructor_path(@instructor)
 
@@ -40,7 +39,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Instructor.count' do
         post instructors_path, params:
@@ -53,7 +52,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as admin or more senior' do
     original_last_name = @instructor.last_name
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       patch instructor_path(@instructor), params:
        { instructor:
@@ -66,7 +65,7 @@ class InstructorsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Instructor.count' do
         delete instructor_path(@instructor)

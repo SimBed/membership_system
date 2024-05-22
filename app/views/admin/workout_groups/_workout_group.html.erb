@@ -1,21 +1,12 @@
-<%= turbo_frame_tag workout_group do%>
+<%= turbo_frame_tag workout_group do %>
   <div class="row">
-    <% if logged_in_as?('partner', 'superadmin') %>
-        <div class="column col-1x extra-small"><%= link_to workout_group.name, workout_group_path(workout_group), class: 'like_button extra_small', data: { turbo_frame: dom_id(workout_group) } %></div>
-        <div class="column col-1x extra-small"><%= link_to workout_group.partner.name, partner_path(workout_group.partner), class: 'like_button extra_small',data: {turbo: false} %></div>
-    <% else %>
-        <div class="column col-1x extra-small"><%= workout_group.name %></div>
-        <div class="column col-1x extra-small"><%= workout_group.partner.name %></div>
-    <% end %>
-    <!--div class="column col-3x extra_small"><%#= workout_group.workout_list %></div-->
+    <div class="column col-1x extra-small"><%= link_to workout_group.name, workout_group_path(workout_group), class: 'like_button extra_small', data: { turbo_frame: dom_id(workout_group) } %></div>
     <div class="column col-1x extra-small"><%= link_to image_tag('view.png', class: "table_icon"), show_workouts_path(workout_group) %></div>
-    <% unless logged_in_as?('partner') %>
-      <div class="column col-1x extra-small"><%= workout_group.requires_account? ? raw("&check;") : "-" %></div>
-      <div class="column col-1x extra-small"><%= workout_group.service %></div>
-      <div class="column"><%= image_tag('gst.png', class: "table_icon") if workout_group.gst_applies %></div>
-      <div class="column"><%= image_tag('invoice.png', class: "table_icon") if workout_group.requires_invoice %></div>
-      <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_workout_group_path(workout_group), data: { turbo_frame: dom_id(workout_group) }%></div>
-    <% end %>
+    <div class="column col-1x extra-small"><%= workout_group.requires_account? ? raw("&check;") : "-" %></div>
+    <div class="column col-1x extra-small"><%= workout_group.service %></div>
+    <div class="column"><%= image_tag('gst.png', class: "table_icon") if workout_group.gst_applies %></div>
+    <div class="column"><%= image_tag('invoice.png', class: "table_icon") if workout_group.requires_invoice %></div>
+    <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_workout_group_path(workout_group), data: { turbo_frame: dom_id(workout_group) }%></div>
   </div>
 <% end %>
 

@@ -3,7 +3,6 @@ require 'test_helper'
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -33,9 +32,4 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     refute_predicate flash, :empty?
   end
 
-  test 'partner invalid login' do
-    post login_path, params: { session: { email: @account_partner1.email, password: '' } }
-
-    refute_predicate flash, :empty?
-  end
 end

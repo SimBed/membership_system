@@ -4,7 +4,6 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client3)
     @account_client2 = accounts(:client2)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -16,7 +15,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
   # no show method for freezes controller
 
   test 'should redirect new when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get new_freeze_path
 
@@ -25,7 +24,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get edit_freeze_path(@freeze)
 
@@ -34,7 +33,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Freeze.count' do
         post freezes_path, params:
@@ -48,7 +47,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as junioradmin or more senior' do
     original_end_date = @freeze.end_date
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       patch freeze_path(@freeze), params:
        { freeze:
@@ -62,7 +61,7 @@ class FreezesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Freeze.count' do
         delete freeze_path(@freeze)

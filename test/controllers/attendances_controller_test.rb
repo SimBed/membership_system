@@ -4,7 +4,6 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
     @account_client2 = accounts(:client2)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -18,7 +17,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   # no show method for attendances controller
 
   test 'should redirect create when not logged in as correct client, junior admin or more senior' do
-    [nil, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Attendance.count' do
         post attendances_path, params:
@@ -32,7 +31,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as correct client, junioradmin or more senior' do
     original_status = @attendance.status
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       patch attendance_path(@attendance), params:
        { attendance:
@@ -45,7 +44,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_client2, @account_partner1].each do |account_holder|
+    [nil, @account_client1, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Attendance.count' do
         delete attendance_path(@attendance)

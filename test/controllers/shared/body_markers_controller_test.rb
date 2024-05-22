@@ -4,7 +4,6 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
     @account_client2 = accounts(:client2)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -14,7 +13,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect new when not logged in as admin or more senior, instructor or client' do
-    [nil, @junioradmin, @account_partner1].each do |account_holder|
+    [nil, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_body_marker_path
 
@@ -23,7 +22,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect index when not logged in as admin or more senior, instructor or client' do
-    [nil, @junioradmin, @account_partner1].each do |account_holder|
+    [nil, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get body_markers_path
 
@@ -32,7 +31,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as admin or more senior, instructor or correct client' do
-    [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
+    [nil, @junioradmin, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       get edit_body_marker_path(@bodymarker_for_client1)
 
@@ -41,7 +40,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as admin or more senior, instructor or correct client' do
-    [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
+    [nil, @junioradmin, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'BodyMarker.count' do
         post body_markers_path, params:
@@ -56,7 +55,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as admin or more senior, instructor or correct client' do
     original_measurement = @bodymarker_for_client1.measurement
-    [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
+    [nil, @junioradmin, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       patch body_marker_path(@bodymarker_for_client1), params:
         { body_marker:
@@ -68,7 +67,7 @@ class Shared::BodyMarkersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged as admin or more senior, instructor or correct client' do
-    [nil, @junioradmin, @account_partner1, @account_client2].each do |account_holder|
+    [nil, @junioradmin, @account_client2].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'BodyMarker.count' do
         delete body_marker_path(@bodymarker_for_client1)

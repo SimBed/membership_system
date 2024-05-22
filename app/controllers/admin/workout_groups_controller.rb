@@ -1,17 +1,10 @@
 class Admin::WorkoutGroupsController < Admin::BaseController
-  skip_before_action :admin_account, only: [:show, :index, :instructor_expense_filter]
-  before_action :partner_or_admin_account, only: [:index]
-  before_action :correct_account_or_superadmin, only: [:show, :instructor_expense_filter]
+  skip_before_action :admin_account, only: [:show, :instructor_expense_filter]
+  before_action :superadmin_account, only: [:show, :instructor_expense_filter]
   before_action :set_workout_group, only: [:show, :edit, :update, :destroy, :show_workouts, :instructor_expense_filter]
 
   def index
-    if logged_in_as?('partner')
-      partner_id = current_account.partner.id
-      # reformat to scope
-      @workout_groups = WorkoutGroup.where(partner_id:).order_by_name
-    else
-      @workout_groups = WorkoutGroup.order_by_name
-    end
+    @workout_groups = WorkoutGroup.order_by_name
     handle_index_response
   end
 
@@ -43,7 +36,6 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 
   def edit
     prepare_items_for_dropdowns
-    @partner = @workout_group.partner
     @form_cancel_link = workout_groups_path
   end
 
@@ -65,7 +57,6 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       flash[:success] = t('.success')
     else
       prepare_items_for_dropdowns
-      @partner = @workout_group.partner
       render :edit, status: :unprocessable_entity
     end
   end
@@ -92,7 +83,6 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 
   def prepare_items_for_dropdowns
     @workouts = Workout.order_by_current
-    @partners = Partner.order_by_name
     @services = Rails.application.config_for(:constants)['workout_group_services']
   end
 
@@ -134,8 +124,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       variable_expense: @workout_group.variable_expense(@period),
       variable_expense_filtered: @wkclasses_with_instructor_expense.sum(:instructor_cost),
       total_expense: @workout_group.total_expense(@period),
-      profit: @workout_group.profit(@period),
-      partner_share: @workout_group.partner_share_amount(@period)
+      profit: @workout_group.profit(@period)
     }
     @summary.merge!(expense_params)
   end
@@ -152,26 +141,8 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   end
 
   def workout_group_params
-    params.require(:workout_group).permit(:name, :service, :partner_id, :partner_share, :requires_account, :gst_applies, :requires_invoice,
+    params.require(:workout_group).permit(:name, :service, :requires_account, :gst_applies, :requires_invoice,
                                           workout_ids: [])
   end
 
-  def correct_account_or_superadmin
-    return if WorkoutGroup.find(params[:id]).partner.account == current_account || logged_in_as?('superadmin')
-
-    redirect_to login_path
-  end
-
-  def partner_or_superadmin_account
-    return if logged_in_as?('superadmin') || logged_in_as?('partner')
-
-    redirect_to login_path
-  end
-
-  def partner_or_admin_account
-    return if logged_in_as?('admin', 'superadmin') || logged_in_as?('partner')
-
-    redirect_to login_path
-    flash[:warning] = I18n.t(:forbidden)
-  end
 end

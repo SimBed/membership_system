@@ -3,7 +3,6 @@ require 'test_helper'
 class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -13,7 +12,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   # no show method for instructor_rates controller
 
   test 'should redirect new when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get new_instructor_rate_path
 
@@ -22,7 +21,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   end
 
   test 'should redirect index when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get instructor_rates_path
 
@@ -31,7 +30,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   end
 
   test 'should redirect edit when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       get edit_instructor_rate_path(@instructor_rate)
 
@@ -40,7 +39,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   end
 
   test 'should redirect create when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'InstructorRate.count' do
         post instructor_rates_path, params:
@@ -54,7 +53,7 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
 
   test 'should redirect update when not logged in as superadmin' do
     original_rate = @instructor_rate.rate
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       patch instructor_rate_path(@instructor_rate), params:
        { instructor_rate:
@@ -68,28 +67,12 @@ class Superadmin::InstructorRatesControllerTest < ActionDispatch::IntegrationTes
   end
 
   test 'should redirect destroy when not logged in as superadmin' do
-    [nil, @account_client1, @account_partner1, @junioradmin, @admin].each do |account_holder|
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'InstructorRate.count' do
         delete instructor_rate_path(@instructor_rate)
       end
     end
   end
-
-  # test 'should redirect index when not logged in as senioradmin' do
-  #   get superadmin_instructor_rates_url
-  #   assert_redirected_to login_path
-  #   log_in_as(@client1)
-  #   get superadmin_instructor_rates_url
-  #   assert_redirected_to login_path
-  #   log_in_as(@partner1)
-  #   get superadmin_instructor_rates_url
-  #   assert_redirected_to login_path
-  #   log_in_as(@junioradmin)
-  #   get superadmin_instructor_rates_url
-  #   assert_redirected_to login_path
-  #   log_in_as(@admin)
-  #   get superadmin_instructor_rates_url
-  #   assert_redirected_to login_path
-  # end
+ 
 end

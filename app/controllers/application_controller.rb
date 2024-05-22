@@ -68,8 +68,7 @@ class ApplicationController < ActionController::Base
   def send_to_correct_page_for_role
     deal_with_admin && return
     deal_with_client && return
-    deal_with_instructor && return
-    deal_with_partner
+    deal_with_instructor
   end
 
   def deal_with_admin
@@ -98,10 +97,6 @@ class ApplicationController < ActionController::Base
         redirect_to instructor_path(@account.instructor)
       end
     end
-  end
-
-  def deal_with_partner
-    redirect_to partner_path(@account.partner) if logged_in_as?('partner')
   end
 
   def set_admin_status

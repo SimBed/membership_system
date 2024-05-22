@@ -3,7 +3,6 @@ require 'test_helper'
 class WkclassesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -15,7 +14,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect new when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get new_wkclass_path
 
@@ -24,7 +23,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect index when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get wkclasses_path
 
@@ -33,7 +32,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect show when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get wkclass_path(@wkclass)
 
@@ -42,7 +41,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get edit_wkclass_path(@wkclass)
 
@@ -51,7 +50,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Wkclass.count' do
         post wkclasses_path, params:
@@ -65,7 +64,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as junioradmin or more senior' do
     original_start_time = @wkclass.start_time
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       patch wkclass_path(@wkclass), params:
        { wkclass:
@@ -79,7 +78,7 @@ class WkclassesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as junioradmin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Wkclass.count' do
         delete wkclass_path(@wkclass)

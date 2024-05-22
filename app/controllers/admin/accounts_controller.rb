@@ -115,23 +115,14 @@ class Admin::AccountsController < Admin::BaseController
 
   def correct_credentials
     only_certain_account_types_can_be_made_here
-    only_superadmin_makes_partner_accounts
   end
 
   def only_certain_account_types_can_be_made_here
     @role_name = params[:role_name]
     # administrator accounts cannot be created through the app
-    return if %w[client instructor partner].include?(@role_name)
+    return if %w[client instructor].include?(@role_name)
     flash[:warning] = t('.warning')
     redirect_to(login_path) && return
-  end
-
-  def only_superadmin_makes_partner_accounts
-    # admin can create client's account, but only superadmin can create partner's account
-    return unless params[:role_name] == 'partner' && !logged_in_as?('superadmin')
-
-    flash[:warning] = t('.warning')
-    redirect_to login_path
   end
 
   def set_account_holder

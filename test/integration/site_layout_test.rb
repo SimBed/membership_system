@@ -5,8 +5,6 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     @junioradmin = accounts(:junioradmin)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
-    @account_partner = accounts(:partner1)
-    @partner = @account_partner.partner
     @account_client = accounts(:client1)
     @account_client_pt = accounts(:client_pt)
     @client = @account_client.client
@@ -184,7 +182,6 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', fitternities_path, count: 0
     assert_select 'a[href=?]', products_path, count: 0
     assert_select 'a[href=?]', instructors_path, count: 0
-    assert_select 'a[href=?]', partners_path, count: 0
     assert_select 'a[href=?]', timetables_path, count: 0
     assert_select 'a[href=?]', workouts_path, count: 0
     assert_select 'a[href=?]', workout_groups_path, count: 0

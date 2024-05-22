@@ -34,8 +34,7 @@ class Auth::SessionsController < Auth::BaseController
     switch_role(params[:role])
     deal_with_admin && return
     deal_with_client && return
-    deal_with_instructor && return
-    deal_with_partner
+    deal_with_instructor
   end
 
   def close_the_browser

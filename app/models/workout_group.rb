@@ -1,5 +1,4 @@
 class WorkoutGroup < ApplicationRecord
-  belongs_to :partner
   has_many :products, dependent: :destroy
   has_many :purchases, through: :products
   has_many :attendances, through: :purchases
@@ -9,7 +8,6 @@ class WorkoutGroup < ApplicationRecord
   attr_accessor :workout_ids
 
   validates :name, presence: true
-  validates :partner_share, presence: true
   validates :workout_ids, presence: true
   after_create :create_rel_workout_group_workout
   after_update :update_rel_workout_group_workout
@@ -74,10 +72,6 @@ class WorkoutGroup < ApplicationRecord
 
   def profit(period)
     net_revenue(period) - total_expense(period)
-  end
-
-  def partner_share_amount(period)
-    profit(period) * partner_share.to_f / 100
   end
 
   def self.includes_workout_of(wkclass)

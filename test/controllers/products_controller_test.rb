@@ -2,7 +2,6 @@ require 'test_helper'
 class ProductsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -10,7 +9,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect new when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_product_path
 
@@ -19,7 +18,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect index when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1].each do |account_holder|
+    [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
       get products_path
 
@@ -28,7 +27,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect show when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get product_path(@product)
 
@@ -37,7 +36,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_product_path(@product)
 
@@ -46,7 +45,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Product.count' do
         post products_path, params:
@@ -61,7 +60,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as admin or more senior' do
     original_validity_length = @product.validity_length
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       patch product_path(@product), params:
        { product:
@@ -76,7 +75,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Product.count' do
         delete product_path(@product)

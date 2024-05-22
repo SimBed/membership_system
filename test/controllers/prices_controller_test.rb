@@ -3,7 +3,6 @@ require 'test_helper'
 class PricesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
-    @account_partner1 = accounts(:partner1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
@@ -15,7 +14,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
   # no show method for prices controller
 
   test 'should redirect new when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get new_price_path(product_id: @product.id)
 
@@ -24,7 +23,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect edit when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       get edit_price_path(@price)
 
@@ -33,7 +32,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect create when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Price.count' do
         post prices_path, params:
@@ -48,7 +47,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect update when not logged in as admin or more senior' do
     original_price = @price.price
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       patch price_path(@price), params:
        { price:
@@ -63,7 +62,7 @@ class PricesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect destroy when not logged in as admin or more senior' do
-    [nil, @account_client1, @account_partner1, @junioradmin].each do |account_holder|
+    [nil, @account_client1, @junioradmin].each do |account_holder|
       log_in_as(account_holder)
       assert_no_difference 'Price.count' do
         delete price_path(@price)

@@ -9,7 +9,7 @@ class ActiveSupport::TestCase
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
-  # fixtures :instructors, :workouts, :accounts, :clients, :partners, :wkclasses
+  # fixtures :instructors, :workouts, :accounts, :clients, :wkclasses
 
   def is_logged_in?
     !session[:account_id].nil?
