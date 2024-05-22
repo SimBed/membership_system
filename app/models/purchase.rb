@@ -72,10 +72,6 @@ class Purchase < ApplicationRecord
   scope :order_by_expiry_date, -> { order(expiry_date: :desc) }
   # scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
-  # scope :uninvoiced, lambda {
-  #                      package.where(invoice: nil).joins(product: [:workout_group])
-  #                             .where(workout_groups: { requires_invoice: true })
-  #                    }
   scope :service_type, ->(service) { joins(product: [:workout_group]).where(workout_groups: { service: }) }
   scope :unpaid, -> { where(payment_mode: 'Not paid') }
   scope :written_off, -> { where(payment_mode: 'Write Off') }

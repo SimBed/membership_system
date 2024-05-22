@@ -19,11 +19,7 @@
     <div class="column col-1x"><%= number_with_delimiter(@summary[:gross_revenue]) %></div>
   </div>
   <div class="row">
-    <div class="column col-1x fw-light">GST</div>
-    <div class="column col-1x"><%= number_to_currency(@summary[:gst], precision: 0, unit: '') %></div>
-  </div>
-  <div class="row">
-    <div class="column col-1x fw-light">Net <small>(of GST)</small> Revenue</div>
+    <div class="column col-1x fw-light">Net Revenue</div>
     <div class="column col-1x"><%= number_to_currency(@summary[:net_revenue], precision: 0, unit: '') %></div>
   </div>
   <% unless @summary[:variable_expense].zero? %>    

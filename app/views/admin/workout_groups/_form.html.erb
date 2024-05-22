@@ -41,16 +41,6 @@
     <% end %>
   </div>
 
-  <div class="field">
-    <%= form.label :gst_applies %>
-    <%= form.select :gst_applies, [true, false] %>
-  </div>
-
-  <div class="field">
-    <%= form.label :requires_invoice, 'The Space invoices the client' %>
-    <%= form.select :requires_invoice, [true, false] %>
-  </div>
-
   <div class="actions">
     <%= form.submit @workout_group.new_record? ? 'Create workout group' : 'Update workout group' %>
   </div>

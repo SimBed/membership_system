@@ -47,12 +47,8 @@ class WorkoutGroup < ApplicationRecord
     base_revenue(period) + expiry_revenue(period)
   end
 
-  def gst(period)
-    gross_revenue(period) * (1 - (1 / (1 + gst_rate)))
-  end
-
   def net_revenue(period)
-    gross_revenue(period) - gst(period)
+    gross_revenue(period)
   end
 
   def fixed_expense(period)
@@ -82,13 +78,6 @@ class WorkoutGroup < ApplicationRecord
 
   def workout_list
     workouts.pluck(:name).join(', ')
-  end
-
-  def gst_rate
-    return 0 unless gst_applies
-
-    # Setting.gst_rate.to_f / 100
-    Rails.application.config_for(:constants)['gst_rate'].to_f / 100
   end
 
   def expiry_revenue(period)

@@ -5,7 +5,7 @@ class WorkoutGroupTest < ActiveSupport::TestCase
     @workout1 = workouts(:hiit)
     @workout2 = workouts(:mobility)
     @workout_group = WorkoutGroup.new(
-      name: 'Dance', gst_applies: true, requires_invoice: true,
+      name: 'Dance', renewable: true, requires_account: true,
       workout_ids: [@workout1.id, @workout2.id],
       service: 'Group'
     )

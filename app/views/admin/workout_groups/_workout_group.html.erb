@@ -4,8 +4,6 @@
     <div class="column col-1x extra-small"><%= link_to image_tag('view.png', class: "table_icon"), show_workouts_path(workout_group) %></div>
     <div class="column col-1x extra-small"><%= workout_group.requires_account? ? raw("&check;") : "-" %></div>
     <div class="column col-1x extra-small"><%= workout_group.service %></div>
-    <div class="column"><%= image_tag('gst.png', class: "table_icon") if workout_group.gst_applies %></div>
-    <div class="column"><%= image_tag('invoice.png', class: "table_icon") if workout_group.requires_invoice %></div>
     <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_workout_group_path(workout_group), data: { turbo_frame: dom_id(workout_group) }%></div>
   </div>
 <% end %>

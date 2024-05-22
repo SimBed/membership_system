@@ -112,7 +112,6 @@ class Admin::WorkoutGroupsController < Admin::BaseController
       base_revenue: @workout_group.base_revenue(@period),
       expiry_revenue: @workout_group.expiry_revenue(@period),
       gross_revenue: @workout_group.gross_revenue(@period),
-      gst: @workout_group.gst(@period),
       net_revenue: @workout_group.net_revenue(@period)
     }
     @summary.merge!(revenue_params)
@@ -141,8 +140,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   end
 
   def workout_group_params
-    params.require(:workout_group).permit(:name, :service, :requires_account, :gst_applies, :requires_invoice,
-                                          workout_ids: [])
+    params.require(:workout_group).permit(:name, :service, :requires_account, workout_ids: [])
   end
 
 end
