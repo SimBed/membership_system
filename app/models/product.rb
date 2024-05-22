@@ -14,6 +14,7 @@ class Product < ApplicationRecord
   validates :validity_unit, presence: true
   # validates :max_classes, uniqueness: { :scope => [:validity_length, :validity_unit, :workout_group_id] }
   validate :product_combo_must_be_unique
+  validate :rider_cant_have_a_rider
   delegate :pt?, :groupex?, :online?, to: :workout_group
   # Client.packagee.active gives 'PG ambiguous column max classes' error unless 'products.max_classes' rather than just 'max_classes'.
   # scope :package, -> { where('products.max_classes > 1') }
@@ -121,7 +122,7 @@ class Product < ApplicationRecord
   end
 
   # seems to be named misleadingly. Rename to duration? and test
-  def duration_days
+  def duration
     validity_unit_hash = { 'D' => :days, 'W' => :weeks, 'M' => :months }
     validity_length.send(validity_unit_hash[validity_unit])
   end
@@ -194,12 +195,13 @@ class Product < ApplicationRecord
     # relevant for updates, new products won't have an id before save
     errors.add(:base, 'This product already exists') unless id == product.id
   end
+
+  def rider_cant_have_a_rider
+    return unless rider? && has_rider?
+
+    errors.add(:base, "A rider can't itself have a rider")
+  end
 end
-
-
-  # def name
-  #   "#{workout_group.name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit.to_sym}#{' ('.concat(color, ')') unless color.nil?}"
-  # end
 
   # # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
   # # https://stackoverflow.com/questions/10522414/breaking-up-long-strings-on-multiple-lines-in-ruby-without-stripping-newlines

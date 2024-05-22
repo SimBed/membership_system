@@ -85,26 +85,6 @@ class Admin::ProductsController < Admin::BaseController
     redirect_to products_path
   end
 
-
-  # def clear_filters
-  #   clear_session(:filter_any_workout_group_of)
-  #   redirect_to products_path
-  # end
-
-  # def filter
-  #   clear_session(:filter_any_workout_group_of)
-  #   session["filter_any_workout_group_of".to_sym] = params[:any_workout_group_of]
-  #   redirect_to products_path
-  # end  
-
-  # def payment
-  #   @payment_for_price = Price.find(params[:selected_price]).discounted_price
-  #   # @base_payment = Price.find(params[:selected_price]).price
-  #   # https://stackoverflow.com/questions/36228873/ruby-how-to-convert-a-string-to-boolean
-  #   # @fitternity = ActiveModel::Type::Boolean.new.cast(params[:fitternity])
-  #   render 'payment.js.erb'
-  # end
-
   private
 
   def initialize_sort
@@ -139,34 +119,6 @@ class Admin::ProductsController < Admin::BaseController
       # @products_not_current = Product.order_by_name_max_classes.where(id: @products_not_current)
     end
   end
-
-  # # reformat - see purchases controller
-  # def handle_sort
-  #   # reformat
-  #   @products_current = @products_current.send("order_by_#{session[:client_sort_option]}") # .page params[:page]
-
-  #   case session[:product_sort_option]
-  #               when 'product_name'
-  #                 @products_current = Product.current.order_by_name_max_classes
-  #                 @products_not_current = Product.not_current.order_by_name_max_classes
-  #               when 'total_count'
-  #                 @products_current = Product.current.order_by_total_count
-  #                 @products_not_current = Product.not_current.order_by_total_count
-  #               when 'ongoing_count'
-  #                 @products_current = Product.current.order_by_ongoing_count
-  #                 @products_not_current = Product.not_current.order_by_ongoing_count
-  #               when 'sell_online'
-  #                 @products_current = Product.current.online_order_by_wg_classes_days
-  #                 @products_not_current = Product.not_current.online_order_by_wg_classes_days
-  #               when 'price'
-  #                 @products_current = Product.current.order_by_base_price
-  #                 @products_not_current = Product.not_current.order_by_base_price
-  #               else
-  #                 # just for now
-  #                 @products_current = Product.current.order_by_name_max_classes
-  #                 @products_not_current = Product.not_current.order_by_name_max_classes
-  #               end
-  # end
 
   def set_product
     @product = Product.find(params[:id])

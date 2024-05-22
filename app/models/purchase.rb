@@ -122,7 +122,7 @@ class Purchase < ApplicationRecord
     return false unless can_restart?
 
     days_until_sunset = (Time.zone.today.beginning_of_day.to_date..sunset_date.end_of_day).count
-    product_duration_days = product.duration_days.in_days
+    product_duration_days = product.duration.in_days
     return true if product_duration_days > days_until_sunset
 
     false
@@ -333,7 +333,7 @@ class Purchase < ApplicationRecord
     # end_date formulae above overstate by 1 day so deduct 1
     # to_date changes ActiveSupport::TimeWithZone object to Date object
     # as 'Sun, 12 Dec 2021' preferred to 'Sun, 12 Dec 2021 10:30:00.000000000 UTC +00:00'
-    (start_date + product.duration_days + extra_days - 1.day).to_date
+    (start_date + product.duration + extra_days - 1.day).to_date
   end
 
   def extra_days
@@ -410,7 +410,7 @@ class Purchase < ApplicationRecord
   end
 
   def sunset_date_calc
-    product_duration = product.duration_days
+    product_duration = product.duration
     sunset_key = product_duration <= 7.days ? :week_or_less : :month_or_more
     dop + product_duration + Setting.sunset_limit_days[sunset_key].days
   end
