@@ -1,2 +1,0 @@
-module Shared::DeclarationsHelper
-end

@@ -1,2 +1,0 @@
-module Superadmin::PaymentsHelper
-end

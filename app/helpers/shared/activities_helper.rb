@@ -1,2 +1,0 @@
-module Shared::ActivitiesHelper
-end
