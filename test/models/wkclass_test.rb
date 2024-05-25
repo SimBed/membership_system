@@ -90,10 +90,6 @@ class WkclassTest < ActiveSupport::TestCase
     assert_equal 4, @wkclass_many_attendances.ethereal_attendances.size
   end
 
-  test 'revenue' do
-    assert_equal 1694, @wkclass_many_attendances.revenue
-  end
-
   test 'at_capacity?' do
     refute_predicate @wkclass_many_attendances, :at_capacity?
   end

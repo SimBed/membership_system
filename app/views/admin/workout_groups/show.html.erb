@@ -1,6 +1,6 @@
 <%= turbo_frame_tag dom_id(@workout_group) do %>
   <div class="admin_form my-2">
-    <h5><strong><i><%= "#{@workout_group.name}" %></i></strong> Profit Share</h5>
+    <h5><strong><i><%= "#{@workout_group.name}" %></i></strong></h5>
     <!--form action=<%= "/admin/workout_groups/#{params[:id]}" %> method="GET"}>
       <select name="revenue_month" onchange="this.form.requestSubmit()" class= "sort">
         <%#= options_for_select @months, session[:revenue_month] %>
@@ -15,23 +15,15 @@
       <%= render partial: 'revenues_table' %>
     </div>
 
-    <% unless @summary[:variable_expense].zero? %>
+    <% unless @summary[:instructor_expense].zero? %>
       <div id="wkclasses-with-expense-table" class="container px-1 mt-3 mb-3">
         <%= render partial: 'wkclasses_with_expense_table' %>
       </div>
-    <% end %>
-
-    <% unless @summary[:variable_expense].zero? %>
       <div id="instructors-expense-table" class="container px-1 mt-3 mb-3">
         <%= render partial: 'instructors_expense_subtotal' %>
       </div>
     <% end %>
 
-    <% unless @summary[:fixed_expense].zero? %>
-      <div id="other-expense-table" class="container px-1 mt-5 mb-3">
-        <%= render partial: 'other_expense_table' %>
-      </div>
-    <% end %>
     <div class="cancel">
       <%= link_to image_tag('delete.png', class: "table_icon"), workout_groups_path %>
     </div>

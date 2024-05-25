@@ -22,6 +22,7 @@ class Wkclass < ApplicationRecord
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
   delegate :rate, to: :instructor_rate
+  delegate :pt_workout?, to: :workout
   scope :any_workout_of, ->(workout_filter) { joins(:workout).where(workout: { name: workout_filter }) }
   scope :order_by_date, -> { order(start_time: :desc) }
   scope :order_by_reverse_date, -> { order(start_time: :asc) }
@@ -196,9 +197,9 @@ class Wkclass < ApplicationRecord
     # Bullet.enable = true if Rails.env == 'development'
   end
 
-  def revenue
-    attendances.map(&:revenue).inject(0, :+)
-  end
+  # def revenue
+  #   attendances.map(&:revenue).inject(0, :+)
+  # end
 
   def booking_window
     window_start = start_time.ago(Setting.booking_window_days_before.days).beginning_of_day

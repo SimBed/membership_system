@@ -23,7 +23,7 @@ class Purchase < ApplicationRecord
 	accepts_nested_attributes_for :payment
   before_save :set_sunset_date
   delegate :name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
-           :product_style, :pt?, :groupex?, :online?, :max_classes, :attendance_estimate, :rider?, to: :product
+           :product_style, :pt?, :groupex?, :online?, :max_classes, :rider?, to: :product
   validates :charge, presence: true
   validates :payment_mode, presence: true
   # validates :ar_payment, presence: true, if: :adjust_restart?

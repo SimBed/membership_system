@@ -35,11 +35,11 @@ class Attendance < ApplicationRecord
                    .first
   end
 
-  def revenue
-    return 0 if amnesty?
+  # def revenue
+  #   return 0 if amnesty?
 
-    purchase.charge / purchase.attendance_estimate
-  end
+  #   purchase.charge / purchase.attendance_estimate
+  # end
 
   def workout_group
     purchase.product.workout_group

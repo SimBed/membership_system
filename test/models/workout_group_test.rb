@@ -26,4 +26,12 @@ class WorkoutGroupTest < ActiveSupport::TestCase
 
     refute_predicate @workout_group, :valid?
   end
+
+  test '#revenue?' do
+    period = month_period('1 October 2021')
+    assert_equal 6000, @workout_group.revenue('Purchase', period)
+    assert_equal 650, @workout_group.revenue('Freeze', period)
+    assert_equal 0, @workout_group.revenue('Restart', period)
+    assert_equal 6650, @workout_group.revenue('all', period)
+  end 
 end

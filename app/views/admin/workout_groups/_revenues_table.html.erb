@@ -7,38 +7,26 @@
     <div class="column col-1x"><%= @summary[:wkclass_count] %></div>
   </div>
   <div class="row">
-    <div class="column col-1x fw-light">Base Revenue</div>
-    <div class="column col-1x"><%= number_with_delimiter(@summary[:base_revenue]) %></div>
+    <div class="column col-1x fw-light">Membership Revenue</div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:membership_revenue]) %></div>
   </div>
   <div class="row">
-    <div class="column col-1x fw-light">Expiry Revenue</div>
-    <div class="column col-1x"><%= number_with_delimiter(@summary[:expiry_revenue]) %></div>
+    <div class="column col-1x fw-light">Freeze Revenue</div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:freeze_revenue]) %></div>
   </div>
   <div class="row">
-    <div class="column col-1x fw-light">Gross Revenue</div>
-    <div class="column col-1x"><%= number_with_delimiter(@summary[:gross_revenue]) %></div>
+    <div class="column col-1x fw-light">Restart Revenue</div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:restart_revenue]) %></div>
   </div>
   <div class="row">
-    <div class="column col-1x fw-light">Net Revenue</div>
+    <div class="column col-1x fw-light">Total Revenue</div>
+    <div class="column col-1x"><%= number_to_currency(@summary[:total_revenue], precision: 0, unit: '') %></div>
+  </div>
+  <div class="row">
+    <div class="column col-1x fw-light">Instructor (per-class) Expense <%= '*' unless @summary[:instructor_expense].zero? %></div>
+    <div class="column col-1x"><%= number_with_delimiter(@summary[:instructor_expense]) %></div>
+  </div>   
+  <div class="row fw-bolder">
+    <div class="column col-1x">Net Revenue</div>
     <div class="column col-1x"><%= number_to_currency(@summary[:net_revenue], precision: 0, unit: '') %></div>
-  </div>
-  <% unless @summary[:variable_expense].zero? %>    
-    <div class="row">
-      <div class="column col-1x fw-light">Instructor (per-class) Expense*</div>
-      <div class="column col-1x"><%= number_with_delimiter(@summary[:variable_expense]) %></div>
-    </div>
-  <% end %>      
-  <% unless @summary[:fixed_expense].zero? %>    
-    <div class="row">
-      <div class="column col-1x fw-light">Other Expenses**</div>
-      <div class="column col-1x"><%= number_with_delimiter(@summary[:fixed_expense]) %></div>
-    </div>
-  <% end %>    
-  <div class="row">
-    <div class="column col-1x fw-light">Total Expense</div>
-    <div class="column col-1x"><%= number_with_delimiter(@summary[:total_expense]) %></div>
-  </div>
-  <div class="row">
-    <div class="column col-1x fw-light">Profit</div>
-    <div class="column col-1x"><%= number_to_currency(@summary[:profit], precision: 0, unit: '') %></div>
   </div>

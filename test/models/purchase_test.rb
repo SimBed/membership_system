@@ -82,12 +82,6 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 8, @purchase_fixed.max_classes
   end
 
-  test 'attendance_estimate method' do
-    assert_equal 60, @purchase_package.attendance_estimate
-    assert_equal 1, @purchase_dropin.attendance_estimate
-    assert_equal 8, @purchase_fixed.attendance_estimate
-  end
-
   test 'available_for_booking method (no client)' do
     assert_equal [purchases(:purchase_374), purchases(:AnushkaUC3Mong), purchases(:AparnaUC1Mong), purchases(:purchase_212), @purchase_with_freeze, purchases(:purchase_335), purchases(:purchase_312),
                   @purchase_trial, @purchase_dropin2, purchases(:purchase_200), @purchase_ptrider, purchases(:purchase_99), purchases(:purchase_198), purchases(:purchase_120), purchases(:purchase_224),

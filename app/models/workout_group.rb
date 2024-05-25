@@ -31,6 +31,8 @@ class WorkoutGroup < ApplicationRecord
     false
   end
 
+  # by_workout_group method also joins on purchase and product, but the seemingly duplicated 'includes(purchase: [:product])' reduces the database hit when
+  # the revenue method is applied to each attendance object in base_revenue method 
   def attendances_during(period)
     Attendance.includes(purchase: [:product]).confirmed.no_amnesty.by_workout_group(name, period)
   end
@@ -39,35 +41,25 @@ class WorkoutGroup < ApplicationRecord
     Wkclass.in_workout_group(name).during(period)
   end
 
-  def base_revenue(period)
-    attendances_during(period).map(&:revenue).inject(0, :+)
+  def payments(purchase_type, period)
+    return Payment.during(period) if purchase_type == 'all'
+
+    Payment.payable_types(purchase_type).during(period)
   end
 
-  def gross_revenue(period)
-    base_revenue(period) + expiry_revenue(period)
+  def revenue(purchase_type, period)
+    payments(purchase_type, period).sum(:amount)
   end
 
-  def net_revenue(period)
-    gross_revenue(period)
-  end
-
-  def fixed_expense(period)
-    Expense.by_workout_group(name, period).sum(:amount)
-  end
-
-  def variable_expense(period)
+  def instructor_expense(period)
     Wkclass.in_workout_group(name)
            .during(period)
            .has_instructor_cost
            .sum(:instructor_cost)
   end
 
-  def total_expense(period)
-    fixed_expense(period) + variable_expense(period)
-  end
-
-  def profit(period)
-    net_revenue(period) - total_expense(period)
+  def net_revenue(period)
+    revenue('all', period) - instructor_expense(period)
   end
 
   def self.includes_workout_of(wkclass)

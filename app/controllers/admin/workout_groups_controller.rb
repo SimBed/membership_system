@@ -109,21 +109,19 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     revenue_params = {
       attendance_count: @workout_group.attendances_during(@period).size,
       wkclass_count: @wkclasses.size,
-      base_revenue: @workout_group.base_revenue(@period),
-      expiry_revenue: @workout_group.expiry_revenue(@period),
-      gross_revenue: @workout_group.gross_revenue(@period),
-      net_revenue: @workout_group.net_revenue(@period)
+      membership_revenue: @workout_group.revenue('Purchase', @period),
+      freeze_revenue: @workout_group.revenue('Freeze', @period),
+      restart_revenue: @workout_group.revenue('Restart', @period),
+      total_revenue: @workout_group.revenue('all', @period)
     }
     @summary.merge!(revenue_params)
   end
 
   def set_expense_summary
     expense_params = {
-      fixed_expense: @workout_group.fixed_expense(@period),
-      variable_expense: @workout_group.variable_expense(@period),
+      instructor_expense: @workout_group.instructor_expense(@period),
       variable_expense_filtered: @wkclasses_with_instructor_expense.sum(:instructor_cost),
-      total_expense: @workout_group.total_expense(@period),
-      profit: @workout_group.profit(@period)
+      net_revenue: @workout_group.net_revenue(@period)
     }
     @summary.merge!(expense_params)
   end
