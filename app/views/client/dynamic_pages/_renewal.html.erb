@@ -10,7 +10,9 @@
       <% end %>    
       <span class = "span1"><%= "#{rupees(yield(:renewal_price))}" %></span>
     </p>
-      <%= render partial: 'razor_form' %>
+      <% if false %>
+        <%= render partial: 'razor_form' %>
+      <% end %>
       <div class="mt-3">
         <%= link_to 'or visit shop', client_shop_path(@client), class: 'like_button text-uppercase', data: {turbo: false} %>
       </div>
