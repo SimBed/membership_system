@@ -1,9 +1,10 @@
 <% payment = @purchase.payment %>
+<% membership = Membership.new(@purchase) %>
 <div class="fst-italic ps-2">    
   <%= link_to @purchase.name(rider_show: true), purchase_path(@purchase), class: "like_button" if setting == 'admin_client_show' %>
   <%= 'Summary' if setting == 'admin_purchase_show' %>
 </div>
-<div class="admin-table striped mt-2 mb-4">
+<div class="admin-table mt-2 mb-4">
   <div class="row">
     <div class="column col-1x">Charge</div>
     <div class="column col-1x"><%= rupees(@purchase.charge) %></div>
@@ -25,9 +26,32 @@
   </div>
   <% if @purchase.can_restart? %>
     <div class="row <%= 'text-danger' if @purchase.restart_warning? %>">
-      <div class="column col-1x">Restart Charge</div>
+      <div class="column col-1x">Restart charge</div>
       <div class="column col-1x"><%= rupees(@purchase.restart_payment) %></div>
     </div>
+  <% end %>
+  <% if membership.can_transfer? %>
+    <div data-controller = purchase-show>  
+      <div class="row">  
+        <div class="column col-1x">Transfer charge <%= image_tag 'more.png', {class:'more_icon', data: {action: "mouseover->purchase-show#toggle_breakdown"}} %></div>
+        <div class="column col-1x"><%= rupees(membership.transfer_charge) %></div>
+      </div>
+      <div hidden class='border border-primary border-2' data-purchase-show-target="transferBreakdown">
+        <div class="row px-3">  
+          <div class="column col-1x">Usage charge</div>
+          <div class="column col-1x"><%= rupees(membership.usage_charge) %></div>
+        </div>
+        <div class="row px-3">  
+          <div class="column col-1x">Price change charge</div>
+          <div class="column col-1x"><%= rupees(membership.price_change_charge) %></div>
+        </div>
+        <div class="row px-3">  
+          <div class="column col-1x">Fixed charge</div>
+          <div class="column col-1x"><%= rupees(Setting.transfer_fixed_charge) %></div>
+        </div>
+      </div>
+    </div>
+
   <% end %>
   <% unless @purchase.not_started? %>
     <div class="row">

@@ -135,10 +135,6 @@ class Superadmin::PaymentsController < Superadmin::BaseController
       end
     end    
       
-    def set_admin_status
-      @superadmin_plus = logged_in_as?('superadmin')
-    end
-
     def set_payment
       @payment = Payment.find(params[:id])
     end

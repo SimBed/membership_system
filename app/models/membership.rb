@@ -21,4 +21,32 @@ class Membership
   def active_membership
     days_passed - days_frozen
   end
+
+  def intended_membership
+   purchase.product.duration.in_days.ceil + purchase.adjustments.sum(:adjustment)
+  end
+
+  def can_transfer?
+    return false unless purchase.groupex? && !purchase.dropin? && !purchase.trial? && !purchase.rider?
+
+    return false if purchase.days_to_expiry.days < 3.weeks
+
+    true
+  end  
+
+  def transfer_charge
+    usage_charge + price_change_charge + Setting.transfer_fixed_charge
+  end
+
+  def usage_charge
+    return (active_membership.to_f / intended_membership * purchase.charge).floor if purchase.unlimited_package?
+
+    (purchase.attendances.no_amnesty.size.to_f / purchase.max_classes * purchase.charge).floor
+  end
+
+  def price_change_charge
+    price_change = purchase.product.base_price_at(Time.zone.now).price - purchase.charge
+    [0, price_change].max
+  end
+
 end

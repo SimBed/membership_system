@@ -5,7 +5,7 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     @admin = accounts(:admin)
     @purchase = purchases(:ekta_unlimited)
     @wkclass = wkclasses(:wkclass_for_booking_early)
-    # @purchase_with_freeze = purchases(:purchase_for_freeze)
+    # @purchase_with_freezes = purchases(:purchase_for_freeze)
     @freeze = freezes(:freeze_test)
     @payment = payments(:payment1)
     travel_to(Date.parse('21 March 2022')) # day after class attended on this package

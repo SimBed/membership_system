@@ -39,7 +39,7 @@ class Freeze < ApplicationRecord
   end
 
   def new_and_non_chargeable?(att)
-    # on update of chargeable to non-chargeable, there will already be a paymnet created, which we want to be updated to zero. (We could also delete the payment in the controller if we wished)
+    # on update of chargeable to non-chargeable, there will already be a payment created, which we want to be updated to zero. (We could also delete the payment in the controller if we wished)
     # for a new freeze, if it is non-chargeable, don't creaate a payment
     return false unless new_record? 
 

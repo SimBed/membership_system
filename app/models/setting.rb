@@ -77,7 +77,7 @@ class Setting < RailsSettings::Base
     field :freeze_duration_days, type: :integer, default: 14
     field :freeze_charge, type: :integer, default: 650
     field :restart_min_charge, type: :integer, default: 1500
-    field :transfer_charge, type: :integer, default: 2500
+    field :transfer_fixed_charge, type: :integer, default: 2500
   end
   
   scope :pagination do

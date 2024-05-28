@@ -18,7 +18,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase_dropin2 = purchases(:kiran1c1d_notstarted)
     @purchase_fixed = purchases(:tina8c5wong)
     @purchase_trial = purchases(:purchase_trial)
-    @purchase_with_freeze = purchases(:purchase_with_freeze) # freeze 10/1/22 - 28/3/22
+    @purchase_with_freezes = purchases(:purchase_with_freezes) # freeze 10/1/22 - 28/3/22
     @purchase_pt = purchases(:purchase_12C5WPT)
     @purchase_ptrider = purchases(:purchase_ptrider)
     @purchase_main = @purchase_ptrider.main_purchase # purchase_12C5WPT
@@ -83,7 +83,7 @@ class PurchaseTest < ActiveSupport::TestCase
   end
 
   test 'available_for_booking method (no client)' do
-    assert_equal [purchases(:purchase_374), purchases(:AnushkaUC3Mong), purchases(:AparnaUC1Mong), purchases(:purchase_212), @purchase_with_freeze, purchases(:purchase_335), purchases(:purchase_312),
+    assert_equal [purchases(:purchase_374), purchases(:AnushkaUC3Mong), purchases(:AparnaUC1Mong), purchases(:purchase_212), @purchase_with_freezes, purchases(:purchase_335), purchases(:purchase_312),
                   @purchase_trial, @purchase_dropin2, purchases(:purchase_200), @purchase_ptrider, purchases(:purchase_99), purchases(:purchase_198), purchases(:purchase_120), purchases(:purchase_224),
                   purchases(:purchase_360), purchases(:purchase_125), purchases(:purchase_341), purchases(:purchase_119), purchases(:purchase_90)],
                  Purchase.available_for_booking(@wkclass1)
@@ -93,11 +93,11 @@ class PurchaseTest < ActiveSupport::TestCase
   # 90 are frozen, but correctly still appears
 
   test 'available_for_booking method (with client)' do
-    assert_equal [@purchase_with_freeze], Purchase.available_for_booking(@wkclass1, @client2)
+    assert_equal [@purchase_with_freezes], Purchase.available_for_booking(@wkclass1, @client2)
   end
 
   test 'available_for_booking method (with client and not restricted i. for waiting list purposes)' do
-    assert_equal [@purchase_with_freeze], Purchase.available_for_booking(@wkclass1, @client2, restricted: false)
+    assert_equal [@purchase_with_freezes], Purchase.available_for_booking(@wkclass1, @client2, restricted: false)
   end
 
   test 'use_for_booking method' do
@@ -105,7 +105,7 @@ class PurchaseTest < ActiveSupport::TestCase
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
 
     assert_nil Purchase.use_for_booking(@tomorrows_class_early, @client)
-    assert_equal @purchase_with_freeze, Purchase.use_for_booking(@tomorrows_class_early, @client2)
+    assert_equal @purchase_with_freezes, Purchase.use_for_booking(@tomorrows_class_early, @client2)
   end
 
   test 'committed_on? method' do
@@ -145,17 +145,17 @@ class PurchaseTest < ActiveSupport::TestCase
 
   test 'freezed? method' do
     # testing on eg Date.parse('10 Jan 2022') is not good enough as the limit of the day is 24 hours later
-    refute @purchase_with_freeze.freezed? '9 Jan 2022 10:30'.to_datetime
-    assert @purchase_with_freeze.freezed? '10 Jan 2022 10:30'.to_datetime
-    assert @purchase_with_freeze.freezed? '28 March 2022 10:30'.to_datetime
-    refute @purchase_with_freeze.freezed? '29 March 2022 10:30'.to_datetime
+    refute @purchase_with_freezes.freezed? '9 Jan 2022 10:30'.to_datetime
+    assert @purchase_with_freezes.freezed? '10 Jan 2022 10:30'.to_datetime
+    assert @purchase_with_freezes.freezed? '28 March 2022 10:30'.to_datetime
+    refute @purchase_with_freezes.freezed? '29 March 2022 10:30'.to_datetime
   end
 
   test 'freezes_cover method' do
-    assert_empty @purchase_with_freeze.freezes_cover('9 Jan 2022 10:30'.to_datetime)
-    assert_equal [freezes(:another_freeze)], @purchase_with_freeze.freezes_cover('10 Jan 2022 10:30'.to_datetime)
-    assert_equal [freezes(:another_freeze)], @purchase_with_freeze.freezes_cover('28 March 2022 10:30'.to_datetime)
-    assert_empty @purchase_with_freeze.freezes_cover('29 March 2022 10:30'.to_datetime)
+    assert_empty @purchase_with_freezes.freezes_cover('9 Jan 2022 10:30'.to_datetime)
+    assert_equal [freezes(:another_freeze)], @purchase_with_freezes.freezes_cover('10 Jan 2022 10:30'.to_datetime)
+    assert_equal [freezes(:another_freeze)], @purchase_with_freezes.freezes_cover('28 March 2022 10:30'.to_datetime)
+    assert_empty @purchase_with_freezes.freezes_cover('29 March 2022 10:30'.to_datetime)
   end
 
   test 'expired_in? method' do
@@ -236,7 +236,7 @@ class PurchaseTest < ActiveSupport::TestCase
     @purchase.save
 
     assert @purchase.deletable?
-    refute @purchase_with_freeze.deletable?
+    refute @purchase_with_freezes.deletable?
     refute @purchase_package.deletable?
   end
 
@@ -245,7 +245,7 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal Date.parse('30 Mar 2022'), @purchase_dropin.sunset_date_calc # dop 2022-02-26, 1D
     assert_equal Date.parse('18 Sep 2022'), @purchase_fixed.sunset_date_calc # dop 2022-02-15, 5W
     assert_equal Date.parse('4 April 2022'), @purchase_trial.sunset_date_calc # dop 2022-02-25, 1W
-    assert_equal Date.parse('8 Aug 2022'), @purchase_with_freeze.sunset_date_calc # dop 2021-11-09, 3M (freeze 2022-01-10 - 2022-03-28)
+    assert_equal Date.parse('8 Aug 2022'), @purchase_with_freezes.sunset_date_calc # dop 2021-11-09, 3M (freeze 2022-01-10 - 2022-03-28)
   end
 
   test 'unexpired_rider_without_ongoing_main scope' do
@@ -268,7 +268,7 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 1000, Product.current.dropin.space_group.first.base_price_at(Time.zone.now).price
     assert_equal 5000, @purchase_package.restart_payment
     assert_equal 6000, @purchase_fixed.restart_payment
-    assert_equal 1500, @purchase_with_freeze.restart_payment
+    assert_equal 1500, @purchase_with_freezes.restart_payment
   end
 
   test '#can_restart?' do
@@ -279,10 +279,10 @@ class PurchaseTest < ActiveSupport::TestCase
     assert @purchase_fixed.can_restart?
     refute @purchase_trial.can_restart?
     # re-establish this as a refute with explanation 'not because frozen, but becasue restart payment > purchase charge' (as it was before I started to remove ids and lost association to attendances)
-    # add some attendances to @purchase_with_freeze
-    assert @purchase_with_freeze.can_restart? 
-    @purchase_with_freeze.update(charge: 100000)
-    assert @purchase_with_freeze.can_restart?
+    # add some attendances to @purchase_with_freezes
+    assert @purchase_with_freezes.can_restart? 
+    @purchase_with_freezes.update(charge: 100000)
+    assert @purchase_with_freezes.can_restart?
     refute @purchase_pt.can_restart?
     refute @purchase_ptrider.can_restart?
     Restart.create(parent_id: @purchase_package.id) # Restart the package
@@ -294,7 +294,7 @@ class PurchaseTest < ActiveSupport::TestCase
     # no freeze
     assert_equal({ earliest: Date.parse('19 Mar 2022'), latest: Date.parse('18 Apr 2022') }, @purchase_package.new_freeze_dates)
     # currently frozen until 28/3/22 (expiry date 6/May 2022)
-    assert_equal({ earliest: Date.parse('29 Mar 2022'), latest: Date.parse('18 Apr 2022') }, @purchase_with_freeze.new_freeze_dates)
+    assert_equal({ earliest: Date.parse('29 Mar 2022'), latest: Date.parse('18 Apr 2022') }, @purchase_with_freezes.new_freeze_dates)
     # currently not frozen, a purchased freeze, which has not yet started will end after more than a month from now
     @purchase_package.freezes.create(start_date: Date.parse('15 April 2022'), end_date: Date.parse('29 April 2022'))
     # puts @purchase_package.expiry_date
