@@ -2,7 +2,7 @@
 <% physical_attendances = wkclass.physical_attendances.size %>
 <%= turbo_frame_tag wkclass do %>
   <div class="row">
-    <div class="column col-1x"><%= link_to wkclass.table_name, wkclass_path(wkclass, link_from: 'wkclasses_index', page: params[:page]), class: "like_button" %></div>
+    <div class="column col-1x"><%= link_to wkclass.instructorised_name, wkclass_path(wkclass, link_from: 'wkclasses_index', page: params[:page]), class: "like_button" %></div>
     <div class="column col-1x"><%= wkclass.date %></div>
     <div class="column col-1x"><%= wkclass.time %></div>
     <div class="column col-05x"><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></div>

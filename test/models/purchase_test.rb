@@ -25,8 +25,8 @@ class PurchaseTest < ActiveSupport::TestCase
     @wkclass1 = wkclasses(:hiitfeb26)
     @wkclass_already_attended = wkclasses(:wkclass362)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
-    # @price_fitternity = prices(:price2)
-    # @fitternity = fitternities(:two_ongoing)
+    @product_without_rider = products(:unlimited3m)
+    @product_with_rider = products(:product_12C5WPT)
   end
 
   test 'should be valid' do
@@ -38,6 +38,23 @@ class PurchaseTest < ActiveSupport::TestCase
 
     refute_predicate @purchase, :valid?
   end
+
+  test 'inconsistent rider not valid' do
+    @purchase_pt.product = @product_without_rider
+    refute_predicate @purchase_pt, :valid?  
+
+    @purchase_package.product = @product_with_rider
+    refute_predicate @purchase_package, :valid?  
+  end
+
+  test 'changing client of rider or riders main purchase not valid' do
+    @purchase_pt.client =  @client2
+    refute_predicate @purchase_pt, :valid?  
+
+    @purchase_package.client =  @client2
+    refute_predicate @purchase_package, :valid?  
+  end
+
 
   test 'delegated name method' do
     assert_equal 'Group UC:3M', @purchase_package.name
@@ -139,7 +156,6 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal 'ongoing', @purchase_pt.status_calc
     assert_equal 'not started', @purchase_ptrider.status_calc
     @purchase_pt.update(status: 'expired') # once main is expired, rider must be expired
-
     assert_equal 'expired', @purchase_ptrider.reload.status_calc
   end
 

@@ -183,8 +183,8 @@ class Wkclass < ApplicationRecord
     "#{workout.name}, #{date}, #{time}"
   end
 
-  def table_name
-    return name unless workout.instructor_initials?
+  def instructorised_name
+    return name if !workout.instructor_initials? || instructor.nil? 
 
     "#{name} (#{instructor.initials})"
   end

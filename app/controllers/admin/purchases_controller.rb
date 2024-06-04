@@ -9,10 +9,9 @@ class Admin::PurchasesController < Admin::BaseController
   before_action :sanitize_params, only: [:create, :update]
   # this should be a callback on Purchase model not a filter
   # before_action :already_had_trial?, only: [:create, :update]
-  before_action :changing_main_purchase_product?, only: :update
-  before_action :changing_main_purchase_name?, only: :update
+  # before_action :changing_main_purchase_product?, only: :update
+  # before_action :changing_main_purchase_name?, only: :update
   # before_action :changing_rider?, only: :update
-  # before_action :adjust_and_restarting?, only: :update
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
   # this approach is no good as the callback should be after a successful create not a failed create
@@ -224,49 +223,27 @@ class Admin::PurchasesController < Admin::BaseController
     false
   end
 
-  # def already_had_trial?
-  #   return if purchase_params[:client_id].blank? || purchase_params[:product_id].blank? #if either client or purchase are blank this will be picked up in the model validation
-  #   @client = Client.find(purchase_params[:client_id])
-  #   @product = Product.find(purchase_params[:product_id])
-  #   if new_purchase?
-  #     return unless @product.trial? && @client.has_had_trial?
+  # def changing_main_purchase_product?
+  #   return false if params[:purchase][:product_id].blank?
 
-  #     flash[:warning] = "Purchase not created. #{@client.name} has already had a Trial"
-  #     # redirect_to new_purchase_path
-  #     @purchase = Purchase.new(purchase_params)
-  #     prepare_items_for_dropdowns
-  #     render :new, status: :unprocessable_entity
-  #   else
-  #     return unless @product.trial? && @client.has_had_trial? && !@purchase.trial?
+  #   original_purchase_has_rider = @purchase.product.has_rider?
+  #   new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
+  #   return false if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
 
-  #     flash[:warning] = "Purchase not updated. #{@client.name} has already had a Trial"
-  #     redirect_to edit_purchase_path(@purchase)
-  #   end
+  #   flash[:warning] = "Purchase not updated. Can't change a purchase without a rider to one with a rider." if !original_purchase_has_rider && new_product_has_rider
+  #   flash[:warning] = "Purchase not updated. Can't change a purchase with a rider to one without a rider." if original_purchase_has_rider && !new_product_has_rider
+  #   redirect_to edit_purchase_path(@purchase)
   # end
 
-  def changing_main_purchase_product?
-    return false if params[:purchase][:product_id].blank?
+  # def changing_main_purchase_name?
+  #   original_purchase_has_rider = @purchase.rider_purchase.present?
+  #   client_changed = @purchase.client_id != params[:purchase][:client_id].to_i
 
-    # this line isn't robust. If the rider is deleted then there won't be a rider present, but the product hasn't necessarily changed 
-    # original_purchase_has_rider = @purchase.rider_purchase.present?
-    original_purchase_has_rider = @purchase.product.has_rider?
-    new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
-    return false if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
+  #   return false unless client_changed && original_purchase_has_rider
 
-    flash[:warning] = "Purchase not updated. Can't change a purchase without a rider to one with a rider." if !original_purchase_has_rider && new_product_has_rider
-    flash[:warning] = "Purchase not updated. Can't change a purchase with a rider to one without a rider." if original_purchase_has_rider && !new_product_has_rider
-    redirect_to edit_purchase_path(@purchase)
-  end
-
-  def changing_main_purchase_name?
-    original_purchase_has_rider = @purchase.rider_purchase.present?
-    client_changed = @purchase.client_id != params[:purchase][:client_id].to_i
-
-    return false unless client_changed && original_purchase_has_rider
-
-    flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
-    redirect_to edit_purchase_path(@purchase)
-  end
+  #   flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
+  #   redirect_to edit_purchase_path(@purchase)
+  # end
 
   # def changing_rider?
   #   return false if @purchase.main_purchase.nil?
@@ -277,7 +254,6 @@ class Admin::PurchasesController < Admin::BaseController
 
   def adjust_and_restart
     new_purchase = @purchase.dup
-    # new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )
     new_purchase.update(status: 'not started' )
     flash_message :warning, t('.adjust_and_restart')
     redirect_to purchases_path

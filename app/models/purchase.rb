@@ -5,7 +5,6 @@ class Purchase < ApplicationRecord
   belongs_to :fitternity, optional: true
   belongs_to :price
   has_many :attendances, dependent: :destroy
-  # has_one :restart, dependent: :destroy
   has_one :restart_as_child, class_name: "Restart", foreign_key: "child_id", dependent: :destroy
   has_one :restart_as_parent, class_name: "Restart", foreign_key: "parent_id"
   has_one :child_purchase, through: :restart_as_parent, source: :child
@@ -33,11 +32,8 @@ class Purchase < ApplicationRecord
   # end
   validate :check_if_already_had_trial
   validate :payment_amount_equals_charge
-  # Fitternity redundant now
-  # validates :fitternity, presence: true, if: :fitternity_id
-  # validate :fitternity_payment
-  # Fitternity redundant now and this validation prevented bulk setting of sunset_dates
-  # validate :fitternity_ongoing_package
+  validate :check_rider_consistency
+  validate :check_client_unchanged_if_rider
   scope :not_expired, lambda {
                         where.not(status: ['expired', 'classes all booked'])
                       }
@@ -445,7 +441,7 @@ class Purchase < ApplicationRecord
 
   def check_if_already_had_trial
     already_had_trial = if persisted?
-                          # editing from non-trial to trial. Note Self is the new intended purchase, not the same as the original Purchase.find(id) purchase
+                          # editing from non-trial to trial. Note self is the new intended purchase, not the same as the original Purchase.find(id) purchase
                           # if the original purchase is not a trial and product of the edited purchase is a trial and the client has had a trial...
                           !Purchase.find(id).trial? && product.trial? && client.has_had_trial?
                         else
@@ -455,13 +451,43 @@ class Purchase < ApplicationRecord
     errors.add(:base, 'Client has already had a trial') if already_had_trial
   end
 
+  def check_rider_consistency
+    return true if new_record?
+
+    had_rider = Purchase.find(id).rider_purchase.present?
+    has_rider = product.has_rider?
+    rider_consistency = had_rider == has_rider
+
+    errors.add(:product_id, "Can't change a purchase without a rider to one with a rider (or vice-versa)") unless rider_consistency
+  end
+
+  def check_client_unchanged_if_rider
+    return true if new_record?
+
+    original_client = Purchase.find(id).client
+    new_client = client
+    client_consistency = original_client == new_client
+
+    errors.add(:base, "Can't change the client for a purchase that has a rider") unless client_consistency
+  end
+
+  # def changing_main_purchase_name?
+  #   original_purchase_has_rider = @purchase.rider_purchase.present?
+  #   client_changed = @purchase.client_id != params[:purchase][:client_id].to_i
+
+  #   return false unless client_changed && original_purchase_has_rider
+
+  #   flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
+  #   redirect_to edit_purchase_path(@purchase)
+  # end  
+
   def payment_amount_equals_charge
     # NOTE: 'retun if restart_as_child' would be semantcally clearer but the Restart only gets associated with the Purchase after the Purchase has been saved, so self.restart_as_child is nil at this point 
     return if payment.nil? # this is the case if a restart as the payment is associated with the Restart not the purchase
 
     mismatch = charge != payment.amount && payment.payment_mode != 'Not paid'
 
-    errors.add(:base, 'The payment amount does not equal the charge, but the payment mode is not shown as Not paid') if mismatch
+    errors.add(:base, "The payment amount does not equal the charge, but the payment mode is not shown as 'Not paid'") if mismatch
   end
 
   def attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true)

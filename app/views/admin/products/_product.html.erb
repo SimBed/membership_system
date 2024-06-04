@@ -13,7 +13,7 @@
       <div class="column col-1x"><%= product_data[:ongoing_count] %></div>
     <% end %>
     <div class="column col-1x"><%= number_with_delimiter(product_data[:base_price]) %></div>
-    <%= product_decorator.edit(@admin_plus) %>     
+    <%= product_decorator.edit(@admin_plus, product.editable?) %>     
     <%= product_decorator.delete(@superadmin, product.deletable?) %>     
   </div>
 <% end %>

@@ -137,9 +137,9 @@ class Product < ApplicationRecord
   #   25 # for 1M
   # end
 
-  def self.full_name(wg_name, max_classes, validity_length, validity_unit, price_name)
-    "#{wg_name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit} #{price_name}"
-  end
+  # def self.full_name(wg_name, max_classes, validity_length, validity_unit, price_name)
+  #   "#{wg_name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit} #{price_name}"
+  # end
 
   def renewal_price(purpose)
     return nil unless purpose == 'base' || workout_group.name == 'Group'
@@ -161,6 +161,13 @@ class Product < ApplicationRecord
 
   def deletable?
     return true if purchases.empty? && prices.empty?
+
+    false
+  end
+
+  def editable?
+    # this boils down to the same as deletable? as new records won't yet have purchases or prices, but retain for now for clarity
+    return true if new_record? || deletable?
 
     false
   end

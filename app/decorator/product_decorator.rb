@@ -1,7 +1,7 @@
 class ProductDecorator < BaseDecorator
 
   def name_link(link)
-    link ? link_maker(name, nil, nil, product_path(self), nil, { turbo: false }, ['like_button']) : name
+    link ? link_maker(name(rider_show: true), nil, nil, product_path(self), nil, { turbo: false }, ['like_button']) : name(rider_show: true)
   end
 
   def sell_online(link)
@@ -12,13 +12,15 @@ class ProductDecorator < BaseDecorator
     link ? link_maker(nil, nil, current_image, product_path(self), {current: !current?}, { method: :patch }, nil) : current_image
   end
 
-  def edit(authorised)
-    if authorised
+  def edit(authorised, editable)
+    if authorised && editable
+      tooltip_title = "This product can be edited. It has no prices or purchases so it is safe to do so.".gsub(' ',"\u00a0")
       link = link_to image_tag('edit.png', class: "table_icon"), edit_product_path(self)
     else
-      link = link_to image_tag('edit.png', class: %w[table_icon greyed-out]), '#', class: 'disabled'    
+      tooltip_title = "This product has purchases or prices and so its fundamentals can not be edited".gsub(' ',"\u00a0")      
+      link = link_to image_tag('edit.png', class: %w[table_icon greyed-out]), '#', class: 'disabled'
     end
-    content_tag(:div, link, class: %w[column nomobile])
+    content_tag(:div, link, class: %w[column nomobile], data:{ toggle:"tooltip", placement: 'top'}, title: tooltip_title)
   end
 
   def delete(authorised, deletable)
