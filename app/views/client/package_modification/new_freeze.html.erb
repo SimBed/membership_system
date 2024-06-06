@@ -1,5 +1,5 @@
 <%= turbo_frame_tag 'freeze_new' do %>
-<div class="admin_form m-2">Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly to freeze.</div>
+<!--div class="admin_form m-2">Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly to freeze.</div-->
 <div class="pseudo-form text-center mx-2 mb-3" data-controller="freeze">
   <div class="mb-2">
     <label for="start"><%="Freeze this Package for #{Setting.freeze_duration_days} days starting on:"%></label>
@@ -12,9 +12,7 @@
            data-freeze-target="startDate"
            data-action="freeze#copy_to_razorpay_form">
   </div>
-  <% if false %>
   <%= render 'razor_form_freeze' %>
-  <% end %>
   <div class="fs-8 mt-3">
   <p>Before paying, please read terms under 'Modifications' <%= link_to 'here', terms_and_conditions_path, class: "fw-bolder text-decoration-underline", target: '_blank' %></p></div>
     <div class="cancel">
