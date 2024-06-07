@@ -4,12 +4,9 @@ export default class extends Controller {
   static targets = [ "clientSearch", "clientSelect", 'product', "renewalDiscount", "statusDiscount", "commercialDiscount", "discretionDiscount", "oneOffDiscount", "dop", "priceId", "basePrice", "charge"]
   static values = { discountUrl: String, dopChangeUrl: String, clientFilterUrl: String }
 
-  // connect() {
-  //   console.log(this.priceIdTarget)
-  //   console.log(this.basePriceTarget)
-  //   console.log(this.chargeTarget)
-  //   console.log(this.dopTargets[2].value)
-  // }
+  connect() {
+    // console.log(this.dopTargets[2].value)
+  }
 
   client_search() {
     let client_dropdown = this.clientSelectTarget
@@ -23,7 +20,7 @@ export default class extends Controller {
     });    
   }
   
-  field_change(){
+  field_change() {
     let renewal_discount_select = this.renewalDiscountTarget    
     let status_discount_select = this.statusDiscountTarget
     let commercial_discount_select = this.commercialDiscountTarget
@@ -32,6 +29,7 @@ export default class extends Controller {
     let priceIdEl = this.priceIdTarget;
     let basePriceEl = this.basePriceTarget;
     let chargeEl = this.chargeTarget;  
+    let dopEl = this.dopTarget.parentElement;  
     let queryHash = {
       renewal_discount_id: renewal_discount_select.value,
       status_discount_id: status_discount_select.value,
@@ -46,15 +44,19 @@ export default class extends Controller {
     fetch(this.dopChangeUrlValue + '?' + new URLSearchParams(queryHash))
     .then(function(response) {
       response.text().then((s) => {
-        console.log(s);
-        renewal_discount_select.innerHTML = JSON.parse(s).renewal;
-        status_discount_select.innerHTML = JSON.parse(s).status;
-        commercial_discount_select.innerHTML = JSON.parse(s).commercial;
-        discretion_discount_select.innerHTML = JSON.parse(s).discretion;
-        oneoff_discount_select.innerHTML = JSON.parse(s).oneoff;
-        priceIdEl.value = JSON.parse(s).base_price_id;
-        basePriceEl.value = JSON.parse(s).base_price_price;
-        chargeEl.value = JSON.parse(s).payment_after_discount;        
+        // console.log(s);
+        if (JSON.parse(s).dop == 'invalid') {
+          dopEl.classList.add('field_with_errors') } else {
+          renewal_discount_select.innerHTML = JSON.parse(s).renewal;
+          status_discount_select.innerHTML = JSON.parse(s).status;
+          commercial_discount_select.innerHTML = JSON.parse(s).commercial;
+          discretion_discount_select.innerHTML = JSON.parse(s).discretion;
+          oneoff_discount_select.innerHTML = JSON.parse(s).oneoff;
+          priceIdEl.value = JSON.parse(s).base_price_id;
+          basePriceEl.value = JSON.parse(s).base_price_price;
+          chargeEl.value = JSON.parse(s).payment_after_discount;
+          dopEl.classList.remove('field_with_errors');
+        }      
       })
     });    
   }

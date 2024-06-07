@@ -170,35 +170,48 @@ class Admin::PurchasesController < Admin::BaseController
 
   def dop_change
     # dop = construct_date(params, 'dop')
-    dop = DateTime.new(params[:dop_1i].to_i,
-    params[:dop_2i].to_i,
-    params[:dop_3i].to_i)
-    discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
-    renewal_discount = (discount_options('renewal', dop, discount_none).include? Discount.find(params[:renewal_discount_id])) ? Discount.find(params[:renewal_discount_id]) : discount_none
-    status_discount = (discount_options('status', dop, discount_none).include? Discount.find(params[:status_discount_id])) ? Discount.find(params[:status_discount_id]) : discount_none
-    # status_discount = Discount.find(params[:status_discount_id])
-    commercial_discount = Discount.find(params[:commercial_discount_id])
-    discretion_discount = Discount.find(params[:discretion_discount_id])
-    oneoff_discount = Discount.find(params[:oneoff_discount_id])
-    # base_price = Price.base_at(Time.zone.now).find_by(product_id: params[:product_id])
-    base_price = Price.base_at(dop).find_by(product_id: params[:product_id])
-    payment_after_discount = apply_discount(base_price, renewal_discount, status_discount, oneoff_discount, discretion_discount, commercial_discount)    
-    render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, discount_options('renewal', dop, discount_none), :id, :name,
-                                                      selected: params[:renewal_discount_id] || discount_none.id),
-                   status: helpers.collection_select(:purchase, :status_discount_id, discount_options('status', dop, discount_none), :id, :name,
-                                                     selected: params[:status_discount_id] || discount_none.id),
-                   commercial: helpers.collection_select(:purchase, :commercial_discount_id, discount_options('commercial', dop, discount_none), :id, :name,
-                                                     selected: params[:commercial_discount_id] || discount_none.id),
-                   discretion: helpers.collection_select(:purchase, :discretion_discount_id, discount_options('discretion', dop, discount_none), :id, :name,
-                                                     selected: params[:discretion_discount_id] || discount_none.id),
-                   oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, discount_options('oneoff', dop, discount_none), :id, :name,
-                                                     selected: params[:oneoff_discount_id] || discount_none.id),
-                   base_price_id: base_price&.id,
-                   base_price_price: base_price&.price,
-                   payment_after_discount: payment_after_discount }
+    dop = check_dop_valid
+    if dop.nil?
+      render json: { dop: 'invalid' }
+    else
+      discount_none = Discount.joins(:discount_reason).where(discount_reasons: { rationale: 'Base' }).first
+      renewal_discount = (discount_options('renewal', dop, discount_none).include? Discount.find(params[:renewal_discount_id])) ? Discount.find(params[:renewal_discount_id]) : discount_none
+      status_discount = (discount_options('status', dop, discount_none).include? Discount.find(params[:status_discount_id])) ? Discount.find(params[:status_discount_id]) : discount_none
+      # status_discount = Discount.find(params[:status_discount_id])
+      commercial_discount = Discount.find(params[:commercial_discount_id])
+      discretion_discount = Discount.find(params[:discretion_discount_id])
+      oneoff_discount = Discount.find(params[:oneoff_discount_id])
+      # base_price = Price.base_at(Time.zone.now).find_by(product_id: params[:product_id])
+      base_price = Price.base_at(dop).find_by(product_id: params[:product_id])
+      payment_after_discount = apply_discount(base_price, renewal_discount, status_discount, oneoff_discount, discretion_discount, commercial_discount)    
+      render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, discount_options('renewal', dop, discount_none), :id, :name,
+                                                        selected: params[:renewal_discount_id] || discount_none.id),
+                    status: helpers.collection_select(:purchase, :status_discount_id, discount_options('status', dop, discount_none), :id, :name,
+                                                      selected: params[:status_discount_id] || discount_none.id),
+                    commercial: helpers.collection_select(:purchase, :commercial_discount_id, discount_options('commercial', dop, discount_none), :id, :name,
+                                                      selected: params[:commercial_discount_id] || discount_none.id),
+                    discretion: helpers.collection_select(:purchase, :discretion_discount_id, discount_options('discretion', dop, discount_none), :id, :name,
+                                                      selected: params[:discretion_discount_id] || discount_none.id),
+                    oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, discount_options('oneoff', dop, discount_none), :id, :name,
+                                                      selected: params[:oneoff_discount_id] || discount_none.id),
+                    base_price_id: base_price&.id,
+                    base_price_price: base_price&.price,
+                    payment_after_discount: payment_after_discount }
+    end
+      
   end
 
   private
+
+  def check_dop_valid
+    # eg administrator could enter 31 Feb by mistake
+    return DateTime.new(params[:dop_1i].to_i,
+    params[:dop_2i].to_i,
+    params[:dop_3i].to_i)
+
+    rescue
+      nil
+  end
 
   def discount_options(discount_type, date, discount_none)
     [discount_none] + Discount.with_rationale_at(discount_type.capitalize, date)
