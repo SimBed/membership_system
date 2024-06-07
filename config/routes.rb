@@ -35,7 +35,7 @@ Rails.application.routes.draw do
         get 'filter'
         get 'clear_filters'
         get 'discount'
-        get 'dop_change'        
+        get 'form_field_change'        
       end
     end
     resources :clients do

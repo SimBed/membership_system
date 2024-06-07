@@ -2,10 +2,11 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = [ "clientSearch", "clientSelect", 'product', "renewalDiscount", "statusDiscount", "commercialDiscount", "discretionDiscount", "oneOffDiscount", "dop", "priceId", "basePrice", "charge"]
-  static values = { discountUrl: String, dopChangeUrl: String, clientFilterUrl: String }
+  static values = { fieldChangeUrl: String, clientFilterUrl: String }
 
   connect() {
     // console.log(this.dopTargets[2].value)
+    // console.log(this.fieldChangeUrlValue)
   }
 
   client_search() {
@@ -41,7 +42,7 @@ export default class extends Controller {
       dop_2i: this.dopTargets[1].value,
       dop_3i: this.dopTargets[2].value  
     }
-    fetch(this.dopChangeUrlValue + '?' + new URLSearchParams(queryHash))
+    fetch(this.fieldChangeUrlValue + '?' + new URLSearchParams(queryHash))
     .then(function(response) {
       response.text().then((s) => {
         // console.log(s);
