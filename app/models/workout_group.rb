@@ -72,10 +72,10 @@ class WorkoutGroup < ApplicationRecord
     workouts.pluck(:name).join(', ')
   end
 
-  def expiry_revenue(period)
-    # purchases.fully_expired.select { |p| p.expired_in?(period) }.map(&:expiry_revenue).inject(0, :+)
-    purchases.expired_in(period).map(&:expiry_revenue).inject(0, :+)
-  end
+  # def expiry_revenue(period)
+  #   # purchases.fully_expired.select { |p| p.expired_in?(period) }.map(&:expiry_revenue).inject(0, :+)
+  #   purchases.expired_in(period).map(&:expiry_revenue).inject(0, :+)
+  # end
 
   def create_rel_workout_group_workout
     workout_ids.each { |wid| RelWorkoutGroupWorkout.create(workout_group_id: id, workout_id: wid) }

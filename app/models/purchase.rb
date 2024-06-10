@@ -24,7 +24,6 @@ class Purchase < ApplicationRecord
   delegate :name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
            :product_style, :pt?, :groupex?, :online?, :max_classes, :rider?, to: :product
   validates :charge, presence: true
-  validates :payment_mode, presence: true
   # validates :ar_payment, presence: true, if: :adjust_restart?
   # with_options if: :adjust_restart? do
   #   validates :ar_payment, presence: true
@@ -69,9 +68,9 @@ class Purchase < ApplicationRecord
   # scope :order_by_expiry_date, -> { package_started_not_expired.order(:expiry_date) }
   scope :client_name_like, ->(name) { joins(:client).merge(Client.name_like(name)) }
   scope :service_type, ->(service) { joins(product: [:workout_group]).where(workout_groups: { service: }) }
-  scope :unpaid, -> { where(payment_mode: 'Not paid') }
-  scope :written_off, -> { where(payment_mode: 'Write Off') }
-  scope :classpass, -> { where(payment_mode: 'ClassPass') }
+  scope :unpaid, -> { joins(:payment).where(payment: { payment_mode: 'Not paid' }) }
+  scope :written_off, -> { joins(:payment).where(payment: { payment_mode: 'Write Off' }) }
+  scope :classpass, -> { joins(:payment).where(payment: { payment_mode: 'ClassPass' }) }
   scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
   scope :remind_to_renew, -> { package_started_not_expired.select(&:remind_to_renew?) }
   scope :during, ->(period) { where(dop: period) }
@@ -344,18 +343,18 @@ class Purchase < ApplicationRecord
     end
   end
 
-  def expiry_revenue
-    return 0 unless expired?
-    # individual fitternity packages are dummy packages for efficiency
-    # either is ok, just extra failsafe to guard against admin error
-    return 0 if payment_mode == 'Fitternity' # || price.name == 'Fitternity'
+  # def expiry_revenue
+  #   return 0 unless expired?
+  #   # individual fitternity packages are dummy packages for efficiency
+  #   # either is ok, just extra failsafe to guard against admin error
+  #   return 0 if payment_mode == 'Fitternity' # || price.name == 'Fitternity'
 
-    attendance_revenue = attendances.includes(purchase: [:product]).confirmed.no_amnesty.map(&:revenue).inject(0, :+)
-    # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
-    return (charge - attendance_revenue) unless restart_as_parent
+  #   attendance_revenue = attendances.includes(purchase: [:product]).confirmed.no_amnesty.map(&:revenue).inject(0, :+)
+  #   # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
+  #   return (charge - attendance_revenue) unless restart_as_parent
         
-    restart_as_parent.payment.amount - attendance_revenue
-  end
+  #   restart_as_parent.payment.amount - attendance_revenue
+  # end
 
   def start_to_expiry
     status_hash[:attendance_provisional].tap do |aps|

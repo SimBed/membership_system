@@ -19,7 +19,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
     if order.status == 'captured'
       account = Account.find(order_params[:account_id])
       purchase_params = { client_id: account.client.id, product_id: order.product_id, price_id: order_params[:price_id],
-                          charge: order.price, dop: Time.zone.today, payment_mode: 'Razorpay', status: 'not started', payment_attributes: {dop: Time.zone.today, amount: order.price, payment_mode: 'Razorpay', online: true, note: nil} }
+                          charge: order.price, dop: Time.zone.today, status: 'not started', payment_attributes: {dop: Time.zone.today, amount: order.price, payment_mode: 'Razorpay', online: true, note: nil} }
       @purchase = Purchase.new(purchase_params)
       if @purchase.save
         [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|

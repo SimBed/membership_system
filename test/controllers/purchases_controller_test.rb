@@ -59,7 +59,6 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
               product_id: @purchase1.product_id,
               charge: 1000,
               dop: '2022-02-15',
-              payment_mode: 'Cash',
               price: @trial_price } }
       end
     end
@@ -75,7 +74,6 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
             product_id: @purchase1.product_id,
             charge: @purchase1.charge + 500,
             dop: @purchase1.dop,
-            payment_mode: @purchase1.payment_mode,
             price: @trial_price } }
 
       assert_equal original_payment, @purchase1.reload.charge
@@ -101,7 +99,6 @@ class PurchasesControllerTest < ActionDispatch::IntegrationTest
             product_id: @product_trial.id,
             charge: 1500,
             dop: '2022-02-15',
-            payment_mode: 'Cash',
             price: prices(:trial),
             renewal_discount_id: @discount.id,
             status_discount_id: @discount.id,

@@ -20,7 +20,7 @@ class Admin::PurchasesController < Admin::BaseController
   def index
     # @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
     # associations referrred to in view - attendances, product in start_to_expiry method, client directly in purchase.client.name
-    @purchases = Purchase.includes(:attendances, :freezes, :adjustments, :penalties, :client, product: [:workout_group])
+    @purchases = Purchase.includes(:attendances, :freezes, :adjustments, :penalties, :payment, :client, product: [:workout_group])
     @superadmin = logged_in_as?('superadmin')
     handle_search
     handle_filter
@@ -207,7 +207,6 @@ class Admin::PurchasesController < Admin::BaseController
     @rider_purchase = @purchase.dup
     if @rider_purchase.update({ product_id: rider_product.id,
                                 charge: 0,
-                                payment_mode: 'Not applicable',
                                 note: nil,
                                 price_id: rider_product_price.id,
                                 purchase_id: @purchase.id })
@@ -276,12 +275,9 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def purchase_params
-    p = params.require(:purchase)
+    params.require(:purchase)
     .permit(:client_id, :product_id, :price_id, :charge, :dop, :note, :renewal_discount_id, :status_discount_id, :oneoff_discount_id,
     :commercial_discount_id, :discretion_discount_id, payment_attributes: [:dop, :amount, :payment_mode, :note])
-    # temporarily retain payment_method in Purchase model
-    p.merge!(payment_mode: params[:purchase][:payment_attributes][:payment_mode])  if params[:purchase][:payment_attributes]
-    p
   end
 
   def sanitize_params

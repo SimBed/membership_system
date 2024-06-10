@@ -9,6 +9,7 @@ class Client < ApplicationRecord
   has_many :challenges, through: :achievements
   has_many :waitings, through: :purchases
   has_one :declaration, dependent: :destroy
+  has_many :payments, through: :purchases
   accepts_nested_attributes_for :declaration
   belongs_to :account, optional: true
   before_save :downcase_email
@@ -119,7 +120,7 @@ class Client < ApplicationRecord
   end
 
   def payment_outstanding?
-    !purchases.where(payment_mode: 'Not paid').empty?
+    payments.where(payment_mode: 'Not paid').any?
   end
 
   # could reformat here as last_counted_class method has similarly structured code
@@ -188,12 +189,6 @@ class Client < ApplicationRecord
     purchases.map(&:online?).any?
   end
 
-  # def just_bought_groupex?
-  #   return false if last_purchase.nil?
-
-  #   last_purchase.workout_group.renewable?
-  # end
-
   def lifetime_classes
     Client.joins(purchases: [:attendances]).where(id:).where(attendances: { status: 'attended' }).size
   end
@@ -204,7 +199,7 @@ class Client < ApplicationRecord
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
   end
 
-  # method once named booked? but this is misleading
+  # method once named booked? but this name would be misleading
   def associated_with?(wkclass)
     return true if attendances.includes(:wkclass).map(&:wkclass).include? wkclass
 

@@ -43,7 +43,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def create
-    handle_fitternity and return if fitternity?
+    # handle_fitternity and return if fitternity?
 
     @attendance = Attendance.new(attendance_params)
     if @attendance.save
@@ -57,27 +57,27 @@ class Admin::AttendancesController < Admin::BaseController
     end
   end
 
-  def handle_fitternity
-    purchase_hash = { client_id: @client.id,
-                      product_id: 1,
-                      price_id: 2,
-                      charge: 550,
-                      dop: Time.zone.today,
-                      payment_mode: 'Fitternity',
-                      fitternity_id: Fitternity.ongoing.first&.id }
+  # def handle_fitternity
+  #   purchase_hash = { client_id: @client.id,
+  #                     product_id: 1,
+  #                     price_id: 2,
+  #                     charge: 550,
+  #                     dop: Time.zone.today,
+  #                     payment_mode: 'Fitternity',
+  #                     fitternity_id: Fitternity.ongoing.first&.id }
 
-    @purchase = Purchase.new(purchase_hash)
-    if @purchase.save
-      @attendance = Attendance.new(wkclass_id: params[:attendance][:wkclass_id].to_i, purchase_id: @purchase.id)
-      if @attendance.save
-        after_successful_create_by_admin
-      else
-        after_unsuccessful_create_by_admin
-      end
-    else
-      after_unsuccessful_create_by_admin
-    end
-  end
+  #   @purchase = Purchase.new(purchase_hash)
+  #   if @purchase.save
+  #     @attendance = Attendance.new(wkclass_id: params[:attendance][:wkclass_id].to_i, purchase_id: @purchase.id)
+  #     if @attendance.save
+  #       after_successful_create_by_admin
+  #     else
+  #       after_unsuccessful_create_by_admin
+  #     end
+  #   else
+  #     after_unsuccessful_create_by_admin
+  #   end
+  # end
 
   def after_successful_create_by_client
     @wkclass = @attendance.wkclass

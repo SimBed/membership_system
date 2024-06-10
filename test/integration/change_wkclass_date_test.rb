@@ -7,7 +7,7 @@ class ChangeWkclassDateTest < ActionDispatch::IntegrationTest
     @product = products(:unlimited1m)
     @price = prices(:Uc1mbase)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
-    @purchase = @client.purchases.create(product_id: @product.id, charge: 9500, payment_mode: 'Cash', price_id: @price.id, dop: '2022-04-01')
+    @purchase = @client.purchases.create(product_id: @product.id, charge: 9500, price_id: @price.id, dop: '2022-04-01')
     @wkclass1 = @tomorrows_class_early.dup    
   end
 

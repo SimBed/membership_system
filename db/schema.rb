@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_22_170014) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_10_105717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -440,7 +440,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_22_170014) do
     t.integer "product_id"
     t.integer "charge"
     t.date "dop"
-    t.string "payment_mode"
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
