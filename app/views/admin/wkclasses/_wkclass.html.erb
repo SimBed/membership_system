@@ -1,20 +1,15 @@
+<% wkclass_decorator = decorate(wkclass) %>
 <% junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
 <% physical_attendances = wkclass.physical_attendances.size %>
 <%= turbo_frame_tag wkclass do %>
   <div class="row">
-    <div class="column col-1x"><%= link_to wkclass.instructorised_name, wkclass_path(wkclass, link_from: 'wkclasses_index', page: params[:page]), class: "like_button" %></div>
-    <div class="column col-1x"><%= wkclass.date %></div>
-    <div class="column col-1x"><%= wkclass.time %></div>
-    <div class="column col-05x"><%= physical_attendances %> <%= image_tag('reserve.png', class: "header_icon")%></div>
-    <div class="column col-05x"><%= wkclass.max_capacity - physical_attendances %> <%= image_tag('group.png', class: "header_icon")%></div>
-    <div class="column col-05x"><%= wkclass.waitings.size %> <%= image_tag('waiting.png', class: "header_icon")%></div>
-    <% if junioradmin_plus %>
-      <div class="column nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_wkclass_path(wkclass, page: params[:page]) %></div>
-      <% if wkclass.deletable? %>
-        <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), wkclass_path(wkclass, page: params[:page]), data: { "turbo-method": :delete, turbo_confirm: 'Class can be deleted as it has no attendances. But are you sure?' } %></div>
-      <% else %>
-        <div class="column nomobile"></div>
-      <% end %>
-    <% end %>
+    <div class="column col-1x"><%= wkclass_decorator.name_link(params[:page]) %></div>
+    <div class="column col-1x"><%= wkclass_decorator.date %></div>
+    <div class="column col-1x"><%= wkclass_decorator.time %></div>
+    <div class="column col-05x"><%= wkclass_decorator.spaces_taken %></div>
+    <div class="column col-05x"><%= wkclass_decorator.spaces_left %></div>
+    <div class="column col-05x"><%= wkclass_decorator.number_on_waiting_list %></div>
+    <%= wkclass_decorator.edit(@junioradmin_plus, params[:page]) %>
+    <%= wkclass_decorator.delete(@junioradmin_plus, wkclass.deletable?, params[:page]) %>
   </div>
 <% end %>

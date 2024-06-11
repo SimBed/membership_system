@@ -8,9 +8,10 @@
       <div class="column col-1x">Days</div>
     </div>
     <% penalties.each_with_index do |pen, index| %>
+    <% wkclass_decorator = decorate(pen.attendance.wkclass) %>
       <div class="row">
         <div class="column"><%= index + 1 %></div>
-        <div class="column col-1x"><%= pen.attendance.wkclass.summary %></div>
+        <div class="column col-1x"><%= wkclass_decorator.summary %></div>
         <div class="column col-1x"><%= "#{pluralize(pen.amount, 'day')}" %></div>
       </div>
     <% end %>

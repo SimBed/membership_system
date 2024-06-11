@@ -1,3 +1,4 @@
+<% wkclass_decorator = decorate(wkclass) %>
 <%# booking_link_and_class = booking_link_and_class_for(wkclass, @client, index, 'group') %>
 <% attendance_format = AttendanceFormat.new(wkclass, @client, index, 'group') %>
     <!-- Modal -->
@@ -38,7 +39,7 @@
   </div>
   <div class="book-item">
     <div class="details">
-      <div class="time"><%=wkclass.time%></div>
+      <div class="time"><%=wkclass_decorator.time%></div>
       <div class="duration"><%=wkclass.duration%></div>
     </div>
   </div>

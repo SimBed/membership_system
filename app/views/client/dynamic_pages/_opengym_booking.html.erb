@@ -1,3 +1,4 @@
+<% wkclass_decorator = decorate(wkclass) %>
 <% booking_link_and_class = booking_link_and_class_for(wkclass, @client, index, 'opengym') %>
   <div class="open-gym-booking">
     <div class="book-item">
@@ -7,7 +8,7 @@
     </div>  
     <div class="book-item">
       <div class="details">          
-        <div class="time"><%=wkclass.time%></div>
+        <div class="time"><%=wkclass_decorator.time%></div>
       </div>
     </div>               
     <div class="book-item">

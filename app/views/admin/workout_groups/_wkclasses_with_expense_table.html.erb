@@ -2,21 +2,22 @@
 <%= render partial: 'instructor_expense_filter_form' %>
   <div class="admin-table striped mt-3">  
     <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
-    <div class="row">
-      <% wkclass_size = wkclass.attendances.size %>      
-      <div class="column"><%= index + 1 %></div>
-        <div class="column col-2x"><%= link_to wkclass.summary, wkclass_path(wkclass, link_from: 'workout_group_show'), class: "like_button", data:{ turbo: false } %>
+      <% wkclass_decorator = decorate(wkclass) %>
+      <div class="row">
+        <% wkclass_size = wkclass.attendances.size %>      
+        <div class="column"><%= index + 1 %></div>
+          <div class="column col-2x"><%= link_to wkclass_decorator.summary, wkclass_path(wkclass, link_from: 'workout_group_show'), class: "like_button", data:{ turbo: false } %>
+        </div>
+        <% if wkclass.pt_workout? %>
+          <div class="column col-1x"><%= wkclass.attendances&.first&.client&.name %></div>
+          <div class="column col-1x"><%= wkclass.attendances&.first&.status %></div>
+          <% else %>
+          <div class="column col-1x">-</div>
+          <div class="column col-1x">-</div>
+        <% end %>    
+        <div class="column col-1x"><%= wkclass.instructor_name %></div>
+        <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
       </div>
-      <% if wkclass.pt_workout? %>
-        <div class="column col-1x"><%= wkclass.attendances&.first&.client&.name %></div>
-        <div class="column col-1x"><%= wkclass.attendances&.first&.status %></div>
-        <% else %>
-        <div class="column col-1x">-</div>
-        <div class="column col-1x">-</div>
-      <% end %>    
-      <div class="column col-1x"><%= wkclass.instructor_name %></div>
-      <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
-    </div>
     <% end %>
     <div class="row">
       <div class="column col fw-bolder">Total: <%= rupees(@summary[:variable_expense_filtered]) %></div>

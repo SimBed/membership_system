@@ -163,13 +163,13 @@ class Wkclass < ApplicationRecord
     true
   end
 
-  def date
-    start_time.strftime('%a %d %b %y')
-  end
+  # def date
+  #   start_time.strftime('%a %d %b %y')
+  # end
 
-  def time
-    start_time.strftime('%H:%M')
-  end
+  # def time
+  #   start_time.strftime('%H:%M')
+  # end
 
   def date_time_short
     start_time.strftime('%H:%M, %a %d')
@@ -179,15 +179,15 @@ class Wkclass < ApplicationRecord
     start_time.strftime('%A')
   end
 
-  def summary
-    "#{workout.name}, #{date}, #{time}"
-  end
+  # def summary
+  #   "#{workout.name}, #{date}, #{time}"
+  # end
 
-  def instructorised_name
-    return name if !workout.instructor_initials? || instructor.nil? 
+  # def instructorised_name
+  #   return name if !workout.instructor_initials? || instructor.nil? 
 
-    "#{name} (#{instructor.initials})"
-  end
+  #   "#{name} (#{instructor.initials})"
+  # end
 
   def deletable?
     # Bullet.enable = false if Rails.env == 'development'

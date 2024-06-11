@@ -2,9 +2,11 @@
   <caption>Attendances</caption>
   <tbody>
     <% @attendances.each_with_index do |attendance, index| %>
+      <% wkclass = attendance.wkclass %>
+      <% wkclass_decorator = decorate(wkclass) %>
       <tr>
         <th scope="row"><%= @attendances.size - index %></th>
-        <td><%= link_to attendance.wkclass.summary, wkclass_path(attendance.wkclass), class: "like_button" %></td>
+        <td><%= link_to wkclass_decorator.summary, wkclass_path(wkclass), class: "like_button" %></td>
         <td><%= link_to attendance.client.name , client_path(attendance.client), class: "like_button" %></td>
         <td><%= attendance.status %></td>
       </tr>
