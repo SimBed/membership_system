@@ -1,6 +1,4 @@
 <% wkclass_decorator = decorate(wkclass) %>
-<% junioradmin_plus = logged_in_as?('junioradmin', 'admin', 'superadmin') ? true : false %>
-<% physical_attendances = wkclass.physical_attendances.size %>
 <%= turbo_frame_tag wkclass do %>
   <div class="row">
     <div class="column col-1x"><%= wkclass_decorator.name_link(params[:page]) %></div>

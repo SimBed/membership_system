@@ -1,8 +1,8 @@
 class Admin::WkclassesController < Admin::BaseController
   include ParamsDateConstructor
-  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :repeat, :filter, :instructor_select]
+  skip_before_action :admin_account, only: [:show, :index, :new, :edit, :create, :update, :destroy, :repeat, :filter, :clear_filters, :instructor_select]
   before_action :junioradmin_account, only: [:new, :edit, :create, :update, :destroy, :repeat, :instructor_select]
-  before_action :junioradmin_or_instructor_account, only: [:show, :index]
+  before_action :junioradmin_or_instructor_account, only: [:show, :index, :filter, :clear_filters]
   before_action :set_wkclass, only: [:show, :edit, :update, :destroy, :repeat]
   before_action :set_repeats, only: [:create, :repeat]
   before_action :attendance_check, only: :repeat
@@ -140,7 +140,7 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def clear_filters
-    # *splat operator is used to turn array into an argument list
+    # splat operator * is used to turn array into an argument list
     # https://ruby-doc.org/core-2.0.0/doc/syntax/calling_methods_rdoc.html#label-Array+to+Arguments+Conversion
     clear_session(*session_filter_list)
     redirect_to wkclasses_path
