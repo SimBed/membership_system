@@ -1,7 +1,7 @@
 <%= turbo_frame_tag workout_group do %>
   <div class="row">
     <div class="column col-1x extra-small"><%= link_to workout_group.name, workout_group_path(workout_group), class: 'like_button extra_small', data: { turbo_frame: dom_id(workout_group) } %></div>
-    <div class="column col-1x extra-small"><%= link_to image_tag('view.png', class: "table_icon"), show_workouts_path(workout_group) %></div>
+    <div class="column col-1x extra-small"><%= link_to image_tag('view.png', class: "table_icon"), show_workouts_workout_groups_path(workout_group) %></div>
     <div class="column col-1x extra-small"><%= workout_group.requires_account? ? raw("&check;") : "-" %></div>
     <div class="column col-1x extra-small"><%= workout_group.service %></div>
     <div class="column"><%= link_to image_tag('attendances.png', class: ["table_icon",("greyed-out" unless workout_group.current?)].compact.join(' ')), toggle_current_workout_groups_path(workout_group, current: !workout_group.current?), data: {turbo_method: :patch} %></div>       

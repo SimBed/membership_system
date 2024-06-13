@@ -15,12 +15,12 @@ Rails.application.routes.draw do
     patch '/purchases/:id/expire', to: 'purchases#expire', as: 'expire_purchase'
     # get '/purchases/discount'
     # get '/purchases/dop_change'
-    get '/workout_groups/:id/instructor_expense_filter', to: 'workout_groups#instructor_expense_filter', as: 'instructor_expense_filter'
+    # get '/workout_groups/:id/instructor_expense_filter', to: 'workout_groups#instructor_expense_filter', as: 'instructor_expense_filter'
     get '/wkclasses/instructor_select'
     get '/footfall', to: 'attendances#footfall'
     get '/timetable', to: 'timetables#show_public', as: 'public_timetable'
     # get 'client_analyze', to: 'clients#analyze', as: 'client_analyze'
-    get 'workout_groups/:id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
+    # get 'workout_groups/:id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
     post '/timetable/:id/copy', to: 'timetables#deep_copy', as: 'timetable_deep_copy'
     post '/wkclasses/:id/repeat', to: 'wkclasses#repeat', as: 'wkclass_repeat'
     resources :products, :wkclasses, :workouts do
@@ -50,6 +50,8 @@ Rails.application.routes.draw do
     end
     resources :workout_groups do
       collection do
+        get ':id/instructor_expense_filter', to: 'workout_groups#instructor_expense_filter', as: 'instructor_expense_filter'
+        get ':id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
         patch 'toggle_current/:id', to: 'workout_groups#toggle_current', as: 'toggle_current'
       end
     end

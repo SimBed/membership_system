@@ -11,7 +11,9 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def show
     set_period
     @wkclasses = @workout_group.wkclasses_during(@period)
+    # @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost.includes(:workout, :instructor)
     @wkclasses_with_instructor_expense = @wkclasses.has_instructor_cost.includes(:workout, :instructor)
+    set_instructor_filters
     @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.send(:with_instructor, session[:filter_instructor]) if session[:filter_instructor].present?
     # unscope :order from wkclasses_during method otherwise get an ActiveRecord::StatementInvalid Exception: PG::GroupingError: ERROR
     # @instructor_cost_subtotals = @wkclasses_with_instructor_expense.unscope(:order).group_by_instructor_cost.delete_if { |k, v| v.zero? }
@@ -25,7 +27,8 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     @summary = {}
     set_revenue_summary
     set_expense_summary
-    @instructor_filter_options = Instructor.current.has_rate.order_by_name
+
+    # @instructor_filter_options = Instructor.current.has_rate.order_by_name
   end
 
   def new
@@ -89,6 +92,13 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   def prepare_items_for_dropdowns
     @workouts = Workout.order_by_current
     @services = Rails.application.config_for(:constants)['workout_group_services']
+  end
+
+  def set_instructor_filters
+    # @wkclasses_with_instructor_expense.pluck('distinct wkclasses.instructor_id') runs into ambiguous coulmn error because instructor_id in wkclass and in instructor_rate
+    # @wkclasses_with_instructor_expense.pluck('distinct wkclasses.instructor_id') gives an ActiveRecord::UnknownAttributeReference error
+    # https://stackoverflow.com/questions/49890531/rails-select-distinct-association-from-collection
+    @instructor_filter_options = Instructor.where(id: Wkclass.where(id: @wkclasses_with_instructor_expense.map(&:id)).pluck('distinct instructor_id'))
   end
 
   # def set_period
