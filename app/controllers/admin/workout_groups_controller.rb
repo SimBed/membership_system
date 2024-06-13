@@ -1,10 +1,10 @@
 class Admin::WorkoutGroupsController < Admin::BaseController
   skip_before_action :admin_account, only: [:show, :instructor_expense_filter]
   before_action :superadmin_account, only: [:show, :instructor_expense_filter]
-  before_action :set_workout_group, only: [:show, :edit, :update, :destroy, :show_workouts, :instructor_expense_filter]
+  before_action :set_workout_group, only: [:show, :edit, :update, :destroy, :show_workouts, :toggle_current, :instructor_expense_filter]
 
   def index
-    @workout_groups = WorkoutGroup.order_by_name
+    @workout_groups = WorkoutGroup.order_by_current
     handle_index_response
   end
 
@@ -65,6 +65,11 @@ class Admin::WorkoutGroupsController < Admin::BaseController
     @workout_group.destroy
     redirect_to workout_groups_path
     flash[:success] = t('.success')
+  end
+
+  def toggle_current
+    @workout_group.update_column(:current, workout_group_params[:current])
+    redirect_to workout_groups_path
   end
 
   def instructor_expense_filter
@@ -138,7 +143,10 @@ class Admin::WorkoutGroupsController < Admin::BaseController
   end
 
   def workout_group_params
-    params.require(:workout_group).permit(:name, :service, :requires_account, workout_ids: [])
+    # the update method (and therefore the workout_group_params method) is used through a form but also by clicking on a link on the workout_groups page
+    return { current: params[:current] } if params[:current].present?
+    
+    params.require(:workout_group).permit(:name, :service, :requires_account, :current, workout_ids: [])
   end
 
 end

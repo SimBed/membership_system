@@ -11,7 +11,7 @@ class Admin::ProductsController < Admin::BaseController
     # @products_not_current = Product.not_current
     handle_filter
     handle_sort
-    @workout_groups = WorkoutGroup.order_by_name
+    @workout_groups = WorkoutGroup.order_by_current
     # reinstate this once sorted out the sorting (sorting by price returns an array)
     # @products = @products.space_group if logged_in_as?('junioradmin')
     set_data
@@ -131,7 +131,7 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def prepare_items_for_dropdowns
-    @workout_groups = WorkoutGroup.all
+    @workout_groups = @product.new_record? ? WorkoutGroup.current.order_by_current : WorkoutGroup.order_by_current
     @validity_units = [%w[days D], %w[weeks W], %w[months M]]
     @colors = Setting.product_colors
   end

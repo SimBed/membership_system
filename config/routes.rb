@@ -48,10 +48,15 @@ Rails.application.routes.draw do
     resources :freezes, except: [:show] do
       get 'filter', on: :collection
     end
+    resources :workout_groups do
+      collection do
+        patch 'toggle_current/:id', to: 'workout_groups#toggle_current', as: 'toggle_current'
+      end
+    end
     resources :adjustments, :entries, :prices, except: [:index, :show]
     resources :accounts, only: [:create, :update, :destroy]
     resources :attendances, only: [:new, :create, :update, :destroy]
-    resources :fitternities, :instructors, :partners, :timetables, :workout_groups
+    resources :fitternities, :instructors, :partners, :timetables
     resources :restarts, except: [:show]
     resources :table_times, :table_days, except: [:index, :show]
   end

@@ -179,16 +179,6 @@ class Wkclass < ApplicationRecord
     start_time.strftime('%A')
   end
 
-  # def summary
-  #   "#{workout.name}, #{date}, #{time}"
-  # end
-
-  # def instructorised_name
-  #   return name if !workout.instructor_initials? || instructor.nil? 
-
-  #   "#{name} (#{instructor.initials})"
-  # end
-
   def deletable?
     # Bullet.enable = false if Rails.env == 'development'
     return true if attendances.empty?
@@ -196,10 +186,6 @@ class Wkclass < ApplicationRecord
     false
     # Bullet.enable = true if Rails.env == 'development'
   end
-
-  # def revenue
-  #   attendances.map(&:revenue).inject(0, :+)
-  # end
 
   def booking_window
     window_start = start_time.ago(Setting.booking_window_days_before.days).beginning_of_day

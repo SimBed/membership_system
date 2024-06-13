@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_10_105717) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_13_104454) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -580,6 +580,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_10_105717) do
     t.boolean "renewable", default: false
     t.boolean "requires_account", default: false
     t.string "service"
+    t.boolean "current", default: true
     t.index ["name"], name: "index_workout_groups_on_name"
     t.index ["service"], name: "index_workout_groups_on_service"
   end
