@@ -36,22 +36,6 @@ else {
 }
 
 
-// i think this can be deleted
-// mm in the function arg is the matchMedia object, passed back into the function
-// smallScreenWindow.addEventListener('change', function(mm) {
-//   const swipeArea = document.querySelector('#timetable');
-//     if (mm.matches) {
-//       let startX;
-      
-//       swipeArea.addEventListener('touchstart', handleTouchStart, false);
-//       swipeArea.addEventListener('touchend', handleTouchEnd, false);
-//     }
-//     else {
-//       swipeArea.removeEventListener('touchstart', handleTouchStart, false);
-//       swipeArea.removeEventListener('touchend', handleTouchEnd, false);
-//     }
-// });
-
 function handleTouchStart(event) {
   const touch = event.touches[0];
   startX = touch.clientX;
@@ -95,7 +79,6 @@ function nextDay() {
     nextDayColumn.classList.add('live', 'd-flex', 'flex-column');
   }
 }
-
 
 function prevDay() {
   let currentDayButton = document.querySelector('button.live');

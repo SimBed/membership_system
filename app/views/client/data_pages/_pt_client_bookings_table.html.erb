@@ -3,11 +3,13 @@
   <caption class="ps-1">Bookings <% if attendances.empty? %>(none made yet)<% end %></caption>    
   <tbody>
     <% attendances.each_with_index do |attendance, index| %>
+      <% wkclass = attendance.wkclass %>
+      <% wkclass_decorator = decorate(wkclass) %>
       <tr class ="">
         <th scope="row"><%= attendances.size - index %></th>
-        <th scope="row"><%= attendance.wkclass.date %></th>
-        <td><%= attendance.wkclass.time %></td>
-        <td><%= "Coach #{attendance.wkclass.instructor&.first_name}" %></td>
+        <th scope="row"><%= wkclass_decorator.date %></th>
+        <td><%= wkclass_decorator.time %></td>
+        <td><%= "Coach #{wkclass.instructor&.first_name}" %></td>
         <td><%= attendance.status %></td>
       </tr>
     <% end %>

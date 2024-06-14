@@ -4,8 +4,8 @@ class TableDay < ApplicationRecord
   before_save :upcase_names
   # Rails 7 introduces ActiveRecord::QueryMethods#in_order_of making previous SQL approach reundant
   # https://www.rubyinrails.com/2021/12/14/fetch-records-in-custom-order-with-rails-activerecord/
-  # SORT_ORDER = Date::DAYNAMES.rotate(Time.zone.today.cwday) #timetable's first column is today's day
-  SORT_ORDER = Date::DAYNAMES.rotate(1) #timetable's first column is Monday
+  SORT_ORDER = Date::DAYNAMES.rotate(Time.zone.today.cwday) #timetable's first column is today's day
+  # SORT_ORDER = Date::DAYNAMES.rotate(1) #timetable's first column is Monday
   scope :order_by_day, -> { in_order_of(:name, SORT_ORDER) }
   private
   

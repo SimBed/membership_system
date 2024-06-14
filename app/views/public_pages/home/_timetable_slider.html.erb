@@ -5,15 +5,17 @@
   <div class="slider">
     <div class="button-container">
       <% @entries_hash.each_with_index do |(day, _entry), index| %>
-        <button class="slider_btn<%=' live' if index == 0%>" data-day=<%= index %> ><%= timetable_day_name(day, @todays_day, @tomorrows_day, :short_name).capitalize %></button>
+        <% dayPresenter = DayPresenter.new(day:, index: ) %>
+        <%= dayPresenter.button %>
       <% end %>
     </div>      
     <div class="d-md-flex justify-content-center">
       <% @entries_hash.each_with_index do |(day, _entry), index| %>
+      <% dayPresenter = DayPresenter.new(day:, index: ) %>
       <div class="mb-3 tt-day<%= ' live' if index == 0 %>" id=<%= index %>>
         <div class="d-flex flex-column mb-3">        
-          <div class="date-title pt-3 pb-1"><%= timetable_day_name(day, @todays_day, @tomorrows_day, :long_name).capitalize.upcase %></div>
-          <div class="date pb-3"><%= Date.yesterday.next_occurring(day.downcase.to_sym).strftime("%b %e") %></div>
+          <div class="date-title pt-3 pb-1"><%= dayPresenter.timetable_day_name(use_short_name: false).capitalize.upcase %></div>
+          <div class="date pb-3"><%= dayPresenter.next_occurring %></div>
         </div>
         <% @entries_hash[day].each do |entry| %>
           <div class="d-flex flex-column mb-3 border-bottom border-grey border-1">

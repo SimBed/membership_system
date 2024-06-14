@@ -51,15 +51,6 @@ class Client::DataPagesController < Client::BaseController
 
   def timetable
     time_table_entries(show_publicly_invisible: true)
-    # @timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
-    # @days = @timetable.table_days.order_by_day
-    # @entries_hash = {}
-    # @days.each do |day|
-    #   @entries_hash[day.name] = Entry.where(table_day_id: day.id).includes(:table_time, :workout).order_by_start
-    # end
-    # # used to establish whether 2nd day in the timetable slider is tomorrow or not
-    # @todays_day = Time.zone.today.strftime('%A')
-    # @tomorrows_day = Date.tomorrow.strftime('%A')
     render 'timetable', layout: 'client_black'
   end  
 
