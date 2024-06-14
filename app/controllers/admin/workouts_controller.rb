@@ -108,6 +108,6 @@ class Admin::WorkoutsController < Admin::BaseController
     # the update method (and therefore the workout_params method) is used through a form but also by clicking on a link on the workouts page
     return { current: params[:current] } if params[:current].present?
 
-    params.require(:workout).permit(:name, :current, :default_capacity, :instructor_initials, :description, :level, :warning, styles: [])
+    params.require(:workout).permit(:name, :current, :default_capacity, :instructor_initials, :description, :level, :warning, :public_timetable_visible, styles: [])
   end
 end

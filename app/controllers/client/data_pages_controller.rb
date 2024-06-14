@@ -50,7 +50,7 @@ class Client::DataPagesController < Client::BaseController
   end
 
   def timetable
-    time_table_entries(show_open_gym: true)
+    time_table_entries(show_publicly_invisible: true)
     # @timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
     # @days = @timetable.table_days.order_by_day
     # @entries_hash = {}

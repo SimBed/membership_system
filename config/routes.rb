@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     # get '/workout_groups/:id/instructor_expense_filter', to: 'workout_groups#instructor_expense_filter', as: 'instructor_expense_filter'
     get '/wkclasses/instructor_select'
     get '/footfall', to: 'attendances#footfall'
-    get '/timetable', to: 'timetables#show_public', as: 'public_timetable'
+    get '/timetable', to: 'timetables#public_format', as: 'public_format_timetable'
     # get 'client_analyze', to: 'clients#analyze', as: 'client_analyze'
     # get 'workout_groups/:id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
     post '/timetable/:id/copy', to: 'timetables#deep_copy', as: 'timetable_deep_copy'

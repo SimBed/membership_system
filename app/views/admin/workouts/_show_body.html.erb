@@ -30,6 +30,11 @@
       </ul>
     </div>
     <div>
+      <h6 class='fst-italic mb-1'>Timetable:</h6>    
+      <input type="checkbox" id="timetable_visibility" <%= 'checked' if @workout.public_timetable_visible %> disabled=true>
+      <label for="timetable_visibility" class='d-inline'><%= "show workout in public timetable" %></label>
+    </div>
+    <div>
       <h6 class='fst-italic mb-1'>Photo:</h6>    
       <input type="checkbox" id="photo"  <%= 'checked' if image_exists?(@workout.name)%> disabled=true>
       <label for="photo" class='d-inline'><%= "the file #{@workout.name.downcase}.jpg exists?" %></label>

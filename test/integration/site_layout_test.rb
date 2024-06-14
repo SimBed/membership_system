@@ -20,7 +20,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', clients_path
     assert_select 'a[href=?]', purchases_path
     assert_select 'a[href=?]', wkclasses_path
-    assert_select 'a[href=?]', public_timetable_path
+    assert_select 'a[href=?]', public_format_timetable_path
     assert_select 'a[href=?]', employee_accounts_path
     assert_select 'a[href=?]', achievements_path
     assert_select 'a[href=?]', blast_path
@@ -71,7 +71,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', clients_path
     assert_select 'a[href=?]', purchases_path
     assert_select 'a[href=?]', wkclasses_path
-    assert_select 'a[href=?]', public_timetable_path
+    assert_select 'a[href=?]', public_format_timetable_path
     assert_select 'a[href=?]', employee_accounts_path, count:0
     assert_select 'a[href=?]', achievements_path
     assert_select 'a[href=?]', blast_path, count:0
@@ -121,7 +121,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', clients_path
     assert_select 'a[href=?]', purchases_path
     assert_select 'a[href=?]', wkclasses_path
-    assert_select 'a[href=?]', public_timetable_path
+    assert_select 'a[href=?]', public_format_timetable_path
     assert_select 'a[href=?]', employee_accounts_path, count:0
     assert_select 'a[href=?]', achievements_path, count:0
     assert_select 'a[href=?]', blast_path, count:0

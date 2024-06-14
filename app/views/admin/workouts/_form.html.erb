@@ -59,6 +59,13 @@
     <% end %>
   </div>
 
+  <div class="field mb-3">
+    <%= form.label :public_timetable_visible do %>
+      <%= form.check_box :public_timetable_visible, { checked: @workout.new_record? || form.object.public_timetable_visible? } %>
+      Show workout in public timetable 
+    <% end %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

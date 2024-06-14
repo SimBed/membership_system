@@ -63,14 +63,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def time_table_entries(show_open_gym: false)
+  def time_table_entries(show_publicly_invisible: false)
     timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
     days = timetable.table_days.order_by_day
     @entries_hash = {}
     days.each do |day|
       #NOTE: currently a hack to exclude open gym from public timetable
       entries = Entry.where(table_day_id: day.id)
-      @entries_hash[day.name] = show_open_gym ? entries.includes(:table_time, :workout).order_by_start :  entries.not_open_gym.includes(:table_time, :workout).order_by_start
+      @entries_hash[day.name] = show_publicly_invisible ? entries.includes(:table_time, :workout).order_by_start :  entries.publicly_visible.includes(:table_time, :workout).order_by_start
     end
     # used to establish whether 2nd day in the timetable slider is tomorrow or not
     @todays_day = Time.zone.today.strftime('%A')
