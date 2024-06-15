@@ -1,46 +1,41 @@
 <%= javascript_import_module_tag "custom/timetable-slider" %>
 <section id="timetable" class="overflow-hidden pt-3 pt-xl-4 bg-dark text-white text-center mt-2">    
-<div class="container">
-<h5 class="text-uppercase fw-bolder">Group Class Timetable</h3>
-  <div class="slider">
-    <div class="button-container">
-      <% @entries_hash.each_with_index do |(day, _entry), index| %>
-        <% dayPresenter = DayPresenter.new(day:, index: ) %>
-        <%= dayPresenter.button %>
-      <% end %>
-    </div>      
-    <div class="d-md-flex justify-content-center">
-      <% @entries_hash.each_with_index do |(day, _entry), index| %>
-      <% dayPresenter = DayPresenter.new(day:, index: ) %>
-      <div class="mb-3 tt-day<%= ' live' if index == 0 %>" id=<%= index %>>
-        <div class="d-flex flex-column mb-3">        
-          <div class="date-title pt-3 pb-1"><%= dayPresenter.timetable_day_name(use_short_name: false).capitalize.upcase %></div>
-          <div class="date pb-3"><%= dayPresenter.next_occurring %></div>
-        </div>
-        <% @entries_hash[day].each do |entry| %>
-          <div class="d-flex flex-column mb-3 border-bottom border-grey border-1">
-            <div class="title-container">
-              <div class="title pb-1"><%= entry&.workout.name %></div>
+  <div class="container">
+  <h5 class="text-uppercase fw-bolder">Group Class Timetable</h3>
+    <div class="slider">
+      <div class="button-container">
+        <% @entries_hash.each_with_index do |(day, _entry), index| %>
+          <% dayPresenter = DayPresenter.new(day:, index: ) %>
+          <%= dayPresenter.button %>
+        <% end %>
+      </div>
+      <div class="d-md-flex justify-content-center">
+        <% @entries_hash.each_with_index do |(day, _entry), index| %>
+          <% dayPresenter = DayPresenter.new(day:, index: ) %>
+          <div class="mb-3 tt-day<%= ' live' if index == 0 %>" id=<%= index %>>
+            <div class="d-flex flex-column mb-3">
+              <div class="date-title pt-3 pb-1"><%= dayPresenter.timetable_day_name(use_short_name: false) %></div>
+              <div class="date pb-3"><%= dayPresenter.next_occurring %></div>
             </div>
-
-            <% time = entry.table_time&.start %>
-            <% time_end = time&.advance(minutes: entry&.duration) %>
-            <div class="time"><%= "#{time.strftime("%l.%M")} - #{time_end.strftime("%l.%M")}" %></div>
-
-            <% goal = entry&.goal.blank? ? '-' : entry&.goal %>
-            <div class="goal-container">
-              <div class="goal"><%= goal %></div>
-            </div>                         
-
-            <% level = entry&.level.blank? ? '-' : entry&.level %>                 
-            <div class="level"><%= level %></div>
-            <div class="studio pb-3"><%= entry&.studio %></div>
+            <% @entries_hash[day].each do |entry| %>
+              <% entry_decorator = decorate(entry) %>
+              <div class="d-flex flex-column mb-3 border-bottom border-grey border-1">
+                <div class="title-container">
+                  <div class="title pb-1"><%= entry.name %></div>
+                </div>
+                <div class="time">
+                  <%= entry_decorator.time_period %>
+                </div>
+                <div class="goal-container">
+                  <div class="goal"><%= entry_decorator.goal_formatted %></div>
+                </div>  
+                <div class="level"><%= entry_decorator.level_foramtted %></div>
+                <div class="studio pb-3"><%= entry&.studio %></div>
+              </div>
+            <% end %>
           </div>
         <% end %>
       </div>
-    <% end %>
-
     </div>
   </div>
-</div>
 </section>

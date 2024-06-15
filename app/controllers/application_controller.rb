@@ -72,9 +72,6 @@ class ApplicationController < ActionController::Base
       entries = Entry.where(table_day_id: day.id)
       @entries_hash[day.name] = show_publicly_invisible ? entries.includes(:table_time, :workout).order_by_start :  entries.publicly_visible.includes(:table_time, :workout).order_by_start
     end
-    # used to establish whether 2nd day in the timetable slider is tomorrow or not
-    @todays_day = Time.zone.today.strftime('%A')
-    @tomorrows_day = Date.tomorrow.strftime('%A') 
   end
 
   private
