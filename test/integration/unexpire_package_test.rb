@@ -9,7 +9,7 @@ class UnexpirePackageTest < ActionDispatch::IntegrationTest
   test 'package expired due to validity should revert to ongoing with a suitable freeze' do
     travel_to(Date.parse('May 9 2022').beginning_of_day)
     # start with 8 class expired package with 1 10 day freeze
-    assert_equal 7, @purchase.attendances.size
+    assert_equal 7, @purchase.bookings.size
     assert_equal 10, @purchase.freezes.map(&:duration).inject(0, :+)
     assert_equal Date.parse('Nov 20 2021'), @purchase.expiry_date
     assert_equal 'expired', @purchase.status

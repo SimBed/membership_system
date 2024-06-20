@@ -16,11 +16,11 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     # make booking during intended freeze period to show it gets cancelled
     new_wkclass = @wkclass.dup
     new_wkclass.update(start_time: Time.zone.now.advance(days: 2, hours: 17))
-    assert_difference '@purchase.attendances.no_amnesty.size', 1 do
-      Attendance.create(wkclass_id: new_wkclass.id, purchase_id: @purchase.id, status: 'booked')
+    assert_difference '@purchase.bookings.no_amnesty.size', 1 do
+      Booking.create(wkclass_id: new_wkclass.id, purchase_id: @purchase.id, status: 'booked')
     end
     log_in_as(@admin)
-    assert_difference -> { Freeze.count } => 1, -> { Payment.count } => 1, -> { @purchase.attendances.booked.size } => -1 do
+    assert_difference -> { Freeze.count } => 1, -> { Payment.count } => 1, -> { @purchase.bookings.booked.size } => -1 do
       post freezes_path, params:
        { freeze:
           { purchase_id: @purchase.id,
@@ -85,11 +85,11 @@ class PackageMofificationTest < ActionDispatch::IntegrationTest
     # make booking after intended restart date to show it gets cancelled
     new_wkclass = @wkclass.dup
     new_wkclass.update(start_time: Time.zone.now.advance(days: 2, hours: 17))
-    assert_difference '@purchase.attendances.no_amnesty.size', 1 do
-      Attendance.create(wkclass_id: new_wkclass.id, purchase_id: @purchase.id, status: 'booked')
+    assert_difference '@purchase.bookings.no_amnesty.size', 1 do
+      Booking.create(wkclass_id: new_wkclass.id, purchase_id: @purchase.id, status: 'booked')
     end    
     log_in_as(@admin)
-    assert_difference -> { Restart.count } => 1, -> { Purchase.count } => 1, -> { Payment.count } => 1, -> { @purchase.attendances.booked.size } => -1 do
+    assert_difference -> { Restart.count } => 1, -> { Purchase.count } => 1, -> { Payment.count } => 1, -> { @purchase.bookings.booked.size } => -1 do
       post restarts_path, params:
        { restart:
           { parent_id: @purchase.id,

@@ -5,7 +5,7 @@
     <div class="column col-1x"><%= rate.name %></div>
     <div class="column col-1x"><%= number_with_delimiter(rate.rate) %></div>
     <div class="column col-1x"><%= rate.date_from.strftime('%d %b %y') %></div>
-    <div class="column nomobile"><%= link_to image_tag('attendances.png', class: ["table_icon",("greyed-out" unless rate.current?)].compact.join(' ')), instructor_rate_path(rate, current: !rate.current?), data: {turbo_method: :patch} %></div>        
+    <div class="column nomobile"><%= link_to image_tag('bookings.png', class: ["table_icon",("greyed-out" unless rate.current?)].compact.join(' ')), instructor_rate_path(rate, current: !rate.current?), data: {turbo_method: :patch} %></div>        
     <div class="column nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_instructor_rate_path(rate) %></div>
     <%= render partial: 'delete_instructor_rate', locals: {rate: } %>      
   </div>

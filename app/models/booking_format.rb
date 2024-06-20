@@ -1,16 +1,16 @@
-class AttendanceFormat
+class BookingFormat
   def initialize(wkclass, client, day, booking_section)
     @wkclass = wkclass
     @client = client
     @day = day
     @booking_section = booking_section
-    @attendance = Attendance.applicable_to(@wkclass, @client)
-    @new_booking = @attendance.nil?
+    @booking = Booking.applicable_to(@wkclass, @client)
+    @new_booking = @booking.nil?
     @wkclass_at_capacity = @wkclass.at_capacity?
     @on_waiting_list = client.on_waiting_list_for?(wkclass)
     # if not at capacity then the next column will be occupied with a booking link
     @waiting_list_remove_link_under_status = true if @on_waiting_list && !@wkclass_at_capacity
-    @purchase = Purchase.use_for_booking(@wkclass, @client, restricted: false) || @attendance&.purchase
+    @purchase = Purchase.use_for_booking(@wkclass, @client, restricted: false) || @booking&.purchase
     @time = Time.zone.now
   end
   attr_reader :waiting_list_remove_link_under_status
@@ -45,7 +45,7 @@ class AttendanceFormat
         ''
       end
     else
-      case @attendance.status
+      case @booking.status
       when 'booked'
         'text-success'
       when 'cancelled late', 'no show'
@@ -67,7 +67,7 @@ class AttendanceFormat
     # https://stackoverflow.com/questions/45621314/html-title-tooltip-gets-cut-off-after-spaces
     title_class_full = "Class\u00a0is\u00a0currently\u00a0full.\u00a0Add\u00a0to\u00a0waiting\u00a0list."
     title_remove_from_waiting_list = "remove\u00a0from\u00a0waiting\u00a0list"
-    return "title=#{title_class_full}" if @wkclass_at_capacity && @attendance.nil? && !@client.on_waiting_list_for?(@wkclass)
+    return "title=#{title_class_full}" if @wkclass_at_capacity && @booking.nil? && !@client.on_waiting_list_for?(@wkclass)
 
     return "title=#{title_remove_from_waiting_list}" if @wkclass_at_capacity && @client.on_waiting_list_for?(@wkclass)
 
@@ -77,7 +77,7 @@ class AttendanceFormat
   def status
     return 'on waiting list' if @client.on_waiting_list_for?(@wkclass)
 
-    return Attendance.applicable_to(@wkclass, @client).status if @client.associated_with?(@wkclass)
+    return Booking.applicable_to(@wkclass, @client).status if @client.associated_with?(@wkclass)
 
     return 'class full' if @wkclass_at_capacity
 
@@ -107,34 +107,34 @@ class AttendanceFormat
       @turbo_params = { method: :delete,
                         confirmation: "You'll be removed from the waiting list" }
     when 'new_booking'
-      confirmation = I18n.t('client.clients.attendance.create.confirm')
-      confirmation = I18n.t('client.clients.attendance.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
+      confirmation = I18n.t('client.clients.booking.create.confirm')
+      confirmation = I18n.t('client.clients.booking.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}" }
-      @route = 'attendances_path'
-      @route_params = { attendance: { wkclass_id: @wkclass.id, purchase_id: @purchase.id },
+      @route = 'bookings_path'
+      @route_params = { booking: { wkclass_id: @wkclass.id, purchase_id: @purchase.id },
                         booking_day: @day,
                         booking_section: @booking_section }
       @turbo_params = { method: :post,
                         confirmation: }
     when 'update_from_booked'
-      confirmation = I18n.t('client.clients.attendance.update.from_booked.confirm')
+      confirmation = I18n.t('client.clients.booking.update.from_booked.confirm')
       @image_params = { src: 'delete.png',
                         css_class: 'table_icon mx-auto filter-red' }
-      @route = 'attendance_path'
-      @route_params = { id: @attendance.id,
+      @route = 'booking_path'
+      @route_params = { id: @booking.id,
                         booking_day: @day,
                         booking_section: @booking_section }
       @turbo_params = { method: :patch,
                         confirmation: }
     when 'rebook'
-      image_class = "table_icon mx-auto #{'filter-white' unless @attendance.wkclass.workout.limited?}"
-      confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm')
-      confirmation = I18n.t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if @attendance.purchase.freezed?(@attendance.wkclass.start_time)
+      image_class = "table_icon mx-auto #{'filter-white' unless @booking.wkclass.workout.limited?}"
+      confirmation = I18n.t('client.clients.booking.update.from_cancelled_early.confirm')
+      confirmation = I18n.t('client.clients.booking.update.from_cancelled_early.confirm_unfreeze') if @booking.purchase.freezed?(@booking.wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: image_class }
-      @route = 'attendance_path'
-      @route_params = { id: @attendance.id,
+      @route = 'booking_path'
+      @route_params = { id: @booking.id,
                         booking_day: @day,
                         booking_section: @booking_section }
       @turbo_params = { method: :patch,
@@ -170,7 +170,7 @@ class AttendanceFormat
   def link_for_update_booking
     return '' if unbookable? # a class legitimately booked, but then auto-cancelled due to expiry date change due to eg freeze break or penalty
 
-    case @attendance.status
+    case @booking.status
     when 'booked'
       get_params('update_from_booked')
       link_maker(@image_params, @route, @route_params, @turbo_params)

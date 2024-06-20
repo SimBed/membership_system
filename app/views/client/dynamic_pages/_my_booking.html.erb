@@ -19,7 +19,7 @@
     </div>               
     <div class="book-item">
       <div class="details">
-        <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Attendance.applicable_to(wkclass, @client)&.status %></div>
+        <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Booking.applicable_to(wkclass, @client)&.status %></div>
       </div>
     </div>                
     <div class="book-item">

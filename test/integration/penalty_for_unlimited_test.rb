@@ -16,25 +16,25 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
   test 'amnesty then penalty after cancel unlimited package late multiple times' do
     log_in_as(@account_client)
     # book a class
-    post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     # cancel class late
     assert_no_difference '@purchase.penalties.size' do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     assert_equal 1, @purchase.reload.late_cancels
 
     # book a 2nd class
-    post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
+    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                          purchase_id: @purchase.id } }
-    @attendance = Attendance.applicable_to(@tomorrows_class_late, @client)
+    @booking = Booking.applicable_to(@tomorrows_class_late, @client)
     travel_to(@tomorrows_class_late.start_time - 10.minutes)
     # cancel 2nd class late
     assert_no_difference '@purchase.penalties.count' do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     assert_equal 2, @purchase.reload.late_cancels
@@ -42,15 +42,15 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     # book a 3rd class
     # must be in booking_window
     travel_to(@wkclass3.start_time.beginning_of_day)
-    assert_difference 'Attendance.no_amnesty.size', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @wkclass3.id,
+    assert_difference 'Booking.no_amnesty.size', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @wkclass3.id,
                                                            purchase_id: @purchase.id } }
     end
-    @attendance = Attendance.applicable_to(@wkclass3, @client)
+    @booking = Booking.applicable_to(@wkclass3, @client)
     travel_to(@wkclass3.start_time - 10.minutes)
     # cancel 3rd class late
     assert_difference '@purchase.penalties.count', 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     assert_equal 3, @purchase.reload.late_cancels
@@ -58,15 +58,15 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     # book a 4th class
     # must be in booking_window
     travel_to(@wkclass4.start_time.beginning_of_day)
-    assert_difference 'Attendance.no_amnesty.size', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @wkclass4.id,
+    assert_difference 'Booking.no_amnesty.size', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @wkclass4.id,
                                                            purchase_id: @purchase.id } }
     end
-    @attendance = Attendance.applicable_to(@wkclass4, @client)
+    @booking = Booking.applicable_to(@wkclass4, @client)
     travel_to(@wkclass4.start_time - 10.minutes)
     # cancel 4th class late
     assert_difference '@purchase.penalties.count', 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     assert_equal 4, @purchase.reload.late_cancels
@@ -78,25 +78,25 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
   test 'warning then penalty after no show multiple times' do
     log_in_as(@admin)
     # book a class
-    post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     # no show
     assert_no_difference '@purchase.penalties.count' do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
 
     assert_equal 1, @purchase.reload.no_shows
 
     # book a 2nd class (can't book same day as no show so book wkclass3)
-    assert_difference 'Attendance.count', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @wkclass3.id,
+    assert_difference 'Booking.count', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @wkclass3.id,
                                                            purchase_id: @purchase.id } }
     end
-    @attendance = Attendance.applicable_to(@wkclass3, @client)
+    @booking = Booking.applicable_to(@wkclass3, @client)
     # no show 2nd time
     assert_difference '@purchase.penalties.count', 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
 
     assert_equal 2, @purchase.reload.no_shows
@@ -115,17 +115,17 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
 
     assert_equal Date.parse('24/04/2022'), @purchase.expiry_date
     # book classes on 22/4/2005 and on final day of package (25/4/2022)
-    post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
-    post attendances_path, params: { attendance: { wkclass_id: @wkclass3.id,
+    post bookings_path, params: { booking: { wkclass_id: @wkclass3.id,
                                                          purchase_id: @purchase.id } }
     # amend purchase so next late cancel will cause a penalty
     @purchase.update(late_cancels: 2)
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     # cancel today's class late
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
-    assert_difference '@client.attendances.booked.count', -2 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled late' } }
+    assert_difference '@client.bookings.booked.count', -2 do
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled late' } }
     end
   end
 end

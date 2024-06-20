@@ -2,22 +2,22 @@
   <div class="admin_form my-2">
     <div class="container px-1 ">
       <% unless params[:link_from] == 'purchase_show' %>
-        <%= turbo_frame_tag "new_attendance_form_#{@wkclass.id}" do %>
+        <%= turbo_frame_tag "new_booking_form_#{@wkclass.id}" do %>
           <% if session[:show_qualifying_purchases] == 'yes' %>
-            <%= render 'new_attendance_form' %>
+            <%= render 'new_booking_form' %>
           <% else %>
             <div class="mb-2">
-              <%= render 'add_attendance_link' %>
+              <%= render 'add_booking_link' %>
             </div>
           <% end %>
         <% end %>
       <% end %>
       <%= render partial: 'wkclass_summary' %>
-      <div id="attendances-table" class="mb-3">
-          <%= render partial: 'wkclass_attendance_table' %>
+      <div id="bookings-table" class="mb-3">
+          <%= render partial: 'wkclass_booking_table' %>
           <%= render partial: 'waiting_list' unless @waitings.empty? %>
         <% if @junioradmin_plus %>
-          <%= render partial: 'repeat_form' if @wkclass.attendances&.first&.purchase&.pt? %>
+          <%= render partial: 'repeat_form' if @wkclass.bookings&.first&.purchase&.pt? %>
         <% end %>
       </div>
 

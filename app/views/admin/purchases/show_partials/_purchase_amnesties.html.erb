@@ -1,16 +1,16 @@
-<% attendances = @purchase.attendances.amnesty.order_by_date %>
-<% unless attendances.empty? %>
+<% bookings = @purchase.bookings.amnesty.order_by_date %>
+<% unless bookings.empty? %>
   <div class="fst-italic ps-2">Amnesties</div>
   <div class="admin-table striped mt-2 mb-4">
     <div class="row">
-      <% attendances.each_with_index do |attendance, index| %>
-        <% wkclass = attendance.wkclass %>
+      <% bookings.each_with_index do |booking, index| %>
+        <% wkclass = booking.wkclass %>
         <% wkclass_decorator = decorate(wkclass) %>  
         <div class="row">
-          <div class="column"><%= attendances.size - index %></div>
+          <div class="column"><%= bookings.size - index %></div>
           <div class="column col-2x"><%= link_to wkclass.name, wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
           <div class="column col-2x"><%= link_to wkclass_decorator.date %></div>
-          <div class="column col-2x"><%= attendance.status %></div>
+          <div class="column col-2x"><%= booking.status %></div>
         </div>
       <% end %>
     </div>

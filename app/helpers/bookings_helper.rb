@@ -1,4 +1,4 @@
-module AttendancesHelper
+module BookingsHelper
   def booking_flash_hash
     { booking:
       { successful:

@@ -1,9 +1,9 @@
 <% wkclass_decorator = decorate(@wkclass) %>
 <div class="mb-2">
-  <h5 class ="class-attendance-header">  <%= "#{wkclass_decorator.summary}" %>
+  <h5> <%= "#{wkclass_decorator.summary}" %>
     <span class="me-2"></span>
   </h5>
-  <%= turbo_frame_tag 'new_attendance_form' %>
+  <%= turbo_frame_tag 'new_booking_form' %>
   <div class ="d-inline-block">
     <%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
   </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_14_110829) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_17_190059) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,20 +57,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_14_110829) do
     t.index ["role_id"], name: "index_assignments_on_role_id"
   end
 
-  create_table "attendances", force: :cascade do |t|
-    t.integer "wkclass_id"
-    t.integer "purchase_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "status", default: "booked"
-    t.string "booked_by"
-    t.integer "amendment_count", default: 0
-    t.boolean "amnesty", default: false
-    t.index ["purchase_id"], name: "index_attendances_on_purchase_id"
-    t.index ["status"], name: "index_attendances_on_status"
-    t.index ["wkclass_id"], name: "index_attendances_on_wkclass_id"
-  end
-
   create_table "body_markers", force: :cascade do |t|
     t.string "bodypart"
     t.float "measurement"
@@ -83,6 +69,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_14_110829) do
     t.index ["client_id"], name: "index_body_markers_on_client_id"
     t.index ["date"], name: "index_body_markers_on_date"
     t.index ["measurement"], name: "index_body_markers_on_measurement"
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer "wkclass_id"
+    t.integer "purchase_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "booked"
+    t.string "booked_by"
+    t.integer "amendment_count", default: 0
+    t.boolean "amnesty", default: false
+    t.index ["purchase_id"], name: "index_bookings_on_purchase_id"
+    t.index ["status"], name: "index_bookings_on_status"
+    t.index ["wkclass_id"], name: "index_bookings_on_wkclass_id"
   end
 
   create_table "challenges", force: :cascade do |t|
@@ -396,12 +396,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_14_110829) do
 
   create_table "penalties", force: :cascade do |t|
     t.bigint "purchase_id", null: false
-    t.bigint "attendance_id", null: false
+    t.bigint "booking_id", null: false
     t.integer "amount"
     t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["attendance_id"], name: "index_penalties_on_attendance_id", unique: true
+    t.index ["booking_id"], name: "index_penalties_on_booking_id", unique: true
     t.index ["purchase_id"], name: "index_penalties_on_purchase_id"
   end
 
@@ -618,7 +618,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_14_110829) do
   add_foreign_key "instructor_rates", "instructors"
   add_foreign_key "instructors", "accounts"
   add_foreign_key "logins", "accounts"
-  add_foreign_key "penalties", "attendances"
+  add_foreign_key "penalties", "bookings"
   add_foreign_key "penalties", "purchases"
   add_foreign_key "purchases", "purchases"
   add_foreign_key "regular_expenses", "workout_groups"

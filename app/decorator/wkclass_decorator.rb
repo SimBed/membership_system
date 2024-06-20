@@ -1,13 +1,13 @@
 class WkclassDecorator < BaseDecorator
 
-  attr_accessor :physical_attendances
+  attr_accessor :atendances
 
   def initialize(wkclass)
     # rails c
     # wkd=WkclassDecorator.new(Wkclass.last)
     # do the normal Delegator intializing, then a bit more
     super
-    @physical_attendances = wkclass.physical_attendances&.size || 0
+    @atendances = wkclass.atendances&.size || 0
   end
 
   def name_link(page)
@@ -33,11 +33,11 @@ class WkclassDecorator < BaseDecorator
   end
 
   def spaces_taken
-    "#{@physical_attendances} #{image_tag('reserve.png', class: "header_icon")}".html_safe
+    "#{@atendances} #{image_tag('reserve.png', class: "header_icon")}".html_safe
   end
 
   def spaces_left
-    "#{max_capacity - @physical_attendances} #{image_tag('group.png', class: "header_icon")}".html_safe
+    "#{max_capacity - @atendances} #{image_tag('group.png', class: "header_icon")}".html_safe
   end
 
   def number_on_waiting_list
@@ -63,11 +63,11 @@ class WkclassDecorator < BaseDecorator
 
   def delete(authorised, deletable, page)
     if authorised && deletable
-      tooltip_title = "This class will be deleted. It has no bookings, attendances or cancellations, so it is safe to do so.".gsub(' ',"\u00a0")
-      confirm_message = "The class has no bookings, attendances or cancellations so can be deleted. But are you sure?"
+      tooltip_title = "This class will be deleted. It has no bookings, atendances or cancellations, so it is safe to do so.".gsub(' ',"\u00a0")
+      confirm_message = "The class has no bookings, atendances or cancellations so can be deleted. But are you sure?"
       link = link_to image_tag('delete.png', class: "table_icon"), wkclass_path(self, page: page), data: { "turbo-method": :delete, turbo_confirm: confirm_message }
     else
-      tooltip_title = "This product has bookings, attendances or cancellations and so can not be deleted".gsub(' ',"\u00a0")
+      tooltip_title = "This product has bookings, atendances or cancellations and so can not be deleted".gsub(' ',"\u00a0")
       link = link_to image_tag('delete.png', class: %w[table_icon greyed-out]), '#', class: 'disabled'    
     end
     content_tag(:div, link, class: %w[column nomobile], data:{ toggle:"tooltip", placement: 'top'}, title: tooltip_title )
@@ -80,6 +80,6 @@ class WkclassDecorator < BaseDecorator
   end
 
   def current_image
-    image_tag('attendances.png', class: ["table_icon",("greyed-out" unless current?)].compact.join(' '))
+    image_tag('bookings.png', class: ["table_icon",("greyed-out" unless current?)].compact.join(' '))
   end
 end

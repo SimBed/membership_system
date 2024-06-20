@@ -1,8 +1,8 @@
-class Admin::AttendancesController < Admin::BaseController
-  include AttendancesHelper
+class Admin::BookingsController < Admin::BaseController
+  include BookingsHelper
   skip_before_action :admin_account
   before_action :fitternity?
-  before_action :set_attendance, only: [:update, :destroy]
+  before_action :set_booking, only: [:update, :destroy]
   before_action :junioradmin_account, only: [:destroy]
   # before_action :junioradmin_or_instructor_account, only: [:new]
   before_action :correct_account_or_junioradmin_or_instructor_account, only: [:create, :update]
@@ -21,34 +21,24 @@ class Admin::AttendancesController < Admin::BaseController
 
   def footfall
     Purchase.default_timezone = :utc
-    @footfall_for_chart_day = Attendance.joins(:wkclass).attended.group_by_day(:start_time).count
-    @footfall_for_chart_week = Attendance.joins(:wkclass).attended.group_by_week(:start_time).count
-    @footfall_for_chart_month = Attendance.joins(:wkclass).attended.group_by_month(:start_time).count
+    @footfall_for_chart_day = Booking.joins(:wkclass).attended.group_by_day(:start_time).count
+    @footfall_for_chart_week = Booking.joins(:wkclass).attended.group_by_week(:start_time).count
+    @footfall_for_chart_month = Booking.joins(:wkclass).attended.group_by_month(:start_time).count
     Purchase.default_timezone = :local
   end
 
-  # def new
-  #   session[:wkclass_id] = params[:wkclass_id] || session[:wkclass_id]
-  #   @attendance = Attendance.new
-  #   @wkclass = Wkclass.find(session[:wkclass_id])
-  #   # [["Aakash Shah (Fitternity)", "Fitternity 271"],...]
-  #   set_new_attendance_dropdown_options
-  # end
-
   def new
     @wkclass = Wkclass.find(params[:wkclass_id])
-    @attendance = Attendance.new
+    @booking = Booking.new
     session[:show_qualifying_purchases] = 'yes'
     @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
   end
 
   def create
-    # handle_fitternity and return if fitternity?
-
-    @attendance = Attendance.new(attendance_params)
-    if @attendance.save
+    @booking = Booking.new(booking_params)
+    if @booking.save
       # needed for after_action callback
-      @purchase = @attendance.purchase
+      @purchase = @booking.purchase
       handle_freeze
       remove_from_waiting_list
       client? ? after_successful_create_by_client : after_successful_create_by_admin
@@ -57,47 +47,25 @@ class Admin::AttendancesController < Admin::BaseController
     end
   end
 
-  # def handle_fitternity
-  #   purchase_hash = { client_id: @client.id,
-  #                     product_id: 1,
-  #                     price_id: 2,
-  #                     charge: 550,
-  #                     dop: Time.zone.today,
-  #                     payment_mode: 'Fitternity',
-  #                     fitternity_id: Fitternity.ongoing.first&.id }
-
-  #   @purchase = Purchase.new(purchase_hash)
-  #   if @purchase.save
-  #     @attendance = Attendance.new(wkclass_id: params[:attendance][:wkclass_id].to_i, purchase_id: @purchase.id)
-  #     if @attendance.save
-  #       after_successful_create_by_admin
-  #     else
-  #       after_unsuccessful_create_by_admin
-  #     end
-  #   else
-  #     after_unsuccessful_create_by_admin
-  #   end
-  # end
-
   def after_successful_create_by_client
-    @wkclass = @attendance.wkclass
+    @wkclass = @booking.wkclass
     @wkclass_name = @wkclass.name
     @wkclass_day = @wkclass.day_of_week
     # pass which section the request came from (can only be opengym or group for create) to render the correct turbo_stream to update the correct table opengym/group/my-bookings
     update_purchase_status([@purchase])
     redirect_to client_book_path(@client, booking_section: params[:booking_section], major_change: @major_change) # pass whether a major change occurred to trigger either a full page reload or just a discrete turbo_frame
     # redirect_to "/client/clients/#{@client.id}/book"
-    # attendances_helper has booking_flash_hash with a method as a value
+    # bookings_helper has booking_flash_hash with a method as a value
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
     flash_message booking_flash_hash[:booking][:successful][:colour],
                   (send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day)
   end
 
   def after_successful_create_by_admin
-    @wkclass = @attendance.wkclass
+    @wkclass = @booking.wkclass
     update_purchase_status([@purchase])
-    redirect_to wkclass_path(@wkclass, link_from: params[:attendance][:link_from], page: params[:attendance][:page], show_qualifying_purchases: 'yes')
-    flash_message :success, "#{@attendance.client_name}'s attendance was successfully logged"
+    redirect_to wkclass_path(@wkclass, link_from: params[:booking][:link_from], page: params[:booking][:page], show_qualifying_purchases: 'yes')
+    flash_message :success, "#{@booking.client_name}'s booking was successfully logged"
   end
 
   def after_unsuccessful_create_by_client
@@ -108,26 +76,26 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def after_unsuccessful_create_by_admin
-    session[:wkclass_id] = params[:attendance][:wkclass_id] || session[:wkclass_id]
-    @attendance = Attendance.new
+    session[:wkclass_id] = params[:booking][:wkclass_id] || session[:wkclass_id]
+    @booking = Booking.new
     @wkclass = Wkclass.find(session[:wkclass_id])
-    set_new_attendance_dropdown_options
+    set_new_booking_dropdown_options
     render :new, status: :unprocessable_entity
   end
 
   def update
-    @purchase = @attendance.purchase
-    @wkclass = @attendance.wkclass
+    @purchase = @booking.purchase
+    @wkclass = @booking.wkclass
     update_by_client if client?
     return unless logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
 
-    result = AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status]).update
+    result = AdminBookingUpdater.new(booking: @booking, wkclass: @wkclass, new_status: booking_status_params[:status]).update
     flash_message(*result.flash_array)
     update_purchase_status([@purchase]) if result.penalty_change?
     return unless result.success?
 
     remove_from_waiting_list
-    notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? attendance_status_params[:status]
+    notify_waiting_list(@wkclass, triggered_by: 'admin') if ['cancelled early', 'cancelled late'].include? booking_status_params[:status]
     handle_admin_update_response
   end
 
@@ -136,7 +104,7 @@ class Admin::AttendancesController < Admin::BaseController
     action_client_update_too_late && return if @time_of_request == 'too late'
 
     send "set_data_client_#{@time_of_request}_cancel"
-    if @attendance.update(status: @updated_status)
+    if @booking.update(status: @updated_status)
       action_client_update_success
 
       handle_client_update_response
@@ -146,9 +114,9 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def destroy
-    @wkclass = Wkclass.find(@attendance.wkclass.id)
-    @purchase = @attendance.purchase
-    @attendance.destroy
+    @wkclass = Wkclass.find(@booking.wkclass.id)
+    @purchase = @booking.purchase
+    @booking.destroy
     notify_waiting_list(@wkclass, triggered_by: 'admin')
     redirect_to wkclass_path(@wkclass, link_from: params[:link_from])
     flash_message :success, t('.success')
@@ -157,23 +125,21 @@ class Admin::AttendancesController < Admin::BaseController
   private
 
   def fitternity?
-    return true if params.dig(:attendance, :purchase_id)&.split&.first == 'Fitternity'
+    return true if params.dig(:booking, :purchase_id)&.split&.first == 'Fitternity'
 
     false
   end
 
-  def set_attendance
-    @attendance = Attendance.find(params[:id])
+  def set_booking
+    @booking = Booking.find(params[:id])
   end
 
-  def set_new_attendance_dropdown_options
-    # fitternity now redundant
-    # fitternity_options = Client.select {|c| c.fitternity}.reject {|c| c.associated_with?(@wkclass)}.map {|c| ["#{c.name} (Fitternity)", "Fitternity #{c.id}"] }
-    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass) #+ fitternity_options
+  def set_new_booking_dropdown_options
+    @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
   end
 
   def handle_freeze
-    wkclass_datetime = @attendance.wkclass.start_time
+    wkclass_datetime = @booking.wkclass.start_time
     # unlikley to be more than 1, but you never know
     applicable_freezes = @purchase.freezes_cover(wkclass_datetime)
     return if applicable_freezes.empty?
@@ -190,9 +156,9 @@ class Admin::AttendancesController < Admin::BaseController
     @wkclass_day = @wkclass.day_of_week
     if account == 'client'
       @time_of_request = time_of_request
-      @original_status = @attendance.status
+      @original_status = @booking.status
     else # admin
-      @client_name = @attendance.client_name
+      @client_name = @booking.client_name
     end
   end
 
@@ -200,45 +166,26 @@ class Admin::AttendancesController < Admin::BaseController
     flash_message hash.dig(event, :colour), (send hash.dig(event, :message), @wkclass_name, @wkclass_day)
   end
 
-  def attendance_params
-    params.require(:attendance).permit(:wkclass_id, :purchase_id)
+  def booking_params
+    params.require(:booking).permit(:wkclass_id, :purchase_id)
   end
 
-  def attendance_status_params
-    params.require(:attendance).permit(:id, :status)
+  def booking_status_params
+    params.require(:booking).permit(:id, :status)
   end
-
-  # def correct_account_or_junioradmin
-  #   @client = if new_booking?
-  #               if fitternity?
-  #                 # purchase_id key is now not well named as for fitternity its of the form ['Fitternity <client_id>']
-  #                 Client.find(params.dig(:attendance, :purchase_id).split.last.to_i)
-  #               else
-  #                 Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
-  #               end
-  #             else
-  #               # update or destroy
-  #               @attendance.client
-  #             end
-
-  #   return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin')
-  #   flash_message :warning, t('.warning')
-  #   # flash[:warning] = 'Forbidden'
-  #   redirect_to login_path
-  # end
 
   # make dry
   def correct_account_or_junioradmin_or_instructor_account
     @client = if new_booking?
                 if fitternity?
                   # purchase_id key is now not well named as for fitternity its of the form ['Fitternity <client_id>']
-                  Client.find(params.dig(:attendance, :purchase_id).split.last.to_i)
+                  Client.find(params.dig(:booking, :purchase_id).split.last.to_i)
                 else
-                  Purchase.find(params.dig(:attendance, :purchase_id).to_i).client
+                  Purchase.find(params.dig(:booking, :purchase_id).to_i).client
                 end
               else
                 # update or destroy
-                @attendance.client
+                @booking.client
               end
     return if current_account?(@client&.account) || logged_in_as?('junioradmin', 'admin', 'superadmin', 'instructor')
 
@@ -286,13 +233,13 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def action_client_update_success
-    @attendance.increment!(:amendment_count)
+    @booking.increment!(:amendment_count)
     if @late_cancellation_by_client
       action_cancelled_late
     elsif @early_cancellation_by_client
       action_cancelled_early
     else # a rebook (and bookings always count)
-      @attendance.update(amnesty: false)
+      @booking.update(amnesty: false)
       handle_freeze
     end
     remove_from_waiting_list
@@ -307,17 +254,17 @@ class Admin::AttendancesController < Admin::BaseController
       # amnesty remains false from earlier booking
     else
       late_cancellation_penalty @purchase.product_type, penalty: false
-      @attendance.update(amnesty: true)
+      @booking.update(amnesty: true)
     end
   end
 
   def action_cancelled_early
     @purchase.increment!(:early_cancels)
-    @attendance.update(amnesty: true)
+    @booking.update(amnesty: true)
   end
 
   def handle_client_update_response
-    set_attendances
+    set_atendances
     flash_client_update_success
     # pass which section the request came from to render the correct turbo_stream to update the correct table opengym/group/my-bookings
     # pass limited as well, as if the request is from my_bookings the turbo stream needs to now whether to update group table or opengym table
@@ -342,16 +289,16 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def handle_admin_update_response
-    set_attendances
-    flash_message :success, t('.success', name: @attendance.client_name, status: @attendance.status)
+    set_atendances
+    flash_message :success, t('.success', name: @booking.client_name, status: @booking.status)
     # redirect_back fallback_location: wkclasses_path
-    redirect_to wkclass_path(@attendance.wkclass, link_from: params[:attendance][:link_from], page: params[:attendance][:page])
+    redirect_to wkclass_path(@booking.wkclass, link_from: params[:booking][:link_from], page: params[:booking][:page])
   end
 
-  def set_attendances
-    @physical_attendances = @wkclass.physical_attendances.order_by_status
-    @ethereal_attendances_no_amnesty = @wkclass.ethereal_attendances.no_amnesty.order_by_status
-    @ethereal_attendances_amnesty = @wkclass.ethereal_attendances.amnesty.order_by_status
+  def set_atendances
+    @atendances = @wkclass.atendances.order_by_status
+    @non_atendances_no_amnesty = @wkclass.non_atendances.no_amnesty.order_by_status
+    @non_atendances_amnesty = @wkclass.non_atendances.amnesty.order_by_status
   end
 
   def flash_client_update_fail
@@ -371,17 +318,17 @@ class Admin::AttendancesController < Admin::BaseController
   # example2 - non-browser request to update 'attended' to 'cancelled early'
   def modifiable_status
     # client can never modify attended or no show
-    return if ['attended', 'no show'].exclude?(@attendance.status) || admin_modification?
+    return if ['attended', 'no show'].exclude?(@booking.status) || admin_modification?
 
     flash_hash = booking_flash_hash[:update][:unmodifiable]
-    flash_message flash_hash[:colour], (send flash_hash[:message], @attendance.status)
+    flash_message flash_hash[:colour], (send flash_hash[:message], @booking.status)
     # flash[flash_hash[:colour]] =
-    #   send flash_hash[:message], @attendance.status
+    #   send flash_hash[:message], @booking.status
     redirect_to client_book_path(@client)
   end
 
   def in_booking_window
-    wkclass = Wkclass.find(params.dig(:attendance, :wkclass_id).to_i)
+    wkclass = Wkclass.find(params.dig(:booking, :wkclass_id).to_i)
     return if wkclass.booking_window.cover?(Time.zone.now) || admin_modification?
 
     flash_hash = booking_flash_hash.dig(:booking, :too_late)
@@ -392,9 +339,6 @@ class Admin::AttendancesController < Admin::BaseController
 
   def already_committed
     set_wkclass_and_booking_type
-    # return unless @wkclass.committed_on_same_day?(@client)
-    # the old method (above) incorrectly restricted 2 bookings on same day from separate
-    # unlimited packages eg group package and nutrition package
     return unless @purchase.restricted_on?(@wkclass)
 
     flash_hash = booking_flash_hash.dig(@booking_type, :daily_limit_met)
@@ -424,13 +368,13 @@ class Admin::AttendancesController < Admin::BaseController
     if new_booking?
       @booking_type = :booking
       @rebooking = false
-      @wkclass = Wkclass.find(params[:attendance][:wkclass_id].to_i)
-      @purchase = Purchase.find(params.dig(:attendance, :purchase_id).to_i)
+      @wkclass = Wkclass.find(params[:booking][:wkclass_id].to_i)
+      @purchase = Purchase.find(params.dig(:booking, :purchase_id).to_i)
     else
       @booking_type = :update
       @rebooking = true
-      @wkclass = @attendance.wkclass
-      @purchase = @attendance.purchase
+      @wkclass = @booking.wkclass
+      @purchase = @booking.purchase
     end
   end
 
@@ -444,7 +388,7 @@ class Admin::AttendancesController < Admin::BaseController
     return unless @wkclass.at_capacity?
 
     action_fully_booked(@booking_type) if new_booking? || ['cancelled early',
-                                                           'cancelled late'].include?(@attendance.status)
+                                                           'cancelled late'].include?(@booking.status)
   end
 
   def action_fully_booked(booking_type)
@@ -455,7 +399,7 @@ class Admin::AttendancesController < Admin::BaseController
   end
 
   def reached_max_amendments
-    return unless client? && @attendance.maxed_out_amendments?
+    return unless client? && @booking.maxed_out_amendments?
 
     flash_message booking_flash_hash[:update][:prior_amendments][:colour],
                   (send booking_flash_hash[:update][:prior_amendments][:message])
@@ -477,7 +421,7 @@ class Admin::AttendancesController < Admin::BaseController
       #    'Renew you Package if you wish to attend this class']
       redirect_to client_book_path(@client)
     else
-      flash_message :warning, t('admin.attendances.action_new_booking_when_prov_expired.admin.warning')
+      flash_message :warning, t('admin.bookings.action_new_booking_when_prov_expired.admin.warning')
       # linked_from param is not relevatn as this attempt at booking is not possible throug the UI
       redirect_to wkclass_path(@wkclass)
     end
@@ -497,7 +441,7 @@ class Admin::AttendancesController < Admin::BaseController
     flash_message :warning,
                   ['The purchase has provisionally expired.',
                    'This change may not be possible without first cancelling a booking']
-    redirect_to wkclass_path(@attendance.wkclass, link_from: params[:attendance][:link_from])
+    redirect_to wkclass_path(@booking.wkclass, link_from: params[:booking][:link_from])
   end
 
   def provisionally_expired
@@ -508,7 +452,7 @@ class Admin::AttendancesController < Admin::BaseController
     else # update
       data_items_provisionally_expired(new_booking: false)
       if @purchase.provisionally_expired?
-        action_client_rebook_cancellation_when_prov_expired if client? && @attendance.status != 'booked'
+        action_client_rebook_cancellation_when_prov_expired if client? && @booking.status != 'booked'
         # if the change results in an extra class or validity term reduction
         action_admin_rebook_cancellation_when_prov_expired if logged_in_as?('junioradmin', 'admin', 'superadmin') && extra_benefits_after_change?
       end
@@ -521,11 +465,11 @@ class Admin::AttendancesController < Admin::BaseController
     has_late_cancels_amnesty = @purchase.late_cancels < late_cancels_max
     has_no_show_amnesty = @purchase.no_shows < no_shows_max
     amnesty_when_changed = true
-    if (params[:attendance][:status] == 'no show' && !has_no_show_amnesty) ||
-       (params[:attendance][:status] == 'cancelled late' && !has_late_cancels_amnesty)
+    if (params[:booking][:status] == 'no show' && !has_no_show_amnesty) ||
+       (params[:booking][:status] == 'cancelled late' && !has_late_cancels_amnesty)
       amnesty_when_changed = false
     end
-    return true if @attendance.amnesty? && !amnesty_when_changed
+    return true if @booking.amnesty? && !amnesty_when_changed
 
     false
   end
@@ -538,20 +482,20 @@ class Admin::AttendancesController < Admin::BaseController
 
   def data_items_provisionally_expired(new_booking: true)
     if new_booking
-      @purchase = Purchase.find(params.dig(:attendance, :purchase_id).to_i)
-      @wkclass = Wkclass.find(params.dig(:attendance, :wkclass_id).to_i)
+      @purchase = Purchase.find(params.dig(:booking, :purchase_id).to_i)
+      @wkclass = Wkclass.find(params.dig(:booking, :wkclass_id).to_i)
     else # update
-      @purchase = @attendance.purchase
+      @purchase = @booking.purchase
     end
   end
 
   def late_cancellation_penalty(package_type, penalty: true)
-    # no more than one penalty per attendance
-    return unless package_type == :unlimited_package && @attendance.penalty.nil?
+    # no more than one penalty per booking
+    return unless package_type == :unlimited_package && @booking.penalty.nil?
 
     return unless penalty
 
-    Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id, amount: 1,
+    Penalty.create({ purchase_id: @purchase.id, booking_id: @booking.id, amount: 1,
                      reason: 'late cancellation' })
     update_purchase_status([@purchase])
     @penalty_given = true # for the flash
@@ -564,12 +508,13 @@ class Admin::AttendancesController < Admin::BaseController
       variable_contents: { name: @wkclass_name, day: @wkclass_day } }
   end
 
-  def set_period
-    default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
-    session[:attendance_period] = params[:attendance_period] || session[:attendance_period] || default_month
-    @period = month_period(session[:attendance_period])
-    session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
-  end
+  # redundant?
+  # def set_period
+  #   default_month = Time.zone.today.beginning_of_month.strftime('%b %Y')
+  #   session[:booking_period] = params[:booking_period] || session[:booking_period] || default_month
+  #   @period = month_period(session[:booking_period])
+  #   session[:workout_group] = params[:workout_group] || session[:workout_group] || 'All'
+  # end
 
   def client?
     logged_in_as?('client')

@@ -15,11 +15,11 @@
 
     <div><%= form.hidden_field :page, value: params[:page] %></div>
     <div class="field">
-      <%# the wkclass must not be edited after an attendance has been added, otherwise careless administration may cause clients to attend a class for which they do not have an applicable product %>
+      <%# the wkclass must not be edited after a booking has been added, otherwise careless administration may cause clients to attend a class for which they do not have an applicable product %>
       <% workout_options = @workouts.map { |w| [w.name, w.id, {'data-capacity' => w.default_capacity}] } %>
       <%= form.select :workout_id, options_for_select( workout_options,
                       { selected: (@wkclass.workout&.id || @workouts.first.id),
-                        disabled: (true unless @wkclass.attendances.size.zero?) }), {},
+                        disabled: (true unless @wkclass.bookings.size.zero?) }), {},
                       data: {"wkclass-form-target": "workout", "action": "wkclass-form#change"} %>
     </div>
 

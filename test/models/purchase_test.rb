@@ -232,13 +232,13 @@ class PurchaseTest < ActiveSupport::TestCase
     assert_equal '15 Feb 22 - 25 Mar 22', @purchase_fixed.start_to_expiry
   end
 
-  test 'attendances_remain method' do
-    assert_equal 'unlimited', @purchase_package.attendances_remain(provisional: true, unlimited_text: true)
-    assert_equal 0, @purchase_dropin.attendances_remain(provisional: true, unlimited_text: true)
-    assert_equal 1, @purchase_dropin2.attendances_remain(provisional: true, unlimited_text: true)
-    assert_equal 2, @purchase_fixed.attendances_remain(provisional: true, unlimited_text: true)
-    assert_equal 995, @purchase_package.attendances_remain(provisional: true, unlimited_text: false)
-    assert_equal 995, @purchase_package.attendances_remain(provisional: false, unlimited_text: false)
+  test 'atendances_remain method' do
+    assert_equal 'unlimited', @purchase_package.atendances_remain(provisional: true, unlimited_text: true)
+    assert_equal 0, @purchase_dropin.atendances_remain(provisional: true, unlimited_text: true)
+    assert_equal 1, @purchase_dropin2.atendances_remain(provisional: true, unlimited_text: true)
+    assert_equal 2, @purchase_fixed.atendances_remain(provisional: true, unlimited_text: true)
+    assert_equal 995, @purchase_package.atendances_remain(provisional: true, unlimited_text: false)
+    assert_equal 995, @purchase_package.atendances_remain(provisional: false, unlimited_text: false)
   end
 
   test 'close_to_expiry? method' do
@@ -294,8 +294,8 @@ class PurchaseTest < ActiveSupport::TestCase
     refute @purchase_dropin.can_restart?
     assert @purchase_fixed.can_restart?
     refute @purchase_trial.can_restart?
-    # re-establish this as a refute with explanation 'not because frozen, but becasue restart payment > purchase charge' (as it was before I started to remove ids and lost association to attendances)
-    # add some attendances to @purchase_with_freezes
+    # re-establish this as a refute with explanation 'not because frozen, but because restart payment > purchase charge' (as it was before I started to remove ids and lost association to bookings)
+    # add some bookings to @purchase_with_freezes
     assert @purchase_with_freezes.can_restart? 
     @purchase_with_freezes.update(charge: 100000)
     assert @purchase_with_freezes.can_restart?

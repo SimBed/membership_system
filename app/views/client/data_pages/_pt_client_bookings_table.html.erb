@@ -1,16 +1,16 @@
-<% attendances = purchase.attendances.no_amnesty.order_by_date %>
+<% bookings = purchase.bookings.no_amnesty.order_by_date %>
 <table class="table table-secondary table-striped caption-top ">
-  <caption class="ps-1">Bookings <% if attendances.empty? %>(none made yet)<% end %></caption>    
+  <caption class="ps-1">Bookings <% if bookings.empty? %>(none made yet)<% end %></caption>    
   <tbody>
-    <% attendances.each_with_index do |attendance, index| %>
-      <% wkclass = attendance.wkclass %>
+    <% bookings.each_with_index do |booking, index| %>
+      <% wkclass = booking.wkclass %>
       <% wkclass_decorator = decorate(wkclass) %>
       <tr class ="">
-        <th scope="row"><%= attendances.size - index %></th>
+        <th scope="row"><%= bookings.size - index %></th>
         <th scope="row"><%= wkclass_decorator.date %></th>
         <td><%= wkclass_decorator.time %></td>
         <td><%= "Coach #{wkclass.instructor&.first_name}" %></td>
-        <td><%= attendance.status %></td>
+        <td><%= booking.status %></td>
       </tr>
     <% end %>
   </tbody>

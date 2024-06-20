@@ -1,38 +1,36 @@
 class AdminBookingUpdater
-  include AttendancesHelper
+  include BookingsHelper
   Outcome = Struct.new(:success?, :penalty_change?, :flash_array)
-  # attendances_controller#update
-  # flash_message AdminBookingUpdater.new(attendance: @attendance, wkclass: @wkclass, new_status: attendance_status_params[:status] ).update
 
   def initialize(attributes = {})
-    @attendance = attributes[:attendance]
+    @booking = attributes[:booking]
     @wkclass = attributes[:wkclass]
     @new_status = attributes[:new_status]
-    @old_status = @attendance.status
-    @purchase = @attendance.purchase
+    @old_status = @booking.status
+    @purchase = @booking.purchase
     @penalty_change = false
     @flash_array = [nil]
   end
 
   def update
-    if @attendance.update(status: @new_status)
+    if @booking.update(status: @new_status)
       action_admin_update_success
       # OpenStruct.new(success?: true, penalty_change?: @penalty_change, flash_array: @flash_array)
       Outcome.new(true, @penalty_change, @flash_array)
     else
-      @flash_array = [:warning, I18n.t('admin.attendances.update_by_admin.warning')]
+      @flash_array = [:warning, I18n.t('admin.bookings.update_by_admin.warning')]
       # OpenStruct.new(success?: false, penalty_change?: @penalty_change, flash_array: @flash_array)
       Outcome.new(false, @penalty_change, @flash_array)
     end
   end
 
   def action_admin_update_success
-    @attendance.increment!(:amendment_count)
+    @booking.increment!(:amendment_count)
     action_undo_cancel(@old_status) if ['cancelled early', 'cancelled late', 'no show'].include? @old_status
     if ['cancelled early', 'cancelled late', 'no show'].include? @new_status
       action_cancel(@new_status)
     else # attended or a rebook (which always count)
-      @attendance.update(amnesty: false)
+      @booking.update(amnesty: false)
       handle_freeze
     end
   end
@@ -40,14 +38,14 @@ class AdminBookingUpdater
   def action_cancel(new_status)
     cancel_attribute = self.class.status_map(new_status)
     @purchase.increment!(cancel_attribute)
-    # previously amnesty_limit was a hash in AttendancesHelper, now it's a method of the Setting class.
+    # previously amnesty_limit was a hash in BookingssHelper, now it's a method of the Setting class.
     # if @purchase.send(cancel_attribute) > amnesty_limit[@purchase.product_style][cancel_attribute][@purchase.product_type]
     if @purchase.send(cancel_attribute) > Setting.amnesty_limit[@purchase.product_style][cancel_attribute][@purchase.product_type]
       # typically will already be false eg booked to no show, but could be correction of eg cancellation early (with amnesty) to cancellation late (without amnesty)
-      @attendance.update(amnesty: false)
+      @booking.update(amnesty: false)
       cancellation_penalty @purchase.product_type, cancel_attribute:
     else
-      @attendance.update(amnesty: true)
+      @booking.update(amnesty: true)
       @flash_array = Whatsapp.new(whatsapp_params("#{cancel_attribute}_no_penalty")).manage_messaging
     end
   end
@@ -59,16 +57,16 @@ class AdminBookingUpdater
     # and delete any associated penalty. Edge and not of serious consequence.
     cancel_attribute = self.class.status_map(old_status)
     @purchase.decrement!(cancel_attribute)
-    return if @attendance.penalty.nil?
+    return if @booking.penalty.nil?
 
-    @attendance.penalty.destroy
+    @booking.penalty.destroy
     @penalty_change = true
   end
 
   def cancellation_penalty(package_type, cancel_attribute: :early_cancels)
-    return unless package_type == :unlimited_package && @attendance.reload.penalty.nil?
+    return unless package_type == :unlimited_package && @booking.reload.penalty.nil?
 
-    Penalty.create({ purchase_id: @purchase.id, attendance_id: @attendance.id,
+    Penalty.create({ purchase_id: @purchase.id, booking_id: @booking.id,
                      amount: Setting.amnesty_limit[:group][cancel_attribute][:penalty][:amount],
                      reason: @new_status })
     @penalty_change = true
@@ -76,7 +74,7 @@ class AdminBookingUpdater
   end
 
   def handle_freeze
-    wkclass_datetime = @attendance.wkclass.start_time
+    wkclass_datetime = @booking.wkclass.start_time
     # unlikley to be more than 1, but you never know
     applicable_freezes = @purchase.freezes_cover(wkclass_datetime)
     return if applicable_freezes.empty?

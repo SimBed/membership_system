@@ -5,8 +5,9 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :junioradmin_or_instructor_account, only: [:show, :index, :filter, :clear_filters]
   before_action :set_wkclass, only: [:show, :edit, :update, :destroy, :repeat]
   before_action :set_repeats, only: [:create, :repeat]
-  before_action :attendance_check, only: :repeat
-  before_action :attendance_remain_check, only: :repeat
+  before_action :set_bookings, only: :repeat
+  before_action :single_booking_check, only: :repeat
+  before_action :atendance_remain_check, only: :repeat
   before_action :affects_waiting_list, only: :update
   before_action :date_change, only: :update
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -15,10 +16,10 @@ class Admin::WkclassesController < Admin::BaseController
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
 
   def index
-    # Bullet would prefer us to counter_cache than load physical attendances as all we need is the size of the association, however counter_cache doesn't work for scoped associations
+    # Bullet would prefer us to counter_cache than load physical atendances as all we need is the size of the association, however counter_cache doesn't work for scoped associations
     # and i'm not minded to roll this myself given it isn't causing any major performance issue
     # https://stackoverflow.com/questions/37029847/counter-cache-in-rails-on-a-scoped-association
-    @wkclasses = Wkclass.includes([:physical_attendances, :workout, :attendances, :instructor]).order_by_date
+    @wkclasses = Wkclass.includes([:atendances, :workout, :bookings, :instructor]).order_by_date
     handle_filter
     handle_period
     # @wkclasses = @wkclasses.page params[:page]
@@ -31,13 +32,13 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def show
-    @physical_attendances = @wkclass.physical_attendances.order_by_status
-    @ethereal_attendances_no_amnesty = @wkclass.ethereal_attendances.no_amnesty.order_by_status
-    @ethereal_attendances_amnesty = @wkclass.ethereal_attendances.amnesty.order_by_status
+    @bookings = @wkclass.atendances.order_by_status
+    @non_atendances_no_amnesty = @wkclass.non_atendances.no_amnesty.order_by_status
+    @non_atendances_amnesty = @wkclass.non_atendances.amnesty.order_by_status
     @waitings = @wkclass.waitings.order_by_created
     session[:show_qualifying_purchases] ||= params[:show_qualifying_purchases] || 'no'
     if session[:show_qualifying_purchases] == 'yes'
-      @attendance = Attendance.new
+      @booking = Booking.new
       @qualifying_purchases = Purchase.qualifying_purchases(@wkclass)
     end
     # this section (which enbabled scrolling through the wkclassess) is redundant now we are hotwired
@@ -89,12 +90,8 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def update
-    # if date_change_after_attendance
-    #   flash_message :warning, t('.date_change_after_attendance')
-    #   redirect_to wkclasses_path(page: params[:wkclass][:page]) and return
-    # end
     if @wkclass.update(wkclass_params)
-      update_purchase_status(@wkclass.purchases) if @wkclass.attendances.no_amnesty.present? && @date_change
+      update_purchase_status(@wkclass.purchases) if @wkclass.bookings.no_amnesty.present? && @date_change
       notify_waiting_list(@wkclass) if @affects_waiting_list
 
       redirect_to wkclasses_path(page: params[:wkclass][:page])
@@ -109,7 +106,7 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def destroy
-    @purchases = @wkclass.attendances.map(&:purchase)
+    @purchases = @wkclass.bookings.map(&:purchase)
     @wkclass.destroy
     update_purchase_status(@purchases)
     redirect_to wkclasses_path(page: params[:page])
@@ -121,10 +118,10 @@ class Admin::WkclassesController < Admin::BaseController
     if @repeats
       @wkclasses = (1..@weeks_to_repeat).map do |weeks|
         wkclass = @wkclass.dup
-        attendance = @attendances.first.dup
+        booking = @bookings.first.dup
         wkclass.update(start_time: wkclass.start_time.advance(weeks:))
         wkclasses << wkclass
-        attendance.dup.update(wkclass_id: wkclass.id, status: 'booked') if wkclass.persisted?
+        booking.dup.update(wkclass_id: wkclass.id, status: 'booked') if wkclass.persisted?
       end
       redirect_to wkclasses_path
       # NOTE: the all? method returns true when called on an empty array.
@@ -165,20 +162,23 @@ class Admin::WkclassesController < Admin::BaseController
 
   private
 
-  def attendance_check
-    @attendances = @wkclass.attendances
-    return if @attendances.size == 1
+  def set_bookings
+    @bookings = @wkclass.bookings
+  end
+
+  def single_booking_check
+    return if @bookings.size == 1
 
     flash[:warning] = 'No classes created. There must be 1 and only 1 booking for this class.' # t('.not_one_booking')
     redirect_to wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
   end
 
-  def attendance_remain_check
-    attendances_remain = @attendances.first.purchase.attendances_remain
+  def atendance_remain_check
+    atendances_remain = @bookings.first.purchase.atendances_remain
 
-    return if attendances_remain == 'unlimited' # nutrition?
+    return if atendances_remain == 'unlimited' # nutrition?
     
-    return if @attendances.first.purchase.attendances_remain >= @weeks_to_repeat
+    return if @bookings.first.purchase.atendances_remain >= @weeks_to_repeat
 
     flash[:warning] = 'No classes created. Number of repeats exceeds the number of bookings that remain on the Package' # t('.repeats_too_high')
     redirect_to wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
@@ -305,7 +305,7 @@ class Admin::WkclassesController < Admin::BaseController
     redirect_to wkclasses_path
   end
 
-  # make dry - repeated in attendances controller
+  # make dry - repeated in bookings controller
   def notify_waiting_list(wkclass)
     return if wkclass.in_the_past?
 

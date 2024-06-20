@@ -2,16 +2,16 @@ class Wkclass < ApplicationRecord
   include Csv
   # want settings hash from ApplicationHelper
   include ApplicationHelper
-  has_many :attendances, dependent: :destroy
+  has_many :bookings, dependent: :destroy
   # https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsinverseof
   # rubocop likes dependent and inverse_of to be specified even though they seem superfluous here
-  has_many :physical_attendances, lambda {
+  has_many :atendances, lambda {
                                     where(status: %w[booked attended])
-                                  }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
-  has_many :ethereal_attendances, lambda {
+                                  }, class_name: 'Booking', dependent: :destroy, inverse_of: :wkclass
+  has_many :non_atendances, lambda {
                                     where.not(status: %w[booked attended])
-                                  }, class_name: 'Attendance', dependent: :destroy, inverse_of: :wkclass
-  has_many :purchases, through: :attendances
+                                  }, class_name: 'Booking', dependent: :destroy, inverse_of: :wkclass
+  has_many :purchases, through: :bookings
   has_many :clients, through: :purchases
   has_many :waitings, dependent: :destroy
   belongs_to :instructor
@@ -45,18 +45,18 @@ class Wkclass < ApplicationRecord
   scope :future, -> { where('start_time > ?', Time.zone.now) }
   scope :instructorless, -> { where(instructor_id: nil) }
   # comment no longer relevant: unscope order to avoid PG::InvalidColumnReference: ERROR https://stackoverflow.com/questions/42846286/pginvalidcolumnreference-error-for-select-distinct-order-by-expressions-mus
-  scope :incomplete, -> { joins(:attendances).where(attendances: { status: 'booked' }).distinct }
-  # scope :empty_class, -> { left_joins(:attendances).where(attendances: { id: nil }) }
+  scope :incomplete, -> { joins(:bookings).where(bookings: { status: 'booked' }).distinct }
+  # scope :empty_class, -> { left_joins(:bookings).where(bookings: { id: nil }) }
   # Rubocop recommends
-  scope :empty_class, -> { where.missing(:attendances) }
+  scope :empty_class, -> { where.missing(:bookings) }
   # limited means multiple bookings in a day restrictions apply ie not Open Gym
   scope :limited, -> { joins(:workout).where(workouts: { limited: true }) }
   scope :unlimited, -> { joins(:workout).where(workouts: { limited: false }) }
   # penalties in last days of Package can cause expiry date to be earlier than final class. Dont want these cases to be considered problematic
   scope :has_booking_post_purchase_expiry, lambda {
-                                             joins(attendances: [:purchase])
+                                             joins(bookings: [:purchase])
                                                .where('purchases.expiry_date + 1 < wkclasses.start_time')
-                                               .where("attendances.status NOT IN ('no show', 'cancelled late')")
+                                               .where("bookings.status NOT IN ('no show', 'cancelled late')")
                                            }
   scope :in_booking_visibility_window, -> { where({ start_time: visibility_window }) }
   cancellation_window = Setting.cancellation_window.hours
@@ -68,7 +68,7 @@ class Wkclass < ApplicationRecord
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
   # scope :prev, ->(id) {where("wkclasses.id < ?", id).first || first}
-  scope :booked_for, ->(client) { joins(attendances: [purchase: [:client]]).where(clients: { id: client.id }).where(attendances: { status: 'booked' }) }
+  scope :booked_for, ->(client) { joins(bookings: [purchase: [:client]]).where(clients: { id: client.id }).where(bookings: { status: 'booked' }) }
 
   # would like to use #or method but see difficulties above re structrurally compatible
   # scope :problematic, -> { instructorless.or(self.incomplete).or(self.empty_class.has_instructor_cost) }
@@ -149,16 +149,16 @@ class Wkclass < ApplicationRecord
   end
 
   def committed_on_same_day?(client)
-    # Used in already_committed attendances_controller before_action callback
+    # Used in already_committed bookings_controller before_action callback
     # fixed packages can be used however the client wants (eg twice a day is ok)
-    # unlimited packages not allowed 2 physical attendances on same day, but allowed to cancel or no show and then book another classes
+    # unlimited packages not allowed 2 atendances on same day, but allowed to cancel or no show and then book another classes
     # (originally for Unlimited we only allowed booking another class after LC or no show if it was an amnesty)
-    attendances_on_same_day =
-      Wkclass.where.not(id:).on_date(start_time.to_date).joins(attendances: [purchase: [:client]])
+    atendances_on_same_day =
+      Wkclass.where.not(id:).on_date(start_time.to_date).joins(bookings: [purchase: [:client]])
              .where(clients: { id: client.id })
-             .merge(Attendance.committed)
+             .merge(Booking.committed)
              .merge(Purchase.unlimited.package)
-    return false if attendances_on_same_day.empty?
+    return false if atendances_on_same_day.empty?
 
     true
   end
@@ -181,7 +181,7 @@ class Wkclass < ApplicationRecord
 
   def deletable?
     # Bullet.enable = false if Rails.env == 'development'
-    return true if attendances.empty?
+    return true if bookings.empty?
 
     false
     # Bullet.enable = true if Rails.env == 'development'
@@ -194,7 +194,7 @@ class Wkclass < ApplicationRecord
   end
 
   def at_capacity?
-    return true if physical_attendances.count >= max_capacity
+    return true if atendances.count >= max_capacity
 
     false
   end
@@ -207,7 +207,7 @@ class Wkclass < ApplicationRecord
 
   def early_cancelled_pt?
     # where a client cancels a PT session early, the instructor may re-schedule the same class/time combo for a different client
-    !workout.group_workout? && attendances&.first&.status == 'cancelled early'
+    !workout.group_workout? && bookings&.first&.status == 'cancelled early'
   end
 
   private

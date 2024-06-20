@@ -17,7 +17,7 @@ class WkclassTest < ActiveSupport::TestCase
                               instructor_id: @instructor.id,
                               instructor_rate: @instructor_pt_rate)
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
-    @wkclass_many_attendances = wkclasses(:wkclass_many_attendances)
+    @wkclass_many_bookings = wkclasses(:wkclass_many_bookings)
     @client = clients(:aparna)
     @client2 = clients(:client_ekta_unlimited)
   end
@@ -36,7 +36,7 @@ class WkclassTest < ActiveSupport::TestCase
   test 'workout/time need not be unique when rescheduling new pt wkclass after client early cancellation of original class' do
     @duplicate_class = @wkclass_pt.dup
     @wkclass_pt.save
-    Attendance.create(wkclass_id: @wkclass_pt.id,
+    Booking.create(wkclass_id: @wkclass_pt.id,
                       purchase_id: purchases(:purchase_12C5WPT).id,
                       status: 'cancelled early')
     @duplicate_class.save
@@ -57,7 +57,7 @@ class WkclassTest < ActiveSupport::TestCase
 
   test 'booked_for' do
     assert_empty Wkclass.booked_for(@client).pluck(:id)
-    Attendance.create(wkclass_id: @tomorrows_class_early.id,
+    Booking.create(wkclass_id: @tomorrows_class_early.id,
                       purchase_id: @client.purchases.first.id,
                       status: 'booked')
 
@@ -68,36 +68,36 @@ class WkclassTest < ActiveSupport::TestCase
   end
 
   test 'chaining of booked_for and show_in_bookings_for' do # these are chained to display my_bookings to client
-    Attendance.create(wkclass_id: @tomorrows_class_early.id,
+    Booking.create(wkclass_id: @tomorrows_class_early.id,
                       purchase_id: @client.purchases.first.id,
                       status: 'booked')
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
     assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)
     # check a different client making a booking doesn't have any impact
-    assert_difference 'Attendance.count', 1 do
-      Attendance.create(wkclass_id: @tomorrows_class_early.id,
+    assert_difference 'Booking.count', 1 do
+      Booking.create(wkclass_id: @tomorrows_class_early.id,
                         purchase_id: @client2.purchases.last.id,
                         status: 'booked')
     end
     assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)
   end
 
-  test 'physical_attendances' do
-    assert_equal 3, @wkclass_many_attendances.physical_attendances.size
+  test 'atendances' do
+    assert_equal 3, @wkclass_many_bookings.atendances.size
   end
 
-  test 'ethereal_attendances' do
-    assert_equal 4, @wkclass_many_attendances.ethereal_attendances.size
+  test 'non_atendances' do
+    assert_equal 4, @wkclass_many_bookings.non_atendances.size
   end
 
   test 'at_capacity?' do
-    refute_predicate @wkclass_many_attendances, :at_capacity?
+    refute_predicate @wkclass_many_bookings, :at_capacity?
   end
 
   test 'deletable? method' do
     @wkclass.save
 
     assert @wkclass.deletable?
-    refute @wkclass_many_attendances.deletable?
+    refute @wkclass_many_bookings.deletable?
   end
 end

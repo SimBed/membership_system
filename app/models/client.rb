@@ -2,7 +2,7 @@ class Client < ApplicationRecord
   include WhatsappNumber
   include Csv
   has_many :purchases, dependent: :destroy
-  has_many :attendances, through: :purchases
+  has_many :bookings, through: :purchases
   has_many :strength_markers, dependent: :destroy
   has_many :body_markers, dependent: :destroy
   has_many :achievements, dependent: :destroy
@@ -73,7 +73,7 @@ class Client < ApplicationRecord
   scope :cold, lambda {
                  Client
                    .select("#{Client.table_name}.*", 'max(start_time) as max')
-                   .joins(purchases: [attendances: [:wkclass]])
+                   .joins(purchases: [bookings: [:wkclass]])
                    .group('clients.id')
                    .having('max(start_time) < ?', Setting.cold.months.ago)
                }
@@ -87,7 +87,7 @@ class Client < ApplicationRecord
   scope :recently_attended, lambda {
                               Client
                                 .select("#{Client.table_name}.*", 'max(start_time)')
-                                .joins(purchases: [attendances: [:wkclass]])
+                                .joins(purchases: [bookings: [:wkclass]])
                                 .group('clients.id')
                                 .having('max(start_time) >= ?', Setting.recently_attended.months.ago)
                             }
@@ -125,7 +125,7 @@ class Client < ApplicationRecord
 
   # could reformat here as last_counted_class method has similarly structured code
   def cold?
-    date_of_last_class = attendances.includes(:wkclass).map { |a| a.wkclass.start_time }.max
+    date_of_last_class = bookings.includes(:wkclass).map { |a| a.wkclass.start_time }.max
     return false if date_of_last_class.nil?
 
     date_of_last_class < Setting.cold.months.ago
@@ -155,11 +155,11 @@ class Client < ApplicationRecord
 
   # NOTE: this includes (probably irrelevantly) early cancelled classes
   def last_class
-    attendances.confirmed.includes(:wkclass).map(&:start_time).max
+    bookings.confirmed.includes(:wkclass).map(&:start_time).max
   end
 
   def last_counted_class
-    attendances.confirmed.no_amnesty.includes(:wkclass).map(&:start_time).max
+    bookings.confirmed.no_amnesty.includes(:wkclass).map(&:start_time).max
   end
 
   def total_spend
@@ -190,18 +190,18 @@ class Client < ApplicationRecord
   end
 
   def lifetime_classes
-    Client.joins(purchases: [:attendances]).where(id:).where(attendances: { status: 'attended' }).size
+    Client.joins(purchases: [:bookings]).where(id:).where(bookings: { status: 'attended' }).size
   end
 
   def classes_last(period = 'month')
-    Client.joins(purchases: [attendances: [:wkclass]])
-          .where(id:).where(attendances: { status: 'attended' })
+    Client.joins(purchases: [bookings: [:wkclass]])
+          .where(id:).where(bookings: { status: 'attended' })
           .merge(Wkclass.during(1.send(period).ago..Time.zone.today)).size
   end
 
   # method once named booked? but this name would be misleading
   def associated_with?(wkclass)
-    return true if attendances.includes(:wkclass).map(&:wkclass).include? wkclass
+    return true if bookings.includes(:wkclass).map(&:wkclass).include? wkclass
 
     false
   end
@@ -210,7 +210,7 @@ class Client < ApplicationRecord
     ongoing_group_packages = purchases.not_fully_expired.renewable
     # return false if ongoing_group_packages.empty?
 
-    return false unless ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: Setting.days_remain, attendances_remain: Setting.attendances_remain) }.all?
+    return false unless ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: Setting.days_remain, atendances_remain: Setting.atendances_remain) }.all?
 
     true
   end

@@ -39,8 +39,8 @@ class ApplicationController < ActionController::Base
       # could also cancel any pt rider bookings post main expiry, but this may cause undisproportionate business problems
       next unless expiry_earlier
       period = (p.expiry_date.advance(days: 1)..Float::INFINITY)
-      post_expiry_attendances = p.attendances.during(period).booked
-      post_expiry_attendances.each do |a|
+      post_expiry_bookings = p.bookings.during(period).booked
+      post_expiry_bookings.each do |a|
         a.update(status: 'cancelled early', amnesty: true)
         flash_message :danger, t('.booking_cancelled')
       end
@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
 
   def cancel_bookings_during_freeze(freeze)
     freeze_period = freeze.start_date..freeze.end_date
-    freeze.purchase.attendances.booked.during(freeze_period).each do |a|
+    freeze.purchase.bookings.booked.during(freeze_period).each do |a|
       a.update(status: 'cancelled early')
       flash_message :danger, t('.booking_cancelled')
     end
@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
 
   def cancel_bookings_post_new_expiry(freeze)
     freeze_period = freeze.start_date..freeze.end_date
-    freeze.purchase.attendances.booked.during(freeze_period).each do |a|
+    freeze.purchase.bookings.booked.during(freeze_period).each do |a|
       a.update(status: 'cancelled early')
       flash_message :danger, t('.booking_cancelled')
     end

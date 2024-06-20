@@ -84,8 +84,8 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     @tomorrows_class_early.update(max_capacity: 1)
     # other client fills class
     log_in_as(@account_other_client)
-    assert_difference '@other_client.attendances.no_amnesty.size', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    assert_difference '@other_client.bookings.no_amnesty.size', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @other_client_purchase.id },
                                              booking_section: 'group' }
     end
@@ -103,22 +103,22 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
   test 'waiting list add/remove links and images appears correctly when space opens up (after client has previously cancelled early)' do
     log_in_as(@account_client)
     # book class, then cancel early
-    assert_difference '@client.attendances.size', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    assert_difference '@client.bookings.size', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    assert_difference '@client.attendances.amnesty.size', 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
+    assert_difference '@client.bookings.amnesty.size', 1 do
+      patch booking_path(@booking), params: { booking: { id: @booking.id } }
     end
-    assert @attendance.status, 'cancelled early'
+    assert @booking.status, 'cancelled early'
     # other client fills class
     @tomorrows_class_early.update(max_capacity: 1)
     log_in_as(@account_other_client)
-    # commented out becasue it fails although i can demonstrate it passes (with a byebug and check on @other_client.attendances.size before and after the post). Weird/annoying
-    # assert_difference '@other_client.attendances.size', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    # commented out becasue it fails although i can demonstrate it passes (with a byebug and check on @other_client.bookings.size before and after the post). Weird/annoying
+    # assert_difference '@other_client.bookings.size', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @other_client_purchase.id },
                                              booking_section: 'group' }
     # end
@@ -133,17 +133,17 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     end
 
     # spot opens up (other client cancels)
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @other_client)
+    @booking = Booking.applicable_to(@tomorrows_class_early, @other_client)
     log_in_as(@account_other_client)
-    assert_difference '@other_client.attendances.amnesty.size', 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    assert_difference '@other_client.bookings.amnesty.size', 1 do
+      patch booking_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     log_in_as(@account_client)
     follow_redirect!
     # File.write("test_output.html", response.body)
     assert_template 'client/dynamic_pages/book'
-    assert_select "a:match('href', ?)", %r{#{attendances_path}/}, count: 1
+    assert_select "a:match('href', ?)", %r{#{bookings_path}/}, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/add.*}, count: 3 # 22/4, 22/4, 24/4
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 0
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 0
@@ -164,8 +164,8 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     end
 
     # client joins a different class
-    assert_difference '@client.attendances.size', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_late.id,
+    assert_difference '@client.bookings.size', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end    
@@ -190,7 +190,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     @tomorrows_class_early.update(max_capacity: 1)
 
     assert_difference 'Waiting.all.size', -1 do
-      post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end

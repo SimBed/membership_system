@@ -1,6 +1,6 @@
 <% wkclass_decorator = decorate(wkclass) %>
 <%# booking_link_and_class = booking_link_and_class_for(wkclass, @client, index, 'group') %>
-<% attendance_format = AttendanceFormat.new(wkclass, @client, index, 'group') %>
+<% booking_format = BookingFormat.new(wkclass, @client, index, 'group') %>
     <!-- Modal -->
     <% workout = wkclass.workout %>
     <div class="modal fade" id=<%="exampleModal#{wkclass.id}"%> tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -45,14 +45,13 @@
   </div>
   <div class="book-item">
     <div class="details">      
-      <!--div class ="<%#=booking_link_and_class[:css_class]%> status"><%#= Attendance.applicable_to(wkclass, @client)&.status %></div-->
-      <div class ="<%= attendance_format.css_class %> status"><%= attendance_format.status %></div>
-      <% if attendance_format.waiting_list_remove_link_under_status %>
-        <div class=""><%= attendance_format.waiting_list_remove_link  %></div>
+      <div class ="<%= booking_format.css_class %> status"><%= booking_format.status %></div>
+      <% if booking_format.waiting_list_remove_link_under_status %>
+        <div class=""><%= booking_format.waiting_list_remove_link  %></div>
       <% end %>      
     </div>
   </div>
   <div class="book-item">
-    <div <%= attendance_format.data_attributes %> <%= attendance_format.tooltip_title %>><%= attendance_format.booking_link %></div>
+    <div <%= booking_format.data_attributes %> <%= booking_format.tooltip_title %>><%= booking_format.booking_link %></div>
   </div>
 </div>

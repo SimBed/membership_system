@@ -10,13 +10,13 @@
     </div>
     <div class="admin-table striped">
       <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
-        <% wkclass_size = wkclass.attendances.size %>
+        <% wkclass_size = wkclass.bookings.size %>
         <% wkclass_decorator = decorate(wkclass) %>  
         <div class="row">
           <div class="column"><%= index + 1 %></div>
           <div class="column col-2x"><%= wkclass_decorator.summary %></div>
-          <div class="column col-2x"><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></div>
-          <div class="column col-1x"><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></div>
+          <div class="column col-2x"><%= wkclass.bookings&.first&.client&.name if wkclass_size == 1 %></div>
+          <div class="column col-1x"><%= wkclass.bookings&.first&.status if wkclass_size == 1 %></div>
           <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
         </div>
       <% end %>
@@ -32,13 +32,13 @@
       <div class="mb-1">Classes (with no additional payment)</div>
       <div class="admin-table striped">
         <% @wkclasses_with_no_instructor_expense.each_with_index do |wkclass, index| %>
-          <% wkclass_size = wkclass.attendances.size %>
+          <% wkclass_size = wkclass.bookings.size %>
           <% wkclass_decorator = decorate(wkclass) %>           
           <div class="row">
             <div class="column"><%= index + 1 %></div>
             <div class="column col-2x"><%= wkclass_decorator.summary %></div>
-            <div class="column col-2x"><%= wkclass.attendances&.first&.client&.name if wkclass_size == 1 %></div>
-            <div class="column col-1x"><%= wkclass.attendances&.first&.status if wkclass_size == 1 %></div>
+            <div class="column col-2x"><%= wkclass.bookings&.first&.client&.name if wkclass_size == 1 %></div>
+            <div class="column col-1x"><%= wkclass.bookings&.first&.status if wkclass_size == 1 %></div>
             <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
           </div>
         <% end %>

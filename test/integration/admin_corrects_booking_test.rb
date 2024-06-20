@@ -14,17 +14,17 @@ class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
   test 'test admin corrects no show to early cancel' do
     log_in_as(@admin)
     # admin books class
-    post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     follow_redirect!
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    # admin (incorrectly) logs attendance as no show
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
+    # admin (incorrectly) logs booking as no show
     assert_difference '@purchase.reload.no_shows', 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
     # admin makes correction
     assert_difference '@purchase.reload.no_shows', -1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled early' } }
     end
   end
 
@@ -32,20 +32,20 @@ class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     # use up no show amnesty
     @purchase.update(no_shows: 1)
-    post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     follow_redirect!
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    # admin (incorrectly) logs attendance as no show
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
+    # admin (incorrectly) logs booking as no show
     assert_equal  Date.parse('20 june 2022'), @purchase.reload.expiry_date
     assert_difference '@purchase.reload.no_shows', 1 do
       # xhr redundant now use Turbo
-      # patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }, xhr: true
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
+      # patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }, xhr: true
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
     # admin makes correction
     assert_difference -> { @purchase.reload.expiry_date } => 2, -> { @purchase.reload.no_shows } => -1, -> { @purchase.reload.late_cancels } => 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled late' } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled late' } }
     end
   end
 
@@ -53,19 +53,19 @@ class AdminCorrectsBookingTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     # use up amnesties
     @purchase.update(no_shows: 1, late_cancels: 2)
-    post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     follow_redirect!
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal Date.parse('Mon, 20 June 2022'), @purchase.reload.expiry_date
-    # admin (incorrectly) logs attendance as no show
+    # admin (incorrectly) logs booking as no show
     assert_difference '@purchase.reload.no_shows', 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'no show' } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
     # admin makes correction
     assert_difference -> { @purchase.reload.expiry_date } => 1, -> { @purchase.reload.no_shows } => -1, -> { @purchase.reload.late_cancels } => 1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled late' } }
+      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled late' } }
     end
   end
 end

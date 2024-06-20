@@ -59,7 +59,7 @@ class Setting < RailsSettings::Base
     field :recently_attended, type: :integer, default: 3
     # field :pre_expiry_trial_renewal, type: :integer, default: 0
     # field :days_remain, type: :integer, default: 14
-    # field :attendances_remain, type: :integer, default: 4
+    # field :atendances_remain, type: :integer, default: 4
   end
 
   scope :marker do
@@ -102,7 +102,7 @@ class Setting < RailsSettings::Base
   
   scope :renewal do
     field :days_remain, type: :integer, default: 14
-    field :attendances_remain, type: :integer, default: 4
+    field :atendances_remain, type: :integer, default: 4
   end
 
   scope :timetable do

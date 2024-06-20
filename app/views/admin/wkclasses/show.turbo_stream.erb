@@ -1,9 +1,4 @@
-<%#= turbo_stream.update "wkclasses" do %>
-  <%#= render partial: "class_attendance_table" %>
-  <%#= render partial: "waiting_list" %>
-<%# end %>
 <%= turbo_stream.update dom_id(@wkclass) do %>
   <%= render partial: "show" %>
-  <%#= render partial: "waiting_list" %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

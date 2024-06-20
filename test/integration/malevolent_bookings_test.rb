@@ -1,9 +1,9 @@
 require 'test_helper'
-require 'attendances_helper'
+require 'bookings_helper'
 
 class MalevolentBookingsTest < ActionDispatch::IntegrationTest
   # https://stackoverflow.com/questions/32029654/how-to-make-helper-methods-available-in-a-rails-integration-test
-  include AttendancesHelper
+  include BookingsHelper
   setup do
     @admin = accounts(:admin)
     @account_client = accounts(:client_for_pilates)
@@ -29,10 +29,10 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
-    assert_difference '@purchase.attendances.count', 2 do
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[0].id,
+    assert_difference '@purchase.bookings.count', 2 do
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[0].id,
                                                            purchase_id: @purchase.id } }
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
     follow_redirect!
@@ -40,8 +40,8 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     assert_equal 'classes all booked', @purchase.reload.status
     # client attempts to book another class
     log_in_as @account_client
-    assert_difference '@purchase.attendances.count', 0 do
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
+    assert_difference '@purchase.bookings.count', 0 do
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[2].id,
                                                            purchase_id: @purchase.id } }
     end
 
@@ -63,29 +63,29 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     follow_redirect!
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
-    assert_difference '@purchase.attendances.count', 2 do
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[0].id,
+    assert_difference '@purchase.bookings.count', 2 do
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[0].id,
                                                            purchase_id: @purchase.id } }
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
     # cancel last booking
-    @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
-    patch attendance_path(@attendance), params: { attendance: { status: 'cancelled early' } }
+    @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
+    patch booking_path(@booking), params: { booking: { status: 'cancelled early' } }
 
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead
-    post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
+    post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
 
     assert_equal 'classes all booked', @purchase.reload.status
 
     # client attempts to rebook previously cancelled class
     log_in_as @account_client
-    @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
+    @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
 
-    assert_difference '@purchase.attendances.count', 0 do
-      patch attendance_path(@attendance)
+    assert_difference '@purchase.bookings.count', 0 do
+      patch booking_path(@booking)
     end
 
     assert_redirected_to client_book_path @client
@@ -108,18 +108,18 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
-    assert_difference '@purchase.attendances.count', 2 do
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[0].id,
+    assert_difference '@purchase.bookings.count', 2 do
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[0].id,
                                                            purchase_id: @purchase.id } }
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
 
     assert_equal 'classes all booked', @purchase.reload.status
 
     # admin attempts to book another class
-    assert_difference '@purchase.attendances.count', 0 do
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
+    assert_difference '@purchase.bookings.count', 0 do
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[2].id,
                                                            purchase_id: @purchase.id } }
     end
 
@@ -142,30 +142,30 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
-    assert_difference '@purchase.attendances.count', 2 do
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[0].id,
+    assert_difference '@purchase.bookings.count', 2 do
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[0].id,
                                                            purchase_id: @purchase.id } }
-      post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
+      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[1].id,
                                                            purchase_id: @purchase.id } }
     end
     # cancel last booking
-    @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
-    patch attendance_path(@attendance), params: { attendance: { status: 'cancelled early' } }
+    @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
+    patch booking_path(@booking), params: { booking: { status: 'cancelled early' } }
 
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead
-    post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
+    post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
 
     assert_equal 'classes all booked', @purchase.reload.status
 
     # admin corrects class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is amnesty)
-    assert_difference '@attendance.reload.amendment_count', 1 do
-      patch attendance_path(@attendance), params: { attendance: { status: 'cancelled late' } }
+    assert_difference '@booking.reload.amendment_count', 1 do
+      patch booking_path(@booking), params: { booking: { status: 'cancelled late' } }
     end
-    assert_redirected_to wkclass_path @attendance.wkclass
+    assert_redirected_to wkclass_path @booking.wkclass
     # assert_redirected_to wkclasses_path
-    assert_equal([["Tina Dehal's attendance was successfully updated to cancelled late"]], flash[:success])
+    assert_equal([["Tina Dehal's booking was successfully updated to cancelled late"]], flash[:success])
   end
 
   test 'admin should not be able to make amendment to booking for provisonally expired package when change will improve package terms' do
@@ -186,28 +186,28 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     travel_to(Date.parse('March 17 2022').beginning_of_day)
     # provisionally expire purchase by booking 2 classes
-    post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[0].id,
+    post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[0].id,
                                                          purchase_id: @purchase.id } }
-    post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[1].id,
+    post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[1].id,
                                                          purchase_id: @purchase.id } }
 
     # last booking cancelled late (but incorrectly set to cancelled early)
-    @attendance = @client.attendances.where(wkclass_id: Wkclass.last(3)[1].id).first
-    patch attendance_path(@attendance), params: { attendance: { status: 'cancelled early' } }
+    @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
+    patch booking_path(@booking), params: { booking: { status: 'cancelled early' } }
 
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead (wouldn't be allowed if previous cancellation logged correctly)
-    post attendances_path, params: { attendance: { wkclass_id: Wkclass.last(3)[2].id,
+    post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[2].id,
                                                          purchase_id: @purchase.id } }
 
     assert_equal 'classes all booked', @purchase.reload.status
 
     # admin attempts to correct class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is no amnesty)
-    assert_difference '@attendance.reload.amendment_count', 0 do
-      patch attendance_path(@attendance), params: { attendance: { status: 'cancelled late' } }
+    assert_difference '@booking.reload.amendment_count', 0 do
+      patch booking_path(@booking), params: { booking: { status: 'cancelled late' } }
     end
 
-    assert_redirected_to wkclass_path @attendance.wkclass
+    assert_redirected_to wkclass_path @booking.wkclass
     assert_equal [['The purchase has provisionally expired.',
                    'This change may not be possible without first cancelling a booking']], flash[:warning]
   end

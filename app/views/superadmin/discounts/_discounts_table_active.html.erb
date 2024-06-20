@@ -35,7 +35,7 @@
             <div class="column col-1x"><%= discount.da_count %></div>
             <div class="column col-2x"><%= discount.start_date.strftime '%d %b %Y' %></div>
             <div class="column col-2x"><%= (discount.end_date - Date.today > 3650) ? raw("&infin;") : (discount.end_date.strftime '%d %b %Y') %></div>
-            <div class="column nomobile"><%= link_to image_tag('attendances.png', class: ["table_icon",("greyed-out" unless discount.current?)].compact.join(' ')), discount_path(discount, current: !discount.current?), data: {turbo_method: :patch} %></div>                    
+            <div class="column nomobile"><%= link_to image_tag('bookings.png', class: ["table_icon",("greyed-out" unless discount.current?)].compact.join(' ')), discount_path(discount, current: !discount.current?), data: {turbo_method: :patch} %></div>                    
             <div class="column nomobile"><%= link_to image_tag('edit.png', class: "table_icon"), edit_discount_path(discount) unless discount.no_discount? %></div>
             <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), discount_path(discount), data: { turbo_method: :delete, turbo_confirm: 'Discount will be deleted. Are you sure?' } unless (discount.no_discount? || discount.used?) %></div>
           </div>

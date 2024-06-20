@@ -1,21 +1,21 @@
-<%= form_with(model: attendance, data: {turbo_frame: dom_id(@wkclass)}) do |form| %>
-  <% if attendance.errors.any? %>
+<%= form_with(model: booking, data: {turbo_frame: dom_id(@wkclass)}) do |form| %>
+  <% if booking.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(attendance.errors.count, "error") %> prohibited this attendance from being saved:</h2>
+      <h2><%= pluralize(booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
       <ul>
-        <% attendance.errors.each do |error| %>
+        <% booking.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div><%= form.hidden_field :wkclass_id, :value => @wkclass&.id || attendance.wkclass.id %> </div>
+  <div><%= form.hidden_field :wkclass_id, :value => @wkclass&.id || booking.wkclass.id %> </div>
   <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>
   <div><%= form.hidden_field :page, value: params[:page] %></div>
   <div><%= form.hidden_field :show_qualifying_purchases, value: 'yes' %></div>
   <%= form.select :purchase_id, options_for_select(@qualifying_purchases) %>
   <div class="actions mt-1 mb-2">
-    <%= form.submit 'Log attendance' %>
+    <%= form.submit 'Log booking' %>
   </div>
 <% end %>

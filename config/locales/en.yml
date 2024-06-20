@@ -1,22 +1,6 @@
 
 en:
   admin:
-    attendances:
-      update_by_admin:
-        warning: Attendance was not updated
-      create:
-        warning: Forbidden
-        booking_cancelled: A booking made for after the new expiry date has been cancelled
-      destroy:
-        success: Attendance was successfully deleted
-        warning: Forbidden
-      update:
-        success: "%{name}'s attendance was successfully updated to %{status}"
-        warning: Forbidden
-        booking_cancelled: A booking made for after the new expiry date has been cancelled
-      action_new_booking_when_prov_expired:
-        admin:
-          warning: The maximum number of classes has already been booked
     accounts:
       create:
         success: Account was successfully created
@@ -41,6 +25,22 @@ en:
       destroy:
         success: Adjustment was successfully deleted
         booking_cancelled: A booking made for after the new expiry date has been cancelled        
+    bookings:
+      update_by_admin:
+        warning: Booking was not updated
+      create:
+        warning: Forbidden
+        booking_cancelled: A booking made for after the new expiry date has been cancelled
+      destroy:
+        success: Booking was successfully deleted
+        warning: Forbidden
+      update:
+        success: "%{name}'s booking was successfully updated to %{status}"
+        warning: Forbidden
+        booking_cancelled: A booking made for after the new expiry date has been cancelled
+      action_new_booking_when_prov_expired:
+        admin:
+          warning: The maximum number of classes has already been booked
     clients:
       index:
         password_reset: This client's password will be reset. Are you sure?
@@ -231,7 +231,7 @@ en:
       password_change:
         success: Your password has been changed  
     clients:
-      attendance:
+      booking:
         create:
           confirm: You will be booked for this class. Are you sure?
           confirm_unfreeze: Your Package is currently frozen. You will be booked for this class and your freeze will end. Are you sure?

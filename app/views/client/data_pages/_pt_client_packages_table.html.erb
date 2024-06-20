@@ -39,7 +39,7 @@
         <td><%= purchase.expiry_date.strftime('%d %b %y') %></td>
       </tr>
         <th scope="row">Sessions left</th>
-        <td><%= purchase.attendances_remain(provisional: false) %></td>
+        <td><%= purchase.atendances_remain(provisional: false) %></td>
       </tr>
     <% end %>
     <% if purchase.expired? %>

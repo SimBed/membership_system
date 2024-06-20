@@ -41,7 +41,7 @@ class Membership
   def usage_charge
     return (active_membership.to_f / intended_membership * purchase.charge).floor if purchase.unlimited_package?
 
-    (purchase.attendances.no_amnesty.size.to_f / purchase.max_classes * purchase.charge).floor
+    (purchase.bookings.no_amnesty.size.to_f / purchase.max_classes * purchase.charge).floor
   end
 
   def price_change_charge

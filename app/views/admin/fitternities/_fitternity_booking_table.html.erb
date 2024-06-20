@@ -1,0 +1,15 @@
+<table class="table table-secondary table-striped caption-top">
+  <caption>Bookings</caption>
+  <tbody>
+    <% @bookings.each_with_index do |booking, index| %>
+      <% wkclass = booking.wkclass %>
+      <% wkclass_decorator = decorate(wkclass) %>
+      <tr>
+        <th scope="row"><%= @bookings.size - index %></th>
+        <td><%= link_to wkclass_decorator.summary, wkclass_path(wkclass), class: "like_button" %></td>
+        <td><%= link_to booking.client.name , client_path(booking.client), class: "like_button" %></td>
+        <td><%= booking.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

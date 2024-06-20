@@ -1,7 +1,7 @@
 <div class="text-center mb-3">
   <h6 class="bolditalics mb-0">
     <%= @product.name(verbose: true, color_show: true, rider_show: true) %>
-    <%= image_tag('attendances.png', class: ["table_icon",("active-product" unless @product.current?)].compact.join(' ')) %>
+    <%= image_tag('bookings.png', class: ["table_icon",("active-product" unless @product.current?)].compact.join(' ')) %>
   </h6>
 </div>
 <%= turbo_frame_tag 'product_prices' do %>

@@ -27,7 +27,7 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def show
-    # without clearing the session, the following sequence will show the attendances of the purchase of the preiously viewed client:
+    # without clearing the session, the following sequence will show the booking of the purchase of the preiously viewed client:
     # show clientA, select one of clientA's purchases, return to client index, show client B
     # no longer want selection
     # clear_session(:purchaseid)
@@ -199,7 +199,7 @@ class Admin::ClientsController < Admin::BaseController
 
   def prepare_data_for_view
     @client_hash = {
-      attendances: @client.attendances.attended.size,
+      atendances: @client.bookings.attended.size,
       packages: @client.purchases.package.size,
       dropins: @client.purchases.dropin.size,
       spend: @client.total_spend,

@@ -14,7 +14,7 @@ class ClientAnalyzer
   end
 
   def first_class
-    @group_packages.started.joins(attendances: [:wkclass]).where.not(attendances: { amnesty: true }).minimum(:start_time)
+    @group_packages.started.joins(bookings: [:wkclass]).where.not(bookings: { amnesty: true }).minimum(:start_time)
   end
 
   def life_span

@@ -14,7 +14,7 @@
     <div class="column nomobile">
     <%= link_to image_tag('edit.png', class: "table_icon"), edit_purchase_path(purchase) %></div>
     <% if logged_in_as?('admin', 'superadmin') && purchase.deletable? %> 
-      <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), purchase_path(purchase), data: { "turbo-method": :delete, turbo_confirm: 'Purchase can be deleted as it has no attendances, adjustments or freezes. But are you sure?' } %></div>
+      <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), purchase_path(purchase), data: { "turbo-method": :delete, turbo_confirm: 'Purchase can be deleted as it has no bookings, adjustments or freezes. But are you sure?' } %></div>
     <% else %>
       <div class="column nomobile"></div>
     <% end %>           

@@ -18,15 +18,15 @@ class Admin::PurchasesController < Admin::BaseController
   # after_action -> { update_purchase_status([@purchase]) }, only: [:create, :update]
 
   def index
-    # @purchases = Purchase.includes(:attendances, :product, :freezes, :adjustments, :client)
-    # associations referrred to in view - attendances, product in start_to_expiry method, client directly in purchase.client.name
-    @purchases = Purchase.includes(:attendances, :freezes, :adjustments, :penalties, :payment, :client, product: [:workout_group])
+    # @purchases = Purchase.includes(:bookings, :product, :freezes, :adjustments, :client)
+    # associations referrred to in view - bookings, product in start_to_expiry method, client directly in purchase.client.name
+    @purchases = Purchase.includes(:bookings, :freezes, :adjustments, :penalties, :payment, :client, product: [:workout_group])
     @superadmin = logged_in_as?('superadmin')
     handle_search
     handle_filter
     handle_period
     handle_charting if @superadmin
-    # Purchase.includes(:attendances, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
+    # Purchase.includes(:bookings, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
     # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
     # much slower if unneccessarily done after sort
     # want the the total pages sum (not just the current page sum)
@@ -44,8 +44,8 @@ class Admin::PurchasesController < Admin::BaseController
 
   def show
     @discounts = @purchase.discounts
-    @attendances_no_amnesty = @purchase.attendances.no_amnesty.merge(Attendance.order_by_date)
-    @attendances_amnesty = @purchase.attendances.amnesty.merge(Attendance.order_by_date)
+    @bookings_no_amnesty = @purchase.bookings.no_amnesty.merge(Booking.order_by_date)
+    @bookings_amnesty = @purchase.bookings.amnesty.merge(Booking.order_by_date)
     @frozen_now = @purchase.freezed?(Time.zone.now)
     sunset_hash
     @link_from = params[:link_from]
@@ -366,7 +366,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def sort_on_object
     @purchases = @purchases.package_started_not_expired.select(&:fixed_package?).to_a.sort_by do |p|
-      p.attendances_remain(provisional: true, unlimited_text: false)
+      p.atendances_remain(provisional: true, unlimited_text: false)
     end
     # restore to ActiveRecord and recover order.
     ids = @purchases.map(&:id)

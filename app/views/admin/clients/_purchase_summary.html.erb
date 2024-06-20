@@ -1,6 +1,6 @@
 <div class="text-uppercase fst-italic">
   <%= link_to @purchase.name(rider_show: true), purchase_path(@purchase, link_from: @link_from), class: "like_button", data: {turbo: false} %>
-  <%= image_tag(@purchase.expired? ? 'expired.png' : 'attendances.png', class: "table_icon") %>
+  <%= image_tag(@purchase.expired? ? 'expired.png' : 'bookings.png', class: "table_icon") %>
 </div>
 <div class="admin-table striped mt-2">
   <% unless @purchase.expired? %>
@@ -28,7 +28,7 @@
   <% unless @purchase.not_started? %>
     <div class="row">    
       <div class="column col-1x">Classes Attended</div>
-      <div class="column col-1x"><%= @purchase.attendances.attended.size %></div>
+      <div class="column col-1x"><%= @purchase.bookings.attended.size %></div>
     </div>     
   <% end %>
   <% unless @purchase.not_started? || @purchase.expired? %>
@@ -38,7 +38,7 @@
     </div>    
     <div class="row">    
       <div class="column col-1x">Bookings Left</div>
-      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: true) %></div>
+      <div class="column col-1x"><%= @purchase.atendances_remain(provisional: true) %></div>
     </div>
   <% end %>
   <% if @purchase.expired? %>

@@ -1,0 +1,17 @@
+<% bookings = @purchase.bookings.no_amnesty.order_by_date %>
+<% unless bookings.empty? %>
+  <div class="mt-3 ps-1">Attendances</div>
+  <div class="admin-table striped reduce-size mt-2">
+    <% bookings.each_with_index do |booking, index| %>
+      <% wkclass_decorator = decorate(booking.wkclass) %>    
+      <div class="row">
+        <div class="column"><%= bookings.size - index %></div>
+        <div class="column col-1x"><%= booking.wkclass.name %></div>
+        <div class="column col-05x"><%= wkclass_decorator.time %></div>
+        <div class="column col-05x"><%= booking.wkclass.start_time.strftime('%a') %></div>
+        <div class="column col-1x"><%= booking.wkclass.start_time.strftime('%d %b %y') %></div>
+        <div class="column col-1x"><%= booking.status %></div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

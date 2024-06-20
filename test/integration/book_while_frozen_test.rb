@@ -32,8 +32,8 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
     assert_equal 10, @purchase.freezes.last.duration
 
     # book during freeze
-    post attendances_path, params:
-     { attendance:
+    post bookings_path, params:
+     { booking:
         { wkclass_id: @tomorrows_class_early.id,
           purchase_id: @purchase.id,
           status: 'booked' } }
@@ -49,13 +49,13 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
 
     assert_equal Date.parse('30 Jun 2022'), @purchase.expiry_date_calc
     @purchase.update(expiry_date: @purchase.expiry_date_calc)
-    future_booking = Attendance.create(wkclass_id: @wkclass_post_expiry.id, purchase_id: @purchase.id) # 28/06/2022 (well after original expiry date)
+    future_booking = Booking.create(wkclass_id: @wkclass_post_expiry.id, purchase_id: @purchase.id) # 28/06/2022 (well after original expiry date)
 
     assert_equal 'booked', future_booking.status
     log_in_as(@account_client)
     # book during freeze, triggers earlier expiry date
-    post attendances_path, params:
-     { attendance:
+    post bookings_path, params:
+     { booking:
         { wkclass_id: @tomorrows_class_early.id,
           purchase_id: @purchase.id,
           status: 'booked' } }
@@ -63,12 +63,12 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
     assert_equal 'cancelled early', future_booking.reload.status
   end
 
-  # these test no longer appply, since validation added to prevent freeze overlapping attendances
+  # these test no longer appply, since validation added to prevent freeze overlapping bookings
   # test 'update booking to booked/attended while frozen terminates freeze early' do
   #   log_in_as(@admin)
   #   # book class
-  #   post attendances_path, params:
-  #    { attendance:
+  #   post bookings_path, params:
+  #    { booking:
   #       { wkclass_id: @tomorrows_class_early.id,
   #         purchase_id: @purchase.id,
   #         status: 'booked' } }
@@ -81,10 +81,10 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #           end_date: @freeze_end_date } }
   #   end
   #   follow_redirect!
-  #   # client attends booked class during freeze, attendance updated to attended
-  #   @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-  #   assert_difference '@client.attendances.confirmed.no_amnesty.size', 1 do
-  #     patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'attended' } }
+  #   # client attends booked class during freeze, booking updated to attended
+  #   @booking = Booking.applicable_to(@tomorrows_class_early, @client)
+  #   assert_difference '@client.bookings.confirmed.no_amnesty.size', 1 do
+  #     patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'attended' } }
   #   end
   #   assert_equal Date.parse('23 Jun 2022'), @purchase.reload.expiry_date_calc
   #   assert_equal 3, @purchase.freezes.last.duration
@@ -93,8 +93,8 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   # test 'update booking to cancelled while frozen has no affect on freeze' do
   #   log_in_as(@admin)
   #   # book class
-  #   post attendances_path, params:
-  #    { attendance:
+  #   post bookings_path, params:
+  #    { booking:
   #       { wkclass_id: @tomorrows_class_early.id,
   #         purchase_id: @purchase.id,
   #         status: 'booked' } }
@@ -108,9 +108,9 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #   end
   #   follow_redirect!
   #   # cancel class during freeze
-  #   @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-  #   assert_difference '@client.attendances.no_amnesty.size', -1 do
-  #     patch attendance_path(@attendance), params: { attendance: { id: @attendance.id, status: 'cancelled early' } }
+  #   @booking = Booking.applicable_to(@tomorrows_class_early, @client)
+  #   assert_difference '@client.bookings.no_amnesty.size', -1 do
+  #     patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled early' } }
   #   end
   #   assert_equal Date.parse('30 Jun 2022'), @purchase.reload.expiry_date_calc
   #   assert_equal 10, @purchase.freezes.last.duration

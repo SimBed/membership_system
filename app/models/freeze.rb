@@ -5,7 +5,6 @@ class Freeze < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
   validate :duration_length
-  # validate :no_attendance_during
   scope :order_by_start_date, -> {order(start_date: :asc)}
   scope :order_by_start_date_desc, -> {order(start_date: :desc)}
   scope :paid_during, ->(period) { joins(:payment).where(payments: {dop: period}) }

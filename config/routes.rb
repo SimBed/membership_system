@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     # get '/purchases/dop_change'
     # get '/workout_groups/:id/instructor_expense_filter', to: 'workout_groups#instructor_expense_filter', as: 'instructor_expense_filter'
     get '/wkclasses/instructor_select'
-    get '/footfall', to: 'attendances#footfall'
+    get '/footfall', to: 'bookings#footfall'
     get '/timetable', to: 'timetables#public_format', as: 'public_format_timetable'
     # get 'client_analyze', to: 'clients#analyze', as: 'client_analyze'
     # get 'workout_groups/:id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
@@ -57,7 +57,7 @@ Rails.application.routes.draw do
     end
     resources :adjustments, :entries, :prices, except: [:index, :show]
     resources :accounts, only: [:create, :update, :destroy]
-    resources :attendances, only: [:new, :create, :update, :destroy]
+    resources :bookings, only: [:new, :create, :update, :destroy]
     resources :fitternities, :instructors, :partners, :timetables
     resources :restarts, except: [:show]
     resources :table_times, :table_days, except: [:index, :show]

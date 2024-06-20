@@ -8,11 +8,11 @@ module Client::ClientsHelper
   end
 
   def booking_link_and_class_for(wkclass, client, day, booking_section)
-    attendance = Attendance.applicable_to(wkclass, client)
-    if attendance.nil?
+    booking = Booking.applicable_to(wkclass, client)
+    if booking.nil?
       handle_new_booking(wkclass, client, day, booking_section)
     else
-      handle_update_booking(attendance, wkclass, day, booking_section)
+      handle_update_booking(booking, wkclass, day, booking_section)
     end
   end
 
@@ -33,13 +33,13 @@ module Client::ClientsHelper
                  tag.i class: ['bi bi-battery-full']
                end) }
     else
-      confirmation = t('client.clients.attendance.create.confirm')
-      confirmation = t('client.clients.attendance.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
+      confirmation = t('client.clients.booking.create.confirm')
+      confirmation = t('client.clients.booking.create.confirm_unfreeze') if purchase.freezed?(wkclass.start_time)
       { css_class: '',
         link: link_to(
           image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}"),
-          attendances_path('attendance[wkclass_id]': wkclass.id,
-                                 'attendance[purchase_id]': purchase.id,
+          bookings_path('booking[wkclass_id]': wkclass.id,
+                                 'booking[purchase_id]': purchase.id,
                                  booking_day: day,
                                  booking_section:),
           data: { turbo_method: :post, turbo_confirm: confirmation },
@@ -49,17 +49,17 @@ module Client::ClientsHelper
     end
   end
 
-  def handle_update_booking(attendance, wkclass, day, booking_section)
-    case attendance.status
+  def handle_update_booking(booking, wkclass, day, booking_section)
+    case booking.status
     when 'booked'
       { css_class: 'text-success',
-        link: link_to_update(attendance, day, amendment: 'cancel', booking_section:) }
+        link: link_to_update(booking, day, amendment: 'cancel', booking_section:) }
     when 'cancelled early'
-      if attendance.purchase.restricted_on?(wkclass)
+      if booking.purchase.restricted_on?(wkclass)
         { css_class: '', link: '' }
       else
         { css_class: '',
-          link: link_to_update(attendance, day, amendment: 'rebook', booking_section:) }
+          link: link_to_update(booking, day, amendment: 'rebook', booking_section:) }
       end
     when 'cancelled late', 'no show'
       { css_class: 'text-danger', link: '' }
@@ -68,20 +68,20 @@ module Client::ClientsHelper
     end
   end
 
-  def link_to_update(attendance, day, amendment:, booking_section:)
+  def link_to_update(booking, day, amendment:, booking_section:)
     if amendment == 'cancel'
       image = 'delete.png'
       image_class = 'table_icon mx-auto filter-red'
-      confirmation = t('client.clients.attendance.update.from_booked.confirm')
+      confirmation = t('client.clients.booking.update.from_booked.confirm')
     else
       image = 'add.png'
-      image_class = "table_icon mx-auto #{'filter-white' unless attendance.wkclass.workout.limited?}"
-      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm')
-      confirmation = t('client.clients.attendance.update.from_cancelled_early.confirm_unfreeze') if attendance.purchase.freezed?(attendance.wkclass.start_time)
+      image_class = "table_icon mx-auto #{'filter-white' unless booking.wkclass.workout.limited?}"
+      confirmation = t('client.clients.booking.update.from_cancelled_early.confirm')
+      confirmation = t('client.clients.booking.update.from_cancelled_early.confirm_unfreeze') if booking.purchase.freezed?(booking.wkclass.start_time)
     end
     link_to(
       image_tag(image, class: image_class),
-      attendance_path(attendance, booking_day: day, booking_section:),
+      booking_path(booking, booking_day: day, booking_section:),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )

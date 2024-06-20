@@ -10,7 +10,7 @@
       <div class="column col-1x">Reason</div>
     </div>
     <% penalties.each_with_index do |pen, index| %>
-      <% wkclass = pen.attendance.wkclass %>    
+      <% wkclass = pen.booking.wkclass %>    
       <% wkclass_decorator = decorate(wkclass) %>
       <div class="row">
         <div class="column"><%= index + 1 %></div>

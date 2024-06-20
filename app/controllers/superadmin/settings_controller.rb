@@ -31,7 +31,7 @@ class Superadmin::SettingsController < Superadmin::BaseController
   # attempt to tidy up strong parameters with *Setting.all.map { |s| s.var } failed because the Setting with the relevant var only exists after first being set
   # def setting_params
   # params.require(:setting).permit(:whitelist, :renew_online, :password_length, :timetable, :goals, :levels, :studios, :sunset_limit_days, :amnesty_limit,
-  #                                 :pre_expiry_package_renewal, :post_expiry_trial_renewal, :pre_expiry_trial_renewal, :attendances_remain, :days_remain)
+  #                                 :pre_expiry_package_renewal, :post_expiry_trial_renewal, :pre_expiry_trial_renewal, :atendances_remain, :days_remain)
   #   params.require(:setting).permit(*Setting.all.map { |s| s.var })
   # end
 end

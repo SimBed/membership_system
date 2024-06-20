@@ -42,6 +42,6 @@ class ProductDecorator < BaseDecorator
   end
 
   def current_image
-    image_tag('attendances.png', class: ["table_icon",("greyed-out" unless current?)].compact.join(' '))
+    image_tag('bookings.png', class: ["table_icon",("greyed-out" unless current?)].compact.join(' '))
   end
 end

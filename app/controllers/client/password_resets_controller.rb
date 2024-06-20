@@ -53,7 +53,7 @@ class Client::PasswordResetsController < ApplicationController
       # reformat - this code is reused in show method of clients controller
       @client = @account.client
       @client_hash = {
-        attendances: @client.attendances.attended.size,
+        atendances: @client.bookings.attended.size,
         last_counted_class: @client.last_counted_class,
         date_created: @client.created_at,
         date_last_purchase_expiry: @client.last_purchase&.expiry_date

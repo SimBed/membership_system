@@ -126,21 +126,6 @@ class Product < ApplicationRecord
     validity_length.send(validity_unit_hash[validity_unit])
   end
 
-  # for revenue cashflows
-  # probably no unlimited products with days but assume every day if so
-  # def attendance_estimate
-  #   return max_classes unless max_classes == 1000
-
-  #   times_per_unit_hash = { 'D' => 1, 'W' => 6, 'M' => 20 }
-  #   return validity_length * times_per_unit_hash[validity_unit] unless "#{validity_length}#{validity_unit}" == '1M'
-
-  #   25 # for 1M
-  # end
-
-  # def self.full_name(wg_name, max_classes, validity_length, validity_unit, price_name)
-  #   "#{wg_name} #{max_classes < 1000 ? max_classes : 'U'}C:#{validity_length}#{validity_unit} #{price_name}"
-  # end
-
   def renewal_price(purpose)
     return nil unless purpose == 'base' || workout_group.name == 'Group'
 

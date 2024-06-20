@@ -78,16 +78,16 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
   test 'client legitimately joins waiting list when class at capacity (having previously cancelled early)' do
     log_in_as(@account_client)
     # book class, then cancel early
-    assert_difference '@client.attendances.size', 1 do
-      post attendances_path, params: { attendance: { wkclass_id: @tomorrows_class_early.id,
+    assert_difference '@client.bookings.size', 1 do
+      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end
-    @attendance = Attendance.applicable_to(@tomorrows_class_early, @client)
-    assert_difference '@client.attendances.no_amnesty.size', -1 do
-      patch attendance_path(@attendance), params: { attendance: { id: @attendance.id } }
+    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
+    assert_difference '@client.bookings.no_amnesty.size', -1 do
+      patch booking_path(@booking), params: { booking: { id: @booking.id } }
     end
-    assert @attendance.status, 'cancelled early'
+    assert @booking.status, 'cancelled early'
 
     # set class to capacity
     @tomorrows_class_early.update(max_capacity: 0)

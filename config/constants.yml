@@ -8,7 +8,7 @@ default: &default
  package_expiry_message_days: 3
  trial_expiry_message_days: 2
 
- attendance_statuses:
+ booking_statuses:
   - booked
   - attended
   - cancelled early

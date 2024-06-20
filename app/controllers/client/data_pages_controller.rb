@@ -46,7 +46,7 @@ class Client::DataPagesController < Client::BaseController
   end
 
   def pt
-    @unexpired_purchases = @client.purchases.not_fully_expired.service_type('pt').order_by_dop.includes(:attendances)
+    @unexpired_purchases = @client.purchases.not_fully_expired.service_type('pt').order_by_dop.includes(:bookings)
   end
 
   def timetable
@@ -59,7 +59,7 @@ class Client::DataPagesController < Client::BaseController
   def prepare_data_for_view
     @account = @client.account
     @client_hash = {
-      attendances: @client.attendances.attended.size,
+      atendances: @client.bookings.attended.size,
       last_counted_class: @client.last_counted_class,
       date_created: @client.created_at,
       date_last_purchase_expiry: @client.last_purchase&.expiry_date

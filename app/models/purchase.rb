@@ -4,7 +4,7 @@ class Purchase < ApplicationRecord
   belongs_to :client
   belongs_to :fitternity, optional: true
   belongs_to :price
-  has_many :attendances, dependent: :destroy
+  has_many :bookings, dependent: :destroy
   has_one :restart_as_child, class_name: "Restart", foreign_key: "child_id", dependent: :destroy
   has_one :restart_as_parent, class_name: "Restart", foreign_key: "parent_id"
   has_one :child_purchase, through: :restart_as_parent, source: :child
@@ -39,7 +39,7 @@ class Purchase < ApplicationRecord
   scope :not_fully_expired, -> { where.not(status: 'expired') }
   scope :fully_expired, -> { where(status: 'expired') }
   # simple solution using distinct (more complex variants) courtesy of Yuri Karpovich https://stackoverflow.com/questions/20183710/find-all-records-which-have-a-count-of-an-association-greater-than-zero
-  # scope :started, -> { joins(:attendances).merge(Attendance.no_amnesty).distinct }
+  # scope :started, -> { joins(:bookings).merge(Booking.no_amnesty).distinct }
   scope :started, -> { where.not(status: 'not started') }
   scope :not_started, -> { where(status: 'not started') }
   # 'using a scope through an association'
@@ -97,7 +97,7 @@ class Purchase < ApplicationRecord
 
   def restart_payment
     group_drop_in_price = Product.current.dropin.space_group.first.base_price_at(Time.zone.now).price
-    [attendances.no_amnesty.size * group_drop_in_price, Setting.restart_min_charge].max
+    [bookings.no_amnesty.size * group_drop_in_price, Setting.restart_min_charge].max
   end
 
   def can_restart?
@@ -126,7 +126,7 @@ class Purchase < ApplicationRecord
   end
 
   def deletable?
-    return true if attendances.empty? && freezes.empty? && adjustments.empty?
+    return true if bookings.empty? && freezes.empty? && adjustments.empty?
 
     false
   end
@@ -144,7 +144,7 @@ class Purchase < ApplicationRecord
   end
 
   # e.g. [["Aparna Shah 9C:5W Feb 12", 1], ["Aryan Agarwal UC:3M Jan 31", 2, {class: "close_to_expiry"}], ...]
-  # used in attendances controller to populate dropdown for new booking
+  # used in bookings controller to populate dropdown for new booking
   def self.qualifying_purchases(wkclass)
     available_for_booking(wkclass).map do |p|
       date_if_multiple_purchases = p.dop.strftime('%b %d') if p.client.purchases.not_expired.size > 1
@@ -171,8 +171,8 @@ class Purchase < ApplicationRecord
   def committed_on?(adate)
     return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
 
-    # committed if attendance on same day (but ignore Open Gym attendances (ie workouts that are not limited ))
-    attendances.committed.includes(:wkclass).map { |a| a.wkclass.workout.limited ? a.start_time.to_date : nil }.include?(adate)
+    # committed if bookings on same day (but ignore Open Gym bookings (ie workouts that are not limited ))
+    bookings.committed.includes(:wkclass).map { |a| a.wkclass.workout.limited ? a.start_time.to_date : nil }.include?(adate)
   end
 
   def restricted_on?(wkclass)
@@ -180,7 +180,7 @@ class Purchase < ApplicationRecord
 
     return false if fixed_package? # fixed packages can do what they want (except book the same class twice!)
 
-    attendances.committed.includes(:wkclass).reject { |a| a.wkclass == wkclass || !a.wkclass.workout.limited }
+    bookings.committed.includes(:wkclass).reject { |a| a.wkclass == wkclass || !a.wkclass.workout.limited }
                .map { |a| a.start_time.to_date }
                .include?(wkclass.start_time.to_date)
   end
@@ -192,7 +192,7 @@ class Purchase < ApplicationRecord
   end
 
   def already_booked_for?(wkclass)
-    return true if attendances.committed.where(wkclass_id: wkclass.id).any?
+    return true if bookings.committed.where(wkclass_id: wkclass.id).any?
 
     false
   end
@@ -217,10 +217,10 @@ class Purchase < ApplicationRecord
     return 'expired' if rider? && main_purchase.expired?
 
     status_hash = self.status_hash
-    return 'not started' if status_hash[:attendance_provisional] == 'not started'
-    return 'booked but not started' if status_hash[:attendance_provisional] == 'booked but not started'
-    return 'expired' if status_hash[:attendance_confirmed] == 'exhausted' || status_hash[:validity] == 'expired'
-    return 'classes all booked' if status_hash[:attendance_provisional] == 'exhausted'
+    return 'not started' if status_hash[:atendance_provisional] == 'not started'
+    return 'booked but not started' if status_hash[:atendance_provisional] == 'booked but not started'
+    return 'expired' if status_hash[:atendance_confirmed] == 'exhausted' || status_hash[:validity] == 'expired'
+    return 'classes all booked' if status_hash[:atendance_provisional] == 'exhausted'
 
     'ongoing'
   end
@@ -286,7 +286,7 @@ class Purchase < ApplicationRecord
   def expiry_cause
     return unless expired?
     return 'restart' if restart_as_parent
-    return 'used max classes' if attendances.no_amnesty.confirmed.size == max_classes
+    return 'used max classes' if bookings.no_amnesty.confirmed.size == max_classes
     return 'PT Package expired' if rider?
     return 'sunset' if expired_on == sunset_date
 
@@ -296,7 +296,7 @@ class Purchase < ApplicationRecord
   def expired_on
     return unless expired?
     return restart_as_parent.payment.dop if restart_as_parent
-    return max_class_expiry_date if attendances.no_amnesty.confirmed.size == max_classes
+    return max_class_expiry_date if bookings.no_amnesty.confirmed.size == max_classes
     # return main_purchase.expired_on if rider?
 
     expiry_date
@@ -305,21 +305,21 @@ class Purchase < ApplicationRecord
   def will_expire_on
     return nil unless provisionally_expired?
 
-    attendances.no_amnesty.includes(:wkclass).map(&:start_time).max
+    bookings.no_amnesty.includes(:wkclass).map(&:start_time).max
   end
 
   def pt_will_expire_on
     return sunset_date if not_started?
 
-    return expiry_date if attendances.no_amnesty.size < max_classes
+    return expiry_date if bookings.no_amnesty.size < max_classes
 
-    attendances.no_amnesty.joins(:wkclass).map(&:start_time).max
+    bookings.no_amnesty.joins(:wkclass).map(&:start_time).max
   end
 
   def expiry_date_calc
     return restart_as_parent.payment.dop if restart_as_parent
 
-    return if attendances.no_amnesty.empty?
+    return if bookings.no_amnesty.empty?
 
     # end_date formulae above overstate by 1 day so deduct 1
     # to_date changes ActiveSupport::TimeWithZone object to Date object
@@ -343,21 +343,8 @@ class Purchase < ApplicationRecord
     end
   end
 
-  # def expiry_revenue
-  #   return 0 unless expired?
-  #   # individual fitternity packages are dummy packages for efficiency
-  #   # either is ok, just extra failsafe to guard against admin error
-  #   return 0 if payment_mode == 'Fitternity' # || price.name == 'Fitternity'
-
-  #   attendance_revenue = attendances.includes(purchase: [:product]).confirmed.no_amnesty.map(&:revenue).inject(0, :+)
-  #   # attendance revenue should never be more than payment, but if it somehow is, then it is consistent that expiry revenue should be negative
-  #   return (charge - attendance_revenue) unless restart_as_parent
-        
-  #   restart_as_parent.payment.amount - attendance_revenue
-  # end
-
   def start_to_expiry
-    status_hash[:attendance_provisional].tap do |aps|
+    status_hash[:atendance_provisional].tap do |aps|
       return aps if ['not started'].include? aps
     end
     return start_date.strftime('%d %b %y').to_s if dropin?
@@ -365,16 +352,16 @@ class Purchase < ApplicationRecord
     "#{start_date.strftime('%d %b %y')} - #{expiry_date.strftime('%d %b %y')}"
   end
 
-  def attendances_remain(provisional: true, unlimited_text: true)
-    attendance_count = provisional ? attendances.no_amnesty.size : attendances.no_amnesty.confirmed.size
+  def atendances_remain(provisional: true, unlimited_text: true)
+    atendance_count = provisional ? bookings.no_amnesty.size : bookings.no_amnesty.confirmed.size
     return 'unlimited' if max_classes == 1000 && unlimited_text == true
 
-    max_classes - attendance_count
+    max_classes - atendance_count
   end
 
   # apply to ongoing packages. Not designed to work sensibly with an expired purchase
-  def close_to_expiry?(days_remain: 5, attendances_remain: 2)
-    return true if attendances_remain(unlimited_text: false) < attendances_remain || days_to_expiry < days_remain
+  def close_to_expiry?(days_remain: 5, atendances_remain: 2)
+    return true if atendances_remain(unlimited_text: false) < atendances_remain || days_to_expiry < days_remain
 
     false
   end
@@ -382,8 +369,8 @@ class Purchase < ApplicationRecord
   # keyword arguments changed in ruby 3
   # https://juanitofatas.com/ruby-3-keyword-arguments
   # Prefix argument with ** if you want to pass in keywords:
-  def remind_to_renew?(days_remain: 5, attendances_remain: 2)
-    keyword_args = { days_remain:, attendances_remain: }
+  def remind_to_renew?(days_remain: 5, atendances_remain: 2)
+    keyword_args = { days_remain:, atendances_remain: }
     return true if close_to_expiry?(**keyword_args) && !renewed?
 
     false
@@ -397,7 +384,7 @@ class Purchase < ApplicationRecord
   end
 
   def start_date_calc
-    attendances.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
+    bookings.no_amnesty.includes(:wkclass).map(&:start_time).min&.to_date
   end
 
   def sunset_date_calc
@@ -435,7 +422,7 @@ class Purchase < ApplicationRecord
   end
 
   def max_class_expiry_date
-    attendances.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max
+    bookings.no_amnesty.confirmed.includes(:wkclass).map(&:start_time).max
   end
 
   def check_if_already_had_trial
@@ -489,33 +476,33 @@ class Purchase < ApplicationRecord
     errors.add(:base, "The payment amount does not equal the charge, but the payment mode is not shown as 'Not paid'") if mismatch
   end
 
-  def attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true)
-    return 'not started' if attendance_count_provisional.zero?
+  def atendance_status(atendance_count_provisional, atendance_count_confirmed, provisional: true)
+    return 'not started' if atendance_count_provisional.zero?
 
-    attendance_count = provisional ? attendance_count_provisional : attendance_count_confirmed
-    return 'exhausted' if attendance_count >= max_classes
-    return 'booked but not started' if attendance_count_confirmed.zero?
+    atendance_count = provisional ? atendance_count_provisional : atendance_count_confirmed
+    return 'exhausted' if atendance_count >= max_classes
+    return 'booked but not started' if atendance_count_confirmed.zero?
     # 'started'
     return 'unlimited' if max_classes == 1000
 
-    attendance_count if attendance_count < max_classes
+    atendance_count if atendance_count < max_classes
   end
 
-  def validity(attendance_count, expiry_date)
-    return if attendance_count.zero?
+  def validity(atendance_count, expiry_date)
+    return if atendance_count.zero?
     return 'expired' if Time.zone.today > expiry_date
 
     expiry_date - start_date
   end
 
   def status_hash
-    attendance_count_provisional = attendances.no_amnesty.size
-    attendance_count_confirmed = attendances.no_amnesty.confirmed.size
-    { attendance_provisional:
-       attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true),
-      attendance_confirmed:
-       attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: false),
-      validity: validity(attendance_count_provisional, expiry_date_calc) }
+    atendance_count_provisional = bookings.no_amnesty.size
+    atendance_count_confirmed = bookings.no_amnesty.confirmed.size
+    { atendance_provisional:
+       atendance_status(atendance_count_provisional, atendance_count_confirmed, provisional: true),
+      atendance_confirmed:
+       atendance_status(atendance_count_provisional, atendance_count_confirmed, provisional: false),
+      validity: validity(atendance_count_provisional, expiry_date_calc) }
   end
 
 end

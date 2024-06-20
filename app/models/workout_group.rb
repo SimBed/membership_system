@@ -1,7 +1,7 @@
 class WorkoutGroup < ApplicationRecord
   has_many :products, dependent: :destroy
   has_many :purchases, through: :products
-  has_many :attendances, through: :purchases
+  has_many :bookings, through: :purchases
   has_many :expenses, dependent: :destroy
   has_many :rel_workout_group_workouts, dependent: :destroy
   has_many :workouts, through: :rel_workout_group_workouts
@@ -33,9 +33,9 @@ class WorkoutGroup < ApplicationRecord
   end
 
   # by_workout_group method also joins on purchase and product, but the seemingly duplicated 'includes(purchase: [:product])' reduces the database hit when
-  # the revenue method is applied to each attendance object in base_revenue method 
-  def attendances_during(period)
-    Attendance.includes(purchase: [:product]).confirmed.no_amnesty.by_workout_group(name, period)
+  # the revenue method is applied to each booking object in base_revenue method 
+  def atendances_during(period)
+    Booking.includes(purchase: [:product]).confirmed.no_amnesty.by_workout_group(name, period)
   end
 
   def wkclasses_during(period)

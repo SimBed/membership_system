@@ -18,8 +18,8 @@ class Admin::InstructorsController < Admin::BaseController
   def show
     set_period
     @wkclasses = Wkclass.during(@period).with_instructor(@instructor.id)
-    @wkclasses_with_instructor_expense = @wkclasses.unscope(:order).has_instructor_cost.includes(:workout, :attendances, instructor: [:instructor_rates])
-    @wkclasses_with_no_instructor_expense = @wkclasses.unscope(:order).has_no_instructor_cost.includes(:workout, :attendances, instructor: [:instructor_rates])
+    @wkclasses_with_instructor_expense = @wkclasses.unscope(:order).has_instructor_cost.includes(:workout, :bookings, instructor: [:instructor_rates])
+    @wkclasses_with_no_instructor_expense = @wkclasses.unscope(:order).has_no_instructor_cost.includes(:workout, :bookings, instructor: [:instructor_rates])
     # this double counts and I cant find a way to prevent it (tried with distinct and group) so fallen back on ruby object
     # @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.sum(:rate)
     @total_instructor_cost_for_period = @wkclasses_with_instructor_expense.map(&:rate).inject(0, :+)
@@ -86,11 +86,11 @@ class Admin::InstructorsController < Admin::BaseController
 
   def sort_on_object
     @wkclasses_with_instructor_expense = @wkclasses_with_instructor_expense.to_a.sort_by do |w|
-      # this seems to be the way to use sort_by with a secondary order (but fails when attendance is nil for some reason "|| 'Z'" mitigates this)
-      [w.attendances&.first&.client&.name || 'Z', -w.start_time.to_i]
+      # this seems to be the way to use sort_by with a secondary order (but fails when booking is nil for some reason "|| 'Z'" mitigates this)
+      [w.bookings&.first&.client&.name || 'Z', -w.start_time.to_i]
     end
     @wkclasses_with_no_instructor_expense = @wkclasses_with_no_instructor_expense.to_a.sort_by do |w|
-      [w.attendances&.first&.client&.name || 'Z', -w.start_time.to_i]
+      [w.bookings&.first&.client&.name || 'Z', -w.start_time.to_i]
     end
   end
 
