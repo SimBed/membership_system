@@ -18,7 +18,10 @@ module BookingsHelper
           message: :unsuccessful },
         already_booked:
         { colour: :secondary,
-          message: :already_booked } },
+          message: :already_booked },
+        provisionally_expired:
+        { colour: :secondary,
+          message: :provisionally_expired } },
       update:
       { successful:
         { colour: :success,
@@ -68,6 +71,11 @@ module BookingsHelper
     'Booking not possible. You have already booked this class'
   end
 
+  def provisionally_expired
+    ['The maximum number of classes has already been booked.',
+    'Renew you Package if you wish to attend this class']
+  end
+
   def too_late(update = false, wkclass = '')
     if update
       "Booking for #{wkclass} not changed. Deadline to make changes has passed"
@@ -107,38 +115,4 @@ module BookingsHelper
     ["Booking is '#{status}' and can't now be changed.",
      'Please contact the Space for help']
   end
-
-  # previously amnesty_limit now a method of the Setting class.
-  # def amnesty_limit
-  #   # if Rails.env.production?
-  #   { group:
-  #     { late_cancels:
-  #         { unlimited_package: 2,
-  #           fixed_package: 1,
-  #           trial: 100,
-  #           dropin: 0,
-  #           penalty: { amount: 1 } },
-  #       no_shows:
-  #         { unlimited_package: 1,
-  #           fixed_package: 0,
-  #           trial: 100,
-  #           dropin: 0,
-  #           penalty: { amount: 2 } },
-  #       early_cancels:
-  #         { unlimited_package: 1000,
-  #           fixed_package: 1000,
-  #           trial: 1000,
-  #           dropin: 1000,
-  #           penalty: { amount: 1 } } },
-  #     pt:
-  #      { late_cancels:
-  #          { fixed_package: 0,
-  #            dropin: 0 },
-  #        no_shows:
-  #          { fixed_package: 0,
-  #            dropin: 0 },
-  #        early_cancels:
-  #          { fixed_package: 1000,
-  #            dropin: 1000 } } }
-  # end
 end

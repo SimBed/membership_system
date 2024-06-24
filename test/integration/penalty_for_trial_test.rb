@@ -22,7 +22,7 @@ class PenaltyForTrialTest < ActionDispatch::IntegrationTest
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     # cancel class late
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_path(@booking), params: { booking: { id: @booking.id } }
+      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     assert_equal 1, @purchase.reload.late_cancels
@@ -34,7 +34,7 @@ class PenaltyForTrialTest < ActionDispatch::IntegrationTest
     travel_to(@tomorrows_class_late.start_time - 10.minutes)
     # cancel 2nd class late
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_path(@booking), params: { booking: { id: @booking.id } }
+      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     assert_equal 2, @purchase.reload.late_cancels
@@ -50,7 +50,7 @@ class PenaltyForTrialTest < ActionDispatch::IntegrationTest
     travel_to(@wkclass3.start_time - 10.minutes)
     # cancel 3rd class late
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_path(@booking), params: { booking: { id: @booking.id } }
+      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
     end
 
     assert_equal 3, @purchase.reload.late_cancels
@@ -70,7 +70,7 @@ class PenaltyForTrialTest < ActionDispatch::IntegrationTest
     # no show
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
+      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
 
     assert_equal 1, @purchase.reload.no_shows
@@ -84,7 +84,7 @@ class PenaltyForTrialTest < ActionDispatch::IntegrationTest
     # no show again
     @booking = Booking.applicable_to(@tomorrows_class_late, @client)
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
+      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
 
     assert_equal 2, @purchase.reload.no_shows
@@ -97,7 +97,7 @@ class PenaltyForTrialTest < ActionDispatch::IntegrationTest
     # no show 3rd time
     @booking = Booking.applicable_to(@wkclass3, @client)
     assert_difference '@purchase.penalties.count', 0 do
-      patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
+      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
     end
 
     assert_equal 3, @purchase.reload.no_shows

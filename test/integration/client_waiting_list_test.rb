@@ -105,22 +105,22 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     # book class, then cancel early
     assert_difference '@client.bookings.size', 1 do
       post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @purchase.id },
-                                             booking_section: 'group' }
+                                               purchase_id: @purchase.id },
+                                    booking_section: 'group' }
     end
-    @booking = Booking.applicable_to(@tomorrows_class_early, @client)
+    @orig_booking = Booking.applicable_to(@tomorrows_class_early, @client)
     assert_difference '@client.bookings.amnesty.size', 1 do
-      patch booking_path(@booking), params: { booking: { id: @booking.id } }
+      patch booking_cancellation_path(@orig_booking), params: { booking: { id: @orig_booking.id } }
     end
-    assert @booking.status, 'cancelled early'
+    assert @orig_booking.status, 'cancelled early'
     # other client fills class
     @tomorrows_class_early.update(max_capacity: 1)
     log_in_as(@account_other_client)
     # commented out becasue it fails although i can demonstrate it passes (with a byebug and check on @other_client.bookings.size before and after the post). Weird/annoying
     # assert_difference '@other_client.bookings.size', 1 do
       post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @other_client_purchase.id },
-                                             booking_section: 'group' }
+                                               purchase_id: @other_client_purchase.id },
+                                    booking_section: 'group' }
     # end
 
     # client joins waiting list
@@ -133,17 +133,20 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     end
 
     # spot opens up (other client cancels)
-    @booking = Booking.applicable_to(@tomorrows_class_early, @other_client)
+    @new_booking = Booking.applicable_to(@tomorrows_class_early, @other_client)
     log_in_as(@account_other_client)
     assert_difference '@other_client.bookings.amnesty.size', 1 do
-      patch booking_path(@booking), params: { booking: { id: @booking.id } }
+      patch booking_cancellation_path(@new_booking), params: { booking: { id: @new_booking.id } }
     end
 
     log_in_as(@account_client)
     follow_redirect!
     # File.write("test_output.html", response.body)
     assert_template 'client/dynamic_pages/book'
-    assert_select "a:match('href', ?)", %r{#{bookings_path}/}, count: 1
+    # had difficulty with this - %r{#{booking_cancellation_path}/} doesn't work as :id from the preivous request form spart of the route...and doing it directly with escaped backslashes wasn't happening either
+    # landded on this imperfect match checking for a count of specific route rather than a more generalised route
+    assert_select "a:match('href', ?)", %r[#{booking_cancellation_path(@orig_booking)}], count: 1
+    # assert_select "a:match('href', ?)", /#{booking_cancellation_path(@orig_booking)}/, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/add.*}, count: 3 # 22/4, 22/4, 24/4
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 0
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 0

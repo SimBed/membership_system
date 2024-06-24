@@ -74,6 +74,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def notify_waiting_list(wkclass, triggered_by: 'admin')
+    waitings = wkclass.waitings
+    return if waitings.empty? || wkclass.in_the_past? || wkclass.at_capacity?
+
+    waitings.each do |waiting|
+      flash_message(*Whatsapp.new({ receiver: waiting.purchase.client,
+                                    message_type: 'waiting_list_blast',
+                                    triggered_by:,
+                                    variable_contents: { wkclass_name: wkclass.name,
+                                                         date_time: wkclass.date_time_short } }).manage_messaging)
+    end
+  end
+
   private
 
   def send_to_correct_page_for_role

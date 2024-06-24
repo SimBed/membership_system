@@ -305,19 +305,4 @@ class Admin::WkclassesController < Admin::BaseController
     redirect_to wkclasses_path
   end
 
-  # make dry - repeated in bookings controller
-  def notify_waiting_list(wkclass)
-    return if wkclass.in_the_past?
-
-    return if wkclass.at_capacity?
-
-    wkclass.waitings.each do |waiting|
-      result = Whatsapp.new({ receiver: waiting.purchase.client,
-                              message_type: 'waiting_list_blast',
-                              variable_contents: { wkclass_name: wkclass.name,
-                                                   date_time: wkclass.date_time_short } }).manage_messaging
-      # splat just breaks the array returned eg [:warning, waiting list blast message sent by Whatsapp to 0000] up into idividual arguments
-      flash_message(*result)
-    end
-  end
 end

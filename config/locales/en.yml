@@ -26,21 +26,23 @@ en:
         success: Adjustment was successfully deleted
         booking_cancelled: A booking made for after the new expiry date has been cancelled        
     bookings:
-      update_by_admin:
-        warning: Booking was not updated
       create:
         warning: Forbidden
         booking_cancelled: A booking made for after the new expiry date has been cancelled
+        success: "%{name}'s booking was successfully logged"
       destroy:
         success: Booking was successfully deleted
         warning: Forbidden
+      action_new_booking_when_prov_expired:
+        admin:
+          warning: The maximum number of classes has already been booked
+    booking_cancellations:
+      update_by_admin:
+        warning: Booking was not updated
       update:
         success: "%{name}'s booking was successfully updated to %{status}"
         warning: Forbidden
         booking_cancelled: A booking made for after the new expiry date has been cancelled
-      action_new_booking_when_prov_expired:
-        admin:
-          warning: The maximum number of classes has already been booked
     clients:
       index:
         password_reset: This client's password will be reset. Are you sure?

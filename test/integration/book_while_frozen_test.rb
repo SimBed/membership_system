@@ -84,7 +84,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #   # client attends booked class during freeze, booking updated to attended
   #   @booking = Booking.applicable_to(@tomorrows_class_early, @client)
   #   assert_difference '@client.bookings.confirmed.no_amnesty.size', 1 do
-  #     patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'attended' } }
+  #     patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'attended' } }
   #   end
   #   assert_equal Date.parse('23 Jun 2022'), @purchase.reload.expiry_date_calc
   #   assert_equal 3, @purchase.freezes.last.duration
@@ -110,7 +110,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
   #   # cancel class during freeze
   #   @booking = Booking.applicable_to(@tomorrows_class_early, @client)
   #   assert_difference '@client.bookings.no_amnesty.size', -1 do
-  #     patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled early' } }
+  #     patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled early' } }
   #   end
   #   assert_equal Date.parse('30 Jun 2022'), @purchase.reload.expiry_date_calc
   #   assert_equal 10, @purchase.freezes.last.duration

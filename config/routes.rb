@@ -57,7 +57,10 @@ Rails.application.routes.draw do
     end
     resources :adjustments, :entries, :prices, except: [:index, :show]
     resources :accounts, only: [:create, :update, :destroy]
-    resources :bookings, only: [:new, :create, :update, :destroy]
+    # resources :bookings, only: [:new, :create, :update, :destroy]
+    # an update of any booking is always handled by the booking cancellations controller
+    resources :bookings, only: [:new, :create, :destroy]
+    resources :booking_cancellations, only: :update
     resources :fitternities, :instructors, :partners, :timetables
     resources :restarts, except: [:show]
     resources :table_times, :table_days, except: [:index, :show]

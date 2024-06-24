@@ -33,7 +33,7 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
     original_status = @booking.status
     [nil, @account_client1].each do |account_holder|
       log_in_as(account_holder)
-      patch booking_path(@booking), params:
+      patch booking_cancellation_path(@booking), params:
        { booking:
           { id: @booking.id,
             status: 'attended' } }

@@ -47,7 +47,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to client_book_path @client
     assert_equal([['The maximum number of classes has already been booked.',
-                   'Renew you Package if you wish to attend this class']], flash[:warning])
+                   'Renew you Package if you wish to attend this class']], flash[:secondary])
   end
 
   test 'attempt by client to update class from cancelled early with provisonally expired package should fail' do
@@ -71,7 +71,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     end
     # cancel last booking
     @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
-    patch booking_path(@booking), params: { booking: { status: 'cancelled early' } }
+    patch booking_cancellation_path(@booking), params: { booking: { status: 'cancelled early' } }
 
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead
@@ -85,7 +85,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
 
     assert_difference '@purchase.bookings.count', 0 do
-      patch booking_path(@booking)
+      patch booking_cancellation_path(@booking)
     end
 
     assert_redirected_to client_book_path @client
@@ -150,7 +150,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     end
     # cancel last booking
     @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
-    patch booking_path(@booking), params: { booking: { status: 'cancelled early' } }
+    patch booking_cancellation_path(@booking), params: { booking: { status: 'cancelled early' } }
 
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead
@@ -161,10 +161,9 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     # admin corrects class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is amnesty)
     assert_difference '@booking.reload.amendment_count', 1 do
-      patch booking_path(@booking), params: { booking: { status: 'cancelled late' } }
+      patch booking_cancellation_path(@booking), params: { booking: { status: 'cancelled late' } }
     end
     assert_redirected_to wkclass_path @booking.wkclass
-    # assert_redirected_to wkclasses_path
     assert_equal([["Tina Dehal's booking was successfully updated to cancelled late"]], flash[:success])
   end
 
@@ -193,7 +192,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     # last booking cancelled late (but incorrectly set to cancelled early)
     @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
-    patch booking_path(@booking), params: { booking: { status: 'cancelled early' } }
+    patch booking_cancellation_path(@booking), params: { booking: { status: 'cancelled early' } }
 
     assert_equal 'ongoing', @purchase.reload.status
     # book another one instead (wouldn't be allowed if previous cancellation logged correctly)
@@ -204,7 +203,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
 
     # admin attempts to correct class incorrecly logged as 'cancelled early' to 'cancelled late' (for which there is no amnesty)
     assert_difference '@booking.reload.amendment_count', 0 do
-      patch booking_path(@booking), params: { booking: { status: 'cancelled late' } }
+      patch booking_cancellation_path(@booking), params: { booking: { status: 'cancelled late' } }
     end
 
     assert_redirected_to wkclass_path @booking.wkclass

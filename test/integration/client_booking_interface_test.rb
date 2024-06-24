@@ -82,7 +82,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     assert_select "a:match('href', ?)", /#{bookings_path}[?]/, count: 1
     booking = Booking.where(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id).first
 
-    assert_select "a:match('href', ?)", /#{booking_path(booking)}/, count: 2
+    assert_select "a:match('href', ?)", /#{booking_cancellation_path(booking)}/, count: 2
     # assert_select 'a[href=?]', booking_path(booking), count: 1
   end
 

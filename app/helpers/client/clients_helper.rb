@@ -81,7 +81,7 @@ module Client::ClientsHelper
     end
     link_to(
       image_tag(image, class: image_class),
-      booking_path(booking, booking_day: day, booking_section:),
+      booking_cancellation_path(booking, booking_day: day, booking_section:),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )

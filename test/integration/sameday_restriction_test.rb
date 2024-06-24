@@ -34,7 +34,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
 
     # cancel class early
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled early' } }
+    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled early' } }
 
     # client books 2nd class same day after early cancellation of first
     log_in_as(@account_client)
@@ -58,7 +58,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client cancels late (with amnesty)
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_path(@booking), params: { booking: { id: @booking.id } }
+    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
 
     # client books 2nd class same day after late cancellation (with amnesty) of first
     assert_difference '@client.bookings.no_amnesty.size', 1 do
@@ -79,7 +79,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client cancels late
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_path(@booking), params: { booking: { id: @booking.id } }
+    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
 
     # client succeeds in booking 2nd class same day after late cancellation of first (even with amnesty used up)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
@@ -97,7 +97,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client no shows
     log_in_as(@admin)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
+    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
 
     # client books 2nd class same day after late cancellation of first
     log_in_as(@account_client)
@@ -119,7 +119,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client no shows
     log_in_as(@admin)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
+    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
 
     # client succeeds in booking 2nd class same day after no show of first (even with amnesty used up)
     log_in_as(@account_client)
@@ -140,7 +140,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
     # cancel late class early
     @booking = Booking.applicable_to(@tomorrows_class_late, @client)
-    patch booking_path(@booking), params: { booking: { id: @booking.id } }
+    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
 
     # book early class
     post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
@@ -148,13 +148,13 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # no show early class
     log_in_as(@admin)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
+    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'no show' } }
 
     # client rebooks late class
     log_in_as(@account_client)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
       @booking = Booking.applicable_to(@tomorrows_class_late, @client)
-      patch booking_path(@booking), params: { booking: { id: @booking.id } }
+      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
     end
   end
 end

@@ -1,4 +1,5 @@
-<%= form_with(model: object, class: "form-class", data: {turbo_method: :patch}) do |form| %>
+<!--%#= form_with(model: object, class: "form-class", data: {turbo_method: :patch}) do |form| %-->
+<%= form_with(model: object, url: booking_cancellation_path(object), class: "form-class" , data: {turbo_method: :patch}) do |form| %>
   <!--div><%#= form.hidden_field :id, :value => object.id %> </div-->
   <div><%= form.hidden_field :link_from, value: params[:link_from] %></div>
   <div><%= form.hidden_field :page, value: params[:page] %></div>

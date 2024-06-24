@@ -20,8 +20,8 @@ class ChangeWkclassDateTest < ActionDispatch::IntegrationTest
     @booking2 = Booking.create(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id)
     log_in_as @admin    
     # update bookings to trigger update purchase so start_date, expiry_date get set
-    patch booking_path(@booking1), params: { booking: { status: 'attended' } }    
-    patch booking_path(@booking2), params: { booking: { status: 'attended' } }    
+    patch booking_cancellation_path(@booking1), params: { booking: { status: 'attended' } }    
+    patch booking_cancellation_path(@booking2), params: { booking: { status: 'attended' } }    
     @purchase.reload
     original_status = @purchase.status
     assert_no_difference ['@purchase.start_date', '@purchase.expiry_date', '@purchase.bookings.no_amnesty.size'] do
@@ -45,8 +45,8 @@ class ChangeWkclassDateTest < ActionDispatch::IntegrationTest
     @booking3 = Booking.create(wkclass_id: @wkclass2.id, purchase_id: @purchase.id)
     # update bookings to trigger update purchase so start_date, expiry_date get set
     log_in_as @admin    
-    patch booking_path(@booking1), params: { booking: { status: 'attended' } }    
-    patch booking_path(@booking2), params: { booking: { status: 'attended' } }    
+    patch booking_cancellation_path(@booking1), params: { booking: { status: 'attended' } }
+    patch booking_cancellation_path(@booking2), params: { booking: { status: 'attended' } }
     # It is only 22 April, so don't attend May 5 class yet. If we set the 5 May booking to to attended, its status will not change the wkclass
     # falls outside of the expiry date, as we will only cancel booked classes (not attended classes),
     # so the test won't pass as the number of amnesty bookings won't change in that case
