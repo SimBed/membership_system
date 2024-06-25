@@ -41,7 +41,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     # client attempts to book another class
     log_in_as @account_client
     assert_difference '@purchase.bookings.count', 0 do
-      post bookings_path, params: { booking: { wkclass_id: Wkclass.last(3)[2].id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: Wkclass.last(3)[2].id,
                                                            purchase_id: @purchase.id } }
     end
 

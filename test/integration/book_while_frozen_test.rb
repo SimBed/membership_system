@@ -54,7 +54,7 @@ class BookWhileFrozenTest < ActionDispatch::IntegrationTest
     assert_equal 'booked', future_booking.status
     log_in_as(@account_client)
     # book during freeze, triggers earlier expiry date
-    post bookings_path, params:
+    post client_create_booking_path(@client), params:
      { booking:
         { wkclass_id: @tomorrows_class_early.id,
           purchase_id: @purchase.id,

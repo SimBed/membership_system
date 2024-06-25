@@ -85,7 +85,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     # other client fills class
     log_in_as(@account_other_client)
     assert_difference '@other_client.bookings.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+      post client_create_booking_path(@other_client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @other_client_purchase.id },
                                              booking_section: 'group' }
     end
@@ -104,7 +104,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     # book class, then cancel early
     assert_difference '@client.bookings.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                purchase_id: @purchase.id },
                                     booking_section: 'group' }
     end
@@ -118,7 +118,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_other_client)
     # commented out becasue it fails although i can demonstrate it passes (with a byebug and check on @other_client.bookings.size before and after the post). Weird/annoying
     # assert_difference '@other_client.bookings.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+      post client_create_booking_path(@other_client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                purchase_id: @other_client_purchase.id },
                                     booking_section: 'group' }
     # end
@@ -168,7 +168,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
 
     # client joins a different class
     assert_difference '@client.bookings.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end    
@@ -193,7 +193,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     @tomorrows_class_early.update(max_capacity: 1)
 
     assert_difference 'Waiting.all.size', -1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end

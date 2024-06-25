@@ -16,12 +16,12 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   test 'cant book 2 classes (with one unlimited package) on same day' do
     log_in_as(@account_client)
     # book a class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
 
     # client attempts to book 2nd class on same day (with one unlimited package)
     assert_difference '@client.bookings.size', 0 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
 
@@ -39,13 +39,13 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client books 2nd class same day after early cancellation of first
     log_in_as(@account_client)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
 
     # client attempts to book 2nd class on same day (with a different unlimited package)
     assert_difference '@client.bookings.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase2.id } }
     end
   end
@@ -53,7 +53,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   test 'client can book 2nd class on same day after cancelling first class late (with amnesty)' do
     log_in_as(@account_client)
     # book a class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     # client cancels late (with amnesty)
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
@@ -62,7 +62,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
 
     # client books 2nd class same day after late cancellation (with amnesty) of first
     assert_difference '@client.bookings.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
   end
@@ -70,7 +70,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   test 'client can (now) book 2nd class on same day after cancelling first class late (without amnesty)' do
     log_in_as(@account_client)
     # book a class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
 
     # bypass late cancellation amnesty
@@ -83,7 +83,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
 
     # client succeeds in booking 2nd class same day after late cancellation of first (even with amnesty used up)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
   end
@@ -91,7 +91,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   test 'client can book 2nd class on same day after no show on first class (with amnesty)' do
     log_in_as(@account_client)
     # book a class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
 
     # client no shows
@@ -102,7 +102,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client books 2nd class same day after late cancellation of first
     log_in_as(@account_client)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
   end
@@ -110,7 +110,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   test 'client (now) can book 2nd class on same day after no show on first class (without amnesty)' do
     log_in_as(@account_client)
     # book a class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
 
     # bypass no show amnesty
@@ -124,7 +124,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client succeeds in booking 2nd class same day after no show of first (even with amnesty used up)
     log_in_as(@account_client)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                            purchase_id: @purchase.id } }
     end
   end
@@ -132,7 +132,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
   test 'can rebook 2nd class after cancelling it early and then booking and no showing (with amnesty) on first class' do
     log_in_as(@account_client)
     # book late class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                          purchase_id: @purchase.id },
                                            booking_section: 'group' }
 
@@ -143,7 +143,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
 
     # book early class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     # no show early class
     log_in_as(@admin)

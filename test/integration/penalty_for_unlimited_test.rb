@@ -16,7 +16,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
   test 'amnesty then penalty after cancel unlimited package late multiple times' do
     log_in_as(@account_client)
     # book a class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
@@ -28,7 +28,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     assert_equal 1, @purchase.reload.late_cancels
 
     # book a 2nd class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                          purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_late, @client)
     travel_to(@tomorrows_class_late.start_time - 10.minutes)
@@ -43,7 +43,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     # must be in booking_window
     travel_to(@wkclass3.start_time.beginning_of_day)
     assert_difference 'Booking.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @wkclass3.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @wkclass3.id,
                                                            purchase_id: @purchase.id } }
     end
     @booking = Booking.applicable_to(@wkclass3, @client)
@@ -59,7 +59,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     # must be in booking_window
     travel_to(@wkclass4.start_time.beginning_of_day)
     assert_difference 'Booking.no_amnesty.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @wkclass4.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @wkclass4.id,
                                                            purchase_id: @purchase.id } }
     end
     @booking = Booking.applicable_to(@wkclass4, @client)
@@ -115,9 +115,9 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
 
     assert_equal Date.parse('24/04/2022'), @purchase.expiry_date
     # book classes on 22/4/2005 and on final day of package (25/4/2022)
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
-    post bookings_path, params: { booking: { wkclass_id: @wkclass3.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @wkclass3.id,
                                                          purchase_id: @purchase.id } }
     # amend purchase so next late cancel will cause a penalty
     @purchase.update(late_cancels: 2)

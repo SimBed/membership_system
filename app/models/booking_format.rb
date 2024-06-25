@@ -111,8 +111,9 @@ class BookingFormat
       confirmation = I18n.t('client.clients.booking.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}" }
-      @route = 'bookings_path'
-      @route_params = { booking: { wkclass_id: @wkclass.id, purchase_id: @purchase.id },
+      @route = 'client_create_booking_path'
+      @route_params = { id: @client.id,
+                        booking: { wkclass_id: @wkclass.id, purchase_id: @purchase.id },
                         booking_day: @day,
                         booking_section: @booking_section }
       @turbo_params = { method: :post,

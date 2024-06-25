@@ -23,7 +23,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     assert_template 'client/dynamic_pages/book'
     # assert_select 'a[href=?]', bookings_path, count: 2
     # i dont know where this syntax is documented, but it selects anchor elements with an href that matches the given regexs
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{client_create_booking_path(@client)}/, count: 3 # 22/4, 22/4, 24/4
     # the path is to the create method (i.e. for a new booking, not an amendmdent to an existing booking)
     # no bookings made yet
     assert_equal 0, booking_count('booked') # test_helper.rb
@@ -60,7 +60,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     # There is a class on 25th but booking_window_days_before defaults to 2
     assert_select "a:match('href', ?)", /#{bookings_path}/, count: 3 # 22/4, 22/4, 24/4
     assert_difference 'Booking.count', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                   purchase_id: @purchase.id },
                                     booking_section: 'group' }
     end

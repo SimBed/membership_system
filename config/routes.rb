@@ -62,7 +62,7 @@ Rails.application.routes.draw do
     resources :bookings, only: [:new, :create, :destroy]
     resources :booking_cancellations, only: :update
     resources :fitternities, :instructors, :partners, :timetables
-    resources :restarts, except: [:show]
+    resources :restarts, except: :show
     resources :table_times, :table_days, except: [:index, :show]
   end
 
@@ -74,7 +74,7 @@ Rails.application.routes.draw do
   # routes to a superadmin namespaced controller, but doesn't include superadmin in the url or url helper
   scope module: :superadmin do
     post 'regular_expenses/add'
-    resource :blast, only: [:show] do
+    resource :blast, only: :show do
       collection do
         get 'add_client'
         get 'remove_client/:id', to: 'blasts#remove_client', as: 'remove_client'
@@ -100,7 +100,7 @@ Rails.application.routes.draw do
         get 'clear_filters'
       end
     end
-    resources :expenses, except: [:show] do
+    resources :expenses, except: :show do
       get 'filter', on: :collection
     end
   end
@@ -133,6 +133,8 @@ Rails.application.routes.draw do
     get ':id/cancel_adjust_restart', to: 'package_modification#cancel_adjust_restart', as: 'package_modification_cancel_adjust_restart'
     get ':id/cancel_transfer', to: 'package_modification#cancel_transfer', as: 'package_modification_cancel_transfer'
     post ':id/buy_freeze', to: 'package_modification#buy_freeze', as: 'buy_freeze'
+    post ':id/bookings', to: 'bookings#create', as: 'create_booking'
+    resources :booking_cancellations, only: :update    
     resources :waitings, only: [:create, :destroy]
     resources :password_resets, only: [:new, :create, :edit, :update] do
       collection do

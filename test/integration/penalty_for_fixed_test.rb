@@ -18,7 +18,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
   test 'amnesty then class deduction after cancel fixed package late (for group client)' do
     log_in_as(@account_client)
     # book a class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                          purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
@@ -32,7 +32,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     assert_equal 1, @purchase.reload.bookings.size - @purchase.reload.bookings.no_amnesty.size
 
     # book a 2nd class
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_late.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                          purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_late, @client)
     travel_to(@tomorrows_class_late.start_time - 10.minutes)
@@ -48,7 +48,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
 
     # book a 3rd class
     travel_to(@wkclass3.start_time.beginning_of_day)
-    post bookings_path, params: { booking: { wkclass_id: @wkclass3.id,
+    post client_create_booking_path(@client), params: { booking: { wkclass_id: @wkclass3.id,
                                                          purchase_id: @purchase.id } }
 
     @booking = Booking.applicable_to(@wkclass3, @client)

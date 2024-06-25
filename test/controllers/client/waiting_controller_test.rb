@@ -79,7 +79,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     # book class, then cancel early
     assert_difference '@client.bookings.size', 1 do
-      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+      post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                            purchase_id: @purchase.id },
                                              booking_section: 'group' }
     end
