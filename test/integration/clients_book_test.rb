@@ -40,7 +40,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                    purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     assert_difference '@client.bookings.no_amnesty.size', -1 do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
@@ -59,7 +59,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     # assert multiple things
     # https://api.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_difference
     assert_difference -> { Booking.count } => 0, -> { Booking.no_amnesty.size } => -1 do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
@@ -144,7 +144,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                                    purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
     assert_difference 'Booking.count', 1 do
       post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                                      purchase_id: @purchase.id },
@@ -161,7 +161,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                    purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     travel_to(@tomorrows_class_early.start_time - 1.hour)
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
     assert_difference 'Booking.count', 1 do
       post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_late.id,
                                                                      purchase_id: @purchase.id },
@@ -178,8 +178,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                    purchase_id: @purchase.id } }
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     travel_to(@tomorrows_class_early.start_time + 5.minutes)
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
-
+    patch client_update_booking_path(@client, @booking)
     assert_equal 'booked', @booking.reload.status
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["Booking for #{@tomorrows_class_early.name} not changed. Deadline to make changes has passed"]],
@@ -198,7 +197,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
 
     assert_equal 'no show', @booking.status
     log_in_as(@account_client)
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
 
     assert_redirected_to client_book_path(@client.id)
     assert_equal [["Booking is 'no show' and can't now be changed.", 'Please contact the Space for help']],
@@ -209,18 +208,10 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     wkclass_max_capacity = 3
     @tomorrows_class_early.update(max_capacity: wkclass_max_capacity)
     log_in_as(@admin)
-    # admin books to max capacity
-    # wkclass_max_capacity.times do
-    #   post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
-    #                                                        purchase_id: @other_client_purchase.id } }
-    # end
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                             purchase_id: @other_client_purchase.id } }
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                             purchase_id: @purchase3.id } }
-    post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                             purchase_id: @purchase4.id } }
-
+    [@other_client_purchase, @purchase3, @purchase4].each do |purchase|
+      post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
+                                               purchase_id: purchase.id } }
+    end
     assert_equal @tomorrows_class_early.bookings.no_amnesty.count, wkclass_max_capacity
     # client attempts to book
     log_in_as(@account_client)
@@ -249,7 +240,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     # client now cancels
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     assert_difference 'Booking.no_amnesty.count', -1 do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
     # class gets full again
     log_in_as(@admin)
@@ -261,7 +252,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     assert_difference 'Booking.no_amnesty.count', 0 do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_equal [['Rebooking not possible. Class fully booked']], flash[:secondary]
@@ -276,22 +267,22 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
 
     assert_equal 0, @booking.amendment_count
     # cancel
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 1, @booking.amendment_count
     # rebook
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 2, @booking.amendment_count
     # cancel again
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 3, @booking.amendment_count
     # re-re-book should fail
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 3, @booking.amendment_count

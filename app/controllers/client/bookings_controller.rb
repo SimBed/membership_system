@@ -14,13 +14,13 @@ class Client::BookingsController < Client::BaseController
       @purchase = @booking.purchase
       handle_freeze
       remove_from_waiting_list
-      after_successful_create_by_client
+      after_successful_create
     else
-      after_unsuccessful_create_by_client
+      after_unsuccessful_create
     end
   end
 
-  def after_successful_create_by_client
+  def after_successful_create
     @wkclass = @booking.wkclass
     @wkclass_name = @wkclass.name
     @wkclass_day = @wkclass.day_of_week
@@ -35,7 +35,7 @@ class Client::BookingsController < Client::BaseController
                   (send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day)
   end
 
-  def after_unsuccessful_create_by_client
+  def after_unsuccessful_create
     redirect_to client_book_path(@client)
     flash_message booking_flash_hash[:booking][:unsuccessful][:colour],
                   (send booking_flash_hash[:booking][:unsuccessful][:message])
@@ -126,5 +126,4 @@ class Client::BookingsController < Client::BaseController
   def remove_from_waiting_list
     @client.waiting_list_for(@wkclass).destroy if @client.on_waiting_list_for?(@wkclass)
   end
-
 end

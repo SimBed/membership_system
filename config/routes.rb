@@ -134,7 +134,10 @@ Rails.application.routes.draw do
     get ':id/cancel_transfer', to: 'package_modification#cancel_transfer', as: 'package_modification_cancel_transfer'
     post ':id/buy_freeze', to: 'package_modification#buy_freeze', as: 'buy_freeze'
     post ':id/bookings', to: 'bookings#create', as: 'create_booking'
-    resources :booking_cancellations, only: :update    
+    # $app.client_update_booking_path(Client.first, Client.first.bookings.last)
+    # => "/client/1/booking_cancellations/1668"
+    patch ':client_id/booking_cancellations/:id', to: 'booking_cancellations#update', as: 'update_booking'
+    # resources :booking_cancellations, only: :update    
     resources :waitings, only: [:create, :destroy]
     resources :password_resets, only: [:new, :create, :edit, :update] do
       collection do

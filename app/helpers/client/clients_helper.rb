@@ -38,7 +38,7 @@ module Client::ClientsHelper
       { css_class: '',
         link: link_to(
           image_tag('add.png', class: "table_icon mx-auto #{'filter-white' unless wkclass.workout.limited?}"),
-          bookings_path('booking[wkclass_id]': wkclass.id,
+          client_create_booking_path(id: @client.id, 'booking[wkclass_id]': wkclass.id,
                                  'booking[purchase_id]': purchase.id,
                                  booking_day: day,
                                  booking_section:),
@@ -81,7 +81,7 @@ module Client::ClientsHelper
     end
     link_to(
       image_tag(image, class: image_class),
-      booking_cancellation_path(booking, booking_day: day, booking_section:),
+      client_update_booking_path(booking.client,booking, booking_day: day, booking_section:),
       data: { turbo_method: :patch, turbo_confirm: confirmation },
       class: 'icon-container'
     )

@@ -86,8 +86,8 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_other_client)
     assert_difference '@other_client.bookings.no_amnesty.size', 1 do
       post client_create_booking_path(@other_client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @other_client_purchase.id },
-                                             booking_section: 'group' }
+                                                                           purchase_id: @other_client_purchase.id },
+                                                                           booking_section: 'group' }
     end
 
     log_in_as(@account_client)
@@ -105,12 +105,12 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     # book class, then cancel early
     assert_difference '@client.bookings.size', 1 do
       post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                               purchase_id: @purchase.id },
-                                    booking_section: 'group' }
+                                                                     purchase_id: @purchase.id },
+                                                          booking_section: 'group' }
     end
     @orig_booking = Booking.applicable_to(@tomorrows_class_early, @client)
     assert_difference '@client.bookings.amnesty.size', 1 do
-      patch booking_cancellation_path(@orig_booking), params: { booking: { id: @orig_booking.id } }
+      patch client_update_booking_path(@client, @orig_booking)
     end
     assert @orig_booking.status, 'cancelled early'
     # other client fills class
@@ -136,7 +136,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     @new_booking = Booking.applicable_to(@tomorrows_class_early, @other_client)
     log_in_as(@account_other_client)
     assert_difference '@other_client.bookings.amnesty.size', 1 do
-      patch booking_cancellation_path(@new_booking), params: { booking: { id: @new_booking.id } }
+      patch client_update_booking_path(@other_client, @new_booking)
     end
 
     log_in_as(@account_client)

@@ -85,7 +85,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     @booking = @client.bookings.where(wkclass_id: Wkclass.last(3)[1].id).first
 
     assert_difference '@purchase.bookings.count', 0 do
-      patch booking_cancellation_path(@booking)
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_redirected_to client_book_path @client

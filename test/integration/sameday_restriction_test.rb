@@ -58,7 +58,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client cancels late (with amnesty)
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
 
     # client books 2nd class same day after late cancellation (with amnesty) of first
     assert_difference '@client.bookings.no_amnesty.size', 1 do
@@ -79,7 +79,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     # client cancels late
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
 
     # client succeeds in booking 2nd class same day after late cancellation of first (even with amnesty used up)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
@@ -140,7 +140,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
     # cancel late class early
     @booking = Booking.applicable_to(@tomorrows_class_late, @client)
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
 
     # book early class
     post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
@@ -154,7 +154,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     assert_difference '@client.bookings.no_amnesty.size', 1 do
       @booking = Booking.applicable_to(@tomorrows_class_late, @client)
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
   end
 end

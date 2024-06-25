@@ -80,12 +80,12 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
     # book class, then cancel early
     assert_difference '@client.bookings.size', 1 do
       post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                                           purchase_id: @purchase.id },
-                                             booking_section: 'group' }
+                                                                     purchase_id: @purchase.id },
+                                                          booking_section: 'group' }
     end
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     assert_difference '@client.bookings.no_amnesty.size', -1 do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
     assert @booking.status, 'cancelled early'
 

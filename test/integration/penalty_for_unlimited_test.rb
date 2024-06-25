@@ -22,7 +22,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     # cancel class late
     assert_no_difference '@purchase.penalties.size' do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_equal 1, @purchase.reload.late_cancels
@@ -34,7 +34,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     travel_to(@tomorrows_class_late.start_time - 10.minutes)
     # cancel 2nd class late
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_equal 2, @purchase.reload.late_cancels
@@ -50,7 +50,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     travel_to(@wkclass3.start_time - 10.minutes)
     # cancel 3rd class late
     assert_difference '@purchase.penalties.count', 1 do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_equal 3, @purchase.reload.late_cancels
@@ -66,7 +66,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     travel_to(@wkclass4.start_time - 10.minutes)
     # cancel 4th class late
     assert_difference '@purchase.penalties.count', 1 do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_equal 4, @purchase.reload.late_cancels
@@ -123,6 +123,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     @purchase.update(late_cancels: 2)
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
     # cancel today's class late
+    log_in_as(@admin)
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     assert_difference '@client.bookings.booked.count', -2 do
       patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id, status: 'cancelled late' } }

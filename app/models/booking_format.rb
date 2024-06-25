@@ -122,8 +122,9 @@ class BookingFormat
       confirmation = I18n.t('client.clients.booking.update.from_booked.confirm')
       @image_params = { src: 'delete.png',
                         css_class: 'table_icon mx-auto filter-red' }
-      @route = 'booking_cancellation_path'
-      @route_params = { id: @booking.id,
+      @route = 'client_update_booking_path'
+      @route_params = { client_id: @client.id,
+                        id: @booking.id,
                         booking_day: @day,
                         booking_section: @booking_section }
       @turbo_params = { method: :patch,
@@ -134,8 +135,9 @@ class BookingFormat
       confirmation = I18n.t('client.clients.booking.update.from_cancelled_early.confirm_unfreeze') if @booking.purchase.freezed?(@booking.wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: image_class }
-      @route = 'booking_cancellation_path'
-      @route_params = { id: @booking.id,
+      @route = 'client_update_booking_path'
+      @route_params = { client_id: @client.id,
+                        id: @booking.id,
                         booking_day: @day,
                         booking_section: @booking_section }
       @turbo_params = { method: :patch,

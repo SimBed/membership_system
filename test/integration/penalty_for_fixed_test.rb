@@ -24,7 +24,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     travel_to(@tomorrows_class_early.start_time - 10.minutes)
     # cancel class late
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_equal 1, @purchase.reload.late_cancels
@@ -39,7 +39,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     # cancel 2nd class late
     # the decuction is a class not a duration validity penalty
     assert_no_difference '@purchase.penalties.count' do
-      patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+      patch client_update_booking_path(@client, @booking)
     end
 
     assert_equal 2, @purchase.reload.late_cancels
@@ -54,7 +54,7 @@ class PenaltyForFixedTest < ActionDispatch::IntegrationTest
     @booking = Booking.applicable_to(@wkclass3, @client)
     travel_to(@wkclass3.start_time - 10.minutes)
     # cancel 3rd class late
-    patch booking_cancellation_path(@booking), params: { booking: { id: @booking.id } }
+    patch client_update_booking_path(@client, @booking)
 
     assert_equal 3, @purchase.reload.late_cancels
     assert_equal 1, @purchase.reload.bookings.size - @purchase.reload.bookings.no_amnesty.size
