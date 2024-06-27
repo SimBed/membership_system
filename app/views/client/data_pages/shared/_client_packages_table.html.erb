@@ -2,13 +2,12 @@
   <% @purchases.each do |purchase| %>
       <div class="container px-0">
         <% @purchase = purchase %>
-        <%# this page is shown on the history page (where details are wanted, but options to modify not wanted) and on bookings page vice-veras.
-        detailed == true means history page, detailed == false booking page %>
-        <% if detailed == false && !(purchase.trial? || purchase.rider?) %> <%# no need for unless purchase.expired? as only unexpired purchases are shown on booking page%>
-          <%= render partial: 'client/data_pages/package_modifications' %>
+        <%# this page is shown on the history page (where booking details are wanted, but options to modify are not wanted) and on bookings page vice-versa. %>
+        <% if package_modifications == true && !(purchase.trial? || purchase.rider?) %>
+          <%= render partial: 'client/package_modification/modifications_list' %>
         <% end %>
         <%= render partial: 'client/data_pages/shared/purchase_summary' %>
-        <% if detailed == true %>
+        <% if booking_details == true %>
           <%= render partial: 'purchase_bookings' %>
         <% end %>
         <%= render partial: 'client/data_pages/freezes_summary' %>

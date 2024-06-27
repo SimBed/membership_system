@@ -2,7 +2,7 @@ class Client::DynamicPagesController < Client::BaseController
   
   def book
     session[:booking_day] = params[:booking_day] || session[:booking_day] || '0'
-    @wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
+    @group_wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
     @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
     @my_bookings = Wkclass.booked_for(@client).show_in_bookings_for(@client).order_by_reverse_date
     # switching the order round (as below) returns wkclasses with booked bookings not of @client. Couldn't figure this out
@@ -10,10 +10,10 @@ class Client::DynamicPagesController < Client::BaseController
     # Wkclass.show_in_bookings_for(c).merge(Wkclass.booked_for(c)).order_by_reverse_date
     @days = (Time.zone.today..Time.zone.today.advance(days: Setting.visibility_window_days_ahead)).to_a
     # Should be done in model
-    @wkclasses_show_by_day = []
+    @group_wkclasses_show_by_day = []
     @opengym_wkclasses_show_by_day = []
     @days.each do |day|
-      @wkclasses_show_by_day.push(@wkclasses_show.on_date(day))
+      @group_wkclasses_show_by_day.push(@group_wkclasses_show.on_date(day))
       @opengym_wkclasses_show_by_day.push(@open_gym_wkclasses.on_date(day))
     end
     @other_services = OtherService.all

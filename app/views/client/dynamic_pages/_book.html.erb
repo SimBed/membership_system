@@ -1,5 +1,4 @@
 <%= turbo_frame_tag 'book' do %>
-  <% provide(:greeting, "Book a Class") %>
   <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?)) %>
   <% provide(:visit_shop_statement, visit_shop_statement(@renewal.product.rider?)) %>
   <% provide(:renewal_product, @renewal.product&.name(verbose: true)) %>
@@ -8,11 +7,10 @@
   <% provide(:classes_heading, ('Classes coming up' if @renewal.package_ongoing?)) %>
 
   <div class="booking-section mb-3">
-    <%= render partial: 'client/data_pages/shared/client_greeting' %>
-    <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @wkclasses_show.empty? %>
+    <%= render partial: 'client_no_classes' if @renewal.package_ongoing? && @group_wkclasses_show.empty? %>
     <div data-controller="booking" data-booking-bookings-open-value = <%= Setting.booking_window_days_before %>>
-      <%= turbo_frame_tag 'client_bookings' do %>
-        <%= render partial: 'client_bookings_table' if @renewal.package_ongoing? && !@wkclasses_show.empty? %>
+      <%= turbo_frame_tag 'group_bookings' do %>
+        <%= render partial: 'group_bookings_table' if @renewal.package_ongoing? && !@group_wkclasses_show.empty? %>
       <% end %>
       <%= turbo_frame_tag 'opengym_bookings' do %>
         <%= render partial: 'opengym_bookings_table' if @renewal.package_ongoing? && !@open_gym_wkclasses.empty? %>
@@ -27,6 +25,6 @@
     <% end %>
   </div>
   <div id="packages-table">
-    <%= render partial: 'client/data_pages/shared/client_packages_table', locals: {detailed: false} %>
+    <%= render partial: 'client/data_pages/shared/client_packages_table', locals: {booking_details: false, package_modifications: true} %>
   </div>
 <% end %>

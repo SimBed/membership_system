@@ -4,6 +4,7 @@ class Client::PackageModificationController < Client::BaseController
   def new_freeze
     @purchase = Purchase.find(params[:purchase_id])
     @default_start_dates = @purchase.new_freeze_dates
+    render 'freeze_form'
   end
 
   def buy_freeze
@@ -34,21 +35,25 @@ class Client::PackageModificationController < Client::BaseController
     redirect_to root_path
   end
 
-  def adjust_restart; end
+  def adjust_restart
+    render 'adjust_restart_form'
+  end
 
-  def transfer; end
+  def transfer
+    render 'transfer_form'
+  end
 
   def cancel_freeze
     @purchase = Purchase.find(params[:purchase_id])
-    render partial: 'client/clients/package_modifications/freeze'
+    render partial: 'client/package_modification/freeze_button'
   end
 
   def cancel_adjust_restart
-    render partial: 'client/clients/package_modifications/adjust_restart'
+    render partial: 'client/package_modification/adjust_restart_button'
   end
 
   def cancel_transfer
-    render partial: 'client/clients/package_modifications/transfer'
+    render partial: 'client/package_modification/transfer_button'
   end
 
   private

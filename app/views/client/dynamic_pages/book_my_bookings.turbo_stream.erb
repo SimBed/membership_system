@@ -1,5 +1,5 @@
-<%= turbo_stream.update "client_bookings" do %>
-  <%= render partial: "client_bookings_table" %>
+<%= turbo_stream.update "group_bookings" do %>
+  <%= render partial: "group_bookings_table" %>
 <% end %>
 <%= turbo_stream.update "opengym_bookings" do %>
   <%= render partial: "opengym_bookings_table" %>
@@ -8,6 +8,6 @@
   <%= render partial: "my_bookings_table" %>
 <% end %>
 <%= turbo_stream.update "packages-table" do %>
-  <%= render partial: "client/data_pages/shared/client_packages_table", locals: {detailed: false} %>
+  <%= render partial: "client/data_pages/shared/client_packages_table", locals: {booking_details: false, package_modifications: true} %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

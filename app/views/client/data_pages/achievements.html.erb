@@ -2,8 +2,8 @@
   <%= render partial: 'achievement_heading' %>
   <%= turbo_frame_tag 'achievement_chart' do %>
     <% unless @main_challenge_selected %>
-        <%= render partial: 'achievement_chart' %>
-        <%= render partial: 'achievement_table' %>
+      <%= render partial: 'achievement_chart' %>
+      <%= render partial: 'achievement_table' %>
     <% end %>
     <%= render partial: 'achievement_league' %>
   <% end %>

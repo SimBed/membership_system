@@ -1,6 +1,6 @@
 <div id="renewal" class="container px-1 fw-bolder fst-italic my-5 text-center">
   <% unless @renewal.product.rider? %>
-    <p class="mb-1"><%= yield(:renewal_statement) %></p>
+    <p class="mb-1"><%= renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?) %></p>
   <% end %>
   <% if @renewal.valid? && !@renewal.product.rider? %>
     <p class="mb-1"><%= yield(:renewal_product) %></p>
@@ -8,13 +8,12 @@
       <% if @renewal.offer_online_discount? %>   
         <s class="me-1"><%= rupees(yield(:base_price))%></s>
       <% end %>    
-      <span class = "span1"><%= "#{rupees(yield(:renewal_price))}" %></span>
+      <span class="span1"><%= "#{rupees(yield(:renewal_price))}" %></span>
     </p>
       <%= render partial: 'razor_form' %>
       <div class="mt-3">
         <%= link_to 'or visit shop', client_shop_path(@client), class: 'like_button text-uppercase', data: {turbo: false} %>
       </div>
-    <%#= "or visit the #{link_to 'Shop', client_shop_path(@client), class: 'shop_button'}".html_safe %>
   <% else %>
     <p class="bolditalics mb-0"><%= yield(:visit_shop_statement) %></p>
   <% end %>

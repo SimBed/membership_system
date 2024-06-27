@@ -14,7 +14,7 @@
   </div>    
   <div class="canvas gray100-canvas">
     <div class="bookings-notice" data-booking-target="bookingsOpen"><%= "bookings open #{Setting.booking_window_days_before} days before" %></div>
-    <% @wkclasses_show_by_day.each_with_index do |day, index| %>
+    <% @group_wkclasses_show_by_day.each_with_index do |day, index| %>
       <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
            data-booking-target="bookingDay">
         <% if day.empty? %>

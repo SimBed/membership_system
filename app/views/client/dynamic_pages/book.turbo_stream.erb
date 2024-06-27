@@ -1,5 +1,5 @@
-<%= turbo_stream.update "client_bookings" do %>
-  <%= render partial: "client_bookings_table" %>
+<%= turbo_stream.update "group_bookings" do %>
+  <%= render partial: "group_bookings_table" %>
 <% end %>
 <% if true %>
   <%= turbo_stream.update "my_bookings" do %>
@@ -7,6 +7,6 @@
   <% end %>
 <% end %>
 <%= turbo_stream.update "packages-table" do %>
-  <%= render partial: "client/data_pages/shared/client_packages_table", locals: {detailed: false} %>
+  <%= render partial: "client/data_pages/shared/client_packages_table", locals: {booking_details: false, package_modifications: true} %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>
