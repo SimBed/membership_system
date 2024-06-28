@@ -16,7 +16,7 @@
             <% end %>
             <div class="pe2 discount-price"><%= rupees(@renewal.price(product)) %></div>
           </div>
-          <% if logged_in? %>
+          <% if logged_in? && Setting.enable_online_payment %>
             <div class="ps-3">
               <%= render partial: 'client/dynamic_pages/shop/razor_form_shop', locals: {product: product} %>
             </div>

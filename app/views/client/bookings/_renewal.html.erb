@@ -10,10 +10,15 @@
       <% end %>    
       <span class="span1"><%= "#{rupees(yield(:renewal_price))}" %></span>
     </p>
+    <% if Setting.enable_online_payment%>
       <%= render partial: 'razor_form' %>
-      <div class="mt-3">
-        <%= link_to 'or visit shop', client_shop_path(@client), class: 'like_button text-uppercase', data: {turbo: false} %>
-      </div>
+    <% end %>
+    <div class="mt-3">
+      <%= link_to 'or visit shop', client_shop_path(@client), class: 'like_button text-uppercase', data: {turbo: false} %>
+    </div>
+    <% unless Setting.enable_online_payment%>    
+      <div class="admin_form mt-3 text-center">Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly for renewal.</div>
+    <% end %>
   <% else %>
     <p class="bolditalics mb-0"><%= yield(:visit_shop_statement) %></p>
   <% end %>

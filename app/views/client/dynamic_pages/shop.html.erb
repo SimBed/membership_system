@@ -1,4 +1,7 @@
-<!--div class="admin_form m-2">Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly for payment.</div-->
+<% unless Setting.enable_online_payment %>   
+  <div class="admin_form m-2 text-center">Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly for payment.</div>
+<% end %>
+
 <div id="shop" class="admin_form pt-4 my-2"
   data-controller="shop-menu"
   data-shop-menu-trial-price-value="<%= rupees(@trial_price) %>"

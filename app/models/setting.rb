@@ -62,14 +62,14 @@ class Setting < RailsSettings::Base
     # field :atendances_remain, type: :integer, default: 4
   end
 
-  scope :marker do
-    field :strength_markers, type: :array, default: ['Back Squat', 'BarBell Strict Press', 'Pull Ups', 'DB Incline Bench Row', 'Hang Power Snatch', 'Deadlift', 'Bar Dip']
-    field :body_markers, type: :array, default: ['Neck', 'Chest', 'Lower Chest', 'Waist', 'Low Waist', 'Hips', 'Thigh (R)', 'Thigh (L)', 'Calf (R)', 'Calf (L)', 'Biceps (R)', 'Biceps (L)']
-  end
-  
   scope :discount do
     field :discount_reason_names, type: :array, default: ['Buddy', 'Class Pass', 'Complimentary', 'Fitternity', 'Friends & Family', 'Student', 'First Package',
     'Renewal of Package Before Expiry', 'Renewal of Package After Expiry', 'Renewal of Trial Before Expiry', 'Renewal of Trial After Expiry']
+  end  
+
+  scope :marker do
+    field :strength_markers, type: :array, default: ['Back Squat', 'BarBell Strict Press', 'Pull Ups', 'DB Incline Bench Row', 'Hang Power Snatch', 'Deadlift', 'Bar Dip']
+    field :body_markers, type: :array, default: ['Neck', 'Chest', 'Lower Chest', 'Waist', 'Low Waist', 'Hips', 'Thigh (R)', 'Thigh (L)', 'Calf (R)', 'Calf (L)', 'Biceps (R)', 'Biceps (L)']
   end
   
   scope :modification do
@@ -113,6 +113,10 @@ class Setting < RailsSettings::Base
     field :durations, type: :array, default: [60, 45, 90]
   end
   
+  scope :shop do
+    field :enable_online_payment, type: :boolean, default: true
+  end
+
   scope :wkclass do
     field :problematic_duration, type: :integer, default: 2
   end

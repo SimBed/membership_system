@@ -1,7 +1,9 @@
 <% if @renewal.new_client? %>  
   <div class="text-center bg-black inverted mb-2">
     <div class="trial-name pt-2 mb-1">unlimited 1 week trial</div>
-      <%=  render 'client/dynamic_pages/shop/razor_form_trial' %>
+      <% if Setting.enable_online_payment %>
+        <%= render 'client/dynamic_pages/shop/razor_form_trial' %>
+      <% end %>
     <div class="trial-tagline pb-1 mt-1 tagline">
       <p class="tagline-sm">Try our classes. Meet our people</p>
     </div>

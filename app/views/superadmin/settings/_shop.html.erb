@@ -1,0 +1,9 @@
+<section class="mb-3 settings-scope"
+         data-settings-target="settingsScope settingsScopeShop">
+  <div class="admin_form">
+    <div class="form-group mb-2">
+      <label class="control-label">Enable online payment (ie Razorpay is working)</label>
+      <%= f.check_box :enable_online_payment, value: Setting.enable_online_payment %>
+    </div>
+  </div>
+</section>
