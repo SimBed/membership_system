@@ -25,7 +25,7 @@
         </li>
         <% unless current_account.without_purchase? %>
           <li class="nav-item">
-            <%= link_to "Book", client_book_path(client), class: "nav-link #{active_link_for(path: client_book_path(client))}" %>
+            <%= link_to "Book", client_bookings_path(client), class: "nav-link #{active_link_for(path: client_bookings_path(client))}" %>
           </li>
         <% end %>
         <% if current_account.client.pt? %>

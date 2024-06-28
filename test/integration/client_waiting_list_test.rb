@@ -19,7 +19,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 0
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 0
     assert_select "a:match('href', ?)", %r{#{client_waitings_path}/}, count: 0
@@ -32,7 +32,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 1
     assert_select "a:match('href', ?)", %r{#{client_waitings_path}/}, count: 0
@@ -49,7 +49,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 0
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 0
     assert_select "a:match('href', ?)", /#{client_waiting_path(Waiting.last)}/, count: 1
@@ -64,7 +64,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 1
     assert_select "a:match('href', ?)", /#{client_waiting_path(Waiting.last)}/, count: 0
@@ -75,7 +75,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 0
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 0
     assert_select "a:match('href', ?)", %r{#{client_waitings_path}/}, count: 0
@@ -93,7 +93,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select "a:match('href', ?)", /#{client_waitings_path}[?]/, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/waiting.*}, count: 1
     assert_select "a:match('href', ?)", %r{#{client_waitings_path}/}, count: 0
@@ -142,7 +142,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     # File.write("test_output.html", response.body)
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     # had difficulty with this - %r{#{booking_cancellation_path}/} doesn't work as :id from the preivous request form spart of the route...and doing it directly with escaped backslashes wasn't happening either
     # landded on this imperfect match checking for a count of specific route rather than a more generalised route
     assert_select "a:match('href', ?)", %r[#{booking_cancellation_path(@orig_booking)}], count: 1
@@ -174,7 +174,7 @@ class ClientWaitingListTest < ActionDispatch::IntegrationTest
     end    
 
     follow_redirect!
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select "a:match('href', ?)", /#{client_waiting_path(Waiting.last)}/, count: 1
     assert_select "img:match('src', ?)", %r{.*assets/remove.*}, count: 1
     assert_select 'div', "on waiting list", 1

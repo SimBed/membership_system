@@ -70,7 +70,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal 4, @purchase.reload.late_cancels
-    assert_redirected_to client_book_path(@client.id, limited: true, major_change: true)
+    assert_redirected_to client_bookings_path(@client.id, limited: true, major_change: true)
     assert_equal [["HIIT on Monday is 'cancelled late'", 'A deduction will be made to your Package.',
                    'Avoid deductions by making changes to bookings before the deadlines']], flash[:danger]
   end
@@ -101,7 +101,7 @@ class PenaltyForUnlimitedTest < ActionDispatch::IntegrationTest
 
     assert_equal 2, @purchase.reload.no_shows
 
-    # assert_redirected_to client_book_path(@client.id)
+    # assert_redirected_to client_bookings_path(@client.id)
     # assert_equal "Booking is 'no show' and too late to change", flash[:warning]
   end
 

@@ -71,7 +71,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
                                            booking_section: 'group' }
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group')
     assert_equal [["You have been added to the waiting list for #{@tomorrows_class_early.name}. You will be sent a message if a spot opens up."]], flash[:success]
   end
 
@@ -99,7 +99,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
                                            booking_section: 'group' }
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group')
     assert_equal [["You have been added to the waiting list for #{@tomorrows_class_early.name}. You will be sent a message if a spot opens up."]], flash[:success]
   end
 
@@ -110,7 +110,7 @@ class Client::WaitingControllerTest < ActionDispatch::IntegrationTest
       delete client_waiting_path(waiting, booking_section: 'group')
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group')
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group')
     assert_equal [['You have been removed from the waiting list for HIIT.']], flash[:success]
   end
 

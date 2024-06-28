@@ -33,7 +33,7 @@ class MakeDeclarationTest < ActionDispatch::IntegrationTest
               indemnity: true
              } } }
       end
-      assert_redirected_to client_book_path(@client.id)
+      assert_redirected_to client_bookings_path(@client.id)
       declaration = @client.declaration
 
       assert_equal Date.parse('17 Feb 1985'), @client.reload.dob

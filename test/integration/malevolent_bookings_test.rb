@@ -45,7 +45,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
                                                            purchase_id: @purchase.id } }
     end
 
-    assert_redirected_to client_book_path @client
+    assert_redirected_to client_bookings_path @client
     assert_equal([['The maximum number of classes has already been booked.',
                    'Renew you Package if you wish to attend this class']], flash[:secondary])
   end
@@ -88,7 +88,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
       patch client_update_booking_path(@client, @booking)
     end
 
-    assert_redirected_to client_book_path @client
+    assert_redirected_to client_bookings_path @client
     assert_equal([['The maximum number of classes has already been booked.',
                    'Renew you Package if you wish to attend this class']], flash[:warning])
   end

@@ -7,7 +7,7 @@ class Client::WaitingsController < ApplicationController
 
   def create
     Waiting.create(wkclass_id: params[:wkclass_id], purchase_id: params[:purchase_id])
-    redirect_to client_book_path(current_account.client, booking_section: params[:booking_section])
+    redirect_to client_bookings_path(current_account.client, booking_section: params[:booking_section])
     flash_message :success, t('.success', wkclass_name: @wkclass.name)
     # flash[:success] = "You have been added to the waiting list for #{wkclass.name}. You will be sent a message if a spot opens up."
   end
@@ -16,7 +16,7 @@ class Client::WaitingsController < ApplicationController
     waiting = Waiting.find(params[:id])
     wkclass_name = waiting.wkclass.name
     waiting.destroy
-    redirect_to client_book_path(current_account.client, booking_section: params[:booking_section])
+    redirect_to client_bookings_path(current_account.client, booking_section: params[:booking_section])
     flash_message :success, t('.success', wkclass_name:)
   end
 

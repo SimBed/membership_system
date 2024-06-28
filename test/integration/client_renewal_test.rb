@@ -24,21 +24,21 @@
 #     log_in_as(@account_client)
 #     follow_redirect!
 
-#     assert_template 'client/dynamic_pages/book'
+#     assert_template 'client/bookings/index'
 #     # puts @response.parsed_body
 #     # 1 form for razorpay
 #     assert_select 'form'
 #     # Setting.renew_online = false
-#     get client_book_path(@account_client.client)
+#     get client_bookings_path(@account_client.client)
 
 #     # assert_select 'form', false
 #     # Setting.renew_online = true
 #     Setting.days_remain = 60
-#     get client_book_path(@account_client.client)
+#     get client_bookings_path(@account_client.client)
 
 #     assert_select 'form'
 #     Setting.days_remain = 58
-#     get client_book_path(@account_client.client)
+#     get client_bookings_path(@account_client.client)
 
 #     assert_select 'form', false
 #   end
@@ -47,7 +47,7 @@
 #     log_in_as(@account_client)
 #     follow_redirect!
 
-#     assert_template 'client/dynamic_pages/book'
+#     assert_template 'client/bookings/index'
 #     assert_select 'p', text: 'Renew your Package before expiry with a 5% online discount!'
 #     assert_select 'p', text: 'Group - Unlimited Classes 3 Months'
 #     assert_select 's', text: 'Rs. 25,500'
@@ -73,7 +73,7 @@
 #     # travel_to(purchase.expiry_date.advance(days:1))
 #     # purchase.update(status: purchase.status_calc)
 #     purchase.update_column(:status, 'expired')
-#     get client_book_path(@account_client.client)
+#     get client_bookings_path(@account_client.client)
 #     # puts @response.parsed_body
 #     assert_select 'p', text: 'Your Group Package has expired. Renew your Package now!'
 #     assert_select 'p', text: 'Group - Unlimited Classes 3 Months'
@@ -96,7 +96,7 @@
 #     log_in_as(@account_client_for_ongoing_trial)
 #     follow_redirect!
 
-#     assert_template 'client/dynamic_pages/book'
+#     assert_template 'client/bookings/index'
 #     # puts @response.parsed_body
 #     assert_select 'p', text: 'Buy your first Package before your trial expires with a 20% online discount!'
 #     assert_select 'p', text: 'Group - Unlimited Classes 3 Months'
@@ -120,7 +120,7 @@
 #     log_in_as(@account_client_for_expired_trial)
 #     follow_redirect!
 
-#     assert_template 'client/dynamic_pages/book'
+#     assert_template 'client/bookings/index'
 #     assert_select 'p', text: 'Your Trial has expired. Buy your first Package with a 15% online discount!'
 #     assert_select 'p', text: 'Group - Unlimited Classes 3 Months'
 #     assert_select 's', text: 'Rs. 25,500'

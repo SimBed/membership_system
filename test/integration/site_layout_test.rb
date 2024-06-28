@@ -166,11 +166,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', client_shop_path(@client)
     assert_select 'a[href=?]', client_history_path(@client)
-    assert_select 'a[href=?]', client_book_path(@client)
+    assert_select 'a[href=?]', client_bookings_path(@client)
     assert_select 'a[href=?]', client_pt_path(@client), count: 0
     assert_select 'a[href=?]', client_timetable_path
     assert_select 'a[href=?]', client_profile_path(@client)
@@ -212,11 +212,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client_pt)
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     assert_select 'a[href=?]', root_path
     assert_select 'a[href=?]', client_shop_path(@client_pt)
     assert_select 'a[href=?]', client_history_path(@client_pt)
-    assert_select 'a[href=?]', client_book_path(@client_pt)
+    assert_select 'a[href=?]', client_bookings_path(@client_pt)
     assert_select 'a[href=?]', client_pt_path(@client_pt), count: 1
     assert_select 'a[href=?]', client_timetable_path
     assert_select 'a[href=?]', client_profile_path(@client_pt)

@@ -20,10 +20,9 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect! # logging in as client triggers redirect to booking page
 
-    assert_template 'client/dynamic_pages/book'
-    # assert_select 'a[href=?]', bookings_path, count: 2
+    assert_template 'client/bookings/index'
     # i dont know where this syntax is documented, but it selects anchor elements with an href that matches the given regexs
-    assert_select "a:match('href', ?)", /#{client_create_booking_path(@client)}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{client_create_booking_path(@client)}[?]/, count: 3 # 22/4, 22/4, 24/4
     # the path is to the create method (i.e. for a new booking, not an amendmdent to an existing booking)
     # no bookings made yet
     assert_equal 0, booking_count('booked') # test_helper.rb
@@ -41,7 +40,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     # an extra class with booking link appears
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 4 # 22/4, 22/4, 24/4, 24/4
+    assert_select "a:match('href', ?)", /#{client_create_booking_path(@client)}[?]/, count: 4 # 22/4, 22/4, 24/4, 24/4
     log_in_as(@admin)
     @wkclass = Wkclass.last
     # push the date outside of the booking window (no test yet for whether it is visible (which it should be) just not bookable)
@@ -51,22 +50,22 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     # no booking link for the later dated wkclass
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{client_create_booking_path(@client)}[?]/, count: 3 # 22/4, 22/4, 24/4
   end
 
   test 'class booking links appear correctly for client after making new booking' do
     log_in_as(@account_client)
     follow_redirect!
     # There is a class on 25th but booking_window_days_before defaults to 2
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{client_bookings_path(@client)}[?]/, count: 3 # 22/4, 22/4, 24/4
     assert_difference 'Booking.count', 1 do
       post client_create_booking_path(@client), params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                                  purchase_id: @purchase.id },
-                                    booking_section: 'group' }
+                                                          purchase_id: @purchase.id },
+                                                booking_section: 'group' }
     end
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
+    assert_template 'client/bookings/index'
     # only 1 class booked but shown twice (once in group, once in my_bookings)
     assert_equal 2, booking_count('booked')
     # after booking:
@@ -79,7 +78,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     # patch to "/admin/bookings/2139?booking_day=1&amp;booking_section=group"
     # find way to export response to file for easier debugging
     # not used in end - but note the addition of \/ [escape backslash] in the regexs if want to select for backslash
-    assert_select "a:match('href', ?)", /#{bookings_path}[?]/, count: 1
+    assert_select "a:match('href', ?)", /#{client_bookings_path(@client)}[?]/, count: 1
     booking = Booking.where(wkclass_id: @tomorrows_class_early.id, purchase_id: @purchase.id).first
 
     assert_select "a:match('href', ?)", /#{booking_cancellation_path(booking)}/, count: 2
@@ -90,14 +89,14 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
 
-    assert_template 'client/dynamic_pages/book'
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_template 'client/bookings/index'
+    # note client/:id/bookings is the navbar link to the bookings page (which we do not want to count) whereas client/:id/bookings?..... represents a booking link
+    assert_select "a:match('href', ?)", /#{client_create_booking_path(@client)}[?]/, count: 3 # 22/4, 22/4, 24/4
     # make 1 class full
     @tomorrows_class_early.update(max_capacity: 0)
-    # debugger
-    get client_book_path(@client)
+    get client_bookings_path(@client)
     # classes with a booking link reduces by 1
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 2 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{client_create_booking_path(@client)}[?]/, count: 2 # 22/4, 22/4, 24/4
     # 1 class shows link for waiting list
     assert_select "a:match('href', ?)", /#{client_waitings_path}/, count: 1
     # assert_select "i.bi-battery-full", 1
@@ -106,7 +105,7 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
   test 'class booking links do not include an unbookable class' do
     log_in_as(@account_client)
     follow_redirect!
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 3
+    assert_select "a:match('href', ?)", /#{client_bookings_path(@client)}[?]/, count: 3
     log_in_as(@admin)
     # admin adds an unbookable class
     post wkclasses_path, params:
@@ -120,11 +119,11 @@ class ClientBookingInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     follow_redirect!
     # the count of classes with booking links remains unchanged
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 3 # 22/4, 22/4, 24/4
+    assert_select "a:match('href', ?)", /#{client_bookings_path(@client)}[?]/, count: 3 # 22/4, 22/4, 24/4
     # change the workout to a bookable one
     Wkclass.last.update(workout_id: @workout.id) # note there is no need to update the wkclasses max_capacity, the workouts default capacity is the relevant attribute that affects bookability
-    get client_book_path(@client)
+    get client_bookings_path(@client)
     # an extra class with booking link appears
-    assert_select "a:match('href', ?)", /#{bookings_path}/, count: 4
+    assert_select "a:match('href', ?)", /#{client_bookings_path(@client)}[?]/, count: 4
   end  
 end

@@ -28,7 +28,7 @@ class PublicPagesControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     # get root_path
 
-    assert_redirected_to client_book_path(@client)
+    assert_redirected_to client_bookings_path(@client)
   end
 
 end

@@ -84,7 +84,7 @@ class Client::BookingCancellationsController < Client::BaseController
   def action_client_update_too_late
     flash_hash = booking_flash_hash[:update][:too_late]
     flash_message flash_hash[:colour], (send flash_hash[:message], true, @wkclass_name)
-    redirect_to client_book_path(@client)
+    redirect_to client_bookings_path(@client)
   end
 
   def action_client_update_success
@@ -125,7 +125,7 @@ class Client::BookingCancellationsController < Client::BaseController
     # pass limited as well, as if the request is from my_bookings the turbo stream needs to now whether to update group table or opengym table
     # limited not used in the end (can be deleted). When a mybooking is cancelled, update both opengym and group. If you dust update the impacted table, then when the day of the cancelled class is different from
     # the day currently selected, there will be inconsistency between the day shown and the non-impacted listing
-    redirect_to client_book_path(@client, booking_section: params[:booking_section], limited: @wkclass.workout.limited, major_change: @major_change) # pass whether a major change occurred to trigger either a full page reload or just a discrete turbo_frame
+    redirect_to client_bookings_path(@client, booking_section: params[:booking_section], limited: @wkclass.workout.limited, major_change: @major_change) # pass whether a major change occurred to trigger either a full page reload or just a discrete turbo_frame
   end
 
   # https://stackoverflow.com/questions/49952991/add-a-line-break-in-a-flash-notice-rails-controller
@@ -200,7 +200,7 @@ class Client::BookingCancellationsController < Client::BaseController
 
     flash_hash = booking_flash_hash[:update][:unmodifiable]
     flash_message flash_hash[:colour], (send flash_hash[:message], @booking.status)
-    redirect_to client_book_path(@client)
+    redirect_to client_bookings_path(@client)
   end
 
   def already_committed
@@ -209,7 +209,7 @@ class Client::BookingCancellationsController < Client::BaseController
 
     flash_hash = booking_flash_hash.dig(@booking_type, :daily_limit_met)
     flash_message flash_hash[:colour], (send flash_hash[:message])
-    redirect_to client_book_path(@client)
+    redirect_to client_bookings_path(@client)
   end
 
   def reached_max_capacity
@@ -222,7 +222,7 @@ class Client::BookingCancellationsController < Client::BaseController
   def action_fully_booked(booking_type)
     flash_hash = booking_flash_hash[booking_type][:fully_booked]
     flash_message flash_hash[:colour], (send flash_hash[:message], @rebooking)
-    redirect_to client_book_path(@client)
+    redirect_to client_bookings_path(@client)
   end
 
   def reached_max_amendments
@@ -230,7 +230,7 @@ class Client::BookingCancellationsController < Client::BaseController
 
     flash_message booking_flash_hash[:update][:prior_amendments][:colour],
                   (send booking_flash_hash[:update][:prior_amendments][:message])
-    redirect_to client_book_path(@client)
+    redirect_to client_bookings_path(@client)
   end
 
   def late_cancellation_penalty(package_type, penalty: true)
@@ -257,6 +257,6 @@ class Client::BookingCancellationsController < Client::BaseController
     flash_message :warning,
                   ['The maximum number of classes has already been booked.',
                    'Renew you Package if you wish to attend this class']
-    redirect_to client_book_path(@client)
+    redirect_to client_bookings_path(@client)
   end
 end

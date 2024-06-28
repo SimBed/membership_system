@@ -1,39 +1,8 @@
 class Client::DynamicPagesController < Client::BaseController
-  
+
   def book
-    session[:booking_day] = params[:booking_day] || session[:booking_day] || '0'
-    @group_wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
-    @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
-    @my_bookings = Wkclass.booked_for(@client).show_in_bookings_for(@client).order_by_reverse_date
-    # switching the order round (as below) returns wkclasses with booked bookings not of @client. Couldn't figure this out
-    # Wkclass.show_in_bookings_for(@client).booked_for(@client).order_by_reverse_date
-    # Wkclass.show_in_bookings_for(c).merge(Wkclass.booked_for(c)).order_by_reverse_date
-    @days = (Time.zone.today..Time.zone.today.advance(days: Setting.visibility_window_days_ahead)).to_a
-    # Should be done in model
-    @group_wkclasses_show_by_day = []
-    @opengym_wkclasses_show_by_day = []
-    @days.each do |day|
-      @group_wkclasses_show_by_day.push(@group_wkclasses_show.on_date(day))
-      @opengym_wkclasses_show_by_day.push(@open_gym_wkclasses.on_date(day))
-    end
-    @other_services = OtherService.all
-    # include bookings and wkclass so can find last booked session in PT package without additional query
-    @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(:freezes, :adjustments, :penalties, bookings: [:wkclass])
-    @renewal = Renewal.new(@client)
-    params[:booking_section] = nil if params[:major_change] == 'true' # do full page reload if major change
-    respond_to do |format|
-      format.html
-      case params[:booking_section]
-      when 'group'
-        format.turbo_stream
-      when 'opengym'
-        format.turbo_stream { render :book_opengym }
-      when 'my_bookings'
-        format.turbo_stream { render :book_my_bookings }
-      else
-        format.turbo_stream { render :book_all_streams }
-      end
-    end
+    # temporary so clients who go to the old url dont get an error dont get error
+    redirect_to client_bookings_path(@client)
   end
 
   def shop

@@ -1,4 +1,4 @@
-<%= turbo_frame_tag 'book' do %>
+<%= turbo_frame_tag 'book_body' do %>
   <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?)) %>
   <% provide(:visit_shop_statement, visit_shop_statement(@renewal.product.rider?)) %>
   <% provide(:renewal_product, @renewal.product&.name(verbose: true)) %>

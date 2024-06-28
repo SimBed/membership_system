@@ -136,7 +136,7 @@ class SamedayRestrictionTest < ActionDispatch::IntegrationTest
                                                          purchase_id: @purchase.id },
                                            booking_section: 'group' }
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group', major_change: false)
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
     # cancel late class early
     @booking = Booking.applicable_to(@tomorrows_class_late, @client)

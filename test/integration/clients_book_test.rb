@@ -29,7 +29,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 'booked', @booking.status
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group', major_change: false)
     # assert_redirected_to "/client/clients/#{@client.id}/book"
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
   end
@@ -45,7 +45,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 'cancelled early', @booking.status
-    assert_redirected_to client_book_path(@client.id, limited: true)
+    assert_redirected_to client_bookings_path(@client.id, limited: true)
     assert_equal [["HIIT on Friday is 'cancelled early'",
                    'There is no deduction for this change.']], flash[:primary]
   end
@@ -64,7 +64,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @booking = Booking.applicable_to(@tomorrows_class_early, @client)
 
     assert_equal 'cancelled late', @booking.status
-    assert_redirected_to client_book_path(@client.id, limited: true)
+    assert_redirected_to client_bookings_path(@client.id, limited: true)
     assert_equal [["HIIT on Friday is 'cancelled late'",
                    'There is no deduction for this change this time.',
                    'Avoid deductions by making changes to bookings before the deadlines']], flash[:primary]
@@ -79,7 +79,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                      purchase_id: @purchase.id } }
     end
 
-    assert_redirected_to client_book_path(@client.id)
+    assert_redirected_to client_bookings_path(@client.id)
     # assert_redirected_to "/client/clients/#{@client.id}/book"
     refute_predicate flash, :empty?
   end
@@ -102,7 +102,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                           booking_section: 'opengym' }
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'opengym', major_change: false)
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'opengym', major_change: false)
     refute_predicate flash, :empty?
   end
 
@@ -122,7 +122,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                      purchase_id: @purchase.id }, booking_section: 'group' }
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group', major_change: false)
     refute_predicate flash, :empty?
   end
 
@@ -135,7 +135,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                      purchase_id: @purchase.id } }
     end
 
-    assert_redirected_to client_book_path(@client.id)
+    assert_redirected_to client_bookings_path(@client.id)
     refute_predicate flash, :empty?
   end
 
@@ -151,7 +151,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                           booking_section: 'group' }
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group', major_change: false)
     assert_equal [['Booked for HIIT on Friday']], flash[:success]
   end
 
@@ -168,7 +168,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                           booking_section: 'group' }
     end
 
-    assert_redirected_to client_book_path(@client.id, booking_section: 'group', major_change: false)
+    assert_redirected_to client_bookings_path(@client.id, booking_section: 'group', major_change: false)
     refute_predicate flash, :empty?
   end
 
@@ -180,7 +180,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     travel_to(@tomorrows_class_early.start_time + 5.minutes)
     patch client_update_booking_path(@client, @booking)
     assert_equal 'booked', @booking.reload.status
-    assert_redirected_to client_book_path(@client.id)
+    assert_redirected_to client_bookings_path(@client.id)
     assert_equal [["Booking for #{@tomorrows_class_early.name} not changed. Deadline to make changes has passed"]],
                  flash[:secondary]
   end
@@ -199,7 +199,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     log_in_as(@account_client)
     patch client_update_booking_path(@client, @booking)
 
-    assert_redirected_to client_book_path(@client.id)
+    assert_redirected_to client_bookings_path(@client.id)
     assert_equal [["Booking is 'no show' and can't now be changed.", 'Please contact the Space for help']],
                  flash[:secondary]
   end
@@ -220,7 +220,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                      purchase_id: @purchase.id } }
     end
 
-    assert_redirected_to client_book_path(@client.id)
+    assert_redirected_to client_bookings_path(@client.id)
     assert_equal [['Booking not possible. Class fully booked']], flash[:secondary]
     # 1 cancellation
     log_in_as(@admin)
@@ -287,7 +287,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
 
     assert_equal 3, @booking.amendment_count
     refute_equal 'booked', @booking.status
-    assert_redirected_to client_book_path(@client.id)
+    assert_redirected_to client_bookings_path(@client.id)
     assert_equal [['Change not possible. Too many prior amendments.',
                    'Please contact the Space for help']], flash[:secondary]
   end

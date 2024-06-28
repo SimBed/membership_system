@@ -27,7 +27,7 @@ class Shared::DeclarationsController < Shared::BaseController
   def update
     if @client.update(client_params)
       flash_message :success, t('.success')
-      redirect_to client_book_path(@client)
+      redirect_to client_bookings_path(@client)
     else
       @gender_options = Rails.application.config_for(:constants)['genders']
       render :new, status: :unprocessable_entity

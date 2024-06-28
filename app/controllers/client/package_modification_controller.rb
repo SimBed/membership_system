@@ -20,7 +20,7 @@ class Client::PackageModificationController < Client::BaseController
         update_purchase_status([@freeze.purchase])
         # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
         if logged_in_as?('client')
-          redirect_to client_book_path account.client
+          redirect_to client_bookings_path account.client
         else
           flash[:warning] = 'Your browser may have logged you out of the system. Please login again to see your purchase and book your classes'
           redirect_to login_path

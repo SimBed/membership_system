@@ -57,8 +57,7 @@ Rails.application.routes.draw do
     end
     resources :adjustments, :entries, :prices, except: [:index, :show]
     resources :accounts, only: [:create, :update, :destroy]
-    # resources :bookings, only: [:new, :create, :update, :destroy]
-    # an update of any booking is always handled by the booking cancellations controller
+    # an update of a booking is handled by the booking cancellations controller (not the bookings controller)
     resources :bookings, only: [:new, :create, :destroy]
     resources :booking_cancellations, only: :update
     resources :fitternities, :instructors, :partners, :timetables
@@ -121,6 +120,7 @@ Rails.application.routes.draw do
   namespace :client do
     get '/:id/shop', to: 'dynamic_pages#shop', as: 'shop'
     get '/:id/history', to: 'data_pages#history', as: 'history'
+    # temporarily retain this route and redirect to client_bookings_path
     get '/:id/book', to: 'dynamic_pages#book', as: 'book'
     get '/:id/pt', to: 'data_pages#pt', as: 'pt'
     get '/timetable', to: 'data_pages#timetable', as: 'timetable'
@@ -133,6 +133,7 @@ Rails.application.routes.draw do
     get ':id/cancel_adjust_restart', to: 'package_modification#cancel_adjust_restart', as: 'package_modification_cancel_adjust_restart'
     get ':id/cancel_transfer', to: 'package_modification#cancel_transfer', as: 'package_modification_cancel_transfer'
     post ':id/buy_freeze', to: 'package_modification#buy_freeze', as: 'buy_freeze'
+    get ':id/bookings', to: 'bookings#index', as: 'bookings'
     post ':id/bookings', to: 'bookings#create', as: 'create_booking'
     # $app.client_update_booking_path(Client.first, Client.first.bookings.last)
     # => "/client/1/booking_cancellations/1668"

@@ -103,7 +103,7 @@ class ApplicationController < ActionController::Base
     (redirect_to client_shop_path(@account.client) if logged_in_as?('client') && @account.without_purchase?) and return
 
     # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
-    redirect_to client_book_path(@account.client) if logged_in_as?('client') # groupex only
+    redirect_to client_bookings_path(@account.client) if logged_in_as?('client') # groupex only
 
     # the rescue is only needed because I've manually assigned a client to superadmin (for role-shifting) leaving the original account of the client
     # without a client account, so on attempted log in, @account.client is nil and things fail.

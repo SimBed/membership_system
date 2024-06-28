@@ -154,7 +154,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
     assert is_logged_in?
     refute_empty flash
-    assert_redirected_to client_book_path(account.client)
+    assert_redirected_to client_bookings_path(account.client)
     assert_nil account.reload.reset_digest
   end
 
