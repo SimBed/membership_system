@@ -1,7 +1,7 @@
 class Client::DynamicPagesController < Client::BaseController
 
   def book
-    # temporary so clients who go to the old url dont get an error dont get error
+    # temporary so clients who go to the old url dont get an error
     redirect_to client_bookings_path(@client)
   end
 
@@ -19,6 +19,6 @@ class Client::DynamicPagesController < Client::BaseController
     ).call
     @renewal = Renewal.new(@client)
     @trial_price = Product.trial.space_group.first.base_price_at(Time.zone.now).price
-    @default_product_type = @renewal.default_product_type
+    @default_class_number_type = @renewal.default_class_number_type
   end  
 end

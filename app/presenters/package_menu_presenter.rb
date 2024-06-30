@@ -1,4 +1,4 @@
-class PackageMenu
+class PackageMenuPresenter < BasePresenter
   include ApplyDiscount
 
   def price(product)

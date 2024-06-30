@@ -3,8 +3,8 @@
     <button class="btn_product_type btn btn-filter" data-action="shop-menu#showUnlimited" data-shop-menu-target="unlimitedBtn">Unlimited</button>
     <button class="btn_product_type btn btn-filter" data-action="shop-menu#showFixed" data-shop-menu-target="fixedBtn">Flex</button>
   </div>
-  <div <%= "hidden" unless @default_product_type == 'unlimited' %> class="px-2 my-3 value-statement unlimited" data-shop-menu-target="unlimitedStatement">Our best value memberships for training regularly. The more you train, the better the value!</div>        
-  <div <%= "hidden" unless @default_product_type == 'fixed' %> class="px-2 my-3 value-statement fixed" data-shop-menu-target="fixedStatement">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
+  <div <%= "hidden" unless @default_class_number_type == 'unlimited' %> class="px-2 my-3 value-statement unlimited" data-shop-menu-target="unlimitedStatement">Our best value memberships for training regularly. The more you train, the better the value!</div>        
+  <div <%= "hidden" unless @default_class_number_type == 'fixed' %> class="px-2 my-3 value-statement fixed" data-shop-menu-target="fixedStatement">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
 </div>
 
 <div class="container px-1 ps-sm-10">

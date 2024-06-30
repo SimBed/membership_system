@@ -1,24 +1,23 @@
 <% @products.each_with_index do |product, index| %>
-  <% product_css_class = product.css_class %>
-  <div <%= "hidden" unless product_css_class == @default_product_type %> class="accordion-item <%= product_css_class %>" data-shop-menu-target=<%= "#{product_css_class}Product" %> >
-    <div class="accordion-header" id=<%="heading-1-#{index}"%>>
+  <% shop_product_decorator = decorate(product, ShopProductDecorator) %>
+  <% class_number_type = shop_product_decorator.class_number_type %>
+  <% renewal_presenter = RenewalPresenter.new({renewal: @renewal, product: product}) %>  
+    <div <%= "hidden" unless class_number_type == @default_class_number_type %>
+         class="accordion-item <%= class_number_type %>"
+         data-shop-menu-target=<%= "#{class_number_type}Product" %>>
+      <div class="accordion-header" id=<%="heading-1-#{index}"%>>
       <div class="accordion-button collapsed justify-content-around py-2 py-md-3" role="button" data-bs-toggle="collapse"
         data-bs-target=<%="#collapse-1-#{index}"%> aria-expanded="false" aria-controls=<%="collapse-1-#{index}"%>>
         <div class="d-flex g-1 g-xl-5 align-items-center pe-3">
           <div class="d-flex flex-column align-items-start pe-3" style="height: 3.5rem;">
-            <div class="mb-auto pe-md-5 name"><%= product.workout_group.name %></div>
-            <div class="pe-md-5 classes"><%= product.shop_name_classes%></div>
-            <div class="pe-md-5 duration"><%= pluralize(product.validity_length, product.formal_unit) %></div>
+            <div class="mb-auto pe-md-5 name"><%= shop_product_decorator.workout_group_name %></div>
+            <div class="pe-md-5 classes"><%= shop_product_decorator.number_of_classes %></div>
+            <div class="pe-md-5 duration"><%= shop_product_decorator.duration_text %></div>
           </div>
-          <div class="d-flex flex-column justify-content-center">
-            <% if @renewal.offer_online_discount? %>
-              <div class="pe2 base-price"><%= rupees(@renewal.base_price(product).price) %></div>
-            <% end %>
-            <div class="pe2 discount-price"><%= rupees(@renewal.price(product)) %></div>
-          </div>
+          <%= render partial: 'client/dynamic_pages/shop/renewal_prices', locals: {renewal_presenter: } %>
           <% if logged_in? && Setting.enable_online_payment %>
             <div class="ps-3">
-              <%= render partial: 'client/dynamic_pages/shop/razor_form_shop', locals: {product: product} %>
+              <%= render partial: 'client/dynamic_pages/shop/razor_form_shop', locals: {product: } %>
             </div>
           <% end %>
         </div>
@@ -28,12 +27,9 @@
       data-bs-parent="#accordion-1">
       <div class="accordion-body">
         <ul class="text-secondary product-notes">
-          <% saving = @renewal.renewal_saving(product) %>
-          <% unless saving.zero? %>
-            <li>Save <%= rupees(saving) %></li>
-          <% end %>
+          <%= renewal_presenter.saving_html %>
           <li>Unlimited Packages allow attendance at a maximum of 1 class per day.</li>
-          <li>Freeze anytime. Freeze charges <%= link_to 'here', charges_and_deductions_path, class: "fw-bolder text-decoration-underline" %>. Freeze terms under 'Modifications' <%= link_to 'here', terms_and_conditions_path, class: "fw-bolder text-decoration-underline" %></li>
+          <%= shop_product_decorator.freeze_charge_link %>
         </ul>
       </div>
     </div>

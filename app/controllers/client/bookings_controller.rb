@@ -43,7 +43,6 @@ class Client::BookingsController < Client::BaseController
     end
   end
 
-
   def create
     @booking = Booking.new(booking_params)
     if @booking.save

@@ -1,24 +1,23 @@
 <div data-controller="shop-menu" data-shop-menu-default-product-type-value="unlimited">
-<section class="mt-10 pb-5 pb-xl-10 text-center" id="shop">
-  <div class="container bg-black inverted py-4">
-    <h5 class="px-4 fw-bolder">Sign up now and get 10% off your first Package at The Space</h5>
-  </div>
-
-  <div class="text-center mt-10">
-    <h6 class="mb-4 text-uppercase fw-bolder">packages</h6>
-    <div class="package_type_btns">    
-      <button class="btn_product_type btn btn-filter current" data-action="shop-menu#showUnlimited" data-shop-menu-target="unlimitedBtn">Unlimited</button>
-      <button class="btn_product_type btn btn-filter" data-action="shop-menu#showFixed" data-shop-menu-target="fixedBtn">Flex</button>
+  <section class="mt-10 pb-5 pb-xl-10 text-center" id="shop">
+    <div class="container bg-black inverted py-4">
+      <h5 class="px-4 fw-bolder">Sign up now and get 10% off your first Package at The Space</h5>
     </div>
-    <div class="px-2 my-4 value-statement unlimited" data-shop-menu-target="unlimitedStatement">Our best value memberships for training regularly. The more you train, the better the value!</div>        
-    <div hidden class="px-2 my-4 value-statement fixed" data-shop-menu-target="fixedStatement">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
-  </div>
-  
-  <%= render 'public_pages/group_classes/shop_product_list' %>
-  <div class="mt-3"> <%= link_to "Buy Now", signup_path, class: "btn btn-outline-black bg-light px-2 py-1 bg-dark text-white" %> </div>
-  <div class="container mt-3 tagline">
-    <p class="px-3 tagline-lg">Save 10% on your first membership at The Space</p>
-  </div>
-</section>
 
+    <div class="text-center mt-10">
+      <h6 class="mb-4 text-uppercase fw-bolder">packages</h6>
+      <div class="package_type_btns">    
+        <button class="btn_product_type btn btn-filter current" data-action="shop-menu#showUnlimited" data-shop-menu-target="unlimitedBtn">Unlimited</button>
+        <button class="btn_product_type btn btn-filter" data-action="shop-menu#showFixed" data-shop-menu-target="fixedBtn">Flex</button>
+      </div>
+      <div class="px-2 my-4 value-statement unlimited" data-shop-menu-target="unlimitedStatement">Our best value memberships for training regularly. The more you train, the better the value!</div>        
+      <div hidden class="px-2 my-4 value-statement fixed" data-shop-menu-target="fixedStatement">Our flexible membership is best value if you plan to train with us twice per week or less.</div>        
+    </div>
+    
+    <%= render 'public_pages/group_classes/shop_product_list' %>
+    <div class="mt-3"> <%= link_to "Buy Now", signup_path, class: "btn btn-outline-black bg-light px-2 py-1 bg-dark text-white" %> </div>
+    <div class="container mt-3 tagline">
+      <p class="px-3 tagline-lg">Save 10% on your first membership at The Space</p>
+    </div>
+  </section>
 </div>

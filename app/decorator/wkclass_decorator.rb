@@ -1,6 +1,6 @@
 class WkclassDecorator < BaseDecorator
 
-  attr_accessor :atendances
+  # attr_accessor :atendances
 
   def initialize(wkclass)
     # rails c

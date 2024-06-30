@@ -1,5 +1,6 @@
 class BaseDecorator < SimpleDelegator
   include Rails.application.routes.url_helpers
+  include ActionView::Helpers::NumberHelper
   # viet 6 Nov 2022 https://stackoverflow.com/questions/489641/using-helpers-in-model-how-do-i-include-helper-dependencies
   delegate :image_tag, :tag, :content_tag, :link_to, to: 'ActionController::Base.helpers'
   
@@ -18,4 +19,8 @@ class BaseDecorator < SimpleDelegator
     css_classes = classes_array&.compact&.join(' ')
     link_to(name, url, data: data, class: css_classes)
   end
+
+  def rupees(amount)
+    number_to_currency(amount, precision: 0, unit: 'Rs. ')
+  end  
 end

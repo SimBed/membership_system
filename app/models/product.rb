@@ -74,10 +74,11 @@ class Product < ApplicationRecord
                         ORDER BY current desc, max_price DESC;")
   end
 
-  def css_class
-    max_classes < 1000 ? 'fixed' : 'unlimited'
-  end
+  # def css_class
+  #   max_classes < 1000 ? 'fixed' : 'unlimited'
+  # end
 
+  # shifted to decorator as number_of_classes (remove once dealt with on shop page as well as group classes page)
   def shop_name_classes
     (max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited').to_s
   end

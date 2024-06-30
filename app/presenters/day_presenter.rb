@@ -1,5 +1,4 @@
-class DayPresenter
-  delegate :button_tag, to: 'ActionController::Base.helpers'
+class DayPresenter < BasePresenter
 
   def initialize(attributes = {})
     @day = attributes[:day]
