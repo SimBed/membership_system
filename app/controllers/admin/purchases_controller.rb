@@ -366,7 +366,7 @@ class Admin::PurchasesController < Admin::BaseController
 
   def sort_on_object
     @purchases = @purchases.package_started_not_expired.select(&:fixed_package?).to_a.sort_by do |p|
-      p.atendances_remain(provisional: true, unlimited_text: false)
+      p.attendances_remain(provisional: true, unlimited_text: false)
     end
     # restore to ActiveRecord and recover order.
     ids = @purchases.map(&:id)

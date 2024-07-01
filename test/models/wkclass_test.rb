@@ -82,12 +82,12 @@ class WkclassTest < ActiveSupport::TestCase
     assert_equal [@tomorrows_class_early.id], Wkclass.booked_for(@client).show_in_bookings_for(@client).pluck(:id)
   end
 
-  test 'atendances' do
-    assert_equal 3, @wkclass_many_bookings.atendances.size
+  test 'uncancelled_bookings' do
+    assert_equal 3, @wkclass_many_bookings.uncancelled_bookings.size
   end
 
-  test 'non_atendances' do
-    assert_equal 4, @wkclass_many_bookings.non_atendances.size
+  test 'cancelled_bookings' do
+    assert_equal 4, @wkclass_many_bookings.cancelled_bookings.size
   end
 
   test 'at_capacity?' do

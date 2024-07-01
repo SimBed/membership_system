@@ -199,7 +199,7 @@ class Admin::ClientsController < Admin::BaseController
 
   def prepare_data_for_view
     @client_hash = {
-      atendances: @client.bookings.attended.size,
+      attendances: @client.bookings.attended.size,
       packages: @client.purchases.package.size,
       dropins: @client.purchases.dropin.size,
       spend: @client.total_spend,

@@ -59,7 +59,7 @@ class Client::DataPagesController < Client::BaseController
   def prepare_data_for_view
     @account = @client.account
     @client_hash = {
-      atendances: @client.bookings.attended.size,
+      attendances: @client.bookings.attended.size,
       last_counted_class: @client.last_counted_class,
       date_created: @client.created_at,
       date_last_purchase_expiry: @client.last_purchase&.expiry_date

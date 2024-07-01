@@ -5,10 +5,10 @@ class Wkclass < ApplicationRecord
   has_many :bookings, dependent: :destroy
   # https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsinverseof
   # rubocop likes dependent and inverse_of to be specified even though they seem superfluous here
-  has_many :atendances, lambda {
+  has_many :uncancelled_bookings, lambda {
                                     where(status: %w[booked attended])
                                   }, class_name: 'Booking', dependent: :destroy, inverse_of: :wkclass
-  has_many :non_atendances, lambda {
+  has_many :cancelled_bookings, lambda {
                                     where.not(status: %w[booked attended])
                                   }, class_name: 'Booking', dependent: :destroy, inverse_of: :wkclass
   has_many :purchases, through: :bookings
@@ -151,14 +151,14 @@ class Wkclass < ApplicationRecord
   def committed_on_same_day?(client)
     # Used in already_committed bookings_controller before_action callback
     # fixed packages can be used however the client wants (eg twice a day is ok)
-    # unlimited packages not allowed 2 atendances on same day, but allowed to cancel or no show and then book another classes
+    # unlimited packages not allowed 2 attendances on same day, but allowed to cancel or no show and then book another classes
     # (originally for Unlimited we only allowed booking another class after LC or no show if it was an amnesty)
-    atendances_on_same_day =
+    attendances_on_same_day =
       Wkclass.where.not(id:).on_date(start_time.to_date).joins(bookings: [purchase: [:client]])
              .where(clients: { id: client.id })
              .merge(Booking.committed)
              .merge(Purchase.unlimited.package)
-    return false if atendances_on_same_day.empty?
+    return false if attendances_on_same_day.empty?
 
     true
   end
@@ -194,7 +194,7 @@ class Wkclass < ApplicationRecord
   end
 
   def at_capacity?
-    return true if atendances.count >= max_capacity
+    return true if uncancelled_bookings.count >= max_capacity
 
     false
   end

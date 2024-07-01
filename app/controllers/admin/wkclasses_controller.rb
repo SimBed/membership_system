@@ -7,7 +7,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :set_repeats, only: [:create, :repeat]
   before_action :set_bookings, only: :repeat
   before_action :single_booking_check, only: :repeat
-  before_action :atendance_remain_check, only: :repeat
+  before_action :attendance_remain_check, only: :repeat
   before_action :affects_waiting_list, only: :update
   before_action :date_change, only: :update
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -16,10 +16,10 @@ class Admin::WkclassesController < Admin::BaseController
   # after_action -> { update_purchase_status([@purchases]) }, only: %i[ destroy ]
 
   def index
-    # Bullet would prefer us to counter_cache than load physical atendances as all we need is the size of the association, however counter_cache doesn't work for scoped associations
+    # Bullet would prefer us to counter_cache than load uncancelled_bookings as all we need is the size of the association, however counter_cache doesn't work for scoped associations
     # and i'm not minded to roll this myself given it isn't causing any major performance issue
     # https://stackoverflow.com/questions/37029847/counter-cache-in-rails-on-a-scoped-association
-    @wkclasses = Wkclass.includes([:atendances, :workout, :bookings, :instructor]).order_by_date
+    @wkclasses = Wkclass.includes([:uncancelled_bookings, :workout, :bookings, :instructor]).order_by_date
     handle_filter
     handle_period
     # @wkclasses = @wkclasses.page params[:page]
@@ -32,9 +32,9 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def show
-    @bookings = @wkclass.atendances.order_by_status
-    @non_atendances_no_amnesty = @wkclass.non_atendances.no_amnesty.order_by_status
-    @non_atendances_amnesty = @wkclass.non_atendances.amnesty.order_by_status
+    @bookings = @wkclass.uncancelled_bookings.order_by_status
+    @cancelled_bookings_no_amnesty = @wkclass.cancelled_bookings.no_amnesty.order_by_status
+    @cancelled_bookings_amnesty = @wkclass.cancelled_bookings.amnesty.order_by_status
     @waitings = @wkclass.waitings.order_by_created
     session[:show_qualifying_purchases] ||= params[:show_qualifying_purchases] || 'no'
     if session[:show_qualifying_purchases] == 'yes'
@@ -173,12 +173,12 @@ class Admin::WkclassesController < Admin::BaseController
     redirect_to wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])
   end
 
-  def atendance_remain_check
-    atendances_remain = @bookings.first.purchase.atendances_remain
+  def attendance_remain_check
+    attendances_remain = @bookings.first.purchase.attendances_remain
 
-    return if atendances_remain == 'unlimited' # nutrition?
+    return if attendances_remain == 'unlimited' # nutrition?
     
-    return if @bookings.first.purchase.atendances_remain >= @weeks_to_repeat
+    return if @bookings.first.purchase.attendances_remain >= @weeks_to_repeat
 
     flash[:warning] = 'No classes created. Number of repeats exceeds the number of bookings that remain on the Package' # t('.repeats_too_high')
     redirect_to wkclass_path(@wkclass, link_from: params[:wkclass][:link_from])

@@ -210,7 +210,7 @@ class Client < ApplicationRecord
     ongoing_group_packages = purchases.not_fully_expired.renewable
     # return false if ongoing_group_packages.empty?
 
-    return false unless ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: Setting.days_remain, atendances_remain: Setting.atendances_remain) }.all?
+    return false unless ongoing_group_packages.map { |p| p.close_to_expiry?(days_remain: Setting.days_remain, attendances_remain: Setting.attendances_remain) }.all?
 
     true
   end

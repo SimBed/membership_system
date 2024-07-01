@@ -217,10 +217,10 @@ class Purchase < ApplicationRecord
     return 'expired' if rider? && main_purchase.expired?
 
     status_hash = self.status_hash
-    return 'not started' if status_hash[:atendance_provisional] == 'not started'
-    return 'booked but not started' if status_hash[:atendance_provisional] == 'booked but not started'
-    return 'expired' if status_hash[:atendance_confirmed] == 'exhausted' || status_hash[:validity] == 'expired'
-    return 'classes all booked' if status_hash[:atendance_provisional] == 'exhausted'
+    return 'not started' if status_hash[:attendance_provisional] == 'not started'
+    return 'booked but not started' if status_hash[:attendance_provisional] == 'booked but not started'
+    return 'expired' if status_hash[:attendance_confirmed] == 'exhausted' || status_hash[:validity] == 'expired'
+    return 'classes all booked' if status_hash[:attendance_provisional] == 'exhausted'
 
     'ongoing'
   end
@@ -344,7 +344,7 @@ class Purchase < ApplicationRecord
   end
 
   def start_to_expiry
-    status_hash[:atendance_provisional].tap do |aps|
+    status_hash[:attendance_provisional].tap do |aps|
       return aps if ['not started'].include? aps
     end
     return start_date.strftime('%d %b %y').to_s if dropin?
@@ -352,16 +352,16 @@ class Purchase < ApplicationRecord
     "#{start_date.strftime('%d %b %y')} - #{expiry_date.strftime('%d %b %y')}"
   end
 
-  def atendances_remain(provisional: true, unlimited_text: true)
-    atendance_count = provisional ? bookings.no_amnesty.size : bookings.no_amnesty.confirmed.size
+  def attendances_remain(provisional: true, unlimited_text: true)
+    attendance_count = provisional ? bookings.no_amnesty.size : bookings.no_amnesty.confirmed.size
     return 'unlimited' if max_classes == 1000 && unlimited_text == true
 
-    max_classes - atendance_count
+    max_classes - attendance_count
   end
 
   # apply to ongoing packages. Not designed to work sensibly with an expired purchase
-  def close_to_expiry?(days_remain: 5, atendances_remain: 2)
-    return true if atendances_remain(unlimited_text: false) < atendances_remain || days_to_expiry < days_remain
+  def close_to_expiry?(days_remain: 5, attendances_remain: 2)
+    return true if attendances_remain(unlimited_text: false) < attendances_remain || days_to_expiry < days_remain
 
     false
   end
@@ -369,8 +369,8 @@ class Purchase < ApplicationRecord
   # keyword arguments changed in ruby 3
   # https://juanitofatas.com/ruby-3-keyword-arguments
   # Prefix argument with ** if you want to pass in keywords:
-  def remind_to_renew?(days_remain: 5, atendances_remain: 2)
-    keyword_args = { days_remain:, atendances_remain: }
+  def remind_to_renew?(days_remain: 5, attendances_remain: 2)
+    keyword_args = { days_remain:, attendances_remain: }
     return true if close_to_expiry?(**keyword_args) && !renewed?
 
     false
@@ -476,33 +476,33 @@ class Purchase < ApplicationRecord
     errors.add(:base, "The payment amount does not equal the charge, but the payment mode is not shown as 'Not paid'") if mismatch
   end
 
-  def atendance_status(atendance_count_provisional, atendance_count_confirmed, provisional: true)
-    return 'not started' if atendance_count_provisional.zero?
+  def attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true)
+    return 'not started' if attendance_count_provisional.zero?
 
-    atendance_count = provisional ? atendance_count_provisional : atendance_count_confirmed
-    return 'exhausted' if atendance_count >= max_classes
-    return 'booked but not started' if atendance_count_confirmed.zero?
+    attendance_count = provisional ? attendance_count_provisional : attendance_count_confirmed
+    return 'exhausted' if attendance_count >= max_classes
+    return 'booked but not started' if attendance_count_confirmed.zero?
     # 'started'
     return 'unlimited' if max_classes == 1000
 
-    atendance_count if atendance_count < max_classes
+    attendance_count if attendance_count < max_classes
   end
 
-  def validity(atendance_count, expiry_date)
-    return if atendance_count.zero?
+  def validity(attendance_count, expiry_date)
+    return if attendance_count.zero?
     return 'expired' if Time.zone.today > expiry_date
 
     expiry_date - start_date
   end
 
   def status_hash
-    atendance_count_provisional = bookings.no_amnesty.size
-    atendance_count_confirmed = bookings.no_amnesty.confirmed.size
-    { atendance_provisional:
-       atendance_status(atendance_count_provisional, atendance_count_confirmed, provisional: true),
-      atendance_confirmed:
-       atendance_status(atendance_count_provisional, atendance_count_confirmed, provisional: false),
-      validity: validity(atendance_count_provisional, expiry_date_calc) }
+    attendance_count_provisional = bookings.no_amnesty.size
+    attendance_count_confirmed = bookings.no_amnesty.confirmed.size
+    { attendance_provisional:
+       attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: true),
+      attendance_confirmed:
+       attendance_status(attendance_count_provisional, attendance_count_confirmed, provisional: false),
+      validity: validity(attendance_count_provisional, expiry_date_calc) }
   end
 
 end

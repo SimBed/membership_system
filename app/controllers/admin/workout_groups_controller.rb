@@ -122,7 +122,7 @@ class Admin::WorkoutGroupsController < Admin::BaseController
 
   def set_revenue_summary
     revenue_params = {
-      atendance_count: @workout_group.atendances_during(@period).size,
+      attendance_count: @workout_group.attendances_during(@period).size,
       wkclass_count: @wkclasses.size,
       membership_revenue: @workout_group.revenue('Purchase', @period),
       freeze_revenue: @workout_group.revenue('Freeze', @period),

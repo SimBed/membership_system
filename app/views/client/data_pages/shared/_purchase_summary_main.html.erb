@@ -41,11 +41,11 @@
     </div>  
     <div class="row">
       <div class="column col-1x">Bookings left</div>
-      <div class="column col-1x"><%= @purchase.atendances_remain(provisional: true) %></div>
+      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: true) %></div>
     </div>  
     <div class="row">
       <div class="column col-1x">Attendances left</div>
-      <div class="column col-1x"><%= @purchase.atendances_remain(provisional: false) %></div>
+      <div class="column col-1x"><%= @purchase.attendances_remain(provisional: false) %></div>
     </div>  
   <% end %>  
   <% if @purchase.expired? %>

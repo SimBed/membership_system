@@ -43,15 +43,14 @@ class Admin::BookingCancellationsController < Admin::BaseController
   end
 
   def handle_admin_update_response
-    set_atendances
+    set_attendances
     flash_message :success, t('.success', name: @booking.client_name, status: @booking.status)
     redirect_to wkclass_path(@booking.wkclass, link_from: params[:booking][:link_from], page: params[:booking][:page])
   end
 
-  def set_atendances
-    @atendances = @wkclass.atendances.order_by_status
-    @non_atendances_no_amnesty = @wkclass.non_atendances.no_amnesty.order_by_status
-    @non_atendances_amnesty = @wkclass.non_atendances.amnesty.order_by_status
+  def set_attendances
+    @cancelled_bookings_no_amnesty = @wkclass.cancelled_bookings.no_amnesty.order_by_status
+    @cancelled_bookings_amnesty = @wkclass.cancelled_bookings.amnesty.order_by_status
   end
 
   def set_booking

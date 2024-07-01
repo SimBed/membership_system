@@ -119,7 +119,7 @@ class Client::BookingCancellationsController < Client::BaseController
   end
 
   def handle_client_update_response
-    set_atendances
+    set_bookings
     flash_client_update_success
     # pass which section the request came from to render the correct turbo_stream to update the correct table opengym/group/my-bookings
     # pass limited as well, as if the request is from my_bookings the turbo stream needs to now whether to update group table or opengym table
@@ -147,10 +147,9 @@ class Client::BookingCancellationsController < Client::BaseController
     @client.waiting_list_for(@wkclass).destroy if @client.on_waiting_list_for?(@wkclass)
   end
 
-  def set_atendances
-    @atendances = @wkclass.atendances.order_by_status
-    @non_atendances_no_amnesty = @wkclass.non_atendances.no_amnesty.order_by_status
-    @non_atendances_amnesty = @wkclass.non_atendances.amnesty.order_by_status
+  def set_bookings
+    @cancelled_bookings_no_amnesty = @wkclass.cancelled_bookings.no_amnesty.order_by_status
+    @cancelled_bookings_amnesty = @wkclass.cancelled_bookings.amnesty.order_by_status
   end
 
   def set_booking

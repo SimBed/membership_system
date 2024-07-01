@@ -34,7 +34,7 @@ class WorkoutGroup < ApplicationRecord
 
   # by_workout_group method also joins on purchase and product, but the seemingly duplicated 'includes(purchase: [:product])' reduces the database hit when
   # the revenue method is applied to each booking object in base_revenue method 
-  def atendances_during(period)
+  def attendances_during(period)
     Booking.includes(purchase: [:product]).confirmed.no_amnesty.by_workout_group(name, period)
   end
 
