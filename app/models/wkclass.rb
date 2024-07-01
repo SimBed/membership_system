@@ -63,7 +63,7 @@ class Wkclass < ApplicationRecord
   scope :in_cancellation_window, -> { where('start_time > ?', Time.zone.now + cancellation_window) }
   scope :future_and_recent, -> { where('start_time > ?', Time.zone.now - cancellation_window) }
   scope :of_service, ->(service) { joins(workout: [:workout_groups]).where(workout_groups: {service: })}
-  #  see explantion in Purchase model (not essential right now - could be used in show method of instructors constroller)
+  # see explantion in Purchase model (not essential right now - could be used in show method of instructors constroller)
   # scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }
   # after_create :send_reminder
   # scope :next, ->(id) {where("wkclasses.id > ?", id).last || last}
@@ -208,6 +208,10 @@ class Wkclass < ApplicationRecord
   def early_cancelled_pt?
     # where a client cancels a PT session early, the instructor may re-schedule the same class/time combo for a different client
     !workout.group_workout? && bookings&.first&.status == 'cancelled early'
+  end
+
+  def pt?
+    workout.workout_groups.any? {|wg| wg.pt?}
   end
 
   private

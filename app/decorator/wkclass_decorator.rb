@@ -5,7 +5,19 @@ class WkclassDecorator < BaseDecorator
     # wkd=WkclassDecorator.new(Wkclass.last)
     # do the normal Delegator intializing, then a bit more
     super
-    @uncancelled_bookings = wkclass.uncancelled_bookings&.size || 0
+    @uncancelled_bookings = wkclass.uncancelled_bookings.size # &.size || 0
+  end
+
+  def pt_client_name
+    (pt? && bookings.present?) ? bookings.first.client.name : nil  
+  end
+
+  def pt_status
+    (pt? && bookings.present?) ? bookings.first.status : nil  
+  end
+
+  def rate_formatted
+    number_with_delimiter(rate)
   end
 
   def name_link(page)
