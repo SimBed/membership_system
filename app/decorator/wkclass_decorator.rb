@@ -24,6 +24,14 @@ class WkclassDecorator < BaseDecorator
     link_maker(instructorised_name, nil, nil, wkclass_path(self), {link_from: 'wkclasses_index', page: page}, {}, ['like_button'])
   end
 
+  def name_link_in_purchase_show_tables
+    link_maker(name, nil, nil, wkclass_path(self), {link_from: 'purchase_show'}, {turbo: false}, ['like_button'])
+  end
+
+  def name_link_in_wg_instructor_expense_table
+    link_maker(summary, nil, nil, wkclass_path(self), {link_from: 'workout_group_show'}, {turbo: false}, ['like_button'])
+  end  
+
   def date
     start_time.strftime('%a %d %b %y')
   end

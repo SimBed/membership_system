@@ -1,26 +1,18 @@
 <div class="mb-2"><h6 class="fw-bolder">* Classes with Instructor Expense<h6></div>
 <%= render partial: 'instructor_expense_filter_form' %>
-  <div class="admin-table striped mt-3">  
-    <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
-      <% wkclass_decorator = decorate(wkclass) %>
-      <div class="row">
-        <% wkclass_size = wkclass.bookings.size %>      
-        <div class="column"><%= index + 1 %></div>
-          <div class="column col-2x"><%= link_to wkclass_decorator.summary, wkclass_path(wkclass, link_from: 'workout_group_show'), class: "like_button", data:{ turbo: false } %>
-        </div>
-        <% if wkclass.pt_workout? %>
-          <div class="column col-1x"><%= wkclass.bookings&.first&.client&.name %></div>
-          <div class="column col-1x"><%= wkclass.bookings&.first&.status %></div>
-          <% else %>
-          <div class="column col-1x">-</div>
-          <div class="column col-1x">-</div>
-        <% end %>    
-        <div class="column col-1x"><%= wkclass.instructor_name %></div>
-        <div class="column col-1x"><%= number_with_delimiter(wkclass.rate) %></div>
-      </div>
-    <% end %>
+<div class="admin-table striped mt-3">  
+  <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
+    <% wkclass_decorator = decorate(wkclass) %>
     <div class="row">
-      <div class="column col fw-bolder">Total: <%= rupees(@summary[:variable_expense_filtered]) %></div>
+      <div class="column"><%= index + 1 %></div>
+      <div class="column col-2x"><%= wkclass_decorator.name_link_in_wg_instructor_expense_table %></div>
+      <div class="column col-1x"><%= wkclass_decorator.pt_client_name %></div>
+      <div class="column col-1x"><%= wkclass_decorator.pt_status %></div>
+      <div class="column col-1x"><%= wkclass_decorator.instructor_name %></div>
+      <div class="column col-1x"><%= wkclass_decorator.rate_formatted %></div>
     </div>
+  <% end %>
+  <div class="row">
+    <div class="column col fw-bolder">Total: <%= rupees(@summary[:variable_expense_filtered]) %></div>
   </div>
-
+</div>

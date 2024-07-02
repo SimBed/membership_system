@@ -1,0 +1,4 @@
+class PenaltyPresenter < BasePresenter
+
+  
+end

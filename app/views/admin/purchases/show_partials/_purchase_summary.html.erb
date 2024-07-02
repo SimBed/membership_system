@@ -1,9 +1,6 @@
 <% payment = @purchase.payment %>
 <% membership = Membership.new(@purchase) %>
-<div class="fst-italic ps-2">    
-  <%= link_to @purchase.name(rider_show: true), purchase_path(@purchase), class: "like_button" if setting == 'admin_client_show' %>
-  <%= 'Summary' if setting == 'admin_purchase_show' %>
-</div>
+<div class="fst-italic ps-2">Summary</div>
 <div class="admin-table mt-2 mb-4">
   <div class="row">
     <div class="column col-1x">Charge</div>

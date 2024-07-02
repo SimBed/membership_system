@@ -1,6 +1,6 @@
 <% penalties = @purchase.penalties %>
 <% unless penalties.count.zero? %>
-  <div class="fst-italic ps-2"><%= "#{pluralize(penalties.size, 'Penalty')} (#{pluralize(penalties.map(&:amount).inject(&:+), 'day')})" %></div>
+  <div class="fst-italic ps-2"><%= penalties_header(@purchase) %></div>
   <div class="admin-table striped mt-2 mb-4">
     <div class="row thead">
       <div class="column"></div>
@@ -9,15 +9,14 @@
       <div class="column col-1x">Days</div>
       <div class="column col-1x">Reason</div>
     </div>
-    <% penalties.each_with_index do |pen, index| %>
-      <% wkclass = pen.booking.wkclass %>    
-      <% wkclass_decorator = decorate(wkclass) %>
+    <% penalties.each_with_index do |penalty, index| %>  
+      <% wkclass_decorator = decorate(penalty.booking.wkclass) %>
       <div class="row">
         <div class="column"><%= index + 1 %></div>
-        <div class="column col-1x"><%= link_to wkclass.name, wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
-        <div class="column col-1x"><%= link_to wkclass_decorator.date %></div>
-        <div class="column col-1x"><%= "#{pluralize(pen.amount, 'day')}" %></div>
-        <div class="column col-1x"><%= pen.reason %></div>
+        <div class="column col-1x"><%= wkclass_decorator.name_link_in_purchase_show_tables %></div>
+        <div class="column col-1x"><%= wkclass_decorator.date %></div>
+        <div class="column col-1x"><%= penalty_days(penalty) %></div>
+        <div class="column col-1x"><%= penalty.reason %></div>
       </div>
     <% end %>
   </div>

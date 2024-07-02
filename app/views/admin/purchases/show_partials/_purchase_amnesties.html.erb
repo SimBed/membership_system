@@ -4,12 +4,11 @@
   <div class="admin-table striped mt-2 mb-4">
     <div class="row">
       <% bookings.each_with_index do |booking, index| %>
-        <% wkclass = booking.wkclass %>
-        <% wkclass_decorator = decorate(wkclass) %>  
+        <% wkclass_decorator = decorate(booking.wkclass) %>  
         <div class="row">
           <div class="column"><%= bookings.size - index %></div>
-          <div class="column col-2x"><%= link_to wkclass.name, wkclass_path(wkclass, link_from: 'purchase_show'), class: "like_button", data: { turbo: false } %></div>
-          <div class="column col-2x"><%= link_to wkclass_decorator.date %></div>
+          <div class="column col-2x"><%= wkclass_decorator.name_link_in_purchase_show_tables %></div>
+          <div class="column col-2x"><%= wkclass_decorator.date %></div>
           <div class="column col-2x"><%= booking.status %></div>
         </div>
       <% end %>

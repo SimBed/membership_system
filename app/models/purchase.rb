@@ -327,11 +327,20 @@ class Purchase < ApplicationRecord
     (start_date + product.duration + extra_days - 1.day).to_date
   end
 
+  def adjustment_days
+    adjustments.map(&:adjustment).inject(0, :+)
+  end
+
+  def frozen_days
+    freezes.map(&:duration).inject(0, :+)
+  end
+
+  def penalty_days
+    penalties.map(&:amount).inject(0, :+)
+  end
+
   def extra_days
-    added_days = adjustments.map(&:adjustment).inject(0, :+).days
-    frozen_days = freezes.map(&:duration).inject(0, :+).days
-    penalty_days = penalties.map(&:amount).inject(0, :+).days
-    added_days + frozen_days - penalty_days
+    adjustment_days.days + frozen_days.days - penalty_days.days
   end
 
   def days_to_expiry

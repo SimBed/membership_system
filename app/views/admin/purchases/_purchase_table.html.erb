@@ -1,10 +1,9 @@
 <div id="purchase-table" class="container px-1 mb-2">
-  <%#= reformat - locals hash no longer needed(?) as client version is its own partial now (not shared) %>
-  <%= render partial: 'admin/purchases/show_partials/purchase_summary', locals: {setting: 'admin_purchase_show'} %>
+  <%= render partial: 'admin/purchases/show_partials/purchase_summary' %>
   <%= render partial: 'admin/purchases/show_partials/purchase_details' %>
 
   <div id="amendment-links" class="mb-3 d-flex">
-    <div-->
+    <div>
       <%= link_to image_tag('freeze.png', class: "table_icon" ),
                   new_freeze_path(purchase: @purchase.id),
                   class: "icon-container",
