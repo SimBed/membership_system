@@ -36,6 +36,10 @@ class WkclassDecorator < BaseDecorator
     start_time.strftime('%a %d %b %y')
   end
 
+  def date_no_year
+    start_time.strftime("%a %b %-d")
+  end
+
   def time
     start_time.strftime('%H:%M')
   end

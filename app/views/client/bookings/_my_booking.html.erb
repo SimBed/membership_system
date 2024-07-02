@@ -1,30 +1,30 @@
 <% wkclass_decorator = decorate(wkclass) %>
-<% booking_link_and_class = booking_link_and_class_for(wkclass, @client, session[:booking_day], 'my_bookings') %>
+<% booking_presenter = BookingPresenter.new(wkclass, @client, session[:booking_day], 'my_bookings') %>
   <div class="my-booking-booking">
     <div class="book-item">
       <div class="details">
-        <div class="date"><%= wkclass.start_time.strftime("%a %b %-d") %></div>
+        <div class="date"><%= wkclass_decorator.date_no_year %></div>
       </div>
     </div>
     <div class="book-item">
       <div class="details">
-        <div class="wkclass-name"><%=wkclass.name%></div>
-        <div class="studio"><%=wkclass.studio%></div>
+        <div class="wkclass-name"><%= wkclass_decorator.name %></div>
+        <div class="studio"><%= wkclass_decorator.studio %></div>
       </div>
     </div>    
     <div class="book-item">
       <div class="details">          
-        <div class="time"><%=wkclass_decorator.time%></div>
+        <div class="time"><%= wkclass_decorator.time %></div>
       </div>
     </div>               
     <div class="book-item">
       <div class="details">
-        <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Booking.applicable_to(wkclass, @client)&.status %></div>
-      </div>
+      <div class ="<%= booking_presenter.css_class %> status"><%= booking_presenter.status %></div>
+    </div>
     </div>                
     <div class="book-item">
       <div class="details">
-        <div <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></div> 
+        <div <%= booking_presenter.data_attributes %> <%= booking_presenter.tooltip_title %>><%= booking_presenter.booking_link %></div>
       </div>
     </div>                 
   </div>

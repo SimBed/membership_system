@@ -1,0 +1,37 @@
+<% wkclass_decorator = decorate(wkclass) %>
+<% booking_presenter = BookingPresenter.new(wkclass, @client, index, 'group') %>
+<%= render partial: 'image_modal', locals: {wkclass: } %>
+<div class="booking">
+  <%# NOTE: on precompilation all assets are put into /public/assets accessed by using /assets (any subfolder eg images is redundant1*). The intuitive path
+  "/images/group/afterburn.jpg") or suchlike won't work. "/assets/group/afterburn.jpg" will work
+  <%# 1* investigate why images subfolder redundant, but groups subfolder not redundant? %>
+  <%# https://stackoverflow.com/questions/15827763/rails-why-images-are-not-showing-in-my-rails-basic-app %>
+  <!--div class="book-item"><%#= image_tag booking_image(wkclass.name.delete(' ').downcase)  %></div-->
+  <div class="book-item image" data-bs-toggle = "modal" data-bs-target = <%="#imageModal#{wkclass.id}"%>>
+    <%# why cant i shift asset_path to the presenter and get the same path? %>
+    <img src=<%= asset_path booking_presenter.booking_image %>>
+  </div>
+  <div class="book-item">
+    <div class="details">
+      <div class="wkclass-name"><%= wkclass_decorator.name %></div>
+      <div class="studio"><%= wkclass_decorator.studio %></div>
+    </div>
+  </div>
+  <div class="book-item">
+    <div class="details">
+      <div class="time"><%= wkclass_decorator.time %></div>
+      <div class="duration"><%= wkclass_decorator.duration %></div>
+    </div>
+  </div>
+  <div class="book-item">
+    <div class="details">      
+      <div class ="<%= booking_presenter.css_class %> status"><%= booking_presenter.status %></div>
+      <% if booking_presenter.waiting_list_remove_link_under_status %>
+        <div><%= booking_presenter.waiting_list_remove_link  %></div>
+      <% end %>      
+    </div>
+  </div>
+  <div class="book-item">
+    <div <%= booking_presenter.data_attributes %> <%= booking_presenter.tooltip_title %>><%= booking_presenter.booking_link %></div>
+  </div>
+</div>

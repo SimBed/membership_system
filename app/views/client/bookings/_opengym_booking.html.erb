@@ -1,24 +1,30 @@
 <% wkclass_decorator = decorate(wkclass) %>
-<% booking_link_and_class = booking_link_and_class_for(wkclass, @client, index, 'opengym') %>
-  <div class="open-gym-booking">
-    <div class="book-item">
-      <div class="details">
-        <div class="date"><%= wkclass.start_time.strftime("%a %b %-d") %></div>
-      </div>
-    </div>  
-    <div class="book-item">
-      <div class="details">          
-        <div class="time"><%=wkclass_decorator.time%></div>
-      </div>
-    </div>               
-    <div class="book-item">
-      <div class="details">
-        <div class ="<%=booking_link_and_class[:css_class]%> status"><%= Booking.applicable_to(wkclass, @client)&.status %></div>
-      </div>
-    </div>                
-    <div class="book-item">
-      <div class="details">
-        <div <%=booking_link_and_class[:data_attributes]%> <%= booking_link_and_class[:tooltip_title] %>><%= booking_link_and_class[:link] %></div> 
-      </div>
-    </div>                 
+<% booking_presenter = BookingPresenter.new(wkclass, @client, index, 'opengym') %>
+<div class="open-gym-booking">
+  <div class="book-item">
+    <div class="details">
+      <div class="date"><%= wkclass_decorator.date_no_year %></div>
+    </div>
+  </div>  
+  <div class="book-item">
+    <div class="details">          
+      <div class="time"><%= wkclass_decorator.time %></div>
+    </div>
+  </div>               
+  <div class="book-item">
+  <div class="details">      
+    <div class ="<%= booking_presenter.css_class %> status"><%= booking_presenter.status %></div>
+    <% if booking_presenter.waiting_list_remove_link_under_status %>
+      <div><%= booking_presenter.waiting_list_remove_link  %></div>
+    <% end %>      
   </div>
+  </div>                
+  <div class="book-item">
+    <div class="details">
+      <div <%= booking_presenter.data_attributes %> <%= booking_presenter.tooltip_title %>>
+        <%= booking_presenter.booking_link %>
+      </div> 
+    </div>
+  </div>                 
+</div>
+

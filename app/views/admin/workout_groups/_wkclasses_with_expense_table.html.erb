@@ -1,5 +1,5 @@
 <div class="mb-2"><h6 class="fw-bolder">* Classes with Instructor Expense<h6></div>
-<%= render partial: 'instructor_expense_filter_form' %>
+<%= render 'instructor_expense_filter_form' %>
 <div class="admin-table striped mt-3">  
   <% @wkclasses_with_instructor_expense.each_with_index do |wkclass, index| %>
     <% wkclass_decorator = decorate(wkclass) %>

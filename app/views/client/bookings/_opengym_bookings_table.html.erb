@@ -1,20 +1,20 @@
-<section id="opengym-bookings-table">
-  <div class="d-md-flex justify-content-center open-gym canvas black-canvas pb-3">
-    <h6 class='style-1 text-white py-4 mb-0'>open gym</h6>
-      <% @opengym_wkclasses_show_by_day.each_with_index do |day, index|%>
-        <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
-             data-booking-target="bookingDay">
-          <% if day.empty? %>
-            <div class= 'mx-auto' >no Open Gym to book</div>
-          <% else %>
-            <%= render partial: 'opengym_booking', collection: day, as: :wkclass, locals: {index: index} %>                  
-          <% end %>
-        </div>
-      <% end %>
-  </div>
-</section>
-
-
+<%= turbo_frame_tag 'opengym_bookings' do %>
+  <section id="opengym-bookings-table">
+    <div class="d-md-flex justify-content-center open-gym canvas black-canvas pb-3">
+      <h6 class='style-1 text-white py-4 mb-0'>open gym</h6>
+        <% @opengym_wkclasses_show_by_day.each_with_index do |day, index|%>
+          <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
+              data-booking-target="bookingDay">
+            <% if day.empty? %>
+              <div class= 'mx-auto' >no Open Gym to book</div>
+            <% else %>
+              <%= render partial: 'opengym_booking', collection: day, as: :wkclass, locals: {index: index} %>                  
+            <% end %>
+          </div>
+        <% end %>
+    </div>
+  </section>
+<% end %>  
 
 
 
