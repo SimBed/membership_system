@@ -44,6 +44,17 @@ class WkclassTest < ActiveSupport::TestCase
     assert_predicate @duplicate_class, :valid?
   end
 
+  test "change of start time to a date beyond a booking's membership's expiry date should not be valid" do
+    orig_time = @wkclass_many_bookings.start_time # 11 Feb 22
+    ok_time = orig_time.advance(days: 1) # earliest expiry of booking is 12 Feb, so 12 Feb ok but 13 Feb not ok
+    not_ok_time = orig_time.advance(days: 2)
+    @wkclass_many_bookings.update(start_time: ok_time, instructor_id: @instructor.id, instructor_rate: @instructor_rate)
+    assert_predicate @wkclass_many_bookings, :valid?
+    
+    @wkclass_many_bookings.update(start_time: not_ok_time)
+    refute_predicate @wkclass_many_bookings, :valid?
+  end
+
   test 'show_in_bookings_for' do
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
 

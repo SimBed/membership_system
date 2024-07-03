@@ -19,6 +19,7 @@ class Wkclass < ApplicationRecord
   belongs_to :instructor_rate
   validate :instructor_rate_exists
   validate :unique_workout_time_instructor_combo
+  validate :purchases_expire_post_start_time
   delegate :name, to: :workout
   delegate :name, to: :instructor, prefix: true
   delegate :rate, to: :instructor_rate
@@ -232,4 +233,9 @@ class Wkclass < ApplicationRecord
     errors.add(:base, 'A class for this workout, instructor and time already exists') unless id == wkclass.id
   end
 
+  def purchases_expire_post_start_time
+    return if bookings.map { |booking| booking.purchase.expiry_date.end_of_day > start_time }.all?
+
+    errors.add(:base, "A booking's membership expires after the proposed new class time")
+  end
 end
