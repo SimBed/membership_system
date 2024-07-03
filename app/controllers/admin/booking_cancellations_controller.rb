@@ -1,4 +1,5 @@
 class Admin::BookingCancellationsController < Admin::BaseController
+  # note the booking_cancellations controller is more aptly named booking_status_change controller as it handles 'booked' to 'attended', 'cancelled early' to 'rebook' as well as all actual cancellations
   include BookingsHelper
   skip_before_action :admin_account
   before_action :set_booking

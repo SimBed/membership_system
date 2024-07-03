@@ -4,18 +4,9 @@ class Admin::BookingsController < Admin::BaseController
   before_action :set_booking, only: :destroy
   before_action :junioradmin_account
   before_action :package_provisionally_expired, only: :create
-  # https://stackoverflow.com/questions/49414318/how-to-use-rails-before-action-conditional-for-only-some-actions
   before_action :already_committed, only: :create
   before_action :already_booked_for_class, only: :create
   after_action -> { update_purchase_status([@purchase]) }, only: :destroy
-
-  def footfall
-    Purchase.default_timezone = :utc
-    @footfall_for_chart_day = Booking.joins(:wkclass).attended.group_by_day(:start_time).count
-    @footfall_for_chart_week = Booking.joins(:wkclass).attended.group_by_week(:start_time).count
-    @footfall_for_chart_month = Booking.joins(:wkclass).attended.group_by_month(:start_time).count
-    Purchase.default_timezone = :local
-  end
 
   def new
     @wkclass = Wkclass.find(params[:wkclass_id])
@@ -31,25 +22,10 @@ class Admin::BookingsController < Admin::BaseController
       @purchase = @booking.purchase
       handle_freeze
       remove_from_waiting_list
-      after_successful_create_by_admin
+      after_successful_create
     else
-      after_unsuccessful_create_by_admin
+      after_unsuccessful_create
     end
-  end
-
-  def after_successful_create_by_admin
-    @wkclass = @booking.wkclass
-    update_purchase_status([@purchase])
-    redirect_to wkclass_path(@wkclass, link_from: params[:booking][:link_from], page: params[:booking][:page], show_qualifying_purchases: 'yes')
-    flash_message :success, t('.success', name: @booking.client_name)
-  end
-
-  def after_unsuccessful_create_by_admin
-    session[:wkclass_id] = params[:booking][:wkclass_id] || session[:wkclass_id]
-    @booking = Booking.new
-    @wkclass = Wkclass.find(session[:wkclass_id])
-    set_new_booking_dropdown_options
-    render :new, status: :unprocessable_entity
   end
 
   def destroy
@@ -61,7 +37,30 @@ class Admin::BookingsController < Admin::BaseController
     flash_message :success, t('.success')
   end
 
+  def footfall
+    Purchase.default_timezone = :utc
+    @footfall_for_chart_day = Booking.joins(:wkclass).attended.group_by_day(:start_time).count
+    @footfall_for_chart_week = Booking.joins(:wkclass).attended.group_by_week(:start_time).count
+    @footfall_for_chart_month = Booking.joins(:wkclass).attended.group_by_month(:start_time).count
+    Purchase.default_timezone = :local
+  end
+
   private
+
+  def after_successful_create
+    @wkclass = @booking.wkclass
+    update_purchase_status([@purchase])
+    redirect_to wkclass_path(@wkclass, link_from: params[:booking][:link_from], page: params[:booking][:page], show_qualifying_purchases: 'yes')
+    flash_message :success, t('.success', name: @booking.client_name)
+  end
+
+  def after_unsuccessful_create
+    session[:wkclass_id] = params[:booking][:wkclass_id] || session[:wkclass_id]
+    @booking = Booking.new
+    @wkclass = Wkclass.find(session[:wkclass_id])
+    set_new_booking_dropdown_options
+    render :new, status: :unprocessable_entity
+  end
 
   def set_booking
     @booking = Booking.find(params[:id])
