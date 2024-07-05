@@ -234,8 +234,10 @@ class Wkclass < ApplicationRecord
   end
 
   def purchases_expire_post_start_time
-    return if bookings.map { |booking| booking.purchase.expiry_date.end_of_day > start_time }.all?
+    # return if bookings.map { |booking| booking.purchase.expiry_date.end_of_day > start_time }.all?
+    return if bookings.map { |booking| booking.purchase.expires_before?(start_time.to_date) }.none?
 
     errors.add(:base, "A booking's membership expires after the proposed new class time")
   end
+
 end

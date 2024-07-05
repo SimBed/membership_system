@@ -22,7 +22,7 @@
   <% if logged_in_as?('superadmin') %>   
     <div class="column" data-toggle="tooltip" data-placement="top" title="Create an account for this instructor. They will be sent a whatsapp with password.">
       <% if instructor.account.nil? && instructor.current? && !instructor.no_instructor %>
-        <%= link_to image_tag('add.png', class: "table_icon"), employee_accounts_path(email: instructor.email, id: instructor.id, role_id: Role.find_by(name: 'instructor').id, linked_from: 'instructors_index'), data: {turbo_method: :post, confirm: 'An account for this instructor will be created. Are you sure?' }  %>
+        <%= link_to image_tag('add.png', class: "table_icon"), employee_accounts_path(email: instructor.email, id: instructor.id, role_id: Role.find_by(name: 'instructor').id, link_from: 'instructors_index'), data: {turbo_method: :post, confirm: 'An account for this instructor will be created. Are you sure?' }  %>
       <% end %>
     </div>
   <% end %>   

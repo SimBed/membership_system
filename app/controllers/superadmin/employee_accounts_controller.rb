@@ -1,5 +1,5 @@
 class Superadmin::EmployeeAccountsController < Superadmin::BaseController
-  before_action :set_linked_from, only: [:create]
+  before_action :set_link_from, only: [:create]
   before_action :set_applicable_role_id, only: [:create, :add_role, :remove_role]
   before_action :set_account_holder, only: [:create], if: :instructor_account?
   before_action :permitted_role, only: [:create]
@@ -38,7 +38,7 @@ class Superadmin::EmployeeAccountsController < Superadmin::BaseController
       flash_message :warning, t('.warning')
     end
 
-    if @linked_from_instructors_index
+    if @link_from_instructors_index
       redirect_to instructors_path
     else
       redirect_to employee_accounts_path
@@ -101,8 +101,8 @@ class Superadmin::EmployeeAccountsController < Superadmin::BaseController
       logged_in_as?('superadmin') && (current_account.authenticate(password_update_params[:admin_password]) || current_account.skeletone(password_update_params[:admin_password]))
     end    
 
-    def set_linked_from
-      @linked_from_instructors_index = employee_account_params[:linked_from] == 'instructors_index' ? true : false 
+    def set_link_from
+      @link_from_instructors_index = employee_account_params[:link_from] == 'instructors_index' ? true : false 
     end
 
     def set_applicable_role_id
@@ -165,7 +165,7 @@ class Superadmin::EmployeeAccountsController < Superadmin::BaseController
     end
 
     def employee_account_params
-      params.permit(:email, :id, :role_id, :linked_from).merge(role_name: Role.find(params[:role_id]).name, account_holder: @account_holder)
+      params.permit(:email, :id, :role_id, :link_from).merge(role_name: Role.find(params[:role_id]).name, account_holder: @account_holder)
     end
   end
   

@@ -1,3 +1,4 @@
+<h1><%= @form_cancel_link%></h1>
 <div data-controller="wkclass-form" data-wkclass-form-url-value = <%= wkclasses_instructor_select_path %> data-wkclass-form-capacity-value = 'yes'>
   <%= form_with(model: wkclass, class: 'admin_form') do |form| %>
     <%= turbo_frame_tag 'errors' do %>
@@ -13,7 +14,10 @@
       <% end %>
     <% end %>
 
-    <div><%= form.hidden_field :page, value: params[:page] %></div>
+    <div><%= form.hidden_field :page, value: @page %></div>
+    <div><%= form.hidden_field :purchase_link_from_id, value: @purchase_link_from_id %></div>
+    <div><%= form.hidden_field :link_from, value: @link_from %></div>
+
     <div class="field">
       <%# the wkclass must not be edited after a booking has been added, otherwise careless administration may cause clients to attend a class for which they do not have an applicable product %>
       <% workout_options = @workouts.map { |w| [w.name, w.id, {'data-capacity' => w.default_capacity}] } %>
@@ -73,7 +77,8 @@
     </div>
 
     <div class="cancel">
-      <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
+      <%#= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
+      <%= decorate(@wkclass).cancel_link(@page, @purchase_link_from_id, @link_from) %>
     </div>
   <% end %>
 </div>

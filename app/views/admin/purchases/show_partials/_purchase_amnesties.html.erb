@@ -7,7 +7,7 @@
         <% wkclass_decorator = decorate(booking.wkclass) %>  
         <div class="row">
           <div class="column"><%= bookings.size - index %></div>
-          <div class="column col-2x"><%= wkclass_decorator.name_link_in_purchase_show_tables %></div>
+          <div class="column col-2x"><%= wkclass_decorator.name_link_in_purchase_show_tables(@purchase.id) %></div>
           <div class="column col-2x"><%= wkclass_decorator.date %></div>
           <div class="column col-2x"><%= booking.status %></div>
         </div>

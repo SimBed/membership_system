@@ -1,17 +1,16 @@
-  <% view_financials = logged_in_as?('admin', 'superadmin') ? true : false %>
+<div class="admin-table striped mt-2">
+  <div class="p-1">Bookings <small><%= "(#{@bookings&.size || 0})" %> </small></div>
+  <%= render partial: 'wkclass_booking', collection: @bookings, as: :booking %>
+</div>
+<% unless @cancelled_bookings_no_amnesty.empty? %>
   <div class="admin-table striped mt-2">
-    <div class="p-1">Bookings <small><%= "(#{@bookings&.size || 0})" %> </small></div>
-    <%= render partial: 'wkclass_booking', collection: @bookings, as: :booking, locals: {view_financials: view_financials} %>
+    <div class="p-1">No-amnesties <small><%= "(#{@cancelled_bookings_no_amnesty&.size || 0})" %> </small></div>
+    <%= render partial: 'wkclass_booking', collection: @cancelled_bookings_no_amnesty, as: :booking %>
   </div>
-  <% unless @cancelled_bookings_no_amnesty.empty? %>
-    <div class="admin-table striped mt-2">
-      <div class="p-1">No-amnesties <small><%= "(#{@cancelled_bookings_no_amnesty&.size || 0})" %> </small></div>
-      <%= render partial: 'wkclass_booking', collection: @cancelled_bookings_no_amnesty, as: :booking, locals: {view_financials: view_financials} %>
-    </div>
-  <% end %>
-  <% unless @cancelled_bookings_amnesty.empty? %>  
-    <div class="admin-table striped mt-2">
-      <div class="p-1">Amnesties <small><%= "(#{@cancelled_bookings_amnesty&.size || 0})" %> </small></div>
-      <%= render partial: 'wkclass_booking', collection: @cancelled_bookings_amnesty, as: :booking, locals: {view_financials: view_financials} %>
-    </div>
-  <% end %>
+<% end %>
+<% unless @cancelled_bookings_amnesty.empty? %>  
+  <div class="admin-table striped mt-2">
+    <div class="p-1">Amnesties <small><%= "(#{@cancelled_bookings_amnesty&.size || 0})" %> </small></div>
+    <%= render partial: 'wkclass_booking', collection: @cancelled_bookings_amnesty, as: :booking %>
+  </div>
+<% end %>

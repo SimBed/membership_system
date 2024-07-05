@@ -8,7 +8,5 @@
     <%= "#{@wkclass.max_capacity} max" %> <%= image_tag('group.png', class: "header_icon")%> |
   </div>
   <%= @wkclass.instructor&.name %>
-  <% unless logged_in_as?('instructor') %>
-    <%= link_to image_tag('edit.png', class: "table_icon"), edit_wkclass_path(@wkclass, link_from: @link_from) %>
-  <% end %>
+  <%= wkclass_decorator.edit(@junioradmin_plus, @page, @purchase_link_from_id, @link_from, put_in_div: false) %>  
 </div>

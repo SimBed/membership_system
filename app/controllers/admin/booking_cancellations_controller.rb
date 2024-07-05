@@ -46,7 +46,11 @@ class Admin::BookingCancellationsController < Admin::BaseController
   def handle_admin_update_response
     set_attendances
     flash_message :success, t('.success', name: @booking.client_name, status: @booking.status)
-    redirect_to wkclass_path(@booking.wkclass, link_from: params[:booking][:link_from], page: params[:booking][:page])
+    if params[:booking][:link_from] == 'purchase_show'
+      redirect_to purchase_path(params[:booking][:purchase_link_from_id], link_from: 'purchase_show')
+    else
+      redirect_to wkclass_path(@booking.wkclass, link_from: 'wkclasses_index', page: params[:booking][:page])
+    end
   end
 
   def set_attendances

@@ -44,7 +44,8 @@ class Admin::WkclassesController < Admin::BaseController
     # this section (which enbabled scrolling through the wkclassess) is redundant now we are hotwired
     # check_record_returned
     @link_from = params[:link_from]
-    @cancel_button = true if @link_from == 'wkclasses_index'
+    @page = params[:page] if @link_from == 'wkclasses_index'
+    @purchase_link_from_id = params[:purchase_link_from_id] if @link_from == 'purchase_show'
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -60,7 +61,10 @@ class Admin::WkclassesController < Admin::BaseController
   def edit
     prepare_items_for_dropdowns
     @workout = @wkclass.workout
-    @form_cancel_link = wkclasses_path(link_from: params[:link_from], page: params[:page])
+    @link_from = params[:link_from]
+    @page = params[:page] if @link_from == 'wkclasses_index'
+    @purchase_link_from_id = params[:purchase_link_from_id] if @link_from == 'purchase_show'
+    # @form_cancel_link = wkclasses_path(link_from: params[:link_from], page: params[:page])
     # @form_cancel_link = params[:link_from] == 'purchases_index' ? wkclass_path(@wkclass, link_from: 'purchases_index') : wkclasses_path
   end
 
@@ -90,11 +94,13 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def update
+    @link_from = params[:wkclass][:link_from]
+    @page = params[:wkclass][:page] if @link_from == 'wkclasses_index'
+    @purchase_link_from_id = params[:wkclass][:purchase_link_from_id] if @link_from == 'purchase_show'    
     if @wkclass.update(wkclass_params)
       update_purchase_status(@wkclass.purchases) if @wkclass.bookings.no_amnesty.present? && @date_change
       notify_waiting_list(@wkclass) if @affects_waiting_list
-
-      redirect_to wkclasses_path(page: params[:wkclass][:page])
+      redirect_to wkclasses_path(page: @page, purchase_link_from_id: @purchase_link_from_id, link_from: @link_from)
       flash_message :success, t('.success')
     else
       prepare_items_for_dropdowns

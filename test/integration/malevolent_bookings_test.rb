@@ -163,7 +163,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     assert_difference '@booking.reload.amendment_count', 1 do
       patch booking_cancellation_path(@booking), params: { booking: { status: 'cancelled late' } }
     end
-    assert_redirected_to wkclass_path @booking.wkclass
+    assert_redirected_to wkclass_path @booking.wkclass, link_from: 'wkclasses_index'
     assert_equal([["Tina Dehal's booking was successfully updated to cancelled late"]], flash[:success])
   end
 

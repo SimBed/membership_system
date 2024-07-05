@@ -21,11 +21,9 @@
         <% end %>
       </div>
 
-      <% if @cancel_button %>
-        <div class="cancel">
-          <%= link_to image_tag('delete.png', class: "table_icon"), wkclasses_path(page: params[:page], show_qualifying_purchases: 'no') %>
-        </div>
-      <% end %>
+      <div class="cancel">
+        <%= decorate(@wkclass).cancel_link(@page, @purchase_link_from_id, @link_from) %>
+      </div>
     </div>
   </div>
 <% end %>

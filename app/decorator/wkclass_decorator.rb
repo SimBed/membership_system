@@ -24,8 +24,8 @@ class WkclassDecorator < BaseDecorator
     link_maker(instructorised_name, nil, nil, wkclass_path(self), {link_from: 'wkclasses_index', page: page}, {}, ['like_button'])
   end
 
-  def name_link_in_purchase_show_tables
-    link_maker(name, nil, nil, wkclass_path(self), {link_from: 'purchase_show'}, {turbo: false}, ['like_button'])
+  def name_link_in_purchase_show_tables(purchase_link_from_id)
+    link_maker(name, nil, nil, wkclass_path(self), {link_from: 'purchase_show', purchase_link_from_id: }, {turbo: false}, ['like_button'])
   end
 
   def name_link_in_wg_instructor_expense_table
@@ -74,25 +74,35 @@ class WkclassDecorator < BaseDecorator
     link ? link_maker(nil, nil, current_image, product_path(self), {current: !current?}, { method: :patch }, nil) : current_image
   end
 
-  def edit(authorised, page)
+  def edit(authorised, page, purchase_link_from_id, link_from, put_in_div: true)
     if authorised
-      link = link_to image_tag('edit.png', class: "table_icon"), edit_wkclass_path(self, page: page)
+      link = link_to image_tag('edit.png', class: "table_icon"), edit_wkclass_path(self, page:, purchase_link_from_id:, link_from: link_from)
     else
       link = link_to image_tag('edit.png', class: %w[table_icon greyed-out]), '#', class: 'disabled'
     end
+    return link unless put_in_div
+
     content_tag(:div, link, class: %w[column nomobile])
   end
 
-  def delete(authorised, deletable, page)
+  def delete(authorised, deletable, page, purchase_link_from_id, link_from)
     if authorised && deletable
       tooltip_title = "This class will be deleted. It has no bookings, attendances or cancellations, so it is safe to do so.".gsub(' ',"\u00a0")
       confirm_message = "The class has no bookings, attendances or cancellations so can be deleted. But are you sure?"
-      link = link_to image_tag('delete.png', class: "table_icon"), wkclass_path(self, page: page), data: { "turbo-method": :delete, turbo_confirm: confirm_message }
+      link = link_to image_tag('delete.png', class: "table_icon"), wkclass_path(self, page:, purchase_link_from_id:, link_from:), data: { "turbo-method": :delete, turbo_confirm: confirm_message }
     else
       tooltip_title = "This product has bookings, attendances or cancellations and so can not be deleted".gsub(' ',"\u00a0")
       link = link_to image_tag('delete.png', class: %w[table_icon greyed-out]), '#', class: 'disabled'    
     end
     content_tag(:div, link, class: %w[column nomobile], data:{ toggle:"tooltip", placement: 'top'}, title: tooltip_title )
+  end
+
+  def cancel_link(page, purchase_link_from_id, link_from)
+    if link_from == 'purchase_show'
+      link_to image_tag('delete.png', class: "table_icon"), purchase_path(purchase_link_from_id), data: {turbo: false}
+    else
+      link_to image_tag('delete.png', class: "table_icon"), wkclasses_path(page:, purchase_link_from_id:, link_from:)
+    end
   end
 
   private

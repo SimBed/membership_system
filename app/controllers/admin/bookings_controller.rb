@@ -33,7 +33,11 @@ class Admin::BookingsController < Admin::BaseController
     @purchase = @booking.purchase
     @booking.destroy
     notify_waiting_list(@wkclass, triggered_by: 'admin')
-    redirect_to wkclass_path(@wkclass, link_from: params[:link_from])
+    # redirect_to wkclass_path(@wkclass, link_from: params[:link_from])
+    @link_from = params[:link_from]
+    @page = params[:page] if @link_from == 'wkclasses_index'
+    @purchase_link_from_id = params[:purchase_link_from_id] if @link_from == 'purchase_show'
+    redirect_to wkclass_path(@booking.wkclass, page: @page, purchase_link_from_id: @purchase_link_from_id, link_from: @link_from)
     flash_message :success, t('.success')
   end
 
