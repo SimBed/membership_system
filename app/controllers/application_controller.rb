@@ -40,8 +40,9 @@ class ApplicationController < ActionController::Base
       next unless expiry_earlier
       period = (p.expiry_date.advance(days: 1)..Float::INFINITY)
       post_expiry_bookings = p.bookings.during(period).booked
-      post_expiry_bookings.each do |a|
-        a.update(status: 'cancelled early', amnesty: true)
+      post_expiry_bookings.each do |booking|
+        # need to ovverride validations as by definition these are post the new expiry and so not valid
+        booking.update_columns({status: 'cancelled early', amnesty: true})
         flash_message :danger, t('.booking_cancelled')
       end
     end

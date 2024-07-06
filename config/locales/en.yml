@@ -134,7 +134,8 @@ en:
         success: Class was successfully deleted
       repeat:
         success: "%{repeats} successfully added"        
-        partial_success: "Not all classes created. Error occured first at %{date_of_first_error} class (perhaps it already exists)"
+        partial_success_wkclass: "Not all classes created. Error occured first at %{date_of_first_error} class (perhaps it already exists)"
+        partial_success_booking: "Not all bookings created. Error occured first at %{date_of_first_error} class (perhaps it is after the date of the membership expiry)"
         error: Classes not created. An error occurred before any classes were created
       show:
         record_not_found: No record found. Perhaps you manually edited the url and there is no class with that id.

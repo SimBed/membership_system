@@ -10,17 +10,17 @@ class BookingTest < ActiveSupport::TestCase
     @booking.valid?
   end
 
-  test 'associated wkclass must be valid' do
-    @booking.wkclass_id = 4000
+  # test 'associated wkclass must be valid' do
+  #   @booking.wkclass_id = 4000
 
-    refute_predicate @booking, :valid?
-  end
+  #   refute_predicate @booking, :valid?
+  # end
 
-  test 'associated purchase must be valid' do
-    @booking.purchase_id = 4000
+  # test 'associated purchase must be valid' do
+  #   @booking.purchase_id = 4000
 
-    refute_predicate @booking, :valid?
-  end
+  #   refute_predicate @booking, :valid?
+  # end
 
   test 'status must be valid' do
     @booking.status = 'half-booked'

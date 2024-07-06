@@ -5,7 +5,7 @@ class Admin::WkclassesController < Admin::BaseController
   before_action :junioradmin_or_instructor_account, only: [:show, :index, :filter, :clear_filters]
   before_action :set_wkclass, only: [:show, :edit, :update, :destroy, :repeat]
   before_action :set_repeats, only: [:create, :repeat]
-  before_action :set_bookings, only: :repeat
+  before_action :set_bookings_and_purchase, only: :repeat
   before_action :single_booking_check, only: :repeat
   before_action :attendance_remain_check, only: :repeat
   before_action :affects_waiting_list, only: :update
@@ -120,22 +120,26 @@ class Admin::WkclassesController < Admin::BaseController
   end
 
   def repeat
-    wkclasses = []
+    wkclasses_added = []
+    bookings_added = []
     if @repeats
-      @wkclasses = (1..@weeks_to_repeat).map do |weeks|
-        wkclass = @wkclass.dup
-        booking = @bookings.first.dup
-        wkclass.update(start_time: wkclass.start_time.advance(weeks:))
-        wkclasses << wkclass
-        booking.dup.update(wkclass_id: wkclass.id, status: 'booked') if wkclass.persisted?
+      (1..@weeks_to_repeat).map do |weeks|
+        wkclass_repeat = @wkclass.dup
+        wkclass_repeat.update(start_time: @wkclass.start_time.advance(weeks:))
+        booking_repeat = wkclass_repeat.bookings.create(purchase_id: @purchase.id, status: 'booked') if wkclass_repeat.persisted? # cant see in what situation it would not be persisted
+        wkclasses_added << wkclass_repeat
+        bookings_added << booking_repeat
       end
       redirect_to wkclasses_path
       # NOTE: the all? method returns true when called on an empty array.
-      if wkclasses.all?(&:persisted?)
-        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes were")
+      if wkclasses_added.all?(&:persisted?) && bookings_added.all?(&:persisted?)
+        flash[:success] = t('.success', repeats: "#{@weeks_to_repeat} classes and bookings were")
+      elsif wkclasses_added.all?(&:persisted?)
+        invalid_booking = bookings_added.select(&:invalid?).first
+        flash[:warning] = t('.partial_success_booking', date_of_first_error: invalid_booking.wkclass.start_time.to_date.strftime('%d %b %y'))
       else
-        wkclass = wkclasses.select(&:invalid?).first
-        flash[:warning] = t('.partial_success', date_of_first_error: wkclass.start_time.to_date.strftime('%d %b %y'))
+        invalid_wkclass = wkclasses_added.select(&:invalid?).first
+        flash[:warning] = t('.partial_success_wkclass', date_of_first_error: invalid_wkclass.start_time.to_date.strftime('%d %b %y'))        
       end
     else
       flash[:warning] = t('.error')
@@ -168,8 +172,9 @@ class Admin::WkclassesController < Admin::BaseController
 
   private
 
-  def set_bookings
+  def set_bookings_and_purchase
     @bookings = @wkclass.bookings
+    @purchase = @bookings.first.purchase
   end
 
   def single_booking_check

@@ -53,12 +53,14 @@ class Wkclass < ApplicationRecord
   # limited means multiple bookings in a day restrictions apply ie not Open Gym
   scope :limited, -> { joins(:workout).where(workouts: { limited: true }) }
   scope :unlimited, -> { joins(:workout).where(workouts: { limited: false }) }
-  # penalties in last days of Package can cause expiry date to be earlier than final class. Dont want these cases to be considered problematic
-  scope :has_booking_post_purchase_expiry, lambda {
-                                             joins(bookings: [:purchase])
-                                               .where('purchases.expiry_date + 1 < wkclasses.start_time')
-                                               .where("bookings.status NOT IN ('no show', 'cancelled late')")
-                                           }
+  # it should no onger be possible (through UI for admin or client) to make a booking post expiry. A post expiry booking can only occur when a penalty occurs in the last days of the Package
+  # and there is no need to identify these as problematic 
+  # penalties in last days of Package can cause expiry date to be earlier than final class. Dont want these cases to be considered problematic, so exclude no show/cancelled late
+  # scope :has_booking_post_purchase_expiry, lambda {
+  #                                            joins(bookings: [:purchase])
+  #                                              .where('purchases.expiry_date + 1 < wkclasses.start_time')
+  #                                              .where("bookings.status NOT IN ('no show', 'cancelled late')")
+  #                                          }
   scope :in_booking_visibility_window, -> { where({ start_time: visibility_window }) }
   cancellation_window = Setting.cancellation_window.hours
   scope :in_cancellation_window, -> { where('start_time > ?', Time.zone.now + cancellation_window) }
@@ -95,12 +97,12 @@ class Wkclass < ApplicationRecord
       wkclasses.empty_class.has_instructor_cost.map(&:id)
     end
 
-    def booking_post_purchase_expiry(wkclasses)
-      wkclasses.has_booking_post_purchase_expiry.map(&:id) # can arise due to careless administration when using the repeat functionality
-    end
+    # def booking_post_purchase_expiry(wkclasses)
+    #   wkclasses.has_booking_post_purchase_expiry.map(&:id) # used to be possible due to careless administration when using the repeat functionality
+    # end
 
     def problematic_ids(wkclasses_past, wkclasses_past_and_future)
-      instructorless_ids(wkclasses_past) + incomplete_ids(wkclasses_past) + empty_with_cost_ids(wkclasses_past) + booking_post_purchase_expiry(wkclasses_past_and_future)
+      instructorless_ids(wkclasses_past) + incomplete_ids(wkclasses_past) + empty_with_cost_ids(wkclasses_past) # + booking_post_purchase_expiry(wkclasses_past_and_future)
     end
 
     # only space group should be client bookable (dont want eg nutrition appearing in client booking table)

@@ -9,13 +9,12 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @tomorrows_class_early = wkclasses(:wkclass_for_booking_early)
     @tomorrows_class_late = wkclasses(:wkclass_for_booking_late)
     @admin = accounts(:admin)
-    @account_other_client = accounts(:client1)
-    @other_client = @account_other_client.client
-    @other_client_purchase = @other_client.purchases.last
+    @notstarted_purchase = purchases(:Sidnotstarted)
+    @other_client = @notstarted_purchase.client
     @account3 = accounts(:client_for_ongoing_trial)
     @purchase3 = @account3.client.purchases.last
-    @account4 = accounts(:client_for_fixed)
-    @purchase4 = @account4.client.purchases.last
+    # @account4 = accounts(:client_for_fixed)
+    # @purchase4 = @account4.client.purchases.last
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
   end
 
@@ -205,10 +204,10 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
   end
 
   test 'book class after reached maximum capacity' do
-    wkclass_max_capacity = 3
+    wkclass_max_capacity = 1
     @tomorrows_class_early.update(max_capacity: wkclass_max_capacity)
     log_in_as(@admin)
-    [@other_client_purchase, @purchase3, @purchase4].each do |purchase|
+    [@notstarted_purchase].each do |purchase|
       post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
                                                purchase_id: purchase.id } }
     end
@@ -246,7 +245,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     log_in_as(@admin)
     assert_difference 'Booking.no_amnesty.count', 1 do
       post bookings_path, params: { booking: { wkclass_id: @tomorrows_class_early.id,
-                                               purchase_id: @other_client_purchase.id } }
+                                               purchase_id: @notstarted_purchase.id } }
     end
     # client attempts to rebook
     log_in_as(@account_client)

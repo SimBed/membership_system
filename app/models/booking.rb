@@ -7,6 +7,7 @@ class Booking < ApplicationRecord
   # delegate :start_time... defines the start_time method for instances of Attendance
   # so @booking.start_time equals WkClass.find(@booking.id).start_time
   # date is a Wkclass instance method that formats start_time
+  validate :purchase_expires_post_start_time
   delegate :start_time, :date, :time, to: :wkclass
   delegate :client, to: :purchase
   delegate :name, to: :client, prefix: :client
@@ -58,4 +59,10 @@ class Booking < ApplicationRecord
   def self.workout_group_condition(selection)
     ['workout_groups.name = ?', selection.to_s] unless selection == 'All'
   end
+
+  def purchase_expires_post_start_time
+    return unless purchase&.expires_before?(wkclass.start_time.to_date)
+
+    errors.add(:base, "The membership of the proposed booking expires before the date of the intended class")
+  end  
 end
