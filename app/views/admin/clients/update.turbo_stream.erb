@@ -1,8 +1,5 @@
 <%= turbo_stream.update "insta-#{@client.id}" do %>
-  <%= render partial: "insta", locals: { client: @client } %>
-<% end %>
-<%= turbo_stream.update "waiver-#{@client.id}" do %>
-  <%= render partial: "waiver", locals: { client: @client } %>
+  <%= render partial: "instagram_ok", locals: { client: @client } %>
 <% end %>
 <%= turbo_stream.update "whatsapp-group-#{@client.id}" do %>
   <%= render partial: "whatsapp_group", locals: { client: @client } %>

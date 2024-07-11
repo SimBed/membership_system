@@ -9,84 +9,18 @@ class Admin::AccountsController < Admin::BaseController
   def create
     outcome = AccountCreator.new(account_params).create
     if outcome.success?
-      if %w[instructor].include?(@account_type)
-        flash_message :success, t('.success') # dont want the true for flash.now for instructor as in this case we redirect rather than render
-        flash_message(*Whatsapp.new(whatsapp_params('new_instructor_account', outcome.password)).manage_messaging)
-      else
-        flash_message :success, t('.success'), true # want the true for client as in this case we render rather than redirect
-        flash_message(*Whatsapp.new(whatsapp_params('new_account', outcome.password)).manage_messaging)
-      end
+      flash_message :success, t('.success'), true # want the true for client as in this case we render rather than redirect
+      flash_message(*Whatsapp.new(whatsapp_params('new_account', outcome.password)).manage_messaging)
     else
       flash_message :warning, t('.warning')
     end
-    # render partial: 'admin/clients/manage_account', locals: {client: @account_holder} 
-    # redirect_back fallback_location: clients_path
-    #NOTE: update for instructor/admin - needs a different turbo update
-    if %w[client].include?(@account_type) 
-      respond_to do |format|
-        format.html { redirect_back fallback_location: clients_path }
-        format.turbo_stream {render :update}
-      end
-    else
-      # respond_to do |format|
-      #   format.html { redirect_back fallback_location: instructors_path }
-      #   format.turbo_stream {render 'admin/instructors/index'}
-      # end
-      redirect_to instructors_path
+    respond_to do |format|
+      format.html { redirect_back fallback_location: clients_path }
+      format.turbo_stream {render :update}
     end
   end
 
   def update
-    # NOTE: needs cleaning up - not that it will happen but if superadmin request for admin gets routed through here, it will incorrectly land on password_reset_client_of_client
-    if params[:account].nil? # means request came from admin link
-      password_reset_admin_of_client
-    # elsif params[:account][:requested_by] == 'superadmin_of_admin'
-    #   (redirect_to login_path and return) unless logged_in_as?('superadmin')
-    #   password_reset_superadmin_of_admin
-    else
-      password_reset_client_of_client
-    end
-  end
-
-  def destroy
-    # redirection = @account_holder.is_a?(Client) ? client_path(@account_holder) : employee_accounts_path
-    @account.clean_up
-    # redirect_to redirection
-    if @account_type == "client"
-      flash_message :success, t('.success'), true
-      respond_to do |format|
-        format.html { redirect_back fallback_location: clients_path }
-        format.turbo_stream {render :update}
-      end
-    else # admin or instructor
-      flash_message :success, t('.success')
-      redirect_to employee_accounts_path
-    end
-
-  end
-
-  def password_reset_client_of_client
-    passwords_the_same = (password_update_params[:new_password] == password_update_params[:new_password_confirmation])
-    @account.errors.add(:base, 'passwords not the same') unless passwords_the_same
-    if passwords_the_same && @account.update(password: password_update_params[:new_password], password_confirmation: password_update_params[:new_password])
-      flash_message :success, t('.success')
-      redirect_back fallback_location: login_path
-    else
-      # reformat - this code is reused in show method of clients controller
-      @client = @account.client
-      @client_hash = {
-        attendances: @client.bookings.attended.size,
-        last_counted_class: @client.last_counted_class,
-        date_created: @client.created_at,
-        date_last_purchase_expiry: @client.last_purchase&.expiry_date
-      }
-      render 'client/data_pages/profile', layout: 'client'
-    end
-  end
-
-  private
-
-  def password_reset_admin_of_client
     password = AccountCreator.password_wizard(Setting.password_length)
     @account.update(password:, password_confirmation: password)
     flash_message(*Whatsapp.new(whatsapp_params('password_reset', password)).manage_messaging, true)
@@ -97,6 +31,20 @@ class Admin::AccountsController < Admin::BaseController
       format.turbo_stream
     end
   end
+
+  def destroy
+    @account.clean_up
+    # without the reload, when we pass locals: {client: @account_holder} in update.turbo_stream, it is still the account_holder with an account held in memory and so
+    # in _manage_account.html, client.account would not return nil, even though the the account has been destroyed and the client no longer has has an account. 
+    @account_holder.reload
+    flash_message :success, t('.success'), true
+    respond_to do |format|
+      format.html { redirect_back fallback_location: clients_path }
+      format.turbo_stream {render :update}
+    end
+  end
+
+  private
 
   def passwords_the_same?
     password_update_params[:new_password] == password_update_params[:new_password_confirmation]
@@ -118,18 +66,18 @@ class Admin::AccountsController < Admin::BaseController
   end
 
   def only_certain_account_types_can_be_made_here
-    @role_name = params[:role_name]
-    # administrator accounts cannot be created through the app
+    @role_name = params[:role_name] 
     return if %w[client instructor].include?(@role_name)
     flash[:warning] = t('.warning')
     redirect_to(login_path) && return
   end
 
   def set_account_holder
-    role_classs = account_params[:role_name].camelcase.constantize
+    @account_type = account_params[:role_name]
+    role_classs = @account_type.camelcase.constantize
     @account_holder = role_classs.where(id: account_params[:id]).first
     (redirect_to(login_path) && return) if @account_holder.nil?
-    # NOTE: this wont do whay you hope beacuse turbo demands a response with the requisite turbo_frame
+    # NOTE: this wont do what you hope beacuse turbo demands a response with the requisite turbo_frame
     rescue Exception
     # log_out if logged_in?
     flash[:danger] = "Please don't mess with the system"

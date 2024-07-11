@@ -1,27 +1,18 @@
-<% admin_plus = logged_in_as?('admin', 'superadmin') ? true : false %>
+<% client_decorator = decorate(@client) %>
 <h4>
-  <%= @client.name %>
-  <%= link_to image_tag('edit.png', class: "table_icon"), edit_client_path(@client, link_from: @link_from) %>
-  <!--form action=<%#= "/admin/clients/#{params[:id]}" %> method="GET" >
-    <select name="purchaseid" onchange="this.form.submit()" class= "sort">
-      <%#= options_for_select @products_purchased, session[:purchaseid] %>
-    </select>
-  </form-->
+  <%= client_decorator.name_link(@junioradmin_plus) %>
+  <%= client_decorator.edit(link_from: @link_from) %>
 </h4>
 <div>
-  <%= image_tag(status_icon(@client)) unless status_icon(@client).nil? %>
+  <%= client_decorator.status_image %>
+  <%= client_decorator.submitted_declaration(in_table: false) %>
   <turbo-frame id="insta-<%= @client.id  %>">    
-    <%= render partial: 'insta', locals: {client: @client} %>
-  </turbo-frame> 
-  <turbo-frame id="waiver-<%= @client.id  %>">    
-    <%= render partial: 'waiver', locals: {client: @client} %>
+    <%= render partial: 'instagram_ok', locals: {client: @client} %>
   </turbo-frame>
   <turbo-frame id="whatsapp-group-<%= @client.id  %>">    
     <%= render partial: 'whatsapp_group', locals: {client: @client} %>
   </turbo-frame>
-  <% if admin_plus %>
-    <turbo-frame id="manage-account-<%= @client.id  %>">
-      <%= render partial: 'manage_account', locals: {client: @client} %>
-    </turbo-frame> 
-  <% end %>    
+  <turbo-frame id="manage-account-<%= @client.id  %>">
+    <%= render partial: 'manage_account', locals: {client: @client} %>
+  </turbo-frame>
 </div>

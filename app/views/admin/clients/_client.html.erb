@@ -1,23 +1,13 @@
-<%# , data: { turbo_frame: dom_id(client) } %>
+<% client_decorator = decorate(client) %>
 <%= turbo_frame_tag client do %>
   <div class="row">
-    <div class="column col-2x">
-      <% if @junioradmin_plus %>
-        <%= link_to client.name, client_path(client, link_from: 'clients_index'), class: "like_button" %>
-      <% else %>
-        <%= client.name %>
-      <% end %>
-    </div>
-    <div class="column col-2x nomobile"><%= client.email %></div>
-    <div class="column col-2x"><%= number(client.whatsapp, client.phone) %></div>
+    <div class="column col-2x"><%= client_decorator.name_link(@junioradmin_plus) %></div>
+    <div class="column col-2x nomobile"><%= client_decorator.email %></div>
+    <div class="column col-2x"><%= client_decorator.number %></div>
+    <%= client_decorator.submitted_declaration %>
     <div class="column nomobile">
       <turbo-frame id="insta-<%= client.id  %>">  
-        <%= render partial: 'insta', locals: {client: client} %>
-      </turbo-frame>
-    </div>
-    <div class="column nomobile">
-      <turbo-frame id="waiver-<%= client.id  %>">
-        <%= render partial: 'waiver', locals: {client: client} %>
+        <%= render partial: 'instagram_ok', locals: {client: client} %>
       </turbo-frame>
     </div>
     <div class="column nomobile">
@@ -25,35 +15,7 @@
         <%= render partial: 'whatsapp_group', locals: {client: client} %>
       </turbo-frame>
     </div>
-    <div class="column">
-      <%= link_to image_tag('edit.png', class: "table_icon"), edit_client_path(client) %>
-    </div>
-    <%= render partial: 'delete_client', locals: {client: } %>      
-
-    <%# if @admin_plus %>
-      <!--div class="column">
-        <turbo-frame id="forgot-password-<%= client.id %>">
-          <%# if client.account.nil? %>
-            <%#= link_to image_tag('add.png', class: "table_icon"), accounts_path(email: client.email, id: client.id, role_name: 'client'), method: :post, data: { "turbo-method": :post, turbo_confirm: 'An account for this client will be created. Are you sure?' }  %>
-          <%# else %>
-            <%#= link_to image_tag('forgot-password.png', class: "table_icon"), account_path(client.account, requested_by: 'admin'), method: :patch, data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } %>
-          <%# end %>
-        </turbo-frame>
-      </div-->
-    <%# end %>
-    <%# if @junioradmin %>
-      <!--div class='column'>
-        <%# if !client.account.nil? %>
-        <%#= link_to image_tag('forgot-password.png', class: "table_icon"), account_path(client.account, requested_by: 'admin'), method: :patch, data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } %>
-          <%#= button_to account_path(client.account),
-                        method: :patch,
-                        data: { "turbo-method": :patch, turbo_confirm: "This client's password will be reset. Are you sure?" } do %>
-            <%#= image_tag('forgot-password.png', class: "table_icon") %>
-          <%# end %>
-        <%# end %>
-      </div-->
-    <%# end %>  
+    <div class="column"><%= client_decorator.edit %></div>
+    <%= client_decorator.delete(@admin_plus, client.deletable?) %>
   </div>
-<% end %>  
-
-
+<% end %>

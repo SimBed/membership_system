@@ -24,8 +24,10 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
   test 'client resets password with valid password' do
     log_in_as(@account)
     get client_profile_path @client
-    patch account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar' } },
-                                        headers: { referer: client_profile_url(@client) }
+    # patch account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar' } },
+    #                                         headers: { referer: client_profile_url(@client) }
+    get password_change_client_password_resets_path(@account), params: { new_password: 'foobar', new_password_confirmation: 'foobar' },
+                                                                         headers: { referer: client_profile_url(@client) }
 
     refute @account.reload.authenticate('password')
     assert @account.reload.authenticate('foobar')
@@ -34,7 +36,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'client resets password with invalid password' do
     log_in_as(@account)
-    patch account_path(@account), params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba' } }
+    get password_change_client_password_resets_path(@account), params: { new_password: 'fooba', new_password_confirmation: 'fooba' }
 
     assert @account.reload.authenticate('password')
     refute @account.reload.authenticate('fooba')
@@ -43,7 +45,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'client resets password with invalid password confirmation' do
     log_in_as(@account)
-    patch account_path(@account), params: { account: { new_password: 'foobar', new_password_confirmation: 'barfoo' } }
+    get password_change_client_password_resets_path(@account), params: { new_password: 'foobar', new_password_confirmation: 'barfoo' }
 
     assert @account.reload.authenticate('password')
     refute @account.reload.authenticate('foobar')
@@ -52,8 +54,8 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
 
   test 'superadmin resets admin account password with valid new password (and correct admin password)' do
     log_in_as(@superadmin)
-    patch account_path(@admin),
-          params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
+    patch password_reset_employee_accounts_path(@admin),
+          params: { new_password: 'foobar', new_password_confirmation: 'foobar', admin_password: 'password', requested_by: 'superadmin_of_admin' }
 
     assert @admin.reload.authenticate('foobar')
     refute @admin.reload.authenticate('password')
@@ -62,7 +64,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
   test 'superadmin resets admin account password with valid new password but incorrect admin password' do
     log_in_as(@superadmin)
     patch password_reset_employee_accounts_path(@admin),
-          params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'passwod' } }
+          params: { new_password: 'foobar', new_password_confirmation: 'foobar', admin_password: 'passwod', requested_by: 'superadmin_of_admin' }
 
     refute @admin.reload.authenticate('foobar')
     assert @admin.reload.authenticate('password')
@@ -71,7 +73,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
   test 'superadmin resets admin account password with invalid new password' do
     log_in_as(@superadmin)
     patch password_reset_employee_accounts_path(@admin),
-          params: { account: { new_password: 'fooba', new_password_confirmation: 'fooba', admin_password: 'password' } }
+          params: { new_password: 'fooba', new_password_confirmation: 'fooba', admin_password: 'password' }
 
     assert @admin.reload.authenticate('password')
     refute @admin.reload.authenticate('fooba')
@@ -81,7 +83,7 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
   test 'admin resets admin account password' do
     log_in_as(@admin)
     patch password_reset_employee_accounts_path(@admin),
-          params: { account: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' } }
+          params: { new_password: 'foobar', new_password_confirmation: 'foobar', requested_by: 'superadmin_of_admin', admin_password: 'password' }
 
     assert @admin.reload.authenticate('password')
     refute @admin.reload.authenticate('foobar')

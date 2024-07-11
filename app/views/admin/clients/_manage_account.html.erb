@@ -1,8 +1,4 @@
-<turbo-frame id="manage-account-<%= client.id %>">
-  <% if client.account %>
-    <%= render partial: 'admin/clients/delete_account', locals: {client: } %>
-    <%= render partial: 'admin/clients/forgot_password', locals: {client: } %>
-  <% else %>
-    <%= render partial: 'admin/clients/add_account', locals: {client: } %>
-  <% end %>
-</turbo-frame> 
+<% client_decorator = decorate(client) %>
+<%= client_decorator.delete_account(@admin_plus, client) %>
+<%= client_decorator.forgot_password(@admin_plus, client) %>
+<%= client_decorator.add_account(@admin_plus, client) %>
