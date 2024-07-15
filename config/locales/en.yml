@@ -198,6 +198,10 @@ en:
         success: Instructor rate was successfully updated
       destroy:
         success: Instructor rate was successfully deleted
+    orders:
+      verify_payment:
+        freeze_success: A freeze has been successfully applied to your Package  
+        booking_cancelled: A booking during your freeze has been cancelled 
     payments:
       update:
         success: Payment was successfully updated
@@ -223,10 +227,10 @@ en:
       destroy:
         success: Regular Expense was successfully deleted
   client:
-    package_modification:
-      buy_freeze:
-        success: A freeze has been successfully applied to your Package  
-        booking_cancelled: A booking during your freeze has been cancelled 
+    # package_modification:
+    #   buy_freeze:
+    #     success: A freeze has been successfully applied to your Package  
+    #     booking_cancelled: A booking during your freeze has been cancelled 
     password_resets:
       create:
         info: Email sent with password reset instructions. Please check your Spam folder.

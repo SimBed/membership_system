@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   # https://guides.rubyonrails.org/routing.html section 2.6 namespaces & routing
   # routes to a superadmin namespaced controller, but doesn't include superadmin in the url or url helper
   scope module: :superadmin do
+    post 'verify_payment', to: 'orders#verify_payment'      
     post 'regular_expenses/add'
     resource :blast, only: :show do
       collection do
@@ -117,7 +118,7 @@ Rails.application.routes.draw do
     get 'profile/:id', to: 'data_pages#profile', as: :client_profile
   end
 
-  namespace :client do
+  namespace :client do    
     get '/:id/shop', to: 'dynamic_pages#shop', as: 'shop'
     get '/:id/history', to: 'data_pages#history', as: 'history'
     # temporarily retain this route and redirect to client_bookings_path
@@ -184,4 +185,5 @@ Rails.application.routes.draw do
     get '/chootiya', to: 'home#wedontsupport'
     get '/buboo', to: 'home#hearts'
   end
+
 end

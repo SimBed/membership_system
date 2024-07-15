@@ -234,7 +234,8 @@ class SignupTest < ActionDispatch::IntegrationTest
     assert_select 'div', text: 'Try our classes. Meet our people'
     assert_select 'div', text: 'Our best value memberships for training regularly. The more you train, the better the value!'
     assert_select 'div', { count: 0, text: 'trial' }
-    refute_empty response.body.scan(/data-amount="150000"/)
+    # refute_empty response.body.scan(/data-amount="150000"/)
+    assert_select 'form input[type=hidden][value="150000"]'
     assert_select 'div.base-price', text: 'Rs. 9,500'
     assert_select 'div.discount-price', text: 'Rs. 8,550'
     # temporarily remove until Razorpay glitch resolved

@@ -21,6 +21,13 @@ class Order < ApplicationRecord
       params.merge!({ status: fetch_payment(params[:payment_id]).status }).except(:price_id)
     end
 
+    # This is not really the right place for this class method (in Order) but it is convenient (for now) so it can be stubbed in testing
+    def payment_status_check(payment_id)
+      payment = Razorpay::Payment.fetch(payment_id)
+      payment.capture(amount: payment.amount) if payment.status == 'authorised'
+      Razorpay::Payment.fetch(payment_id).status
+    end     
+
     # def process_refund(payment_id)
     #   fetch_payment(payment_id).refund
     #   record = Order.find_by_payment_id(payment_id)

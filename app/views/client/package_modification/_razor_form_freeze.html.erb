@@ -1,18 +1,59 @@
-<form action=<%= client_buy_freeze_path(@client) %> method="POST">
-  <script
-    src="https://checkout.razorpay.com/v1/checkout.js"
-    data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-    data-amount="<%= Setting.freeze_charge.to_s + "00" %>"
-    data-name="<%= "The Space" %>"
-    data-description="<%= "Package Freeze" %>"
-    data-image="<%= asset_path 'favicon.ico' %>"
-    data-prefill.email="<%= "#{current_account&.email}" %>"
-    data-theme.color="#1a2b3c"
-  >
-  </script>
-  <input type="hidden" value="<%= "#{params[:purchase_id]}" %>" name="purchase_id">                                                
-  <input type="hidden" value="<%= "#{current_account.id}" %>" name="account_id">
-  <input type="hidden" value="<%= "#{Time.zone.today.advance(days: 1)}" %>" name="start_date" data-freeze-target= "razStartDate">
-	<input type="hidden" value="shop page" name="client_ui">
-	<input type="hidden" value="<%= Setting.freeze_charge.to_s %>" name="price">
-</form>
+<%= form_with url: verify_payment_path(purchase_type: 'membership_freeze'), method: :post, local: true, id: "freeze-payment-form" do |form| %>
+  <%= form.hidden_field :amount, value: Setting.freeze_charge.to_i * 100 %>
+  <%= form.hidden_field :order_id %>
+  <%= form.hidden_field :razorpay_payment_id %>
+  <%= form.hidden_field :razorpay_signature %>
+  <%= form.hidden_field :purchase_id, value: params[:purchase_id] %>
+  <%= form.hidden_field :price, value: Setting.freeze_charge.to_s %>
+  <%= form.hidden_field :account_id, value: current_account.id %>
+  <%= form.hidden_field :start_date, value: Time.zone.today.advance(days: 1), data: {'freeze-target': "razStartDate"} %>
+  <%= form.submit 'Pay Now', id: "rzp-freeze-button", class: 'razorpay-payment-button' %>  
+<% end %>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  let rzpFreezeBtn = document.getElementById("rzp-freeze-button")
+  let freezePaymentForm = document.getElementById('freeze-payment-form')
+  rzpFreezeBtn.onclick = function(e){
+    e.preventDefault();
+
+    fetch('<%= orders_path %>', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': '<%= form_authenticity_token %>'
+      },
+      body: JSON.stringify({ amount: freezePaymentForm.querySelector('[name="amount"]').value })
+    })
+    .then(response => response.json())
+    .then(data => {
+      freezePaymentForm.querySelector('[name="order_id"]').value = data.order_id;
+
+      var options = {
+        "key": "<%= Rails.configuration.razorpay[:key_id] %>",
+        "amount": data.amount,
+        "currency": "INR",
+        "name": "The Space",
+        "description": "Package Freeze",
+        "order_id": data.order_id,
+        "handler": function (response){
+          freezePaymentForm.querySelector('[name="razorpay_payment_id"]').value = response.razorpay_payment_id;
+          freezePaymentForm.querySelector('[name="razorpay_signature"]').value = response.razorpay_signature;
+          freezePaymentForm.submit();
+        },
+        "prefill": {
+          "name": "<%= current_account.client.name %>",
+          "email": "<%= current_account.email %>",
+          "contact": "<%= decorate(current_account.client).number %>"
+        },
+        "theme": {
+          "color": "#1a2b3c"
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>

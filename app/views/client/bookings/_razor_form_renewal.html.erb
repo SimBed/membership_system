@@ -1,0 +1,61 @@
+<%= form_with url: verify_payment_path(purchase_type: 'membership'), method: :post, local: true, id: "payment-form" do |form| %>
+  <%= form.hidden_field :amount, value: @renewal.price(@renewal.product) * 100 %> <!-- Amount in paise -->
+  <%= form.hidden_field :order_id %> <!-- This will be filled dynamically -->
+  <%= form.hidden_field :razorpay_payment_id %>
+  <%= form.hidden_field :razorpay_signature %>
+  <%= form.hidden_field :product_id, value: @renewal.product.id %>
+  <%= form.hidden_field :price_id, value: @renewal.product.base_price_at(Time.zone.now).id %>
+  <%= form.hidden_field :price, value: @renewal.price(@renewal.product) %>
+  <%= form.hidden_field :renewal_discount_id, value: @renewal.discount_hash[:renewal]&.id %>
+  <%= form.hidden_field :status_discount_id, value: @renewal.discount_hash[:status]&.id %>
+  <%= form.hidden_field :oneoff_discount_id, value: @renewal.discount_hash[:oneoff]&.id %>
+  <%= form.hidden_field :account_id, value: current_account.id %>
+  <%= form.hidden_field :client_ui, value: "booking page" %>
+  <%= form.submit 'Pay Now', id: "rzp-button", class: 'razorpay-payment-button' %>  
+<% end %>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  document.getElementById('rzp-button').onclick = function(e){
+    e.preventDefault();
+
+    fetch('<%= orders_path %>', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': '<%= form_authenticity_token %>'
+      },
+      body: JSON.stringify({ amount: document.querySelector('[name="amount"]').value })
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.querySelector('[name="order_id"]').value = data.order_id;
+
+      var options = {
+        "key": "<%= Rails.configuration.razorpay[:key_id] %>",
+        "amount": data.amount,
+        "currency": "INR",
+        "name": "The Space",
+        "description": "<%= "#{@renewal.product.name(verbose: true)}" %>",
+        "order_id": data.order_id,
+        "handler": function (response){
+          document.querySelector('[name="razorpay_payment_id"]').value = response.razorpay_payment_id;
+          document.querySelector('[name="razorpay_signature"]').value = response.razorpay_signature;
+          document.getElementById('payment-form').submit();
+        },
+        "prefill": {
+          "name": "<%= current_account.client.name %>",
+          "email": "<%= current_account.email %>",
+          "contact": "<%= decorate(current_account.client).number %>"
+        },
+        "theme": {
+          "color": "#1a2b3c" // Don't think this has any affect
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>

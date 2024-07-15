@@ -1,21 +1,63 @@
 <% product = Product.trial.space_group.first %>
 <div id="trial-btn" data-shop-menu-target="trialBtn">
-  <form action=<%= orders_path %> method="POST">
-    <script
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        data-key="<%= "#{Rails.configuration.razorpay[:key_id]}" %>"
-        data-amount="<%= "#{@renewal.base_price(product).price * 100}" %>"
-        data-name="<%= "The Space" %>"
-        data-description="<%= "#{product.name(verbose: true)}" %>"
-        data-image="<%= asset_path 'favicon.ico' %>"
-        data-prefill.email="<%= "#{current_account&.email}" %>"
-        data-theme.color="#1a2b3c"
-    >
-    </script>
-    <input type="hidden" value="<%= "#{product.id}" %>" name="product_id">
-    <input type="hidden" value="<%= "#{@renewal.base_price(product)&.id}" %>" name="price_id">
-    <input type="hidden" value="<%= "#{@renewal.price(product)}" %>" name="price">        
-    <input type="hidden" value="<%= "#{current_account&.id}" %>" name="account_id">
-	  <input type="hidden" value="shop page" name="client_ui">    
-  </form>
+  <%= form_with url: verify_payment_path(purchase_type: 'membership'), method: :post, local: true, id: "trial-payment-form" do |form| %>
+    <%= form.hidden_field :amount, value: @renewal.base_price(product).price * 100 %>
+    <%= form.hidden_field :order_id %>
+    <%= form.hidden_field :razorpay_payment_id %>
+    <%= form.hidden_field :razorpay_signature %>
+    <%= form.hidden_field :product_id, value: product.id %>
+    <%= form.hidden_field :price_id, value: @renewal.base_price(product)&.id %>
+    <%= form.hidden_field :price, value: @renewal.price(product) %>
+    <%= form.hidden_field :account_id, value: current_account.id %>
+    <%= form.hidden_field :client_ui, value: "shop page" %>
+    <%= form.submit 'Pay Now', id: "rzp-trial-button", class: 'razorpay-payment-button' %>  
+  <% end %>
 </div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  let rzpTrialBtn = document.getElementById("rzp-trial-button")
+  let trialPaymentForm = document.getElementById('trial-payment-form')
+  rzpTrialBtn.onclick = function(e){
+    e.preventDefault();
+
+    fetch('<%= orders_path %>', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': '<%= form_authenticity_token %>'
+      },
+      body: JSON.stringify({ amount: trialPaymentForm.querySelector('[name="amount"]').value })
+    })
+    .then(response => response.json())
+    .then(data => {
+      trialPaymentForm.querySelector('[name="order_id"]').value = data.order_id;
+
+      var options = {
+        "key": "<%= Rails.configuration.razorpay[:key_id] %>",
+        "amount": data.amount,
+        "currency": "INR",
+        "name": "The Space",
+        "description": "<%= "#{product.name(verbose: true)}" %>",
+        "order_id": data.order_id,
+        "handler": function (response){
+          trialPaymentForm.querySelector('[name="razorpay_payment_id"]').value = response.razorpay_payment_id;
+          trialPaymentForm.querySelector('[name="razorpay_signature"]').value = response.razorpay_signature;
+          trialPaymentForm.submit();
+        },
+        "prefill": {
+          "name": "<%= current_account.client.name %>",
+          "email": "<%= current_account.email %>",
+          "contact": "<%= decorate(current_account.client).number %>"
+        },
+        "theme": {
+          "color": "#1a2b3c" // Don't think this has any affect
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>

@@ -1,7 +1,7 @@
 <% @products.each_with_index do |product, index| %>
   <% shop_product_decorator = decorate(product, ShopProductDecorator) %>
   <% class_number_type = shop_product_decorator.class_number_type %>
-  <% renewal_presenter = RenewalPresenter.new({renewal: @renewal, product: product}) %>  
+  <% renewal_presenter = RenewalPresenter.new({renewal: @renewal, product: product}) %>
     <div <%= "hidden" unless class_number_type == @default_class_number_type %>
          class="accordion-item <%= class_number_type %>"
          data-shop-menu-target=<%= "#{class_number_type}Product" %>>
@@ -17,7 +17,7 @@
           <%= render partial: 'client/dynamic_pages/shop/renewal_prices', locals: {renewal_presenter: } %>
           <% if logged_in? && Setting.enable_online_payment %>
             <div class="ps-3">
-              <%= render partial: 'client/dynamic_pages/shop/razor_form_shop', locals: {product: } %>
+              <%= render partial: 'client/dynamic_pages/shop/razor_form_shop_item', locals: {product: } %>
             </div>
           <% end %>
         </div>
@@ -35,3 +35,15 @@
     </div>
   </div>
 <% end %>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<%# <script>
+    const payButtons = document.querySelectorAll('.razorpay-payment-button');
+console.log(payButtons);
+    payButtons.forEach(element => {
+      element.addEventListener('mouseenter', (event) => {
+        console.log('hi');
+        let accordionButton = document.querySelectorAll('.razorpay-payment-button')[0].parentElement.parentElement.parentElement.parentElement;
+        accordionButton.setAttribute('data-bs-toggle', '');
+      });
+    });
+</script> %>
