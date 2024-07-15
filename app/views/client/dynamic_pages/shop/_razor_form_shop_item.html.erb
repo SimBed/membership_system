@@ -18,10 +18,12 @@
   <%= "payment_button#{product.id}"%> = document.getElementById("<%= "rzp-button-product#{product.id}" %>")
   <%= "payment_button#{product.id}"%>.addEventListener('mouseenter', (event) => {
     let accordionButton = <%= "payment_button#{product.id}"%>.parentElement.parentElement.parentElement.parentElement;
-    console.log(accordionButton);
     accordionButton.setAttribute('data-bs-toggle', '');
-    console.log(accordionButton);
-  });  
+  });
+  <%= "payment_button#{product.id}"%>.addEventListener('mouseleave', (event) => {
+    let accordionButton = <%= "payment_button#{product.id}"%>.parentElement.parentElement.parentElement.parentElement;
+    accordionButton.setAttribute('data-bs-toggle', 'collapse');
+  });
   <%= "payment_button#{product.id}"%>.onclick = function(e){
     e.preventDefault();
 
