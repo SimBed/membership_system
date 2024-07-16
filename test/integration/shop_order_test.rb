@@ -23,7 +23,7 @@ class ShopOrderTest < ActionDispatch::IntegrationTest
 
     # This is not an exact simulation of what happens in practice, but it is pretty close
     Razorpay::Utility.stub :verify_payment_signature, true do
-      Order.stub :payment_status_check, 'captured' do
+      Order.stub :proceed_to_completion, true do
         assert_difference [ 'Purchase.count', 'Payment.count' ], 1 do
         post orders_path, params: { amount: 855000 }
         assert_response :success
@@ -46,7 +46,7 @@ class ShopOrderTest < ActionDispatch::IntegrationTest
                      account_id: @account_client.id }
 
     Razorpay::Utility.stub :verify_payment_signature, true do
-      Order.stub :payment_status_check, 'captured' do
+      Order.stub :proceed_to_completion, true do
         assert_difference [ 'Freeze.count', 'Payment.count' ], 1 do
         post orders_path, params: { amount: 855000 }
         assert_response :success

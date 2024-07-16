@@ -25,12 +25,11 @@ class Superadmin::OrdersController < Superadmin::BaseController
     payment_id = params[:razorpay_payment_id].to_s
     order_id = params[:order_id].to_s
     signature = params[:razorpay_signature].to_s
-    # if payment_id.nil? || order_id.nil? || signature.nil?
     if [payment_id, order_id, signature].any?(nil)
       unable_to_verify_payment
     end
     if Razorpay::Utility.verify_payment_signature(razorpay_order_id: order_id, razorpay_payment_id: payment_id, razorpay_signature: signature)
-      if Order.payment_status_check(payment_id) == "captured"      
+      if Order.proceed_to_completion(payment_id)      
         complete_membership_purchase if params[:purchase_type] == 'membership'
         complete_freeze_purchase if params[:purchase_type] == 'membership_freeze' 
       else
