@@ -99,6 +99,13 @@ class ApplicationController < ActionController::Base
     deal_with_admin && return
     deal_with_client && return
     deal_with_instructor
+
+    # the rescue is only needed because I've manually assigned a client to superadmin (for role-shifting) leaving the original account of the client
+    # without a client account, so on attempted log in, @account.client (in #deal_with_client) is nil and things fail.
+    rescue Exception
+      log_out if logged_in?
+      redirect_to login_path
+      flash[:danger] = 'No client associated with this account. Unable to login.'    
   end
 
   def deal_with_admin
@@ -106,17 +113,15 @@ class ApplicationController < ActionController::Base
   end
 
   def deal_with_client
-    (redirect_to client_shop_path(@account.client) if logged_in_as?('client') && @account.without_purchase?) and return
+    return unless logged_in_as?('client')
 
-    # redirect_to client_pt_path(client) if logged_in_as?('client') #pt
-    redirect_to client_bookings_path(@account.client) if logged_in_as?('client') # groupex only
+    client = @account.client
+    (redirect_to client_shop_path(client) if @account.without_purchase?) and return
 
-    # the rescue is only needed because I've manually assigned a client to superadmin (for role-shifting) leaving the original account of the client
-    # without a client account, so on attempted log in, @account.client is nil and things fail.
-  rescue Exception
-    log_out if logged_in?
-    redirect_to login_path
-    flash[:danger] = 'No client associated with this account. Unable to login.'
+    # temporary - ultimately no client without a declaration may book, in short-term existing clients with old declarations can continue to book
+    (redirect_to new_client_declaration_path(client) if client.not_yet_booked? && !client.declaration) and return 
+
+    redirect_to client_bookings_path(client)
   end
 
   def deal_with_instructor

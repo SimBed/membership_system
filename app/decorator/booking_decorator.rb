@@ -10,6 +10,12 @@ class BookingDecorator < BaseDecorator
 
     nil
   end
+  
+  def missing_health_declaration
+    return 'bg-danger-subtle' if ['booked', 'attended'].include?(status) && client.declaration.nil?
+
+    nil
+  end
 
   def client_name_link(authorised)
     return client.name unless authorised

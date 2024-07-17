@@ -9,6 +9,8 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     @account_client_pt = accounts(:client_pt)
     @client = @account_client.client
     @client_pt = @account_client_pt.client
+    @account_cant_book = accounts(:client_not_yet_started)
+    @client_cant_book = @account_cant_book.client
   end
 
   test 'layout links when logged-in as superadmin' do
@@ -162,7 +164,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
   end
 
-  test 'layout links when logged-in as non-pt client' do
+  test 'layout links when logged-in as non-pt client (with declaration completed)' do
     log_in_as(@account_client)
     follow_redirect!
 
@@ -206,6 +208,14 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', 'https://www.instagram.com/thespace.juhu/'
     assert_select 'a[href=?]', 'https://www.facebook.com/TheSpace.Mumbai/timeline'
     assert_select 'a[href=?]', 'https://wa.me/919619348427'
+  end
+
+  test 'layout links when logged-in as new client (with declaration not completed and no bookings)' do
+    log_in_as(@account_cant_book)
+    follow_redirect!
+
+    assert_template 'shared/declarations/new'
+    assert_select 'a[href=?]', client_bookings_path(@client_cant_book), count: 0
   end
 
   test 'layout links when logged-in as pt client' do

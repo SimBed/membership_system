@@ -23,7 +23,7 @@
         <li class="nav-item">
           <%= link_to "History", client_history_path(client), class: "nav-link #{active_link_for(path: client_history_path(client))}" %>
         </li>
-        <% unless current_account.without_purchase? %>
+        <% unless current_account.without_purchase? || (client.not_yet_booked? && !client.declaration) %>
           <li class="nav-item">
             <%= link_to "Book", client_bookings_path(client), class: "nav-link #{active_link_for(path: client_bookings_path(client))}" %>
           </li>

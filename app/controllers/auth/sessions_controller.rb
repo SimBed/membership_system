@@ -66,14 +66,12 @@ class Auth::SessionsController < Auth::BaseController
   end
 
   def action_when_not_activated
-    message  = 'Account not activated'
-    message += 'Please advise The Space that your account is not activated'
-    flash[:warning] = message
+    flash_message :warning, t('.account_not_activated')
     render 'new'
   end
 
   def action_when_invalid
-    flash.now[:danger] = 'Invalid email/password combination'
+    flash_message :danger, t('.action_when_invalid'), true
     render 'new'
   end
 end

@@ -1,8 +1,7 @@
 <% booking_decorator = decorate(booking) %>
-<div class="row <%= booking_decorator.close_to_expiry %> <%= booking_decorator.payment_outstanding %>">
+<div class="row <%= booking_decorator.missing_health_declaration %> <%= booking_decorator.close_to_expiry %> <%= booking_decorator.payment_outstanding %>">
   <div class="column col-1x "><%= booking_decorator.client_name_link(@junioradmin_plus) %></div>
   <div class="column col-1x"><%= booking_decorator.product_name_link(@junioradmin_plus) %></div>
   <div class="column col-2x"><%= render 'admin/wkclasses/booking_form', object: booking %></div>
   <%= booking_decorator.delete(@junioradmin_plus, @page, @purchase_link_from_id, @link_from) %> 
 </div>
-

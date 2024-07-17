@@ -1,5 +1,12 @@
 
 en:
+  auth:
+    sessions:
+      create:
+        account_not_activated:
+          Account not activated. Please advise The Space that your account is not activated
+        action_when_invalid:
+          Invalid email/password combination
   admin:
     accounts:
       create:
@@ -9,8 +16,8 @@ en:
         warning: Forbidden
       update:
         success: Your password has been changed
-        fail: Update failed. Passwords either don't match or too short (min 6 characters)
-        password_success: The password has been changed        
+        # fail: Update failed. Passwords either don't match or too short (min 6 characters)
+        # password_success: The password has been changed        
       destroy: 
         success: The account was successfully deleted
       show:
@@ -72,7 +79,7 @@ en:
         success: Instructor was successfully added
       update:
         success: Instructor was successfully updated
-        instructor_rates_upadted: Instructor's rates have beeen made inactive
+        instructor_rates_updated: Instructor's rates have beeen made inactive
       destroy:
         success: Instructor was successfully deleted
     partners:

@@ -253,6 +253,10 @@ class Client < ApplicationRecord
     purchases.main_purchase.last.pt? ? 'pt' : 'group'
   end
 
+  def not_yet_booked?
+    bookings.size.zero?
+  end
+
   private
 
   def downcase_email

@@ -66,7 +66,7 @@ class Admin::InstructorsController < Admin::BaseController
 
   def retire_instructors_rates
     current_instructor_rates = @instructor.instructor_rates.current
-    flash[:warning] = t('.instructor_rates_upadted') unless current_instructor_rates.empty?
+    flash[:warning] = t('.instructor_rates_updated') unless current_instructor_rates.empty?
     current_instructor_rates.update_all(current: false)
   end
 
