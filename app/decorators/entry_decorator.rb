@@ -1,17 +1,15 @@
 class EntryDecorator < BaseDecorator
-
   def time_period
     time = table_time.start
     time_end = time.advance(minutes: duration)
-    "#{time.strftime("%l.%M")} - #{time_end.strftime("%l.%M")}"
+    "#{time.strftime('%l.%M')} - #{time_end.strftime('%l.%M')}"
   end
 
   def goal_formatted
-    goal.blank? ? '-' : goal
+    (goal.presence || '-')
   end
 
   def level_foramtted
-    level.blank? ? '-' : level
+    (level.presence || '-')
   end
-
 end

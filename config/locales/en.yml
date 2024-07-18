@@ -17,7 +17,7 @@ en:
       update:
         success: Your password has been changed
         # fail: Update failed. Passwords either don't match or too short (min 6 characters)
-        # password_success: The password has been changed        
+        # password_success: The password has been changed
       destroy: 
         success: The account was successfully deleted
       show:
@@ -302,3 +302,27 @@ en:
   # new_purchase_by_new_client: Thank you for your purchase. Please complete the health declaration before booking your first class
   new_signup: "Welcome to The Space %{name}. Your account has been created. You should receive a whatsapp shortly with your password to login in future. Please contact The Space if you need any help to complete your purchase."
   message_sent: "%{message_type} message sent by Whatsapp to %{to_number}"
+  delete_account: "The account will be deleted. No data will be deleted, however %{first_name} will no longer be able to log in."
+  delete_client: "The client will be deleted. %{first_name} has no account nor purchases so it is safe to do so."
+  delete_client_no: "%{first_name} has an account or purchases and so can not be deleted."
+  submitted_declaration: This client has completed a health declaration.
+  submitted_declaration_no: This client has not completed a health declaration, so may not yet book classes.
+  instagram_ok: This client has approved hash-tagging on Instagram and can be tagged.
+  instagram_ok_no: This client has not approved hash-tagging on Instagram and should not be tagged.
+  in_whatsapp_group: This client is in the community whatsapp group.
+  in_whatsapp_group_no: This client is not in the community whatsapp group.
+  forgot_password: "%{first_name}'s password will be reset and they will be sent a whatsapp containing their new password"
+  add_account: "An account will be created for %{first_name} and a whatsapp message sent."
+  hot: Hot lead, high level of interest.
+  cold: "Client has not attended a class for more than %{month} months."
+  enquiry: Enquiry, not yet made a purchase.
+  booking_delete: This booking will be permanently deleted.
+  product_edit: This product can be edited. It has no prices or purchases so it is safe to do so.
+  product_edit_no: This product has purchases or prices and so its structure can not be edited.
+  product_delete: This product will be deleted. It has no prices or purchases so it is safe to do so.
+  product_delete_no: This product has purchases or prices and so can not be deleted.
+  freeze_charge_link1: Freeze anytime. Freeze charges
+  freeze_charge_link2: here.
+  freeze_charge_link3: Freeze terms under 'Modifications'
+  wkclass_delete: This class will be deleted. It has no bookings, attendances or cancellations, so it is safe to do so.
+  wkclass_delete_no: This class has bookings, attendances or cancellations and so can not be deleted.
