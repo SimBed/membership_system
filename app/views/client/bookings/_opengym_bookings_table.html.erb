@@ -6,7 +6,7 @@
           <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
               data-booking-target="bookingDay">
             <% if day.empty? %>
-              <div class= 'mx-auto' >no Open Gym to book</div>
+              <div class= 'mx-auto' ><%= t('none_to_book', wkclass_type: 'Open Gym') %></div>
             <% else %>
               <%= render partial: 'opengym_booking', collection: day, as: :wkclass, locals: {index: index} %>                  
             <% end %>

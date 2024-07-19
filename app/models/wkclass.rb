@@ -149,6 +149,21 @@ class Wkclass < ApplicationRecord
       # need wkclasses.id to avoid ambiguity error
       where(id: ids).order(Arel.sql("POSITION(wkclasses.id::TEXT IN '#{ids.join(',')}')"))
     end
+
+    def booking_display(array)
+      array.each_with_index.map do |item, index|
+        inside_window = index <= Setting.booking_window_days_before
+        display_wkclasses = inside_window && item.present? 
+        display = if display_wkclasses
+                    item
+                  elsif inside_window
+                    I18n.t('none_to_book', wkclass_type: 'Group Classes')
+                  else
+                    I18n.t('bookings_open', days_before: Setting.booking_window_days_before)
+                  end
+        [display_wkclasses, display]
+      end
+    end
   end
 
   def committed_on_same_day?(client)

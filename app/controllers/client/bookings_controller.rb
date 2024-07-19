@@ -12,6 +12,7 @@ class Client::BookingsController < Client::BaseController
     @group_wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
     @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
     @my_bookings = Wkclass.booked_for(@client).show_in_bookings_for(@client).order_by_reverse_date
+    @no_classes = (@group_wkclasses_show + @open_gym_wkclasses).empty?
     # switching the order round (as below) returns wkclasses with booked bookings not of @client. Couldn't figure this out
     # Wkclass.show_in_bookings_for(@client).booked_for(@client).order_by_reverse_date
     # Wkclass.show_in_bookings_for(c).merge(Wkclass.booked_for(c)).order_by_reverse_date
@@ -23,6 +24,7 @@ class Client::BookingsController < Client::BaseController
       @group_wkclasses_show_by_day.push(@group_wkclasses_show.on_date(day))
       @opengym_wkclasses_show_by_day.push(@open_gym_wkclasses.on_date(day))
     end
+    @group_wkclasses_show_by_day = Wkclass.booking_display(@group_wkclasses_show_by_day)
     @other_services = OtherService.all
     # include bookings and wkclass so can find last booked session in PT package without additional query
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(:freezes, :adjustments, :penalties, bookings: [:wkclass])

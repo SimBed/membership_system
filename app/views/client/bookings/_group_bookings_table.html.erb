@@ -14,14 +14,14 @@
     </div>
 
     <div class="canvas gray100-canvas">
-      <div class="bookings-notice" data-booking-target="bookingsOpen"><%= "bookings open #{Setting.booking_window_days_before} days before" %></div>
-      <% @group_wkclasses_show_by_day.each_with_index do |day, index| %>
+      <!--div class="bookings-notice" data-booking-target="bookingsOpen"><%#= "bookings open #{Setting.booking_window_days_before} days before" %></div-->
+      <% @group_wkclasses_show_by_day.each_with_index do |days_classes, index| %>
         <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
             data-booking-target="bookingDay">
-          <% if day.empty? %>
-            <div class="bookings-notice live">no group classes to book</div>
+          <% unless days_classes[0] %>
+            <div class="bookings-notice live"><%=days_classes[1]%></div>
           <% else %>
-            <%= render partial: 'wkclass_booking', collection: day, as: :wkclass, locals: {index: } %>                  
+            <%= render partial: 'wkclass_booking', collection: days_classes[1], as: :wkclass, locals: {index: } %>                  
           <% end %>
         </div>
       <% end %>
