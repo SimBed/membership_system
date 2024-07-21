@@ -6,7 +6,7 @@ export default class extends Controller {
 
   // https://stimulus.hotwired.dev/reference/actions action parameters
   change_day( event ) {
-    console.log(this.bookingsOpenValue)
+    // console.log(this.bookingsOpenValue)
     this.dayButtonTargets.forEach((btn)=> {
       btn.classList.remove('live')
     })

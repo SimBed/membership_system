@@ -19,7 +19,7 @@ class RenewalPresenter < BasePresenter
 
   def saving_html
     saving = @renewal.renewal_saving(@product)
-    return nil if saving.nil?
+    return nil if saving.zero?
 
     content_tag(:li, "Save #{rupees(saving)}")
   end

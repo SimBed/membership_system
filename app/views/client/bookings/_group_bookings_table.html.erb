@@ -14,15 +14,16 @@
     </div>
 
     <div class="canvas gray100-canvas">
-      <!--div class="bookings-notice" data-booking-target="bookingsOpen"><%#= "bookings open #{Setting.booking_window_days_before} days before" %></div-->
       <% @group_wkclasses_show_by_day.each_with_index do |days_classes, index| %>
+        <% @no_classes_text_array[index].tap do |hash| %>
+          <% @not_in_window = hash[:show_not_in_window] %>
+          <% @no_group_classes = hash[:show_no_group_classes] %>
+        <% end %>
         <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
-            data-booking-target="bookingDay">
-          <% unless days_classes[0] %>
-            <div class="bookings-notice live"><%=days_classes[1]%></div>
-          <% else %>
-            <%= render partial: 'wkclass_booking', collection: days_classes[1], as: :wkclass, locals: {index: } %>                  
-          <% end %>
+          data-booking-target="bookingDay">
+          <div class="bookings-notice <%= 'live' if @not_in_window %>"><%= t('bookings_open', days_before: Setting.booking_window_days_before) %></div>
+          <div class="bookings-notice <%= 'live' if @no_group_classes %>"><%= t('none_to_book', wkclass_type: 'Group Classes') %></div>
+          <%= render partial: 'wkclass_booking', collection: days_classes, as: :wkclass, locals: {index: } %>                  
         </div>
       <% end %>
     </div>

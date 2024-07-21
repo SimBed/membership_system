@@ -97,10 +97,6 @@ class Wkclass < ApplicationRecord
       wkclasses.empty_class.has_instructor_cost.map(&:id)
     end
 
-    # def booking_post_purchase_expiry(wkclasses)
-    #   wkclasses.has_booking_post_purchase_expiry.map(&:id) # used to be possible due to careless administration when using the repeat functionality
-    # end
-
     def problematic_ids(wkclasses_past, wkclasses_past_and_future)
       instructorless_ids(wkclasses_past) + incomplete_ids(wkclasses_past) + empty_with_cost_ids(wkclasses_past) # + booking_post_purchase_expiry(wkclasses_past_and_future)
     end
@@ -150,20 +146,6 @@ class Wkclass < ApplicationRecord
       where(id: ids).order(Arel.sql("POSITION(wkclasses.id::TEXT IN '#{ids.join(',')}')"))
     end
 
-    def booking_display(array)
-      array.each_with_index.map do |item, index|
-        inside_window = index <= Setting.booking_window_days_before
-        display_wkclasses = inside_window && item.present? 
-        display = if display_wkclasses
-                    item
-                  elsif inside_window
-                    I18n.t('none_to_book', wkclass_type: 'Group Classes')
-                  else
-                    I18n.t('bookings_open', days_before: Setting.booking_window_days_before)
-                  end
-        [display_wkclasses, display]
-      end
-    end
   end
 
   def committed_on_same_day?(client)
@@ -181,14 +163,7 @@ class Wkclass < ApplicationRecord
     true
   end
 
-  # def date
-  #   start_time.strftime('%a %d %b %y')
-  # end
-
-  # def time
-  #   start_time.strftime('%H:%M')
-  # end
-
+  # shift to decorator??
   def date_time_short
     start_time.strftime('%H:%M, %a %d')
   end

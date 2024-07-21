@@ -5,17 +5,13 @@
   <% provide(:renewal_price, @renewal.price(@renewal.product).to_s) %>
   <% provide(:base_price, @renewal.base_price(@renewal.product).price.to_s) %>
 
-  <% renewal_package_ongoing = @renewal.package_ongoing? %>
   <div class="booking-section mb-3">
-    <%= render 'client_no_classes' if @no_classes %>
     <div data-controller="booking" data-booking-bookings-open-value = <%= Setting.booking_window_days_before %>>
-      <% if renewal_package_ongoing %>
-        <%= render 'group_bookings_table' %>
-        <%= render 'opengym_bookings_table' %>
-      <% end %>
+      <%= render 'group_bookings_table' %>
+      <%= render 'opengym_bookings_table' %>
     </div >
     <%= render 'other_services' unless @other_services.empty? %>
-    <%= render 'my_bookings_table' if renewal_package_ongoing %>
+    <%= render 'my_bookings_table' %>
     <%= render 'renewal' if @renewal.alert_to_renew? %>
   </div>
   <div id="packages-table">

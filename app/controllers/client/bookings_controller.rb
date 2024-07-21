@@ -6,13 +6,12 @@ class Client::BookingsController < Client::BaseController
   before_action :already_booked_for_class, only: :create
   before_action :in_booking_window, only: :create
   before_action :reached_max_capacity, only: :create
-  
+
   def index
     session[:booking_day] = params[:booking_day] || session[:booking_day] || '0'
     @group_wkclasses_show = Wkclass.limited.show_in_bookings_for(@client).order_by_reverse_date
     @open_gym_wkclasses = Wkclass.unlimited.show_in_bookings_for(@client).order_by_reverse_date
     @my_bookings = Wkclass.booked_for(@client).show_in_bookings_for(@client).order_by_reverse_date
-    @no_classes = (@group_wkclasses_show + @open_gym_wkclasses).empty?
     # switching the order round (as below) returns wkclasses with booked bookings not of @client. Couldn't figure this out
     # Wkclass.show_in_bookings_for(@client).booked_for(@client).order_by_reverse_date
     # Wkclass.show_in_bookings_for(c).merge(Wkclass.booked_for(c)).order_by_reverse_date
@@ -24,25 +23,15 @@ class Client::BookingsController < Client::BaseController
       @group_wkclasses_show_by_day.push(@group_wkclasses_show.on_date(day))
       @opengym_wkclasses_show_by_day.push(@open_gym_wkclasses.on_date(day))
     end
-    @group_wkclasses_show_by_day = Wkclass.booking_display(@group_wkclasses_show_by_day)
+    @no_classes_text_array = (0..@days.length - 1).map do |index|
+      Booking.booking_text(@group_wkclasses_show_by_day[index].size, @opengym_wkclasses_show_by_day[index].size, index)
+    end
     @other_services = OtherService.all
     # include bookings and wkclass so can find last booked session in PT package without additional query
     @purchases = @client.purchases.not_fully_expired.service_type('group').package.order_by_dop.includes(:freezes, :adjustments, :penalties, bookings: [:wkclass])
     @renewal = Renewal.new(@client)
     params[:booking_section] = nil if params[:major_change] == 'true' # do full page reload if major change
-    respond_to do |format|
-      format.html
-      case params[:booking_section]
-      when 'group'
-        format.turbo_stream
-      when 'opengym'
-        format.turbo_stream { render :opengym }
-      when 'my_bookings'
-        format.turbo_stream { render :my_bookings }
-      else
-        format.turbo_stream { render :all_streams }
-      end
-    end
+    handle_index_response
   end
 
   def create
@@ -59,9 +48,6 @@ class Client::BookingsController < Client::BaseController
   end
 
   def after_successful_create
-    @wkclass = @booking.wkclass
-    @wkclass_name = @wkclass.name
-    @wkclass_day = @wkclass.day_of_week
     # pass which section the request came from (can only be opengym or group for create) to render the correct turbo_stream to update the correct table opengym/group/my-bookings
     update_purchase_status([@purchase])
     # redirect_to "/client/clients/#{@client.id}/book"
@@ -70,7 +56,7 @@ class Client::BookingsController < Client::BaseController
     # https://stackoverflow.com/questions/13033830/ruby-function-as-value-of-hash
     # e.g. flash_message :successful, "Booked for Bootcamp on Thursday"
     flash_message booking_flash_hash[:booking][:successful][:colour],
-                  (send booking_flash_hash[:booking][:successful][:message], @wkclass_name, @wkclass_day)
+                  (send booking_flash_hash[:booking][:successful][:message], @wkclass.name, @wkclass.day_of_week)
   end
 
   def after_unsuccessful_create
@@ -80,6 +66,22 @@ class Client::BookingsController < Client::BaseController
   end
 
   private
+
+  def handle_index_response
+    respond_to do |format|
+      format.html
+      case params[:booking_section]
+      when 'group'
+        format.turbo_stream
+      when 'opengym'
+        format.turbo_stream { render :opengym }
+      when 'my_bookings'
+        format.turbo_stream { render :my_bookings }
+      else
+        format.turbo_stream { render :all_streams }
+      end
+    end
+  end
 
   def handle_freeze
     wkclass_datetime = @booking.wkclass.start_time
