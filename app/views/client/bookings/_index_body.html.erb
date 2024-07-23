@@ -1,15 +1,9 @@
 <%= turbo_frame_tag 'index_body' do %>
-  <% provide(:renewal_statement, renewal_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.valid?)) %>
-  <% provide(:visit_shop_statement, visit_shop_statement(@renewal.product.rider?)) %>
-  <% provide(:renewal_product, @renewal.product&.name(verbose: true)) %>
-  <% provide(:renewal_price, @renewal.price(@renewal.product).to_s) %>
-  <% provide(:base_price, @renewal.base_price(@renewal.product).price.to_s) %>
-
-  <div class="booking-section mb-3">
+  <div class="booking-section px-1 mb-3">
     <div data-controller="booking" data-booking-bookings-open-value = <%= Setting.booking_window_days_before %>>
       <%= render 'group_bookings_table' %>
       <%= render 'opengym_bookings_table' %>
-    </div >
+    </div>
     <%= render 'other_services' unless @other_services.empty? %>
     <%= render 'my_bookings_table' %>
     <%= render 'renewal' if @renewal.alert_to_renew? %>

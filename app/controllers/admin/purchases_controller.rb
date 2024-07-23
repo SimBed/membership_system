@@ -263,10 +263,10 @@ class Admin::PurchasesController < Admin::BaseController
   #   redirect_to purchase_path(@purchase)
   # end
 
-  def adjust_and_restart
+  def restart
     new_purchase = @purchase.dup
     new_purchase.update(status: 'not started' )
-    flash_message :warning, t('.adjust_and_restart')
+    flash_message :warning, t('.restart')
     redirect_to purchases_path
   end
 
@@ -291,7 +291,7 @@ class Admin::PurchasesController < Admin::BaseController
     #   # prevent ar_date becoming not nil after an update
     #   # checkbox values in form are strings
     #   # adjust and restart checkbox on form hides/displays a&r payment/date but doesn't itself set their values to nil/zero. Don't want to potentially have unwanted entries saved to the database.  
-    #   if params[:adjust_restart] == '0'
+    #   if params[:restart] == '0'
     #     params['ar_date(1i)'] = ''
     #     params['ar_date(2i)'] = ''
     #     params['ar_date(3i)'] = ''

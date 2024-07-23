@@ -132,23 +132,6 @@
 
     </div>
 
-    <% unless @purchase.new_record? || true %>
-      <div class="field">
-        <%= form.label :adjust_restart %>
-        <%= form.check_box :adjust_restart, {"data-action": "purchase-form#adjust_restart"} %>
-      </div>
-
-      <div class="field" data-purchase-form-target="hideable" <%= 'hidden' unless @purchase.adjust_restart %>>
-        <%= form.label :ar_payment %>
-        <%= form.number_field :ar_payment %>
-      </div>
-
-      <div class="field" data-purchase-form-target="hideable" <%= 'hidden' unless @purchase.adjust_restart %>>
-        <%= form.label :ar_date %>
-        <%= form.date_select :ar_date, {include_blank: true, selected: @purchase.ar_date || Time.zone.today}, {class: "arvalue"} %>
-      </div>
-    <% end %>
-
     <div class="actions">
       <%= form.submit @purchase.new_record? ? 'Log Purchase' : 'Update Purchase' %>
     </div>

@@ -8,3 +8,25 @@
 .fs-8 {
   font-size: $font-size-base * 0.8;
 }
+
+// base-price for shop is similar to renewal but shop has been set up in shop's own component
+#renewal .base-price {
+  text-decoration: line-through;  
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+#renewal .discount-price {
+  font-size: 1.0rem;
+  font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  #renewal .base-price {
+    font-size: 1.0rem;
+  }
+
+  #renewal .discount-price {
+    font-size: 1.2rem;
+  }  
+}

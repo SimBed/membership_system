@@ -22,6 +22,25 @@ a.like_button {
     }
 }
 
+a.like_button_alt {
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.5rem;
+  box-shadow: 0.3rem 0.3rem 0.6rem $gray-700;
+  text-decoration: none;
+  color: $white;
+  background-color: $black;
+  border-color: $black;  
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;   
+  &:hover {
+    opacity: 0.8;
+    box-shadow: none;
+  }
+  @include media-breakpoint-up(md) {
+  }
+}
+
 a.disable-link {
   pointer-events: none;
 }

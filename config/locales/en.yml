@@ -111,7 +111,7 @@ en:
       update:
         success: Purchase was successfully updated
         booking_cancelled: A booking made for after the new expiry date has been cancelled
-        adjust_and_restart: This purchase has been expired by A&R and a new purchase with no attendances has been created 
+        restart: This purchase has been expired by Restart and a new purchase with no attendances has been created 
       destroy:
         success: "%{name}'s purchase was successfully deleted"
       expire:
@@ -119,7 +119,7 @@ en:
         unexpired: "%{name}'s purchase has been brought back to life"
     restarts:
       create:
-        success: Restart was successfully made. The original purchase has been expired by A&R and a new purchase with no attendances has been created
+        success: Restart was successfully made. The original purchase has been expired by Restart and a new purchase with no attendances has been created
       update:
         success: Restart was successfully updated
     timetables:
@@ -328,3 +328,9 @@ en:
   wkclass_delete_no: This class has bookings, attendances or cancellations and so can not be deleted.
   bookings_open: "Bookings open %{days_before} days before"
   none_to_book: "No %{wkclass_type} to book"
+  renewal_pre_trial_expiry: "Buy your first Package before your Trial expires with a %{discount}% online discount!"
+  renewal_pre_package_expiry: "Renew your Package before expiry with a %{discount}% online discount!"
+  renewal_alt_pre_package_expiry: "Buy your next Package before expiry with a %{discount}% online discount!"
+  renewal_post_trial_expiry: "Your Trial has expired. Buy your first Package with a %{discount}% online discount!"
+  renewal_post_package_expiry: Your Group Package has expired. Renew your Package now!
+  razor_pay_glitch_renewal: Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly for renewal.

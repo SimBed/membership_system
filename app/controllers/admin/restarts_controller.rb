@@ -63,12 +63,4 @@ class Admin::RestartsController < Admin::BaseController
   def restart_params
     params.require(:restart).permit(:parent_id, :added_by, :note, payment_attributes: [:dop, :amount, :payment_mode, :note])
   end
-
-  #TODO: delete? taken from purchases_controller
-  def adjust_and_restart
-    new_purchase = @purchase.dup
-    new_purchase.update(adjust_restart: false, ar_payment: 0, status: 'not started' )
-    flash_message :warning, t('.adjust_and_restart')
-    redirect_to purchases_path
-  end
 end

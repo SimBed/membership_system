@@ -8,7 +8,11 @@
   &.black-canvas {
     background-color: $black;
     padding-top: 0;
-    padding-bottom: 0;    
+    padding-bottom: 0;
+  }  
+  &.form-like {
+    box-shadow: 1px 3px 6px $black;
+    border-radius: 0.375rem;
   }  
   @include media-breakpoint-up(md) {
     width: 32rem;

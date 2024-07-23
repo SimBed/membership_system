@@ -35,8 +35,8 @@ class Client::PackageModificationController < Client::BaseController
     redirect_to root_path
   end
 
-  def adjust_restart
-    render 'adjust_restart_form'
+  def restart
+    render 'restart_form'
   end
 
   def transfer
@@ -48,8 +48,8 @@ class Client::PackageModificationController < Client::BaseController
     render partial: 'client/package_modification/freeze_button'
   end
 
-  def cancel_adjust_restart
-    render partial: 'client/package_modification/adjust_restart_button'
+  def cancel_restart
+    render partial: 'client/package_modification/restart_button'
   end
 
   def cancel_transfer

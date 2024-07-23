@@ -24,8 +24,8 @@ class Purchase < ApplicationRecord
   delegate :name, :workout_group, :dropin?, :trial?, :unlimited_package?, :fixed_package?, :product_type,
            :product_style, :pt?, :groupex?, :online?, :max_classes, :rider?, to: :product
   validates :charge, presence: true
-  # validates :ar_payment, presence: true, if: :adjust_restart?
-  # with_options if: :adjust_restart? do
+  # validates :ar_payment, presence: true, if: :restart?
+  # with_options if: :restart? do
   #   validates :ar_payment, presence: true
   #   validates :ar_date, presence: true
   # end

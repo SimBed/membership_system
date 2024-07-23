@@ -127,5 +127,5 @@ class Renewal
   def default_class_number_type
     product.fixed_package? ? 'fixed' : 'unlimited'
   end
-
+  
 end
