@@ -321,13 +321,14 @@ en:
   product_edit_no: This product has purchases or prices and so its structure can not be edited.
   product_delete: This product will be deleted. It has no prices or purchases so it is safe to do so.
   product_delete_no: This product has purchases or prices and so can not be deleted.
-  freeze_charge_link1: Freeze anytime. Freeze charges
-  freeze_charge_link2: here.
-  freeze_charge_link3: Freeze terms under 'Modifications'
+  freeze_charge_link0: Freeze anytime. Freeze charges
+  freeze_charge_link1: here.
+  freeze_charge_link2: Freeze terms under 'Modifications'
   wkclass_delete: This class will be deleted. It has no bookings, attendances or cancellations, so it is safe to do so.
   wkclass_delete_no: This class has bookings, attendances or cancellations and so can not be deleted.
   bookings_open: "Bookings open %{days_before} days before"
   none_to_book: "No %{wkclass_type} to book"
+  no_bookings: You have no classes booked
   renewal_pre_trial_expiry: "Buy your first Package before your Trial expires with a %{discount}% online discount!"
   renewal_pre_package_expiry: "Renew your Package before expiry with a %{discount}% online discount!"
   renewal_alt_pre_package_expiry: "Buy your next Package before expiry with a %{discount}% online discount!"

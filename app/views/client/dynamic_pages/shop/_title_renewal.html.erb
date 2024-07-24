@@ -1,7 +1,4 @@
 <div class="text-center">
-  <!--h2 class="display-2 mb-1">Shop</h2-->
   <h3 class="display-6 mb-1">GROUP CLASS PACKAGES</h3>
-  <% if @renewal.offer_online_discount? && !@renewal.new_client? %>
-    <h3 class="display-2 fw-light discount-statement mb-3"><%= shop_discount_statement(@renewal.package_ongoing?, @renewal.from_trial?, @renewal.oneoff_discount?) %></h3>
-  <% end %>
+  <h3 class="display-2 fw-light discount-statement mb-3"><%= RenewalPresenter.new(renewal: @renewal).shop_discount_statement %></h3>
 </div>

@@ -53,4 +53,8 @@ class Discount < ApplicationRecord
   def used?
     !DiscountAssignment.where(discount_id: id).empty?
   end
+
+  def renewal_rationale?
+    rationale == 'Renewal'
+  end
 end

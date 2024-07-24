@@ -48,7 +48,7 @@ class ShopProductDecorator < BaseDecorator
 
   def freeze_charge_link
     # https://guides.rubyonrails.org/i18n.html#bulk-and-namespace-lookup
-    text = I18n.t(['.freeze_charge_link1', '.freeze_charge_link2', '.freeze_charge_link1'])
+    text = I18n.t(['.freeze_charge_link0', '.freeze_charge_link1', '.freeze_charge_link2'])
     content_tag(:li,
                 "#{text[0]} #{link_to text[1], charges_and_deductions_path, class: %w[fw-bolder text-decoration-underline], target: '_blank', rel: 'noopener'}
                  #{text[2]} #{link_to text[1], terms_and_conditions_path, class: %w[fw-bolder text-decoration-underline], target: '_blank', rel: 'noopener'}".html_safe)

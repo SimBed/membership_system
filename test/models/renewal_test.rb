@@ -101,13 +101,13 @@ class RenewalTest < ActiveSupport::TestCase
     assert_equal 21_700, @renewal_trial_expired.price(@renewal_trial_expired.product)
     assert_equal 20_400, @renewal_trial_ongoing.price(@renewal_trial_ongoing.product)
   end
-  test '#renewal_offer' do
-    assert_equal 'renewal_pre_package_expiry', @renewal_package_ongoing_unlimited.renewal_offer
-    assert_equal 'renewal_post_package_expiry', @renewal_package_expired_unlimited.renewal_offer
-    assert_equal 'renewal_pre_package_expiry', @renewal_package_ongoing_fixed.renewal_offer
-    assert_equal 'first_package', @renewal_new_client.renewal_offer
-    assert_equal 'renewal_post_trial_expiry', @renewal_trial_expired.renewal_offer
-    assert_equal 'renewal_pre_trial_expiry', @renewal_trial_ongoing.renewal_offer
+  test '#renewal_situation' do
+    assert_equal :renewal_pre_package_expiry, @renewal_package_ongoing_unlimited.renewal_situation
+    assert_equal :renewal_post_package_expiry, @renewal_package_expired_unlimited.renewal_situation
+    assert_equal :renewal_pre_package_expiry, @renewal_package_ongoing_fixed.renewal_situation
+    assert_equal :first_package, @renewal_new_client.renewal_situation
+    assert_equal :renewal_post_trial_expiry, @renewal_trial_expired.renewal_situation
+    assert_equal :renewal_pre_trial_expiry, @renewal_trial_ongoing.renewal_situation
   end
   test '#offer_online_discount?' do
     assert @renewal_package_ongoing_unlimited.offer_online_discount?

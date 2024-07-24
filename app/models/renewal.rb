@@ -11,23 +11,31 @@ class Renewal
   end
   attr_reader :last_product, :client
 
-  def discount_hash
-    # for now quick and dirty, max 1 discount can apply and the one that applies is the one with the biggest percent
-    renewal_discount = Discount.with_renewal_rationale_at(renewal_offer, Time.zone.now)&.first
+  def best_discount
+    # for now max 1 discount can apply and the one that applies is the one with the biggest percent
+    renewal_discount = Discount.with_renewal_rationale_at(renewal_situation, Time.zone.now)&.first
     student_discount = Discount.student_at(Time.zone.now)&.first if @client.student?
-    friends_and_family_discount = Discount.friends_and_family_at(Time.zone.now)&.first if @client.friends_and_family?
+    # too many variations apply
+    # friends_and_family_discount = Discount.friends_and_family_at(Time.zone.now)&.first if @client.friends_and_family?
     oneoff_discount = Discount.with_rationale_at('Oneoff', Time.zone.now)&.first
-    best_discount = [renewal_discount, student_discount, friends_and_family_discount, oneoff_discount].compact.max_by { |d| [d.percent, d.fixed] }
-    hash = { renewal: nil, status: nil, oneoff: nil }
-    hash[best_discount.discount_reason.rationale.downcase.to_sym] = best_discount unless best_discount.nil?
+    [renewal_discount, student_discount, oneoff_discount].compact.max_by { |d| [d.percent, d.fixed] }
+  end
+
+  def discount_hash
+    # hash = { renewal: nil, status: nil, oneoff: nil }
+    discount_applies = best_discount
+    hash = Hash.new
+    hash[discount_applies.discount_reason.rationale.downcase.to_sym] = discount_applies unless discount_applies.nil?
     hash
 
     # NOTE: nil.to_i returns 0
     # status_discount = (student_discount.percent.to_i > friends_and_family_discount.percent.to_i ? student_discount : friends_and_family_discount)
-    # { renewal: Discount.with_renewal_rationale_at(renewal_offer, Time.zone.now)&.first,
+    # { renewal: Discount.with_renewal_rationale_at(renewal_situation, Time.zone.now)&.first,
     #   status: nil, status_discount,
     #   oneoff: Discount.with_rationale_at('Oneoff', Time.zone.now)&.first }
   end
+
+  # def renewal_offer
 
   def oneoff_discount?
     return true unless discount_hash[:oneoff].nil?
@@ -59,17 +67,23 @@ class Renewal
     false
   end
 
-  def renewal_offer
-    return 'first_package' if new_client?
-    return 'renewal_post_trial_expiry' if expired_trial?
-    return 'renewal_post_package_expiry' if expired_package?
-    return 'renewal_pre_trial_expiry' if ongoing_trial?
+  def renewal_situation
+    return :first_package if new_client?
+    return :renewal_post_trial_expiry if expired_trial?
+    return :renewal_post_package_expiry if expired_package?
+    return :renewal_pre_trial_expiry if ongoing_trial?
 
-    'renewal_pre_package_expiry' # ongoing package
+    :renewal_pre_package_expiry # ongoing package
   end
 
   def offer_online_discount?
     return false if discount_hash.values.map(&:nil?).all?
+
+    true
+  end
+
+  def offer_renewal_discount?
+    return true if discount_hash.values.map(&:renewal_rationale?).any?
 
     true
   end

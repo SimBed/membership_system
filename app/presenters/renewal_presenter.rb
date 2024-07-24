@@ -5,20 +5,20 @@ class RenewalPresenter < BasePresenter
     @product = attributes[:product] || @renewal.product
   end
 
-  def base_price_html
+  def base_price
     if @renewal.offer_online_discount?
-      content_tag :div, rupees(@renewal.base_price(@product).price), class: %w[pe2, base-price]
+      rupees(@renewal.base_price(@product).price)
     else
       nil
     end
   end
 
-  def price_html
-    content_tag :div, rupees(@renewal.price(@product)), class: %w[pe2, discount-price]
+  def price
+    rupees(@renewal.price @product)
   end
 
   def saving_html
-    saving = @renewal.renewal_saving(@product)
+    saving = @renewal.renewal_saving @product
     return nil if saving.zero?
 
     content_tag(:li, "Save #{rupees(saving)}")
@@ -48,6 +48,31 @@ class RenewalPresenter < BasePresenter
 
     rescue
       nil
+  end
+
+  def visit_shop_statement(rider)
+    return "Visit the #{link_to 'Shop', client_shop_path(@renewal.client), class: 'like_button text-uppercase', data: {turbo: false}} now".html_safe unless rider
+
+    "Visit the #{link_to 'Shop', client_shop_path(@renewal.client), class: 'like_button text-uppercase', data: {turbo: false}} for more group classes".html_safe
+  end
+
+  def shop_discount_statement
+    return nil if !@renewal.offer_online_discount? || @renewal.new_client?
+
+    return 'Special Discount Applies' if @renewal.oneoff_discount?
+
+    # not yet catering for student discount
+    return nil unless @renewal.offer_renewal_discount?
+    case @renewal.renewal_situation
+    when :renewal_pre_trial_expiry
+      "Buy your first Package before your Trial expires with a #{format_rate(:renewal_pre_trial_expiry)}% online discount!"
+    when :renewal_post_trial_expiry
+      "Buy your first Package with a #{format_rate(:renewal_post_trial_expiry)}% online discount!"
+    when :renewal_pre_package_expiry
+      "Renew your Package before expiry with a #{format_rate(:renewal_pre_package_expiry)}% online discount!"
+    when :renewal_post_package_expiry
+      "Renew your Package with a #{format_rate(:renewal_post_package_expiry)}% online discount!"
+    end
   end
 
   def product_name

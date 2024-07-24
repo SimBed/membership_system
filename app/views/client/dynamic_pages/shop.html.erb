@@ -3,11 +3,11 @@
 <% end %>
 
 <div id="shop" class="admin_form pt-4 my-2"
-  data-controller="shop-menu"
-  data-shop-menu-trial-price-value="<%= rupees(@trial_price) %>"
-  data-shop-menu-index-value="unlimited"
-  data-shop-menu-default-product-type-value="<%= @default_class_number_type %>"
-  >
+     data-controller="shop-menu"
+     data-shop-menu-trial-price-value="<%= rupees(@trial_price) %>"
+     data-shop-menu-index-value="unlimited"
+     data-shop-menu-default-product-type-value="<%= @default_class_number_type %>"
+     >
   <%= render 'client/dynamic_pages/shop/title_renewal'%>
   <%= render 'client/dynamic_pages/shop/new_client'%>
   <%= render 'client/dynamic_pages/shop/menu'%>
