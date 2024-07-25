@@ -23,6 +23,18 @@ class ClientDecorator < BaseDecorator
     content_tag(:div, image, class: %w[column nomobile], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)
   end
 
+  def student
+    tooltip_title = if student?
+                      I18n.t('.student')
+                    else
+                      I18n.t('.not_student')
+                    end
+    link = link_to image_tag('student.png', class: ['table_icon', ('greyed-out' unless student?)].compact.join(' ')),
+                   client_path(self, student: !student?),
+                   data: { 'turbo-method': :patch }
+    content_tag('turbo-frame', link, id: "student-#{id}", data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)
+  end
+
   def instagram_ok
     tooltip_title = if instawaiver?
                       I18n.t('.instagram_ok')

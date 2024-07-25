@@ -69,14 +69,13 @@ class Admin::ClientsController < Admin::BaseController
   end
 
   def update
+    quick_link = true if params[:client].nil? # triggered by student/instagram/whatsapp_group toggle
     # if the client email is updated, the account email must be too
-    # neeed to add an extra conditional (or use if client_params[:email].nil?) as shouldn't update email on waiver/instagram toggle)
-    update_account_email = true unless @client.email == client_params[:email] || @client.account.nil?
+    update_account_email = true unless @client.email == client_params[:email] || @client.account.nil? || quick_link
     if @client.update(client_params)
-      # @client.account.update(email: @client.email) if update_account_email
       @client.account.update_column(:email, @client.email) if update_account_email
-      @quick_link = true if client_params[:email].nil? # means not the update form, but a link to update waiver\instagram\whatsapp
-      if @quick_link
+      # @quick_link = true if client_params[:email].nil? # means not the update form, but a link to update waiver\instagram\whatsapp
+      if quick_link
         respond_to do |format|
           format.html { redirect_back fallback_location: clients_path, success: t('.success', name: @client.name) }
           format.turbo_stream { flash_message :success, t('.success', name: @client.name), true }
@@ -131,8 +130,8 @@ class Admin::ClientsController < Admin::BaseController
 
   def client_params
     # the update method (and therefore the client_params method) is used through a form but also clicking on a link on the clients page
-    return { fitternity: params[:fitternity] } if params[:fitternity].present?
-    return { waiver: params[:waiver] } if params[:waiver].present?
+    return { student: params[:student] } if params[:student].present?
+    # return { waiver: params[:waiver] } if params[:waiver].present?
     return { instawaiver: params[:instawaiver] } if params[:instawaiver].present?
     return { whatsapp_group: params[:whatsapp_group] } if params[:whatsapp_group].present?
 

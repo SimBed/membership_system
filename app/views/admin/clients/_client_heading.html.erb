@@ -6,6 +6,9 @@
 <div>
   <%= client_decorator.status_image %>
   <%= client_decorator.submitted_declaration(in_table: false) %>
+  <turbo-frame id="student-<%= @client.id  %>">    
+    <%= render partial: 'student', locals: {client: @client} %>
+  </turbo-frame>
   <turbo-frame id="insta-<%= @client.id  %>">    
     <%= render partial: 'instagram_ok', locals: {client: @client} %>
   </turbo-frame>

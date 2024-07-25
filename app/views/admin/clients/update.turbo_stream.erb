@@ -1,3 +1,6 @@
+<%= turbo_stream.update "student-#{@client.id}" do %>
+  <%= render partial: "student", locals: { client: @client } %>
+<% end %>
 <%= turbo_stream.update "insta-#{@client.id}" do %>
   <%= render partial: "instagram_ok", locals: { client: @client } %>
 <% end %>

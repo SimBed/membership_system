@@ -307,6 +307,8 @@ en:
   delete_client_no: "%{first_name} has an account or purchases and so can not be deleted."
   submitted_declaration: This client has completed a health declaration.
   submitted_declaration_no: This client has not completed a health declaration, so may not yet book classes.
+  student: This client has been confirmed as a student and may be entitled to a student discount.
+  not_student: This client has not been confirmed as a student and is not entitled to a student discount.
   instagram_ok: This client has approved hash-tagging on Instagram and can be tagged.
   instagram_ok_no: This client has not approved hash-tagging on Instagram and should not be tagged.
   in_whatsapp_group: This client is in the community whatsapp group.
