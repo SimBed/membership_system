@@ -1,10 +1,9 @@
-<%= turbo_stream.update "group_bookings" do %>
+<%# note the partial contains the turboframe, so use replace not update otherwise the turboframe will be updated with content which itself has a turboframe %>
+<%= turbo_stream.replace "group_bookings" do %>
   <%= render partial: "group_bookings_table" %>
 <% end %>
-<% if true %>
-  <%= turbo_stream.update "my_bookings" do %>
-    <%= render partial: "my_bookings_table" %>
-  <% end %>
+<%= turbo_stream.replace "my_bookings" do %>
+  <%= render partial: "my_bookings_table" %>
 <% end %>
 <%= turbo_stream.update "packages-table" do %>
   <%= render partial: "client/data_pages/shared/client_packages_table", locals: {booking_details: false, package_modifications: true} %>

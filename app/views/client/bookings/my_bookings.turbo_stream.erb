@@ -1,10 +1,10 @@
-<%= turbo_stream.update "group_bookings" do %>
+<%= turbo_stream.replace "group_bookings" do %>
   <%= render partial: "group_bookings_table" %>
 <% end %>
-<%= turbo_stream.update "opengym_bookings" do %>
+<%= turbo_stream.replace "opengym_bookings" do %>
   <%= render partial: "opengym_bookings_table" %>
 <% end %>
-<%= turbo_stream.update "my_bookings" do %>
+<%= turbo_stream.replace "my_bookings" do %>
   <%= render partial: "my_bookings_table" %>
 <% end %>
 <%= turbo_stream.update "packages-table" do %>

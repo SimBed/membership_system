@@ -1,4 +1,4 @@
-<%= turbo_stream.update "index_body" do %>
+<%= turbo_stream.replace "index_body" do %>
   <%= render partial: "index_body" %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>
