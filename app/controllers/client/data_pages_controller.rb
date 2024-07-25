@@ -1,9 +1,9 @@
 class Client::DataPagesController < Client::BaseController
   skip_before_action :correct_account, only: [:timetable]
   
-  def achievement
-    achievement_data
-  end
+  # def achievement
+  #   achievement_data
+  # end
 
   def achievements
     achievement_data

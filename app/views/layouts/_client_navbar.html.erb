@@ -39,11 +39,11 @@
         <li class="nav-item">
           <%= link_to "Profile", client_profile_path(client), class: "nav-link #{active_link_for(path: client_profile_path(client))}" %>
         </li>
-        <%# if Setting.show_challenge %>
+        <% if Setting.show_achievements_page %>
           <li class="nav-item">
             <%= link_to "Achievements", client_achievements_path(client), class: "nav-link #{active_link_for(path: client_achievements_path(client))}" %>
           </li>
-        <%# end %>
+        <% end %>
         <li class="nav-item">
           <%= link_to "Markers", strength_markers_path, class: "nav-link #{active_link_for(path: strength_markers_path)}" %>
         </li>

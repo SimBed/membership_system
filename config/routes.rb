@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     end
     resources :adjustments, :entries, :prices, except: [:index, :show]
     resources :accounts, only: [:create, :update, :destroy]
+    resources :achievements, except: [:show]    
     # an update of a booking is handled by the booking cancellations controller (not the bookings controller)
     resources :bookings, only: [:new, :create, :destroy]
     resources :booking_cancellations, only: :update
@@ -125,7 +126,7 @@ Rails.application.routes.draw do
     get '/:id/book', to: 'dynamic_pages#book', as: 'book'
     get '/:id/pt', to: 'data_pages#pt', as: 'pt'
     get '/timetable', to: 'data_pages#timetable', as: 'timetable'
-    get '/:id/achievement', to: 'data_pages#achievement', as: 'achievement'
+    # get '/:id/achievement', to: 'data_pages#achievement', as: 'achievement'
     get '/:id/achievements', to: 'data_pages#achievements', as: 'achievements'
     get ':id/new_freeze', to: 'package_modification#new_freeze', as: 'package_modification_new_freeze'
     get ':id/restart', to: 'package_modification#restart', as: 'package_modification_restart'
@@ -150,7 +151,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :shared do
-    resources :achievements, except: [:show]
+    # resources :achievements, except: [:show]
     resources :body_markers, :strength_markers, except: [:show] do
       get 'filter', on: :collection
     end

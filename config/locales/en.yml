@@ -21,7 +21,14 @@ en:
       destroy: 
         success: The account was successfully deleted
       show:
-        warning: Forbidden 
+        warning: Forbidden
+    achievements:
+      create:
+        success: Achievement was successfully added
+      update:
+        success: Achievement was successfully updated
+      destroy:
+        success: Achievement was successfully deleted        
     adjustments:
       create:
         success: Adjustment was successfully added
@@ -266,13 +273,6 @@ en:
     create_account:
       daily_account_limit: Sorry, the site limit has been exceeded. This is a temporary issue. Please contact The Space or try again tomorrow. The site developer has been notified.
   shared:
-    achievements:
-      create:
-        success: Achievement was successfully added
-      update:
-        success: Achievement was successfully updated
-      destroy:
-        success: Achievement was successfully deleted
     body_markers:
       create:
         success: Body Marker was successfully added

@@ -7,6 +7,10 @@ class Setting < RailsSettings::Base
     field :daily_account_limit, type: :integer, default: 0
     field :daily_account_limit_triggered, type: :boolean, default: false
   end
+
+  scope :achievement do
+    field :show_achievements_page, type: :boolean, default: true
+  end  
     
   scope :blast do
     field :max_recipient_blast_limit, type: :integer, default: 100    
