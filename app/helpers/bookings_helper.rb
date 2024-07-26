@@ -1,4 +1,11 @@
 module BookingsHelper
+  def booking_day_name(index, day)
+    return 'today'.capitalize if index.zero?
+    return 'tomorrow'.capitalize if index == 1
+
+    day.strftime('%a').capitalize
+  end
+    
   def booking_flash_hash
     { booking:
       { successful:

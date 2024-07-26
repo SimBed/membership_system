@@ -2,27 +2,4 @@
   <%= render partial: 'client/data_pages/client_data' %>
   <%= render partial: 'client/data_pages/client_summary' %>
 </div>
-
 <%= render partial: 'client/password_resets/form' %>
-
-<% if false %>
-  <% if @achievements.present? %>
-    <div id="client-challenge" class="">
-        <div class="text-center mb-3">
-          <h6 class="fw-bolder fst-italic mb-0">
-            <%= yield(:challenges_heading) %>
-          </h6>
-            <h2>
-              <form action=<%= "/client/clients/#{params[:id]}/#client-challenge" %> method="GET" data-turbo-frame="achievement_chart" >
-                <select name="challenge_id" class= "sort" onchange="this.form.requestSubmit()" >
-                  <%= options_for_select @challenges_entered, session[:challenge_id] %>
-                </select>
-              </form>
-            </h2>
-        </div>
-        <%= turbo_frame_tag 'achievement_chart' do %>
-          <%= render 'achievement_chart' %>
-        <% end %>
-    </div>
-  <% end %>  
-<% end %>
