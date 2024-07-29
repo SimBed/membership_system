@@ -306,6 +306,7 @@ en:
   delete_client: "The client will be deleted. %{first_name} has no account nor purchases so it is safe to do so."
   delete_client_no: "%{first_name} has an account or purchases and so can not be deleted."
   submitted_declaration: This client has completed a health declaration.
+  click_to_show: Click to show.
   submitted_declaration_no: This client has not completed a health declaration, so may not yet book classes.
   student: This client has been confirmed as a student and may be entitled to a student discount.
   not_student: This client has not been confirmed as a student and is not entitled to a student discount.
@@ -313,7 +314,7 @@ en:
   instagram_ok_no: This client has not approved hash-tagging on Instagram and should not be tagged.
   in_whatsapp_group: This client is in the community whatsapp group.
   in_whatsapp_group_no: This client is not in the community whatsapp group.
-  forgot_password: "%{first_name}'s password will be reset and they will be sent a whatsapp containing their new password"
+  forgot_password: "%{first_name}'s password will be reset and they will be sent a whatsapp containing their new password."
   add_account: "An account will be created for %{first_name} and a whatsapp message sent."
   hot: Hot lead, high level of interest.
   cold: "Client has not attended a class for more than %{month} months."

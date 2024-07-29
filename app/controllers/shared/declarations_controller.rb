@@ -38,6 +38,7 @@ class Shared::DeclarationsController < Shared::BaseController
     @declaration_updates = @declaration.declaration_updates.order_by_submitted
     @client_view = true if logged_in_as?('client')
     @cancel_button = true unless @client_view
+    @cancel_declaration_button_link = params[:link_from] == 'clients_index' ? client_path(@client) : declarations_path
   end
 
   def clear_filters

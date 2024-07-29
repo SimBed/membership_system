@@ -43,7 +43,7 @@ class Admin::ClientsController < Admin::BaseController
     @link_from = params[:link_from]
     @cancel_button = true if @link_from == 'clients_index'
     prepare_data_for_view
-    # set_show_dropdown_items
+    # prepare_declaration_form_items
   end
 
   def new
@@ -209,17 +209,9 @@ class Admin::ClientsController < Admin::BaseController
     }
   end
 
-  # def set_show_dropdown_items
-  #   @products_purchased = ['All'] + @client.purchases.order_by_dop.map { |p| [p.name_with_dop, p.id] }
-  # end
-
-  # def layout_set
-  #   if logged_in_as?('admin')
-  #     self.class.layout 'admin'
-  #   else
-  #     # fails without self.class. Solution given here but reason not known.
-  #     # https://stackoverflow.com/questions/33276915/undefined-method-layout-for
-  #     self.class.layout 'application'
-  #   end
-  # end
+  def prepare_declaration_form_items
+    return unless @declaration = @client.declaration
+    @declaration_updates = @declaration.declaration_updates.order_by_submitted
+    @client_view = false
+  end
 end

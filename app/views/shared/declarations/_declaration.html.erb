@@ -2,6 +2,6 @@
   <div class="row">
     <div class="column col-1x fw-light"><%= declaration.client.name %></div>
     <div class="column col-1x fw-light"><%= declaration.created_at.strftime('%d %b %y') %></div>
-    <div class="column"><%= link_to image_tag('clipboard.png', class:'table_icon'), client_declaration_path(declaration.client) %></div>
+    <div class="column"><%= link_to image_tag('clipboard.png', class:'table_icon'), client_declaration_path(declaration.client, link_from: 'declarations_index') %></div>
   </div>
 <% end %>

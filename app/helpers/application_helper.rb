@@ -1,9 +1,18 @@
 module ApplicationHelper
   include Pagy::Frontend
-
+  
   def decorate(model_name, decorator_class = nil)
     (decorator_class || "#{model_name.class}Decorator".constantize).new(model_name) 
   end 
+
+  #NOTE: dry up - used in instructors and blasts (as well as clients where it got shifted to the decorator)
+  def number(whatsapp, phone)
+    return nil if whatsapp.blank? && phone.blank?
+
+    return phone.phony_formatted(format: :international, spaces: '-') if phone.present?
+
+    whatsapp.phony_formatted(format: :international, spaces: '-')
+  end  
 
   def flash_message(type, text = nil, now = nil)
     return if type.nil?

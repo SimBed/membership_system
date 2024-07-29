@@ -1,4 +1,5 @@
 class ClientDecorator < BaseDecorator
+  include ActionView::RecordIdentifier
   def name_link(link)
     link ? link_maker(name, nil, nil, client_path(self), { link_from: 'clients_index' }, {}, ['like_button']) : name
   end
@@ -11,16 +12,30 @@ class ClientDecorator < BaseDecorator
     whatsapp.phony_formatted(format: :international, spaces: '-')
   end
 
-  def submitted_declaration(in_table: true)
+  # def submitted_declaration(in_table: true)
+  #   tooltip_title = if declaration
+  #                     I18n.t('.submitted_declaration')
+  #                   else
+  #                     I18n.t('.submitted_declaration_no')
+  #                   end
+  #   image = image_tag('health.png', class: ['table_icon', ('dull' unless declaration)].compact.join(' '))
+  #   return content_tag(:span, image, data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title) unless in_table
+
+  #   content_tag(:div, image, class: %w[column nomobile], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)
+  # end
+  def submitted_declaration(in_table: true, authorised: false)
     tooltip_title = if declaration
-                      I18n.t('.submitted_declaration')
+                      "#{I18n.t('.submitted_declaration')} " "#{I18n.t('.click_to_show') if authorised && !in_table }"
                     else
                       I18n.t('.submitted_declaration_no')
                     end
     image = image_tag('health.png', class: ['table_icon', ('dull' unless declaration)].compact.join(' '))
-    return content_tag(:span, image, data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title) unless in_table
-
-    content_tag(:div, image, class: %w[column nomobile], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)
+    return content_tag(:div, image, class: %w[column nomobile], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title) if in_table
+    
+    return content_tag(:div, image, class: %w[d-inline], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title) if !authorised || declaration.nil?
+    
+    link = link_to image, client_declaration_path(self, link_from: :clients_index), data: { turbo_frame: dom_id(self.declaration) }
+    content_tag(:div, link, class: %w[d-inline], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)    
   end
 
   def student

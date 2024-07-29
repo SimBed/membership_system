@@ -10,7 +10,7 @@
     <% if logged_in_as?('admin', 'superadmin') %>
       <%= link_to @purchase.name(verbose: true, rider_show: true), product_path(@purchase.product), class: "like_button", data: {turbo: false} %>
     <% else %>
-      <%=@purchase.name(verbose: true, rider_show: true) %>
+      <%= @purchase.name(verbose: true, rider_show: true) %>
     <% end %>
     <% if @frozen_now %>
       <%= image_tag('cold.png')%>

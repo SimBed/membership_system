@@ -22,12 +22,6 @@
       <div class="column col-2x"><%= @client.instagram %></div>
     </div>
   <% end %>
-  <% if @client.student? %>
-    <div class="row">
-      <div class="column col-1x">Student</div>
-      <div class="column col-2x"><%= raw("&check;") %></div>
-    </div>
-  <% end %>
   <% if @client.friends_and_family? %>
     <div class="row">
       <div class="column col-1x">Friend & Family</div>

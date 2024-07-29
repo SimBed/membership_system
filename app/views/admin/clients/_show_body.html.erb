@@ -28,6 +28,16 @@
       <%= render partial: 'expired_purchases' %>
     </div>
 
+    <% if declaration = @client.declaration %>
+      <%= turbo_frame_tag declaration %>    
+    <% end %>
+    
+    <% if false && declaration = @client.declaration %>
+      <div id="declaration" class="container px-1 mb-3">
+        <%= render partial: 'shared/declarations/show_body', locals: {declaration: @client.declaration } %>
+      </div>
+    <% end %>
+
     <% if @cancel_button %>
       <div class="cancel">
         <%= link_to image_tag('delete.png', class: "table_icon"), clients_path %>
