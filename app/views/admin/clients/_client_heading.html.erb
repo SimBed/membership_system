@@ -5,7 +5,7 @@
 </h4>
 <div>
   <%= client_decorator.status_image %>
-  <%= client_decorator.submitted_declaration(in_table: false, authorised: @junioradmin_plus) %>
+  <%= client_decorator.submitted_declaration(link_from: @link_from, authorised: @junioradmin_plus) %>
   <turbo-frame id="student-<%= @client.id  %>">    
     <%= render partial: 'student', locals: {client: @client} %>
   </turbo-frame>

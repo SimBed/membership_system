@@ -4,7 +4,7 @@
     <div class="column col-2x"><%= client_decorator.name_link(@junioradmin_plus) %></div>
     <div class="column col-2x nomobile"><%= client_decorator.email %></div>
     <div class="column col-2x"><%= client_decorator.number %></div>
-    <%= client_decorator.submitted_declaration %>
+    <%= client_decorator.submitted_declaration(link_from: 'clients_index_table') %>
     <div class="column nomobile">
       <turbo-frame id="insta-<%= client.id  %>">  
         <%= render partial: 'instagram_ok', locals: {client: client} %>

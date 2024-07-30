@@ -40,8 +40,7 @@ class Admin::ClientsController < Admin::BaseController
     @ongoing_packages = @client.purchases.not_fully_expired.package.order_by_dop
     @ongoing_dropins = @client.purchases.not_fully_expired.dropin.order_by_dop
     @expired_purchases = @client.purchases.fully_expired.order_by_dop
-    @link_from = params[:link_from]
-    @cancel_button = true if @link_from == 'clients_index'
+    set_cancel_button
     prepare_data_for_view
     # prepare_declaration_form_items
   end
@@ -213,5 +212,13 @@ class Admin::ClientsController < Admin::BaseController
     return unless @declaration = @client.declaration
     @declaration_updates = @declaration.declaration_updates.order_by_submitted
     @client_view = false
+  end
+
+  def set_cancel_button
+    @link_from = params[:link_from]
+    @cancel_button = true if ['clients_index', 'declarations_index'].include? @link_from
+    if @cancel_button
+      @cancel_client_button_link = @link_from == 'clients_index' ? clients_path : declarations_path
+    end
   end
 end
