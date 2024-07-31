@@ -59,9 +59,8 @@ class Auth::SessionsController < Auth::BaseController
 
   def action_when_activated
     log_in @account
-    @account.logins.create
-    # params.dig(:session, :remember_me) == '1' ? remember(@account) : forget(@account)
-    remember(@account) #unless cookies.signed[:account_id] #if @account.remember_digest.nil?
+    @account.logins.create if Setting.log_each_login
+    remember(@account)
     send_to_correct_page_for_role
   end
 

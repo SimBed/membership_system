@@ -6,6 +6,7 @@ class Setting < RailsSettings::Base
     field :password_length, type: :integer, default: 6
     field :daily_account_limit, type: :integer, default: 0
     field :daily_account_limit_triggered, type: :boolean, default: false
+    field :log_each_login, type: :boolean  
   end
 
   scope :achievement do

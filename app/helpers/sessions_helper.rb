@@ -37,7 +37,7 @@ module SessionsHelper
       account = Account.find_by(id: account_id)
       if account&.authenticated?(:remember, cookies[:remember_token])
         log_in account
-        account.logins.create(by_cookie: true)
+        account.logins.create(by_cookie: true) if Setting.log_each_login
         @current_account = account
       end
     end
