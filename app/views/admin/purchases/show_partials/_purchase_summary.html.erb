@@ -1,5 +1,6 @@
 <% payment = @purchase.payment %>
 <% membership = Membership.new(@purchase) %>
+<% @discounts = @purchase.discounts %>
 <div class="fst-italic ps-2">Summary</div>
 <div class="admin-table mt-2 mb-4">
   <div class="row">
@@ -10,8 +11,8 @@
     <div class="column col-1x">Base price</div>
     <div class="column col-1x"><%= rupees(@purchase.price.price) %></div>
   </div>
-  <% unless @purchase.discounts.empty? %>
-    <%= render partial: 'admin/purchases/show_partials/discount', collection: @purchase.discounts %>
+  <% unless @discounts.empty? %>
+    <%= render partial: 'admin/purchases/show_partials/discount', collection: @discounts %>
   <% end %>
   <div class="row">
     <div class="column col-1x">Purchased on</div>

@@ -1,30 +1,12 @@
+<% @discounts = @purchase.discounts %>
 <div class="mt-2 ps-1"><%= @purchase.name(verbose: true) %> <%=image_tag('cold.png') if @purchase.display_frozen?(Time.zone.now)%></div>
 <div class="admin-table striped mt-2">
   <div class="row">
     <div class="column col-1x">Payment</div>
     <div class="column col-1x"><%= rupees(@purchase.charge) %></div>
   </div>
-  <% unless @purchase.discounts.empty? %>  
-    <% discount = @purchase.discounts.first %>
-    <div class="row">
-      <div class="column col-1x">Discount Name</div>
-      <div class="column col-1x"><%= discount.name %></div>
-    </div>
-    <% if discount.percent.zero? %>
-      <div class="row">
-        <div class="column col-1x">Fixed Discount</div>
-        <div class="column col-1x"><%= rupees(discount.fixed) %></div>
-      </div>
-    <% else %>
-      <div class="row">
-        <div class="column col-1x">Discount Percent</div>
-        <div class="column col-1x"><%= "#{number_with_precision(discount.percent, strip_insignificant_zeros: true)}%" %></div>
-      </div>
-    <% end %>
-    <div class="row">
-      <div class="column col-1x">Discount Amount</div>
-      <div class="column col-1x"><%= rupees(@purchase.price.price - @purchase.charge) %></div>
-    </div>
+  <% unless @discounts.empty? %>
+    <%= render partial: 'admin/purchases/show_partials/discount', collection: @discounts %>
   <% end %>
     <div class="row">
       <div class="column col-1x">Paid on</div>

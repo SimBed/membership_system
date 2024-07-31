@@ -1,6 +1,8 @@
+<% discount_heading = DiscountHeadingPresenter.new(@discounts.size, discount_counter) %>
 <div class="row">
   <% #https://guides.rubyonrails.org/layouts_and_rendering.html#counter-variables %>
-  <div class="column col-1x">Discount (<%= discount_counter + 1 %>) Name</div>
+  <!--div class="column col-1x">Discount <%#= discount_counter + 1 %> Reason</div-->
+  <div class="column col-1x"><%= discount_heading.reason %></div>
   <div class="column col-1x"> <%= discount.name %> </div>
 </div>
 <div class="row">
@@ -15,4 +17,5 @@
 <div class="row">
   <div class="column col-1x">Discount Amount</div>
   <div class="column col-1x"> <%= rupees(@purchase.price.price - @purchase.charge) %> </div>
-</div>    
+</div>
+

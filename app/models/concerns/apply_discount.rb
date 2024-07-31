@@ -7,6 +7,7 @@ module ApplyDiscount
       
       discount = { percent: 0, fixed: 0 }
       unless discounts.empty?
+        # NOTE - multiple percentage discount application (rare if at all) is not correct. percentage discounts should not be additive. eg Should apply as (price x 90% X 75%) not price x (100% - (10% + 25%))
         discount[:percent] = discounts.map { |d| d&.percent }.compact.inject(:+)
         discount[:fixed] = discounts.map { |d| d&.fixed }.compact.inject(:+)
       end
