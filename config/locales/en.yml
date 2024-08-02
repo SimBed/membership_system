@@ -338,3 +338,5 @@ en:
   renewal_post_trial_expiry: "Your Trial has expired. Buy your first Package with a %{discount}% online discount!"
   renewal_post_package_expiry: Your Group Package has expired. Renew your Package now!
   razor_pay_glitch_renewal: Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly for renewal.
+  unable_to_verify_payment: There was a problem verifying the correct payment. Please contact The Space.  
+  unable_to_process_payment: Unable to process payment. Please contact The Space.  

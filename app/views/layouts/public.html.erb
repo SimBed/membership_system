@@ -21,6 +21,9 @@
     <%= render 'layouts/determine_navbar' %>
 
     <main>
+      <div id="flash_messages" class="flash">
+        <%= render_flash %>
+      </div>    
       <%= yield %>
       <%= current_account&.priority_role&.name if Rails.env.development? %>
       <%= render 'layouts/footer' %>

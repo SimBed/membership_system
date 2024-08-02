@@ -27,14 +27,7 @@ class Order < ApplicationRecord
       orig_payment.capture(amount: payment.amount) if orig_payment.status == 'authorised'
       payment = Razorpay::Payment.fetch(payment_id)
       return true if payment.status == 'captured' || payment.method =='upi' # upi payments fail to capture (but money still taken from client) causing completion not to occur and subequent admin intervention
-    end     
-
-    # def process_refund(payment_id)
-    #   fetch_payment(payment_id).refund
-    #   record = Order.find_by_payment_id(payment_id)
-    #   record.update(status: fetch_payment(payment_id).status)
-    #   return record
-    # end
+    end
 
     def filter(params)
       params[:status] ? Order.send(params[:status]) : Order.captured

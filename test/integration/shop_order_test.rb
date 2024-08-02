@@ -22,12 +22,13 @@ class ShopOrderTest < ActionDispatch::IntegrationTest
                      client_ui: 'shop page' }
 
     # This is not an exact simulation of what happens in practice, but it is pretty close
+    # Note how the response from the razorpay Order creation is operated on to identify the id of the newly created Order and then added to the params for the verify_payment request
     Razorpay::Utility.stub :verify_payment_signature, true do
       Order.stub :proceed_to_completion, true do
         assert_difference [ 'Purchase.count', 'Payment.count' ], 1 do
         post orders_path, params: { amount: 855000 }
         assert_response :success
-        post verify_payment_path(purchase_type: 'membership', params: order_params)
+        post verify_payment_path(purchase_type: 'membership', order_id: JSON.parse(response.body)['order_id'], params: order_params)
         end
       end
     end
@@ -50,7 +51,7 @@ class ShopOrderTest < ActionDispatch::IntegrationTest
         assert_difference [ 'Freeze.count', 'Payment.count' ], 1 do
         post orders_path, params: { amount: 855000 }
         assert_response :success
-        post verify_payment_path(purchase_type: 'membership_freeze', params: order_params)
+        post verify_payment_path(purchase_type: 'membership_freeze', order_id: JSON.parse(response.body)['order_id'], params: order_params)
         end
       end
     end

@@ -15,19 +15,18 @@ class Superadmin::OrdersController < Superadmin::BaseController
     amount = params[:amount].to_i # Amount in paise (e.g., 50000 for Rs 500)
     Razorpay.setup(Rails.configuration.razorpay[:key_id], Rails.configuration.razorpay[:key_secret])
     order = Razorpay::Order.create(amount: amount, currency: 'INR', receipt: SecureRandom.hex(10))
-    render json: { order_id: order.id, amount: amount }    
+    render json: { order_id: order.id, amount: amount }
   rescue Exception
     flash[:danger] = 'Unable to process payment. Please contact The Space'
     redirect_to root_path
   end
 
   def verify_payment
-    payment_id = params[:razorpay_payment_id].to_s
-    order_id = params[:order_id].to_s
-    signature = params[:razorpay_signature].to_s
-    if [payment_id, order_id, signature].any?(nil)
-      unable_to_verify_payment
-    end
+    # https://apidock.com/rails/Object/presence
+    payment_id = params[:razorpay_payment_id].presence
+    order_id = params[:order_id].presence
+    signature = params[:razorpay_signature]
+    unable_to_verify_payment && return if [payment_id, order_id].any?(nil) || signature == 'undefined'
     if Razorpay::Utility.verify_payment_signature(razorpay_order_id: order_id, razorpay_payment_id: payment_id, razorpay_signature: signature)
       if Order.proceed_to_completion(payment_id)      
         complete_membership_purchase if params[:purchase_type] == 'membership'
@@ -98,13 +97,15 @@ class Superadmin::OrdersController < Superadmin::BaseController
       end
 
     rescue Exception
-      flash[:danger] = 'Unable to process payment. Please contact The Space'
+      flash_message :danger, I18n.t('.unable_to_process_payment')
       redirect_to root_path    
   end  
 
   def unable_to_verify_payment
-    flash[:alert] = 'There was a problem verifying the correct payment. Please contact The Space.'
-    redirect_to root_path
+    flash_message :danger, I18n.t('.unable_to_verify_payment')
+    client = current_account.client
+    fallback_route = client ? client_shop_path(client) : root_path
+    redirect_back_or_to(fallback_route)
   end
 
   def whatsapp_params(message_type)

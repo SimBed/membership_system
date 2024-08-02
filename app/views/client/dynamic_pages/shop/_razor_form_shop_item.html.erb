@@ -15,6 +15,7 @@
 <% end %>
 
 <script>
+  // want payment button in accordion div but dont want clicking payment button to expand accordion
   <%= "payment_button#{product.id}"%> = document.getElementById("<%= "rzp-button-product#{product.id}" %>")
   <%= "payment_button#{product.id}"%>.addEventListener('mouseenter', (event) => {
     let accordionButton = <%= "payment_button#{product.id}"%>.parentElement.parentElement.parentElement.parentElement;
@@ -25,6 +26,7 @@
     accordionButton.setAttribute('data-bs-toggle', 'collapse');
   });
   <%= "payment_button#{product.id}"%>.onclick = function(e){
+    // interrupt the submission of the payment form to first create a Razorpay order and populate the payment from with associated ids 
     e.preventDefault();
 
     fetch('<%= orders_path %>', {
@@ -49,15 +51,13 @@
         "handler": function (response){
           document.getElementById("<%= "payment-form-product#{product.id}" %>").querySelector('[name="razorpay_payment_id"]').value = response.razorpay_payment_id;
           document.getElementById("<%= "payment-form-product#{product.id}" %>").querySelector('[name="razorpay_signature"]').value = response.razorpay_signature;
+          // once razorpay authrorisation response is received and id items added to the payment form, continue with the previously interrupted submission of the payment form
           document.getElementById("<%= "payment-form-product#{product.id}" %>").submit();
         },
         "prefill": {
           "name": "<%= current_account.client.name %>",
           "email": "<%= current_account.email %>",
           "contact": "<%= decorate(current_account.client).number %>"
-        },
-        "theme": {
-          "color": "#1a2b3c" // Don't think this has any affect
         }
       };
       var rzp1 = new Razorpay(options);
