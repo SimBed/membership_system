@@ -2,7 +2,7 @@ class Account < ApplicationRecord
   # dependent option controls what happens to the associated objects when their owner is destroyed (a client can survive wihtout an account)
   has_one :client, dependent: nil
   has_one :instructor, dependent: nil
-  has_many :orders, dependent: :destroy
+  # has_many :orders, dependent: :destroy
   has_many :assignments, dependent: :destroy
   has_many :logins, dependent: :destroy
   has_many :roles, through: :assignments

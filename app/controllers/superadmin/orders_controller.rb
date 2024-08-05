@@ -1,15 +1,8 @@
 class Superadmin::OrdersController < Superadmin::BaseController
   skip_before_action :verify_authenticity_token
   skip_before_action :superadmin_account, only: [:create, :verify_payment]
-  # this before filter created issues on phones where overzealous browsers deleted sessions (so logging the client out) while the razorpay button was still active and used
+  # this before filter created issues on phones where overzealous browsers deleted sessions (so logging the client out) while the razorpay button was still active
   # before_action :client_account, only: [:create]
-  before_action :set_order, only: [:show]
-
-  def index
-    @pagy, @orders = pagy(Order.filter(filter_params).includes(:account).order_by_date)
-  end
-
-  def show; end
 
   def create
     amount = params[:amount].to_i # Amount in paise (e.g., 50000 for Rs 500)
@@ -17,8 +10,10 @@ class Superadmin::OrdersController < Superadmin::BaseController
     order = Razorpay::Order.create(amount: amount, currency: 'INR', receipt: SecureRandom.hex(10))
     render json: { order_id: order.id, amount: amount }
   rescue Exception
-    flash[:danger] = 'Unable to process payment. Please contact The Space'
-    redirect_to root_path
+    # javascript makes this request so provide a json response, as expected
+    render json: { order_id: nil, error_message: I18n.t('.unable_to_process_payment') }
+    # flash_message :danger, I18n.t('.unable_to_process_payment')
+    # redirect_to root_path
   end
 
   def verify_payment
@@ -42,6 +37,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
       redirect_to login_path
   end
 
+  private
   def complete_membership_purchase
     account = Account.find(order_params[:account_id])
     price = order_params[:price]
@@ -115,17 +111,14 @@ class Superadmin::OrdersController < Superadmin::BaseController
       variable_contents: { first_name: @purchase.client.first_name } }
   end
 
-  private
-
-  def set_order
-    @order = Order.find(params[:id])
-  end
-
   def order_params
     p = params.permit(:product_id, :account_id, :price_id, :price, :razorpay_payment_id, :payment_id, :client_ui)
     # delete returns nil if the key doesn't exist and the key's value if it does.
     p.merge!({ payment_id: p.delete(:razorpay_payment_id) || p[:payment_id] })
     p
+   # delete(key) → value. Deletes the key-value pair and returns the value from hsh whose key is equal to key
+   # so the :razorpay_payment_id is switched to :payment_id key
+   # #<ActionController::Parameters {"purchase_id"=>"821", "start_date"=>"2024-02-15", "account_id"=>"3", "client_ui"=>"shop page", "price"=>"650", "payment_id"=>"pay_Nah0Nx1uFw5rta"} permitted: true>    
   end
 
   def freeze_params
@@ -150,7 +143,4 @@ class Superadmin::OrdersController < Superadmin::BaseController
    # #<ActionController::Parameters {"purchase_id"=>"821", "start_date"=>"2024-02-15", "account_id"=>"3", "client_ui"=>"shop page", "price"=>"650", "payment_id"=>"pay_Nah0Nx1uFw5rta"} permitted: true>
   end  
 
-  def filter_params
-    params.permit(:status, :page)
-  end
 end

@@ -73,7 +73,8 @@ Rails.application.routes.draw do
   # https://guides.rubyonrails.org/routing.html section 2.6 namespaces & routing
   # routes to a superadmin namespaced controller, but doesn't include superadmin in the url or url helper
   scope module: :superadmin do
-    post 'verify_payment', to: 'orders#verify_payment'      
+    post 'orders', to: 'orders#create'
+    post 'verify_payment', to: 'orders#verify_payment'
     post 'regular_expenses/add'
     resource :blast, only: :show do
       collection do
@@ -86,7 +87,7 @@ Rails.application.routes.draw do
         post 'add_message'
       end
     end
-    resources :discounts, :discount_reasons, :orders
+    resources :discounts, :discount_reasons #, :orders
     resources :employee_accounts do
       collection do
         get 'add_role/:id', to: 'employee_accounts#add_role', as: 'add_role'

@@ -2,11 +2,6 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   include ApplicationHelper
   include SessionsHelper
-  before_action :before_everything
-
-  def before_everything
-    # byebug
-  end
 
   # to demonstrate session deletion issue is csrf-related (randomly occurring session deletion stops when protectfromforgery is false )
   # protect_from_forgery unless false

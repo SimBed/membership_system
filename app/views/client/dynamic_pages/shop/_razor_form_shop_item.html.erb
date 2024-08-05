@@ -39,6 +39,8 @@
     })
     .then(response => response.json())
     .then(data => {
+      if (data.order_id == null) throw new Error(data.error_message);
+      // console.log (data.order_id)
       document.getElementById("<%= "payment-form-product#{product.id}" %>").querySelector('[name="order_id"]').value = data.order_id;
 
       var options = {
@@ -63,7 +65,10 @@
       var rzp1 = new Razorpay(options);
       rzp1.open();
     })
-    .catch(error => console.error('Error:', error));
+    //.catch(error => console.error('Error:', error));
+    .catch((error) => {
+      // console.error('Error:', error);
+      alert(error)});
   }
 
 </script>

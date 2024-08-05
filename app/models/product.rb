@@ -7,7 +7,7 @@ class Product < ApplicationRecord
   # has_many :current_price_objects, lambda { where(current: true) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
   # the price is no longer explicitly selected following rearchitecture so current_price_objects is now redundant
   # has_many :current_price_objects, lambda { where('DATE(?) BETWEEN date_from AND date_until', Time.zone.now) }, class_name: 'Price', dependent: :destroy, inverse_of: :product
-  has_many :orders, dependent: :destroy
+  # has_many :orders, dependent: :destroy
   belongs_to :workout_group
   validates :max_classes, presence: true
   validates :validity_length, presence: true
