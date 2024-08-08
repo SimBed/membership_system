@@ -1,3 +1,4 @@
+<%= javascript_import_module_tag "custom/navbar-movement" %>
 <nav id="mainNav" class="navbar navbar-expand-lg navbar-sticky navbar-dark <%= 'bg-black' if @home != true %> inverted">
 
   <div class="container">
@@ -42,7 +43,7 @@
       <ul class="navbar-nav" >
         <li id="" class="nav-item dropdown dropdown-hover">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
+            aria-expanded="false" tabindex='-1'>
             <i class="fa fa-list"></i>
           </a>
           <div class="highnavbar dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown-1">

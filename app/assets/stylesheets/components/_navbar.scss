@@ -57,7 +57,11 @@
     @include media-breakpoint-up(lg) {
       padding-left: 1rem !important;
       padding-right: 1rem !important;
-    }      
+    }
+    &.tabbed {
+      background-color: grey;
+      border-radius: 80%;
+    }   
   }
 
   .nav-icon {
@@ -118,6 +122,16 @@ nav.disappear {
     margin-top: -12rem !important;
   }
 }
+
+.show_dropdown {
+  opacity: 1 !important;
+}
+
+.dropdown-item.tabbed {
+  background-color: grey;
+}
+
+
 
 
 
