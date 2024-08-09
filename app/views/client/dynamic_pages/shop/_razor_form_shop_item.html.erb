@@ -48,7 +48,7 @@
         "amount": data.amount,
         "currency": "INR",
         "name": "The Space",
-        "description": "<%= "#{@renewal.product.name(verbose: true)}" %>",
+        "description": "<%= "#{product.name(verbose: true)}" %>",
         "order_id": data.order_id,
         "handler": function (response){
           document.getElementById("<%= "payment-form-product#{product.id}" %>").querySelector('[name="razorpay_payment_id"]').value = response.razorpay_payment_id;
