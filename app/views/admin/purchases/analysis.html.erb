@@ -1,0 +1,15 @@
+<div class="container px-1">
+  <h4 class='text-center'>Purchase Analysis</h4>
+</div>
+<div class="mb-5">
+  <%= line_chart @purchase_count_by_week, ytitle: "Count" %>
+  <%= line_chart @purchase_charge_by_week, ytitle: "Payment (Rs)", thousands: "," %>
+</div>
+<div class='mb-4'>
+  <h5 class='text-center'>Count by Workout Group</h5>
+  <%= pie_chart @purchase_count_by_wg, donut: true, legend: false, label: "Value" %>
+</div>
+<div>
+  <h5 class='text-center'>Charge by Workout Group</h5>
+  <%= pie_chart @purchase_charge_by_wg, donut: true, thousands: ",", legend: "bottom" %>
+</div>

@@ -4,14 +4,10 @@ class Admin::PurchasesController < Admin::BaseController
   # include ParamsDateConstructor  
   skip_before_action :admin_account
   before_action :junioradmin_account
+  before_action :superadmin_account, only: :analysis
   before_action :initialize_sort, only: :index
   before_action :set_purchase, only: [:show, :edit, :update, :destroy, :expire]
   before_action :sanitize_params, only: [:create, :update]
-  # this should be a callback on Purchase model not a filter
-  # before_action :already_had_trial?, only: [:create, :update]
-  # before_action :changing_main_purchase_product?, only: :update
-  # before_action :changing_main_purchase_name?, only: :update
-  # before_action :changing_rider?, only: :update
   # https://stackoverflow.com/questions/30221810/rails-pass-params-arguments-to-activerecord-callback-function
   # parameter is an array to deal with the situation where eg a wkclass is deleted and multiple purchases need updating
   # this approach is no good as the callback should be after a successful create not a failed create
@@ -25,23 +21,14 @@ class Admin::PurchasesController < Admin::BaseController
     handle_search
     handle_filter
     handle_period
-    handle_charting if @superadmin
-    # Purchase.includes(:bookings, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
-    # financial summary for superadmin only - don't want to risk unneccessary calc slowing down response for admin
-    # much slower if unneccessarily done after sort
-    # want the the total pages sum (not just the current page sum)
-    # https://stackoverflow.com/questions/5483407/subqueries-in-activerecord - jan 3, 2012
-    # this appeared to work but in some situations (i couldn't resolve fails with)
-    # ActiveRecord::StatementInvalid Exception: PG::SyntaxError: ERROR:  subquery has too many columns
-    # so reverted to previous less efficent 2 query approach
-    # @purchases_all_pages_sum = Purchase.where("id IN (#{@purchases.select(:id).to_sql})").sum(:payment) if logged_in_as?('superadmin')
     @purchases_all_pages_sum = Purchase.where(id: @purchases.pluck(:id)).sum(:charge) if logged_in_as?('admin', 'superadmin')
     handle_sort
     prepare_items_for_filters
     handle_pagination
     handle_index_response
   end
-
+  
+  
   def show
     @discounts = @purchase.discounts
     @bookings_no_amnesty = @purchase.bookings.no_amnesty.merge(Booking.order_by_date)
@@ -51,20 +38,20 @@ class Admin::PurchasesController < Admin::BaseController
     @link_from = params[:link_from]
     handle_show_response
   end
-
+  
   def new
     @purchase = Purchase.new
     prepare_items_for_dropdowns
     @form_cancel_link = purchases_path
     payment = @purchase.build_payment    
   end
-
+  
   def edit
     @form_cancel_link = params[:link_from] == 'show' ? purchase_path(@purchase) : purchases_path
     prepare_items_for_dropdowns
     handle_show_response    
   end
-
+  
   def create
     @purchase = Purchase.new(purchase_params)
     if @purchase.save
@@ -83,7 +70,7 @@ class Admin::PurchasesController < Admin::BaseController
       render :new, status: :unprocessable_entity
     end
   end
-
+  
   def update
     if @purchase.update(purchase_params)
       # if the edit does not change the discounts, then no further action, otherwise delete all the purchases existing DiscountAssignments and create new ones
@@ -108,13 +95,13 @@ class Admin::PurchasesController < Admin::BaseController
       render :edit, status: :unprocessable_entity
     end
   end
-
+  
   def destroy
     @purchase.destroy
     redirect_to purchases_path
     flash_message :success, t('.success', name: @purchase.client.name)
   end
-
+  
   def client_filter
     clear_session(:select_client_name)
     session[:select_client_name] = params[:select_client_name] || session[:select_client_name]
@@ -123,14 +110,14 @@ class Admin::PurchasesController < Admin::BaseController
     render json: { selected_client_index: @selected_client_index }
     # redirect_to new_purchase_path
   end
-
+  
   def clear_filters
     # *splat operator is used to turn array into an argument list
     # https://ruby-doc.org/core-2.0.0/doc/syntax/calling_methods_rdoc.html#label-Array+to+Arguments+Conversion
     clear_session(*session_filter_list)
     redirect_to purchases_path
   end
-
+  
   def filter
     clear_session(*session_filter_list)
     session[:search_name] = params[:search_name]
@@ -140,7 +127,7 @@ class Admin::PurchasesController < Admin::BaseController
     end
     redirect_to purchases_path
   end
-
+  
   def expire
     if @purchase.expired?
       @purchase.update(status: @purchase.status_calc, expiry_date: @purchase.expiry_date_calc)
@@ -151,7 +138,22 @@ class Admin::PurchasesController < Admin::BaseController
     end
     redirect_to @purchase
   end
-
+  
+  def analysis
+    # Purchase.includes(:bookings, :product, :client).sum(:payment) duplicates payments because includes becomes single query joins in this situation
+    @purchases = Purchase.all
+    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
+    Purchase.default_timezone = :utc
+    # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_charge_by_week gives strange results (doubling up on some purchases)...haven't resolved
+    # Bullet.enable = false if Rails.env == 'development'
+    @purchase_count_by_week = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
+    @purchase_charge_by_week = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:charge)
+    @purchase_count_by_wg = Purchase.joins(product: [:workout_group]).group('workout_groups.name').count
+    @purchase_charge_by_wg = Purchase.joins(product: [:workout_group]).group('workout_groups.name').sum(:charge)
+    # Bullet.enable = true if Rails.env == 'development'
+    Purchase.default_timezone = :local
+  end
+  
   def form_field_change
     # dop = construct_date(params, 'dop')
     dop = check_dop_valid
@@ -169,32 +171,32 @@ class Admin::PurchasesController < Admin::BaseController
       base_price = Price.base_at(dop).find_by(product_id: params[:product_id])
       payment_after_discount = apply_discount(base_price, renewal_discount, status_discount, oneoff_discount, discretion_discount, commercial_discount)    
       render json: { renewal: helpers.collection_select(:purchase, :renewal_discount_id, discount_options('renewal', dop, discount_none), :id, :name,
-                                                        selected: params[:renewal_discount_id] || discount_none.id),
-                    status: helpers.collection_select(:purchase, :status_discount_id, discount_options('status', dop, discount_none), :id, :name,
-                                                      selected: params[:status_discount_id] || discount_none.id),
-                    commercial: helpers.collection_select(:purchase, :commercial_discount_id, discount_options('commercial', dop, discount_none), :id, :name,
-                                                      selected: params[:commercial_discount_id] || discount_none.id),
-                    discretion: helpers.collection_select(:purchase, :discretion_discount_id, discount_options('discretion', dop, discount_none), :id, :name,
-                                                      selected: params[:discretion_discount_id] || discount_none.id),
-                    oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, discount_options('oneoff', dop, discount_none), :id, :name,
-                                                      selected: params[:oneoff_discount_id] || discount_none.id),
-                    base_price_id: base_price&.id,
-                    base_price_price: base_price&.price,
-                    payment_after_discount: payment_after_discount }
+      selected: params[:renewal_discount_id] || discount_none.id),
+      status: helpers.collection_select(:purchase, :status_discount_id, discount_options('status', dop, discount_none), :id, :name,
+      selected: params[:status_discount_id] || discount_none.id),
+      commercial: helpers.collection_select(:purchase, :commercial_discount_id, discount_options('commercial', dop, discount_none), :id, :name,
+      selected: params[:commercial_discount_id] || discount_none.id),
+      discretion: helpers.collection_select(:purchase, :discretion_discount_id, discount_options('discretion', dop, discount_none), :id, :name,
+      selected: params[:discretion_discount_id] || discount_none.id),
+      oneoff: helpers.collection_select(:purchase, :oneoff_discount_id, discount_options('oneoff', dop, discount_none), :id, :name,
+      selected: params[:oneoff_discount_id] || discount_none.id),
+      base_price_id: base_price&.id,
+      base_price_price: base_price&.price,
+      payment_after_discount: payment_after_discount }
     end
-      
+    
   end
-
+  
   private
-
+  
   def check_dop_valid
     # eg administrator could enter 31 Feb by mistake
     return DateTime.new(params[:dop_1i].to_i,
     params[:dop_2i].to_i,
     params[:dop_3i].to_i)
-
-    rescue
-      nil
+    
+  rescue
+    nil
   end
 
   def discount_options(discount_type, date, discount_none)
@@ -233,35 +235,6 @@ class Admin::PurchasesController < Admin::BaseController
 
     false
   end
-
-  # def changing_main_purchase_product?
-  #   return false if params[:purchase][:product_id].blank?
-
-  #   original_purchase_has_rider = @purchase.product.has_rider?
-  #   new_product_has_rider = Product.find(params[:purchase][:product_id]).has_rider?
-  #   return false if (original_purchase_has_rider && new_product_has_rider) || (!original_purchase_has_rider && !new_product_has_rider)
-
-  #   flash[:warning] = "Purchase not updated. Can't change a purchase without a rider to one with a rider." if !original_purchase_has_rider && new_product_has_rider
-  #   flash[:warning] = "Purchase not updated. Can't change a purchase with a rider to one without a rider." if original_purchase_has_rider && !new_product_has_rider
-  #   redirect_to edit_purchase_path(@purchase)
-  # end
-
-  # def changing_main_purchase_name?
-  #   original_purchase_has_rider = @purchase.rider_purchase.present?
-  #   client_changed = @purchase.client_id != params[:purchase][:client_id].to_i
-
-  #   return false unless client_changed && original_purchase_has_rider
-
-  #   flash[:warning] = "Purchase not updated. Can't change client of a purchase with a rider."
-  #   redirect_to edit_purchase_path(@purchase)
-  # end
-
-  # def changing_rider?
-  #   return false if @purchase.main_purchase.nil?
-
-  #   flash[:warning] = "Purchase not updated. Can't change details of a purchase that is a rider"
-  #   redirect_to purchase_path(@purchase)
-  # end
 
   def restart
     new_purchase = @purchase.dup
@@ -330,17 +303,6 @@ class Admin::PurchasesController < Admin::BaseController
     @purchases = @purchases.during(month_period(session[:purchases_period]))
   end
 
-  def handle_charting
-    # HACK: for timezone issue with groupdata https://github.com/ankane/groupdate/issues/66
-    Purchase.default_timezone = :utc
-    # Would like to replace 'Purchase.where(id: @purchases.map(&:id))' with '@purchases' but without this hack @purchase_payments_for_chart gives strange results (doubling up on some purchases)...haven't resolved
-    # Bullet.enable = false if Rails.env == 'development'
-    @purchase_count_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
-    @purchase_payments_for_chart = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:charge)
-    # Bullet.enable = true if Rails.env == 'development'
-    Purchase.default_timezone = :local
-  end  
-
   def prepare_items_for_filters
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
@@ -360,7 +322,6 @@ class Admin::PurchasesController < Admin::BaseController
   end
 
   def sort_on_database
-    # @purchases = @purchases.send("order_by_#{session[:sort_option]}").page params[:page]
     @purchases = @purchases.send("order_by_#{session[:sort_option]}")
   end
 

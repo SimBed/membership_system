@@ -1,26 +1,29 @@
 Rails.application.routes.draw do
-  # root 'public_pages/home#welcome'
   # https://stackoverflow.com/questions/65794152/how-can-i-do-a-health-check-for-a-rails-based-app-on-render
   get '/health_check', to: proc { [200, {}, ['success']] }
   # whereas below from railsguide3.13 doesnt work
   # get '/health', to: ->(env) { [204, {}, ['']] }
 
+  scope module: :public_pages do
+    root 'home#welcome'
+    get '/about', to: 'footer#about'
+    get '/terms_and_conditions', to: 'footer#package_policy'
+    get '/charges_and_deductions', to: 'footer#charges'
+    get '/privacy_policy',  to: 'footer#privacy_policy'
+    get '/payment_policy',  to: 'footer#payment_policy'
+    get '/contact',  to: 'footer#contact'
+    get '/group_classes', to: 'home#group_classes'
+    get '/signup', to: 'home#signup'
+    post '/signup',  to: 'home#create_account'
+    get '/chootiya', to: 'home#wedontsupport'
+    get '/buboo', to: 'home#hearts'
+  end
+
   # https://guides.rubyonrails.org/routing.html 2.10 Adding More RESTful Actions...2.10.2 Adding Collection Routes
   scope module: :admin do
-    # principle correct but example routes need updating
-    # if say get 'admin/purchases/filter' was after the (admin namespaced) resources :purchases, a request to admin/purchases/filter would be handled by the show method of the purchases controller (with params[:id] = 'filter')
-    # and an error would arise 'ActiveRecord::RecordNotFound (Couldn't find Purchase with 'id'=filter):'. This happens due to https://guides.rubyonrails.org/routing.html section 2.2
-    # the first match of the url 'admin/purchases/filter' would be /admin/purchases/:id(.:format), handled by the show method. The admin/purchases/filter(.:format) would be ignored as it comes later.
-    get '/purchases/client_filter', to: 'purchases#client_filter', as: 'client_filter'
-    patch '/purchases/:id/expire', to: 'purchases#expire', as: 'expire_purchase'
-    # get '/purchases/discount'
-    # get '/purchases/dop_change'
-    # get '/workout_groups/:id/instructor_expense_filter', to: 'workout_groups#instructor_expense_filter', as: 'instructor_expense_filter'
     get '/wkclasses/instructor_select'
     get '/footfall', to: 'bookings#footfall'
     get '/timetable', to: 'timetables#public_format', as: 'public_format_timetable'
-    # get 'client_analyze', to: 'clients#analyze', as: 'client_analyze'
-    # get 'workout_groups/:id/show_workouts', to: 'workout_groups#show_workouts', as: 'show_workouts'
     post '/timetable/:id/copy', to: 'timetables#deep_copy', as: 'timetable_deep_copy'
     post '/wkclasses/:id/repeat', to: 'wkclasses#repeat', as: 'wkclass_repeat'
     resources :products, :wkclasses, :workouts do
@@ -30,12 +33,19 @@ Rails.application.routes.draw do
         get 'clear_filters'
       end
     end
+    # Something to be aware of https://guides.rubyonrails.org/routing.html section 2.2
+    # if say get 'admin/purchases/filter' was after the (admin namespaced) resources :purchases, a request to admin/purchases/filter would be handled by the show method
+    # of the purchases controller (with params[:id] = 'filter') and an error would arise 'ActiveRecord::RecordNotFound (Couldn't find Purchase with 'id'=filter):'. 
+    # the first match of the url 'admin/purchases/filter' would be /admin/purchases/:id(.:format), handled by the show method. The admin/purchases/filter(.:format) would be ignored as it comes later. 
     resources :purchases do
       collection do
-        get 'filter'
         get 'clear_filters'
+        get 'client_filter'
         get 'discount'
-        get 'form_field_change'        
+        get 'filter'
+        get 'form_field_change'
+        get 'analysis'
+        patch ':id/expire', to: 'purchases#expire', as: 'expire'
       end
     end
     resources :clients do
@@ -87,7 +97,7 @@ Rails.application.routes.draw do
         post 'add_message'
       end
     end
-    resources :discounts, :discount_reasons #, :orders
+    resources :discounts, :discount_reasons
     resources :employee_accounts do
       collection do
         get 'add_role/:id', to: 'employee_accounts#add_role', as: 'add_role'
@@ -123,11 +133,12 @@ Rails.application.routes.draw do
   namespace :client do    
     get '/:id/shop', to: 'dynamic_pages#shop', as: 'shop'
     get '/:id/history', to: 'data_pages#history', as: 'history'
+    get ':id/bookings', to: 'bookings#index', as: 'bookings'
+    post ':id/bookings', to: 'bookings#create', as: 'create_booking'
     # temporarily retain this route and redirect to client_bookings_path
     get '/:id/book', to: 'dynamic_pages#book', as: 'book'
     get '/:id/pt', to: 'data_pages#pt', as: 'pt'
     get '/timetable', to: 'data_pages#timetable', as: 'timetable'
-    # get '/:id/achievement', to: 'data_pages#achievement', as: 'achievement'
     get '/:id/achievements', to: 'data_pages#achievements', as: 'achievements'
     get ':id/new_freeze', to: 'package_modification#new_freeze', as: 'package_modification_new_freeze'
     get ':id/restart', to: 'package_modification#restart', as: 'package_modification_restart'
@@ -136,12 +147,9 @@ Rails.application.routes.draw do
     get ':id/cancel_restart', to: 'package_modification#cancel_restart', as: 'package_modification_cancel_restart'
     get ':id/cancel_transfer', to: 'package_modification#cancel_transfer', as: 'package_modification_cancel_transfer'
     post ':id/buy_freeze', to: 'package_modification#buy_freeze', as: 'buy_freeze'
-    get ':id/bookings', to: 'bookings#index', as: 'bookings'
-    post ':id/bookings', to: 'bookings#create', as: 'create_booking'
-    # $app.client_update_booking_path(Client.first, Client.first.bookings.last)
+    # test out on console $app.client_update_booking_path(Client.first, Client.first.bookings.last)
     # => "/client/1/booking_cancellations/1668"
-    patch ':client_id/booking_cancellations/:id', to: 'booking_cancellations#update', as: 'update_booking'
-    # resources :booking_cancellations, only: :update    
+    patch ':client_id/booking_cancellations/:id', to: 'booking_cancellations#update', as: 'update_booking' 
     resources :waitings, only: [:create, :destroy]
     resources :password_resets, only: [:new, :create, :edit, :update] do
       collection do
@@ -172,20 +180,5 @@ Rails.application.routes.draw do
       end
     end
     end
-
-  scope module: :public_pages do
-    root 'home#welcome'
-    get '/about', to: 'footer#about'
-    get '/terms_and_conditions', to: 'footer#package_policy'
-    get '/charges_and_deductions', to: 'footer#charges'
-    get '/privacy_policy',  to: 'footer#privacy_policy'
-    get '/payment_policy',  to: 'footer#payment_policy'
-    get '/contact',  to: 'footer#contact'
-    get '/group_classes', to: 'home#group_classes'
-    get '/signup', to: 'home#signup'
-    post '/signup',  to: 'home#create_account'
-    get '/chootiya', to: 'home#wedontsupport'
-    get '/buboo', to: 'home#hearts'
-  end
 
 end

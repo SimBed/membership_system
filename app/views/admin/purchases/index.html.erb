@@ -12,9 +12,9 @@
   <% end %>
     <%= turbo_frame_tag 'purchases' do %>
       <%= render partial: 'purchases_table' %>
-      <% if @superadmin %>
-        <%= line_chart @purchase_count_for_chart, ytitle: "Count" %>
-        <%= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>
-      <% end %>
+      <%# if @superadmin %>
+        <%#= line_chart @purchase_count_for_chart, ytitle: "Count" %>
+        <%#= line_chart @purchase_payments_for_chart, ytitle: "Payment (Rs)", thousands: "," %>
+      <%# end %>
     <% end %>
 <% end %>
