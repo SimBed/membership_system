@@ -4,7 +4,7 @@ class Admin::FreezesController < Admin::BaseController
   before_action :set_freeze, only: [:edit, :update, :destroy]
   
   def index
-    @freezes = Freeze.order_by_start_date_desc
+    @freezes = Freeze.order_by_start_date_desc.includes(:payment, purchase: [:client, product: [:workout_group]])
     @months = ['All'] + months_logged
     handle_period
     handle_pagination    

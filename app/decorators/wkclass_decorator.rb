@@ -54,15 +54,21 @@ class WkclassDecorator < BaseDecorator
   end
 
   def spaces_taken
-    "#{@uncancelled_bookings} #{image_tag('reserve.png', class: 'header_icon')}".html_safe
+    tooltip_title = I18n.t('.spaces_taken')
+    content = "#{@uncancelled_bookings} #{image_tag('reserve.png', class: 'header_icon')}".html_safe
+    content_tag(:div, content, class: %w[column col-05x], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)    
   end
 
   def spaces_left
-    "#{max_capacity - @uncancelled_bookings} #{image_tag('group.png', class: 'header_icon')}".html_safe
+    tooltip_title = I18n.t('.spaces_left')
+    content = "#{max_capacity - @uncancelled_bookings} #{image_tag('group.png', class: 'header_icon')}".html_safe
+    content_tag(:div, content, class: %w[column col-05x], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)    
   end
 
   def number_on_waiting_list
-    "#{waitings.size} #{image_tag('waiting.png', class: 'header_icon')}".html_safe
+    tooltip_title = I18n.t('.waiting_list')
+    content = "#{waitings.size} #{image_tag('waiting.png', class: 'header_icon')}".html_safe
+    content_tag(:div, content, class: %w[column col-05x], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)
   end
 
   def sell_online(link)

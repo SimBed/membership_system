@@ -4,9 +4,9 @@
     <div class="column col-1x"><%= wkclass_decorator.name_link(@pagy.page) %></div>
     <div class="column col-1x"><%= wkclass_decorator.date %></div>
     <div class="column col-1x"><%= wkclass_decorator.time %></div>
-    <div class="column col-05x"><%= wkclass_decorator.spaces_taken %></div>
-    <div class="column col-05x"><%= wkclass_decorator.spaces_left %></div>
-    <div class="column col-05x"><%= wkclass_decorator.number_on_waiting_list %></div>
+    <%= wkclass_decorator.spaces_taken %>
+    <%= wkclass_decorator.spaces_left %>
+    <%= wkclass_decorator.number_on_waiting_list %>
     <%= wkclass_decorator.edit(@junioradmin_plus, @pagy.page, nil, 'wkclasses_index') %>
     <%= wkclass_decorator.delete(@junioradmin_plus, wkclass.deletable?, @pagy.page, @nil, 'wkclasses_index') %>
   </div>

@@ -2,8 +2,8 @@ class Superadmin::InstructorRatesController < Superadmin::BaseController
   before_action :set_instructor_rate, only: [:edit, :update, :destroy]
 
   def index
-    @current_instructor_rates = InstructorRate.current.order_by_group_instructor_rate
-    @not_current_instructor_rates = InstructorRate.not_current.order_by_group_instructor_rate
+    @current_instructor_rates = InstructorRate.current.order_by_group_instructor_rate.includes(:instructor)
+    @not_current_instructor_rates = InstructorRate.not_current.order_by_group_instructor_rate.includes(:instructor)
     respond_to do |format|
       format.html
       format.turbo_stream

@@ -7,7 +7,7 @@ class Shared::StrengthMarkersController < Shared::BaseController
   before_action :initialize_sort, only: :index
 
   def index
-      @strength_markers =  @client_logging ? @client.strength_markers : StrengthMarker.all
+      @strength_markers =  @client_logging ? @client.strength_markers : StrengthMarker.all.includes(:client)
       handle_client_filter unless @client_logging
       handle_marker_filter      
       handle_sort

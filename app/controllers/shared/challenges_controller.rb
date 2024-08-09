@@ -2,7 +2,7 @@ class Shared::ChallengesController < Shared::BaseController
   before_action :set_challenge, only: [:show, :edit, :update, :destroy]
 
   def index
-    @challenges = Challenge.order_by_name
+    @challenges = Challenge.order_by_name.includes(:main_challenge)
   end
 
   def show

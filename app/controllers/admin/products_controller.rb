@@ -7,7 +7,7 @@ class Admin::ProductsController < Admin::BaseController
   # after_action -> { update_purchase_status(@purchases) }, only: [:update]
 
   def index
-    @products = Product.all
+    @products = Product.all.includes(:workout_group, :purchases, :prices)
     # @products_not_current = Product.not_current
     handle_filter
     handle_sort

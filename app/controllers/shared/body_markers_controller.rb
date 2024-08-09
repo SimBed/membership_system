@@ -7,7 +7,7 @@ class Shared::BodyMarkersController < Shared::BaseController
   before_action :initialize_sort, only: :index  
 
   def index
-      @body_markers =  @client_logging ?  @client.body_markers : BodyMarker.all
+      @body_markers =  @client_logging ?  @client.body_markers : BodyMarker.all.includes(:client)
       handle_client_filter unless @client_logging
       handle_marker_filter
       handle_sort

@@ -19,7 +19,8 @@ class Admin::WkclassesController < Admin::BaseController
     # Bullet would prefer us to counter_cache than load uncancelled_bookings as all we need is the size of the association, however counter_cache doesn't work for scoped associations
     # and i'm not minded to roll this myself given it isn't causing any major performance issue
     # https://stackoverflow.com/questions/37029847/counter-cache-in-rails-on-a-scoped-association
-    @wkclasses = Wkclass.includes([:uncancelled_bookings, :workout, :bookings, :instructor]).order_by_date
+    # could counter cache the waitings if desired - https://blog.appsignal.com/2018/06/19/activerecords-counter-cache.html gives explanation of populating the counter_cache for objects that predate the counter 
+    @wkclasses = Wkclass.includes([:uncancelled_bookings, :workout, :bookings, :instructor, :waitings]).order_by_date
     handle_filter
     handle_period
     # @wkclasses = @wkclasses.page params[:page]

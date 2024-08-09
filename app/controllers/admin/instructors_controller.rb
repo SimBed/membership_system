@@ -6,8 +6,8 @@ class Admin::InstructorsController < Admin::BaseController
   before_action :set_raw_numbers, only: :edit
 
   def index
-    @current_instructors = Instructor.current.order_by_name
-    @not_current_instructors = Instructor.not_current.order_by_name
+    @current_instructors = Instructor.current.order_by_name.includes(:wkclasses, :account)
+    @not_current_instructors = Instructor.not_current.order_by_name.includes(:wkclasses, :account)
     @superadmin = logged_in_as?('superadmin') ? true : false
     respond_to do |format|
       format.html

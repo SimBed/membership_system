@@ -2,7 +2,7 @@ class Admin::AchievementsController < Admin::BaseController
   before_action :set_achievement, only: [:show, :edit, :update, :destroy]
 
   def index
-    @achievements = Achievement.order_by_date
+    @achievements = Achievement.order_by_date.includes(:client, :challenge)
   end
 
   def new
