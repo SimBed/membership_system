@@ -16,7 +16,7 @@ class Admin::PurchasesController < Admin::BaseController
   def index
     # @purchases = Purchase.includes(:bookings, :product, :freezes, :adjustments, :client)
     # associations referrred to in view - bookings, product in start_to_expiry method, client directly in purchase.client.name
-    @purchases = Purchase.includes(:bookings, :freezes, :adjustments, :penalties, :payment, :client, product: [:workout_group])
+    @purchases = Purchase.includes(:bookings, :freezes, :adjustments, :penalties, :client, :restart_as_parent, product: [:workout_group])
     @superadmin = logged_in_as?('superadmin')
     handle_search
     handle_filter

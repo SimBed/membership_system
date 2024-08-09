@@ -9,7 +9,7 @@ class Admin::ClientsController < Admin::BaseController
 
   def index
     # this must be inefficient, loading all clients and their associations into memory
-    @clients = Client.includes(:account, :purchases)
+    @clients = Client.includes(:account, :purchases, :declaration)
     handle_filter
     # switched order cos of bug with chaining scope with group by in it (previously handle search before handle filter)
     handle_search

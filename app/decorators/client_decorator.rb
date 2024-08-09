@@ -12,17 +12,6 @@ class ClientDecorator < BaseDecorator
     whatsapp.phony_formatted(format: :international, spaces: '-')
   end
 
-  # def submitted_declaration(in_table: true)
-  #   tooltip_title = if declaration
-  #                     I18n.t('.submitted_declaration')
-  #                   else
-  #                     I18n.t('.submitted_declaration_no')
-  #                   end
-  #   image = image_tag('health.png', class: ['table_icon', ('dull' unless declaration)].compact.join(' '))
-  #   return content_tag(:span, image, data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title) unless in_table
-
-  #   content_tag(:div, image, class: %w[column nomobile], data: { toggle: 'tooltip', placement: 'top' }, title: tooltip_title)
-  # end
   def submitted_declaration(link_from: nil, authorised: false)
     viewable = true if authorised && declaration.present? && link_from == 'clients_index'
     in_table = true if link_from == 'clients_index_table'

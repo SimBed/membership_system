@@ -4,7 +4,7 @@ class WkclassDecorator < BaseDecorator
     # wkd=WkclassDecorator.new(Wkclass.last)
     # do the normal Delegator intializing, then a bit more
     super
-    @uncancelled_bookings = wkclass.uncancelled_bookings.size # &.size || 0
+    @uncancelled_bookings = wkclass.uncancelled_bookings.size
   end
 
   def pt_client_name
