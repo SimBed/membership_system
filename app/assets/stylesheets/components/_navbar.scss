@@ -59,8 +59,11 @@
       padding-right: 1rem !important;
     }
     &.tabbed {
-      background-color: grey;
-      border-radius: 80%;
+      color: $gray-600 !important;
+      @include media-breakpoint-up(lg) {
+        background-color: grey;
+        border-radius: 80%;
+      }      
     }   
   }
 
@@ -131,11 +134,8 @@ nav.disappear {
   background-color: grey;
 }
 
-
-
-
-
-
-    
-
-
+.danny {
+  background-color: #851212;
+  @include media-breakpoint-up(lg) {
+    background-color: yellow; }
+}
