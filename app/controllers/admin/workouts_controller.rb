@@ -13,10 +13,6 @@ class Admin::WorkoutsController < Admin::BaseController
   end
 
   def show
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end    
   end
 
   def new

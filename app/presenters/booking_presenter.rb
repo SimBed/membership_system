@@ -228,18 +228,3 @@ class BookingPresenter < BasePresenter
   end  
 
 end
-
-
-# def link_maker(text_params, icon_params, image_params, route, route_params, turbo_params, classes_array)
-#   name = if image_params
-#           image_params
-#          elsif icon_params
-#           icon_params
-#          else
-#           text_params
-#          end
-#   url = "#{route}?#{route_params.to_query if route_params}"
-#   data = { "turbo-method": turbo_params[:method], turbo_confirm: turbo_params[:confirmation], turbo: turbo_params[:turbo] }
-#   css_classes = classes_array&.compact&.join(' ')
-#   link_to(name, url, data: data, class: css_classes)
-# end
