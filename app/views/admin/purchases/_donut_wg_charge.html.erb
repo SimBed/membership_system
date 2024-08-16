@@ -1,0 +1,4 @@
+<div class='d-flex flex-column'>
+  <h4 class='text-center'><%= year.year %></h4>
+  <%= pie_chart @purchase_charge_by_wg_hash[year.year], donut: true, thousands: ",", legend: "bottom" %>
+</div>

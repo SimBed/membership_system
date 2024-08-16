@@ -148,8 +148,20 @@ class Admin::PurchasesController < Admin::BaseController
     # Bullet.enable = false if Rails.env == 'development'
     @purchase_count_by_week = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).count
     @purchase_charge_by_week = Purchase.where(id: @purchases.map(&:id)).group_by_week(:dop).sum(:charge)
-    @purchase_count_by_wg = Purchase.joins(product: [:workout_group]).group('workout_groups.name').count
-    @purchase_charge_by_wg = Purchase.joins(product: [:workout_group]).group('workout_groups.name').sum(:charge)
+    @purchase_years = purchase_years
+    @purchase_count_by_wg_hash={}
+    @purchase_charge_by_wg_hash={}
+    # i want a consistent colour across the years in the donut for the main workout groups 
+    # https://stackoverflow.com/questions/4283295/how-to-sort-an-array-in-ruby-to-a-particular-order
+    sort_order = %w[Group Space\ PT Apoorv\ PT Gigi\ PT]
+    lookup = sort_order.each_with_index.to_h
+    sort_order.each_with_index do |item, index|
+      lookup[item] = index
+    end
+    @purchase_years.each do |year|
+      @purchase_count_by_wg_hash[year.year] = Purchase.count_by_workout_group(year..year.end_of_year).sort_by { |key, value| lookup.fetch(key, sort_order.length + 1) }
+      @purchase_charge_by_wg_hash[year.year] = Purchase.charge_by_workout_group(year..year.end_of_year).sort_by { |key, value| lookup.fetch(key, sort_order.length + 1) }
+    end
     # Bullet.enable = true if Rails.env == 'development'
     Purchase.default_timezone = :local
   end

@@ -35,13 +35,16 @@ module ApplicationHelper
     raw(rendered.join('<br/>'))
   end
 
-  # prepare items for date selection
   def months_logged(advanced: 0)
-    # order_by_date sorts descending
     first_class_date = Wkclass.order_by_date.last.start_time - 1.month
     last_class_date = Wkclass.order_by_date.first.start_time + advanced.months
-    # @months = shouldn't be here?
     @months = months_between(first_class_date, last_class_date)
+  end
+
+  def purchase_years
+    first_purchase_year = Purchase.order_by_dop.last.dop.year
+    last_purchase_year = Purchase.order_by_dop.first.dop.year
+    (first_purchase_year..last_purchase_year).map { |year| Date.new(year, 1, 1) }
   end
 
   def nillify_when_blank(params, *params_items)

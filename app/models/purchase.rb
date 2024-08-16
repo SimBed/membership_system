@@ -74,6 +74,8 @@ class Purchase < ApplicationRecord
   scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
   scope :remind_to_renew, -> { package_started_not_expired.select(&:remind_to_renew?) }
   scope :during, ->(period) { where(dop: period) }
+  scope :count_by_workout_group, ->(period) { during(period).joins(product: [:workout_group]).group('workout_groups.name').count }
+  scope :charge_by_workout_group, ->(period) { during(period).joins(product: [:workout_group]).group('workout_groups.name').sum(:charge) }
   scope :unexpired_rider_without_ongoing_main, -> { not_fully_expired.joins(:main_purchase).where.not(main_purchase: { status: ['ongoing', 'classes all booked'] }) }
   scope :rider, -> { where.not(purchase_id: nil) }
   scope :main_purchase, -> { where(purchase_id: nil) }
