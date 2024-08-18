@@ -7,7 +7,16 @@ class Superadmin::OrdersController < Superadmin::BaseController
   def create
     amount = params[:amount].to_i # Amount in paise (e.g., 50000 for Rs 500)
     Razorpay.setup(Rails.configuration.razorpay[:key_id], Rails.configuration.razorpay[:key_secret])
-    order = Razorpay::Order.create(amount: amount, currency: 'INR', receipt: SecureRandom.hex(10))
+    # per Razorpay support #12133191 17/8/2024 pass payment_capture: true (to resolve intermittent issue with payments not auto-capturing)
+    # payment: {capture: 'automatic'} shown here https://razorpay.com/docs/payments/payments/capture-settings/api/
+    # when adding capture, it fails without all the capture_options also
+    order = Razorpay::Order.create(amount: amount, currency: 'INR', receipt: SecureRandom.hex(10),
+                                   payment: {capture: "automatic",
+                                             capture_options: {automatic_expiry_period: 12,
+                                                               manual_expiry_period: 7200,
+                                                               refund_speed: "optimum"}
+                                            }
+                                   )
     render json: { order_id: order.id, amount: amount }
   rescue Exception
     # javascript makes this request so provide a json response, as expected
