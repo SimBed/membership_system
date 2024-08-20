@@ -1,8 +1,13 @@
+<% timetable_decorator = decorate(timetable) %>
+<% use_for_display = timetable == @active_display %>
+<% use_for_wkclass = timetable == @active_build %>
 <div class="row">
-  <div class="column col-1x"><%= link_to timetable.title, timetable, class: 'like_button'  %></div>
-  <div class="column col-1x"><%= timetable.date_from&.strftime('%d %b %y') %></div>
-  <div class="column col-1x"><%= timetable.date_until&.strftime('%d %b %y') %></div>
-  <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_timetable_path(timetable), data: { turbo: false } %></div>
-  <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), timetable, data: { turbo_method: :delete, turbo_confirm: 'Timetable will be deleted. Are you sure?' }%></div>
-  <div class="column"><%= link_to image_tag('clipboard.png', class: "table_icon"), timetable_deep_copy_path(timetable), data: { turbo_method: :post, turbo_confirm: "A copy of this timetable, it's times, days and entries will be created. Are you sure?" }%></div>
+  <div class="column col-1x"><%= timetable_decorator.title_link %></div>
+  <div class="column col-1x"><%= timetable_decorator.date_fromm %></div>
+  <div class="column col-1x"><%= timetable_decorator.date_untill %></div>
+  <div class="column"><%= timetable_decorator.display(use_for_display) %></div>
+  <div class="column"><%= timetable_decorator.wkclass_maker(use_for_wkclass) %></div>
+  <div class="column"><%= timetable_decorator.edit %></div>
+  <div class="column"><%= timetable_decorator.delete %></div>
+  <div class="column"><%= timetable_decorator.copy %></div>
 </div>

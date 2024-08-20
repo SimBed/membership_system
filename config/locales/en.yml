@@ -342,4 +342,8 @@ en:
   unable_to_process_payment: Unable to process payment. Please contact The Space.
   waiting_list: number on waiting list  
   spaces_taken: number of spaces taken  
-  spaces_left: number of spaces left  
+  spaces_left: number of spaces left
+  timetable_delete: Timetable will be deleted. Are you sure?
+  timetable_copy: A copy of this timetable, it's times, days and entries will be created. Are you sure?
+  timetable_wkclassmaker: This timetable will be referenced to create new classes   
+  timetable_display: This timetable will be publicly displayed   

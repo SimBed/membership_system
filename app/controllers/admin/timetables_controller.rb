@@ -2,6 +2,7 @@ class Admin::TimetablesController < Admin::BaseController
   skip_before_action :admin_account, only: [:show_public, :show]
   before_action :junioradmin_account, only: :show
   before_action :set_timetable, only: [:show, :edit, :update, :destroy, :deep_copy]
+  before_action :set_active_timetables, only: :index
 
   def index
     @timetables = Timetable.order_by_date_until
@@ -62,6 +63,12 @@ class Admin::TimetablesController < Admin::BaseController
   end
 
   private
+
+  def set_active_timetables
+    @active_display = Timetable.active_at(Time.zone.now)
+    wkclass_date = Time.zone.now.advance(days: Rails.application.config_for(:constants)['wkclassmaker_advance'])
+    @active_build = Timetable.active_at(wkclass_date)    
+  end
 
   def unique_current_timetable
     case Timetable.current_at(Time.zone.now).size
