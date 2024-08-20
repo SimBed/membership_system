@@ -45,9 +45,9 @@ class Admin::TimetablesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update timetable' do
     log_in_as(@admin)
-    patch timetable_url(@timetable), params: { timetable: { title: @timetable.title } }
+    patch timetable_path(@timetable), params: { timetable: { title: @timetable.title } }
 
-    assert_redirected_to timetable_url(@timetable)
+    assert_redirected_to timetables_path
   end
 
   test 'should destroy timetable' do

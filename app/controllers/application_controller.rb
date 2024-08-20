@@ -65,7 +65,8 @@ class ApplicationController < ActionController::Base
   end
 
   def time_table_entries(show_publicly_invisible: false)
-    timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
+    # timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
+    timetable = Timetable.active_at(Time.zone.now)
     days = timetable.table_days.order_by_day
     @entries_hash = {}
     # {Monday: [<Entry:0x00007f1...>, <Entry:0x....], Tuesday: [....], ....}

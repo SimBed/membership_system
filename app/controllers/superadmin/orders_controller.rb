@@ -14,7 +14,7 @@ class Superadmin::OrdersController < Superadmin::BaseController
                                    payment: {capture: "automatic",
                                              capture_options: {automatic_expiry_period: 12,
                                                                manual_expiry_period: 7200,
-                                                               refund_speed: "optimum"}
+                                                               refund_speed: "normal"}
                                             }
                                    )
     render json: { order_id: order.id, amount: amount }

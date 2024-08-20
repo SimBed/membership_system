@@ -4,7 +4,8 @@ class Admin::TimetablesController < Admin::BaseController
   before_action :set_timetable, only: [:show, :edit, :update, :destroy, :deep_copy]
 
   def index
-    @timetables = Timetable.all
+    @timetables = Timetable.order_by_date_until
+    unique_current_timetable
   end
 
   def show
@@ -41,7 +42,7 @@ class Admin::TimetablesController < Admin::BaseController
   def update
     if @timetable.update(timetable_params)
       flash[:success] = t('.success')
-      redirect_to timetable_path(@timetable)
+      redirect_to timetables_path
     else
       render :edit, status: :unprocessable_entity
     end
@@ -62,11 +63,24 @@ class Admin::TimetablesController < Admin::BaseController
 
   private
 
+  def unique_current_timetable
+    case Timetable.current_at(Time.zone.now).size
+    when 0 
+      @uniqueness_error = true
+      @uniqueness_error_message = "There is no timetable active at today's date."
+    when 1
+      @uniqueness_error = false
+    else
+      @uniqueness_error = true
+      @uniqueness_error_message = "There is more than 1 timetable current at today's date."
+    end
+  end
+
   def set_timetable
     @timetable = Timetable.find(params[:id])
   end
 
   def timetable_params
-    params.require(:timetable).permit(:title)
+    params.require(:timetable).permit(:title, :date_from, :date_until)
   end
 end

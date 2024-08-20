@@ -16,6 +16,16 @@
     <%= form.text_field :title %>
   </div>
 
+  <div class="field mb-3">
+    <%= form.label :date_from, 'starting on' %>
+    <%= form.date_field :date_from, value: (form.object.new_record? ? Date.today : form.object.date_from) %>
+  </div>
+  
+  <div class="field mb-3">
+    <%= form.label :date_until, 'ending on' %>
+    <%= form.date_field :date_until, value: (form.object.new_record? ? 1.years.from_now.to_date : form.object.date_until) %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
