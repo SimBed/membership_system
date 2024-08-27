@@ -13,6 +13,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
     @other_client = @notstarted_purchase.client
     @account3 = accounts(:client_for_ongoing_trial)
     @purchase3 = @account3.client.purchases.last
+    @opengym = workouts(:opengym)
     # @account4 = accounts(:client_for_fixed)
     # @purchase4 = @account4.client.purchases.last
     travel_to(@tomorrows_class_early.start_time.beginning_of_day)
@@ -89,7 +90,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
                                                                    purchase_id: @purchase.id },
                                                         booking_section: 'group' }
     opengym = Wkclass.create(
-      workout_id: 8,
+      workout_id: @opengym.id,
       start_time: '2022-04-22 21:00:00',
       instructor: instructors(:amit),
       instructor_rate: instructor_rates(:amit_base),
@@ -108,7 +109,7 @@ class ClientBookingTest < ActionDispatch::IntegrationTest
   test '2nd booking on same day when 1st is limited (ie Open Gym) ' do
     log_in_as(@account_client)
     opengym = Wkclass.create(
-      workout_id: 8,
+      workout_id: @opengym.id,
       start_time: '2022-04-22 21:00:00',
       instructor: instructors(:amit),
       instructor_rate: instructor_rates(:amit_base),

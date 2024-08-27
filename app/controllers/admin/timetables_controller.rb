@@ -65,9 +65,9 @@ class Admin::TimetablesController < Admin::BaseController
   private
 
   def set_active_timetables
-    @active_display = Timetable.active_at(Time.zone.now)
+    @active_display = Timetable.actives_at(Time.zone.now).first
     wkclass_date = Time.zone.now.advance(days: Rails.application.config_for(:constants)['wkclassmaker_advance'])
-    @active_build = Timetable.active_at(wkclass_date)    
+    @active_build = Timetable.actives_at(wkclass_date).first
   end
 
   def unique_current_timetable

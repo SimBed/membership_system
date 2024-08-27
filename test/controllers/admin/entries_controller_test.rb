@@ -2,16 +2,17 @@ require 'test_helper'
 
 class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @entry = entries(:one)
-    @table_day = table_days(:one)
+    @entry = entries(:entry1)
+    @table_day = table_days(:mon1)
     @table_time = table_times(:one)
     @admin = accounts(:admin)
     @workout = workouts(:hiit)
+    @workout_other = workouts(:mobility)
   end
 
   test 'should get new' do
     log_in_as(@admin)
-    get new_entry_url
+    get new_entry_path
 
     assert_response :success
   end
@@ -19,11 +20,11 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
   test 'should create entry' do
     log_in_as(@admin)
     assert_difference('Entry.count') do
-      post entries_url, params: {
+      post entries_path, params: {
         entry: {
-          studio: @entry.studio,
-          goal: @entry.goal,
-          level: @entry.level,
+          studio: 'cellar',
+          goal: 'entropy',
+          level: 'prime',
           workout_id: @workout.id,
           table_day_id: @table_day.id,
           table_time_id: @table_time.id
@@ -31,30 +32,30 @@ class Admin::EntriesControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to timetable_url(@table_day.timetable)
+    assert_redirected_to timetable_path(@table_day.timetable)
   end
 
   test 'should get edit' do
     log_in_as(@admin)
-    get edit_entry_url(@entry)
+    get edit_entry_path(@entry)
 
     assert_response :success
   end
 
   test 'should update entry' do
     log_in_as(@admin)
-    patch entry_url(@entry), params: { entry: { studio: @entry.studio, goal: @entry.goal, level: @entry.level, workout_id: 4 } }
+    patch entry_path(@entry), params: { entry: { studio: 'window', goal: 'skill', level: 'olympic', workout_id: @workout_other.id } }
 
-    assert_redirected_to timetable_url(@entry.table_day.timetable)
+    assert_redirected_to timetable_path(@entry.table_day.timetable)
   end
 
   test 'should destroy entry' do
     log_in_as(@admin)
     timetable = @entry.table_day.timetable
     assert_difference('Entry.count', -1) do
-      delete entry_url(@entry)
+      delete entry_path(@entry)
     end
 
-    assert_redirected_to timetable_url(timetable)
+    assert_redirected_to timetable_path(timetable)
   end
 end

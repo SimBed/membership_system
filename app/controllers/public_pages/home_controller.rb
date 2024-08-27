@@ -66,7 +66,8 @@ class PublicPages::HomeController < ApplicationController
   private
 
   def set_timetable
-    time_table_entries(show_publicly_invisible: false)
+    @entries_hash = Timetable.display_entries    
+    # time_table_entries(show_publicly_invisible: false)
   end
 
   def daily_account_limit

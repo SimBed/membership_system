@@ -12,6 +12,6 @@ class Shared::BaseController < ApplicationController
 
   def set_public_timetable
     # @current_timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
-    @current_timetable = Timetable.active_at(Time.zone.now)    
+    @current_timetable = Timetable.actives_at(Time.zone.now).first    
   end
 end

@@ -12,6 +12,7 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     @purchase = purchases(:tina8c5wong)
     @instructor = instructors(:raki)
     @instructor_rate = instructor_rates(:raki_base)
+    @psm = workouts(:psm)
   end
 
   test 'attempt by client to book class with provisonally expired package should fail' do
@@ -19,11 +20,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
 
@@ -54,11 +55,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
     travel_to(Date.parse('March 17 2022').beginning_of_day)
@@ -98,11 +99,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
 
@@ -132,11 +133,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
 
@@ -172,11 +173,11 @@ class MalevolentBookingsTest < ActionDispatch::IntegrationTest
     log_in_as @admin
     assert_difference 'Wkclass.count', 3 do
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-19 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-20 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
       post wkclasses_path,
-           params: { wkclass: { workout_id: 3, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
+           params: { wkclass: { workout_id: @psm.id, start_time: '2022-03-21 10:30:00', instructor_id: @instructor.id, instructor_rate_id: @instructor_rate.id, max_capacity: 6 } }
     end
     follow_redirect!
 

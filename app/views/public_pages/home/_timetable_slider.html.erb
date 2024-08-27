@@ -17,7 +17,7 @@
               <div class="date-title pt-3 pb-1"><%= dayPresenter.timetable_day_name(use_short_name: false) %></div>
               <div class="date pb-3"><%= dayPresenter.next_occurring %></div>
             </div>
-            <% @entries_hash[day].each do |entry| %>
+            <% @entries_hash[day]&.each do |entry| %>
               <% entry_decorator = decorate(entry) %>
               <div class="d-flex flex-column mb-3 border-bottom border-grey border-1">
                 <div class="title-container">

@@ -64,18 +64,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def time_table_entries(show_publicly_invisible: false)
-    # timetable = Timetable.find(Rails.application.config_for(:constants)['display_timetable_id'])
-    timetable = Timetable.active_at(Time.zone.now)
-    days = timetable.table_days.order_by_day
-    @entries_hash = {}
-    # {Monday: [<Entry:0x00007f1...>, <Entry:0x....], Tuesday: [....], ....}
-    days.each do |day|
-      entries = Entry.where(table_day_id: day.id)
-      @entries_hash[day.name] = show_publicly_invisible ? entries.includes(:table_time, :workout).order_by_start :  entries.publicly_visible.includes(:table_time, :workout).order_by_start
-    end
-  end
-
   def notify_waiting_list(wkclass, triggered_by: 'admin')
     waitings = wkclass.waitings
     return if waitings.empty? || wkclass.in_the_past? || wkclass.at_capacity?
