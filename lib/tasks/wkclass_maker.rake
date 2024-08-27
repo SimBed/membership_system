@@ -1,7 +1,7 @@
 desc 'create wkclasses for the day based on timetable'
 task wkclass_daily_create: :environment do
   wkclass_date = Time.zone.now.advance(days: Rails.application.config_for(:constants)['wkclassmaker_advance'])
-  timetable = Timetable.active_at(wkclass_date)
+  timetable = Timetable.actives_at(wkclass_date).first
   return if timetable.nil?
   day_of_week = wkclass_date.strftime('%A')
   entries = Entry.joins(table_day: [:timetable]).joins(:table_time).where(timetables: { id: timetable.id }).where(table_days: { name: day_of_week }).order('table_times.start')

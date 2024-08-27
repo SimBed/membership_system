@@ -1,7 +1,5 @@
 default: &default
 
-#  display_timetable_id: 10
-#  wkclass_make_timetable_id: 10
  window_capacity: 8
  recipient_pagination: 200
  wkclassmaker_advance: 4

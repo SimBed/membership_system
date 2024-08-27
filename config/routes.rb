@@ -88,6 +88,10 @@ Rails.application.routes.draw do
     post 'regular_expenses/add'
     namespace :charts do
       get 'purchase_count_by_week'
+      get 'purchase_charge_by_week'
+      # get 'purchase_count_by_wg/:year', to: '#purchase_count_by_wg', as: :purchase_count_by_wg
+      get 'purchase_count_by_wg'
+      get 'purchase_charge_by_wg'
     end
     resource :blast, only: :show do
       collection do

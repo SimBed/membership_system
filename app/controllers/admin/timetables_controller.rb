@@ -20,8 +20,8 @@ class Admin::TimetablesController < Admin::BaseController
   end
 
   def public_format
-    time_table_entries(show_publicly_invisible: true)
-      render 'public_pages/timetable', layout: 'public'
+    @entries_hash = Timetable.display_entries(show_publicly_invisible: true)
+    render 'public_pages/timetable', layout: 'public'
   end
 
   def new
