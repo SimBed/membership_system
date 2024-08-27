@@ -1,7 +1,8 @@
 <div<h4 class='text-center'>Purchase Analysis</h4>
   <div class="mb-5">
-    <%= line_chart @purchase_count_by_week, ytitle: "Count" %>
-    <%= line_chart @purchase_charge_by_week, ytitle: "Payment (Rs)", thousands: "," %>
+    <%#= line_chart @purchase_count_by_week, ytitle: "Count" %>
+    <%= line_chart charts_purchase_count_by_week_path, ytitle: "Count" %>
+    <%= column_chart @purchase_charge_by_week, ytitle: "Payment (Rs)", thousands: "," %>
   </div>
   <div class='mb-4'>
     <h5 class='text-center'>Count by Workout Group</h5>

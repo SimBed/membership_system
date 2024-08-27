@@ -50,7 +50,8 @@ class Client::DataPagesController < Client::BaseController
   end
 
   def timetable
-    time_table_entries(show_publicly_invisible: true)
+    @entries_hash = Timetable.display_entries(show_publicly_invisible: true)
+    # time_table_entries(show_publicly_invisible: true)
     render 'timetable', layout: 'client_black'
   end  
 

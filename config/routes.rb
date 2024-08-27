@@ -86,6 +86,9 @@ Rails.application.routes.draw do
     post 'orders', to: 'orders#create'
     post 'verify_payment', to: 'orders#verify_payment'
     post 'regular_expenses/add'
+    namespace :charts do
+      get 'purchase_count_by_week'
+    end
     resource :blast, only: :show do
       collection do
         get 'add_client'
@@ -179,6 +182,5 @@ Rails.application.routes.draw do
         get 'clear_filters'
       end
     end
-    end
-
+  end
 end
