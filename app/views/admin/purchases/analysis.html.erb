@@ -1,4 +1,5 @@
-<div<h4 class='text-center'>Purchase Analysis</h4>
+<div>
+  <h4 class='text-center'>Purchase Analysis</h4>
   <div class="mb-5">
     <%= line_chart charts_purchase_count_by_week_path, ytitle: "Count" %>
     <%= line_chart charts_purchase_charge_by_week_path, ytitle: "Payment (Rs)", thousands: "," %>
@@ -13,6 +14,16 @@
     <h5 class='text-center'>Charge by Workout Group</h5>
     <div class='d-flex flex-column flex-sm-row justify-content-center'>    
       <%= render partial: 'donut_wg_charge', collection: @purchase_years, as: :year %>
+    </div>
+  </div>
+</div>
+<hr class='mb-4'>
+<div>
+  <h4 class='text-center'>Product Analysis</h4>
+  <div class='mb-4'>
+    <h5 class='text-center'>Count by Product (top 9)</h5>
+    <div class='d-flex flex-column flex-sm-row justify-content-center'>
+      <%= render partial: 'donut_product_count', collection: @purchase_years, as: :year %>
     </div>
   </div>
 </div>

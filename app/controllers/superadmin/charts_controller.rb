@@ -1,5 +1,5 @@
 class Superadmin::ChartsController < Superadmin::BaseController
-  before_action :set_year, only: [:purchase_count_by_wg, :purchase_charge_by_wg]
+  before_action :set_year, only: [:purchase_count_by_wg, :purchase_charge_by_wg, :product_count]
   before_action :set_sort_order, only: [:purchase_count_by_wg, :purchase_charge_by_wg]
 
   def purchase_count_by_week
@@ -22,12 +22,26 @@ class Superadmin::ChartsController < Superadmin::BaseController
     # https://stackoverflow.com/questions/4283295/how-to-sort-an-array-in-ruby-to-a-particular-order
     # sort_order = %w[Group Space\ PT Apoorv\ PT Gigi\ PT]
     # lookup = sort_order.each_with_index.to_h
-    chart_data = Purchase.count_by_workout_group(@year..@year.end_of_year).sort_by { |key, value| @sort_order.fetch(key, @sort_order_length) }
+    chart_data = Purchase.count_by_workout_group(@year..@year.end_of_year)
+                         .sort_by { |key, value| @sort_order.fetch(key, @sort_order_length) }
     render json: chart_data
   end
 
   def purchase_charge_by_wg
-    chart_data = Purchase.charge_by_workout_group(@year..@year.end_of_year).sort_by { |key, value| @sort_order.fetch(key, @sort_order_length) }
+    chart_data = Purchase.charge_by_workout_group(@year..@year.end_of_year)
+                         .sort_by { |key, value| @sort_order.fetch(key, @sort_order_length) }
+    render json: chart_data
+  end
+
+  def product_count
+    chart_data = Product.joins(:purchases)
+                        .merge(Purchase.during(@year..@year.end_of_year))
+                        .group('products.id')
+                        .count
+                        .sort_by { |_key, value| -value }
+                        .first(9)
+                        .to_h
+                        .transform_keys{|key| Product.find(key).name(color_show: false)}
     render json: chart_data
   end
 
