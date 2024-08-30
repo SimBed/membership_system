@@ -141,6 +141,7 @@ class Admin::PurchasesController < Admin::BaseController
   
   def analysis
     @purchase_years = purchase_years
+    @product_display_limit = Rails.application.config_for(:constants)['product_piechart_display_limit']
   end
   
   def form_field_change

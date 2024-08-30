@@ -5,6 +5,7 @@ default: &default
  wkclassmaker_advance: 4
  package_expiry_message_days: 3
  trial_expiry_message_days: 2
+ product_piechart_display_limit: 9 
 
  booking_statuses:
   - booked

@@ -92,7 +92,8 @@ Rails.application.routes.draw do
       # get 'purchase_count_by_wg/:year', to: '#purchase_count_by_wg', as: :purchase_count_by_wg
       get 'purchase_count_by_wg'
       get 'purchase_charge_by_wg'
-      get 'product_count'
+      get 'product_group_count'
+      get 'product_pt_count'
     end
     resource :blast, only: :show do
       collection do

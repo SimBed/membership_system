@@ -33,6 +33,7 @@ class Product < ApplicationRecord
   scope :order_by_name_max_classes, -> { joins(:workout_group).order('products.current desc', 'workout_groups.name', 'products.max_classes') }
   # keep 'space group' instead of just 'group' because of complications with using a special word like 'group'
   scope :space_group, -> { joins(:workout_group).where("workout_groups.name = 'Group'") }
+  scope :wg_service, ->service { joins(:workout_group).where(workout_group: {service: }) } 
   # scope :space_group, -> { joins(:workout_group).where(workout_group: {service: 'group'}) } # no this isn't right. There can be many workout_groups with service = group, but only one workout_group with the name 'Group'
   # non-intuitive in the order clause. max(workout_groups.id) works where workout_groups.name (as wanted) fails
   # scope :order_by_total_count, -> { left_joins(:purchases).group(:id).order('COUNT(purchases.id) DESC') }
@@ -51,32 +52,38 @@ class Product < ApplicationRecord
   scope :has_rider, -> { where(has_rider: true) }
   scope :sell_online, -> { where(sellonline: true) }
   scope :any_workout_group_of, ->(wgs) { joins(:workout_group).where(workout_group: { name: wgs }) }
+  scope :during, ->period { joins(:purchases).merge(Purchase.during(period)) }
 
-  def self.online_order_by_wg_classes_days
-    # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id
-    Product.find_by_sql("SELECT products.*, CASE
-                                    WHEN validity_unit = 'M' THEN validity_length * 30
-                                    WHEN validity_unit = 'W' THEN validity_length * 7
-                                    ELSE validity_length * 1 END
-                                    AS days
-                        FROM products
-                        INNER JOIN workout_groups w ON products.workout_group_id = w.id
-                        WHERE max_classes > 1 AND sellonline = true
-                        ORDER BY current desc, name, max_classes, days;")
+  class << self
+    def count_for_service_purchased_during(service, period, limit)
+      during(period).wg_service(service).group('products.id').order(count_all: :desc).count
+      .first(limit)
+      .to_h
+      .transform_keys{|key| Product.find(key).name(color_show: false, wg_show: true)} # {"UC:1M"=>10, "6C:5W"=>2, "UC:3M"=>2, "8C:5W"=>1, "UC:6M"=>1, "4C:36D"=>1}
+    end
+
+    def online_order_by_wg_classes_days
+      # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id
+      Product.find_by_sql("SELECT products.*, CASE
+                                      WHEN validity_unit = 'M' THEN validity_length * 30
+                                      WHEN validity_unit = 'W' THEN validity_length * 7
+                                      ELSE validity_length * 1 END
+                                      AS days
+                          FROM products
+                          INNER JOIN workout_groups w ON products.workout_group_id = w.id
+                          WHERE max_classes > 1 AND sellonline = true
+                          ORDER BY current desc, name, max_classes, days;")
+    end
+
+    def order_by_base_price
+      # max of any price past or present rather than strctly base price but good enough for purpose
+      Product.find_by_sql("SELECT products.*, MAX(price) as max_price
+                          FROM products
+                          INNER JOIN prices ON prices.product_id = products.id
+                          GROUP BY products.id
+                          ORDER BY current desc, max_price DESC;")
+    end
   end
-
-  def self.order_by_base_price
-    # max of any price past or present rather than strctly base price but good enough for purpose
-    Product.find_by_sql("SELECT products.*, MAX(price) as max_price
-                        FROM products
-                        INNER JOIN prices ON prices.product_id = products.id
-                        GROUP BY products.id
-                        ORDER BY current desc, max_price DESC;")
-  end
-
-  # def css_class
-  #   max_classes < 1000 ? 'fixed' : 'unlimited'
-  # end
 
   # shifted to decorator as number_of_classes (remove once dealt with on shop page as well as group classes page)
   def shop_name_classes
@@ -159,10 +166,10 @@ class Product < ApplicationRecord
   end
 
   Formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
-  def name(verbose: false, color_show: true, rider_show: false)
+  def name(verbose: false, color_show: true, rider_show: false, wg_show: true)
     name_part = []
-    name_part[0] = workout_group.name
-    name_part[1] = verbose ? ' - ' : ' '
+    name_part[0] = "#{workout_group.name} " if wg_show
+    name_part[1] = verbose ? '- ' : ''
     name_part[2] = if verbose
       "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} " \
       "#{ActionController::Base.helpers.pluralize(validity_length, Formal_unit[validity_unit.to_sym])}"
