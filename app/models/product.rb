@@ -55,12 +55,34 @@ class Product < ApplicationRecord
   scope :during, ->period { joins(:purchases).merge(Purchase.during(period)) }
 
   class << self
-    def count_for_service_purchased_during(service, period, limit)
+    def count_for(service, period, limit, wg_show: true, color: true)
+      color ? count_for_group_on_color(service, period, limit, wg_show) : count_for_no_group_on_color(service, period, limit)
+    end
+
+    # use this approach to discriminiate between products by classes/validity and by color 
+    def count_for_group_on_color(service, period, limit, wg_show)
       during(period).wg_service(service).group('products.id').order(count_all: :desc).count
       .first(limit)
       .to_h
-      .transform_keys{|key| Product.find(key).name(color_show: false, wg_show: true)} # {"UC:1M"=>10, "6C:5W"=>2, "UC:3M"=>2, "8C:5W"=>1, "UC:6M"=>1, "4C:36D"=>1}
+      .transform_keys{|key| Product.find(key).name(color_show: false, wg_show:)} # {"UC:1M"=>10, "6C:5W"=>2, "UC:3M"=>2, "8C:5W"=>1, "UC:6M"=>1, "4C:36D"=>1}
     end
+
+    # use this approach to discriminiate between products by classes/validity only (but not by color)
+    # NOTE: havent yet implemented the wg_show argument
+    def count_for_no_group_on_color(service, period, limit, wg_show)
+      sql = "SELECT pname, count(*) as count_all
+            FROM
+              (SELECT *, w.name || cast(max_classes as text) || 'C' || ' ' ||  cast(validity_length as text) || cast(validity_unit as text) as pname
+              FROM products
+              LEFT JOIN workout_groups w ON products.workout_group_id = w.id
+              LEFT JOIN purchases p ON p.product_id = products.id
+              where w.service = '#{service}'
+              AND dop BETWEEN '#{period.begin}' AND '#{period.end}') x
+            GROUP BY pname
+            ORDER BY count_all DESC
+            LIMIT '#{limit}';"
+      ActiveRecord::Base.connection.exec_query(sql)
+    end 
 
     def online_order_by_wg_classes_days
       # https://stackoverflow.com/questions/39981636/rails-find-by-sql-uses-the-wrong-id
@@ -166,6 +188,8 @@ class Product < ApplicationRecord
   end
 
   Formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
+  # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
+  # https://stackoverflow.com/questions/10522414/breaking-up-long-strings-on-multiple-lines-in-ruby-without-stripping-newlines  
   def name(verbose: false, color_show: true, rider_show: false, wg_show: true)
     name_part = []
     name_part[0] = "#{workout_group.name} " if wg_show
@@ -201,12 +225,3 @@ class Product < ApplicationRecord
     errors.add(:base, "A rider can't itself have a rider")
   end
 end
-
-  # # https://stackoverflow.com/questions/6806473/is-there-a-way-to-use-pluralize-inside-a-model-rather-than-a-view
-  # # https://stackoverflow.com/questions/10522414/breaking-up-long-strings-on-multiple-lines-in-ruby-without-stripping-newlines
-  # def formal_name
-  #   formal_unit = { D: 'Day', W: 'Week', M: 'Month' }
-  #   "#{workout_group.name} - " \
-  #     "#{max_classes < 1000 ? ActionController::Base.helpers.pluralize(max_classes, 'Class') : 'Unlimited Classes'} " \
-  #     "#{ActionController::Base.helpers.pluralize(validity_length, formal_unit[validity_unit.to_sym])}#{' ('.concat(color, ')') unless color.nil?}"
-  # end

@@ -20,8 +20,9 @@ class Chart
       .to_h # {"Group"=>0, "Nutrition"=>1, "Space PT"=>2} 
     end  
 
-    def product_order(service, period, limit)
-      Product.count_for_service_purchased_during(service, period, limit) # {"UC:1M"=>10, "6C:5W"=>2, "UC:3M"=>2, "8C:5W"=>1, "UC:6M"=>1, "4C:36D"=>1}
+    def product_order(service, period, limit, wg_show, color)
+      Product.count_for(service, period, limit, color:) # {"UC:1M"=>10, "6C:5W"=>2, "UC:3M"=>2, "8C:5W"=>1, "UC:6M"=>1, "4C:36D"=>1}
+      .tap { |substep| substep.rows.to_h unless color }
       .keys
       .each_with_index
       .to_h # {"UC:1M"=>0, "6C:5W"=>1, "UC:3M"=>2, "8C:5W"=>3, "UC:6M"=>4, "4C:36D"=>5}

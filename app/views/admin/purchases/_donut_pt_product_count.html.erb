@@ -1,4 +1,4 @@
 <div class='d-flex flex-column'>
   <h4 class='text-center'><%= year.year %></h4>
-  <%= pie_chart charts_product_pt_count_path(year: year.year), donut: true, legend: "bottom", label: 'Value' %>
+  <%= pie_chart charts_product_pt_count_path(year: year.year, color: false, wg_show: true), donut: true, legend: "bottom", label: 'Value' %>
 </div>

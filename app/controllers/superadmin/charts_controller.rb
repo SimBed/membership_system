@@ -1,6 +1,6 @@
 class Superadmin::ChartsController < Superadmin::BaseController
   before_action :set_year, only: [:purchase_count_by_wg, :purchase_charge_by_wg, :product_group_count, :product_pt_count]
-  before_action :set_last_full_year_period, only: [:purchase_count_by_wg, :purchase_charge_by_wg, :product_group_count, :product_pt_count]
+  before_action :set_last_period, only: [:purchase_count_by_wg, :purchase_charge_by_wg, :product_group_count, :product_pt_count]
   before_action :set_workout_group_order, only: [:purchase_count_by_wg, :purchase_charge_by_wg]
   before_action :set_product_display_limit, only: [:product_group_count, :product_pt_count]
 
@@ -34,15 +34,21 @@ class Superadmin::ChartsController < Superadmin::BaseController
   end
 
   def product_group_count
-    product_order = Chart.product_order('group', @last_year_period, @product_display_limit * 2) # set limit to a number bigger than @product_display_limit as not all years will have the same set of biggest selling products
-    chart_data = Product.count_for_service_purchased_during('group', @year..@year.end_of_year, @product_display_limit)
+    color = params[:color]
+    wg_show = params[:wg_show]  
+    product_order = Chart.product_order('group', @last_period, @product_display_limit * 2, wg_show, color) # set limit to a number bigger than @product_display_limit as not all years will have the same set of biggest selling products
+    chart_data = Product.count_for('group', @year..@year.end_of_year, @product_display_limit, wg_show:, color:)
+                        .tap { |substep| substep.rows.to_h unless color }
                         .sort_by { |key, value| product_order.fetch(key, product_order.length) }
     render json: chart_data
   end
 
   def product_pt_count
-    product_order = Chart.product_order('pt', @last_year_period, @product_display_limit * 2)    
-    chart_data = Product.count_for_service_purchased_during('pt', @year..@year.end_of_year, @product_display_limit)
+    color = params[:color]
+    wg_show = params[:wg_show]    
+    product_order = Chart.product_order('pt', @last_period, @product_display_limit * 2, wg_show, color)
+    chart_data = Product.count_for('pt', @year..@year.end_of_year, @product_display_limit, color:)
+                        .tap { |substep| substep.rows.to_h unless color }
                         .sort_by { |key, value| product_order.fetch(key, product_order.length) }
     render json: chart_data
   end
@@ -53,14 +59,14 @@ class Superadmin::ChartsController < Superadmin::BaseController
     @year = Date.new(params[:year].to_i, 1, 1)    
   end
 
-  def set_last_full_year_period
+  def set_last_period
     end_date = Time.zone.today
-    start_date = end_date.last_year.advance(days: 1)
-    @last_year_period = start_date..end_date
+    start_date = end_date.advance(months: -6)
+    @last_period = start_date..end_date
   end
 
   def set_workout_group_order
-    @workout_group_order = Chart.workout_group_order(@last_year_period)
+    @workout_group_order = Chart.workout_group_order(@last_period)
   end
 
   def set_product_display_limit
