@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_19_131758) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_03_131915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_19_131758) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["purchase_id"], name: "index_adjustments_on_purchase_id"
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "assignments", force: :cascade do |t|
@@ -357,6 +363,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_19_131758) do
     t.index ["account_id"], name: "index_logins_on_account_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.datetime "read_at"
+    t.bigint "account_id", null: false
+    t.bigint "announcement_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_notifications_on_account_id"
+    t.index ["announcement_id"], name: "index_notifications_on_announcement_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer "product_id"
     t.integer "price"
@@ -620,6 +636,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_19_131758) do
   add_foreign_key "instructor_rates", "instructors"
   add_foreign_key "instructors", "accounts"
   add_foreign_key "logins", "accounts"
+  add_foreign_key "notifications", "accounts"
+  add_foreign_key "notifications", "announcements"
   add_foreign_key "penalties", "bookings"
   add_foreign_key "penalties", "purchases"
   add_foreign_key "purchases", "purchases"

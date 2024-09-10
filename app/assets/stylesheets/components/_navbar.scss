@@ -18,17 +18,17 @@
   animation: animate 0.4s linear;  
 }
 
-// the navbar flickers on screen refresh, this makes it less unpleasant (dont think it flickers anymore so this ma y be redundant)
-@keyframes animate {
-  0% {
-    // opacity: 0;
-    top: -50px;
-  }
-  100% {
-    // opacity: 1;
-    top: 0;
-  }
-}
+// the navbar flickers on screen refresh, this makes it less unpleasant (dont think it flickers anymore so this may be redundant)
+// @keyframes animate {
+//   0% {
+//     // opacity: 0;
+//     top: -50px;
+//   }
+//   100% {
+//     // opacity: 1;
+//     top: 0;
+//   }
+// }
 
 .navbar-nav {
   margin-top: 1rem;

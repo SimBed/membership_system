@@ -1,44 +1,48 @@
-require 'test_helper'
+require "test_helper"
 
-class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
+class Superadmin::AnnouncementsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account_client1 = accounts(:client1)
     @admin = accounts(:admin)
     @superadmin = accounts(:superadmin)
     @junioradmin = accounts(:junioradmin)
-    @expense = expenses(:expense1)
+    @announcement = announcements(:one)
   end
-
-  # no show method for expenses controller
 
   test 'should redirect new when not logged in as superadmin' do
     [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get new_expense_path
+      get new_announcement_path
 
       assert_redirected_to login_path
     end
   end
+
+  test 'should redirect show when not logged in as superadmin' do
+    [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
+      log_in_as(account_holder)
+      get announcement_path(@announcement)
+
+      assert_redirected_to login_path
+    end
+  end  
 
   test 'should redirect index when not logged in as superadmin' do
     [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get expenses_path
+      get announcements_path
 
       assert_redirected_to login_path
     end
-  end
+  end  
 
   test 'should redirect create when not logged in as superadmin' do
     [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      assert_no_difference 'Expense.count' do
-        post expenses_path, params:
-         { expense:
-            { item: 'Rope',
-              amount: 2000,
-              date: '2022-02-15',
-              workout_group_id: @expense.workout_group_id } }
+      assert_no_difference 'Announcement.count' do
+        post announcements_path, params:
+         { announcement:
+            { message: 'no parking on the road'} }
       end
     end
   end
@@ -46,24 +50,21 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect edit when not logged in as superadmin' do
     [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      get edit_expense_path(@expense)
+      get edit_announcement_path(@announcement)
 
       assert_redirected_to login_path
     end
   end
 
   test 'should redirect update when not logged in as superadmin' do
-    original_amount = @expense.amount
+    original_message = @announcement.message
     [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      patch expense_path(@expense), params:
-       { expense:
-          { item: 'Rope',
-            amount: 2000,
-            date: '2022-02-15',
-            workout_group_id: @expense.workout_group_id } }
+      patch announcement_path(@announcement), params:
+       { announcement:
+          { message: 'you can park on the road' } }
 
-      assert_equal original_amount, @expense.reload.amount
+      assert_equal original_message, @announcement.reload.message
       assert_redirected_to login_path
     end
   end
@@ -71,9 +72,10 @@ class Superadmin::ExpensesControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect destroy when not logged in as superadmin' do
     [nil, @account_client1, @junioradmin, @admin].each do |account_holder|
       log_in_as(account_holder)
-      assert_no_difference 'Expense.count' do
-        delete expense_path(@expense)
+      assert_no_difference 'Announcement.count' do
+        delete announcement_path(@announcement)
       end
     end
-  end
+  end  
+
 end

@@ -1,7 +1,6 @@
 class Client::BookingCancellationsController < Client::BaseController
   include BookingsHelper
   before_action :set_booking
-  before_action :correct_account
   before_action :set_booking_day
   before_action :provisionally_expired
   before_action :modifiable_status

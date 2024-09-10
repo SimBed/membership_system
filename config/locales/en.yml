@@ -169,9 +169,20 @@ en:
       destroy:
         success: Workout was successfully deleted
   superadmin:
+    announcements:
+      create:
+        success: Announcement was successfully added
+      update:
+        success: Announcement was successfully updated
+      destroy:
+        success: Announcement was successfully deleted
+      blast_off:
+        success: "%{passes} announcements successfully issued. %{errors} announcements failed to issue."
+      destroy_notification:
+        success: "Notification was successfully deleted"
     blasts:
       blast_off:
-        success: "Messages all sent. %{passes} sent. %{errors} failed. Check Twilio logs to confirm deliveries."
+        success: "Messages sent. %{passes} sent. %{errors} failed. Check Twilio logs to confirm deliveries."
         warning: "Messages not sent. The number of recipients exceeds the limit of %{max_recipient_blast_limit}. The limit can be increased in Settings if necessary."
     discounts:
       create:
@@ -244,7 +255,9 @@ en:
     # package_modification:
     #   buy_freeze:
     #     success: A freeze has been successfully applied to your Package  
-    #     booking_cancelled: A booking during your freeze has been cancelled 
+    #     booking_cancelled: A booking during your freeze has been cancelled
+    notifications:
+      no-notifications: You don't have any notifications right now.
     password_resets:
       create:
         info: Email sent with password reset instructions. Please check your Spam folder.

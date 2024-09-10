@@ -1,0 +1,11 @@
+<div id="<%= dom_id announcement %>">
+  <div class="admin-table striped mt-2">
+    <div class="row">
+      <div class="column col-2x"><%= link_to announcement.message[0..50], announcement_path(announcement), class: 'like_button' %></div>
+      <div class="column col-1x"><%= announcement.created_at.strftime('%b %d %Y') %></div>
+      <div class="column"><%= Notification.where(announcement_id:announcement.id).size %></div>
+      <div class="column"><%= link_to image_tag('edit.png', class: "table_icon"), edit_announcement_path(announcement), data: {turbo: false} %></div>
+      <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"), announcement_path(announcement), data: { turbo_method: :delete, turbo_confirm: 'Announcement will be deleted. Are you sure?' } %></div>
+    </div>
+  </div>
+</div>

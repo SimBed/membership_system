@@ -1,10 +1,7 @@
-  <div class="row">
-    <div class="column col-2x">
-      <%= link_to client.name, client_path(client, link_from: 'clients_index'), class: "like_button", data: {turbo:false} %>
-    </div>
-    <div class="column col-2x"><%= number(client.whatsapp, client.phone) %></div>
-    <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), remove_client_blast_path(client) %></div>
+<div class="row">
+  <div class="column col-2x">
+    <%= link_to client.name, client_path(client, link_from: 'clients_index'), class: "like_button", data: {turbo:false} %>
   </div>
-
-
-
+  <div class="column col-2x"><%= number(client.whatsapp, client.phone) %></div>
+  <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), remove_client_blast_path(client) %></div>
+</div>

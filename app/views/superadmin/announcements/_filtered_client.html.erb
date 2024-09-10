@@ -1,0 +1,16 @@
+<div class="row <%= 'dull' unless client.account %>">
+  <div class="column col-2x"><%= link_to client.name, client_path(client), data: {turbo: false}, class: 'like_button' %></div>
+  <% if client.account %>
+    <% css_classes = "table_icon" %>
+    <% title = 'Has an account' %>
+  <% else %>
+    <% css_classes = "table_icon dull" %>
+    <% title = "Has no account. Won't be notified." %>
+  <% end %>
+  <div class="column">
+    <%= image_tag('account.png', class: css_classes, title: title, data:{toggle:"tooltip", placement:"top"})  %>
+  </div>  
+  <div class="column"><%= link_to image_tag('delete.png', class: "table_icon"),
+                                  remove_client_announcements_path(@announcement, client_id: client.id),
+                                  title: 'remove from notification list', data:{toggle:"tooltip", placement:"top"} %></div>
+</div>

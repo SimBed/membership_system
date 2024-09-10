@@ -1,0 +1,16 @@
+<% announcement = notification.announcement %>
+<div class="container announcement">
+  <div class="outer-canvas">
+    <div class="date date-sent">
+      <span><%= notification.created_at.strftime('%B %d %Y') %></span>
+    </div>
+    <div class="message">
+      <%= announcement.message %>
+    </div>
+    <% if notification.read_at %>
+      <div class="date date-read">
+        <span><%= notification.read_at.strftime('%B %d %Y') %></span>
+      </div>
+    <% end %>
+  </div>
+</div>

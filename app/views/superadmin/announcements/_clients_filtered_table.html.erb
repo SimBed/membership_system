@@ -1,0 +1,16 @@
+<div id="clients-filtered-table" class="container px-0 mb-5 admin_form">
+  <div class="page_entries_info px-1">
+    <h6>Filtered Clients <span class="reduce80">(excludes those already notified)</span></h6>  
+    <div class="record-count mb-1">
+      <div> <%= "showing #{@recipients&.length} of #{@pagy_recipients&.count}" %> </div>
+    </div>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy_recipients) %>
+    </div>    
+  </div>
+
+  <div class="admin-table mt-3">
+    <%= render partial: 'filtered_client', collection: @recipients, as: :client %>
+  </div>
+
+</div>

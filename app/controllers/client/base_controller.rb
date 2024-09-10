@@ -1,5 +1,6 @@
 class Client::BaseController < ApplicationController
   before_action :correct_account
+  before_action :set_chime
   layout 'client'
 
   def correct_account
@@ -7,4 +8,9 @@ class Client::BaseController < ApplicationController
     @client = Client.find(params[:client_id] || params[:id])
     redirect_to login_path unless current_account?(@client.account)
   end  
+
+  def set_chime
+    # return unless @client
+    @chime = @client.account.notifications.unread.present?
+  end
 end

@@ -1,7 +1,7 @@
 default: &default
 
  window_capacity: 8
- recipient_pagination: 200
+ recipient_pagination: 50
  wkclassmaker_advance: 4
  package_expiry_message_days: 3
  trial_expiry_message_days: 2

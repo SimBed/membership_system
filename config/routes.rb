@@ -79,10 +79,20 @@ Rails.application.routes.draw do
   namespace :superadmin do
     resource :settings, only: [:show, :create]
   end
-
+  
   # https://guides.rubyonrails.org/routing.html section 2.6 namespaces & routing
   # routes to a superadmin namespaced controller, but doesn't include superadmin in the url or url helper
   scope module: :superadmin do
+    resources :announcements do
+      collection do
+        get 'add_client/:id', to: 'announcements#add_client', as: 'add_client'
+        get ':id/remove_client/:client_id', to: 'announcements#remove_client', as: 'remove_client'
+        get ':id/blast_off', to: 'announcements#blast_off', as: 'blast_off'
+        get 'clear_filters/:id', to: 'announcements#clear_filters', as: 'clear_filters'
+        get 'filter/:id', to: 'announcements#filter', as: 'filter_client'
+        delete 'destroy_notification/:id', to: 'announcements#destroy_notification', as: 'destroy_notification'
+      end
+    end
     post 'orders', to: 'orders#create'
     post 'verify_payment', to: 'orders#verify_payment'
     post 'regular_expenses/add'
@@ -140,6 +150,7 @@ Rails.application.routes.draw do
   end
 
   namespace :client do    
+    get '/:id/notifications', to: 'data_pages#notifications', as: 'notifications'
     get '/:id/shop', to: 'dynamic_pages#shop', as: 'shop'
     get '/:id/history', to: 'data_pages#history', as: 'history'
     get ':id/bookings', to: 'bookings#index', as: 'bookings'

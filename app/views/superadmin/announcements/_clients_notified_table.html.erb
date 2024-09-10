@@ -1,0 +1,16 @@
+<div id="clients-notified-table" class="container px-0 mb-5 admin_form">
+  <div class="page_entries_info px-1">
+    <h6>Notified Clients</h6>  
+    <div class="record-count mb-1">
+      <div> <%= "showing #{@notifieds&.length} of #{@pagy_notifieds&.count}" %> </div>
+    </div>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy_notifieds) %> 
+    </div>    
+  </div>
+
+  <div class="admin-table mt-3">
+    <%= render partial: 'notified_client', collection: @notifieds, as: :client %>
+  </div>
+
+</div>

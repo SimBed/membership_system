@@ -1,0 +1,6 @@
+<div class="container px-1">
+  <h4>Announcements <%= link_to image_tag('add.png', class: 'button_icon'), new_announcement_path %></h4>
+</div>
+<div id="announcements_table" class="container px-1 mt-3">
+  <%= render @announcements %>
+</div>

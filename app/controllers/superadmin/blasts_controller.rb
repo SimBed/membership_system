@@ -51,14 +51,11 @@ class Superadmin::BlastsController < Superadmin::BaseController
     @recipients.each do |recipient|
       recipient_name = add_greeting ? recipient.first_name : nil
       Blast.new(receiver: recipient, message: template_message(session[:message], recipient_name)).send_whatsapp
-      # client_message = add_greeting ? "Hi #{recipient.first_name}\n" + session[:message] : session[:message]
-      # Blast.new(receiver: recipient, message: client_message).send_whatsapp
       passes += 1
     rescue
       next
       errros += 1
     end
-    # flash[:success] = t('.success')
     flash[:success] = t('.success', errors: ActionController::Base.helpers.pluralize(errors, "error"), passes: ActionController::Base.helpers.pluralize(passes, "pass"))
     redirect_to blast_path
   end
@@ -70,8 +67,9 @@ class Superadmin::BlastsController < Superadmin::BaseController
   end
 
   def add_client
-    session[:client_ids_add] = client_ids_add << params[:client_id]
-    session[:client_ids_remove].delete(params[:client_id])
+    client_id = params[:client_id]
+    session[:client_ids_add] = client_ids_add << client_id
+    session[:client_ids_remove].delete(client_id)
     redirect_to blast_path
   end
 

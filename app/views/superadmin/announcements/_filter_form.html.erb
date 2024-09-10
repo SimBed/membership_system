@@ -1,0 +1,55 @@
+<div id="announcements-filter" class="container px-1 mb-3">
+  <%= form_with(url: filter_client_announcements_path(@announcement), method: "get", class: "form-class") do %>
+    <div class="admin_form mb-3">
+      <div class="row mb-3 g-0">
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>ATTRIBUTE</legend>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'packagee', 'packagee', session[:filter_announcement_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_packagee", onchange: "this.form.requestSubmit()" %>
+              <%= 'has package' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'group_packagee', 'group_packagee', session[:filter_announcement_group_packagee].present? ? true : false, class: "checkbox-class", id: "chbox_group_packagee", onchange: "this.form.requestSubmit()" %>
+              <%= 'has group package' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'group_packagee_not_rider', 'group_packagee_not_rider', session[:filter_announcement_group_packagee_not_rider].present? ? true : false, class: "checkbox-class", id: "chbox_group_packagee_not_rider", onchange: "this.form.requestSubmit()" %>
+              <%= 'has group package (excluding rider)' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'nobody', 'nobody', session[:filter_announcement_nobody].present? ? true : false, class: "checkbox-class", id: "chbox_nobody", onchange: "this.form.requestSubmit()" %>
+              <%= 'nobody' %>
+            <% end %>
+          </fieldset>
+        </div>
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>EXCLUDE</legend>
+            <ul style="list-style: none; padding-left: 0;">
+              <% @excluded_clients.each do |client| %>
+                <li><%= client.name %></li>
+              <% end %>
+            </ul>
+          </fieldset>
+        </div>
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>INCLUDE</legend>
+            <ul style="list-style: none; padding-left: 0;">
+              <% @added_clients.each do |client| %>
+                <li><%= client.name %></li>
+              <% end %>
+            </ul>
+          </fieldset>
+      </div>
+    </div>
+  <% end %>
+  <div class="reduce80">
+    <%= render 'additional_recipient_form' %>
+    <div class="container d-flex">
+      <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_filters_announcements_path(@announcement), {class: "search searchdelete icon-container"} %>
+    </div>
+  </div>
+
+</div>

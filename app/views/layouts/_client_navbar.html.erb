@@ -1,4 +1,5 @@
 <nav id="mainNav" class="navbar navbar-expand-lg navbar-sticky navbar-dark <%= 'bg-black' if @home != true %> inverted">
+  <% client = current_account.client %>
 
   <div class="container">
     <%= link_to root_path, class: "navbar-brand", data: {turbo: false} do %>
@@ -6,6 +7,11 @@
     <% end %>
 
     <ul class="navbar-nav navbar-nav-secondary order-lg-3">
+      <%= content_tag :li, class: ["nav-item, bell", ("bell-chime" if @chime)].compact.join(' ') do %>
+        <%= link_to client_notifications_path(client), class: ["nav-link, btn-bell", ("btn-bell-chime" if @chime)].compact.join(' ') do %>
+          <i class="fa fa-bell "></i>
+        <% end %>
+      <% end %>
       <li class="nav-item d-lg-none">
         <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#navbar"
           aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +22,6 @@
 
     <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
       <ul class="navbar-nav">
-      <% client = current_account.client %>
         <li class="nav-item">
           <%= link_to "Shop", client_shop_path(client), class: "nav-link #{active_link_for(path: client_shop_path(client))}", 'data-turbolinks': false %>
         </li>
@@ -55,6 +60,7 @@
           <% end %>
         </li>
       </ul>
+
 
       <ul class="navbar-nav">
         <% if multiple_roles? %>

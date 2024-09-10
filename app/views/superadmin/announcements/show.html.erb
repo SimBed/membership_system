@@ -1,0 +1,9 @@
+<div class="container px-1 mb-5">
+  <%= render 'notification_input' %>
+  <%= turbo_frame_tag 'clients-and-filter' do %>
+    <%= render 'filter_form' %>
+    <%= render 'notification_blast' %>
+    <%= render 'clients_filtered_table' %>
+    <%= render 'clients_notified_table' %>
+  <% end %>
+</div>

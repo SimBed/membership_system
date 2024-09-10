@@ -1,0 +1,9 @@
+<% notification = Notification.where(announcement_id: @announcement.id, account_id: client.account.id).first %>
+<div class="row">
+  <div class="column col-2x"><%= client.name %></div>
+  <div class="column col-2x"><%= notification.read_at %></div>
+  <div class="column"><%= image_tag 'read.png', class: ['table_icon', ('dull' if notification.read_at.nil?)].compact.join(' ') %></div>
+  <div class="column"><%= link_to image_tag('delete.png', class: 'table_icon'),
+                                  destroy_notification_announcements_path(notification),
+                                  data: {turbo_method: :delete, turbo_confirm: 'Are you sure you dont want to notify this client?'} %></div>
+</div>

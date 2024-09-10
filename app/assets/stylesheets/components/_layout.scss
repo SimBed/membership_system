@@ -11,8 +11,13 @@ section {
 }
 
 .span1 {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  font-weight: bolder;
   @include media-breakpoint-up(lg) {
-    font-size: 1.2rem;
+    font-size: 1.0rem;
    }
+}
+
+div.span2 {
+  background-color: yellow;
 }
