@@ -116,8 +116,8 @@ class BookingPresenter < BasePresenter
       @turbo_params = { method: :delete,
                         confirmation: "You'll be removed from the waiting list" }
     when 'new_booking'
-      confirmation = I18n.t('client.clients.booking.create.confirm')
-      confirmation = I18n.t('client.clients.booking.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
+      confirmation = I18n.t('client.booking.create.confirm')
+      confirmation = I18n.t('client.booking.create.confirm_unfreeze') if @purchase.freezed?(@wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: "table_icon mx-auto #{'filter-white' unless @wkclass.workout.limited?}" }
       @route = 'client_create_booking_path'
@@ -128,7 +128,7 @@ class BookingPresenter < BasePresenter
       @turbo_params = { method: :post,
                         confirmation: }
     when 'update_from_booked'
-      confirmation = I18n.t('client.clients.booking.update.from_booked.confirm')
+      confirmation = I18n.t('client.booking.update.from_booked.confirm')
       @image_params = { src: 'delete.png',
                         css_class: 'table_icon mx-auto filter-red' }
       @route = 'client_update_booking_path'
@@ -140,8 +140,8 @@ class BookingPresenter < BasePresenter
                         confirmation: }
     when 'rebook'
       image_class = "table_icon mx-auto #{'filter-white' unless @booking.wkclass.workout.limited?}"
-      confirmation = I18n.t('client.clients.booking.update.from_cancelled_early.confirm')
-      confirmation = I18n.t('client.clients.booking.update.from_cancelled_early.confirm_unfreeze') if @booking.purchase.freezed?(@booking.wkclass.start_time)
+      confirmation = I18n.t('client.booking.update.from_cancelled_early.confirm')
+      confirmation = I18n.t('client.booking.update.from_cancelled_early.confirm_unfreeze') if @booking.purchase.freezed?(@booking.wkclass.start_time)
       @image_params = { src: 'add.png',
                         css_class: image_class }
       @route = 'client_update_booking_path'

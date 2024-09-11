@@ -252,10 +252,6 @@ en:
       destroy:
         success: Regular Expense was successfully deleted
   client:
-    # package_modification:
-    #   buy_freeze:
-    #     success: A freeze has been successfully applied to your Package  
-    #     booking_cancelled: A booking during your freeze has been cancelled
     notifications:
       no-notifications: You don't have any notifications right now.
     password_resets:
@@ -264,17 +260,16 @@ en:
         danger: Your password cannot be reset. Please check your email address is the one registered with us. Contact The Space if you still receive this message.
       password_change:
         success: Your password has been changed  
-    clients:
-      booking:
-        create:
-          confirm: You will be booked for this class. Are you sure?
-          confirm_unfreeze: Your Package is currently frozen. You will be booked for this class and your freeze will end. Are you sure?
-        update:
-          from_booked:
-            confirm: You will be cancelled for this class. Deductions may apply to late cancellations and no-shows. Are you sure?
-          from_cancelled_early:
-            confirm: You will be rebooked for this class. Are you sure?
-            confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?      
+    booking:
+      create:
+        confirm: You will be booked for this class. Are you sure?
+        confirm_unfreeze: Your Package is currently frozen. You will be booked for this class and your freeze will end. Are you sure?
+      update:
+        from_booked:
+          confirm: You will be cancelled for this class. Deductions may apply to late cancellations and no-shows. Are you sure?
+        from_cancelled_early:
+          confirm: You will be rebooked for this class. Are you sure?
+          confirm_unfreeze: Your Package is currently frozen. You will be rebooked for this class and your freeze will end. Are you sure?      
     waitings:
       create:
         success: "You have been added to the waiting list for %{wkclass_name}. You will be sent a message if a spot opens up."
