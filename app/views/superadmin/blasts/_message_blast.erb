@@ -1,4 +1,4 @@
-<div class="admin_form mb-3" data-controller="blast" data-blast-toggle-class="disabled" data-blast-recipient-number-value=<%= @recipients.size %>> 
+<div class="canvas gray100-canvas embossed px-2 mb-3" data-controller="blast" data-blast-toggle-class="disabled" data-blast-recipient-number-value=<%= @recipients.size %>> 
   <%= label_tag nil, class: "" do %>
     <%= check_box_tag 'blast_ready', 'no', false,  data: {"action": "blast#toggle_blast_ready"} %>
     <span class='span1'>The message has been reviewed. The test message has been sent and received. The recipient list has been double-checked.</span>

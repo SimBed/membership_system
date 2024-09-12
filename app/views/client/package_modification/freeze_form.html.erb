@@ -1,8 +1,8 @@
 <%= turbo_frame_tag 'freeze_new' do %>
 <% unless Setting.enable_online_payment %>
-  <div class="admin_form m-2 text-center">Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly to freeze.</div>
+  <div class="canvas gray100-canvas embossed width32 text-center mb-3">Due to a temporary, technical glitch at RazorPay, we cannot currently take payment online. Please contact the Space directly to freeze.</div>
 <% end %>
-<div class="pseudo-form text-center mx-2 mb-3" data-controller="freeze">
+<div class="canvas gray100-canvas embossed width32 text-center mb-3" data-controller="freeze">
   <div class="mb-2">
     <label for="start"><%="Freeze this Package for #{Setting.freeze_duration_days} days starting on:"%></label>
     <input type="date"

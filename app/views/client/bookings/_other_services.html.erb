@@ -1,5 +1,5 @@
 <section id="other_services" class="">
-  <div class="d-flex flex-column canvas black-canvas form-like py-3 mb-1">
+  <div class="d-flex flex-column canvas black-canvas width32 embossed py-3 mb-1">
     <h6 class='style-1 text-white py-4 mb-0'>other services</h6>
       <% @other_services.each do |service|%>
         <div class="text-center pb-3"><%= link_to service.name, service.link,  target: "_blank", class: 'w-50 btn btn-outline-black rounded-pill bg-light px-2 py-1' %></div>

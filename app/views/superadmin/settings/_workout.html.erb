@@ -1,13 +1,13 @@
 <section class="mb-3 settings-scope"
          data-settings-target="settingsScope settingsScopeWorkout">
-  <div class="admin_form">
-      <div class="form-group mb-2">
-        <label class="control-label">Styles</label>
-        <%= f.text_area :styles, value: Setting.styles.join("\n"), class: "form-control", style: "height: 10rem;" %>
-      </div>
-      <div class="form-group mb-2">
-        <label class="control-label">Warnings</label>
-        <%= f.text_area :warnings, value: Setting.warnings.join("\n"), class: "form-control", style: "height: 10rem;" %>
-      </div>
+  <div class="canvas gray100-canvas embossed px-2">
+    <div class="form-group mb-2">
+      <label class="control-label">Styles</label>
+      <%= f.text_area :styles, value: Setting.styles.join("\n"), class: "form-control", style: "height: 10rem;" %>
+    </div>
+    <div class="form-group mb-2">
+      <label class="control-label">Warnings</label>
+      <%= f.text_area :warnings, value: Setting.warnings.join("\n"), class: "form-control", style: "height: 10rem;" %>
+    </div>
   </div>
 </section>

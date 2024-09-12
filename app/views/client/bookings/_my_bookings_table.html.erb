@@ -1,6 +1,6 @@
 <%= turbo_frame_tag 'my_bookings' do %>
   <section id="my-bookings-table" class="">
-    <div class="d-md-flex justify-content-center my-booking canvas black-canvas form-like pb-3">
+    <div class="d-md-flex justify-content-center my-booking canvas black-canvas width32 embossed pb-3">
       <h6 class='style-1 text-white py-4 mb-0'>my bookings</h6>
       <% if @my_bookings.empty? %>
         <div class='mx-auto'><%= I18n.t('no_bookings') %></div>

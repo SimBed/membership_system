@@ -1,6 +1,6 @@
 <%= turbo_frame_tag dom_id(@workout_group) do %>
   <% unless @current_workouts.empty? %>
-    <div class="admin_form my-2">
+    <div class="canvas gray100-canvas embossed px-2 my-2">
       <h5>Current Workouts <small><%= "(#{@current_workouts.size})" %> </small></h5>
         <div class="admin-table">
           <%= render partial: 'admin/workout_groups/workout', collection: @current_workouts, as: :workout %>
@@ -12,7 +12,7 @@
   <% end %>
 
   <% unless @not_current_workouts.empty? %>  
-    <div class="admin_form my-2">
+    <div class="canvas gray100-canvas embossed px-2 my-2">
       <h5>Not Current Workouts <small><%= "(#{@not_current_workouts.size})" %> </small></h5>
         <div class="admin-table">
           <%= render partial: 'admin/workout_groups/workout', collection: @not_current_workouts, as: :workout %>

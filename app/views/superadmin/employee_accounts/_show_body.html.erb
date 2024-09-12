@@ -1,12 +1,10 @@
 <%= turbo_frame_tag dom_id(@account) do %>
-  <div class="admin_form my-2">
+  <div class="canvas gray100-canvas embossed px-2 my-2">
     <%= render partial: 'superadmin/employee_accounts/account_heading', locals: {account_roles: @account_roles} %>
     <hr class = 'mb-0'>
     <%= render 'superadmin/employee_accounts/password_change' %>
     <hr>
     <%= render partial: 'superadmin/employee_accounts/manage_roles', locals: {addable_roles: @addable_roles, removable_roles: @removable_roles} %>
-    <%#= render partial: 'superadmin/employee_accounts/add_role_form', locals: {addable_roles: @addable_roles} %>
-    <%#= render partial: 'superadmin/employee_accounts/remove_role_form', locals: {removable_roles: @addable_roles} %>
     <div class="cancel">
       <%= link_to image_tag('delete.png', class: "table_icon"), employee_accounts_path %>
     </div>

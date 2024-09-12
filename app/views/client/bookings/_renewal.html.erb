@@ -1,7 +1,7 @@
 <div id="renewal" class="container px-1 fw-bolder fst-italic my-5 text-center">
   <% renewal_presenter = RenewalPresenter.new(renewal: @renewal) %>
   <% renewable = !@renewal.product.rider? %>
-  <div class="d-flex flex-column justify-content-center admin_form">
+  <div class="d-flex flex-column justify-content-center canvas gray100-canvas embossed width32">
     <div class="mb-1"><%= renewal_presenter.renewal_statement(renewable) %></div>
     <% if @renewal.valid? && renewable %>
       <div class="mb-2"><%= renewal_presenter.product_name %></div>
@@ -14,7 +14,7 @@
         <%= link_to 'or visit shop', client_shop_path(@client), class: 'like_button_alt', data: {turbo: false} %>
       </div>
       <% unless Setting.enable_online_payment%>    
-        <div class="admin_form mt-3 text-center"><%= I18n.t('razor_pay_glitch_renewal') %></div>
+        <div class="canvas gray100-canvas embossed m-2 mt-3 text-center"><%= I18n.t('razor_pay_glitch_renewal') %></div>
       <% end %>
     <% else %>
       <p class="bolditalics mb-0"><%= renewal_presenter.visit_shop_statement(!renewable) %></p>

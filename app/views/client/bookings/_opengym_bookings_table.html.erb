@@ -5,7 +5,7 @@
       <% section_visibility = @no_classes_text_array[index][:hide_opengym_section] ? 'd-none' : 'd-md-flex' %>
       <div class="booking-day <%= "booking-day#{index}" %> <%= 'live' if index.to_s == session[:booking_day] %>"
            data-booking-target="bookingDay">
-        <div class="justify-content-center open-gym canvas black-canvas form-like pb-3 my-1 <%= section_visibility %>">
+        <div class="justify-content-center open-gym canvas black-canvas width32 embossed pb-3 my-1 <%= section_visibility %>">
           <h6 class='style-1 text-white py-4 mb-0'>open gym</h6>
           <div class="bookings-notice <%= 'live' if @show_no_opengym_classes %>"><%= t('none_to_book', wkclass_type: 'Open Gym') %></div>              
           <%= render partial: 'opengym_booking', collection: day, as: :wkclass, locals: {index: index} %>                  

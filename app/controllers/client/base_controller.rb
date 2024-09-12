@@ -10,7 +10,7 @@ class Client::BaseController < ApplicationController
   end  
 
   def set_chime
-    # return unless @client
-    @chime = @client.account.notifications.unread.present?
+    # @chime = @client.account.notifications.unread.present?
+    @chime = current_account.notifications.unread.present?
   end
 end

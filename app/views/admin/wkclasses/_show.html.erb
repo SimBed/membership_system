@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(@wkclass) do %>
-  <div class="admin_form my-2">
+  <div class="canvas gray100-canvas embossed my-2">
     <div class="container px-1 ">
       <% unless params[:link_from] == 'purchase_show' %>
         <%= turbo_frame_tag "new_booking_form_#{@wkclass.id}" do %>

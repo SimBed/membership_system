@@ -1,21 +1,17 @@
 <div class="container">
-  <div class="admin_form"> 
-    <div class="row">
-      <div class="col-md-6">
-        <h3>Reset password</h3>
-        <p>A reset password link will be sent to your registered email address from members@thespacejuhu.in.</p>
-        <p>Please check your Spam folder and move the message to your Inbox if necessary.</p>
-        <p>If you don't know your registered email address, please contact The Space.</p>
-        <%= form_with(scope: :password_reset, url: client_password_resets_path) do |f| %>
-          <div class="field mb-2">
-            <%= f.label :email %>
-            <%= f.email_field :email, class: 'form-control' %>
-          </div>
-          <div class="actions">
-            <%= f.submit "Submit", class: "btn btn-black" %>
-          </div>
-        <% end %>
+  <div class="canvas gray100-canvas embossed width32 px-2"> 
+    <h3 class='text-center'>Reset password</h3>
+    <p>A reset password link will be sent to your registered email address from members@thespacejuhu.in.</p>
+    <p>Please check your Spam folder and move the message to your Inbox if necessary.</p>
+    <p>If you don't know your registered email address, please contact The Space.</p>
+    <%= form_with(scope: :password_reset, url: client_password_resets_path) do |f| %>
+      <div class="field">
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control' %>
       </div>
-    </div>
+      <div class="actions">
+        <%= f.submit "Submit", class: "btn btn-black" %>
+      </div>
+    <% end %>
   </div>
 </div>

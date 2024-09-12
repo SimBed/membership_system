@@ -1,6 +1,6 @@
-<div class="admin_form pt-4 my-2" data-controller="purchase-form"
-                                  data-purchase-form-client-filter-url-value = <%= client_filter_purchases_path %>
-                                  data-purchase-form-field-change-url-value = <%= form_field_change_purchases_path %>>
+<div class="canvas gray100-canvas embossed px-2 pt-4 my-2" data-controller="purchase-form"
+                                                      data-purchase-form-client-filter-url-value = <%= client_filter_purchases_path %>
+                                                      data-purchase-form-field-change-url-value = <%= form_field_change_purchases_path %>>
   <div class="field" > 
     <%= text_field_tag :search_client_name, nil, {class: "form-control-sm mb-2 search", placeholder: "First name search…", value: session[:select_client_name],
                                                   "data-action": "purchase-form#client_search",

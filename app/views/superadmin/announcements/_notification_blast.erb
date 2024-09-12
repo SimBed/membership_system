@@ -1,4 +1,4 @@
-<div class="admin_form mb-3" data-controller="notification" data-notification-toggle-class="disabled" data-notification-recipient-number-value=<%= @recipients.size %>> 
+<div class="canvas gray100-canvas embossed px-2 mb-3" data-controller="notification" data-notification-toggle-class="disabled" data-notification-recipient-number-value=<%= @recipients.size %>> 
   <%= label_tag nil, class: "" do %>
     <%= check_box_tag 'notification_ready', 'no', false,  data: {"action": "notification#toggle_blast_ready"} %>
     <span class='span1'>The notification message has been reviewed. The recipient list has been double-checked.</span>

@@ -5,12 +5,11 @@
   </h4>
   <%= turbo_frame_tag Client.new %>    
   <!--h3 style="">Clients <%#= link_to tag.i(class: %w( bi bi-plus-circle )), new_admclient_path, class: "icon-container"%></h3-->
-</div>
 <%= turbo_frame_tag 'clients-and-filter' do %>
   <%= render partial: 'filter_form' %>
   <%#= turbo_frame_tag 'client_edit' %>    
   <% if logged_in_as?('superadmin') %>
-    <div class="container px-1 mb-2">  
+    <div class="container mb-3 canvas gray100-canvas embossed">  
       <%= render partial: 'download' %>
     </div>
   <% end %>
@@ -18,3 +17,4 @@
     <%= render partial: 'clients_table' %>
   <% end %>
 <% end %>
+</div>

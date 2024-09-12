@@ -1,15 +1,7 @@
-<% provide(:title, "Signup") %>
-
-<div class="container">
-  <div class="admin_form"> 
-    <div class="row">
-      <div class="col-md-6">
-        <div class="text-center">
-          <h3 class="mb-0 text-uppercase">join us</h3>
-          <span class="sub-label">(Once signed up, you can complete your purchase)</span>
-        </div>
-        <%= render 'signup_form', client: @client %>
-      </div>
-    </div>
+<div class="canvas gray100-canvas embossed width32 px-2"> 
+  <div class="text-center">
+    <h3 class="mb-0 text-uppercase">join us</h3>
+    <span class="sub-label">(Once signed up, you can complete your purchase)</span>
   </div>
+  <%= render 'signup_form', client: @client %>
 </div>
