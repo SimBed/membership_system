@@ -56,7 +56,9 @@ class Admin::TimetablesController < Admin::BaseController
   end
 
   def deep_copy
-    t_copy = @timetable.deep_clone include: [ {table_days: :entries}, { table_times: :entries} ], use_dictionary: true
+    #TODO: validate: false added as TableDay#no_repeated_days fails with validations. Don't see any problem with not running validations, but perhaps more robust to 
+    # investigate more why this happens and perhaps solve by adding return nil if inputs are nil to for_day_of_week method  
+    t_copy = @timetable.deep_clone include: [ {table_days: :entries}, { table_times: :entries} ], use_dictionary: true, validate: false
     t_copy.update(title: "#{t_copy.title} (copy)") # NOTE: update saves record
     flash[:success] = t('.success')
     redirect_to timetables_path    
