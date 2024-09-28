@@ -57,8 +57,10 @@ class Superadmin::AnnouncementsController < Superadmin::BaseController
   end
 
   def filter
-    clear_session(:filter_announcement_packagee, :filter_announcement_group_packagee, :filter_announcement_group_packagee_not_rider, :filter_announcement_nobody)
-    set_announcement_session(:packagee, :group_packagee, :group_packagee_not_rider, :nobody)
+    clear_session(:filter_announcement_packagee, :filter_announcement_group_packagee, :filter_announcement_group_packagee_not_rider,
+                  :filter_announcement_has_booking_today, :filter_announcement_has_booking_tomorrow, :filter_announcement_has_booking_in_future,
+                  :filter_announcement_nobody)
+    set_announcement_session(:packagee, :group_packagee, :group_packagee_not_rider, :has_booking_today, :has_booking_tomorrow, :has_booking_in_future, :nobody)
     redirect_to announcement_path(@announcement)
   end
 
@@ -66,6 +68,9 @@ class Superadmin::AnnouncementsController < Superadmin::BaseController
     clear_session(:filter_announcement_packagee,
                   :filter_announcement_group_packagee,
                   :filter_announcement_group_packagee_not_rider,
+                  :filter_announcement_has_booking_today,
+                  :filter_announcement_has_booking_tomorrow,
+                  :filter_announcement_has_booking_in_future,
                   :filter_announcement_nobody,
                   :announcement_client_ids_add, :announcement_client_ids_remove)
     redirect_to announcement_path(@announcement)
@@ -116,7 +121,7 @@ class Superadmin::AnnouncementsController < Superadmin::BaseController
   end
 
   def handle_filter
-    %w[packagee group_packagee group_packagee_not_rider nobody].each do |key|
+    %w[packagee group_packagee group_packagee_not_rider has_booking_today has_booking_tomorrow has_booking_in_future nobody].each do |key|
       @recipients = @recipients.send(key) if session["filter_announcement_#{key}"].present?
     end
     unless client_ids_add.empty?

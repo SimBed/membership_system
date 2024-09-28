@@ -97,6 +97,26 @@ class Client < ApplicationRecord
   scope :group_packagee_not_rider, -> { joins(:purchases).merge(Purchase.not_fully_expired.service_type('group').package.main_purchase).distinct }
   scope :has_strength_marker, -> { where.associated(:strength_markers).distinct}
   scope :has_body_marker, -> { where.associated(:body_markers).distinct}
+  scope :has_booking_today, lambda {
+                              Client.joins(purchases: [bookings: [:wkclass]])
+                              .where(bookings: { status: 'booked' })
+                              .merge(Wkclass.todays_class) }
+  scope :has_booking_tomorrow, lambda {
+                              Client.joins(purchases: [bookings: [:wkclass]])
+                              .where(bookings: { status: 'booked' })
+                              .merge(Wkclass.tomorrows_class) }
+  scope :has_booking_in_future, lambda {
+                              Client.joins(purchases: [bookings: [:wkclass]])
+                              .where(bookings: { status: 'booked' })
+                              .merge(Wkclass.future) }
+  # https://stackoverflow.com/questions/1797189/conditional-chaining-in-ruby epigen 2021
+  # this works but would make the announcements filter controller code more complicated as some filters would require an argument and some wouldnt
+  # scope :has_booking, lambda { |time|
+  #                             Client.joins(purchases: [bookings: [:wkclass]])
+  #                             .where(bookings: { status: 'booked' })
+  #                             .then{ |chain| time == 'today' ? chain.merge(Wkclass.todays_class) : chain }.
+  #                             then{ |chain| time == 'tomorrow' ? chain.merge(Wkclass.tomorrows_class) : chain }.
+  #                             then{ |chain| time == 'future' ? chain.merge(Wkclass.future) : chain } }
   scope :nobody, -> { where(id: 0) }
   # scope :has_strength_marker, -> { left_joins(:strength_markers).where.not(strength_markers: {client_id: nil}).distinct}
   # scope :recover_order, ->(ids) { where(id: ids).order(Arel.sql("POSITION(id::TEXT IN '#{ids.join(',')}')")) }

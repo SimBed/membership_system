@@ -18,6 +18,18 @@
               <%= 'has group package (excluding rider)' %>
             <% end %>
             <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'has_booking_today', 'has_booking_today', session[:filter_announcement_has_booking_today].present? ? true : false, class: "checkbox-class", id: "chbox_has_booking_today", onchange: "this.form.requestSubmit()" %>
+              <%= 'has booking today' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'has_booking_tomorrow', 'has_booking_tomorrow', session[:filter_announcement_has_booking_tomorrow].present? ? true : false, class: "checkbox-class", id: "chbox_has_booking_tomorrow", onchange: "this.form.requestSubmit()" %>
+              <%= 'has booking tomorrow' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
+              <%= check_box_tag 'has_booking_in_future', 'has_booking_in_future', session[:filter_announcement_has_booking_in_future].present? ? true : false, class: "checkbox-class", id: "chbox_has_booking_in_future", onchange: "this.form.requestSubmit()" %>
+              <%= 'has booking in future' %>
+            <% end %>
+            <%= label_tag nil, class: "chbox-lbl-filters" do %>
               <%= check_box_tag 'nobody', 'nobody', session[:filter_announcement_nobody].present? ? true : false, class: "checkbox-class", id: "chbox_nobody", onchange: "this.form.requestSubmit()" %>
               <%= 'nobody' %>
             <% end %>
