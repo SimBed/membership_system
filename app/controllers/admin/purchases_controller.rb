@@ -296,7 +296,6 @@ class Admin::PurchasesController < Admin::BaseController
   def prepare_items_for_filters
     @workout_group = WorkoutGroup.distinct.pluck(:name).sort!
     @statuses = Purchase.distinct.pluck(:status).sort!
-    # ['expired', 'frozen', 'not started', 'ongoing']
     @other_attributes = %w[classpass close_to_expiry fixed main_purchase package_not_trial remind_to_renew rider sunsetted sunset_passed trial unlimited unpaid
                            written_off]
     @months = ['All'] + months_logged

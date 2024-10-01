@@ -1,0 +1,16 @@
+<div id="purchases-table" class="canvas gray100-canvas embossed px-0 my-2">
+  <div class="page_entries_info px-1">
+    <div class="record-count mb-1">
+      <div> <%= "showing #{@recipients&.length} of #{@pagy&.count}" %> </div>
+      <div> <%= "NOTE: The maximum recipient limit is 100." if @recipients&.length > Setting.max_recipient_blast_limit %> </div>
+    </div>
+    <div data-controller="pagy-initializer">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>    
+  </div>
+
+  <div class="admin-table mt-3">
+    <%= render partial: 'purchase', collection: @recipients %>
+  </div>
+
+</div>

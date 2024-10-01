@@ -116,6 +116,15 @@ Rails.application.routes.draw do
         post 'add_message'
       end
     end
+    resource :bulk_freeze, only: :show do
+      collection do
+        get 'remove_purchase/:id', to: 'bulk_freezes#remove_purchase', as: 'remove_purchase'
+        get 'blast_off'
+        get 'clear_filters'
+        get 'filter'
+        post 'process_details'        
+      end
+    end
     resources :discounts, :discount_reasons
     resources :employee_accounts do
       collection do

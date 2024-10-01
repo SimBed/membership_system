@@ -54,9 +54,9 @@ class Superadmin::BlastsController < Superadmin::BaseController
       passes += 1
     rescue
       next
-      errros += 1
+      errors += 1
     end
-    flash[:success] = t('.success', errors: ActionController::Base.helpers.pluralize(errors, "error"), passes: ActionController::Base.helpers.pluralize(passes, "pass"))
+    flash[:success] = t('.success', errors: ActionController::Base.helpers.pluralize(errors, "message"), passes: ActionController::Base.helpers.pluralize(passes, "message"))
     redirect_to blast_path
   end
 

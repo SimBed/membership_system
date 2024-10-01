@@ -177,13 +177,17 @@ en:
       destroy:
         success: Announcement was successfully deleted
       blast_off:
-        success: "%{passes} announcements successfully issued. %{errors} announcements failed to issue."
+        success: "%{passes} successfully issued. %{errors} failed to issue."
       destroy_notification:
         success: "Notification was successfully deleted"
     blasts:
       blast_off:
-        success: "Messages sent. %{passes} sent. %{errors} failed. Check Twilio logs to confirm deliveries."
+        success: "%{passes} sent. %{errors} failed. Check Twilio logs to confirm deliveries."
         warning: "Messages not sent. The number of recipients exceeds the limit of %{max_recipient_blast_limit}. The limit can be increased in Settings if necessary."
+    bulk_freezes:
+      blast_off:
+        success: "%{passes} frozen. %{errors} memberships failed to freeze."
+        warning: "Freezes not applied. The number of memberships exceeds the limit of %{max_recipient_blast_limit}. The limit can be increased in Settings if necessary."
     discounts:
       create:
         success: Discount was successfully added

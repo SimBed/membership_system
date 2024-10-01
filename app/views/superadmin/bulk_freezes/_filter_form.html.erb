@@ -1,0 +1,60 @@
+<div id="bulk-freezes-filter" class="container px-1 mb-3">
+  <%= form_with(url: filter_bulk_freeze_path, method: "get", class: "form-class") do %>
+    <div class="canvas gray100-canvas embossed px-2 mb-3">
+      <div class="row mb-3 g-0">
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>WORKOUT GROUP</legend>
+            <% @workout_group.each do |wg| %>
+              <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                <%= check_box_tag 'workout_group[]', wg, session[:bulk_freeze_filter_workout_group].present? ? session[:bulk_freeze_filter_workout_group].include?(wg) : false, id: "chbox#{wg}", onchange: "this.form.requestSubmit()" %>
+                <%= wg %>
+              <% end %>
+            <% end %>
+          </fieldset>
+        </div>
+
+        <% if false %>
+          <div class="col-3 px-0">
+            <fieldset>
+              <legend>STATUS</legend>
+              <% @statuses.each do |status| %>
+                <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                  <%= check_box_tag 'statuses[]', status, session[:bulk_freeze_filter_statuses].present? ? session[:bulk_freeze_filter_statuses].include?(status) : false, class: "checkbox-class", id: "chbox#{status}", onchange: "this.form.requestSubmit()"  %>
+                  <%= status %>
+                <% end %>
+              <% end %>
+            </fieldset>
+          </div>
+        <% end %>
+
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>ATTRIBUTE</legend>
+              <% @other_attributes.each do |attribute| %>
+                <%= label_tag nil, class: "chbox-lbl-filters" do %>
+                  <%= check_box_tag attribute, attribute, session["bulk_freeze_filter_#{attribute}"].present? ? true : false, class: "checkbox-class", id: "chbox#{attribute}", onchange: "this.form.requestSubmit()"  %>
+                  <%= attribute.split('_').join(' ') %>
+                <% end %>
+              <% end %>
+          </fieldset>
+        </div>
+        <div class="col-4 px-0">
+          <fieldset>
+            <legend>EXCLUDE</legend>
+            <ul style="list-style: none; padding-left: 0;">
+              <% @excluded_purchases.each do |purchase| %>
+                <li><%= purchase.client.name %></li>
+              <% end %>
+            </ul>
+          </fieldset>
+        </div>
+
+        <div class="container d-flex">
+          <%= link_to image_tag('clear_filter.png', class: "button_icon"), clear_filters_bulk_freeze_path, {class: "search searchdelete icon-container"} %>
+        </div>        
+
+      </div>
+    </div>
+  <% end %>
+</div>

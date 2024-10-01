@@ -92,7 +92,7 @@ class Superadmin::AnnouncementsController < Superadmin::BaseController
       next
       errros += 1
     end
-    flash[:success] = t('.success', errors: ActionController::Base.helpers.pluralize(errors, "error"), passes: ActionController::Base.helpers.pluralize(passes, "pass"))
+    flash[:success] = t('.success', errors: ActionController::Base.helpers.pluralize(errors, "announcement"), passes: ActionController::Base.helpers.pluralize(passes, "announcement"))
     redirect_to announcement_path(@announcement)
   end  
 

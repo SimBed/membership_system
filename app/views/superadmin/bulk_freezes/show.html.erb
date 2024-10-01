@@ -1,0 +1,10 @@
+<div class="container px-1 mb-5">
+  <%= render 'freeze_details' %>
+  <%= render 'freeze_details_process' if @processed %>
+
+  <%= turbo_frame_tag 'purchasess-and-filter' do %>
+    <%= render 'filter_form' %>
+    <%= render 'freeze_blast' %>
+    <%= render 'purchases_table' %>
+  <% end %>
+</div>

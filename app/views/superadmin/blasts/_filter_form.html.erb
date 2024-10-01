@@ -27,9 +27,9 @@
           <fieldset>
             <legend>EXCLUDE</legend>
             <ul style="list-style: none; padding-left: 0;">
-            <% @excluded_clients.each do |client| %>
-            <li><%= client.name %></li>
-            <% end %>
+             <% @excluded_clients.each do |client| %>
+              <li><%= client.name %></li>
+             <% end %>
             </ul>
           </fieldset>
         </div>
@@ -37,9 +37,9 @@
           <fieldset>
             <legend>INCLUDE</legend>
             <ul style="list-style: none; padding-left: 0;">
-            <% @added_clients.each do |client| %>
-            <li><%= client.name %></li>
-            <% end %>
+              <% @added_clients.each do |client| %>
+                <li><%= client.name %></li>
+              <% end %>
             </ul>
           </fieldset>
       </div>

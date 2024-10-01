@@ -71,7 +71,7 @@ class Purchase < ApplicationRecord
   scope :unpaid, -> { joins(:payment).where(payment: { payment_mode: 'Not paid' }) }
   scope :written_off, -> { joins(:payment).where(payment: { payment_mode: 'Write Off' }) }
   scope :classpass, -> { joins(:payment).where(payment: { payment_mode: 'ClassPass' }) }
-  scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) }
+  scope :close_to_expiry, -> { package_started_not_expired.select(&:close_to_expiry?) } #NOTE: scopes should return activerecord association so chainable, this returns an array. SHould this be a class method instead?
   scope :remind_to_renew, -> { package_started_not_expired.select(&:remind_to_renew?) }
   scope :during, ->(period) { where(dop: period) }
   # https://stackoverflow.com/questions/7131109/order-by-result-of-group-by-count
@@ -261,7 +261,6 @@ class Purchase < ApplicationRecord
     true
   end
 
-  # use for manually automating bulk freezes over holidays
   def freezes_cover?(period)
     freezes.map { |f| f.applies_during(period) }.any?
   end

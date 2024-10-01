@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="column col-2x">
+    <%= link_to purchase.client.name, client_path(purchase.client), class: "like_button", data: {turbo:false} %>
+  </div>
+  <div class="column col-2x">
+    <%= link_to purchase.name, purchase_path(purchase, link_from: 'purchases_index'), class: "like_button", data: {turbo:false} %>
+  </div>
+  <div class="column nomobile"><%= link_to image_tag('delete.png', class: "table_icon"), remove_purchase_bulk_freeze_path(purchase) %></div>
+</div>

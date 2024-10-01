@@ -1,0 +1,24 @@
+<div class="canvas gray100-canvas embossed px-2 mb-3"
+     data-controller="freeze"
+     data-freeze-duration-days-value = 1> 
+  <%= form_with url: process_details_bulk_freeze_path, class: '' do |form| %>
+
+    <div class="field">
+      <%= form.label :note %>
+      <%= form.text_area :note, cols: 40, rows: 5, value: @note %>
+    </div>    
+
+    <div class="field" id="freeze_start">
+      <%= form.label :start_date %>
+      <%= form.date_field :start_date, value: @start_date, data: {"freeze-target": "startDate", action: "freeze#dynamic_end_date"} %>
+    </div>
+
+    <div class="field" id="freeze_end">
+      <%= form.label :end_date %>
+      <%= form.date_field :end_date, value: @start_date, data: {"freeze-target": "endDate"} %>
+    </div>
+    <div class="actions">
+      <%= form.submit 'process', style: 'font-size: 0.8em;' %>
+    </div>
+  <% end %>
+</div>
