@@ -1,66 +1,77 @@
-<%= form_with(model: product, class: 'admin_form pt-4 my-2') do |form| %>
-  <% if product.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
-      <ul>
-        <% product.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<% unlimited = product.max_classes == 1000 %>
+<div data-controller="product-form"                 
+     data-signup-disabled-class="disabled"> 
+  <%= form_with(model: product, class: 'admin_form pt-4 my-2') do |form| %>
+    <% if product.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+        <ul>
+          <% product.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :unlimited do %>
+        <%= form.check_box :unlimited, { checked: unlimited,  data: { 'product-form-target': "unlimited", action: "product-form#unlimitedToggle" } } %>
+        unlimited classes
+      <% end %>    
+    </div>    
+
+    <div class="field" <%= "hidden" if unlimited %> data-product-form-target = "maxClassesContainer" >
+      <%= form.label :max_classes %>
+      <%= form.number_field :max_classes, data: { 'product-form-target': "maxClasses" } %>
+    </div>
+
+    <div class="field">
+      <%= form.label :validity_length %>
+      <%= form.number_field :validity_length %>
+    </div>
+
+    <div class="field">
+      <%= form.label :validity_unit %>
+      <%= form.select :validity_unit, options_for_select(@validity_units, @product.validity_unit) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :color %>
+      <%= form.select :color, options_for_select(@colors, @product.color) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :workout_group_id, 'Workout Group' %>
+      <%= form.collection_select :workout_group_id, @workout_groups, :id, :name, selected: @product.workout_group&.id || @workout_groups.first%>
+    </div>
+
+    <div class="field mb-3">
+      <%= form.label :current do %>
+        <%= form.check_box :current, { checked: @product.new_record? || form.object.current? } %>
+        Active
+      <% end %>
+    </div>
+
+    <div class="field mb-3">
+      <%= form.label :rider do %>
+        <%= form.check_box :rider, { checked: form.object.rider? } %>
+        Rider
+      <% end %>
+    </div>
+
+    <div class="field mb-3">
+      <%= form.label :has_rider do %>
+        <%= form.check_box :has_rider, { checked: form.object.has_rider? } %>
+        Has a rider
+      <% end %>
+    </div>  
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+
+    <div class="cancel">
+      <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :max_classes %>
-    <%= form.number_field :max_classes %>
-  </div>
-
-  <div class="field">
-    <%= form.label :validity_length %>
-    <%= form.number_field :validity_length %>
-  </div>
-
-  <div class="field">
-    <%= form.label :validity_unit %>
-    <%= form.select :validity_unit, options_for_select(@validity_units, @product.validity_unit) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :color %>
-    <%= form.select :color, options_for_select(@colors, @product.color) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :workout_group_id, 'Workout Group' %>
-    <%= form.collection_select :workout_group_id, @workout_groups, :id, :name, selected: @product.workout_group&.id || @workout_groups.first%>
-  </div>
-
-  <div class="field mb-3">
-    <%= form.label :current do %>
-      <%= form.check_box :current, { checked: @product.new_record? || form.object.current? } %>
-      Active
-    <% end %>
-  </div>
-
-  <div class="field mb-3">
-    <%= form.label :rider do %>
-      <%= form.check_box :rider, { checked: form.object.rider? } %>
-      Rider
-    <% end %>
-  </div>
-
-  <div class="field mb-3">
-    <%= form.label :has_rider do %>
-      <%= form.check_box :has_rider, { checked: form.object.has_rider? } %>
-      Has a rider
-    <% end %>
-  </div>  
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-
-  <div class="cancel">
-    <%= link_to image_tag('delete.png', class: "table_icon"), @form_cancel_link %>
-  </div>  
-<% end %>
+</div>
