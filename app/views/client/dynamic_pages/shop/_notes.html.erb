@@ -3,5 +3,10 @@
     <li><%= link_to 'Terms & Conditions', terms_and_conditions_path %> apply</li>
     <li>Prices include GST</li>
     <li>Payment portal convenience fee applied at checkout</li>
+    <% if @renewal.new_client? %>  
+      <li><%= RenewalPresenter.new(renewal: @renewal).new_client_statement %></li>
+    <% end %>
   </ul>
 </div>
+
+

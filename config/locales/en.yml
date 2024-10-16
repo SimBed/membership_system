@@ -344,6 +344,7 @@ en:
   bookings_open: "Bookings open %{days_before} days before"
   none_to_book: "No %{wkclass_type} to book"
   no_bookings: You have no classes booked
+  student: "%{discount}% online student discount!"
   renewal_pre_trial_expiry: "Buy your first Package before your Trial expires with a %{discount}% online discount!"
   renewal_pre_package_expiry: "Renew your Package before expiry with a %{discount}% online discount!"
   renewal_alt_pre_package_expiry: "Buy your next Package before expiry with a %{discount}% online discount!"

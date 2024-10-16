@@ -55,9 +55,11 @@ class Superadmin::OrdersController < Superadmin::BaseController
                         payment_attributes: {dop: Time.zone.today, amount: price, payment_mode: 'Razorpay', online: true, note: nil} }
     @purchase = Purchase.new(purchase_params)
     if @purchase.save
-      [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
-        DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) if params[discount].present?
-      end
+      # [:renewal_discount_id, :status_discount_id, :oneoff_discount_id].each do |discount|
+      #   DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount].to_i) if params[discount].present?
+      # end
+      DiscountAssignment.create(purchase_id: @purchase.id, discount_id: params[discount_id].to_i) if params[discount_id].present?
+
       flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
       # should be logged in as client, but phones have a weird way of deleting sessions so the payment may have been made but the client may no longer be logged in
       if logged_in_as?('client')

@@ -6,9 +6,10 @@
   <%= form.hidden_field :product_id, value: product.id %>
   <%= form.hidden_field :price_id, value: @renewal.base_price(product)&.id %>
   <%= form.hidden_field :price, value: @renewal.price(product) %>
-  <%= form.hidden_field :renewal_discount_id, value: @renewal.discount_hash[:renewal]&.id %>
-  <%= form.hidden_field :status_discount_id, value: @renewal.discount_hash[:status]&.id %>
-  <%= form.hidden_field :oneoff_discount_id, value: @renewal.discount_hash[:oneoff]&.id %>
+  <%# <%= form.hidden_field :renewal_discount_id, value: @renewal.discount_hash[:renewal]&.id %>
+  <%# <%= form.hidden_field :status_discount_id, value: @renewal.discount_hash[:status]&.id %>
+  <%# <%= form.hidden_field :oneoff_discount_id, value: @renewal.discount_hash[:oneoff]&.id %>
+  <%= form.hidden_field :discount_id, value: @renewal.best_discount&.id %>  
   <%= form.hidden_field :account_id, value: current_account.id %>
   <%= form.hidden_field :client_ui, value: "shop page" %>
   <%= form.submit 'Pay Now', id: "rzp-button-product#{product.id}", class: 'razorpay-payment-button' %>  
