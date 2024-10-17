@@ -12,7 +12,7 @@
 
   <div class="field">
     <%= form.label :instructor_id %>
-    <%= form.select :instructor_id, options_for_select(@instructors, @instructor_id), include_blank: false %>
+    <%= form.select :instructor_id, options_for_select(@instructors, @instructor&.id), include_blank: false %>
   </div>
      
   <div class="field">

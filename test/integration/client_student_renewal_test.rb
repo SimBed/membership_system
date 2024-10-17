@@ -14,10 +14,6 @@ class ClientStudentRenewalTest < ActionDispatch::IntegrationTest
     @price_uc1m_base = prices(:Uc1mbase)
     @price_uc3m_base = prices(:Uc3mbase)
     @price_trial = prices(:trial)
-    # @discount_trialbeforeexpiry = discounts(:trialbeforeexpiry)
-    # @discount_trialafterexpiry = discounts(:trialafterexpiry)
-    # @discount_beforeexpiry = discounts(:beforeexpiry)
-    # @discount_firstpackage = discounts(:firstpackage)
     @discount_student = discounts(:student)
     # studentise
     @account_client.client.update(student: true)
@@ -63,7 +59,6 @@ class ClientStudentRenewalTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     assert_template 'client/bookings/index'
-    # puts @response.parsed_body
     assert_select 'div', text: '25% online student discount!'
     assert_select 'div', text: 'Group - Unlimited Classes 3 Months'
     assert_select 'div.base-price', text: 'Rs. 25,500'
@@ -102,7 +97,6 @@ class ClientStudentRenewalTest < ActionDispatch::IntegrationTest
     assert_select 'div', text: 'TRIAL', count: 0
     assert_select 'div.base-price', text: 'Rs. 9,500'
     assert_select 'div.discount-price', text: 'Rs. 7,150'
-    # refute_empty response.body.scan(/data-amount="905000"/)
     assert_select 'li', text: 'Save Rs. 2,350'
     assert_select 'div.base-price', text: 'Rs. 25,500'
     assert_select 'div.discount-price', text: 'Rs. 19,150'
@@ -218,7 +212,6 @@ class ClientStudentRenewalTest < ActionDispatch::IntegrationTest
     get client_shop_path(@account_new_client.client)
 
     assert_template 'client/dynamic_pages/shop'
-    # File.write('test_output.html', response.body)
     assert_empty response.body.scan(/Buy your Package with a 25% online student discount!/)
     assert_empty response.body.scan(/Buy your first Package/)
     assert_empty response.body.scan(/Renew your Package/)

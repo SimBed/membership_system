@@ -83,8 +83,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price_id'][value='#{@price_uc3m_base.id}']"
     assert_select "input[type=hidden][name='price'][value='25500']"
     assert_select "input[type=hidden][name='discount_id']:not([value])"
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])"
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])"
     assert_select "input[type=hidden][name='account_id'][value='#{@account_client.id}']"
   end
 
@@ -102,8 +100,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price_id'][value='#{@price_uc3m_base.id}']"
     assert_select "input[type=hidden][name='price'][value='20400']"
     assert_select "input[type=hidden][name='discount_id'][value='#{@discount_trialbeforeexpiry.id}']"
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])"
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])"
     assert_select "input[type=hidden][name='account_id'][value='#{@account_client_for_ongoing_trial.id}']"
   end
 
@@ -120,8 +116,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price_id'][value='#{@price_uc3m_base.id}']"
     assert_select "input[type=hidden][name='price'][value='21700']"
     assert_select "input[type=hidden][name='discount_id'][value='#{@discount_trialafterexpiry.id}']"
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])"
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])"
     assert_select "input[type=hidden][name='account_id'][value='#{@account_client_for_expired_trial.id}']"
   end
 
@@ -152,8 +146,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price'][value='24250']", count: 1
     # across all shop products listed
     assert_select "input[type=hidden][name='discount_id'][value='#{@discount_beforeexpiry.id}']", count: 2
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])", count: 2
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])", count: 2
     assert_select "form input[type=hidden][name=account_id][value='#{@account_client.id}']", count: 2
   end
 
@@ -183,8 +175,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price'][value='25500']", count: 1
     # across all shop products listed
     assert_select "input[type=hidden][name='discount_id']:not([value])", count: 2
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])", count: 2
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])", count: 2
     assert_select "form input[type=hidden][name=account_id][value='#{@account_client.id}']", count: 2
   end
 
@@ -214,8 +204,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price'][value='20400']", count: 1
     # across all shop products listed
     assert_select "input[type=hidden][name='discount_id'][value='#{@discount_trialbeforeexpiry.id}']", count: 2
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])", count: 2
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])", count: 2
     assert_select "form input[type=hidden][name=account_id][value='#{@account_client_for_ongoing_trial.id}']", count: 2
   end
 
@@ -247,8 +235,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price'][value='21700']", count: 1
     # across all shop products listed
     assert_select "input[type=hidden][name='discount_id'][value='#{@discount_trialafterexpiry.id}']", count: 2
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])", count: 2
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])", count: 2
     assert_select "form input[type=hidden][name=account_id][value='#{@account_client_for_expired_trial.id}']", count: 2
   end
 
@@ -257,7 +243,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     get client_shop_path(@account_new_client.client)
 
     assert_template 'client/dynamic_pages/shop'
-    # File.write('test_output.html', response.body)
     assert_empty response.body.scan(/Buy your first Package/)
     assert_empty response.body.scan(/Renew your Package/)
     assert_select 'div.trial-name', text: 'unlimited 1 week trial'
@@ -285,8 +270,6 @@ class ClientRenewalTest < ActionDispatch::IntegrationTest
     assert_select "input[type=hidden][name='price'][value='22950']", count: 1
     # across all shop products listed
     assert_select "input[type=hidden][name='discount_id'][value='#{@discount_firstpackage.id}']", count: 2
-    # assert_select "input[type=hidden][name='status_discount_id']:not([value])", count: 2
-    # assert_select "input[type=hidden][name='oneoff_discount_id']:not([value])", count: 2
     assert_select "form input[type=hidden][name=account_id][value='#{@account_new_client.id}']", count: 3
   end
 end
