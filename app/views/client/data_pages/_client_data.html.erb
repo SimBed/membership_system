@@ -21,4 +21,10 @@
       <div class="column col-1x"><%= @client.instagram %></div>
     </div>  
   <% end %>    
+  <% if @client.student? %>
+    <div class="row">
+      <div class="column col-1x">Employment Status</div>
+      <div class="column col-1x">Full Time Education <small>(you must notify us when this changes)</small></div>
+    </div>  
+  <% end %>    
 </div>

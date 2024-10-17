@@ -31,7 +31,8 @@ class ClientDecorator < BaseDecorator
 
   def student
     tooltip_title = if student?
-                      I18n.t('.student')
+                      discount_rate = Discount.rate(Time.zone.now.to_date)[:student][:percent]
+                      I18n.t('student', discount: number_with_precision(discount_rate, strip_insignificant_zeros: true))
                     else
                       I18n.t('.not_student')
                     end

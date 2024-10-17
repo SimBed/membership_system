@@ -6,7 +6,9 @@
     <% if @renewal.new_client? %>  
       <li><%= RenewalPresenter.new(renewal: @renewal).new_client_statement %></li>
     <% end %>
+    <% if @client.student? %>  
+      <li>You must notify us if you are no longer in full time education</li>
+    <% end %>
   </ul>
 </div>
-
 

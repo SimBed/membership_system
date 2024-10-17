@@ -1,4 +1,4 @@
 <%= turbo_stream.update dom_id(@wkclass) do %>
-  <%= render partial: "show" %>
+  <%= render partial: "show_body" %>
 <% end %>
 <%= turbo_stream.prepend "flash", partial: "partials/flashes" %>

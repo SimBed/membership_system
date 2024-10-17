@@ -1,4 +1,18 @@
-  // booking slider
+.row div.column.student {
+
+
+  &::after {
+    background-image: url('student.png');
+    background-size: 1em 1em;
+    display: inline-block;
+    width: 1em; 
+    height: 1em;
+    content: '';
+    margin-left: 0.5rem;
+  }
+}
+
+// booking slider
 div.booking-section {
   // background-color: $gray-100;
   // font-family: cursive;
@@ -308,6 +322,14 @@ div.my-booking {
     .col-3x {
       flex: 3;
       overflow: auto;
+    }
+    // accommodate extra width of student icon when needed    
+    .col-2x-sm {
+      flex: 2;
+      overflow: auto;
+      @include media-breakpoint-up(sm) {
+        flex: 1;
+      }  
     }
 
     .adj-line-height {

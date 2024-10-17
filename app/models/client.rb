@@ -92,6 +92,7 @@ class Client < ApplicationRecord
                                 .having('max(start_time) >= ?', Setting.recently_attended.months.ago)
                             }
 
+  scope :student, -> { where(student: true) }
   scope :packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.package).distinct }
   scope :group_packagee, -> { joins(:purchases).merge(Purchase.not_fully_expired.service_type('group').package).distinct }
   scope :group_packagee_not_rider, -> { joins(:purchases).merge(Purchase.not_fully_expired.service_type('group').package.main_purchase).distinct }
