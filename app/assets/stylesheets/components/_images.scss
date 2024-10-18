@@ -108,23 +108,46 @@ a i.bi-sunset:hover, a i.bi-sunrise:hover {
   transform: scale(1.2);
   }
 
-  img.table_icon {
-    &.dull {
-      opacity: 0.1;
-    }
+img.table_icon {
+  &.dull {
+    opacity: 0.1;
   }
+}
 
-  img.more_icon {
-    margin-left: 1rem;
-    width: 1.0rem;
-    height: 1.0rem;
-    opacity: 1.0;
-    @include media-breakpoint-up(lg) {
-      width: 1.3rem;
-      height: 1.3rem;
+img.more_icon {
+  margin-left: 1rem;
+  width: 1.0rem;
+  height: 1.0rem;
+  opacity: 1.0;
+  @include media-breakpoint-up(lg) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  &:hover {
+    transform: scale(1.5);
+    opacity: 0.5
     }
-    &:hover {
-      transform: scale(1.5);
-      opacity: 0.5
-      }
-  }  
+}
+
+@mixin image-after-content {
+  background-size: 1em 1em;
+  display: inline-block;
+  width: 1em; 
+  height: 1em;
+  content: '';
+  margin-left: 0.5rem;
+}
+  
+.row div.column.student {
+  &::after {
+    background-image: url('student.png');
+    @include image-after-content;
+  }
+}
+  
+.row div.column.warning {
+  &::after {
+    background-image: url('warning.png');
+    @include image-after-content;
+  }
+}

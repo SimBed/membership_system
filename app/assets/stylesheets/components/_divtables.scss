@@ -1,17 +1,3 @@
-.row div.column.student {
-
-
-  &::after {
-    background-image: url('student.png');
-    background-size: 1em 1em;
-    display: inline-block;
-    width: 1em; 
-    height: 1em;
-    content: '';
-    margin-left: 0.5rem;
-  }
-}
-
 // booking slider
 div.booking-section {
   // background-color: $gray-100;

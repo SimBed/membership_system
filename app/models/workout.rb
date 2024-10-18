@@ -22,6 +22,10 @@ class Workout < ApplicationRecord
     workout_groups.any?(&:pt?)
   end
 
+  def has_no_workout_group?
+    !workout_groups.any?
+  end
+
   private
 
   def prettify_name

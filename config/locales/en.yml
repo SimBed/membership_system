@@ -163,7 +163,7 @@ en:
         success: Workout Group was successfully deleted
     workouts:
       create:
-        success: Workout was successfully added
+        success: Workout was successfully added. Remeber to now add this Workout to a Workout Group.
       update:
         success: Workout was successfully updated
       destroy:
@@ -359,4 +359,5 @@ en:
   timetable_delete: Timetable will be deleted. Are you sure?
   timetable_copy: A copy of this timetable, it's times, days and entries will be created. Are you sure?
   timetable_wkclassmaker: This timetable will be referenced to create new classes   
-  timetable_display: This timetable will be publicly displayed   
+  timetable_display: This timetable will be publicly displayed
+  workout_warning: Please go to the Workout Groups page and add this Workout to a Workout Group
