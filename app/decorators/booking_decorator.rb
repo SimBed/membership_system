@@ -17,11 +17,22 @@ class BookingDecorator < BaseDecorator
     nil
   end
 
-  def client_name_link(authorised)
-    return client.name unless authorised
+  # def client_name_link(authorised)
+  #   return client.name unless authorised
 
-    link_maker(client.name, nil, nil, client_path(client), nil, { turbo: false }, ['like_button'])
+  #   link_maker(client.name, nil, nil, client_path(client), nil, { turbo: false }, ['like_button'])
+  # end
+
+  def client_name_link(authorised)
+    name = if authorised
+            link_maker(client.name, nil, nil, client_path(client), nil, { turbo: false }, ['like_button'])
+           else
+            client.name
+           end
+    css_classes = ["column col-2x-sm", ("student" if client.student?)].compact.join(' ')     
+    content_tag(:div, name, class: css_classes)  
   end
+
 
   def product_name_link(authorised)
     return product.name unless authorised
