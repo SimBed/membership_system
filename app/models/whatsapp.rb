@@ -1,3 +1,4 @@
+# TODO: make redundant once twilio_message class is available for all message types
 class Whatsapp
   def initialize(attributes = {})
     @receiver = attributes[:receiver]
@@ -118,13 +119,14 @@ class Whatsapp
       "\nTerms & Conditions: https://www.thespacefitness.in/terms&conditions"
   end
     
-  def body_new_purchase
-    "Thank you for your new purchase #{@variable_contents[:first_name]}." +
-    "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
-    "\n\nTEMPORARY ENTRANCE: Please note, due to renovations, our entrance has temporarily relocated. Please use the side entry (enter Silver Beach Estate by silver gates to side of Bayroute, then 2nd set of gold gates)." +
-    "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
-    "\nTerms & Conditions: https://www.thespacefitness.in/terms&conditions"
-  end
+  # has twilio api content_builder
+  # def body_new_purchase
+  #   "Thank you for your new purchase #{@variable_contents[:first_name]}." +
+  #   "\nPlease log in to your account to stay up to date with your attendance and expiry details." +
+  #   "\n\nTEMPORARY ENTRANCE: Please note, due to renovations, our entrance has temporarily relocated. Please use the side entry (enter Silver Beach Estate by silver gates to side of Bayroute, then 2nd set of gold gates)." +
+  #   "\n \nPlease do not reply to this message. Contact The Space directly if you have any questions." +
+  #   "\nTerms & Conditions: https://www.thespacefitness.in/terms&conditions"
+  # end
 
   def body_package_expiry
     "Hi #{@variable_contents[:first_name]}" +

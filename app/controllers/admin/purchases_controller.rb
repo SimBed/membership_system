@@ -373,14 +373,21 @@ class Admin::PurchasesController < Admin::BaseController
     # setup account which returns some flashes as an array of type/message arrays
     Account.setup_for(client).each { |item| flash_message(*item) } if client.account.nil?
     # use splat to turn array returned into separate arguments
-    flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
+    # flash_message(*Whatsapp.new(whatsapp_params('new_purchase')).manage_messaging)
+    flash_message(*TwilioMessage.new(twilio_message_params).manage)
   end
 
   # https://stackoverflow.com/questions/5750770/conditional-key-value-in-a-ruby-hash
-  def whatsapp_params(message_type)
+  # def whatsapp_params(message_type)
+  #   { receiver: @purchase.client,
+  #     message_type:,
+  #     variable_contents: { first_name: @purchase.client.first_name } }
+  # end
+  def twilio_message_params
     { receiver: @purchase.client,
-      message_type:,
-      variable_contents: { first_name: @purchase.client.first_name } }
+      message_type: 'new_purchase',
+      content_sid: 'HXc853fb537240534dd076f0114dc44e17', # per Twilio Content Template Builder
+      content_variables: { first_name: @purchase.client.first_name } }
   end
 
   def handle_pagination
